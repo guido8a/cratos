@@ -1,0 +1,22 @@
+
+h1. renderBarcodeJpeg
+
+h2. Purpose
+
+
+
+h2. Examples
+
+{code:java}
+foo.renderBarcodeJpeg(string,string)
+{code}
+
+h2. Description
+
+
+
+Arguments:
+
+[* @string@
+, * @string@
+]

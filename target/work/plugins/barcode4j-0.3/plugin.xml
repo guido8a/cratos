@@ -1,0 +1,24 @@
+<plugin name='barcode4j' version='0.3' grailsVersion='1.2 &gt; *'>
+  <author>Luke Daley</author>
+  <authorEmail>ld@ldaley.com</authorEmail>
+  <title>Barcode4j Plugin</title>
+  <description>Provides the generation of barcodes, using the Barcode4j library</description>
+  <documentation>http://www.grails.org/plugin/barcode4j</documentation>
+  <type>Barcode4jGrailsPlugin</type>
+  <resources>
+    <resource>grails.plugin.barcode4j.Barcode4jService</resource>
+  </resources>
+  <repositories>
+    <repository name='grailsCentral' url='http://grails.org/plugins' />
+    <repository name='http://repo.grails.org/grails/core' url='http://repo.grails.org/grails/core/' />
+    <repository name='mavenCentral' url='http://repo1.maven.org/maven2/' />
+  </repositories>
+  <dependencies>
+    <compile>
+      <dependency group='net.sf.barcode4j' name='barcode4j' version='2.1' />
+    </compile>
+  </dependencies>
+  <plugins />
+  <runtimePluginRequirements />
+  <behavior />
+</plugin>

@@ -1,0 +1,81 @@
+body {
+    padding-top : 70px;
+}
+
+.toolbar {
+    margin-bottom : 10px;
+}
+
+.text-shadow {
+    text-shadow : 3px 5px 4px rgba(150, 150, 150, 0.95);
+}
+
+/* para los iconos grandotes */
+.fa-6x {
+    font-size : 6em;
+}
+
+/* el mensaje de not found */
+.not-found {
+    height     : 110px;
+    margin-top : 25px;
+}
+
+.not-found > i {
+    margin-right : 10px;
+    margin-left  : 20px;
+}
+
+.not-found > p {
+    line-height : 75px;
+    font-size   : 20px;
+    font-weight : bold;
+}
+
+.hasCountdown {
+    border-color     : #1260B3 !important;
+    color            : #1260B3 !important;
+    background-color : #ffab19;
+}
+
+.col2 {
+    -moz-column-count    : 2; /* Firefox */
+    -webkit-column-count : 2; /* Safari and Chrome */
+    column-count         : 2;
+}
+
+.col3 {
+    -moz-column-count    : 3;
+    -webkit-column-count : 3;
+    -webkit-column-gap: 20px;
+    column-count         : 3;
+}
+
+.col4 {
+    -moz-column-count    : 4; /* Firefox */
+    -webkit-column-count : 4; /* Safari and Chrome */
+    column-count         : 4;
+}
+
+.form-group, .grupo {
+    -webkit-column-break-inside : avoid;
+    -moz-column-break-inside    : avoid;
+    -o-column-break-inside      : avoid;
+    -ms-column-break-inside     : avoid;
+    column-break-inside         : avoid;
+}
+
+.keeptogether {
+    display : inline-block;
+    width   : 100%;
+}
+
+.iconMargin {
+    margin-right : 10px;
+}
+
+.vertical-container-list {
+    margin-top : 25px;
+    color      : black;
+    min-height : 250px;
+}

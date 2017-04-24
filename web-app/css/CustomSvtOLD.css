@@ -1,0 +1,174 @@
+.css-vertical-text {
+    position          : absolute;
+    left              : 5px;
+    bottom            : 5px;
+    color             : #0088CC;
+    border            : 0px solid red;
+    writing-mode      : tb-rl;
+    -webkit-transform : rotate(270deg);
+    -moz-transform    : rotate(270deg);
+    -o-transform      : rotate(270deg);
+    white-space       : nowrap;
+    display           : block;
+    width             : 20px;
+    height            : 50px;
+    font-size         : 25px;
+    font-family       : 'Tulpen One', cursive;
+    font-weight       : bold;
+    font-size         : 35px;
+    /*text-shadow       : -2px 2px 1px rgba(0, 0, 0, 0.25);*/
+
+    /*text-shadow: 0px 0px 1px #333;*/
+}
+
+.vertical-container {
+    border-bottom : 1px solid black;
+    padding-left  : 50px;
+    position      : relative;
+}
+
+.vertical-container-no-padding {
+    border-bottom : 1px solid black;
+    padding-left  : 10px;
+    position      : relative;
+}
+
+th {
+    color       : white;
+    font-weight : bold;
+}
+
+.titulo-azul {
+    /* Antes conocido como titulo chevere */
+    color       : #0088CC;
+    border      : 0px solid red;
+    white-space : nowrap;
+    display     : block;
+    width       : 98%;
+    height      : 30px;
+    font-family : 'open sans condensed';
+    font-weight : bold;
+    font-size   : 25px;
+    /*text-shadow : -2px 2px 1px rgba(0, 0, 0, 0.25);*/
+    margin-top  : 10px;
+    line-height : 25px;
+
+    /*text-shadow: 0px 0px 1px #333;*/
+}
+
+.linea {
+    position    : absolute;
+    left        : 30px;
+    bottom      : 5px;
+    width       : 1px;
+    border-left : 1px solid #0088CC;
+    height      : 95%;
+
+}
+
+.negrilla {
+    font-weight : bold;
+}
+
+.label-azul {
+    color       : #0061CC;
+    font-family : 'open sans condensed';
+    font-weight : bold;
+    font-size   : 14px;
+    /*text-shadow : -2px 2px 1px rgba(0, 0, 0, 0.25);*/
+    line-height : 14px;
+}
+
+.label-shared {
+    width       : auto;
+    display     : inline;
+    font-weight : normal;
+}
+
+.row {
+    margin-top : 15px;
+}
+
+.btn-azul {
+    background  : #0088CC;
+    color       : white;
+    font-weight : bold;
+}
+
+a.btn-azul:hover {
+    background  : #327BbA;
+    color       : #ffffff;
+    border      : 1px solid #327BbA;
+    text-shadow : -2px 2px 1px rgba(0, 0, 0, 0.25);
+}
+
+a.btn-azul:active {
+    color : #ffffff;
+}
+
+.cmbRequired {
+    border-bottom : 2px solid green;
+    border-right  : 2px solid green;
+}
+
+/*long modal*/
+.longModal {
+    width    : 900px; /* SET THE WIDTH OF THE MODAL */
+    margin   : 30 0 10 450; /* CHANGE MARGINS TO ACCOMODATE THE NEW WIDTH (original = margin: -250px 0 0 -280px;) */
+    padding  : 0px;
+    overflow : hidden;
+    height   : 740px;
+}
+
+.longModal .modal-dialog {
+    width  : 100%;
+    margin : 0px;
+}
+
+.longModal .modal-body {
+    height   : 600px;
+    overflow : auto;
+}
+
+.longModal .modal-header {
+    width : 98%;
+}
+
+/*etiqueta*/
+.etiqueta-container{
+    position: relative;
+    border: 1px solid white;
+}
+.etiqueta-svt{
+    width: 96%;
+    height: 40px;
+    line-height: 40px;
+    color:#ffffff;
+    background:  #0088CC;
+    margin-top: 10px !important;
+    margin-bottom: 10px;
+    padding-left: 1%;
+    font-weight: bold;
+    font-family : 'open sans condensed';
+    font-size: 18px;
+}
+.etiqueta-svt:before, .etiqueta-svt:after{
+    position: absolute;
+    content: "";
+    width: 0px;
+    height: 0px;
+}
+.etiqueta-svt:before{
+    width: 30px;
+    left: -29px;
+    top: 10px;
+    height: 40px;
+    background:#0088CC  ;
+}
+.etiqueta-svt:after{
+    left:-29;
+    top: 50;
+    border-width:  10px 0px 0px 29px;
+    border-style: solid;
+    border-color:#666 transparent ;
+}

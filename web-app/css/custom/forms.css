@@ -1,0 +1,16 @@
+input.required, select.required {
+    border-bottom : 2px solid #287418;
+    border-right  : 2px solid #287418;
+}
+
+input.help-block, select.help-block, textarea.help-block {
+    margin : auto;
+}
+
+.allCaps {
+    text-transform : uppercase;
+}
+
+.dropdown-menu {
+    z-index : 1050;
+}
