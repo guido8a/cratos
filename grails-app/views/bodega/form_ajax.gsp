@@ -46,7 +46,7 @@
                 <div class="col-md-6">
                     <g:select id="centroCosto" name="centroCosto.id" from="${cratos.CentroCosto.list()}" optionKey="id" optionValue="nombre"
                               value="${bodegaInstance?.centroCosto?.id}" class="many-to-one form-control"
-                              noSelection="['null': '']"/>
+                              noSelection="['null': 'Seleccione...']"/>
                 </div>
 
             </span>

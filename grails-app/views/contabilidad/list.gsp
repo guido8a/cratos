@@ -13,7 +13,7 @@
         <!-- botones -->
         <div class="btn-toolbar toolbar">
             <div class="btn-group">
-                <g:link action="form" class="btn btn-default btnCrear">
+                <g:link action="form" class="btn btn-info btnCrear">
                     <i class="fa fa-file-o"></i> Crear
                 </g:link>
             </div>

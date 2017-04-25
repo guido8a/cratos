@@ -14,7 +14,7 @@
                     Código
                 </label>
 
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <g:textField name="codigo" maxlength="4" minlength="4" required="" class="allCaps form-control required" value="${formaDePagoInstance?.codigo}"/>
                 </div>
                 *
@@ -28,7 +28,7 @@
                 </label>
 
                 <div class="col-md-6">
-                    <g:textField name="descripcion" maxlength="31" class="allCaps form-control" value="${formaDePagoInstance?.descripcion}"/>
+                    <g:textField name="descripcion" maxlength="31" class="form-control required" value="${formaDePagoInstance?.descripcion}"/>
                 </div>
 
             </span>

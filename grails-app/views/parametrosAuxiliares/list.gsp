@@ -13,7 +13,7 @@
     <!-- botones -->
         <div class="btn-toolbar toolbar">
             <div class="btn-group">
-                <g:link action="form" class="btn btn-default btnCrear">
+                <g:link action="form" class="btn btn-info btnCrear">
                     <i class="fa fa-file-o"></i> Crear
                 </g:link>
             </div>
@@ -37,7 +37,7 @@
                 <thead>
                     <tr>
                         
-                        <g:sortableColumn property="iva" title="Iva" />
+                        <th>Iva</th>
                         
                         <th width="110">Acciones</th>
                     </tr>
@@ -46,7 +46,7 @@
                     <g:each in="${parametrosAuxiliaresInstanceList}" status="i" var="parametrosAuxiliaresInstance">
                         <tr data-id="${parametrosAuxiliaresInstance.id}">
                             
-                            <td>${fieldValue(bean: parametrosAuxiliaresInstance, field: "iva")}</td>
+                            <td>${fieldValue(bean: parametrosAuxiliaresInstance, field: "iva")} %</td>
                             
                             <td>
                                 <a href="#" data-id="${parametrosAuxiliaresInstance.id}" class="btn btn-info btn-sm btn-show btn-ajax" title="Ver">

@@ -16,7 +16,7 @@ class TipoComprobanteSriController extends cratos.seguridad.Shield {
         if(tipoComprobanteSriInstanceList.size() == 0 && params.offset && params.max) {
             params.offset = params.offset - params.max
         }
-        tipoComprobanteSriInstanceList = TipoComprobanteSri.list(params)
+        tipoComprobanteSriInstanceList = TipoComprobanteSri.list(params).sort{it.codigo}
         return [tipoComprobanteSriInstanceList: tipoComprobanteSriInstanceList, tipoComprobanteSriInstanceCount: tipoComprobanteSriInstanceCount]
     } //list
 

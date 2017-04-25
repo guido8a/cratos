@@ -15,7 +15,7 @@
                 </label>
 
                 <div class="col-md-6">
-                    <g:textField name="codigo" maxlength="4" class="allCaps form-control"
+                    <g:textField name="codigo" maxlength="4" class="allCaps form-control required"
                                  value="${grupoInstance?.codigo}"/>
                 </div>
 
@@ -36,7 +36,7 @@
 
                     <g:select id="cuenta" name="cuenta.id" from="${cuentas}" optionKey="id"
                               value="${grupoInstance?.cuenta?.id}" class="many-to-one form-control"
-                              noSelection="['null': '']"/>
+                              noSelection="['null': 'Seleccione...']"/>
                 </div>
 
             </span>
@@ -49,7 +49,7 @@
                 </label>
 
                 <div class="col-md-6">
-                    <g:textField name="descripcion" maxlength="63" class="allCaps form-control"
+                    <g:textField name="descripcion" maxlength="63" class="allCaps form-control required"
                                  value="${grupoInstance?.descripcion}"/>
                 </div>
 

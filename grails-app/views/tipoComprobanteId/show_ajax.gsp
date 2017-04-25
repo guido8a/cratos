@@ -11,7 +11,7 @@
                 Tipo Identificación
             </div>
 
-            <div class="col-md-5">
+            <div class="col-md-7">
                 ${tipoComprobanteIdInstance?.tipoIdentificacion?.descripcion?.encodeAsHTML()}
             </div>
 
@@ -24,7 +24,7 @@
                 Tipo Comprobante Sri
             </div>
 
-            <div class="col-md-5">
+            <div class="col-md-7">
                 ${tipoComprobanteIdInstance?.tipoComprobanteSri?.descripcion?.encodeAsHTML()}
             </div>
 

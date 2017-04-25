@@ -14,7 +14,8 @@
                     Iva
                 </label>
                 <div class="col-md-2">
-                    <g:field name="iva" type="number" value="${fieldValue(bean: parametrosAuxiliaresInstance, field: 'iva')}" class="number form-control  required" required=""/>
+                    %{--<g:field name="iva" type="number" value="${fieldValue(bean: parametrosAuxiliaresInstance, field: 'iva')}" class="number form-control  required" required=""/>--}%
+                    <g:textField name="iva" class="number form-control required" value="${fieldValue(bean: parametrosAuxiliaresInstance, field: 'iva')}" required="" maxlength="2"/>
                 </div>
                  *
             </span>

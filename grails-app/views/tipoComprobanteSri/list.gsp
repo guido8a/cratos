@@ -13,7 +13,7 @@
     <!-- botones -->
         <div class="btn-toolbar toolbar">
             <div class="btn-group">
-                <g:link action="form" class="btn btn-default btnCrear">
+                <g:link action="form" class="btn btn-info btnCrear">
                     <i class="fa fa-file-o"></i> Crear
                 </g:link>
             </div>
@@ -109,7 +109,7 @@
             function deleteRow(itemId) {
                 bootbox.dialog({
                     title   : "Alerta",
-                    message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea eliminar el TipoComprobanteSri seleccionado? Esta acción no se puede deshacer.</p>",
+                    message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea eliminar el Tipo de Comprobante del Sri seleccionado? Esta acción no se puede deshacer.</p>",
                     buttons : {
                         cancelar : {
                             label     : "Cancelar",
@@ -155,7 +155,7 @@
                     success : function (msg) {
                         var b = bootbox.dialog({
                             id      : "dlgCreateEdit",
-                            title   : title + " TipoComprobanteSri",
+                            title   : title + " Tipo de Comprobante del Sri",
                             message : msg,
                             buttons : {
                                 cancelar : {
@@ -198,7 +198,7 @@
                         },
                         success : function (msg) {
                             bootbox.dialog({
-                                title   : "Ver TipoComprobanteSri",
+                                title   : "Ver Tipo de Comprobante del Sri",
                                 message : msg,
                                 buttons : {
                                     ok : {

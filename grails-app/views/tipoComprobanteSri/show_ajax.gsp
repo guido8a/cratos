@@ -11,7 +11,7 @@
                 Código
             </div>
 
-            <div class="col-md-3">
+            <div class="col-md-7">
                 <g:fieldValue bean="${tipoComprobanteSriInstance}" field="codigo"/>
             </div>
 
@@ -24,7 +24,7 @@
                 Descripción
             </div>
 
-            <div class="col-md-3">
+            <div class="col-md-7">
                 <g:fieldValue bean="${tipoComprobanteSriInstance}" field="descripcion"/>
             </div>
 
@@ -37,7 +37,7 @@
                 Secuenciales
             </div>
 
-            <div class="col-md-3">
+            <div class="col-md-7">
                 <g:fieldValue bean="${tipoComprobanteSriInstance}" field="secuenciales"/>
             </div>
 
@@ -50,7 +50,7 @@
                 Sustento
             </div>
 
-            <div class="col-md-3">
+            <div class="col-md-7">
                 <g:fieldValue bean="${tipoComprobanteSriInstance}" field="sustento"/>
             </div>
 

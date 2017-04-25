@@ -61,10 +61,10 @@
                         Año
                     </label>
 
-                    <div class="col-md-2">
-                        <g:textField name="anio" maxlength="4" class="digits form-control" value=""/>
+                    <div class="col-md-3">
+                        <g:textField name="anio" maxlength="4" class="digits form-control required" value=""/>
                     </div>
-
+                    *
                 </span>
             </div>
 
@@ -75,7 +75,7 @@
                     Prefijo
                 </label>
 
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <g:textField name="prefijo" maxlength="8" class="allCaps form-control" value="${contabilidadInstance?.prefijo}"/>
                 </div>
 

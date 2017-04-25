@@ -9,10 +9,10 @@
     <g:if test="${grupoInstance?.codigo}">
         <div class="row">
             <div class="col-md-2 text-info">
-                Codigo
+                Código
             </div>
             
-            <div class="col-md-3">
+            <div class="col-md-7">
                 <g:fieldValue bean="${grupoInstance}" field="codigo"/>
             </div>
             
@@ -25,7 +25,7 @@
                 Cuenta
             </div>
             
-            <div class="col-md-3">
+            <div class="col-md-7">
                 ${grupoInstance?.cuenta?.encodeAsHTML()}
             </div>
             
@@ -35,10 +35,10 @@
     <g:if test="${grupoInstance?.descripcion}">
         <div class="row">
             <div class="col-md-2 text-info">
-                Descripcion
+                Descripción
             </div>
             
-            <div class="col-md-3">
+            <div class="col-md-7">
                 <g:fieldValue bean="${grupoInstance}" field="descripcion"/>
             </div>
             

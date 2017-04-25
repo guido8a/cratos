@@ -26,7 +26,7 @@
 </g:if>
 <div class="btn-toolbar toolbar">
     <div class="btn-group">
-        <g:link class="btn btn-primary" action="nuevoGestor">
+        <g:link class="btn btn-info" action="nuevoGestor">
             <i class="fa fa-file-o"></i>    Crear nuevo Gestor
         </g:link>
     </div>

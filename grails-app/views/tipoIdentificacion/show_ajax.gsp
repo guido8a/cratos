@@ -7,11 +7,11 @@
 
     <g:if test="${tipoIdentificacionInstance?.codigo}">
         <div class="row">
-            <div class="col-md-2 text-info">
+            <div class="col-md-3 text-info">
                 Código
             </div>
 
-            <div class="col-md-3">
+            <div class="col-md-5">
                 <g:fieldValue bean="${tipoIdentificacionInstance}" field="codigo"/>
             </div>
 
@@ -20,11 +20,11 @@
 
     <g:if test="${tipoIdentificacionInstance?.descripcion}">
         <div class="row">
-            <div class="col-md-2 text-info">
+            <div class="col-md-3 text-info">
                 Descripción
             </div>
 
-            <div class="col-md-3">
+            <div class="col-md-5">
                 <g:fieldValue bean="${tipoIdentificacionInstance}" field="descripcion"/>
             </div>
 
@@ -33,11 +33,11 @@
 
     <g:if test="${tipoIdentificacionInstance?.tipoAnexo}">
         <div class="row">
-            <div class="col-md-2 text-info">
+            <div class="col-md-3 text-info">
                 Tipo de Anexo
             </div>
 
-            <div class="col-md-3">
+            <div class="col-md-5">
                 <g:fieldValue bean="${tipoIdentificacionInstance}" field="tipoAnexo"/>
             </div>
 
@@ -46,11 +46,11 @@
 
     <g:if test="${tipoIdentificacionInstance?.codigoSri}">
         <div class="row">
-            <div class="col-md-2 text-info">
+            <div class="col-md-3 text-info">
                 Codigo SRI
             </div>
 
-            <div class="col-md-3">
+            <div class="col-md-5">
                 <g:fieldValue bean="${tipoIdentificacionInstance}" field="codigoSri"/>
             </div>
 

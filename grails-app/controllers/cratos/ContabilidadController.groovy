@@ -66,6 +66,8 @@ class ContabilidadController extends cratos.seguridad.Shield {
 
     def save_ajax() {
 
+        def errores = ''
+
         params.each { k, v ->
             if (v != "date.struct" && v instanceof java.lang.String) {
                 params[k] = v.toUpperCase()
@@ -101,22 +103,30 @@ class ContabilidadController extends cratos.seguridad.Shield {
             12.times {
                 def ini = new Date().parse("dd-MM-yyyy", "01-" + ((it + 1).toString().padLeft(2, '0')) + "-" + contabilidadInstance.fechaInicio.format("yyyy"))
                 def fin = utilitarioService.getLastDayOfMonth(ini)
+//                println("primero " + ini)
+//                println("ultimo " + fin)
                 def periodoInstance = new Periodo()
 
-                if (periodoInstance.save(flush: true)) {
+                periodoInstance.contabilidad = contabilidadInstance
+                periodoInstance.fechaInicio = ini
+                periodoInstance.fechaFin = fin
+                periodoInstance.numero = it + 1
 
-                    periodoInstance.contabilidad = contabilidadInstance
-                    periodoInstance.fechaInicio = ini
-                    periodoInstance.fechaFin = fin
-                    periodoInstance.numero = it + 1
-                } else {
-
-                    render "Error al grabar períodos"
+                if (!periodoInstance.save(flush: true)) {
+                   errores += periodoInstance.save()
                 }
             }
         }
 
-        render "OK_${params.id ? 'Actualización' : 'Creación'} de Contabilidad exitosa."
+//        println("texto errores " + errores)
+
+        if(errores == ''){
+            render "OK_${params.id ? 'Actualización' : 'Creación'} de Contabilidad exitosa."
+        }else{
+            render "NO_Error al grabar períodos"
+        }
+
+//        render "OK_${params.id ? 'Actualización' : 'Creación'} de Contabilidad exitosa."
     } //save para grabar desde ajax
 
     def delete_ajax() {

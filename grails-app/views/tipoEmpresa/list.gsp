@@ -13,7 +13,7 @@
     <!-- botones -->
         <div class="btn-toolbar toolbar">
             <div class="btn-group">
-                <g:link action="form" class="btn btn-default btnCrear">
+                <g:link action="form" class="btn btn-info btnCrear">
                     <i class="fa fa-file-o"></i> Crear
                 </g:link>
             </div>
@@ -30,14 +30,14 @@
         </div>
 
         <div class="vertical-container vertical-container-list">
-            <p class="css-vertical-text">Lista de Tipo de Empresa</p>
+            <p class="css-vertical-text">Lista de Tipos de Empresa</p>
 
             <div class="linea"></div>
             <table class="table table-condensed table-bordered table-striped table-hover">
                 <thead>
                     <tr>
                         
-                        <g:sortableColumn property="descripcion" title="Descripcion" />
+                        <g:sortableColumn property="descripcion" title="Descripción" />
                         
                         <th width="110">Acciones</th>
                     </tr>

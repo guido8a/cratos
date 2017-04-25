@@ -28,7 +28,7 @@
 
     <div class="btn-toolbar toolbar">
         <div class="btn-group">
-            <g:link action="create" class="btn btn-azul"><i class="fa fa-save"></i> Nuevo</g:link>
+            <g:link action="create" class="btn btn-info"><i class="fa fa-save"></i> Nuevo</g:link>
         </div>
     </div>
 

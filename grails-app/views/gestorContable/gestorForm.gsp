@@ -104,7 +104,7 @@
 
                 <div class="campo">
                     <g:select name="fuente.id" type="select" campo="fuente" from="${cratos.Fuente.list([sort: 'descripcion'])}" label="Fuente: "
-                              value="${gestorInstance?.fuente?.id}" optionKey="id" optionValue="descripcion" class="form-control required" style="width: 200px" ></g:select>
+                              value="${gestorInstance?.fuente?.id}" optionKey="id" optionValue="descripcion" class="form-control required" style="width: 200px" />
                 </div>
             </div>
 
@@ -116,7 +116,7 @@
                 <div class="campo">
                     <span class="grupo">
                         <g:select name="tipoCom" type="select" campo="tipo" from="${cratos.TipoComprobante.list([sort: 'descripcion'])}" label="Tipo comprobante: " value="${tipoCom?.id}"
-                                  optionKey="id" id="tipo" class="form-control required" optionValue="descripcion" style="width: 200px"></g:select>
+                                  optionKey="id" id="tipo" class="form-control required" optionValue="descripcion" style="width: 200px" />
                     </span>
                 </div>
             </div>
@@ -134,7 +134,7 @@
     <g:render template="busquedaCuentas"/>
 </div>
 
-<div class="vertical-container" style="margin-top: 25px;min-height: 370px;margin-bottom: 30px">
+<div class="vertical-container" style="margin-top: 25px;min-height: 310px;margin-bottom: 30px">
     <p class="css-vertical-text">Agregar movimientos</p>
     <div class="linea"></div>
     <div class="row" style="margin-bottom: 10px">
@@ -169,9 +169,9 @@
         </thead>
     </table>
 
-    <div class="row-fluid"  style="width: 99.7%;height: 250px;overflow-y: auto;float: right;">
+    <div class="row-fluid"  style="width: 99.7%;height: 200px;overflow-y: auto;float: right;">
         <div class="span12">
-            <div id="divPlanCuentas" style="width: 1050px; height: 250px;"></div>
+            <div id="divPlanCuentas" style="width: 1050px; height: 200px;"></div>
         </div>
     </div>
 

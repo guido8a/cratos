@@ -79,26 +79,35 @@
     </head>
 
     <body>
+
+
+
+    <div class="btn-toolbar toolbar">
+        <div class="btn-group">
+            <g:link controller="ordenCompra" action="list" class="btn btn-primary btnRegresar">
+                <i class="fa fa-chevron-circle-left"></i> Lista
+            </g:link>
+        </div>
+    </div>
+
+
         <form action="" id="frmAll">
-            <div id="create-ordenCompra" class="content scaffold-create" role="main">
-                <div class="ui-widget-header ui-corner-all nav navegacion" role="navigation">
-                    <ul style="margin-bottom:0;">
-                        <li><g:link class="list linkButton" action="list">Lista</g:link></li>
-                    </ul>
-                </div>
+
+
 
 
                 <div class="contenedor" style="height: 650px">
                     <div style="padding: 0.7em; margin-top:5px; display: none;" class="ui-state-error ui-corner-all" id="divErrores">
                         <span style="float: left; margin-right: .3em;" class="ui-icon ui-icon-alert"></span>
-                        <span style="font-weight: solid;" id="spanError">Se encontraron los siguientes errores:</span>
+                        <span id="spanError">Se encontraron los siguientes errores:</span>
 
                         <ul id="listaErrores"></ul>
                     </div>
 
+                    <div class="vertical-container vertical-container-list">
+                        <p class="css-vertical-text">Orden de Compra</p>
 
-                    <fieldset style="margin: 10px;">
-                        <legend>Orden de compra</legend>
+                        <div class="linea"></div>
 
                         <div class="span-20">
                             <div class="span-3">Número:</div>
@@ -122,26 +131,14 @@
                             <div class="span-3 prepend-1">Fecha:</div>
 
                             <div class="span-2">
-                                %{--<g:if test="${ordenCompraInstance.id}">--}%
-                                %{--<g:formatDate date="${ordenCompraInstance.fecha}" format="dd-MM-yyyy"/>--}%
-                                %{--</g:if>--}%
-                                %{--<g:else>--}%
-                                %{--<g:formatDate date="${new java.util.Date()}" format="dd-MM-yyyy"/>--}%
-                                %{--</g:else>--}%
-                                %{----}%
-
                                 <g:set var="periodo"
                                        value="${cratos.Periodo.findAllByFechaInicioLessThanEqualsAndFechaFinGreaterThanEquals(new Date(), new Date())[0]}"/>
-
-
-                                %{--${periodo.fechaInicio}--}%
-
-
 
                                 <input type="text" id="datepicker" class="field ui-corner-all  datepicker" style="width: 70px">
 
                             </div>
                         </div>
+
 
                         <div class="span-20">
                             <div class="span-3">Descripci&oacute;n:</div>
@@ -152,25 +149,13 @@
                             </div>
 
                             <div class="span-3 prepend-1">Estado:</div>
-
                             <div class="span-2">
-                            %{--<g:select from="${['N': 'No registrado', 'R': 'Registrado']}" name="estado"--}%
-                            %{--class="required span-6 ui-widget-content ui-corner-all"--}%
-                            %{--value="${ordenCompraInstance.estado}" style="width: 100px" optionKey="key"--}%
-                            %{--optionValue="value"/>--}%
-
                                 <g:if test="${ordenCompraInstance.id != null}">
-
                                     <td>${ordenCompraInstance.estado}</td>
-
                                 </g:if>
-
                                 <g:else>
-
                                     No Registrado
-
                                 </g:else>
-
                             </div>
                         </div>
 
@@ -184,10 +169,12 @@
                             </div>
                         </div>
 
-                    </fieldset>
+                    </div>
 
-                    <fieldset style="margin: 10px;">
-                        <legend>Productos</legend>
+                    <div class="vertical-container vertical-container-list">
+                        <p class="css-vertical-text">Productos</p>
+
+                        <div class="linea"></div>
 
                         <table class="bg" style="width: 100%;">
                             <tr>
@@ -252,32 +239,32 @@
                         <g:textField name="verifItems" class="ui-helper-hidden-accessible"/>
                         <table id="tblItems" border="1" style="border-collapse: collapse;">
                             <thead>
-                                <tr>
-                                    <th width="50" class="cantidad">
-                                        Cantidad
-                                    </th>
-                                    <th width="100">
-                                        Código
-                                    </th>
-                                    <th width="300">
-                                        Item
-                                    </th>
-                                    <th width="100" class="precioUnitario">
-                                        Precio Unitario
-                                    </th>
-                                    %{--<th width="80" class="descuento">--}%
-                                    %{--Descuento--}%
-                                    %{--</th>--}%
-                                    <th width="80" class="subtotal">
-                                        Subtotal
-                                    </th>
-                                    %{--<th width="200">--}%
-                                    %{--Observaciones--}%
-                                    %{--</th>--}%
-                                    <th width="70">
-                                        Acciones
-                                    </th>
-                                </tr>
+                            <tr>
+                                <th width="50" class="cantidad">
+                                    Cantidad
+                                </th>
+                                <th width="100">
+                                    Código
+                                </th>
+                                <th width="300">
+                                    Item
+                                </th>
+                                <th width="100" class="precioUnitario">
+                                    Precio Unitario
+                                </th>
+                                %{--<th width="80" class="descuento">--}%
+                                %{--Descuento--}%
+                                %{--</th>--}%
+                                <th width="80" class="subtotal">
+                                    Subtotal
+                                </th>
+                                %{--<th width="200">--}%
+                                %{--Observaciones--}%
+                                %{--</th>--}%
+                                <th width="70">
+                                    Acciones
+                                </th>
+                            </tr>
                             </thead>
                             <tbody id="tbItems" name="tbItems">
 
@@ -292,7 +279,8 @@
                                 <td id="tdSubtotalFin" style="text-align: right;">0.00</td>
                             </tr>
                         </table>
-                    </fieldset>
+                    </div>
+
                 </div>
 
                 <div class="ui-widget-header buttons botones">
@@ -312,7 +300,6 @@
                     </div>
 
                 </div>
-            </div>
         </form>
 
         <script type="text/javascript">
