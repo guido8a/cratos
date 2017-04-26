@@ -9,7 +9,7 @@ class Rubro implements Serializable {
     String descripcion
     TipoRubro tipoRubro
     double valor
-    Empresa empresa
+//    Empresa empresa
 
     static mapping = {
         table 'rbro'
@@ -27,7 +27,7 @@ class Rubro implements Serializable {
             descripcion column: 'rbrodscr'
             tipoRubro column: 'tprb__id'
             valor column: 'rbrovlor'
-            empresa column: 'empr__id'
+//            empresa column: 'empr__id'
         }
     }
     static constraints = {
@@ -39,7 +39,7 @@ class Rubro implements Serializable {
         iess(size: 1..1, blank: false, nullable: false, attributes: [title: 'iess'])
         gravable(size: 1..1, blank: false, nullable: false, attributes: [title: 'grabable'])
         valor(blank: true, nullable: true, attributes: [title: 'valor predefinido'])
-        empresa(nullable: false,blank:false)
+//        empresa(nullable: false,blank:false)
     }
     String toString() {
         "${tipoRubro}: ${descripcion}"
