@@ -11,7 +11,7 @@
                 Padre
             </div>
 
-            <div class="col-md-3">
+            <div class="col-md-7">
                 ${cuentaInstance?.padre?.encodeAsHTML()}
             </div>
 
@@ -50,7 +50,7 @@
                 Descripción
             </div>
 
-            <div class="col-md-3">
+            <div class="col-md-7">
                 <g:fieldValue bean="${cuentaInstance}" field="descripcion"/>
             </div>
 
@@ -82,7 +82,7 @@
     <g:if test="${cuentaInstance?.retencion}">
         <div class="row">
             <div class="col-md-2 text-info">
-                Genera Retencion
+                Genera Retención
             </div>
 
             <div class="col-md-3">

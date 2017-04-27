@@ -12,20 +12,27 @@
         <!-- botones -->
         <div class="btn-toolbar toolbar">
             <div class="btn-group">
-                <g:link action="list" class="btn btn-default">
-                    <i class="fa fa-arrow-left"></i> Cuentas
+                <g:link action="list" class="btn btn-primary">
+                    <i class="fa fa-chevron-left"></i> Cuentas
                 </g:link>
+                <a href="#" class="btn btn-success" id="btnSave"><i class="fa fa-save"></i> Guardar</a>
             </div>
         </div>
 
-        <p>
-            Por favor seleccione las cuentas para el cálculo de resultado del ejercicio
+
+    <div class="vertical-container vertical-container-list">
+        <p class="css-vertical-text">Cuentas de resultados</p>
+
+        <div class="linea"></div>
+
+        <p style="font-size: medium">
+           * Por favor seleccione las cuentas para el cálculo de resultado del ejercicio
         </p>
         <g:form class="form-horizontal" action="grabarCuentaResultado" name="res_form" method="POST">
             <div class="form-group">
                 <label for="super" class="col-md-2 control-label">Cuenta de Superávit</label>
 
-                <div class="col-md-3">
+                <div class="col-md-7">
                     <g:select name="super" class="form-control" from="${cuentas}" optionKey="id" value="${cuentaS?.id}"/>
                 </div>
 
@@ -33,7 +40,7 @@
                 </div>
                 <label for="deficit" class="col-md-2 control-label">Cuenta de Déficit</label>
 
-                <div class="col-md-3">
+                <div class="col-md-7">
                     <g:select name="deficit" class="form-control" from="${cuentas}" optionKey="id" value="${cuentaD?.id}"/>
                 </div>
 
@@ -41,7 +48,7 @@
                 </div>
                 <label for="deficit" class="col-md-2 control-label">Cuenta de Activos Fijos</label>
 
-                <div class="col-md-3">
+                <div class="col-md-7">
                     <g:select name="activo" class="form-control" from="${cuentas1}" optionKey="id" value="${cuentaA?.id}"/>
                 </div>
 
@@ -49,7 +56,7 @@
                 </div>
                 <label for="deficit" class="col-md-2 control-label">Cuenta de Depreciación</label>
 
-                <div class="col-md-3">
+                <div class="col-md-7">
                     <g:select name="depreciacion" class="form-control" from="${cuentas2}" optionKey="id" value="${cuentaP?.id}"/>
                 </div>
 
@@ -57,17 +64,17 @@
                 </div>
                 <label for="gasto" class="col-md-2 control-label">Cuenta de Gasto</label>
 
-                <div class="col-md-3">
+                <div class="col-md-7">
                     <g:select name="gasto" class="form-control" from="${cuentas5}" optionKey="id" value="${cuentaG?.id}"/>
                 </div>
             </div>
-
-            <div class="row">
-                <div class="col-md-5 text-center">
-                    <a href="#" class="btn btn-success" id="btnSave"><i class="fa fa-save"></i> Guardar</a>
-                </div>
-            </div>
         </g:form>
+
+    </div>
+
+
+
+
 
         <script type="text/javascript">
             $(function () {

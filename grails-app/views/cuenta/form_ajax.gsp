@@ -10,18 +10,20 @@
         <g:hiddenField name="padre.id" value="${cuentaInstance?.padreId}"/>
         <g:hiddenField name="nivel.id" value="${cuentaInstance?.nivelId}"/>
 
-        <div class="form-group ${hasErrors(bean: cuentaInstance, field: 'padre', 'error')} ">
-            <span class="grupo">
-                <label class="col-md-2 control-label text-info">
-                    Padre
-                </label>
+        <g:if test="${cuentaInstance?.padre }">
+            <div class="form-group ${hasErrors(bean: cuentaInstance, field: 'padre', 'error')} ">
+                <span class="grupo">
+                    <label class="col-md-2 control-label text-info">
+                        Padre
+                    </label>
 
-                <div class="col-md-6">
-                    <p class="form-control-static">${cuentaInstance?.padre}</p>
-                </div>
+                    <div class="col-md-6">
+                        <p class="form-control-static">${cuentaInstance?.padre ?: "No tiene padre"}</p>
+                    </div>
 
-            </span>
-        </div>
+                </span>
+            </div>
+        </g:if>
 
         <div class="form-group ${hasErrors(bean: cuentaInstance, field: 'nivel', 'error')} required">
             <span class="grupo">
@@ -40,9 +42,8 @@
                 <label for="numero" class="col-md-2 control-label text-info">
                     Número
                 </label>
-
-                <div class="col-md-6">
-                    <g:textField onfocus="this.value = this.value;" name="numero" maxlength="20" required="" class="allCaps form-control required" value="${cuentaInstance?.numero ?: cuentaInstance?.padre?.numero}"/>
+                <div class="col-md-5">
+                        <g:textField onfocus="this.value = this.value;" name="numero" maxlength="20" required="" class="allCaps form-control required" value="${cuentaInstance?.numero ?: cuentaInstance?.padre?.numero}"/>
                 </div>
                 *
             </span>
@@ -55,7 +56,7 @@
                 </label>
 
                 <div class="col-md-6">
-                    <g:textArea name="descripcion" maxlength="127" required="" class="allCaps form-control required" value="${cuentaInstance?.descripcion}"/>
+                    <g:textArea name="descripcion" maxlength="127" style="resize: none" required="" class="allCaps form-control required" value="${cuentaInstance?.descripcion}"/>
                 </div>
                 *
             </span>
@@ -104,7 +105,7 @@
 
                 <div class="col-md-2">
                     <g:select name="retencion" from="${cuentaInstance.constraints.retencion.inList}" class="form-control" value="${cuentaInstance?.retencion ?: 'N'}"
-                              valueMessagePrefix="cuenta.retencion"/>
+                              valueMessagePrefix="cuenta.retencion" noSelection="['': 'Seleccione..']"/>
                 </div>
 
             </span>
@@ -118,7 +119,7 @@
 
                 <div class="col-md-6">
                     <g:select id="cuentaBanco" name="cuentaBanco.id" from="${cratos.CuentaBanco.list()}" optionKey="id" value="${cuentaInstance?.cuentaBanco?.id}"
-                              class="many-to-one form-control" noSelection="['': '']"/>
+                              class="many-to-one form-control" noSelection="['': 'Seleccione..']"/>
                 </div>
 
             </span>
@@ -133,7 +134,7 @@
 
                     <div class="col-md-6">
                         <g:select id="impuesto" name="impuesto.id" from="${cratos.Impuesto.list([sort: 'codigo'])}"
-                                  optionKey="id" value="${cuentaInstance?.impuesto?.id}" class="many-to-one form-control" noSelection="['': '']"
+                                  optionKey="id" value="${cuentaInstance?.impuesto?.id}" class="many-to-one form-control" noSelection="['': 'Seleccione']"
                                   optionValue="${{
                                       it.nombre + ' (' + it.porcentaje + '%, ret. ' + it.retencion + '%' + (it.sri == 'BNS' ? ', bienes' : it.sri == 'SRV' ? ', servicios' : '') + ')'
                                   }}"/>

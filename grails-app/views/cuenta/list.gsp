@@ -28,7 +28,7 @@
                 <!-- botones -->
                 <div class="btn-toolbar toolbar">
                     <div class="btn-group">
-                        <g:link action="cuentaResultados" class="btn btn-default">
+                        <g:link action="cuentaResultados" class="btn btn-info">
                             <i class="fa fa-money"></i> Cuentas de resultados
                         </g:link>
                     </div>
@@ -121,7 +121,7 @@
 
                             buttons : {
                                 cancelar : {
-                                    label     : "Cancelar",
+                                    label     : "<i class='fa fa-times'></i> Cancelar",
                                     className : "btn-primary",
                                     callback  : function () {
                                     }

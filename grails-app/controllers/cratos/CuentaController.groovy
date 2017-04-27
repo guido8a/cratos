@@ -525,6 +525,7 @@ class CuentaController extends cratos.seguridad.Shield {
     } //show para cargar con ajax en un dialog
 
     def form_ajax() {
+        println("---> " + params)
         def cuentaInstance = new Cuenta(params)
         def hijos = 0
         if (params.id) {
@@ -551,7 +552,7 @@ class CuentaController extends cratos.seguridad.Shield {
                     cuentaInstance.numero = num
                 }
             } else {
-                cuentaInstance.numero = "1"
+                cuentaInstance.numero = " "
             }
         }
         return [cuentaInstance: cuentaInstance, hijos: hijos]

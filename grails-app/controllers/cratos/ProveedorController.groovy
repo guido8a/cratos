@@ -167,7 +167,7 @@ class ProveedorController extends cratos.seguridad.Shield {
 
     def list() {
         params.max = Math.min(params.max ? params.max.toInteger() : 10, 100)
-        def proveedorInstanceList = Proveedor.findAllByEmpresa(session.empresa, params)
+        def proveedorInstanceList = Proveedor.findAllByEmpresa(session.empresa, params).sort{it.nombre}
         def proveedorInstanceCount = Proveedor.countByEmpresa(session.empresa)
         if (proveedorInstanceList.size() == 0 && params.offset && params.max) {
             params.offset = params.offset - params.max
@@ -198,39 +198,33 @@ class ProveedorController extends cratos.seguridad.Shield {
                 return
             }
         }
-        return [proveedorInstance: proveedorInstance]
+
+
+        def countries = [] as SortedSet
+
+        Locale.availableLocales*.displayCountry.each {
+            if (it) {
+                countries << it
+            }
+        }
+
+//        println("--- " + countries)
+
+        return [proveedorInstance: proveedorInstance, paises: countries]
     } //form para cargar con ajax en un dialog
 
     def save_ajax() {
 
 //        println("params:" + params)
 
-//        params.each { k, v ->
-//            if (v != "date.struct" && v instanceof java.lang.String) {
-//                params[k] = v.toUpperCase()
-//            }
-//        }
-
-        //nuevo
-
         def persona
-
-//        if (params.fecha) {
-//
-//            params.fecha = new Date().parse("yyyy-MM-dd", params.fecha)
-//
-//        }
-//        if (params.fechaCaducidad) {
-//
-//            params.fechaCaducidad = new Date().parse("yyyy-MM-dd", params.fechaCaducidad)
-//
-//        }
 
         //original
         def proveedorInstance = new Proveedor()
         if (params.id) {
             proveedorInstance = Proveedor.get(params.id)
             proveedorInstance.properties = params
+            proveedorInstance.pais = params."pais.id"
             if (!proveedorInstance) {
                 notFound_ajax()
                 return
@@ -241,6 +235,7 @@ class ProveedorController extends cratos.seguridad.Shield {
             proveedorInstance.properties = params
 //            proveedorInstance.estado = '1'
             proveedorInstance.empresa = session.empresa
+            proveedorInstance.pais = params."pais.id"
 
 
         } //update

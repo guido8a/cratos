@@ -331,6 +331,19 @@
                     <ul class="fa-ul">
                         <li>
                             <i class="fa-li ${iconEmpr}"></i>
+                            <span id="paramsEmp">
+                                <g:link controller="empresa" action="list">Parámetros de la Empresa</g:link> para definir la forma de
+                                funcionamiento de la contabilidad, centros de costos y control de inventarios.
+                            </span>
+
+                            <div class="descripcion hide">
+                                <h4>Parámetros de la Empresa</h4>
+
+                                <p>Parámetros de funcionamiento de la contabilidad, control de costos y valores del IVA, en la Empresa,</p>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fa-li ${iconEmpr}"></i>
                             <span id="tipoEmpresa">
                                 <g:link controller="tipoEmpresa" action="list">Tipo de Empresa</g:link>, clasificación para registro
                                 y control de empresas que reciben el servicio
@@ -413,19 +426,7 @@
                                 <p>Parámetros de funcionamiento generales como el valor del IVA.</p>
                             </div>
                         </li>
-                        <li>
-                            <i class="fa-li ${iconEmpr}"></i>
-                            <span id="paramsEmp">
-                                <g:link controller="empresa" action="list">Parámetros de la Empresa</g:link> para definir la forma de
-                                funcionamiento de la contabilidad, centros de costos y control de inventarios.
-                            </span>
 
-                            <div class="descripcion hide">
-                                <h4>Parámtros de la Empresa</h4>
-
-                                <p>Parámetros de funcionamiento de la contabilidad, control de costos y valores del IVA, en la Empresa,</p>
-                            </div>
-                        </li>
                     </ul>
                 </div>
 

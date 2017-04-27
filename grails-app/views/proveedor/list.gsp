@@ -13,8 +13,8 @@
 <!-- botones -->
 <div class="btn-toolbar toolbar">
     <div class="btn-group">
-        <g:link action="form" class="btn btn-default btnCrear">
-            <i class="fa fa-file-o"></i> Crear
+        <g:link action="form" class="btn btn-info btnCrear">
+            <i class="fa fa-file-o"></i> Nuevo Proveedor
         </g:link>
     </div>
     <div class="btn-group pull-right col-md-3">
@@ -41,15 +41,15 @@
 
             <g:sortableColumn property="nombre" title="Nombre"/>
 
-            <g:sortableColumn property="tipoProveedor" title="Tipo Proveedor"/>
+            <g:sortableColumn property="tipoProveedor" title="Tipo"/>
 
             %{--<g:sortableColumn property="tipoPersonas" title="Tipo Persona"/>--}%
 
-            <g:sortableColumn property="tipoIdentificacion" title="Tipo Identificación"/>
+            <g:sortableColumn property="tipoIdentificacion" title="Identificación"/>
 
             <g:sortableColumn property="direccion" title="Dirección"/>
 
-            <g:sortableColumn title="Contacto" property="apellidoContacto"/>
+            %{--<g:sortableColumn title="Contacto" property="apellidoContacto"/>--}%
 
             <th width="110">Acciones</th>
         </tr>
@@ -68,7 +68,7 @@
 
                 <td>${fieldValue(bean: proveedorInstance, field: "direccion")}</td>
 
-                <td>${proveedorInstance?.nombreContacto + " " + proveedorInstance?.apellidoContacto }</td>
+                %{--<td>${proveedorInstance?.nombreContacto + " " + proveedorInstance?.apellidoContacto }</td>--}%
 
 
                 <td>
@@ -105,7 +105,9 @@
                     var parts = msg.split("_");
                     log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
                     if (parts[0] == "OK") {
-                        location.reload(true);
+                        setTimeout(function () {
+                            location.reload(true);
+                        }, 1000);
                     } else {
                         closeLoader();
                         spinner.replaceWith($btn);
@@ -171,7 +173,7 @@
                     message : msg,
                     buttons : {
                         cancelar : {
-                            label     : "Cancelar",
+                            label     : "<i class='fa fa-times'></i> Cancelar",
                             className : "btn-primary",
                             callback  : function () {
                             }
