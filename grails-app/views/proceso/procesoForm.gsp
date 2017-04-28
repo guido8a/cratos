@@ -76,14 +76,14 @@
 <div class="btn-toolbar toolbar">
     <div class="btn-group">
         <g:if test="${!registro}">
-            <a href="#" class="btn btn-azul" id="guardarProceso">
+            <a href="#" class="btn btn-success" id="guardarProceso">
                 <i class="fa fa-save"></i>
                 Guardar
             </a>
         </g:if>
         <g:if test="${params.id}">
             <g:if test="${proceso.adquisicion == null && proceso.fact == null && proceso.transferencia == null && !registro}">
-                <a href="#" class="btn btn-success" id="registrarProceso">
+                <a href="#" class="btn btn-primary" id="registrarProceso">
                     <i class="fa fa-pencil-square-o"></i>
                     Registrar
                 </a>
@@ -99,7 +99,7 @@
                     <g:form action="borrarProceso" class="br_prcs" style="margin:0px;display: inline" >
                         <input type="hidden" name="id" value="${proceso?.id}">
                         <a class="btn btn-danger" id="btn-br-prcs" action="borrarProceso">
-                            <i class="fa fa-basket"></i>
+                            <i class="fa fa-trash-o"></i>
                             Borrar Proceso
                         </a>
                     </g:form>
@@ -164,7 +164,7 @@
             <div class="col-xs-4 negrilla">
                 <input type="text" name="proveedor.ruc" class="form-control  label-shared" id="prov" disabled="true" value="${proceso?.proveedor?.ruc}" title="El proveedor o cliente"/>
                 <g:if test="${!registro}">
-                    <a href="#" id="btn_buscar" class="btn btn-azul">
+                    <a href="#" id="btn_buscar" class="btn btn-info">
                         <i class="fa fa-search"></i>
                         Buscar
                     </a>

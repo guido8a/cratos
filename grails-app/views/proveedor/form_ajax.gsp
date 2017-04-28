@@ -39,10 +39,7 @@
 
                 </span>
             </div>
-
-
         </div>
-
 
         <div class="form-group ${hasErrors(bean: proveedorInstance, field: 'direccion', 'error')} ">
             <span class="grupo">

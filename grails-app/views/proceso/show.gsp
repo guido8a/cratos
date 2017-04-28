@@ -147,8 +147,6 @@
 
     $("#borrarProceso").click(function () {
 
-        console.log("entro")
-
     });
 
 </script>

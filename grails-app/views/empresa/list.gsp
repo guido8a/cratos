@@ -11,12 +11,14 @@
         <elm:flashMessage tipo="${flash.tipo}" clase="${flash.clase}">${flash.message}</elm:flashMessage>
 
         <!-- botones -->
-        %{--<div class="btn-toolbar toolbar">--}%
-            %{--<div class="btn-group">--}%
-                %{--<g:link action="form" class="btn btn-info btnCrear">--}%
-                    %{--<i class="fa fa-file-o"></i> Crear--}%
-                %{--</g:link>--}%
-            %{--</div>--}%
+        <div class="btn-toolbar toolbar">
+            <div class="btn-group">
+
+                <g:link action="form" class="btn btn-info btnCrear">
+                    <i class="fa fa-file-o"></i> Crear
+                </g:link>
+            </div>
+
 
             %{--<div class="btn-group pull-right col-md-3">--}%
                 %{--<div class="input-group">--}%
@@ -28,7 +30,7 @@
                     %{--</span>--}%
                 %{--</div><!-- /input-group -->--}%
             %{--</div>--}%
-        %{--</div>--}%
+        </div>
 
         <div class="vertical-container vertical-container-list">
             <p class="css-vertical-text">Parámetros de la Empresa</p>

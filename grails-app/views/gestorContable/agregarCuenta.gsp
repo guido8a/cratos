@@ -38,9 +38,10 @@
             <tr style="background-color: ${(genera.tipoComprobante.id==1)?'#D4E6FC':((genera.tipoComprobante.id==2)?'#99CC99':'#FFCC99')} !important; " class="movimiento">
             <td style="max-width: 250px;">${cuenta.numero+'('+cuenta.descripcion+')'}</td>
             <g:if test="${genera.debeHaber=='D'}">
-                <td><input type="text" name="porcentaje" id="por_${i}"  class="form-control" style="width: 62px;" value="${genera.porcentaje?:0}"/></td>
-                <td><input type="text" name="impuestos" id="imp_${i}"  class="form-control" style="width: 62px;" value="${genera.porcentajeImpuestos?:0}"/></td>
-                <td><input type="text" name="valor" id="val_${i}"  class="form-control" style="width: 62px;" value="${genera.valor?:0}"/></td>
+                %{--<td><input type="number" name="porcentaje" id="por_${i}"  class="form-control" style="width: 62px;" value="${genera.porcentaje?:0}"/></td>--}%
+                <td><g:textField name="porcentaje" class="number form-control" id="por_${i}" style="width: 62px;" value="${genera.porcentaje?:0}"/></td>
+                <td><input type="number" name="impuestos" id="imp_${i}"  class="form-control" style="width: 62px;" value="${genera.porcentajeImpuestos?:0}"/></td>
+                <td><input type="number" name="valor" id="val_${i}"  class="form-control" style="width: 62px;" value="${genera.valor?:0}"/></td>
                 <td></td>
                 <td></td>
                 <td></td>

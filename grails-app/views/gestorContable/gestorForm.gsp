@@ -47,7 +47,7 @@
 </g:if>
 <div class="btn-toolbar toolbar">
     <div class="btn-group">
-        <a href="#" id="btnGuardar" class="btn btn-azul">
+        <a href="#" id="btnGuardar" class="btn btn-success">
             <i class="fa fa-save"></i>
             Guardar
         </a>
