@@ -33,7 +33,7 @@ environments {
     production {
         dataSource {
             dbCreate = "update"
-            url = "jdbc:postgresql://127.0.0.1:5432/asofin"
+            url = "jdbc:postgresql://127.0.0.1:5432/cratos"
             username = "postgres"
             password = "steinsgate"
             properties {
