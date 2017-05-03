@@ -4,11 +4,10 @@
         <elm:notFound elem="Persona" genero="o"/>
     </g:if>
     <g:else>
-
         <g:if test="${personaInstance?.cedula}">
             <div class="row">
                 <div class="col-md-3 text-info">
-                    Cédula
+                    Cédula vvv
                 </div>
 
                 <div class="col-md-4">

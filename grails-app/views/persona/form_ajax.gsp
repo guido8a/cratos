@@ -10,6 +10,30 @@
         <g:form class="form-horizontal" name="frmPersona" role="form" action="save_ajax" method="POST">
             <g:hiddenField name="id" value="${personaInstance?.id}"/>
 
+            %{--${session.usuario.login}--}%
+                <div class="form-group keeptogether  ${hasErrors(bean: personaInstance, field: 'empresa', 'error')} required">
+                <span class="grupo">
+                    <label for="cedula" class="col-md-3 control-label text-info">
+                        Empresa
+                    </label>
+
+                    <div class="col-md-6">
+                        <g:select id="empresa" name="empresa.id" from="${cratos.Empresa.list()}" optionKey="id"
+                            disabled="${session.usuario.login == 'admin' ? 'true' : 'false'}"
+                                  value="${personaInstance?.empresa.id}" optionValue="nombre" class="many-to-one form-control text-info"
+                                  noSelection="['null': 'Seleccione...']"/>
+
+                    </div>
+
+%{--
+                    <div class="col-md-6">
+                        <g:textField name="nombre" required="" class="form-control required" readonly="true"
+                                     value="${personaInstance?.empresa?.nombre}"/>
+                    </div>
+--}%
+                </span>
+                </div>
+
             <div class="form-group keeptogether  ${hasErrors(bean: personaInstance, field: 'cedula', 'error')} required">
                 <span class="grupo">
                     <label for="cedula" class="col-md-3 control-label text-info">
@@ -312,7 +336,8 @@
         %{--</div>--}%
 
         </g:form>
-
+    </g:else>
+</div>
         <script type="text/javascript">
             var validator = $("#frmPersona").validate({
                 errorClass     : "help-block",
@@ -362,5 +387,3 @@
             });
         </script>
 
-    </g:else>
-</div>

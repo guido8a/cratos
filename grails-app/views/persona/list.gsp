@@ -3,7 +3,7 @@
 <html>
     <head>
         <meta name="layout" content="main">
-        <title>Lista de Usuarios</title>
+        <title>Usuarios</title>
     </head>
 
     <body>
@@ -30,6 +30,14 @@
             </div>
         </div>
 
+    <g:if test="${session.usuario.login == 'admin'}">
+        <h1 style="text-align: center">Empresas</h1>
+    </g:if>
+    <g:else>
+        <h1 style="text-align: center">${session.empresa.nombre}</h1>
+    </g:else>
+
+
         <div class="vertical-container vertical-container-list">
             <p class="css-vertical-text">Lista de Usuarios</p>
 
@@ -37,24 +45,24 @@
             <table class="table table-condensed table-bordered table-striped table-hover">
                 <thead>
                     <tr>
+                        <th>Empresa</th>
                         <g:sortableColumn property="cedula" title="Cédula"/>
                         <g:sortableColumn property="nombre" title="Nombre"/>
                         <g:sortableColumn property="apellido" title="Apellido"/>
                         <g:sortableColumn property="login" title="Login"/>
                         <g:sortableColumn property="activo" title="Activo"/>
-                        <g:sortableColumn property="observaciones" title="Observaciones"/>
                         <th width="190">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     <g:each in="${personaInstanceList}" status="i" var="personaInstance">
                         <tr data-id="${personaInstance.id}">
-                            <td>${fieldValue(bean: personaInstance, field: "cedula")}</td>
-                            <td>${fieldValue(bean: personaInstance, field: "nombre")}</td>
-                            <td>${fieldValue(bean: personaInstance, field: "apellido")}</td>
-                            <td>${fieldValue(bean: personaInstance, field: "login")}</td>
+                            <td style="background-color: #dddddd">${personaInstance?.empresa}</td>
+                            <td>${personaInstance.cedula}</td>
+                            <td>${personaInstance.nombre}</td>
+                            <td>${personaInstance.apellido}</td>
+                            <td>${personaInstance.login}</td>
                             <td><g:formatBoolean boolean="${personaInstance.activo == 1}" true="SI" false="NO"/></td>
-                            <td>${fieldValue(bean: personaInstance, field: "observaciones")}</td>
                             <td>
                                 <a href="#" data-id="${personaInstance.id}" class="btn btn-info btn-sm btn-show btn-ajax" title="Ver">
                                     <i class="fa fa-laptop"></i>

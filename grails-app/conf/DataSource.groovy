@@ -25,15 +25,17 @@ environments {
     test {
         dataSource {
             dbCreate = "update"
-            url = "jdbc:postgresql://127.0.0.1:5432/cratosReborn"
+            url = "jdbc:postgresql://127.0.0.1:5432/cratos"
             username = "postgres"
-            password = "postgres"
+            password = "steinsgate"
         }
     }
     production {
         dataSource {
             dbCreate = "update"
             url = "jdbc:postgresql://127.0.0.1:5432/asofin"
+            username = "postgres"
+            password = "steinsgate"
             properties {
                // See http://grails.org/doc/latest/guide/conf.html#dataSource for documentation
                jmxEnabled = true

@@ -1,5 +1,7 @@
 package cratos
 
+import cratos.seguridad.Persona
+
 
 class EmpresaController extends cratos.seguridad.Shield {
 
@@ -10,6 +12,7 @@ class EmpresaController extends cratos.seguridad.Shield {
     } //index
 
     def list() {
+        def usro = Persona.get(session?.usuario?.id)
         params.max = Math.min(params.max ? params.max.toInteger() : 10, 100)
         def empresaInstanceList = Empresa.list(params)
         def empresaInstanceCount = Empresa.count()
@@ -21,7 +24,14 @@ class EmpresaController extends cratos.seguridad.Shield {
 
 //        def miEmpresa = session.empresa
 
-        def empresa = Empresa.get(session.empresa.id)
+        def empresa
+//        println "usuario: ${session}, usro: ${usro.login}"
+
+        if(usro.login == 'admin') {
+            empresa = Empresa.list([sort: 'nombre'])
+        } else {
+            empresa = Empresa.findAllById(session.empresa.id)
+        }
 
         println("empresa:" + empresa)
 

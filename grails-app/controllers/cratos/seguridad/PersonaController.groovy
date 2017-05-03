@@ -2,6 +2,7 @@ package cratos.seguridad
 
 
 class PersonaController extends cratos.seguridad.Shield {
+    def dbConnectionService
 
     static allowedMethods = [save: "POST", delete: "POST", save_ajax: "POST", delete_ajax: "POST"]
 
@@ -160,13 +161,31 @@ class PersonaController extends cratos.seguridad.Shield {
     /* ************************ COPIAR DESDE AQUI ****************************/
 
     def list() {
-        params.max = Math.min(params.max ? params.max.toInteger() : 10, 100)
-        def personaInstanceList = Persona.findAllByEmpresa(session.empresa, params)
-        def personaInstanceCount = Persona.count()
-        if (personaInstanceList.size() == 0 && params.offset && params.max) {
-            params.offset = params.offset - params.max
+//        println "list: $params"
+        def cn = dbConnectionService.getConnection()
+        params.max = Math.min(params.max ? params.max.toInteger() : 15, 100)
+        def ordena = params.sort?: "nombre"
+        def campos = [cedula: 'prsncdla', nombre: 'prsnnmbr', apellido: 'prsnapll', login: 'prsnlogn', activo: 'prsnactv' ]
+        def ordenaCampo = campos[ordena]
+        println "--> $ordenaCampo"
+        def sql = "select prsn__id id, prsncdla cedula, prsnnmbr nombre, prsnapll apellido, " +
+                "prsnactv activo, emprnmbr empresa, prsnlogn login from prsn, empr where prsn.empr__Id = empr.empr__id " +
+                "order by emprnmbr, ${ordenaCampo} limit ${params.max} offset ${params.offset}"
+        def sqlE = "select prsn__id id, prsncdla cedula, prsnnmbr nombre, prsnapll apellido, " +
+                "prsnactv activo, emprnmbr empresa, prsnlogn login from prsn, empr where prsn.empr__Id = empr.empr__id and " +
+                "empr.empr__id = ${session.empresa.id} order by emprnmbr, ${ordenaCampo} limit ${params.max} offset ${params.offset}"
+//        println "sql: $sql"
+        def personaInstanceList
+        def personaInstanceCount
+
+        if(session.usuario.login == 'admin') {
+            personaInstanceList = cn.rows(sql.toString())
+            personaInstanceCount = cn.rows("select count(*) cnta from prsn".toString())[0].cnta
+        } else {
+            personaInstanceList = cn.rows(sqlE.toString())
+            personaInstanceCount = cn.rows("select count(*) cnta from prsn where empr__id = ${session.empresa.id}".toString())[0].cnta
         }
-        personaInstanceList = Persona.findAllByEmpresa(session.empresa, params)
+
         return [personaInstanceList: personaInstanceList, personaInstanceCount: personaInstanceCount]
     } //list
 

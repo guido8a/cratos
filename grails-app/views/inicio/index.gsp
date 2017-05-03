@@ -89,9 +89,10 @@
             box-sizing:border-box;
             /*background-color: rgba(0, 128, 128, 0.8);*/
             background-color: #ffbd4c;
+            color: #050666;
             font-weight: 300;
-            -webkit-transition:  -webkit-transform .2s ease-out, opacity .3s ease-out;
-            transition:          transform .2s ease-out, opacity .3s ease-out;
+            -webkit-transition:  -webkit-transform .2s ease-out, opacity .1s ease-out;
+            transition:          transform .2s ease-out, opacity .1s ease-out;
         }
         .hex h1 {
             bottom: 50%;
@@ -190,6 +191,8 @@
     <body>
 
 
+    <h1 style="text-align: center">${session.empresa.nombre}</h1>
+
     <ul id="hexGrid">
         <li class="hex">
             <div class="hexIn">
@@ -250,7 +253,7 @@
                 <a class="hexLink" href="${createLink(controller: 'cuenta', action: 'list')}">
                     <img src="${resource(dir: 'images',file: 'plan2.jpeg')}" alt=""  style="width: 100%; height: 100%"/>
                     <h1>Plan de Cuentas</h1>
-                    <p>Plan de Cuentas</p>
+                    <p>Plan de Cuentas de la Empresa</p>
                 </a>
             </div>
         </li>

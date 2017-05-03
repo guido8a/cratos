@@ -4,9 +4,12 @@ import cratos.seguridad.Persona
 import cratos.seguridad.Shield
 
 class InicioController extends Shield {
+    def dbConnectionService
 
     def index() {
-        println "inicio"
+        def cn = dbConnectionService.getConnection()
+        def prms = []
+        def acciones = "'procesos', 'contabilidad', 'facturacion'"
         def usu = Persona.get(session.usuario?.id)
         if (usu) {
             def now = new Date().clearTime()
@@ -15,6 +18,17 @@ class InicioController extends Shield {
                 return
             }
         }
+//        def tx = "select accnnmbr from prms, accn where prfl__id = " + Prfl.findByNombre(session.perfil.toString()).id +
+        def tx = "select accnnmbr from prms, accn where prfl__id = " + '1' +
+                " and accn.accn__id = prms.accn__id and accnnmbr in (${acciones})"
+        cn.eachRow(tx) { d ->
+            prms << d.accnnmbr
+        }
+        cn.close()
+
+        println "permisos: $prms"
+
+        return [prms: prms]
     }
 
     def saldosIniciales(){

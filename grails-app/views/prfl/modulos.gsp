@@ -2,32 +2,33 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="layout" content="main"/>
-        <title>Gestión de Permisos, Módulos y Perfiles</title>
+        <title>Gestión de Permisos</title>
     </head>
 
     <body>
 
         <div class="btn-toolbar toolbar">
             <div class="btn-group">
-                <g:link action="form" class="btn btn-primary btnCrear">
+                %{--<g:link action="form" class="btn btn-info btnCrear">--}%
+                <g:link action="form" class="btn btn-info btnCrear">
                     <i class="fa fa-file-o"></i> Crear perfil
                 </g:link>
-                <a href="#" class="btn btn-primary btnEdit">
+                <a href="#" class="btn btn-info btnEdit">
                     <i class="fa fa-pencil"></i> Editar perfil
                 </a>
-                <a href="#" class="btn btn-primary btnDelete">
+                <a href="#" class="btn btn-info btnDelete">
                     <i class="fa fa-trash-o"></i> Eliminar perfil
                 </a>
             </div>
 
             <div class="btn-group">
-                <a href="#" class="btn btn-primary btnCrearMdlo">
+                <a href="#" class="btn btn-info btnCrearMdlo">
                     <i class="fa fa-file-o"></i> Crear módulo
                 </a>
-                <a href="#" class="btn btn-primary btnEditMdlo">
+                <a href="#" class="btn btn-info btnEditMdlo">
                     <i class="fa fa-pencil"></i> Editar módulo
                 </a>
-                <a href="#" class="btn btn-primary btnDeleteMdlo">
+                <a href="#" class="btn btn-info btnDeleteMdlo">
                     <i class="fa fa-trash-o"></i> Eliminar módulo
                 </a>
             </div>
@@ -37,7 +38,7 @@
             Selecione el tipo de acción
             <div class="btn-group" data-toggle="buttons">
                 <g:each var="tp" in="${cratos.seguridad.Tpac.list()}" status="i">
-                    <label class="btn btn-primary tipo ${(tp.id == 1) ? 'active' : ''}">
+                    <label class="btn btn-info tipo ${(tp.id == 1) ? 'active' : ''}">
                         <input type="radio" id="tpac${i}" name="tpac" value="${tp.id}" ${(tp.id == 1) ? 'checked=' : ''}> ${tp.tipo}
                     </label>
                 </g:each>
@@ -56,7 +57,7 @@
 
                 <div class="btn-group" data-toggle="buttons">
                     <g:each in="${lstacmbo}" status="i" var="d">
-                        <label class="btn btn-primary modulo">
+                        <label class="btn btn-info modulo">
                             <input type="radio" id="check${i}" name="modulo" value="${d[0]?.encodeAsHTML()}" nombre="${d[1]?.encodeAsHTML()}"> ${d[1]?.encodeAsHTML()}
                         </label>
                     </g:each>
@@ -112,6 +113,7 @@
             } //submit form
             function deleteRow(itemId, tipo) {
                 var url = "", str = "";
+                console.log('tipo:', tipo, 'id:', itemId)
                 switch (tipo) {
                     case "perfil":
                         url = '${createLink(controller: 'prfl', action:'delete_ajax')}';
@@ -124,11 +126,12 @@
                 }
                 bootbox.dialog({
                     title   : "Alerta",
-                    message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea eliminar el " + str + " seleccionado? Esta acción no se puede deshacer.</p>",
+                    message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro " +
+                      "que desea eliminar el " + str + " seleccionado? Esta acción no se puede deshacer.</p>",
                     buttons : {
                         cancelar : {
                             label     : "Cancelar",
-                            className : "btn-primary",
+                            className : "btn-info",
                             callback  : function () {
                             }
                         },
@@ -161,11 +164,11 @@
                 var url = "", str = "";
                 switch (tipo) {
                     case "perfil":
-                        url = '${createLink(controller: 'prfl', action:'form_ajax')}';
+                        url = '${createLink(controller: 'prfl', action: 'form_ajax')}';
                         title += " perfil";
                         break;
                     case "modulo":
-                        url = '${createLink(controller: 'modulo', action:'form_ajax')}';
+                        url = '${createLink(controller: 'modulo', action: 'form_ajax')}';
                         title += "módulo";
                         break;
                 }
@@ -181,7 +184,7 @@
                             buttons : {
                                 cancelar : {
                                     label     : "Cancelar",
-                                    className : "btn-primary",
+                                    className : "btn-info",
                                     callback  : function () {
                                     }
                                 },
@@ -220,11 +223,13 @@
                     return false;
                 });
                 $(".btnEditMdlo").click(function () {
-                    createEditRow($("#perfil").val(), "perfil");
+//                    createEditRow($("#perfil").val(), "modulo");
+                    createEditRow($(".modulo.active").find("input").val(), "modulo");
                     return false;
                 });
                 $(".btnDeleteMdlo").click(function () {
-                    deleteRow($("#perfil").val(), "perfil");
+                    deleteRow($(".modulo.active").find("input").val(), "modulo");
+//                    deleteRow($("#perfil").val(), "perfil");
                     return false;
                 });
 

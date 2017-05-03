@@ -10,35 +10,35 @@
 
         <div class="btn-toolbar" role="toolbar">
             <div class="btn-group">
-                <p class="text-primary"> Tipo de Acción:</p>
+                <p> Tipo de Acción:</p>
             </div>
             <div class="btn-group" data-toggle="buttons">
                 <g:each var="tp" in="${cratos.seguridad.Tpac.list([sort: id])}" status="i">
-                    <label class="btn btn-primary tipo ${(tp.id == 1) ? 'active' : ''}">
+                    <label class="btn btn-info tipo ${(tp.id == 1) ? 'active' : ''}">
                         <input type="radio" name="options" id="tpac${i}" value="${tp.id}"> ${tp.tipo}
                     </label>
                 </g:each>
             </div>
 
             <div class="btn-group">
-                <g:link controller="prfl" action="modulos" id="1" class="aPrfl btn btn-primary">
+                <g:link controller="prfl" action="modulos" id="1" class="aPrfl btn btn-info">
                     Gestionar Permisos y M&oacute;dulos
                 </g:link>
             </div>
 
             <div class="btn-group">
-                <a href="#" id="cargaCtrl" class="btn btn-primary">Cargar Controladores</a>
+                <a href="#" id="cargaCtrl" class="btn btn-info">Cargar Controladores</a>
 
-                <a href="#" id="cargaAccn" class="btn btn-primary">Cargar Acciones</a>
+                <a href="#" id="cargaAccn" class="btn btn-info">Cargar Acciones</a>
             </div>
         </div>
 
-    <p class="text-primary"><strong>Seleccione el módulo para fijar permisos o editar acciones y procesos</strong></p>
+    <p><strong>Seleccione el módulo para fijar permisos o editar acciones y procesos</strong></p>
 
         <div class="" id="parm">
             <div class="btn-group" data-toggle="buttons">
                 <g:each in="${modulos}" status="i" var="d">
-                    <label class="btn btn-primary modulo">
+                    <label class="btn btn-info modulo">
                         <input type="radio" id="check${i}" name="modulo" value="${d.id}"> ${d.nombre}
                     </label>
                 </g:each>

@@ -85,7 +85,7 @@
                         Usuario
                     </div>
                     <div class="col-xs-8 negrilla" style="">
-                        <input name="login" id="login" type="text" class="form-control required"   autofocus >
+                        <input name="login" id="login" type="text" class="form-control required">
                     </div>
                 </div>
                 <div class="row">

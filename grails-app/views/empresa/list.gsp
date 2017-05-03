@@ -3,7 +3,7 @@
 <html>
     <head>
         <meta name="layout" content="main">
-        <title>Parámetros de la Empresa</title>
+        <title>Empresas</title>
     </head>
 
     <body>
@@ -49,27 +49,27 @@
                     </tr>
                 </thead>
                 <tbody>
-                    %{--<g:each in="${empresaInstanceList}" status="i" var="empresaInstance">--}%
-                        <tr data-id="${empresa.id}">
-                            <td>${fieldValue(bean: empresa, field: "nombre")}</td>
-                            <td>${fieldValue(bean: empresa, field: "email")}</td>
-                            <td><g:formatDate date="${empresa.fechaInicio}" format="dd-MM-yyyy"/></td>
-                            <td><g:formatDate date="${empresa.fechaFin}" format="dd-MM-yyyy"/></td>
-                            <td>${fieldValue(bean: empresa, field: "direccion")}</td>
-                            <td>${fieldValue(bean: empresa, field: "telefono")}</td>
+                    <g:each in="${empresa}" status="i" var="empr">
+                        <tr data-id="${empr.id}">
+                            <td>${fieldValue(bean: empr, field: "nombre")}</td>
+                            <td>${fieldValue(bean: empr, field: "email")}</td>
+                            <td><g:formatDate date="${empr.fechaInicio}" format="dd-MM-yyyy"/></td>
+                            <td><g:formatDate date="${empr.fechaFin}" format="dd-MM-yyyy"/></td>
+                            <td>${fieldValue(bean: empr, field: "direccion")}</td>
+                            <td>${fieldValue(bean: empr, field: "telefono")}</td>
                             <td>
-                                <a href="#" data-id="${empresa.id}" class="btn btn-info btn-sm btn-show btn-ajax" title="Ver">
+                                <a href="#" data-id="${empr.id}" class="btn btn-info btn-sm btn-show btn-ajax" title="Ver">
                                     <i class="fa fa-laptop"></i>
                                 </a>
-                                <a href="#" data-id="${empresa.id}" class="btn btn-success btn-sm btn-edit btn-ajax" title="Editar">
+                                <a href="#" data-id="${empr.id}" class="btn btn-success btn-sm btn-edit btn-ajax" title="Editar">
                                     <i class="fa fa-pencil"></i>
                                 </a>
-                                %{--<a href="#" data-id="${empresaInstance.id}" class="btn btn-danger btn-sm btn-delete btn-ajax" title="Eliminar">--}%
-                                    %{--<i class="fa fa-trash-o"></i>--}%
-                                %{--</a>--}%
+                                <a href="#" data-id="${empr.id}" class="btn btn-danger btn-sm btn-delete btn-ajax" title="Eliminar">
+                                    <i class="fa fa-trash-o"></i>
+                                </a>
                             </td>
                         </tr>
-                    %{--</g:each>--}%
+                    </g:each>
                 </tbody>
             </table>
         </div>

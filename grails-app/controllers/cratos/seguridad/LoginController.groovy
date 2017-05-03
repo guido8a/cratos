@@ -86,7 +86,7 @@ class LoginController {
     }
 
     def validar() {
-        //println "params "+params
+        println "params "+params
         def user = Persona.withCriteria {
             eq("login", params.login, [ignoreCase: true])
             eq("password", params.pass.encodeAsMD5())
@@ -107,6 +107,7 @@ class LoginController {
             user = user[0]
             session.usuario = user
             session.empresa = user.empresa
+//            session.perfil =
 //            session.contabilidad = Contabilidad.findByFechaInicioLessThanEqualsAndFechaCierreGreaterThanEquals(ahora, ahora)
 
             def cont = Contabilidad.withCriteria {
