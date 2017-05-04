@@ -1,15 +1,8 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: luz
-  Date: 1/20/14
-  Time: 4:03 PM
---%>
-
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
     <head>
         <meta name="layout" content="main">
-        <title>Inicio</title>
+        <title>Cratos</title>
         <style type="text/css">
 
         * {
@@ -29,7 +22,6 @@
             font-size: 15px;
             list-style-type: none;
         }
-
         .hex {
             position: relative;
             visibility:hidden;
@@ -40,7 +32,6 @@
             content:'';
             display:block;
             padding-bottom: 86.602%;  /* =  100 / tan(60) * 1.5 */
-
         }
         .hexIn{
             position: absolute;
@@ -185,66 +176,19 @@
         }
 
         </style>
-
     </head>
 
     <body>
-
 
     <h1 style="text-align: center">${session.empresa.nombre}</h1>
 
     <ul id="hexGrid">
         <li class="hex">
             <div class="hexIn">
-                <a class="hexLink"  href="${createLink(controller: 'ordenCompra', action: 'list')}">
-                    <img src="${resource(dir: 'images',file: 'orden1.jpg')}" style="width: 100%; height: 100%"/>
-                    <h1>Orden de Compra</h1>
-                    <p>Orden de Compra</p>
-                </a>
-            </div>
-        </li>
-        <li class="hex">
-            <div class="hexIn">
-                <a class="hexLink" href="${createLink(controller: 'factura', action: 'list')}">
-                    <img src="${resource(dir: 'images',file: 'ventas1.jpg')}" alt="" style="width: 100%; height: 100%"/>
-                    <h1>Ventas</h1>
-                    <p>Ventas</p>
-                </a>
-            </div>
-        </li>
-        <li class="hex">
-            <div class="hexIn">
-                <a class="hexLink" href="${createLink(controller: 'ordenCompra', action: 'list')}">
-                    <img src="${resource(dir: 'images',file: 'adquisiciones1.jpg')}" alt="" style="width: 100%; height: 100%"/>
-                    <h1>Adquisiciones</h1>
-                    <p>Adquisiciones</p>
-                </a>
-            </div>
-        </li>
-        <li class="hex">
-            <div class="hexIn">
-                <a class="hexLink" href="${createLink(controller: 'proceso', action: 'lsta')}">
-                    <img src="${resource(dir: 'images',file: 'conta1.jpg')}" alt=""  style="width: 100%; height: 100%"/>
-                    <h1>Contabilidad</h1>
-                    <p>Contabilidad</p>
-                </a>
-            </div>
-        </li>
-        <li class="hex">
-            <div class="hexIn">
-                <a class="hexLink" href="${createLink(controller: 'gestorContable', action: 'index')}">
-                    <img src="${resource(dir: 'images',file: 'gestor1.png')}" alt=""  style="width: 100%; height: 100%" />
-                    <h1>Gestor</h1>
-                    <p>Gestor</p>
-                </a>
-            </div>
-        </li>
-        <li class="hex">
-            <div class="hexIn">
-                <a class="hexLink" href="${createLink(controller: 'proceso', action: 'nuevoProceso')}">
-                    <img src="${resource(dir: 'images',file: 'transa1.jpeg')}" alt=""  style="width: 100%; height: 100%" />
-                    <h1>Transacciones</h1>
-                    <p>Transacciones</p>
+                <a class="hexLink" href="${createLink(controller: 'inicio', action: 'parametros')}">
+                    <img src="${resource(dir: 'images',file: 'param1.jpeg')}" alt=""  style="width: 100%; height: 100%"/>
+                    <h1>Parámetros</h1>
+                    <p>Parámetros</p>
                 </a>
             </div>
         </li>
@@ -279,17 +223,65 @@
             <div class="hexIn">
                 <a class="hexLink" href="${createLink(controller: 'item', action: 'list')}">
                     <img src="${resource(dir: 'images',file: 'prod1.jpg')}" alt=""  style="width: 100%; height: 100%"/>
-                    <h1>Productos</h1>
-                    <p>Productos</p>
+                    <h1>Artículos de Inventario</h1>
+                    <p>Artículos de Inventario</p>
+                </a>
+            </div>
+        </li>
+
+%{--
+        <li class="hex">
+            <div class="hexIn">
+                <a class="hexLink"  href="${createLink(controller: 'ordenCompra', action: 'list')}">
+                    <img src="${resource(dir: 'images',file: 'orden1.jpg')}" style="width: 100%; height: 100%"/>
+                    <h1>Orden de Compra</h1>
+                    <p>Orden de Compra</p>
+                </a>
+            </div>
+        </li>
+--}%
+        <li class="hex">
+            <div class="hexIn">
+                <a class="hexLink" href="${createLink(controller: 'proceso', action: 'lsta')}">
+                    <img src="${resource(dir: 'images',file: 'conta1.jpg')}" alt=""  style="width: 100%; height: 100%"/>
+                    <h1>Contabilidad</h1>
+                    <p>Contabilidad</p>
                 </a>
             </div>
         </li>
         <li class="hex">
             <div class="hexIn">
-                <a class="hexLink" href="${createLink(controller: 'inicio', action: 'parametros')}">
-                    <img src="${resource(dir: 'images',file: 'param1.jpeg')}" alt=""  style="width: 100%; height: 100%"/>
-                    <h1>Parámetros</h1>
-                    <p>Parámetros</p>
+                <a class="hexLink" href="${createLink(controller: 'gestorContable', action: 'index')}">
+                    <img src="${resource(dir: 'images',file: 'gestor1.png')}" alt=""  style="width: 100%; height: 100%" />
+                    <h1>Gestor</h1>
+                    <p>Gestor contable o procesos tipo</p>
+                </a>
+            </div>
+        </li>
+        <li class="hex">
+            <div class="hexIn">
+                <a class="hexLink" href="${createLink(controller: 'proceso', action: 'nuevoProceso')}">
+                    <img src="${resource(dir: 'images',file: 'transa1.jpeg')}" alt=""  style="width: 100%; height: 100%" />
+                    <h1>Transacciones</h1>
+                    <p>Transacciones</p>
+                </a>
+            </div>
+        </li>
+        <li class="hex">
+            <div class="hexIn">
+                <a class="hexLink" href="${createLink(controller: 'factura', action: 'list')}">
+                    <img src="${resource(dir: 'images',file: 'ventas1.jpg')}" alt="" style="width: 100%; height: 100%"/>
+                    <h1>Facturación</h1>
+                    <p>Facturas</p>
+                </a>
+            </div>
+        </li>
+        <li class="hex">
+            <div class="hexIn">
+                <a class="hexLink" href="${createLink(controller: 'ordenCompra', action: 'list')}">
+                    <img src="${resource(dir: 'images',file: 'adquisiciones1.jpg')}" alt="" style="width: 100%; height: 100%"/>
+                    <h1>Adquisiciones</h1>
+                    <p>Adquisiciones</p>
                 </a>
             </div>
         </li>
