@@ -19,11 +19,12 @@
 </g:form>
 <div class="btn-toolbar toolbar">
     <div class="btn-group">
-        <g:link action="index" class="btn btn-default" name="editarGestor" >
-            <i class="fa fa-list-alt"></i>
+        <g:link action="index" class="btn btn-primary" name="editarGestor" >
+            <i class="fa fa-chevron-left"></i>
             Lista de gestores
         </g:link>
-        <g:link action="nuevoGestor" id="${gestor.id}" class="btn btn-default" name="editarGestor" >
+        %{--<g:link action="nuevoGestor" id="${gestor.id}" class="btn btn-default" name="editarGestor" >--}%
+        <g:link action="formGestor" id="${gestor.id}" class="btn btn-success" name="editarGestor" >
             <i class="fa fa-pencil"></i>
             Editar
         </g:link>

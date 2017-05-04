@@ -1,0 +1,296 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: gato
+  Date: 02/05/17
+  Time: 14:46
+--%>
+
+<%@ page contentType="text/html;charset=UTF-8" %>
+<html>
+<head>
+    <meta name="layout" content="main"/>
+    <title>${(gestorInstance) ? 'Editar gestor contable' : 'Nuevo gestor contable'}</title>
+
+    <style type="text/css">
+    .fila {
+        width  : 800px;
+        min-height : 40px;
+    }
+
+    .label {
+        width       : 80px;
+        float       : left;
+        height      : 30px;
+        line-height : 30px;
+        color: #000000;
+        font-size: inherit;
+        text-align: left;
+        margin-left: 0px;
+    }
+
+    .campo {
+        width  : 670px;
+        float  : right;
+        min-height: 40px;
+    }
+    </style>
+
+</head>
+
+<body>
+
+<g:if test="${flash.message}">
+    <div class="alert ${flash.tipo == 'error' ? 'alert-danger' : flash.tipo == 'success' ? 'alert-success' : 'alert-info'} ${flash.clase}">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <g:if test="${flash.tipo == 'error'}">
+            <i class="fa fa-warning fa-2x pull-left"></i>
+        </g:if>
+        <g:elseif test="${flash.tipo == 'success'}">
+            <i class="fa fa-check-square fa-2x pull-left"></i>
+        </g:elseif>
+        <g:elseif test="${flash.tipo == 'notFound'}">
+            <i class="icon-ghost fa-2x pull-left"></i>
+        </g:elseif>
+        <p>
+            ${flash.message}
+        </p>
+    </div>
+</g:if>
+<div class="btn-toolbar toolbar">
+    <div class="btn-group">
+        <g:link class="btn btn-primary" action="index">
+            <i class="fa fa-chevron-left"></i>
+            Lista de gestores
+        </g:link>
+
+        <a href="#" id="btnGuardar" class="btn btn-success">
+        <i class="fa fa-save"></i>
+        Guardar
+         </a>
+    </div>
+</div>
+<div class="vertical-container" style="margin-top: 25px;color: black">
+    <p class="css-vertical-text">Descripción</p>
+    <div class="linea"></div>
+    %{--<g:form action="save" class="frmGestor" controller="gestorContable">--}%
+        <div id="contenido" >
+            %{--<input type="hidden" name="id" value="${gestorInstance?.id}"/>--}%
+
+            <div class="fila">
+
+                <div class="label">
+                    Empresa:
+                </div>
+
+                <div class="campo">
+                    <strong>${session.empresa}</strong>
+                </div>
+
+            </div>
+
+            <div class="fila">
+                <div class="label">
+                    Nombre:
+                </div>
+
+                <div class="campo">
+                    <span class="grupo">
+                        <input name="nombre_name" id="nombre" type="text" value="${gestorInstance?.nombre}" maxlength="127" style="width:700px;" class="form-control required"/>
+                    </span>
+                </div>
+            </div>
+
+            <div class="fila">
+                <div class="label">
+                    Descripción:
+                </div>
+
+                <div class="campo">
+                    <span class="grupo">
+                        <input name="descripcion_name" id="descripcion" type="textArea" value="${gestorInstance?.descripcion}" maxlength="255"  style="width:700px;" class="form-control required"/>
+                    </span>
+                </div>
+            </div>
+
+            <div class="fila">
+                <div class="label">
+                    Observaciones:
+                </div>
+
+                <div class="campo">
+                    <input name="observaciones_name" id="observaciones" type="textArea" value="${gestorInstance?.observaciones}"  maxlength="125" style="width:700px;" class="form-control"/>
+                </div>
+            </div>
+
+            <div class="fila">
+                <div class="label">
+                    Fuente:
+                </div>
+
+                <div class="campo">
+                    <g:select name="fuente.id" type="select" campo="fuente" from="${cratos.Fuente.list([sort: 'descripcion'])}" label="Fuente: "
+                              value="${gestorInstance?.fuente?.id}" optionKey="id" optionValue="descripcion" class="form-control required" style="width: 200px" id="fuenteGestor"/>
+                </div>
+
+            </div>
+        </div>
+    %{--</g:form>--}%
+</div>
+
+<g:if test="${gestorInstance?.id}">
+    <div class="vertical-container" style="margin-top: 25px;color: black; height: 400px">
+        <p class="css-vertical-text">Movimientos</p>
+        <div class="linea"></div>
+
+        <div class="contenido">
+
+            <div class="col-md-12" style="margin-bottom: 10px">
+                <div class="label col-md-2">
+                    Tipo:
+                </div>
+
+                <div class="col-md-4">
+                    <span class="grupo">
+                        <g:select name="tipoCom" type="select" campo="tipo" from="${cratos.TipoComprobante.list([sort: 'descripcion'])}" label="Tipo comprobante: " value="${''}"
+                                  optionKey="id" id="tipo" class="form-control required" optionValue="descripcion" style="width: 200px" />
+                    </span>
+                </div>
+
+                <div class="btn-group col-md-3">
+                    <a href="#" id="btnAgregarMovimiento" class="btn btn-info" title="Agregar movimiento contable">
+                        <i class="fa fa-plus"></i>
+                        Agregar Cuenta
+                    </a>
+                </div>
+            </div>
+
+
+            <table class="table table-bordered table-hover table-condensed">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th colspan="3">Debe</th>
+                    <th colspan="3">Haber</th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <th style="max-width: 250px;">Código (Comprobante)</th>
+                    <th>B. Imponible</th>
+                    <th>Impuestos</th>
+                    <th>Valor</th>
+                    <th>B. Imponible</th>
+                    <th>Impuestos</th>
+                    <th>Valor</th>
+                    <th></th>
+                </tr>
+                </thead>
+            </table>
+
+            <div class="row-fluid"  style="width: 99.7%;height: 250px;overflow-y: auto;float: right;">
+                <div class="span12">
+                    <div id="cuentaAgregada" style="width: 1070px; height: 250px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</g:if>
+
+
+
+<script type="text/javascript">
+
+
+    $("#btnAgregarMovimiento").click(function () {
+        var tipo = $("#tipo").val();
+        $.ajax({
+            type   : "POST",
+            url    : "${createLink(controller: 'gestorContable', action:'buscarMovimiento_ajax')}",
+            data   : {
+                    empresa: '${session.empresa.id}',
+                    id: '${gestorInstance?.id}',
+                    tipo: tipo
+
+            },
+            success: function (msg) {
+                var b = bootbox.dialog({
+                    id   : "dlgBuscar",
+                    title: "Buscar cuenta",
+                    class   : "long",
+                    message: msg,
+                    buttons: {
+                        cancelar: {
+                            label    : "<i class='fa fa-times'></i> Cancelar",
+                            className: "btn-primary",
+                            callback : function () {
+                            }
+                        }
+                    } //buttons
+                }); //dialog
+                setTimeout(function () {
+                    b.find(".form-control").first().focus()
+                }, 500);
+            } //success
+        }); //ajax
+    });
+
+
+    if('${gestorInstance?.id}'){
+        var tipoC = $("#tipo").val();
+        cargarMovimientos('${gestorInstance?.id}', tipoC);
+    }
+
+        $("#tipo").change(function () {
+            var tipoVal = $(this).val();
+            cargarMovimientos('${gestorInstance?.id}', tipoVal);
+        });
+
+        function cargarMovimientos (idGestor, idTipo) {
+            $.ajax({
+                type:'POST',
+                url: '${createLink(controller: 'gestorContable', action: 'tablaGestor_ajax')}',
+                data:{
+                    id: idGestor,
+                    tipo: idTipo
+                },
+                success: function (msg){
+                    $("#cuentaAgregada").html(msg)
+                }
+            });
+        }
+
+        $("#btnGuardar").click(function () {
+            var gestor = '${gestorInstance?.id}'
+            var nombreGestor = $("#nombre").val();
+            var descripcion = $("#descripcion").val();
+            var observacion = $("#observaciones").val();
+            var fuente = $("#fuenteGestor").val();
+            $.ajax({
+                type: 'POST',
+                url: "${createLink(controller: 'gestorContable', action: 'guardarGestor')}",
+                data:{
+                    gestor: gestor,
+                    nombre: nombreGestor,
+                    descripcion: descripcion,
+                    observacion: observacion,
+                    fuente: fuente
+                },
+                success: function (msg){
+                    var parts = msg.split("_");
+                    if(parts[0] == 'ok'){
+                        log("Información del gestor guardada correctamente","success")
+                        setTimeout(function () {
+                          location.href="${createLink(controller: 'gestorContable', action: 'formGestor')}/" + parts[1]
+                        }, 800);
+                    }else{
+                        log("Error al guardar la información del gestor","error")
+                    }
+                }
+
+            });
+        });
+
+
+</script>
+
+</body>
+</html>

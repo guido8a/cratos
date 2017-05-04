@@ -156,7 +156,7 @@ class GestorContableController extends cratos.seguridad.Shield {
                             genera.valor = it.valor
                             println "tipo  !! " + session.tipoComp
                             if (session.tipoComp)
-                                genera.tipoComprobante = session.tipoComp
+                                genera.tipoComprobante = TipoComprobante.get(session.tipoComp)
                             //println " datos " + it.porcentajeImpuestos + " " + it.porcentaje + " " + it.valor
                             //println "paso genera " + genera
                             genera.save(flush: true)
@@ -179,7 +179,9 @@ class GestorContableController extends cratos.seguridad.Shield {
                 redirect(action: 'index')
             } catch (Exception e) {
                 println "catch " + e
-                render(view: 'gestorForm', model: ['GestorInstance': p], error: true)
+                flash.message = "Error al guardar el gestor contable"
+//                render(view: 'gestorForm', model: ['GestorInstance': p], error: true)
+                redirect(action: 'index')
             }
         }
     }
@@ -265,5 +267,140 @@ class GestorContableController extends cratos.seguridad.Shield {
         return res
     }
 
+    def formGestor () {
+        if(params.id){
+            def gestorInstance = Gestor.get(params.id)
+            return [gestorInstance: gestorInstance]
+        }
+    }
+
+    def tablaGestor_ajax () {
+//        println("tabla gestor" + params)
+        def gestor = Gestor.get(params.id)
+        def tipoComprobante = TipoComprobante.get(params.tipo)
+
+        def movimientos = Genera.findAllByGestorAndTipoComprobante(gestor, tipoComprobante).sort{it.debeHaber}
+
+//        println("movimientos " + movimientos )
+
+        return [movimientos: movimientos, gestor: gestor, tipo: tipoComprobante]
+    }
+
+    def buscarMovimiento_ajax () {
+        def empresa = Empresa.get(params.empresa)
+        def gestor = Gestor.get(params.id)
+        def tipo = TipoComprobante.get(params.tipo)
+
+        return [empresa: empresa, gestor: gestor, tipo: tipo]
+    }
+
+    def tablaBuscar_ajax () {
+//        println("params " + params)
+        def empresa = Empresa.get(params.empresa)
+        def gestor = Gestor.get(params.gestor)
+        def tipo = TipoComprobante.get(params.tipo)
+        def res
+
+        if(params.nombre == "" && params.codigo == ""){
+        res = Cuenta.findAllByEmpresa(empresa).sort{it.numero}
+        }else{
+            res = Cuenta.withCriteria {
+                eq("empresa", empresa)
+
+                and{
+                    ilike("descripcion", '%' + params.nombre + '%')
+                    ilike("numero", '%' + params.codigo + '%')
+                }
+
+                order ("numero","asc")
+            }
+        }
+
+        return [cuentas: res, gestor: gestor, tipo: tipo]
+    }
+
+    def agregarDebeHaber_ajax () {
+//        println("params agregar debe " + params)
+        def gestor = Gestor.get(params.gestor)
+        def tipo = TipoComprobante.get(params.tipo)
+        def cuenta = Cuenta.get(params.cuenta)
+
+        def genera = new Genera()
+        genera.gestor = gestor
+        genera.tipoComprobante = tipo
+        genera.cuenta = cuenta
+        genera.debeHaber = params.dif
+        genera.porcentaje = 0
+        genera.porcentajeImpuestos = 0
+        genera.valor = 0
+
+        if(!genera.save(flush: true)){
+           render "no"
+        }else{
+            render "ok"
+        }
+    }
+
+    def borrarCuenta_ajax () {
+//        println("genera borrar " + params)
+        def genera = Genera.get(params.genera)
+        def errores = ''
+
+        try {
+            genera.delete(flush: true)
+        } catch (e) {
+            errores += e.stackTrace
+        }
+
+        if(errores == ''){
+            render "ok"
+        }else{
+            render "no"
+        }
+    }
+
+    def guardarValores_ajax () {
+        println("params " + params)
+        def genera = Genera.get(params.genera)
+        genera.valor = params.valor.toDouble()
+        genera.porcentajeImpuestos = params.impuesto.toDouble()
+        genera.porcentaje = params.porcentaje.toDouble()
+
+        if(!genera.save(flush: true)){
+            render "no"
+        }else{
+            render "ok"
+        }
+    }
+
+    def guardarGestor () {
+        println("params guardar " + params)
+        def gestor
+        def fuente = Fuente.get(params.fuente)
+        def empresa = session.empresa
+        if(params.gestor){
+            gestor = Gestor.get(params.gestor)
+            gestor.nombre = params.nombre
+            gestor.descripcion = params.descripcion
+            gestor.observaciones = params.observacion
+            gestor.fuente = fuente
+        }else{
+            gestor = new Gestor()
+            gestor.nombre = params.nombre
+            gestor.descripcion = params.descripcion
+            gestor.observaciones = params.observacion
+            gestor.fuente = fuente
+            gestor.empresa = empresa
+            gestor.estado = 'A'
+        }
+
+        if(!gestor.save(flush: true)){
+            render "no"
+//            println("error " + gestor.errors)
+        }else{
+            render "ok_" + gestor?.id
+        }
+
+    }
 
 }

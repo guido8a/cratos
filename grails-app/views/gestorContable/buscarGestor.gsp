@@ -27,7 +27,8 @@
                     <a href="${g.createLink(action: 'verGestor',id:gestor.id)}" class="btn btn-small btn-info" title="Ver">
                         <i class="fa fa-laptop" title="Ver"></i>
                     </a>
-                    <a href="${g.createLink(action: 'nuevoGestor',id:gestor.id)}" class="btn btn-small btn-success" title="Editar">
+                    %{--<a href="${g.createLink(action: 'nuevoGestor',id:gestor.id)}" class="btn btn-small btn-success" title="Editar">--}%
+                    <a href="${g.createLink(action: 'formGestor',id:gestor.id)}" class="btn btn-small btn-success" title="Editar">
                         <i class="fa fa-pencil"></i>
                     </a>
 

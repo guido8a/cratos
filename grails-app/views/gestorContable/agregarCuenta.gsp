@@ -28,21 +28,20 @@
         <g:set var="valH" value="${0}" />
         <g:each var="genera" in="${cuentas}" status="i">
             <g:if test="${genera.id}">
-                <g:set var="gnra" value="${cratos.Genera.get(genera.id)}"></g:set>
-                <g:set var="cuenta" value="${cratos.Cuenta.get(gnra.cuenta.id)}"></g:set>
+                <g:set var="gnra" value="${cratos.Genera.get(genera.id)}"/>
+                <g:set var="cuenta" value="${cratos.Cuenta.get(gnra.cuenta.id)}"/>
             </g:if>
             <g:else>
-                <g:set var="gnra" value="${genera}"></g:set>
-                <g:set var="cuenta" value="${genera.cuenta}"></g:set>
+                <g:set var="gnra" value="${genera}"/>
+                <g:set var="cuenta" value="${genera.cuenta}"/>
             </g:else>
             <tr style="background-color: ${(genera.tipoComprobante.id==1)?'#D4E6FC':((genera.tipoComprobante.id==2)?'#99CC99':'#FFCC99')} !important; " class="movimiento">
             <td style="max-width: 250px;">${cuenta.numero+'('+cuenta.descripcion+')'}</td>
             <g:if test="${genera.debeHaber=='D'}">
-                %{--<td><input type="number" name="porcentaje" id="por_${i}"  class="form-control" style="width: 62px;" value="${genera.porcentaje?:0}"/></td>--}%
-                <td><g:textField name="porcentaje" class="number form-control" id="por_${i}" style="width: 62px;" value="${genera.porcentaje?:0}"/></td>
-                <td><input type="number" name="impuestos" id="imp_${i}"  class="form-control" style="width: 62px;" value="${genera.porcentajeImpuestos?:0}"/></td>
-                <td><input type="number" name="valor" id="val_${i}"  class="form-control" style="width: 62px;" value="${genera.valor?:0}"/></td>
-                <td></td>
+                    <td><g:textField type="number" name="porcentaje" id="por_${i}" class="validacionNumero form-control" style="width: 62px;" value="${genera.porcentaje ?: 0}" /></td>
+                    <td><g:textField type="number" name="impuestos" id="imp_${i}" class="validacionNumero form-control" style="width: 62px;" value="${genera.porcentajeImpuestos?:0}" /></td>
+                    <td><g:textField type="number" name="valor" id="val_${i}" class="validacionNumero form-control" style="width: 62px;" value="${genera.valor?:0}" /></td>
+                    <td></td>
                 <td></td>
                 <td></td>
                 <td>
@@ -62,9 +61,9 @@
                 <td>&nbsp;</td>
                 <td></td>
                 <td></td>
-                <td><input type="text" name="porcentaje" class="form-control" id="por_${i}" style="width: 62px;" value="${genera.porcentaje?:0}"/></td>
-                <td><input type="text" name="impuestos" class="form-control" id="imp_${i}" style="width: 62px;" value="${genera.porcentajeImpuestos?:0}"/></td>
-                <td><input type="text" name="valor" class="form-control" id="val_${i}" style="width: 62px;" value="${genera.valor?:0}"/></td>
+                <td><g:textField type="number" name="porcentajeDown" id="por_${i}" class="validacionNumero form-control" style="width: 62px;" value="${genera.porcentaje ?: 0}" /></td>
+                <td><g:textField type="number" name="impuestos" id="imp_${i}" class="validacionNumero form-control" style="width: 62px;" value="${genera.porcentajeImpuestos?:0}" /></td>
+                <td><g:textField type="number" name="valor" id="val_${i}" class="validacionNumero form-control" style="width: 62px;" value="${genera.valor?:0}" /></td>
                 <td>
                     <div  style="float: left; margin-right: 5px;" class="guardarDatos btnpq ui-state-default ui-corner-all" id="guardar_${i}" posicion="${i}" >
                         <span class="ui-icon ui-icon-circle-check"></span>
@@ -77,7 +76,7 @@
                 <g:set var="impH" value="${impH+genera.porcentajeImpuestos?:0}" />
                 <g:set var="valH" value="${valH+genera.valor?:0}" />
             </g:else>
-            </tr>
+            %{--</tr>--}%
         </g:each>
         <tr style="background-color:white !important;">
             <td>TOTAL:</td>
@@ -143,6 +142,45 @@
             return true
         }
 
+
+
+
+
+    });
+
+    function validarNum(ev) {
+        /*
+         48-57      -> numeros
+         96-105     -> teclado numerico
+         188        -> , (coma)
+         190        -> . (punto) teclado
+         110        -> . (punto) teclado numerico
+         8          -> backspace
+         46         -> delete
+         9          -> tab
+         37         -> flecha izq
+         39         -> flecha der
+         */
+        return ((ev.keyCode >= 48 && ev.keyCode <= 57) ||
+        (ev.keyCode >= 96 && ev.keyCode <= 105) ||
+        ev.keyCode == 8 || ev.keyCode == 46 || ev.keyCode == 9 ||
+        ev.keyCode == 37 || ev.keyCode == 39 ||
+        ev.keyCode == 110 || ev.keyCode == 190);
+    }
+
+
+    $(".validacionNumero").keydown(function (ev) {
+        return validarNum(ev);
+    }).keyup(function () {
+
+//        console.log("entro up")
+//        var enteros = $(this).val();
+//
+//        if (parseFloat(enteros) > 100) {
+//
+//            $(this).val(100)
+//
+//        }
 
     });
 </script>

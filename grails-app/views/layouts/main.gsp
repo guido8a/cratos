@@ -32,7 +32,8 @@
 
         <!-- plugins -->
         <!-- para los alerts y confirms y dialogs -->
-        <script src="${resource(dir: 'js/plugins/bootbox/js', file: 'bootbox.js')}"></script>
+        %{--<script src="${resource(dir: 'js/plugins/bootbox/js', file: 'bootbox.js')}"></script>--}%
+        <script src="${resource(dir: 'js/plugins/bootbox-4.3.0/js', file: 'bootbox.js')}"></script>
 
         %{--<!-- el datepicker -->--}%
         <script src="${resource(dir: 'js/plugins/bootstrap-datepicker/js', file: 'bootstrap-datepicker.js')}"></script>
