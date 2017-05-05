@@ -360,7 +360,7 @@ class GestorContableController extends cratos.seguridad.Shield {
     }
 
     def guardarValores_ajax () {
-        println("params " + params)
+//        println("params " + params)
         def genera = Genera.get(params.genera)
         genera.valor = params.valor.toDouble()
         genera.porcentajeImpuestos = params.impuesto.toDouble()
@@ -374,7 +374,7 @@ class GestorContableController extends cratos.seguridad.Shield {
     }
 
     def guardarGestor () {
-        println("params guardar " + params)
+//        println("params guardar " + params)
         def gestor
         def fuente = Fuente.get(params.fuente)
         def empresa = session.empresa

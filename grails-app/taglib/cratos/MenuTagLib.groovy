@@ -75,7 +75,8 @@ class MenuTagLib {
         html += strItems
         html += '</ul>'
 
-        html += '<p  class="navbar-text navbar-right" id="countdown">20</p>'
+//        html += '<p  class="navbar-text navbar-right" id="countdown">20</p>'
+        html += '<p  class="navbar-text navbar-right" id="countdown"></p>'
         html += '<ul class="nav navbar-nav navbar-right">'
         html += '<li><a href="' + g.createLink(controller: 'login', action: 'logout') + '"><i class="fa fa-power-off"></i> Salir</a></li>'
 
