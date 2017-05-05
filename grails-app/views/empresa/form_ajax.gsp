@@ -200,6 +200,7 @@
                 </span>
             </div>
 
+%{--
             <div class="form-group keeptogether ${hasErrors(bean: empresaInstance, field: 'ordenCompra', 'error')} ">
                 <span class="grupo">
                     <label for="ordenCompra" class="col-md-6 control-label text-info">
@@ -212,6 +213,7 @@
 
                 </span>
             </div>
+--}%
 
         </g:form>
 

@@ -30,12 +30,16 @@ class ContabilidadController extends cratos.seguridad.Shield {
 
     def list() {
         params.max = Math.min(params.max ? params.max.toInteger() : 10, 100)
+        params.sort = 'fechaInicio'
+
         def contabilidadInstanceList = Contabilidad.findAllByInstitucion(session.empresa, params)
         def contabilidadInstanceCount = Contabilidad.count()
         if (contabilidadInstanceList.size() == 0 && params.offset && params.max) {
             params.offset = params.offset - params.max
         }
         contabilidadInstanceList = Contabilidad.findAllByInstitucion(session.empresa, params)
+//        contabilidadInstanceList = contabilidadInstanceList.sort{it.fechaInicio}
+
         return [contabilidadInstanceList: contabilidadInstanceList, contabilidadInstanceCount: contabilidadInstanceCount]
     } //list
 

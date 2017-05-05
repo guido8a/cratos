@@ -70,7 +70,7 @@
         <ul class="nav nav-tabs">
             <li class="active"><a href="#generales" data-toggle="tab">Generales</a></li>
             <li><a href="#empresa" data-toggle="tab">Empresa</a></li>
-            <li><a href="#activos" data-toggle="tab">Activos fijos y facturación</a></li>
+            <li><a href="#activos" data-toggle="tab">Artículos de inventario y facturación</a></li>
             <li><a href="#nomina" data-toggle="tab">Nómina</a></li>
         </ul>
 
