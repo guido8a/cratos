@@ -5,6 +5,12 @@
   Time: 10:51
 --%>
 
+<style type="text/css">
+    .largo{
+        width: 80px;
+    }
+</style>
+
 <table class="table table-bordered table-hover table-condensed">
     <tbody>
     <g:set var="por" value="${0}" />
@@ -16,15 +22,16 @@
     <g:if test="${movimientos}">
         <g:each in="${movimientos}" var="genera" status="i">
             <tr style="background-color: ${(genera.tipoComprobante.id.toInteger() == 1)?'#D4E6FC':((genera.tipoComprobante.id.toInteger() == 2)?'#99CC99':'#FFCC99')} !important; " class="movimiento">
-            <td style="max-width: 250px;">${genera.cuenta.numero+'('+genera.cuenta.descripcion+')'}</td>
+            %{--<td style="max-width: 250px;">${genera.cuenta.numero+'('+genera.cuenta.descripcion+')'}</td>--}%
+            <td style="width: 280px;">${genera.cuenta.numero+'('+genera.cuenta.descripcion+')'}</td>
             <g:if test="${genera.debeHaber=='D'}">
-                <td><g:textField type="number" name="porcentaje" id="por_${genera?.id}" class="validacionNumero form-control" style="width: 90px;" value="${genera.porcentaje ?: 0}" /></td>
-                <td><g:textField type="number" name="impuestos" id="imp_${genera?.id}" class="validacionNumero form-control" style="width: 90px;" value="${genera.porcentajeImpuestos?:0}" /></td>
-                <td><g:textField type="number" name="valor" id="val_${genera?.id}" class="validacionNumero form-control" style="width: 90px;" value="${genera.valor?:0}" /></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td>
+                <td class="largo"><g:textField type="number" name="porcentaje" id="por_${genera?.id}" class="validacionNumero form-control" style="width: 90px;" value="${genera.porcentaje ?: 0}" /></td>
+                <td class="largo"><g:textField type="number" name="impuestos" id="imp_${genera?.id}" class="validacionNumero form-control" style="width: 90px;" value="${genera.porcentajeImpuestos?:0}" /></td>
+                <td class="largo"><g:textField type="number" name="valor" id="val_${genera?.id}" class="validacionNumero form-control" style="width: 90px;" value="${genera.valor?:0}" /></td>
+                <td class="largo"></td>
+                <td class="largo"></td>
+                <td class="largo"></td>
+                <td style="width: 70px">
                     <div class="btn-group">
                         <a href="#" class="btn btn-success btn-sm btnGuardarMovi" cuenta="${genera?.id}" iden="${i}" title="Guardar cambios">
                             <i class="fa fa-save"></i>

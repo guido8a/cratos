@@ -169,19 +169,19 @@
                 <thead>
                 <tr>
                     <th></th>
-                    <th colspan="3">Debe</th>
-                    <th colspan="3">Haber</th>
+                    <th colspan="3">DEBE</th>
+                    <th colspan="3">HABER</th>
                     <th></th>
                 </tr>
                 <tr>
-                    <th style="max-width: 250px;">Código (Comprobante)</th>
-                    <th>B. Imponible</th>
-                    <th>Impuestos</th>
-                    <th>Valor</th>
-                    <th>B. Imponible</th>
-                    <th>Impuestos</th>
-                    <th>Valor</th>
-                    <th></th>
+                    <th style="width: 280px;">Código (Comprobante)</th>
+                    <th style="width: 100px">B. Imponible</th>
+                    <th style="width: 80px">Impuestos</th>
+                    <th style="width: 80px">Valor</th>
+                    <th style="width: 100px">B. Imponible</th>
+                    <th style="width: 80px">Impuestos</th>
+                    <th style="width: 80px">Valor</th>
+                    <th style="width: 80px"><i class="fa fa-pencil"></i> </th>
                 </tr>
                 </thead>
             </table>
