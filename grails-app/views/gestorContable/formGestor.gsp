@@ -138,7 +138,7 @@
 </div>
 
 <g:if test="${gestorInstance?.id}">
-    <div class="vertical-container" style="margin-top: 25px;color: black; height: 400px">
+    <div class="vertical-container" style="margin-top: 25px;color: black; height: 430px">
         <p class="css-vertical-text">Movimientos</p>
         <div class="linea"></div>
 
@@ -186,11 +186,23 @@
                 </thead>
             </table>
 
+
+
+
             <div class="row-fluid"  style="width: 99.7%;height: 250px;overflow-y: auto;float: right;">
                 <div class="span12">
                     <div id="cuentaAgregada" style="width: 1070px; height: 250px;"></div>
                 </div>
             </div>
+
+            %{--<div class="row-fluid"  style="width: 99.7%;height: 250px;overflow-y: auto;float: right;">--}%
+                <div class="span12">
+                    <div id="totales" style="width: 1070px; height: 20px;"></div>
+                </div>
+            %{--</div>--}%
+
+
+
         </div>
     </div>
 </g:if>
@@ -237,11 +249,13 @@
     if('${gestorInstance?.id}'){
         var tipoC = $("#tipo").val();
         cargarMovimientos('${gestorInstance?.id}', tipoC);
+        cargarTotales('${gestorInstance?.id}', tipoC);
     }
 
         $("#tipo").change(function () {
             var tipoVal = $(this).val();
             cargarMovimientos('${gestorInstance?.id}', tipoVal);
+            cargarTotales('${gestorInstance?.id}', tipoVal);
         });
 
         function cargarMovimientos (idGestor, idTipo) {
@@ -257,6 +271,21 @@
                 }
             });
         }
+
+        function cargarTotales(idGestor, idTipo) {
+            $.ajax({
+                type:'POST',
+                url: '${createLink(controller: 'gestorContable', action: 'totales_ajax')}',
+                data:{
+                    id: idGestor,
+                    tipo: idTipo
+                },
+                success: function (msg){
+                    $("#totales").html(msg)
+                }
+            });
+        }
+
 
         $("#btnGuardar").click(function () {
             var gestor = '${gestorInstance?.id}'

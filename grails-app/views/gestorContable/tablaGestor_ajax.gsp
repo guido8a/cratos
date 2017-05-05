@@ -47,13 +47,13 @@
                 <g:set var="val" value="${val+genera.valor?:0}" />
             </g:if>
             <g:else>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td><g:textField type="number" name="porcentajeDown" id="por_${genera?.id}" class="validacionNumero form-control" style="width: 90px;" value="${genera.porcentaje ?: 0}" /></td>
-                <td><g:textField type="number" name="impuestos" id="imp_${genera?.id}" class="validacionNumero form-control" style="width: 90px;" value="${genera.porcentajeImpuestos?:0}" /></td>
-                <td><g:textField type="number" name="valor" id="val_${genera?.id}" class="validacionNumero form-control" style="width: 90px;" value="${genera.valor?:0}" /></td>
-                <td>
+                <td class="largo"></td>
+                <td class="largo"></td>
+                <td class="largo"></td>
+                <td class="largo"><g:textField type="number" name="porcentajeDown" id="por_${genera?.id}" class="validacionNumero form-control" style="width: 90px;" value="${genera.porcentaje ?: 0}" /></td>
+                <td class="largo"><g:textField type="number" name="impuestos" id="imp_${genera?.id}" class="validacionNumero form-control" style="width: 90px;" value="${genera.porcentajeImpuestos?:0}" /></td>
+                <td class="largo"><g:textField type="number" name="valor" id="val_${genera?.id}" class="validacionNumero form-control" style="width: 90px;" value="${genera.valor?:0}" /></td>
+                <td style="width: 70px">
                     <div class="btn-group">
                         <a href="#" class="btn btn-success btn-sm btnGuardarMovi" cuenta="${genera?.id}" iden="${i}" title="Guardar cambios">
                             <i class="fa fa-save"></i>
@@ -68,6 +68,16 @@
                 <g:set var="valH" value="${valH+genera.valor?:0}" />
             </g:else>
         </g:each>
+        %{--<tr>--}%
+            %{--<td style="width: 250px">TOTAL:</td>--}%
+            %{--<td style="background-color: ${(por==porH)?'#d0ffd0':'#ffd0d0'}; width: 80px" >${por}</td>--}%
+            %{--<td style="background-color: ${(imp==impH)?'#d0ffd0':'#ffd0d0'}; width: 80px">${imp}</td>--}%
+            %{--<td style="background-color: ${(val==valH)?'#d0ffd0':'#ffd0d0'}; width: 80px">${val}</td>--}%
+            %{--<td style="background-color: ${(por==porH)?'#d0ffd0':'#ffd0d0'}; width: 80px">${porH}</td>--}%
+            %{--<td style="background-color: ${(imp==impH)?'#d0ffd0':'#ffd0d0'}; width: 80px">${impH}</td>--}%
+            %{--<td style="background-color: ${(val==valH)?'#d0ffd0':'#ffd0d0'}; width: 80px">${valH}</td>--}%
+            %{--<td style="width: 70px"></td>--}%
+        %{--</tr>--}%
     </g:if>
     <g:else>
         <tr class="danger text-center">
@@ -137,6 +147,7 @@
                                 if(msg == 'ok'){
                                     closeLoader();
                                     cargarMovimientos(gestor, tipo);
+                                    cargarTotales(gestor, tipo);
                                     log("Cuenta borrada correctamente","success");
 //                                    var b = bootbox.dialog({
 //                                        id      : "dlgBorradoC",
@@ -155,6 +166,7 @@
                                 }else{
                                     closeLoader();
                                     cargarMovimientos(gestor, tipo);
+                                    cargarTotales(gestor, tipo);
                                     log("Error al borrarla cuenta!.","error");
 //                                    var c = bootbox.dialog({
 //                                        id      : "dlgBorradoE",
@@ -199,6 +211,7 @@
                 if(msg == 'ok'){
                     log("Valores guardados correctamente","success");
                     cargarMovimientos(gestor, tipo);
+                    cargarTotales(gestor, tipo);
                 }else{
                     log("Error al guardar los valores!","error");
                 }

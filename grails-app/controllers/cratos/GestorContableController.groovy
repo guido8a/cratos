@@ -403,4 +403,21 @@ class GestorContableController extends cratos.seguridad.Shield {
 
     }
 
+    def totales_ajax () {
+        def gestor = Gestor.get(params.id)
+        def tipoComprobante = TipoComprobante.get(params.tipo)
+        def cuentasDebe = Genera.findAllByGestorAndTipoComprobanteAndDebeHaber(gestor, tipoComprobante,'D').sort{it.debeHaber}
+        def cuentasHaber = Genera.findAllByGestorAndTipoComprobanteAndDebeHaber(gestor, tipoComprobante,'H').sort{it.debeHaber}
+
+        def baseD =  cuentasDebe.porcentaje.sum()
+        def impD = cuentasDebe.porcentajeImpuestos.sum()
+        def valorD =  cuentasDebe.valor.sum()
+
+        def baseH =  cuentasHaber.porcentaje.sum()
+        def impH = cuentasHaber.porcentajeImpuestos.sum()
+        def valorH =  cuentasHaber.valor.sum()
+
+        return [baseD: baseD, impD: impD, valorD: valorD, baseH: baseH, impH: impH, valorH: valorH]
+    }
+
 }
