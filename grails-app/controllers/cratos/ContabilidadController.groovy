@@ -83,7 +83,7 @@ class ContabilidadController extends cratos.seguridad.Shield {
             contabilidadInstance = new Contabilidad()
             contabilidadInstance.institucion = session.empresa
             contabilidadInstance.descripcion = params.descripcion
-            contabilidadInstance.prefijo = params.prefijo
+            contabilidadInstance.prefijo = params.prefijo.toUpperCase()
             params.fechaInicio = new Date().parse("dd-MM-yyyy", params.fechaInicio_input)
             params.fechaCierre = new Date().parse("dd-MM-yyyy", params.fechaCierre_input)
             contabilidadInstance.fechaInicio = params.fechaInicio
@@ -141,7 +141,7 @@ class ContabilidadController extends cratos.seguridad.Shield {
                             def periodoInstance = new Periodo()
                             periodoInstance.contabilidad = contabilidadInstance
                             periodoInstance.fechaInicio = ini
-                            periodoInstance.numero = it + 1
+                            periodoInstance.numero = it + 2
 
 
                             if(mesFin == (mesInicio + it + 1)){
