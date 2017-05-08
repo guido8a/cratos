@@ -18,6 +18,14 @@
                 </g:link>
             </div>
 
+        %{--<div class="btn-group">--}%
+            %{--<g:link action="form" class="btn btn-info btnNueva">--}%
+                %{--<i class="fa fa-file-o"></i> Nueva contabilidad--}%
+            %{--</g:link>--}%
+        %{--</div>--}%
+
+
+
             <div class="btn-group pull-right col-md-3">
                 <div class="input-group">
                     <input type="text" class="form-control" placeholder="Buscar">
@@ -213,6 +221,46 @@
                 });
 
             });
+
+
+            $(".btnNueva").click(function () {
+                  $.ajax({
+                     type: 'POST',
+                      %{--url: '${createLink(controller: 'contabilidad', action: 'formPeriodo_ajax')}',--}%
+                      url: '${createLink(controller: 'contabilidad', action: 'form_ajax')}',
+                      data:{
+
+                      },
+                      success: function (msg){
+                          var b = bootbox.dialog({
+                              id      : "dlgNuevaContabilidad",
+                              title   : "Nueva Contabilidad",
+                              message : msg,
+                              buttons : {
+                                  cancelar : {
+                                      label     : "Cancelar",
+                                      className : "btn-primary",
+                                      callback  : function () {
+                                      }
+                                  },
+                                  guardar  : {
+                                      id        : "btnSaveNueva",
+                                      label     : "<i class='fa fa-save'></i> Guardar",
+                                      className : "btn-success",
+                                      callback  : function () {
+
+                                      } //callback
+                                  } //guardar
+                              } //buttons
+                          }); //dialog
+                          setTimeout(function () {
+
+
+                          }, 500);
+                      }
+                  });
+            });
+
         </script>
 
     </body>

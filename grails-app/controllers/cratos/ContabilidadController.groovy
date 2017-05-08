@@ -72,63 +72,172 @@ class ContabilidadController extends cratos.seguridad.Shield {
 
         def errores = ''
 
-        params.each { k, v ->
-            if (v != "date.struct" && v instanceof java.lang.String) {
-                params[k] = v.toUpperCase()
-            }
-        }
+//        println("params save " + params)
+        def contabilidadInstance
 
-        params.institucion = session.empresa
+        if(params.id){
+            contabilidadInstance =  Contabilidad.get(params.id)
+            contabilidadInstance.descripcion = params.descripcion
+            contabilidadInstance.prefijo = params.prefijo
+        }else{
+            contabilidadInstance = new Contabilidad()
+            contabilidadInstance.institucion = session.empresa
+            contabilidadInstance.descripcion = params.descripcion
+            contabilidadInstance.prefijo = params.prefijo
+            params.fechaInicio = new Date().parse("dd-MM-yyyy", params.fechaInicio_input)
+            params.fechaCierre = new Date().parse("dd-MM-yyyy", params.fechaCierre_input)
+            contabilidadInstance.fechaInicio = params.fechaInicio
+            contabilidadInstance.fechaCierre = params.fechaCierre
+            contabilidadInstance.presupuesto = params.fechaInicio
 
-        def contabilidadInstance = new Contabilidad()
-        if (params.id) {
-            contabilidadInstance = Contabilidad.get(params.id)
-            if (!contabilidadInstance) {
-                notFound_ajax()
-                return
-            }
-        } //update
 
-        if (params.anio) {
-            params.fechaInicio = new Date().parse("dd-MM-yyyy", '01-01-' + params.anio)
-            params.fechaCierre = new Date().parse("dd-MM-yyyy", '31-12-' + params.anio)
-        }
-        contabilidadInstance.properties = params
-        contabilidadInstance.presupuesto = contabilidadInstance.fechaInicio
+            if (!contabilidadInstance.save(flush: true)) {
+                render "NO_Error al crear la contabilidad"
+                println("Error" + contabilidadInstance.errors)
+            } else{
 
-        if (!contabilidadInstance.save(flush: true)) {
-            def msg = "NO_No se pudo ${params.id ? 'actualizar' : 'crear'} Contabilidad."
-            msg += renderErrors(bean: contabilidadInstance)
-            render msg
-            return
-        }
+                def mesInicio = params.fechaInicio_month.toInteger()
+                def mesFin = params.fechaCierre_month.toInteger()
 
-        if (Periodo.countByContabilidad(contabilidadInstance) == 0) {
-            12.times {
-                def ini = new Date().parse("dd-MM-yyyy", "01-" + ((it + 1).toString().padLeft(2, '0')) + "-" + contabilidadInstance.fechaInicio.format("yyyy"))
-                def fin = utilitarioService.getLastDayOfMonth(ini)
-//                println("primero " + ini)
-//                println("ultimo " + fin)
-                def periodoInstance = new Periodo()
+                if(mesFin == mesInicio){
 
-                periodoInstance.contabilidad = contabilidadInstance
-                periodoInstance.fechaInicio = ini
-                periodoInstance.fechaFin = fin
-                periodoInstance.numero = it + 1
+                    def soloPeriodo = new Periodo()
+                    soloPeriodo.contabilidad = contabilidadInstance
+                    soloPeriodo.fechaInicio = contabilidadInstance.fechaInicio
+                    soloPeriodo.fechaFin = contabilidadInstance.fechaCierre
+                    soloPeriodo.numero = 1
 
-                if (!periodoInstance.save(flush: true)) {
-                   errores += periodoInstance.save()
+                    if(!soloPeriodo.save(flush: true)){
+                        println("error solo periodo " + soloPeriodo.errors)
+                        render "NO_Error al crear la contabilidad"
+                    }else{
+                        render "OK_Contabilidad creada correctamente!"
+                    }
+
+                }else{
+
+
+                    def inicioPrimer = contabilidadInstance.fechaInicio
+                    def finPrimer = utilitarioService.getLastDayOfMonth(inicioPrimer)
+
+                    def primerPeriodo = new Periodo()
+                    primerPeriodo.contabilidad = contabilidadInstance
+                    primerPeriodo.fechaInicio = inicioPrimer
+                    primerPeriodo.fechaFin = finPrimer
+                    primerPeriodo.numero = 1
+
+                    if(!primerPeriodo.save(flush: true)){
+                        println("error primer periodo " + primerPeriodo.errors)
+                        errores += primerPeriodo.errors
+                    }else{
+
+                        def siguientePeriodo
+                        def repe = mesFin - mesInicio
+
+                        repe.times {
+                            def ini = new Date().parse("dd-MM-yyyy", "01-" + ((mesInicio + it + 1).toString().padLeft(2, '0')) + "-" + contabilidadInstance.fechaInicio.format("yyyy"))
+//                            println("ini " + ini)
+
+                            def periodoInstance = new Periodo()
+                            periodoInstance.contabilidad = contabilidadInstance
+                            periodoInstance.fechaInicio = ini
+                            periodoInstance.numero = it + 1
+
+
+                            if(mesFin == (mesInicio + it + 1)){
+                                periodoInstance.fechaFin = contabilidadInstance.fechaCierre
+                            }else{
+                                def fin = utilitarioService.getLastDayOfMonth(ini)
+                                periodoInstance.fechaFin = fin
+                            }
+
+                            if (!periodoInstance.save(flush: true)) {
+                                errores += periodoInstance.errors
+                            }
+                        }
+                    }
+
+                    println("errores " + errores)
+
+                    if(errores == ''){
+                        render "OK_Contabilidad creada correctamente"
+                    }else{
+                        render "NO_Error al crear la contabilidad"
+                    }
                 }
             }
         }
 
-//        println("texto errores " + errores)
 
-        if(errores == ''){
-            render "OK_${params.id ? 'Actualización' : 'Creación'} de Contabilidad exitosa."
-        }else{
-            render "NO_Error al grabar períodos"
-        }
+
+
+
+
+
+
+        //antiguo
+
+//        def errores = ''
+//
+//        params.each { k, v ->
+//            if (v != "date.struct" && v instanceof java.lang.String) {
+//                params[k] = v.toUpperCase()
+//            }
+//        }
+
+//        params.institucion = session.empresa
+//
+//        def contabilidadInstance = new Contabilidad()
+//        if (params.id) {
+//            contabilidadInstance = Contabilidad.get(params.id)
+//            if (!contabilidadInstance) {
+//                notFound_ajax()
+//                return
+//            }
+//        } //update
+//
+//        if (params.anio) {
+//            params.fechaInicio = new Date().parse("dd-MM-yyyy", '01-01-' + params.anio)
+//            params.fechaCierre = new Date().parse("dd-MM-yyyy", '31-12-' + params.anio)
+//        }
+//
+//
+//        contabilidadInstance.properties = params
+//        contabilidadInstance.presupuesto = contabilidadInstance.fechaInicio
+//
+//        if (!contabilidadInstance.save(flush: true)) {
+//            def msg = "NO_No se pudo ${params.id ? 'actualizar' : 'crear'} Contabilidad."
+//            msg += renderErrors(bean: contabilidadInstance)
+//            render msg
+//            return
+//        }
+//
+//        if (Periodo.countByContabilidad(contabilidadInstance) == 0) {
+//            12.times {
+//                def ini = new Date().parse("dd-MM-yyyy", "01-" + ((it + 1).toString().padLeft(2, '0')) + "-" + contabilidadInstance.fechaInicio.format("yyyy"))
+//                def fin = utilitarioService.getLastDayOfMonth(ini)
+////                println("primero " + ini)
+////                println("ultimo " + fin)
+//                def periodoInstance = new Periodo()
+//
+//                periodoInstance.contabilidad = contabilidadInstance
+//                periodoInstance.fechaInicio = ini
+//                periodoInstance.fechaFin = fin
+//                periodoInstance.numero = it + 1
+//
+//                if (!periodoInstance.save(flush: true)) {
+//                   errores += periodoInstance.save()
+//                }
+//            }
+//        }
+//
+////        println("texto errores " + errores)
+//
+//        if(errores == ''){
+//            render "OK_${params.id ? 'Actualización' : 'Creación'} de Contabilidad exitosa."
+//        }else{
+//            render "NO_Error al grabar períodos"
+//        }
 
 //        render "OK_${params.id ? 'Actualización' : 'Creación'} de Contabilidad exitosa."
     } //save para grabar desde ajax
@@ -278,6 +387,10 @@ class ContabilidadController extends cratos.seguridad.Shield {
             flash.ico = "ss_delete"
             redirect(action: "show", id: params.id)
         }
+    }
+
+    def formPeriodo_ajax () {
+
     }
 
 
