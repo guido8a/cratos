@@ -67,6 +67,11 @@
         <i class="fa fa-save"></i>
         Guardar
          </a>
+
+        <a href="#" id="btnGuardar" class="btn btn-info">
+        <i class="fa fa-save"></i>
+        Registrar
+         </a>
     </div>
 </div>
 <div class="vertical-container" style="margin-top: 25px;color: black">
