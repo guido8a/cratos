@@ -94,9 +94,10 @@
                 </div>
 
                 <div class="campo">
-                    <span class="grupo">
-                        <input name="nombre_name" id="nombre" type="text" value="${gestorInstance?.nombre}" maxlength="127" style="width:700px;" class="form-control required"/>
-                    </span>
+                    %{--<span class="grupo">--}%
+                        <input name="nombre_name" id="nombre" type="text" value="${gestorInstance?.nombre}" maxlength="127"
+                               class="form-control required"/>
+                    %{--</span>--}%
                 </div>
             </div>
 
@@ -178,10 +179,10 @@
                 </tr>
                 <tr>
                     <th style="width: 280px;">Código (Cuenta)</th>
-                    <th style="width: 100px">B. Imponible</th>
+                    <th style="width: 100px">% B. Imponible</th>
                     <th style="width: 80px">Impuestos</th>
                     <th style="width: 80px">Valor</th>
-                    <th style="width: 100px">B. Imponible</th>
+                    <th style="width: 100px">% B. Imponible</th>
                     <th style="width: 80px">Impuestos</th>
                     <th style="width: 80px">Valor</th>
                     <th style="width: 70px"><i class="fa fa-pencil"></i> </th>

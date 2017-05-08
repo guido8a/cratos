@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <title>Cratos - Gestor Contable</title>
+    <title>Gestores</title>
     <meta name="layout" content="main"/>
 
 </head>
@@ -73,7 +73,7 @@
         </thead>
     </table>
 
-    <div class="row-fluid"  style="width: 99.7%;height: 250px;overflow-y: auto;float: right;">
+    <div class="row-fluid"  style="width: 99.7%;height: 500px;overflow-y: auto;float: right;">
         <div class="span12">
             <div id="divLista" style="width: 1120px; height: 450px;"></div>
         </div>
