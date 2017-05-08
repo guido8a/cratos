@@ -22,8 +22,8 @@
     <g:if test="${movimientos}">
         <g:each in="${movimientos}" var="genera" status="i">
             <tr style="background-color: ${(genera.tipoComprobante.id.toInteger() == 1)?'#D4E6FC':((genera.tipoComprobante.id.toInteger() == 2)?'#99CC99':'#FFCC99')} !important; " class="movimiento">
-            %{--<td style="max-width: 250px;">${genera.cuenta.numero+'('+genera.cuenta.descripcion+')'}</td>--}%
-            <td style="width: 280px;">${genera.cuenta.numero+'('+genera.cuenta.descripcion+')'}</td>
+            <td style="width: 285px;">${genera.cuenta.numero}<span style="font-size: 12px">(${genera.cuenta.descripcion})</span></td>
+            %{--<td style="width: 280px;">${genera.cuenta.numero+'('+genera.cuenta.descripcion+')'}</td>--}%
             <g:if test="${genera.debeHaber=='D'}">
                 <td class="largo"><g:textField type="number" name="porcentaje" id="por_${genera?.id}" class="validacionNumero form-control" style="width: 90px;" value="${genera.porcentaje ?: 0}" /></td>
                 <td class="largo"><g:textField type="number" name="impuestos" id="imp_${genera?.id}" class="validacionNumero form-control" style="width: 90px;" value="${genera.porcentajeImpuestos?:0}" /></td>

@@ -9,31 +9,30 @@
         <g:hiddenField name="id" value="${contabilidadInstance?.id}"/>
 
         <g:if test="${contabilidadInstance?.id}">
-        %{--<div class="form-group ${hasErrors(bean: contabilidadInstance, field: 'fechaInicio', 'error')} required">--}%
-        %{--<span class="grupo">--}%
-        %{--<label for="fechaInicio" class="col-md-2 control-label text-info">--}%
-        %{--Fecha Inicio--}%
-        %{--</label>--}%
+        <div class="form-group ${hasErrors(bean: contabilidadInstance, field: 'fechaInicio', 'error')} required">
+        <span class="grupo">
+        <label for="fechaInicio" class="col-md-2 control-label text-info">
+        Fecha Inicio
+        </label>
 
-        %{--<div class="col-md-4">--}%
-        %{--<elm:datepicker name="fechaInicio" title="Fecha de inicio del periodo comtable" class="datepicker form-control required" value="${contabilidadInstance?.fechaInicio}"/>--}%
-        %{--</div>--}%
-        %{--*--}%
-        %{--</span>--}%
-        %{--</div>--}%
+        <div class="col-md-4">
+        <elm:datepicker name="fechaInicio" title="Fecha de inicio del periodo comtable" class="datepicker form-control required" value="${contabilidadInstance?.fechaInicio}"/>
+        </div>
+        *
+        </span>
+        </div>
 
-        %{--<div class="form-group ${hasErrors(bean: contabilidadInstance, field: 'fechaCierre', 'error')} ">--}%
-        %{--<span class="grupo">--}%
-        %{--<label for="fechaCierre" class="col-md-2 control-label text-info">--}%
-        %{--Fecha Cierre--}%
-        %{--</label>--}%
+        <div class="form-group ${hasErrors(bean: contabilidadInstance, field: 'fechaCierre', 'error')} ">
+        <span class="grupo">
+        <label for="fechaCierre" class="col-md-2 control-label text-info">
+        Fecha Cierre
+        </label>
 
-        %{--<div class="col-md-4">--}%
-        %{--<elm:datepicker name="fechaCierre" title="Fecha de cierre del periodo comtable" class="datepicker form-control" value="${contabilidadInstance?.fechaCierre}"/>--}%
-        %{--</div>--}%
-
-        %{--</span>--}%
-        %{--</div>--}%
+        <div class="col-md-4">
+        <elm:datepicker name="fechaCierre" title="Fecha de cierre del periodo comtable" class="datepicker form-control" value="${contabilidadInstance?.fechaCierre}"/>
+        </div>
+        </span>
+        </div>
 
             <div class="form-group ${hasErrors(bean: contabilidadInstance, field: 'prefijo', 'error')} ">
                 <span class="grupo">
@@ -49,7 +48,6 @@
 
                         </p>
                     </div>
-
                 </span>
             </div>
         </g:if>

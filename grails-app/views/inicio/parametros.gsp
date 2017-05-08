@@ -307,17 +307,6 @@
                             </div>
                         </li>
 
-                        <li>
-                            <i class="fa-li ${iconGen}"></i>
-                            <span id="periodosContables">
-                                <g:link controller="contabilidad" action="list">Períodos Contables</g:link>
-                            </span>
-
-                            <div class="descripcion hide">
-                                <h4>Períodos contables</h4>
-                            </div>
-                        </li>
-
                     </ul>
 
                 </div>

@@ -13,11 +13,11 @@
         <g:if test="${cuentaInstance?.padre }">
             <div class="form-group ${hasErrors(bean: cuentaInstance, field: 'padre', 'error')} ">
                 <span class="grupo">
-                    <label class="col-md-2 control-label text-info">
-                        Padre
+                    <label class="col-md-3 control-label text-info">
+                        Cuenta padre
                     </label>
 
-                    <div class="col-md-6">
+                    <div class="col-md-9">
                         <p class="form-control-static">${cuentaInstance?.padre ?: "No tiene padre"}</p>
                     </div>
 
@@ -43,9 +43,10 @@
                     Número
                 </label>
                 <div class="col-md-5">
-                        <g:textField onfocus="this.value = this.value;" name="numero" maxlength="20" required="" class="allCaps form-control required" value="${cuentaInstance?.numero ?: cuentaInstance?.padre?.numero}"/>
+                        <g:textField onfocus="this.value = this.value;" name="numero" maxlength="20" required=""
+                                     class="allCaps form-control required"
+                                     value="${cuentaInstance?.numero ?: cuentaInstance?.padre?.numero}"/>
                 </div>
-                *
             </span>
         </div>
 
@@ -55,8 +56,9 @@
                     Descripción
                 </label>
 
-                <div class="col-md-6">
-                    <g:textArea name="descripcion" maxlength="127" style="resize: none" required="" class="allCaps form-control required" value="${cuentaInstance?.descripcion}"/>
+                <div class="col-md-9">
+                    <g:textArea name="descripcion" maxlength="127" style="resize: none" required=""
+                                class="allCaps form-control required" value="${cuentaInstance?.descripcion}"/>
                 </div>
                 *
             </span>
@@ -70,8 +72,8 @@
 
                 <div class="col-md-2">
                     <g:if test="${hijos == 0}">
-                        <g:select name="auxiliar" from="${cuentaInstance.constraints.auxiliar.inList}" class="form-control" value="${cuentaInstance?.auxiliar ?: 'N'}"
-                                  valueMessagePrefix="cuenta.auxiliar"/>
+                        <g:select name="auxiliar" from="${cuentaInstance.constraints.auxiliar.inList}" class="form-control"
+                                  value="${cuentaInstance?.auxiliar ?: 'N'}" valueMessagePrefix="cuenta.auxiliar"/>
                     </g:if>
                     <g:else>
                         <g:message code="cuenta.auxiliar.${cuentaInstance.auxiliar}"/>
@@ -80,13 +82,15 @@
             </span>
 
             <span class="grupo">
+                <span class="col-md-2"></span>
                 <label for="movimiento" class="col-md-2 control-label text-info">
                     Movimiento
                 </label>
 
                 <div class="col-md-2">
                     <g:if test="${hijos == 0}">
-                        <g:select name="movimiento" from="${cuentaInstance.constraints.movimiento.inList}" class="form-control" value="${cuentaInstance?.movimiento ?: '0'}"
+                        <g:select name="movimiento" from="${cuentaInstance.constraints.movimiento.inList}"
+                                  class="form-control" value="${cuentaInstance?.movimiento ?: '0'}"
                                   valueMessagePrefix="cuenta.movimiento"/>
                     </g:if>
                     <g:else>
@@ -117,7 +121,7 @@
                     Cuenta Banco
                 </label>
 
-                <div class="col-md-6">
+                <div class="col-md-9">
                     <g:select id="cuentaBanco" name="cuentaBanco.id" from="${cratos.CuentaBanco.list()}" optionKey="id" value="${cuentaInstance?.cuentaBanco?.id}"
                               class="many-to-one form-control" noSelection="['': 'Seleccione..']"/>
                 </div>
@@ -132,7 +136,7 @@
                         Impuesto
                     </label>
 
-                    <div class="col-md-6">
+                    <div class="col-md-9">
                         <g:select id="impuesto" name="impuesto.id" from="${cratos.Impuesto.list([sort: 'codigo'])}"
                                   optionKey="id" value="${cuentaInstance?.impuesto?.id}" class="many-to-one form-control" noSelection="['': 'Seleccione']"
                                   optionValue="${{

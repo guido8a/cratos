@@ -9,7 +9,7 @@
 <html>
 <head>
     <meta name="layout" content="main"/>
-    <title>${(gestorInstance) ? 'Editar gestor contable' : 'Nuevo gestor contable'}</title>
+    <title>${(gestorInstance) ? 'Editar Gestor' : 'Nuevo gestor contable'}</title>
 
     <style type="text/css">
     .fila {
@@ -60,7 +60,7 @@
     <div class="btn-group">
         <g:link class="btn btn-primary" action="index">
             <i class="fa fa-chevron-left"></i>
-            Lista de gestores
+            Lista de Gestores
         </g:link>
 
         <a href="#" id="btnGuardar" class="btn btn-success">
@@ -70,14 +70,14 @@
     </div>
 </div>
 <div class="vertical-container" style="margin-top: 25px;color: black">
-    <p class="css-vertical-text">Descripción</p>
+    <p class="css-vertical-text">Gestor Contable</p>
     <div class="linea"></div>
     %{--<g:form action="save" class="frmGestor" controller="gestorContable">--}%
         <div id="contenido" >
             %{--<input type="hidden" name="id" value="${gestorInstance?.id}"/>--}%
 
+%{--
             <div class="fila">
-
                 <div class="label">
                     Empresa:
                 </div>
@@ -85,8 +85,8 @@
                 <div class="campo">
                     <strong>${session.empresa}</strong>
                 </div>
-
             </div>
+--}%
 
             <div class="fila">
                 <div class="label">
@@ -128,8 +128,9 @@
                 </div>
 
                 <div class="campo">
-                    <g:select name="fuente.id" type="select" campo="fuente" from="${cratos.Fuente.list([sort: 'descripcion'])}" label="Fuente: "
-                              value="${gestorInstance?.fuente?.id}" optionKey="id" optionValue="descripcion" class="form-control required" style="width: 200px" id="fuenteGestor"/>
+                    <g:select name="fuente.id" type="select" campo="fuente" from="${cratos.Fuente.list([sort: 'descripcion'])}"
+                              label="Fuente: " value="${gestorInstance?.fuente?.id}" optionKey="id" optionValue="descripcion"
+                              class="form-control required col-md-3" id="fuenteGestor"/>
                 </div>
 
             </div>
@@ -138,28 +139,30 @@
 </div>
 
 <g:if test="${gestorInstance?.id}">
-    <div class="vertical-container" style="margin-top: 25px;color: black; height: 430px">
-        <p class="css-vertical-text">Movimientos</p>
+    <div class="vertical-container" style="margin-top: 25px;color: black; height: 500px">
+        <p class="css-vertical-text">Cuentas del asiento</p>
         <div class="linea"></div>
 
         <div class="contenido">
 
             <div class="col-md-12" style="margin-bottom: 10px">
-                <div class="label col-md-2">
-                    Tipo:
+                <div class="label col-md-3">
+                    Tipo de comprobante:
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <span class="grupo">
-                        <g:select name="tipoCom" type="select" campo="tipo" from="${cratos.TipoComprobante.list([sort: 'descripcion'])}" label="Tipo comprobante: " value="${''}"
-                                  optionKey="id" id="tipo" class="form-control required" optionValue="descripcion" style="width: 200px" />
+                        <g:select name="tipoCom" type="select" campo="tipo" from="${cratos.TipoComprobante.list([sort: 'descripcion'])}"
+                                  label="Tipo comprobante: " value="${''}" optionKey="id" id="tipo" class="form-control required col-md-3"
+                                  optionValue="descripcion" style="margin-left: 80px; font-weight: bold"/>
                     </span>
                 </div>
+                <span class="col-md-3">
 
+                </span>
                 <div class="btn-group col-md-3">
-                    <a href="#" id="btnAgregarMovimiento" class="btn btn-info" title="Agregar movimiento contable">
-                        <i class="fa fa-plus"></i>
-                        Agregar Cuenta
+                    <a href="#" id="btnAgregarMovimiento" class="btn btn-info" title="Agregar una cuenta al gestor">
+                        <i class="fa fa-plus"></i> Agregar Cuenta
                     </a>
                 </div>
             </div>
@@ -174,24 +177,22 @@
                     <th></th>
                 </tr>
                 <tr>
-                    <th style="width: 280px;">Código (Comprobante)</th>
+                    <th style="width: 280px;">Código (Cuenta)</th>
                     <th style="width: 100px">B. Imponible</th>
                     <th style="width: 80px">Impuestos</th>
                     <th style="width: 80px">Valor</th>
                     <th style="width: 100px">B. Imponible</th>
                     <th style="width: 80px">Impuestos</th>
                     <th style="width: 80px">Valor</th>
-                    <th style="width: 80px"><i class="fa fa-pencil"></i> </th>
+                    <th style="width: 70px"><i class="fa fa-pencil"></i> </th>
                 </tr>
                 </thead>
             </table>
 
 
-
-
-            <div class="row-fluid"  style="width: 99.7%;height: 250px;overflow-y: auto;float: right;">
+            <div class="row-fluid"  style="width: 99.7%;height: 320px;overflow-y: auto;float: right;">
                 <div class="span12">
-                    <div id="cuentaAgregada" style="width: 1070px; height: 250px;"></div>
+                    <div id="cuentaAgregada" style="width: 1070px; height: 280px;"></div>
                 </div>
             </div>
 
