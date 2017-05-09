@@ -430,6 +430,7 @@ class GestorContableController extends cratos.seguridad.Shield {
         def generaDebe
         def generaHaber
         def errores = 0
+        def vr = 0
 
         tiposComprobantes.each {t->
 
@@ -465,6 +466,7 @@ class GestorContableController extends cratos.seguridad.Shield {
             }else{
                 if(!generaDebe && !generaHaber){
                     errores += 1
+                    vr += 1
                 }else{
                     render "no_No se puede registrar el gestor contable, ingrese valores tanto en DEBE como en HABER, TIPO: (${tipo?.descripcion})"
                     return
@@ -477,7 +479,7 @@ class GestorContableController extends cratos.seguridad.Shield {
 //        println("tam " + tam)
 //        println("errores  " + errores)
 
-        if(tam == errores){
+        if(tam == errores && tam != vr){
             gestor.estado = 'R'
             if(!gestor.save(flush: true)){
                 render "no_Error al registrar el gestor contable"
@@ -485,6 +487,8 @@ class GestorContableController extends cratos.seguridad.Shield {
             }else{
                 render "ok_Gestor contable registrado correctamente"
             }
+        }else{
+            render "no_Error al registrar el gestor contable"
         }
 
 
