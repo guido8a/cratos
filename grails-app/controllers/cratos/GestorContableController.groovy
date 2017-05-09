@@ -422,4 +422,72 @@ class GestorContableController extends cratos.seguridad.Shield {
         return [baseD: baseD, impD: impD, valorD: valorD, baseH: baseH, impH: impH, valorH: valorH]
     }
 
+    def registrar_ajax () {
+
+        def gestor = Gestor.get(params.id)
+        def tiposComprobantes = TipoComprobante.list()
+        def tipo
+        def generaDebe
+        def generaHaber
+        def errores = 0
+
+        tiposComprobantes.each {t->
+
+            tipo = TipoComprobante.get(t?.id)
+
+            generaDebe = Genera.findAllByGestorAndDebeHaberAndTipoComprobante(gestor, 'D',tipo)
+            generaHaber = Genera.findAllByGestorAndDebeHaberAndTipoComprobante(gestor, 'H',tipo)
+
+            if(generaDebe && generaHaber){
+
+                def debeValor = generaDebe.valor.sum()
+                def debeImpuesto = generaDebe.porcentaje.sum()
+                def debePorcentaImpuesto = generaDebe.porcentajeImpuestos.sum()
+
+                def haberValor = generaHaber.valor.sum()
+                def haberImpuesto = generaHaber.porcentaje.sum()
+                def haberPorcentaImpuesto = generaHaber.porcentajeImpuestos.sum()
+
+                def totalesDebe = debeValor + debeImpuesto + debePorcentaImpuesto
+                def totalesHaber = haberValor + haberImpuesto + haberPorcentaImpuesto
+
+                if(totalesDebe != 0 && totalesHaber != 0){
+                    if(debeValor == haberValor && debeImpuesto == haberImpuesto && debePorcentaImpuesto == haberPorcentaImpuesto){
+                            errores += 1
+                    }else{
+                        render "no_No se puede registrar el gestor contable, los valores no cuadran entre DEBE y HABER, TIPO: (${tipo?.descripcion})"
+                        return
+                    }
+                }else{
+                    render "no_No se puede registrar el gestor contable, los valores se encuentran en 0, TIPO: (${tipo?.descripcion})"
+                    return
+                }
+            }else{
+                if(!generaDebe && !generaHaber){
+                    errores += 1
+                }else{
+                    render "no_No se puede registrar el gestor contable, ingrese valores tanto en DEBE como en HABER, TIPO: (${tipo?.descripcion})"
+                    return
+                }
+            }
+        }
+
+        def tam = tiposComprobantes.size()
+
+//        println("tam " + tam)
+//        println("errores  " + errores)
+
+        if(tam == errores){
+            gestor.estado = 'R'
+            if(!gestor.save(flush: true)){
+                render "no_Error al registrar el gestor contable"
+                println("error save gestor " + gestor.errors)
+            }else{
+                render "ok_Gestor contable registrado correctamente"
+            }
+        }
+
+
+    }
+
 }

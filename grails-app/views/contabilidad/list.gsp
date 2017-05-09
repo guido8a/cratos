@@ -3,7 +3,7 @@
 <html>
     <head>
         <meta name="layout" content="main">
-        <title>Lista de Contabilidad</title>
+        <title>Lista de Contabilidades</title>
     </head>
 
     <body>
@@ -37,7 +37,7 @@
         </div>
 
         <div class="vertical-container vertical-container-list">
-            <p class="css-vertical-text">Lista de Contabilidad</p>
+            <p class="css-vertical-text">Lista de Contabilidades</p>
 
             <div class="linea"></div>
             <table class="table table-condensed table-bordered table-striped table-hover">
@@ -53,8 +53,8 @@
                 <tbody>
                     <g:each in="${contabilidadInstanceList}" status="i" var="contabilidadInstance">
                         <tr data-id="${contabilidadInstance.id}">
-                            <td><g:formatDate date="${contabilidadInstance.fechaInicio}" format="dd-MM-yyyy"/></td>
-                            <td><g:formatDate date="${contabilidadInstance.fechaCierre}" format="dd-MM-yyyy"/></td>
+                            <td style="color: #2fd152; text-align: center"><g:formatDate date="${contabilidadInstance.fechaInicio}" format="dd-MM-yyyy"/></td>
+                            <td style="text-align: center"><g:formatDate date="${contabilidadInstance.fechaCierre}" format="dd-MM-yyyy"/></td>
                             <td>${fieldValue(bean: contabilidadInstance, field: "prefijo")}</td>
                             <td>${fieldValue(bean: contabilidadInstance, field: "descripcion")}</td>
                             <td>
@@ -91,10 +91,12 @@
                             var parts = msg.split("_");
                             log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
                             if (parts[0] == "OK") {
-                                location.reload(true);
+                                setTimeout(function () {
+                                    location.reload(true);
+                                }, 1200);
                             } else {
                                 closeLoader();
-                                spinner.replaceWith($btn);
+//                                spinner.replaceWith($btn);
                                 return false;
                             }
                         }
@@ -106,10 +108,10 @@
             function deleteRow(itemId) {
                 bootbox.dialog({
                     title   : "Alerta",
-                    message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea eliminar el Contabilidad seleccionado? Esta acción no se puede deshacer.</p>",
+                    message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea eliminar la Contabilidad seleccionada? Esta acción no se puede deshacer.</p>",
                     buttons : {
                         cancelar : {
-                            label     : "Cancelar",
+                            label     : "<i class='fa fa-times'></i> Cancelar",
                             className : "btn-primary",
                             callback  : function () {
                             }
@@ -129,10 +131,12 @@
                                         var parts = msg.split("_");
                                         log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
                                         if (parts[0] == "OK") {
-                                            location.reload(true);
+                                            setTimeout(function () {
+                                                location.reload(true);
+                                            }, 1200);
                                         } else {
                                             closeLoader();
-                                            spinner.replaceWith($btn);
+//                                            spinner.replaceWith($btn);
                                             return false;
                                         }
                                     }
@@ -143,7 +147,7 @@
                 });
             }
             function createEditRow(id) {
-                var title = id ? "Editar" : "Crear";
+                var title = id ? "Editar" : "Nueva";
                 var data = id ? { id : id } : {};
                 $.ajax({
                     type    : "POST",
@@ -156,7 +160,7 @@
                             message : msg,
                             buttons : {
                                 cancelar : {
-                                    label     : "Cancelar",
+                                    label     : "<i class='fa fa-times'></i> Cancelar",
                                     className : "btn-primary",
                                     callback  : function () {
                                     }
@@ -195,11 +199,11 @@
                         },
                         success : function (msg) {
                             bootbox.dialog({
-                                title   : "Ver Contabilidad",
+                                title   : "Ver datos de la Contabilidad",
                                 message : msg,
                                 buttons : {
                                     ok : {
-                                        label     : "Aceptar",
+                                        label     : "<i class='fa fa-times'></i> Aceptar",
                                         className : "btn-primary",
                                         callback  : function () {
                                         }
@@ -236,7 +240,7 @@
                               message : msg,
                               buttons : {
                                   cancelar : {
-                                      label     : "Cancelar",
+                                      label     : "<i class='fa fa-times'></i> Cancelar",
                                       className : "btn-primary",
                                       callback  : function () {
                                       }
@@ -252,7 +256,6 @@
                               } //buttons
                           }); //dialog
                           setTimeout(function () {
-
 
                           }, 500);
                       }

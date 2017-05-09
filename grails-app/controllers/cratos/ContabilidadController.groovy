@@ -37,7 +37,7 @@ class ContabilidadController extends cratos.seguridad.Shield {
         if (contabilidadInstanceList.size() == 0 && params.offset && params.max) {
             params.offset = params.offset - params.max
         }
-        contabilidadInstanceList = Contabilidad.findAllByInstitucion(session.empresa, params)
+        contabilidadInstanceList = Contabilidad.findAllByInstitucion(session.empresa, params).sort{it.descripcion}
 //        contabilidadInstanceList = contabilidadInstanceList.sort{it.fechaInicio}
 
         return [contabilidadInstanceList: contabilidadInstanceList, contabilidadInstanceCount: contabilidadInstanceCount]
@@ -69,16 +69,23 @@ class ContabilidadController extends cratos.seguridad.Shield {
     } //form para cargar con ajax en un dialog
 
     def save_ajax() {
+//        println("params save " + params)
 
         def errores = ''
-
-//        println("params save " + params)
         def contabilidadInstance
 
         if(params.id){
             contabilidadInstance =  Contabilidad.get(params.id)
             contabilidadInstance.descripcion = params.descripcion
-            contabilidadInstance.prefijo = params.prefijo
+            contabilidadInstance.prefijo = params.prefijo.toUpperCase()
+
+            if (!contabilidadInstance.save(flush: true)) {
+                render "NO_Error al guardar los datos de la contabilidad"
+                println("Error editar" + contabilidadInstance.errors)
+            } else{
+                render "OK_Datos de la contabilidad actualizados correctamente"
+            }
+
         }else{
             contabilidadInstance = new Contabilidad()
             contabilidadInstance.institucion = session.empresa
@@ -168,13 +175,6 @@ class ContabilidadController extends cratos.seguridad.Shield {
             }
         }
 
-
-
-
-
-
-
-
         //antiguo
 
 //        def errores = ''
@@ -243,21 +243,54 @@ class ContabilidadController extends cratos.seguridad.Shield {
     } //save para grabar desde ajax
 
     def delete_ajax() {
-        if (params.id) {
-            def contabilidadInstance = Contabilidad.get(params.id)
-            if (contabilidadInstance) {
-                try {
-                    contabilidadInstance.delete(flush: true)
-                    render "OK_Eliminación de Contabilidad exitosa."
-                } catch (e) {
-                    render "NO_No se pudo eliminar Contabilidad."
+
+//        println("params delete " + params)
+
+        def contabilidadInstance = Contabilidad.get(params.id)
+        def periodos = Periodo.findAllByContabilidad(contabilidadInstance)
+        def procesos = Proceso.findAllByContabilidad(contabilidadInstance)
+        def errores = ''
+
+        if(procesos){
+            render "NO_No se puede borrar esta contabilidad, ya tiene procesos asociados!"
+        }else{
+
+            periodos.each {p->
+                try{
+                    p.delete(flush: true)
+                }catch (e){
+                    errores += p.errors
                 }
-            } else {
-                notFound_ajax()
             }
-        } else {
-            notFound_ajax()
+
+//            println("errores " + errores)
+
+            if(errores == ''){
+                try{
+                    contabilidadInstance.delete(flush: true)
+                    render "OK_Contabilidad borrada correctamente!"
+                }catch (e){
+                    render "NO_Error al borrar la contabilidad"
+                }
+            }
         }
+
+
+//        if (params.id) {
+//            def contabilidadInstance = Contabilidad.get(params.id)
+//            if (contabilidadInstance) {
+//                try {
+//                    contabilidadInstance.delete(flush: true)
+//                    render "OK_Eliminación de Contabilidad exitosa."
+//                } catch (e) {
+//                    render "NO_No se pudo eliminar Contabilidad."
+//                }
+//            } else {
+//                notFound_ajax()
+//            }
+//        } else {
+//            notFound_ajax()
+//        }
     } //delete para eliminar via ajax
 
     protected void notFound_ajax() {

@@ -63,15 +63,20 @@
             Lista de Gestores
         </g:link>
 
-        <a href="#" id="btnGuardar" class="btn btn-success">
-        <i class="fa fa-save"></i>
-        Guardar
-         </a>
+        <g:if test="${gestorInstance?.estado != 'R'}">
 
-        <a href="#" id="btnGuardar" class="btn btn-info">
-        <i class="fa fa-save"></i>
-        Registrar
-         </a>
+            <a href="#" id="btnGuardar" class="btn btn-success">
+                <i class="fa fa-save"></i>
+                Guardar
+            </a>
+        </g:if>
+
+            <g:if test="${gestorInstance?.id && gestorInstance?.estado != 'R'}">
+            <a href="#" id="btnRegistrar" class="btn btn-info">
+                <i class="fa fa-check"></i>
+                Registrar
+            </a>
+        </g:if>
     </div>
 </div>
 <div class="vertical-container" style="margin-top: 25px;color: black">
@@ -166,11 +171,16 @@
                 <span class="col-md-3">
 
                 </span>
-                <div class="btn-group col-md-3">
-                    <a href="#" id="btnAgregarMovimiento" class="btn btn-info" title="Agregar una cuenta al gestor">
-                        <i class="fa fa-plus"></i> Agregar Cuenta
-                    </a>
-                </div>
+
+    <g:if test="${gestorInstance?.estado != 'R'}">
+        <div class="btn-group col-md-3">
+            <a href="#" id="btnAgregarMovimiento" class="btn btn-info" title="Agregar una cuenta al gestor">
+                <i class="fa fa-plus"></i> Agregar Cuenta
+            </a>
+        </div>
+    </g:if>
+
+
             </div>
 
 
@@ -217,6 +227,48 @@
 
 
 <script type="text/javascript">
+
+    $("#btnRegistrar").click(function () {
+        bootbox.dialog({
+            title   : "Alerta",
+            message : "<i class='fa fa-check fa-3x pull-left text-warning text-shadow'></i><p>¿Está seguro que desea registrar el gestor contable? </br> Una vez registrado, la información NO podrá ser cambiada.</p>",
+            buttons : {
+                cancelar : {
+                    label     : "<i class='fa fa-times'></i> Cancelar",
+                    className : "btn-primary",
+                    callback  : function () {
+                    }
+                },
+                eliminar : {
+                    label     : "<i class='fa fa-check'></i> Registrar",
+                    className : "btn-success",
+                    callback  : function () {
+                        openLoader("Registrando..");
+                        $.ajax({
+                            type: 'POST',
+                            url: '${createLink(controller: 'gestorContable', action: 'registrar_ajax')}',
+                            data:{
+                                id: '${gestorInstance?.id}'
+                            },
+                            success: function (msg){
+                                var parts = msg.split("_")
+                                if(parts[0] == 'ok'){
+                                    log(parts[1],"success");
+                                    setTimeout(function () {
+                                        location.href="${createLink(controller: 'gestorContable', action: 'formGestor')}/" + '${gestorInstance?.id}'
+                                    }, 1000);
+                                }else{
+                                    log(parts[1],"error");
+                                    closeLoader();
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        });
+
+    });
 
 
     $("#btnAgregarMovimiento").click(function () {

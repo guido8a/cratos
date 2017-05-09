@@ -6,9 +6,9 @@
 --%>
 
 <style type="text/css">
-    .largo{
-        width: 80px;
-    }
+.largo{
+    width: 80px;
+}
 </style>
 
 <table class="table table-bordered table-hover table-condensed">
@@ -23,7 +23,7 @@
         <g:each in="${movimientos}" var="genera" status="i">
             <tr style="background-color: ${(genera.tipoComprobante.id.toInteger() == 1)?'#D4E6FC':((genera.tipoComprobante.id.toInteger() == 2)?'#99CC99':'#FFCC99')} !important; " class="movimiento">
             <td style="width: 285px;">${genera.cuenta.numero}<span style="font-size: 12px"> (${genera.cuenta.descripcion})</span></td>
-            %{--<td style="width: 280px;">${genera.cuenta.numero+'('+genera.cuenta.descripcion+')'}</td>--}%
+        %{--<td style="width: 280px;">${genera.cuenta.numero+'('+genera.cuenta.descripcion+')'}</td>--}%
             <g:if test="${genera.debeHaber=='D'}">
                 <td class="largo"><g:textField type="number" name="porcentaje" id="por_${genera?.id}" class="validacionNumero form-control" style="width: 90px;" value="${genera.porcentaje ?: 0}" /></td>
                 <td class="largo"><g:textField type="number" name="impuestos" id="imp_${genera?.id}" class="validacionNumero form-control" style="width: 90px;" value="${genera.porcentajeImpuestos?:0}" /></td>
@@ -32,14 +32,18 @@
                 <td class="largo"></td>
                 <td class="largo"></td>
                 <td style="width: 70px">
-                    <div class="btn-group">
-                        <a href="#" class="btn btn-success btn-sm btnGuardarMovi" cuenta="${genera?.id}" iden="${i}" title="Guardar cambios">
-                            <i class="fa fa-save"></i>
-                        </a>
-                        <a href="#" class="btn btn-danger btn-sm btnEliminarMovi" cuenta="${genera?.id}" title="Eliminar movimiento">
-                            <i class="fa fa-times"></i>
-                        </a>
-                    </div>
+                    <g:if test="${gestor?.estado != 'R'}">
+
+                        <div class="btn-group">
+                            <a href="#" class="btn btn-success btn-sm btnGuardarMovi" cuenta="${genera?.id}" iden="${i}" title="Guardar cambios">
+                                <i class="fa fa-save"></i>
+                            </a>
+                            <a href="#" class="btn btn-danger btn-sm btnEliminarMovi" cuenta="${genera?.id}" title="Eliminar movimiento">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+
+                    </g:if>
                 </td>
                 </tr>
                 <g:set var="por" value="${por+genera.porcentaje?:0}" />
@@ -54,30 +58,32 @@
                 <td class="largo"><g:textField type="number" name="impuestos" id="imp_${genera?.id}" class="validacionNumero form-control" style="width: 90px;" value="${genera.porcentajeImpuestos?:0}" /></td>
                 <td class="largo"><g:textField type="number" name="valor" id="val_${genera?.id}" class="validacionNumero form-control" style="width: 90px;" value="${genera.valor?:0}" /></td>
                 <td style="width: 70px">
-                    <div class="btn-group">
-                        <a href="#" class="btn btn-success btn-sm btnGuardarMovi" cuenta="${genera?.id}" iden="${i}" title="Guardar cambios">
-                            <i class="fa fa-save"></i>
-                        </a>
-                        <a href="#" class="btn btn-danger btn-sm btnEliminarMovi" title="Eliminar movimiento" cuenta="${genera?.id}" nombreCuenta="${genera?.cuenta?.descripcion}">
-                            <i class="fa fa-times"></i>
-                        </a>
-                    </div>
+                    <g:if test="${gestor?.estado != 'R'}">
+                        <div class="btn-group">
+                            <a href="#" class="btn btn-success btn-sm btnGuardarMovi" cuenta="${genera?.id}" iden="${i}" title="Guardar cambios">
+                                <i class="fa fa-save"></i>
+                            </a>
+                            <a href="#" class="btn btn-danger btn-sm btnEliminarMovi" title="Eliminar movimiento" cuenta="${genera?.id}" nombreCuenta="${genera?.cuenta?.descripcion}">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </g:if>
                 </td>
                 <g:set var="porH" value="${porH+genera.porcentaje?:0}" />
                 <g:set var="impH" value="${impH+genera.porcentajeImpuestos?:0}" />
                 <g:set var="valH" value="${valH+genera.valor?:0}" />
             </g:else>
         </g:each>
-        %{--<tr>--}%
-            %{--<td style="width: 250px">TOTAL:</td>--}%
-            %{--<td style="background-color: ${(por==porH)?'#d0ffd0':'#ffd0d0'}; width: 80px" >${por}</td>--}%
-            %{--<td style="background-color: ${(imp==impH)?'#d0ffd0':'#ffd0d0'}; width: 80px">${imp}</td>--}%
-            %{--<td style="background-color: ${(val==valH)?'#d0ffd0':'#ffd0d0'}; width: 80px">${val}</td>--}%
-            %{--<td style="background-color: ${(por==porH)?'#d0ffd0':'#ffd0d0'}; width: 80px">${porH}</td>--}%
-            %{--<td style="background-color: ${(imp==impH)?'#d0ffd0':'#ffd0d0'}; width: 80px">${impH}</td>--}%
-            %{--<td style="background-color: ${(val==valH)?'#d0ffd0':'#ffd0d0'}; width: 80px">${valH}</td>--}%
-            %{--<td style="width: 70px"></td>--}%
-        %{--</tr>--}%
+    %{--<tr>--}%
+    %{--<td style="width: 250px">TOTAL:</td>--}%
+    %{--<td style="background-color: ${(por==porH)?'#d0ffd0':'#ffd0d0'}; width: 80px" >${por}</td>--}%
+    %{--<td style="background-color: ${(imp==impH)?'#d0ffd0':'#ffd0d0'}; width: 80px">${imp}</td>--}%
+    %{--<td style="background-color: ${(val==valH)?'#d0ffd0':'#ffd0d0'}; width: 80px">${val}</td>--}%
+    %{--<td style="background-color: ${(por==porH)?'#d0ffd0':'#ffd0d0'}; width: 80px">${porH}</td>--}%
+    %{--<td style="background-color: ${(imp==impH)?'#d0ffd0':'#ffd0d0'}; width: 80px">${impH}</td>--}%
+    %{--<td style="background-color: ${(val==valH)?'#d0ffd0':'#ffd0d0'}; width: 80px">${valH}</td>--}%
+    %{--<td style="width: 70px"></td>--}%
+    %{--</tr>--}%
     </g:if>
     <g:else>
         <tr class="danger text-center">
@@ -199,7 +205,7 @@
         var tipo = '${tipo?.id}';
 
         $.ajax({
-           type: 'POST',
+            type: 'POST',
             url:'${createLink(controller: 'gestorContable', action: 'guardarValores_ajax')}',
             data:{
                 genera: genera,

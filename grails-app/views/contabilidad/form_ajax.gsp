@@ -8,66 +8,35 @@
     <g:form class="form-horizontal" name="frmContabilidad" role="form" action="save_ajax" method="POST">
         <g:hiddenField name="id" value="${contabilidadInstance?.id}"/>
 
-        %{--<g:if test="${contabilidadInstance?.id}">--}%
-        <div class="form-group ${hasErrors(bean: contabilidadInstance, field: 'fechaInicio', 'error')} required">
-        <span class="grupo">
-        <label for="fechaInicio" class="col-md-2 control-label text-info">
-        Fecha Inicio
-        </label>
+        <g:if test="${!contabilidadInstance?.id}">
+            <div class="form-group ${hasErrors(bean: contabilidadInstance, field: 'fechaInicio', 'error')} required">
+                <span class="grupo">
+                    <label for="fechaInicio" class="col-md-2 control-label text-info">
+                        Fecha Inicio
+                    </label>
 
-        <div class="col-md-4">
-        <elm:datepicker name="fechaInicio" title="Fecha de inicio del periodo comtable" class="datepicker form-control required" value="${contabilidadInstance?.fechaInicio}"/>
-        </div>
-        *
-        </span>
-        </div>
+                    <div class="col-md-4">
+                        <elm:datepicker name="fechaInicio" title="Fecha de inicio del periodo comtable" class="datepicker form-control required" value="${contabilidadInstance?.fechaInicio}"/>
+                    </div>
+                    *
+                </span>
+            </div>
 
-        <div class="form-group ${hasErrors(bean: contabilidadInstance, field: 'fechaCierre', 'error')} ">
-        <span class="grupo">
-        <label for="fechaCierre" class="col-md-2 control-label text-info">
-        Fecha Cierre
-        </label>
+            <div class="form-group ${hasErrors(bean: contabilidadInstance, field: 'fechaCierre', 'error')} ">
+                <span class="grupo">
+                    <label for="fechaCierre" class="col-md-2 control-label text-info">
+                        Fecha Cierre
+                    </label>
 
-        <div class="col-md-4">
-        <elm:datepicker name="fechaCierre" title="Fecha de cierre del periodo comtable" class="datepicker form-control required" value="${contabilidadInstance?.fechaCierre}"/>
-        </div>
-        *
-        </span>
-        </div>
+                    <div class="col-md-4">
+                        <elm:datepicker name="fechaCierre" title="Fecha de cierre del periodo comtable" class="datepicker form-control required" value="${contabilidadInstance?.fechaCierre}"/>
+                    </div>
+                    *
+                </span>
+            </div>
 
-            %{--<div class="form-group ${hasErrors(bean: contabilidadInstance, field: 'prefijo', 'error')} ">--}%
-                %{--<span class="grupo">--}%
-                    %{--<label class="col-md-2 control-label text-info">--}%
-                        %{--Año--}%
-                    %{--</label>--}%
+        </g:if>
 
-                    %{--<div class="col-md-6">--}%
-                        %{--<p class="form-control-static">--}%
-                            %{--<g:formatDate date="${contabilidadInstance?.fechaInicio}" format="yyyy"/>--}%
-                            %{--(de <g:formatDate date="${contabilidadInstance?.fechaInicio}" format="dd-MM-yyyy"/> a--}%
-                            %{--<g:formatDate date="${contabilidadInstance?.fechaCierre}" format="dd-MM-yyyy"/>)--}%
-
-                        %{--</p>--}%
-                    %{--</div>--}%
-                %{--</span>--}%
-            %{--</div>--}%
-        %{--</g:if>--}%
-        %{--<g:else>--}%
-
-            %{--<div class="form-group ${hasErrors(bean: contabilidadInstance, field: 'prefijo', 'error')} ">--}%
-                %{--<span class="grupo">--}%
-                    %{--<label class="col-md-2 control-label text-info">--}%
-                        %{--Año--}%
-                    %{--</label>--}%
-
-                    %{--<div class="col-md-3">--}%
-                        %{--<g:textField name="anio" maxlength="4" class="digits form-control required" value=""/>--}%
-                    %{--</div>--}%
-                    %{--*--}%
-                %{--</span>--}%
-            %{--</div>--}%
-
-        %{--</g:else>--}%
         <div class="form-group ${hasErrors(bean: contabilidadInstance, field: 'prefijo', 'error')} ">
             <span class="grupo">
                 <label for="prefijo" class="col-md-2 control-label text-info">
