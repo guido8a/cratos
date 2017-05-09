@@ -26,13 +26,12 @@
 </g:if>
 <div class="btn-toolbar toolbar">
     <div class="btn-group">
-        %{--<g:link class="btn btn-info" action="nuevoGestor">--}%
         <g:link class="btn btn-info" action="formGestor">
-            <i class="fa fa-file-o"></i>    Crear nuevo Gestor
+            <i class="fa fa-file-o"></i> Crear nuevo Gestor
         </g:link>
     </div>
 </div>
-<div style="margin-top: 30px;" class="vertical-container-no-padding">
+<div style="margin-top: -50px;" class="vertical-container-no-padding">
     <div id="divContenido">
         <g:form action="buscarGestor" class="buscarGestor">
             <div class="ui-state-error ui-corner-all ui-helper-hidden" style="padding: 5px; margin-bottom: 10px;">
@@ -40,8 +39,10 @@
                 <span id="error">error!</span>
             </div>
             <div class="row">
-                <div class="col-xs-3 negrilla">
-                    Nombre:
+                <div class="col-xs-2 negrilla">
+                </div>
+                <div class="col-xs-4 negrilla">
+                    Nombre del gestor:
                     <input type="text" name="nombre" id="txtBusca" class="form-control required label-shared"/>
                 </div>
 
@@ -89,6 +90,14 @@
         enviar();
         $("#buscarGestor").click(function () {
             enviar();
+        });
+
+        $("#txtBusca").keydown(function (ev) {
+            if (ev.keyCode == 13) {
+                enviar();
+                return false;
+            }
+            return true;
         });
 
         function enviar() {

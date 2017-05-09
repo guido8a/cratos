@@ -9,7 +9,7 @@
 <html>
 <head>
     <meta name="layout" content="main"/>
-    <title>${(gestorInstance) ? 'Editar Gestor' : 'Nuevo gestor contable'}</title>
+    <title>${(gestorInstance) ? 'Editar Gestor' : 'Nuevo Gestor'}</title>
 
     <style type="text/css">
     .fila {
@@ -59,7 +59,7 @@
 <div class="btn-toolbar toolbar">
     <div class="btn-group">
         <g:link class="btn btn-primary" action="index">
-            <i class="fa fa-chevron-left"></i>
+            <i class="fa fa-arrow-left"></i>
             Lista de Gestores
         </g:link>
 
@@ -118,7 +118,8 @@
 
                 <div class="campo">
                     <span class="grupo">
-                        <input name="descripcion_name" id="descripcion" type="textArea" value="${gestorInstance?.descripcion}" maxlength="255"  style="width:700px;" class="form-control required"/>
+                        <input name="descripcion_name" id="descripcion" type="textArea" value="${gestorInstance?.descripcion}"
+                               maxlength="255"  class="form-control required" style="width:800px;"/>
                     </span>
                 </div>
             </div>
@@ -129,7 +130,8 @@
                 </div>
 
                 <div class="campo">
-                    <input name="observaciones_name" id="observaciones" type="textArea" value="${gestorInstance?.observaciones}"  maxlength="125" style="width:700px;" class="form-control"/>
+                    <input name="observaciones_name" id="observaciones" type="textArea" value="${gestorInstance?.observaciones}"
+                           maxlength="125" class="form-control col-md-8"/>
                 </div>
             </div>
 

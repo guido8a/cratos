@@ -6,7 +6,15 @@ class ProcesoService {
     def dbConnectionService
     def kerberosoldService
 
-    List registrar(proceso, perfil, usuario,contabilidad) {
+    /**
+     * Registra el proceso contable y genera el comprobante, asientos y auxiliar
+     * @param proceso
+     * @param perfil   --
+     * @param usuario  --
+     * @param contabilidad
+     * @return
+     */
+    List registrar(proceso, perfil, usuario, contabilidad) {
         def lista = [true]
         def p = new Proceso()
         p = proceso

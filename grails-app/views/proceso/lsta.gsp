@@ -28,8 +28,8 @@
         <g:link class="btn btn-primary" action="nuevoProceso">
             <i class="fa fa-file-o"></i> Nueva transacción contable
         </g:link>
-        <span style="height: 30px;line-height: 30px;font-size: 12px;font-weight: bold;margin-left: 10px;vertical-align: middle">
-            Usted esta trabajando en la contabilidad: ${session.contabilidad}
+        <span style="height: 30px;line-height: 30px;font-size: 14px;margin-left: 10px;vertical-align: middle">
+            Usted esta trabajando en la contabilidad: <span class="text-info"><strong>${session.contabilidad}</strong></span>
             <g:link class="btn btn-azul" action="cambiar" controller="contabilidad" style="margin-left:10px">
                 <i class="fa fa-refresh"></i> Cambiar
             </g:link>
@@ -37,9 +37,23 @@
     </div>
 </div>
 <div class="vertical-container-no-padding" style="margin-top: 25px;color: black;min-height: 460px;border: none">
-    <div style="width: 1000px;float: left">
+    <div style="width: 1100px;float: left">
         <bsc:buscador name="proceso.id"  accion="listar" campos="${campos}" label="Transacción" tipo="lista"/>
     </div>
 </div>
+
+<script type="text/javascript">
+
+    $(function () {
+        $("#criterio").keydown(function (event) {
+            if (event.which == 13) {
+                return false;
+            }
+            return true;
+        });
+    });
+
+</script>
+
 </body>
 </html>

@@ -130,14 +130,44 @@
         <input type="hidden" name="empleado.id" value="${session.usuario.id}"/>
         <input type="hidden" name="periodoContable.id" value="${session?.contabilidad?.id}"/>
         <input type="hidden" name="data" id="data" value="${session?.contabilidad?.id}"/>
+
+    <div class="row">
+        <div class="col-xs-2 negrilla">
+            Fecha:
+        </div>
+        <div class="col-xs-2">
+            <g:if test="${registro}">
+                ${proceso?.fecha.format("dd-MM-yyyy")}
+            </g:if>
+            <g:else>
+                <elm:datepicker name="fecha"  title="Fecha de registro a la contabilidad " class="datepicker form-control required col-xs-3"
+                                value="${proceso?.fecha}"  maxDate="new Date()" style="width: 80px; margin-left: 5px" />
+            </g:else>
+        </div>
+        <div class="col-xs-2">
+        </div>
+        <div class="col-xs-2 negrilla">
+            Tipo de transacción:
+        </div>
+        <div class="col-xs-3 negrilla">
+            <g:select class="form-control required cmbRequired" name="tipoProceso"  id="tipoProceso" from="${tiposProceso}"
+                      label="Proceso tipo: " value="${proceso?.tipoProceso}" optionKey="key" optionValue="value" title="Tipo de la transacción"  disabled="${registro?true:false}"/>
+        </div>
+
+    </div>
+
         <div class="row">
             <div class="col-xs-2 negrilla">
                 Gestor:
             </div>
-            <div class="col-xs-3 negrilla">
+            <div class="col-xs-10 negrilla">
                 <g:select class="form-control required" name="gestor.id" from="${cratos.Gestor.findAllByEstadoAndEmpresa('A', session.empresa, [sort: 'nombre'])}"
                           label="Proceso tipo: " value="${proceso?.gestor?.id}" optionKey="id" optionValue="nombre" title="Proceso tipo" disabled="${registro?true:false}" />
             </div>
+        </div>
+%{--
+        <div class="row">
+
             <div class="col-xs-2 negrilla">
                 Tipo de transacción:
             </div>
@@ -146,18 +176,8 @@
                           label="Proceso tipo: " value="${proceso?.tipoProceso}" optionKey="key" optionValue="value" title="Tipo de la transacción"  disabled="${registro?true:false}"/>
             </div>
         </div>
+--}%
         <div class="row">
-            <div class="col-xs-2 negrilla">
-                Fecha:
-            </div>
-            <div class="col-xs-3 ">
-                <g:if test="${registro}">
-                    ${proceso?.fecha.format("dd-MM-yyyy")}
-                </g:if>
-                <g:else>
-                    <elm:datepicker name="fecha"  title="Fecha de registro a la contabilidad " class="datepicker form-control required" value="${proceso?.fecha}"  maxDate="new Date()" style="width: 80px; margin-left: 5px" />
-                </g:else>
-            </div>
             <div class="col-xs-2 negrilla">
                 Proveedor:
             </div>
@@ -617,7 +637,7 @@
         });
 
         $("#registrarProceso").click(function () {
-            bootbox.confirm("Esta seguro?.<br>Una vez registrada la transacción no se podrá hacer modificaciones.",function(result){
+            bootbox.confirm("Esta seguro?.<br>Una vez registrada la transacción no se podrá hacer modificaciones.", function(result){
                 if(result){
                     openLoader()
                     $.ajax({
