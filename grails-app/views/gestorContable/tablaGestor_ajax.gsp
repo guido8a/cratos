@@ -116,7 +116,6 @@
         ev.keyCode == 110 || ev.keyCode == 190);
     }
 
-
     $(".validacionNumero").keydown(function (ev) {
         return validarNum(ev);
     }).keyup(function () {

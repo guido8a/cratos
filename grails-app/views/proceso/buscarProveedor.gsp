@@ -13,7 +13,7 @@
     <g:each in="${provs}" var="p">
         <tr>
             <td>
-                <a href="#" class="btn_bsc btn btn-azul" id="${p.id}" ruc="${p.ruc}" title="Seleccionar">
+                <a href="#" class="btn_bsc btn btn-azul" id="${p.id}" ruc="${p.ruc}" nombre="${p?.nombre}" title="Seleccionar">
                     <i class="fa fa-check"></i>
                 </a>
             </td>
@@ -29,6 +29,7 @@
 <script type="text/javascript">
     $(".btn_bsc").click(function(){
         $("#prov").val($(this).attr("ruc"))
+        $("#prov_nombre").val($(this).attr("nombre"))
         $("#prov_id").val($(this).attr("id"))
         $('#modal-proveedor').modal('hide')
     });

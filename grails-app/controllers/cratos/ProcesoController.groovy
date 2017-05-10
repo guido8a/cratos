@@ -792,18 +792,61 @@ class ProcesoController extends cratos.seguridad.Shield {
 //                   println("NO entro!")
                 }
             }
-
             render "ok"
-            println("ok")
+//            println("ok")
 
         } else {
-
 //            println("error al grabar la retencion" + retencion.errors)
             render "Error al grabar!"
         }
-
-
     }
 
+    def pagos_ajax () {
+        def proceso = Proceso.get(params.proceso)
+        def formasPago = ProcesoFormaDePago.findAllByProceso(proceso).tipoPago
+        def listaId = TipoPago.list().id - formasPago.id
+        def listaFormasPago = TipoPago.findAllByIdInList(listaId)
+        return [proceso: proceso, lista: listaFormasPago]
+    }
 
+    def tablaPagos_ajax () {
+        def proceso = Proceso.get(params.proceso)
+        def formasPago = ProcesoFormaDePago.findAllByProceso(proceso)
+        return [formas: formasPago, proceso: proceso]
+    }
+
+    def borrarFormaPago_ajax () {
+        def formaPago = ProcesoFormaDePago.get(params.id)
+
+        try{
+         formaPago.delete(flush: true)
+         render "ok"
+        }catch (e){
+          render "no"
+            println("error borrar forma pago " + formaPago.errors)
+        }
+    }
+
+    def listaFormas_ajax () {
+        def proceso = Proceso.get(params.proceso)
+        def formasPago = ProcesoFormaDePago.findAllByProceso(proceso).tipoPago
+        def listaId = TipoPago.list().id - formasPago.id
+        def listaFormasPago = TipoPago.findAllByIdInList(listaId)
+        return [proceso: proceso, lista: listaFormasPago]
+    }
+
+    def agregarFormaPago_ajax () {
+//        println("params " + params)
+        def proceso = Proceso.get(params.proceso)
+        def tipoPago = TipoPago.get(params.forma)
+        def formaPago = new ProcesoFormaDePago()
+        formaPago.proceso = proceso
+        formaPago.tipoPago = tipoPago
+
+        if(!formaPago.save(flush: true)){
+            render "no"
+        }else{
+            render "ok"
+        }
+    }
 }

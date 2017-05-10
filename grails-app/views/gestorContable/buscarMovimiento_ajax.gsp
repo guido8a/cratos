@@ -43,6 +43,8 @@
 
 <script type="text/javascript">
 
+
+
     $("#buscarM").click(function (){
         var cod = $("#codigoBus").val();
         var nom = $("#nombreBus").val();

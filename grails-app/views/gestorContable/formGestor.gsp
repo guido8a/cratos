@@ -253,8 +253,8 @@
                                 id: '${gestorInstance?.id}'
                             },
                             success: function (msg){
-                                var parts = msg.split("_")
-                                if(parts[0] == 'ok'){
+                                var parts = msg.split("_");
+                                  if(parts[0] == 'ok'){
                                     log(parts[1],"success");
                                     setTimeout(function () {
                                         location.href="${createLink(controller: 'gestorContable', action: 'formGestor')}/" + '${gestorInstance?.id}'
@@ -349,7 +349,7 @@
 
 
         $("#btnGuardar").click(function () {
-            var gestor = '${gestorInstance?.id}'
+            var gestor = '${gestorInstance?.id}';
             var nombreGestor = $("#nombre").val();
             var descripcion = $("#descripcion").val();
             var observacion = $("#observaciones").val();

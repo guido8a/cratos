@@ -12,7 +12,7 @@
         font-weight : bold;
         display     : inline-block;
     }
-    
+
     .number{
         text-align: right;
     }
@@ -83,17 +83,22 @@
         </g:if>
         <g:if test="${params.id}">
             <g:if test="${proceso.adquisicion == null && proceso.fact == null && proceso.transferencia == null && !registro}">
-                <a href="#" class="btn btn-primary" id="registrarProceso">
-                    <i class="fa fa-pencil-square-o"></i>
+                <a href="#" class="btn btn-info" id="registrarProceso">
+                    <i class="fa fa-check"></i>
                     Registrar
                 </a>
             </g:if>
         </g:if>
-        <g:link class="btn btn-default" action="index">
+        <g:link class="btn btn-primary" action="index">
             <i class="fa fa-times"></i>
             Cancelar
         </g:link>
         <g:if test="${proceso}">
+
+            <a href=# class="btn btn-info" id="btnFormaPago">
+                <i class="fa fa-money"></i>
+                Formas de Pago
+            </a>
             <g:if test="${!aux}">
                 <g:if test="${proceso?.tipoProceso!='P'}">
                     <g:form action="borrarProceso" class="br_prcs" style="margin:0px;display: inline" >
@@ -115,10 +120,8 @@
     </div>
 </div>
 <div style="padding: 0.7em; margin-top:5px; display: none;" class="alert alert-danger ui-corner-all" id="divErrores">
-    %{--<span style="float: left; margin-right: .3em;" class="ui-icon ui-icon-alert"></span>--}%
     <i class="fa fa-exclamation-triangle"> </i>
     <span style="" id="spanError">Se encontraron los siguientes errores:</span>
-
     <ul id="listaErrores"></ul>
 </div>
 <g:form name="procesoForm" action="save" method="post" class="frmProceso">
@@ -131,30 +134,30 @@
         <input type="hidden" name="periodoContable.id" value="${session?.contabilidad?.id}"/>
         <input type="hidden" name="data" id="data" value="${session?.contabilidad?.id}"/>
 
-    <div class="row">
-        <div class="col-xs-2 negrilla">
-            Fecha:
-        </div>
-        <div class="col-xs-2">
-            <g:if test="${registro}">
-                ${proceso?.fecha.format("dd-MM-yyyy")}
-            </g:if>
-            <g:else>
-                <elm:datepicker name="fecha"  title="Fecha de registro a la contabilidad " class="datepicker form-control required col-xs-3"
-                                value="${proceso?.fecha}"  maxDate="new Date()" style="width: 80px; margin-left: 5px" />
-            </g:else>
-        </div>
-        <div class="col-xs-2">
-        </div>
-        <div class="col-xs-2 negrilla">
-            Tipo de transacción:
-        </div>
-        <div class="col-xs-3 negrilla">
-            <g:select class="form-control required cmbRequired" name="tipoProceso"  id="tipoProceso" from="${tiposProceso}"
-                      label="Proceso tipo: " value="${proceso?.tipoProceso}" optionKey="key" optionValue="value" title="Tipo de la transacción"  disabled="${registro?true:false}"/>
-        </div>
+        <div class="row">
+            <div class="col-xs-2 negrilla">
+                Fecha:
+            </div>
+            <div class="col-xs-2">
+                <g:if test="${registro}">
+                    ${proceso?.fecha.format("dd-MM-yyyy")}
+                </g:if>
+                <g:else>
+                    <elm:datepicker name="fecha"  title="Fecha de registro a la contabilidad " class="datepicker form-control required col-xs-3"
+                                    value="${proceso?.fecha}"  maxDate="new Date()" style="width: 80px; margin-left: 5px" />
+                </g:else>
+            </div>
+            <div class="col-xs-2">
+            </div>
+            <div class="col-xs-2 negrilla">
+                Tipo de transacción:
+            </div>
+            <div class="col-xs-3 negrilla">
+                <g:select class="form-control required cmbRequired" name="tipoProceso"  id="tipoProceso" from="${tiposProceso}"
+                          label="Proceso tipo: " value="${proceso?.tipoProceso}" optionKey="key" optionValue="value" title="Tipo de la transacción"  disabled="${registro?true:false}"/>
+            </div>
 
-    </div>
+        </div>
 
         <div class="row">
             <div class="col-xs-2 negrilla">
@@ -165,30 +168,26 @@
                           label="Proceso tipo: " value="${proceso?.gestor?.id}" optionKey="id" optionValue="nombre" title="Proceso tipo" disabled="${registro?true:false}" />
             </div>
         </div>
-%{--
-        <div class="row">
 
-            <div class="col-xs-2 negrilla">
-                Tipo de transacción:
-            </div>
-            <div class="col-xs-3 negrilla">
-                <g:select class="form-control required cmbRequired" name="tipoProceso"  id="tipoProceso" from="${tiposProceso}"
-                          label="Proceso tipo: " value="${proceso?.tipoProceso}" optionKey="key" optionValue="value" title="Tipo de la transacción"  disabled="${registro?true:false}"/>
-            </div>
-        </div>
---}%
         <div class="row">
             <div class="col-xs-2 negrilla">
                 Proveedor:
             </div>
-            <div class="col-xs-4 negrilla">
-                <input type="text" name="proveedor.ruc" class="form-control  label-shared" id="prov" disabled="true" value="${proceso?.proveedor?.ruc}" title="El proveedor o cliente"/>
-                <g:if test="${!registro}">
-                    <a href="#" id="btn_buscar" class="btn btn-info">
-                        <i class="fa fa-search"></i>
-                        Buscar
-                    </a>
-                </g:if>
+            <div class="col-xs-9 negrilla">
+                <div class="col-xs-3" style="margin-left: -15px">
+                    <input type="text" name="proveedor.ruc" class="form-control " id="prov" disabled="true" value="" title="RUC del proveedor o cliente" style="width: 140px"/>
+                </div>
+                <div class="col-xs-5" style="margin-left: -55px">
+                    <input type="text" name="proveedor.nombre" class="form-control  label-shared" id="prov_nombre" disabled="true" value="" title="Nombre del proveedor o cliente" style="width: 300px"/>
+                </div>
+                <div class="col-xs-2">
+                    <g:if test="${!registro}">
+                        <a href="#" id="btn_buscar" class="btn btn-info">
+                            <i class="fa fa-search"></i>
+                            Buscar
+                        </a>
+                    </g:if>
+                </div>
                 <input type="hidden" name="proveedor.id" id="prov_id" value="${proceso?.proveedor?.id}">
             </div>
         </div>
@@ -219,7 +218,7 @@
                 Descripción:
             </div>
             <div class="col-xs-3 negrilla">
-                <textArea style='height:80px;width: 700px;resize: none' maxlength="255" name="descripcion" id="descripcion" title="La descripción de la transacción contable" class="form-control required cmbRequired" ${registro?'disabled':''} >${proceso?.descripcion}</textArea>
+                <textArea style='height:80px;width: 700px;resize: none' maxlength="255" name="descripcion" id="descripcion" title="La descripción de la transacción contable" class="form-control required cmbRequired required" ${registro?'disabled':''} >${proceso?.descripcion}</textArea>
             </div>
         </div>
     </div>
@@ -267,7 +266,7 @@
             <div class="col-xs-2 negrilla" style="width: 120px">
                 Documento:
             </div>
-            <div class="col-xs-4 negrilla">
+            <div class="col-xs-3 negrilla">
                 <input type="text" name="facturaEstablecimiento" id="establecimiento" size="3" maxlength="3" value="${proceso?.facturaEstablecimiento}" class=" digits form-control label-shared " validate=" number"
                        title="El número de establecimiento del documento " ${registro?'disabled':''} />
                 <input type="text" name="facturaPuntoEmision" id="emision" size="3" maxlength="3" value="${proceso?.facturaPuntoEmision}" class=" digits form-control label-shared " validate=" number"
@@ -282,11 +281,14 @@
                 <input type="text" name="facturaAutorizacion" id="auto" size="10" maxlength="15" value="${proceso?.facturaAutorizacion}" class=" digits form-control label-shared " validate=" number"
                        title="El número autorización de la factura a registrar " ${registro?'disabled':''} />
             </div>
-            <div class="col-xs-3 negrilla" style="width: 140px">
-                <a href="#" id="abrir-fp" class="btn btn-azul">
-                    <i class="fa fa-credit-card"></i>
-                    Registrar formas de pago
-                </a>
+            %{--<div class="col-xs-3 negrilla" style="width: 140px">--}%
+                %{--<a href="#" id="abrir-fp" class="btn btn-azul">--}%
+                    %{--<i class="fa fa-credit-card"></i>--}%
+                    %{--Registrar formas de pago--}%
+                %{--</a>--}%
+            %{--</div>--}%
+
+            <div class="col-md-2" id="divPagos" style="margin-left: 50px">
             </div>
         </div>
 
@@ -339,7 +341,7 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar y continuar</button>
+                <button type="button" class="btn btn-success" data-dismiss="modal" id="btnCerrarPagos"><i class="fa fa-save"></i> Cerrar y continuar</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
@@ -383,6 +385,33 @@
 </div><!-- /.modal -->
 
 <script type="text/javascript">
+
+
+    $("#btnFormaPago").click(function () {
+
+        $.ajax({
+           type: 'POST',
+            url: '${createLink(controller: 'proceso', action: 'pagos_ajax')}',
+            data:{
+                proceso: '${proceso?.id}'
+            },
+            success: function (msg) {
+                bootbox.dialog({
+                    title   : "Formas de Pago",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "<i class='fa fa-times'></i> Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    });
+
 
     jQuery.fn.svtContainer = function () {
 
@@ -628,8 +657,6 @@
                 url     : "${g.createLink(controller: 'proceso',action: 'buscarProveedor')}",
                 data    : "par=" + $("#parametro").val() + "&tipo=" + $("#tipoPar").val(),
                 success : function (msg) {
-                    //$("#registro").html(msg).show("slide");
-
                     $("#resultados").html(msg).show("slide")
                 }
             });
