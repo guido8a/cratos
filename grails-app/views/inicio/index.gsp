@@ -260,7 +260,7 @@
         </li>
         <li class="hex">
             <div class="hexIn">
-                <a class="hexLink" href="${createLink(controller: 'proceso', action: 'nuevoProceso')}">
+                <a class="hexLink" href="${createLink(controller: 'proceso', action: 'lsta')}">
                     <img src="${resource(dir: 'images',file: 'transa1.jpeg')}" alt=""  style="width: 100%; height: 100%" />
                     <h1>Transacciones</h1>
                     <p>Transacciones</p>

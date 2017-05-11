@@ -69,7 +69,8 @@
             success: function (msg) {
                 if(msg == 'ok'){
                     cargarFormasPago('${proceso?.id}');
-                    cargarSelFormas ('${proceso?.id}')
+                    cargarSelFormas ('${proceso?.id}');
+                    cargarPagosMain('${proceso?.id}');
                 }
             }
         });

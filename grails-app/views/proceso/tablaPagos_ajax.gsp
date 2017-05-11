@@ -39,7 +39,8 @@
                 success: function (msg){
                     if(msg == 'ok'){
                         cargarFormasPago('${proceso?.id}');
-                        cargarSelFormas ('${proceso?.id}')
+                        cargarSelFormas ('${proceso?.id}');
+                        cargarPagosMain('${proceso?.id}');
                     }else{
                         log("Error al borrar la forma de pago","error")
                     }

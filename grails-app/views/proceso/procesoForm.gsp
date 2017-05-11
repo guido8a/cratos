@@ -75,6 +75,12 @@
 </g:if>
 <div class="btn-toolbar toolbar">
     <div class="btn-group">
+
+        <g:link class="btn btn-primary" action="index">
+            <i class="fa fa-chevron-left"></i>
+            Lista
+        </g:link>
+
         <g:if test="${!registro}">
             <a href="#" class="btn btn-success" id="guardarProceso">
                 <i class="fa fa-save"></i>
@@ -89,16 +95,14 @@
                 </a>
             </g:if>
         </g:if>
-        <g:link class="btn btn-primary" action="index">
-            <i class="fa fa-times"></i>
-            Cancelar
-        </g:link>
-        <g:if test="${proceso}">
 
-            <a href=# class="btn btn-info" id="btnFormaPago">
-                <i class="fa fa-money"></i>
-                Formas de Pago
-            </a>
+        <g:if test="${proceso}">
+        %{--<g:if test="${!registro}">--}%
+        %{--<a href=# class="btn btn-primary" id="btnFormaPago">--}%
+        %{--<i class="fa fa-money"></i>--}%
+        %{--Formas de Pago--}%
+        %{--</a>--}%
+        %{--</g:if>--}%
             <g:if test="${!aux}">
                 <g:if test="${proceso?.tipoProceso!='P'}">
                     <g:form action="borrarProceso" class="br_prcs" style="margin:0px;display: inline" >
@@ -175,10 +179,10 @@
             </div>
             <div class="col-xs-9 negrilla">
                 <div class="col-xs-3" style="margin-left: -15px">
-                    <input type="text" name="proveedor.ruc" class="form-control " id="prov" disabled="true" value="" title="RUC del proveedor o cliente" style="width: 140px"/>
+                    <input type="text" name="proveedor.ruc" class="form-control " id="prov" disabled="true" value="${proceso?.proveedor?.ruc ?: ''}" title="RUC del proveedor o cliente" style="width: 140px"/>
                 </div>
                 <div class="col-xs-5" style="margin-left: -55px">
-                    <input type="text" name="proveedor.nombre" class="form-control  label-shared" id="prov_nombre" disabled="true" value="" title="Nombre del proveedor o cliente" style="width: 300px"/>
+                    <input type="text" name="proveedor.nombre" class="form-control  label-shared" id="prov_nombre" disabled="true" value="${proceso?.proveedor?.nombre ?: ''}" title="Nombre del proveedor o cliente" style="width: 300px"/>
                 </div>
                 <div class="col-xs-2">
                     <g:if test="${!registro}">
@@ -281,24 +285,21 @@
                 <input type="text" name="facturaAutorizacion" id="auto" size="10" maxlength="15" value="${proceso?.facturaAutorizacion}" class=" digits form-control label-shared " validate=" number"
                        title="El número autorización de la factura a registrar " ${registro?'disabled':''} />
             </div>
-            %{--<div class="col-xs-3 negrilla" style="width: 140px">--}%
-                %{--<a href="#" id="abrir-fp" class="btn btn-azul">--}%
-                    %{--<i class="fa fa-credit-card"></i>--}%
-                    %{--Registrar formas de pago--}%
-                %{--</a>--}%
-            %{--</div>--}%
 
-            <div class="col-md-2" id="divPagos" style="margin-left: 50px">
-            </div>
+            %{--<div class="col-md-4" id="divPagosMain" style="margin-left: 50px">--}%
+            %{--</div>--}%
         </div>
 
     </div>
 </g:form>
 <g:if test="${proceso}">
-    <div class="vertical-container" skip="1" style="margin-top: 25px;color: black;min-height: 250px;margin-bottom: 20px">
+    <div class="vertical-container" skip="1" style="margin-top: 25px;color: black;min-height: 350px;margin-bottom: 20px">
         <p class="css-vertical-text">Comprobante</p>
         <div class="linea"></div>
-        <div id="registro" style=" margin-left: 40px;margin-bottom: 10px ;padding: 10px;display: none;margin-top: 5px;width: 850px;">
+        %{--<div id="registro" style=" margin-left: 40px;margin-bottom: 10px ;padding: 10px;display: none;margin-top: 5px;width: 850px;">--}%
+        %{--</div>--}%
+
+        <div id="divComprobante" class="col-md-12" style="margin-bottom: 20px ;padding: 10px;display: none;margin-top: 5px">
         </div>
     </div>
 </g:if>
@@ -386,11 +387,28 @@
 
 <script type="text/javascript">
 
+    %{--if('${proceso?.id}'){--}%
+    %{--cargarPagosMain('${proceso?.id}')--}%
+    %{--}--}%
+
+    %{--function cargarPagosMain(proceso){--}%
+    %{--$.ajax({--}%
+    %{--type: 'POST',--}%
+    %{--url: '${createLink(controller: 'proceso', action: 'cargarPagoMain_ajax')}',--}%
+    %{--data:{--}%
+    %{--proceso: proceso--}%
+    %{--},--}%
+    %{--success: function (msg){--}%
+    %{--$("#divPagosMain").html(msg)--}%
+    %{--}--}%
+    %{--});--}%
+    %{--}--}%
+
 
     $("#btnFormaPago").click(function () {
 
         $.ajax({
-           type: 'POST',
+            type: 'POST',
             url: '${createLink(controller: 'proceso', action: 'pagos_ajax')}',
             data:{
                 proceso: '${proceso?.id}'
@@ -605,10 +623,10 @@
                     }
                 }
             }
-            if($(".filaFP").size() <1){
-                info+="No ha asignado formas de pago para la transacción contable"
-                bandData=false
-            }
+//            if($(".filaFP").size() <1){
+//                info+="No ha asignado formas de pago para la transacción contable"
+//                bandData=false
+//            }
             if(bandData){
                 var data =""
                 $(".filaFP").each(function(){
@@ -685,22 +703,41 @@
             })
         });
 
-        <g:if test="${proceso}">
-        //                console.log("entro")
-        openLoader("Cargando")
-        $.ajax({
-            type    : "POST",
-            url     : "${g.createLink(action: 'cargaComprobantes')}",
-            data    : "proceso=" + $("#idProceso").val(),
-            success : function (msg) {
-                $("#registro").html(msg).show("slide");
-                closeLoader()
-            }
-        });
-
-        </g:if>
+        %{--<g:if test="${proceso}">--}%
+        %{--openLoader("Cargando");--}%
+        %{--$.ajax({--}%
+            %{--type    : "POST",--}%
+            %{--url     : "${g.createLink(action: 'cargaComprobantes')}",--}%
+            %{--data    : "proceso=" + $("#idProceso").val(),--}%
+            %{--success : function (msg) {--}%
+                %{--$("#registro").html(msg).show("slide");--}%
+                %{--closeLoader()--}%
+            %{--}--}%
+        %{--});--}%
+        %{--</g:if>--}%
 
     });
+
+
+    cargarComprobante('${proceso?.id}')
+
+    function cargarComprobante (proceso) {
+        $.ajax({
+           type:'POST',
+            url:"${createLink(controller: 'proceso',action: 'comprobante_ajax')}",
+            data:{
+                proceso: proceso
+            },
+            success: function (msg) {
+                $("#divComprobante").html(msg).show("slide");
+            }
+        });
+    }
+
+
+
+
+
 </script>
 
 </body>

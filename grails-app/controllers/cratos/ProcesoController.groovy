@@ -33,7 +33,7 @@ class ProcesoController extends cratos.seguridad.Shield {
 
     def save = {
         if (request.method == 'POST') {
-            // println "save proceso "+params
+             println "save proceso "+params
             params.lang="en"
             def key = "org.springframework.web.servlet.DispatcherServlet.LOCALE_RESOLVER"
             def localeResolver = request.getAttribute(key)
@@ -54,9 +54,9 @@ class ProcesoController extends cratos.seguridad.Shield {
             params.fechaIngresoSistema = new Date()
             if (params.id) {
                 p = Proceso.get(params.id)
-                ProcesoFormaDePago.findAllByProceso(p).each {
-                    it.delete(flush: true)
-                }
+//                ProcesoFormaDePago.findAllByProceso(p).each {
+//                    it.delete(flush: true)
+//                }
             } else {
                 p = new Proceso()
             }
@@ -71,10 +71,10 @@ class ProcesoController extends cratos.seguridad.Shield {
                     // println "data "+data
                     data.each {
                         if (it != "") {
-                            def fp = new ProcesoFormaDePago()
-                            fp.proceso = p
-                            fp.tipoPago = TipoPago.get(it)
-                            fp.save(flush: true)
+//                            def fp = new ProcesoFormaDePago()
+//                            fp.proceso = p
+//                            fp.tipoPago = TipoPago.get(it)
+//                            fp.save(flush: true)
                         }
                     }
                 }
@@ -849,4 +849,26 @@ class ProcesoController extends cratos.seguridad.Shield {
             render "ok"
         }
     }
+
+    def cargarPagoMain_ajax () {
+        def proceso = Proceso.get(params.proceso)
+        def formasPago = ProcesoFormaDePago.findAllByProceso(proceso).tipoPago
+        return [formasPago: formasPago]
+    }
+
+    def comprobante_ajax () {
+        def proceso = Proceso.get(params.proceso)
+        def comprobantes = Comprobante.findAllByProceso(proceso).sort{it.tipo.descripcion}
+        return [comprobantes: comprobantes]
+    }
+
+    def asientos_ajax () {
+        println("params " + params)
+//        def proceso = Proceso.get(params.proceso)
+//        def comprobante = Comprobante.findByProceso(proceso)
+        def comprobante = Comprobante.get(params.comprobante)
+        def asientos = Asiento.findAllByComprobante(comprobante).sort{it.numero}
+        return [asientos: asientos, comprobante: comprobante]
+    }
 }
+
