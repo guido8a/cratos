@@ -164,7 +164,7 @@
                 Gestor:
             </div>
             <div class="col-xs-10 negrilla">
-                <g:select class="form-control required" name="gestor.id" from="${cratos.Gestor.findAllByEstadoAndEmpresa('A', session.empresa, [sort: 'nombre'])}"
+                <g:select class="form-control required" name="gestor.id" from="${cratos.Gestor.findAllByEstadoAndEmpresa('R', session.empresa, [sort: 'nombre'])}"
                           label="Proceso tipo: " value="${proceso?.gestor?.id}" optionKey="id" optionValue="nombre" title="Proceso tipo" disabled="${registro?true:false}" />
             </div>
         </div>

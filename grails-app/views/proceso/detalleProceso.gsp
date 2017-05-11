@@ -609,7 +609,7 @@
                 openLoader()
                 $.ajax({
                     type    : "POST",
-                    url     : "${g.createLink(controller: 'proceso',action: 'nuevoAuxiliar')}",
+                    url     : "${g.createLink(controller: 'proceso', action: 'nuevoAuxiliar')}",
                     data    : "asiento.id=" + asientoId + "&tipoDocumento.id=" + td + "&valor=" + valor + "&razon=" + razon + "&descripcion=" + des + "&proceso=" + $("#idProceso").val() + "&proveedor.id=" + pro + "&fechaPago=" + fecha + "&referencia=" + referencia,
                     success : function (msg) {
                         closeLoader()

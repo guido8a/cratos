@@ -7,11 +7,10 @@ class TipoComprobante implements Serializable {
     static mapping = {
         table 'tpcp'
         cache usage: 'read-write', include: 'non-lazy'
-        id column: 'tipoProveedor'
+        id column: 'tpcp__id'
         id generator: 'identity'
         version false
         columns {
-            id column: 'tipoProveedor'
             codigo column: 'tpcpcdgo'
             descripcion column: 'tpcpdscr'
         }
