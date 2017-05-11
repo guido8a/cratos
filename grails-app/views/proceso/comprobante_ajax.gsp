@@ -7,7 +7,7 @@
 
 <div class="btn-group">
     <g:each in="${comprobantes}" var="comprobante">
-        <a href="#" class="btn btn-info btn-sm btnComprobante" idComp="${comprobante.id}" style="margin-bottom: 10px">
+        <a href="#" class="btn btn-info btn-sm btnComprobante" idComp="${comprobante?.id}" style="margin-bottom: 10px">
             <i class="fa fa-file-text-o"></i> ${comprobante?.tipo?.descripcion}
         </a>
     </g:each>
@@ -23,9 +23,13 @@
             cargarAsiento(id)
     });
 
-    if('${comprobantes}'){
-        cargarAsiento('${comprobantes.first().id}')
-    }
+    <g:if test="${comprobantes}">
+    cargarAsiento('${comprobantes?.first()?.id}');
+    </g:if>
+
+    %{--if('${comprobantes}'){--}%
+        %{----}%
+    %{--}--}%
 
     function cargarAsiento (idComprobante) {
         $.ajax({
