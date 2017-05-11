@@ -18,7 +18,7 @@ class Contabilidad implements Serializable {
             fechaInicio column: 'contfcin'
             prefijo column: 'contpref'
             descripcion column: 'contdscr'
-            institucion column: 'inst__id'
+            institucion column: 'empr__id'
             presupuesto column: 'contprsp'
         }
     }
