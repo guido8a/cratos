@@ -3,7 +3,7 @@ package cratos
 class Asiento implements Serializable {
     double haber=0
     double debe=0
-    String numero
+    int    numero
     Cuenta cuenta
     Comprobante comprobante
     String retencion
