@@ -296,11 +296,11 @@
     <div class="vertical-container" skip="1" style="margin-top: 25px;color: black;min-height: 350px;margin-bottom: 20px">
         <p class="css-vertical-text">Comprobante</p>
         <div class="linea"></div>
-        %{--<div id="registro" style=" margin-left: 40px;margin-bottom: 10px ;padding: 10px;display: none;margin-top: 5px;width: 850px;">--}%
-        %{--</div>--}%
-
-        <div id="divComprobante" class="col-md-12" style="margin-bottom: 20px ;padding: 10px;display: none;margin-top: 5px">
+        <div id="registro" style=" margin-left: 40px;margin-bottom: 10px ;padding: 10px;display: none;margin-top: 5px;width: 850px;">
         </div>
+
+        %{--<div id="divComprobante" class="col-md-12" style="margin-bottom: 20px ;padding: 10px;display: none;margin-top: 5px">--}%
+        %{--</div>--}%
     </div>
 </g:if>
 
@@ -703,18 +703,18 @@
             })
         });
 
-        %{--<g:if test="${proceso}">--}%
-        %{--openLoader("Cargando");--}%
-        %{--$.ajax({--}%
-            %{--type    : "POST",--}%
-            %{--url     : "${g.createLink(action: 'cargaComprobantes')}",--}%
-            %{--data    : "proceso=" + $("#idProceso").val(),--}%
-            %{--success : function (msg) {--}%
-                %{--$("#registro").html(msg).show("slide");--}%
-                %{--closeLoader()--}%
-            %{--}--}%
-        %{--});--}%
-        %{--</g:if>--}%
+        <g:if test="${proceso}">
+        openLoader("Cargando");
+        $.ajax({
+            type    : "POST",
+            url     : "${g.createLink(action: 'cargaComprobantes')}",
+            data    : "proceso=" + $("#idProceso").val(),
+            success : function (msg) {
+                $("#registro").html(msg).show("slide");
+                closeLoader()
+            }
+        });
+        </g:if>
 
     });
 

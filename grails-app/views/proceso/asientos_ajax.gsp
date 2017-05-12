@@ -24,9 +24,7 @@
         <th colspan="2">Asientos Contables</th>
         <th>DEBE</th>
         <th>HABER</th>
-        <th>
-
-        </th>
+        <th></th>
     </tr>
     <tr>
         <th style="width: 100px;">Código</th>
@@ -46,10 +44,10 @@
                 <td>${asiento.haber ? g.formatNumber(number: asiento.haber, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2) : 0.00}</td>
                 <td style="text-align: center">
                     <div class="btn-group">
-                        <a href="#" class="btn btn-success btn-sm btnGuardarMovi" cuenta="${asiento?.id}" title="Editar asiento">
+                        <a href="#" class="btn btn-success btn-sm btnEditarAsiento" idAs="${asiento?.id}" title="Editar asiento">
                             <i class="fa fa-pencil"></i>
                         </a>
-                        <a href="#" class="btn btn-danger btn-sm btnEliminarMovi" cuenta="${asiento?.id}" title="Eliminar asiento">
+                        <a href="#" class="btn btn-danger btn-sm btnEliminarAsiento" idAs="${asiento?.id}" title="Eliminar asiento">
                             <i class="fa fa-times"></i>
                         </a>
                     </div>
@@ -59,3 +57,54 @@
     </g:each>
     </tbody>
 </table>
+
+
+<script type="text/javascript">
+
+    $(".btnAgregarAsiento").click(function () {
+        agregar('${comprobante?.id}', null)
+    });
+
+    $(".btnEditarAsiento").click(function () {
+        var idAsiento = $(this).attr('idAs');
+        agregar(${comprobante?.id}, idAsiento)
+    });
+
+
+
+    function agregar(compro, idAsiento){
+        $.ajax({
+            type: 'POST',
+            url: '${createLink(controller: 'proceso',action: 'formAsiento_ajax')}',
+            data:{
+                comprobante: compro,
+                asiento: idAsiento
+            },
+            success: function (msg){
+                bootbox.dialog({
+                    title   : idAsiento ? "Editar Asiento" : "Nuevo Asiento",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "<i class='fa fa-times'></i> Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        eliminar : {
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                openLoader("Guardando..");
+
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+
+
+</script>

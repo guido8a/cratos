@@ -33,7 +33,7 @@ class ProcesoController extends cratos.seguridad.Shield {
 
     def save = {
         if (request.method == 'POST') {
-             println "save proceso "+params
+//             println "save proceso "+params
             params.lang="en"
             def key = "org.springframework.web.servlet.DispatcherServlet.LOCALE_RESOLVER"
             def localeResolver = request.getAttribute(key)
@@ -864,12 +864,20 @@ class ProcesoController extends cratos.seguridad.Shield {
     }
 
     def asientos_ajax () {
-        println("params " + params)
-//        def proceso = Proceso.get(params.proceso)
-//        def comprobante = Comprobante.findByProceso(proceso)
         def comprobante = Comprobante.get(params.comprobante)
         def asientos = Asiento.findAllByComprobante(comprobante).sort{it.numero}
         return [asientos: asientos, comprobante: comprobante]
+    }
+
+    def formAsiento_ajax () {
+        println("params asiento " + params)
+        def comprobante = Comprobante.get(params.comprobante)
+        if(params.asiento){
+            def asiento = Asiento.get(params.asiento)
+            return [asiento: asiento]
+        }else{
+            return [comprobante: comprobante]
+        }
     }
 }
 

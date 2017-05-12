@@ -5,13 +5,13 @@
   Time: 11:30
 --%>
 
-<div class="btn-group">
+%{--<div class="btn-group">--}%
     <g:each in="${comprobantes}" var="comprobante">
         <a href="#" class="btn btn-info btn-sm btnComprobante" idComp="${comprobante?.id}" style="margin-bottom: 10px">
             <i class="fa fa-file-text-o"></i> ${comprobante?.tipo?.descripcion}
         </a>
     </g:each>
-</div>
+%{--</div>--}%
 <div class="col-md-12" id="divAsientos"style="margin-bottom: 20px">
 
 </div>
@@ -19,17 +19,14 @@
 <script type="text/javascript">
 
     $(".btnComprobante").click(function (){
-            var id = $(this).attr('idComp');
-            cargarAsiento(id)
+        var id = $(this).attr('idComp');
+        cargarAsiento(id)
     });
 
     <g:if test="${comprobantes}">
     cargarAsiento('${comprobantes?.first()?.id}');
     </g:if>
 
-    %{--if('${comprobantes}'){--}%
-        %{----}%
-    %{--}--}%
 
     function cargarAsiento (idComprobante) {
         $.ajax({
