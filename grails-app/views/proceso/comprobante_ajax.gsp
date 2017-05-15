@@ -33,7 +33,8 @@
             type: 'POST',
             url: '${createLink(controller: 'proceso', action: 'asientos_ajax')}',
             data:{
-                comprobante: idComprobante
+                comprobante: idComprobante,
+                proceso: '${proceso?.id}'
             },
             success: function (msg) {
                 $("#divAsientos").html(msg).show("slide");

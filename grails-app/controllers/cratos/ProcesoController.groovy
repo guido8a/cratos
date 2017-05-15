@@ -860,17 +860,18 @@ class ProcesoController extends cratos.seguridad.Shield {
         def proceso = Proceso.get(params.proceso)
         def comprobantes = Comprobante.findAllByProceso(proceso).sort{it.tipo.descripcion}
         println("comrp" + comprobantes)
-        return [comprobantes: comprobantes]
+        return [comprobantes: comprobantes, proceso: proceso]
     }
 
     def asientos_ajax () {
+        def proceso = Proceso.get(params.proceso)
         def comprobante = Comprobante.get(params.comprobante)
         def asientos = Asiento.findAllByComprobante(comprobante).sort{it.numero}
-        return [asientos: asientos, comprobante: comprobante]
+        return [asientos: asientos, comprobante: comprobante, proceso: proceso]
     }
 
     def formAsiento_ajax () {
-        println("params asiento " + params)
+//        println("params asiento " + params)
         def comprobante = Comprobante.get(params.comprobante)
         if(params.asiento){
             def asiento = Asiento.get(params.asiento)
@@ -878,6 +879,92 @@ class ProcesoController extends cratos.seguridad.Shield {
         }else{
             return [comprobante: comprobante]
         }
+    }
+
+
+    def buscarCuenta_ajax () {
+        def empresa = Empresa.get(params.empresa)
+        return [empresa: empresa]
+    }
+
+    def tablaBuscarCuenta_ajax () {
+//        println("params " + params)
+        def empresa = Empresa.get(params.empresa)
+        def res
+
+        if(params.nombre == "" && params.codigo == ""){
+            res = Cuenta.findAllByEmpresa(empresa).sort{it.numero}
+        }else{
+            res = Cuenta.withCriteria {
+                eq("empresa", empresa)
+
+                and{
+                    ilike("descripcion", '%' + params.nombre + '%')
+                    ilike("numero", '%' + params.codigo + '%')
+                }
+                order ("numero","asc")
+            }
+        }
+
+        return [cuentas: res]
+    }
+
+    def guardarAsiento_ajax () {
+//        println("params guardar " + params)
+        def asiento
+        def cuenta = Cuenta.get(params.cuenta)
+        def proceso = Proceso.get(params.proceso)
+        def comprobante = Comprobante.get(params.comprobante)
+        def asientos = Asiento.findAllByComprobante(comprobante).sort{it.numero}
+        def siguiente = 0
+        if(asientos){
+           siguiente = asientos.numero.last() + 1
+        }
+//        println("asientos " + asientos.numero)
+
+        if(params.asiento){
+            asiento = Asiento.get(params.asiento)
+            asiento.cuenta = cuenta
+            asiento.debe = params.debe.toDouble()
+            asiento.haber = params.haber.toDouble()
+        }else{
+            asiento = new Asiento()
+            asiento.cuenta = cuenta
+            asiento.debe = params.debe.toDouble()
+            asiento.haber = params.haber.toDouble()
+            asiento.comprobante = comprobante
+            asiento.numero = siguiente
+        }
+
+        if(!asiento.save(flush: true)){
+            render "no"
+            println("error " + asiento.errors)
+        }else{
+            render "ok"
+        }
+    }
+
+    def borrarAsiento_ajax () {
+//        println("borrar asiento params " + params)
+        def comprobante = Comprobante.get(params.comprobante)
+        def asiento = Asiento.get(params.asiento)
+        def auxiliar = Auxiliar.findByAsiento(asiento)
+
+        if(comprobante.registrado == 'N'){
+               if(!auxiliar){
+                    try{
+                        asiento.delete(flush: true)
+                        render "ok_Asiento borrado correctamente"
+                    }catch (e){
+                        render "no_Error al borrar el asiento"
+                    }
+               } else{
+                   render "no_No se puede borrar el asiento, el asiento contable posee un auxiliar"
+               }
+        }else{
+            render "no_No se puede borrar el asiento, el comprobante ya se encuentra registrado"
+        }
+
     }
 }
 
