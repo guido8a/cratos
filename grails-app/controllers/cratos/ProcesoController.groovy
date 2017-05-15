@@ -867,7 +867,8 @@ class ProcesoController extends cratos.seguridad.Shield {
         def proceso = Proceso.get(params.proceso)
         def comprobante = Comprobante.get(params.comprobante)
         def asientos = Asiento.findAllByComprobante(comprobante).sort{it.numero}
-        return [asientos: asientos, comprobante: comprobante, proceso: proceso]
+        def auxiliares = Auxiliar.findAllByAsientoInList(asientos)
+        return [asientos: asientos, comprobante: comprobante, proceso: proceso, auxiliares: auxiliares]
     }
 
     def formAsiento_ajax () {

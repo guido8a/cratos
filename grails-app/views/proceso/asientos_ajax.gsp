@@ -43,11 +43,11 @@
             <g:each in="${asientos}" var="asiento">
                 <g:if test="${asiento.comprobante == comprobante}">
                     <tr>
-                        <td>${asiento?.cuenta?.numero}</td>
-                        <td>${asiento?.cuenta?.descripcion}</td>
-                        <td>${asiento.debe ? g.formatNumber(number: asiento.debe, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2) : 0.00}</td>
-                        <td>${asiento.haber ? g.formatNumber(number: asiento.haber, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2) : 0.00}</td>
-                        <td style="text-align: center">
+                        <td style="width: 100px">${asiento?.cuenta?.numero}</td>
+                        <td style="width: 280px">${asiento?.cuenta?.descripcion}</td>
+                        <td style="width: 80px">${asiento.debe ? g.formatNumber(number: asiento.debe, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2) : 0.00}</td>
+                        <td style="width: 80px">${asiento.haber ? g.formatNumber(number: asiento.haber, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2) : 0.00}</td>
+                        <td style="text-align: center; width: 60px">
                             <div class="btn-group">
                                 <a href="#" class="btn btn-success btn-sm btnEditarAsiento" idAs="${asiento?.id}" title="Editar asiento">
                                     <i class="fa fa-pencil"></i>
@@ -64,6 +64,55 @@
         </table>
     </div>
 </div>
+
+<g:if test="${auxiliares}">
+    <table class="table table-bordered table-hover table-condensed">
+        <thead>
+        <tr>
+            <th colspan="2">Auxiliares Contables</th>
+            <th>DEBE</th>
+            <th>HABER</th>
+            <th></th>
+        </tr>
+        <tr>
+            <th style="width: 100px;">Código</th>
+            <th style="width: 280px">Nombre</th>
+            <th style="width: 80px">Valor</th>
+            <th style="width: 80px">Valor</th>
+            <th style="width: 70px"><i class="fa fa-pencil"></i> </th>
+        </tr>
+        </thead>
+    </table>
+
+    <div class="row-fluid"  style="width: 99.7%;height: 100px;overflow-y: auto;float: right; margin-bottom: 20px">
+        <div class="span12">
+            <table class="table table-bordered table-hover table-condensed">
+                <tbody>
+                <g:each in="${auxiliares}" var="auxiliar">
+                    <g:if test="${auxiliar.asiento.comprobante == comprobante}">
+                        <tr style="background-color: #ffbd4c">
+                            <td style="width: 100px">${auxiliar?.asiento?.cuenta?.numero}</td>
+                            <td style="width: 280px">${auxiliar?.descripcion}</td>
+                            <td style="width: 80px">${auxiliar?.debe ? g.formatNumber(number: auxiliar.debe, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2) : 0.00}</td>
+                            <td style="width: 80px">${auxiliar.haber ? g.formatNumber(number: auxiliar.haber, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2) : 0.00}</td>
+                            <td style="text-align: center; width: 60px">
+                                <div class="btn-group">
+                                    <a href="#" class="btn btn-success btn-sm btnEditarAuxiliar" idAs="${auxiliar?.id}" title="Editar auxiliar">
+                                        <i class="fa fa-pencil"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-danger btn-sm btnEliminarAuxiliar" idAs="${auxiliar?.id}" title="Eliminar auxiliar">
+                                        <i class="fa fa-times"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    </g:if>
+                </g:each>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</g:if>
 
 
 

@@ -1,4 +1,4 @@
-<%@ page import="cratos.TipoComprobanteSri; cratos.SustentoTributario" %>
+<%@ page import="cratos.Asiento; cratos.TipoComprobanteSri; cratos.SustentoTributario" %>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -293,7 +293,7 @@
     </div>
 </g:form>
 <g:if test="${proceso}">
-    <div class="vertical-container" skip="1" style="margin-top: 25px;color: black;min-height: 350px;margin-bottom: 20px">
+    <div class="vertical-container" skip="1" style="margin-top: 25px;color: black;min-height: 550px;margin-bottom: 20px">
         <p class="css-vertical-text">Comprobante</p>
         <div class="linea"></div>
         %{--<div id="registro" style=" margin-left: 40px;margin-bottom: 10px ;padding: 10px;display: none;margin-top: 5px;width: 850px;">--}%
@@ -303,6 +303,7 @@
         </div>
     </div>
 </g:if>
+
 
 <!-- Modal -->
 <div class="modal fade" id="modal-formas-pago" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
