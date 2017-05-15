@@ -5,6 +5,13 @@
   Time: 13:13
 --%>
 
+<style type="text/css">
+    .colorAtras{
+        background-color: #ffbd4c;
+        color: #0b0b0b;
+    }
+
+</style>
 
 
 <div class="etiqueta"><label>Comprobante: </label></div> ${comprobante?.descripcion}<br>
@@ -21,13 +28,7 @@
 <table class="table table-bordered table-hover table-condensed">
     <thead>
     <tr>
-        <th colspan="2">Asientos Contables</th>
-        <th>DEBE</th>
-        <th>HABER</th>
-        <th></th>
-    </tr>
-    <tr>
-        <th style="width: 100px;">Código</th>
+        <th style="width: 100px;">Asiento Código</th>
         <th style="width: 280px">Nombre</th>
         <th style="width: 80px">Valor</th>
         <th style="width: 80px">Valor</th>
@@ -36,7 +37,7 @@
     </thead>
 </table>
 
-<div class="row-fluid"  style="width: 99.7%;height: 130px;overflow-y: auto;float: right;">
+<div class="row-fluid"  style="width: 99.7%;height: 130px;overflow-y: auto;float: right;margin-bottom: 20px">
     <div class="span12">
         <table class="table table-bordered table-hover table-condensed">
             <tbody>
@@ -69,17 +70,12 @@
     <table class="table table-bordered table-hover table-condensed">
         <thead>
         <tr>
-            <th colspan="2">Auxiliares Contables</th>
-            <th>DEBE</th>
-            <th>HABER</th>
-            <th></th>
-        </tr>
-        <tr>
-            <th style="width: 100px;">Código</th>
-            <th style="width: 280px">Nombre</th>
-            <th style="width: 80px">Valor</th>
-            <th style="width: 80px">Valor</th>
-            <th style="width: 70px"><i class="fa fa-pencil"></i> </th>
+            <th style="width: 80px;" class="colorAtras">Auxiliar Cuenta</th>
+            <th style="width: 200px" class="colorAtras">Proceso</th>
+            <th style="width: 80px" class="colorAtras">Fecha Pago</th>
+            <th style="width: 80px" class="colorAtras">Pagar</th>
+            <th style="width: 80px" class="colorAtras">Cobrar</th>
+            <th style="width: 70px" class="colorAtras"><i class="fa fa-pencil"></i> </th>
         </tr>
         </thead>
     </table>
@@ -90,9 +86,10 @@
                 <tbody>
                 <g:each in="${auxiliares}" var="auxiliar">
                     <g:if test="${auxiliar.asiento.comprobante == comprobante}">
-                        <tr style="background-color: #ffbd4c">
-                            <td style="width: 100px">${auxiliar?.asiento?.cuenta?.numero}</td>
-                            <td style="width: 280px">${auxiliar?.descripcion}</td>
+                        <tr>
+                            <td style="width: 80px">${auxiliar?.asiento?.cuenta?.numero}</td>
+                            <td style="width: 200px">${auxiliar?.asiento?.cuenta?.descripcion}</td>
+                            <td style="width: 80px">${auxiliar?.fechaPago?.format("dd-MM-yyyy")}</td>
                             <td style="width: 80px">${auxiliar?.debe ? g.formatNumber(number: auxiliar.debe, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2) : 0.00}</td>
                             <td style="width: 80px">${auxiliar.haber ? g.formatNumber(number: auxiliar.haber, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2) : 0.00}</td>
                             <td style="text-align: center; width: 60px">
@@ -113,7 +110,6 @@
         </div>
     </div>
 </g:if>
-
 
 
 <script type="text/javascript">
