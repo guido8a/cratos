@@ -28,7 +28,7 @@
 <table class="table table-bordered table-hover table-condensed">
     <thead>
     <tr>
-        <th style="width: 100px;">Asiento Código</th>
+        <th style="width: 100px;">Asiento</th>
         <th style="width: 280px">Nombre</th>
         <th style="width: 80px">Valor</th>
         <th style="width: 80px">Valor</th>
@@ -70,12 +70,12 @@
     <table class="table table-bordered table-hover table-condensed">
         <thead>
         <tr>
-            <th style="width: 80px;" class="colorAtras">Auxiliar Cuenta</th>
-            <th style="width: 200px" class="colorAtras">Proceso</th>
+            <th style="width: 160px;" class="colorAtras">Auxiliar Cuenta</th>
+            <th style="width: 150px" class="colorAtras">Proveedor</th>
             <th style="width: 80px" class="colorAtras">Fecha Pago</th>
             <th style="width: 80px" class="colorAtras">Pagar</th>
             <th style="width: 80px" class="colorAtras">Cobrar</th>
-            <th style="width: 70px" class="colorAtras"><i class="fa fa-pencil"></i> </th>
+            <th style="width: 60px" class="colorAtras"><i class="fa fa-pencil"></i> </th>
         </tr>
         </thead>
     </table>
@@ -87,11 +87,11 @@
                 <g:each in="${auxiliares}" var="auxiliar">
                     <g:if test="${auxiliar.asiento.comprobante == comprobante}">
                         <tr>
-                            <td style="width: 80px">${auxiliar?.asiento?.cuenta?.numero}</td>
-                            <td style="width: 200px">${auxiliar?.asiento?.cuenta?.descripcion}</td>
-                            <td style="width: 80px">${auxiliar?.fechaPago?.format("dd-MM-yyyy")}</td>
-                            <td style="width: 80px">${auxiliar?.debe ? g.formatNumber(number: auxiliar.debe, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2) : 0.00}</td>
-                            <td style="width: 80px">${auxiliar.haber ? g.formatNumber(number: auxiliar.haber, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2) : 0.00}</td>
+                            <td style="width: 150px">${auxiliar?.asiento?.cuenta?.descripcion}</td>
+                            <td style="width: 150px">${auxiliar?.proveedor?.nombre}</td>
+                            <td style="width: 70px">${auxiliar?.fechaPago?.format("dd-MM-yyyy")}</td>
+                            <td style="width: 70px">${auxiliar?.debe ? g.formatNumber(number: auxiliar.debe, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2) : 0.00}</td>
+                            <td style="width: 70px">${auxiliar.haber ? g.formatNumber(number: auxiliar.haber, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2) : 0.00}</td>
                             <td style="text-align: center; width: 60px">
                                 <div class="btn-group">
                                     <a href="#" class="btn btn-success btn-sm btnEditarAuxiliar" idAs="${auxiliar?.id}" title="Editar auxiliar">
