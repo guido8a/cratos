@@ -228,7 +228,7 @@
                                                     cargarComprobante('${proceso?.id}');
                                                     closeLoader();
                                                 }else{
-                                                    log("Error al guardar el error contable","error");
+                                                    log("Error al guardar asiento contable","error");
                                                     closeLoader();
                                                 }
                                             }
@@ -314,39 +314,41 @@
                             label     : "<i class='fa fa-save'></i> Guardar",
                             className : "btn-success",
                             callback  : function () {
-                                %{--if($("#valorAsientoDebe").val() == 0 && $("#valorAsientoHaber").val()== 0){--}%
-                                    %{--bootbox.alert("Ingrese un valor distinto a cero")--}%
-                                    %{--return false;--}%
-                                %{--}else{--}%
-                                    %{--if($("#idCuentaNueva").val()){--}%
-                                        %{--openLoader("Guardando..");--}%
-                                        %{--$.ajax({--}%
-                                            %{--type: 'POST',--}%
-                                            %{--url: '${createLink(controller: 'proceso', action: 'guardarAsiento_ajax')}',--}%
-                                            %{--data:{--}%
-                                                %{--asiento: idAsiento,--}%
-                                                %{--cuenta: $("#idCuentaNueva").val(),--}%
-                                                %{--debe : $("#valorAsientoDebe").val(),--}%
-                                                %{--haber : $("#valorAsientoHaber").val(),--}%
-                                                %{--proceso: '${proceso?.id}',--}%
-                                                %{--comprobante: '${comprobante?.id}'--}%
-                                            %{--},--}%
-                                            %{--success: function (msg){--}%
-                                                %{--if(msg == 'ok'){--}%
-                                                    %{--log("Asiento contable guardado correctamente","success");--}%
-                                                    %{--cargarComprobante('${proceso?.id}');--}%
-                                                    %{--closeLoader();--}%
-                                                %{--}else{--}%
-                                                    %{--log("Error al guardar el error contable","error");--}%
-                                                    %{--closeLoader();--}%
-                                                %{--}--}%
-                                            %{--}--}%
-                                        %{--});--}%
-                                    %{--}else{--}%
-                                        %{--bootbox.alert("Seleccione una cuenta")--}%
-                                        %{--return false;--}%
-                                    %{--}--}%
-                                %{--}--}%
+                                if($("#valorPagar").val() == 0 && $("#valorCobrar").val()== 0){
+                                    bootbox.alert("Ingrese un valor distinto a cero")
+                                    return false;
+                                }else{
+//                                    if($("#idCuentaNueva").val()){
+                                        openLoader("Guardando..");
+                                        $.ajax({
+                                            type: 'POST',
+                                            url: '${createLink(controller: 'proceso', action: 'guardarAuxiliar_ajax')}',
+                                            data:{
+                                                asiento: idAsiento,
+                                                debe : $("#valorPagar").val(),
+                                                haber : $("#valorCobrar").val(),
+                                                comprobante: '${comprobante?.id}',
+                                                tipoPago: $("#tipoPago").val(),
+                                                fechaPago: $(".fechaPago").val(),
+                                                proveedor: $("#proveedor").val(),
+                                                descripcion:  $("#descripcionAux").val()
+                                            },
+                                            success: function (msg){
+                                                if(msg == 'ok'){
+                                                    log("Auxiliar contable guardado correctamente","success");
+                                                    cargarComprobante('${proceso?.id}');
+                                                    closeLoader();
+                                                }else{
+                                                    log("Error al guardar el auxiliar contable","error");
+                                                    closeLoader();
+                                                }
+                                            }
+                                        });
+//                                    }else{
+//                                        bootbox.alert("Seleccione una cuenta")
+//                                        return false;
+//                                    }
+                                }
                             }
                         }
                     }

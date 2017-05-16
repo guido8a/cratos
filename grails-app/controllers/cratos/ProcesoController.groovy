@@ -989,9 +989,38 @@ class ProcesoController extends cratos.seguridad.Shield {
         def auxiliar
         if(params.auxiliar){
             auxiliar = Auxiliar.get(params.auxiliar)
-            return [asiento: asiento, auxiliar: auxiliar]
+            return [asiento: asiento, auxiliar: auxiliar, comprobante: comprobante]
         }else{
-            return [asiento: asiento]
+            return [asiento: asiento, comprobante: comprobante]
+        }
+    }
+
+    def guardarAuxiliar_ajax () {
+        println("params " + params)
+        def asiento = Asiento.get(params.asiento)
+        def comprobante = Comprobante.get(params.comprobante)
+        def tipoPago = TipoPago.get(params.tipoPago)
+        def proveedor = Proveedor.get(params.proveedor)
+        def fechaPago =  new Date().parse("dd-MM-yyyy", params.fechaPago)
+        def auxiliar
+        if(params.auxiliar){
+
+        }else{
+            auxiliar = new Auxiliar()
+            auxiliar.asiento = asiento
+            auxiliar.descripcion = params.descripcion
+            auxiliar.fechaPago = fechaPago
+            auxiliar.proveedor = proveedor
+            auxiliar.tipoPago = tipoPago
+            auxiliar.debe = params.debe.toDouble()
+            auxiliar.haber = params.haber.toDouble()
+        }
+
+        try{
+            auxiliar.save(flus: true)
+            render "ok"
+        }catch (e){
+            render "no"
         }
     }
 }
