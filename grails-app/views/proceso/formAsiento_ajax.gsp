@@ -72,13 +72,11 @@
     $(".valorD").keydown(function (ev) {
         $(".valorH").val(0).prop('readonly', true)
     }).keyup(function () {
-//        console.log('entro')
     });
 
     $(".valorH").keydown(function (ev) {
         $(".valorD").val(0).prop('readonly', true)
     }).keyup(function () {
-//        console.log('entro')
     });
 
     $("#btnBuscarCuenta").click(function () {

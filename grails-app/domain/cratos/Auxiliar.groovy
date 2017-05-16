@@ -8,6 +8,8 @@ class Auxiliar implements Serializable {
     Date fechaRegistro = new Date()
     Date fechaPago
     Proveedor proveedor
+    TipoPago tipoPago
+
 
     static mapping = {
         table 'axlr'
@@ -23,6 +25,7 @@ class Auxiliar implements Serializable {
             fechaRegistro column: 'axlrfcrg'
             fechaPago column: 'axlrfcpg'
             proveedor column: 'prve__id'
+            tipoPago column: 'tppg__id'
         }
     }
     static constraints = {
@@ -32,6 +35,7 @@ class Auxiliar implements Serializable {
         fechaPago(blank: true, nullable: true)
         fechaRegistro(blank: true, nullable: true)
         proveedor(blank: true, nullable: true)
+        tipoPago (blank: true, nullable: true)
     }
 
 

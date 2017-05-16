@@ -965,7 +965,34 @@ class ProcesoController extends cratos.seguridad.Shield {
         }else{
             render "no_No se puede borrar el asiento, el comprobante ya se encuentra registrado"
         }
+    }
 
+    def borrarAuxiliar_ajax () {
+        def comprobante = Comprobante.get(params.comprobante)
+        def auxiliar = Auxiliar.get(params.auxiliar)
+
+        if(comprobante.registrado == 'N'){
+                try{
+                    auxiliar.delete(flush: true)
+                    render "ok_Auxiliar borrado correctamente"
+                }catch (e){
+                    render "no_Error al borrar el auxiliar"
+                }
+        }else{
+            render "no_No se puede borrar el auxiliar, el comprobante ya se encuentra registrado"
+        }
+    }
+
+    def formAuxiliar_ajax() {
+        def comprobante = Comprobante.get(params.comprobante)
+        def asiento = Asiento.get(params.asiento)
+        def auxiliar
+        if(params.auxiliar){
+            auxiliar = Auxiliar.get(params.auxiliar)
+            return [asiento: asiento, auxiliar: auxiliar]
+        }else{
+            return [asiento: asiento]
+        }
     }
 }
 

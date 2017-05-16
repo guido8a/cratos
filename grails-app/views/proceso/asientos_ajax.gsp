@@ -6,10 +6,10 @@
 --%>
 
 <style type="text/css">
-    .colorAtras{
-        background-color: #ffbd4c;
-        color: #0b0b0b;
-    }
+.colorAtras{
+    background-color: #ffbd4c;
+    color: #0b0b0b;
+}
 
 </style>
 
@@ -22,6 +22,10 @@
     <a href="#" class="btn btn-success btnAgregarAsiento" comp="${comprobante?.id}" title="Agregar asiento contable">
         <i class="fa fa-plus"> Agregar Asiento</i>
     </a>
+
+    %{--<a href="#" class="btn btn-warning btnAgregarAuxiliar" comp="${comprobante?.id}" title="Agregar auxiliar contable">--}%
+        %{--<i class="fa fa-plus"> Agregar Auxiliar</i>--}%
+    %{--</a>--}%
 </div>
 
 
@@ -30,8 +34,8 @@
     <tr>
         <th style="width: 100px;">Asiento</th>
         <th style="width: 280px">Nombre</th>
-        <th style="width: 80px">Valor</th>
-        <th style="width: 80px">Valor</th>
+        <th style="width: 80px">DEBE</th>
+        <th style="width: 80px">HABER</th>
         <th style="width: 70px"><i class="fa fa-pencil"></i> </th>
     </tr>
     </thead>
@@ -53,6 +57,9 @@
                                 <a href="#" class="btn btn-success btn-sm btnEditarAsiento" idAs="${asiento?.id}" title="Editar asiento">
                                     <i class="fa fa-pencil"></i>
                                 </a>
+                                <a href="#" class="btn btn-warning btn-sm btnAgregarAuxiliar" idAs="${asiento?.id}" title="Agregar auxiliar">
+                                    <i class="fa fa-plus"></i>
+                                </a>
                                 <a href="#" class="btn btn-danger btn-sm btnEliminarAsiento" idAs="${asiento?.id}" title="Eliminar asiento">
                                     <i class="fa fa-times"></i>
                                 </a>
@@ -67,6 +74,11 @@
 </div>
 
 <g:if test="${auxiliares}">
+
+
+
+
+
     <table class="table table-bordered table-hover table-condensed">
         <thead>
         <tr>
@@ -94,10 +106,10 @@
                             <td style="width: 70px">${auxiliar.haber ? g.formatNumber(number: auxiliar.haber, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2) : 0.00}</td>
                             <td style="text-align: center; width: 60px">
                                 <div class="btn-group">
-                                    <a href="#" class="btn btn-success btn-sm btnEditarAuxiliar" idAs="${auxiliar?.id}" title="Editar auxiliar">
+                                    <a href="#" class="btn btn-success btn-sm btnEditarAuxiliar" idAu="${auxiliar?.id}" title="Editar auxiliar">
                                         <i class="fa fa-pencil"></i>
                                     </a>
-                                    <a href="#" class="btn btn-danger btn-sm btnEliminarAuxiliar" idAs="${auxiliar?.id}" title="Eliminar auxiliar">
+                                    <a href="#" class="btn btn-danger btn-sm btnEliminarAuxiliar" idAu="${auxiliar?.id}" title="Eliminar auxiliar">
                                         <i class="fa fa-times"></i>
                                     </a>
                                 </div>
@@ -123,11 +135,16 @@
         agregar(${comprobante?.id}, idAsiento)
     });
 
+    $(".btnAgregarAuxiliar").click(function () {
+        var idAsiento = $(this).attr('idAs');
+        agregarAuxiliar(${comprobante?.id}, idAsiento, null)
+    });
+
     $(".btnEliminarAsiento").click(function () {
         var idAsiento = $(this).attr('idAs');
         bootbox.dialog({
             title   : "Alerta",
-            message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea eliminar el asiento contable?.</p>",
+            message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea eliminar el asiento contable?</p>",
             buttons : {
                 cancelar : {
                     label     : "<i class='fa fa-times'></i> Cancelar",
@@ -229,6 +246,114 @@
         });
     }
 
+
+    $(".btnEliminarAuxiliar").click(function () {
+        var idAuxiliar = $(this).attr('idAu');
+        bootbox.dialog({
+            title   : "Alerta",
+            message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea eliminar el auxiliar contable?</p>",
+            buttons : {
+                cancelar : {
+                    label     : "<i class='fa fa-times'></i> Cancelar",
+                    className : "btn-primary",
+                    callback  : function () {
+                    }
+                },
+                eliminar : {
+                    label     : "<i class='fa fa-trash-o'></i> Borrar",
+                    className : "btn-danger",
+                    callback  : function () {
+                        openLoader("Borrando..");
+                        $.ajax({
+                            type: 'POST',
+                            url: '${createLink(controller: 'proceso', action: 'borrarAuxiliar_ajax')}',
+                            data:{
+                                auxiliar: idAuxiliar,
+                                comprobante: '${comprobante?.id}'
+                            },
+                            success: function (msg){
+                                var parts = msg.split("_");
+                                if(parts[0] == 'ok'){
+                                    log(parts[1],"success");
+                                    cargarComprobante('${proceso?.id}');
+                                    closeLoader();
+                                }else{
+                                    log(parts[1],"error");
+                                    closeLoader();
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        });
+    });
+
+
+    function agregarAuxiliar(compro, idAsiento, idAuxiliar){
+        $.ajax({
+            type: 'POST',
+            url: '${createLink(controller: 'proceso',action: 'formAuxiliar_ajax')}',
+            data:{
+                comprobante: compro,
+                asiento: idAsiento,
+                auxiliar: idAuxiliar
+            },
+            success: function (msg){
+                bootbox.dialog({
+                    title   : idAuxiliar ? "Editar Auxiliar" : "Nuevo Auxiliar",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "<i class='fa fa-times'></i> Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        eliminar : {
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                %{--if($("#valorAsientoDebe").val() == 0 && $("#valorAsientoHaber").val()== 0){--}%
+                                    %{--bootbox.alert("Ingrese un valor distinto a cero")--}%
+                                    %{--return false;--}%
+                                %{--}else{--}%
+                                    %{--if($("#idCuentaNueva").val()){--}%
+                                        %{--openLoader("Guardando..");--}%
+                                        %{--$.ajax({--}%
+                                            %{--type: 'POST',--}%
+                                            %{--url: '${createLink(controller: 'proceso', action: 'guardarAsiento_ajax')}',--}%
+                                            %{--data:{--}%
+                                                %{--asiento: idAsiento,--}%
+                                                %{--cuenta: $("#idCuentaNueva").val(),--}%
+                                                %{--debe : $("#valorAsientoDebe").val(),--}%
+                                                %{--haber : $("#valorAsientoHaber").val(),--}%
+                                                %{--proceso: '${proceso?.id}',--}%
+                                                %{--comprobante: '${comprobante?.id}'--}%
+                                            %{--},--}%
+                                            %{--success: function (msg){--}%
+                                                %{--if(msg == 'ok'){--}%
+                                                    %{--log("Asiento contable guardado correctamente","success");--}%
+                                                    %{--cargarComprobante('${proceso?.id}');--}%
+                                                    %{--closeLoader();--}%
+                                                %{--}else{--}%
+                                                    %{--log("Error al guardar el error contable","error");--}%
+                                                    %{--closeLoader();--}%
+                                                %{--}--}%
+                                            %{--}--}%
+                                        %{--});--}%
+                                    %{--}else{--}%
+                                        %{--bootbox.alert("Seleccione una cuenta")--}%
+                                        %{--return false;--}%
+                                    %{--}--}%
+                                %{--}--}%
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    }
 
 
 </script>
