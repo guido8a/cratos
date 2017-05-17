@@ -22,10 +22,6 @@
     <a href="#" class="btn btn-success btnAgregarAsiento" comp="${comprobante?.id}" title="Agregar asiento contable">
         <i class="fa fa-plus"> Agregar Asiento</i>
     </a>
-
-    %{--<a href="#" class="btn btn-warning btnAgregarAuxiliar" comp="${comprobante?.id}" title="Agregar auxiliar contable">--}%
-        %{--<i class="fa fa-plus"> Agregar Auxiliar</i>--}%
-    %{--</a>--}%
 </div>
 
 
@@ -74,11 +70,6 @@
 </div>
 
 <g:if test="${auxiliares}">
-
-
-
-
-
     <table class="table table-bordered table-hover table-condensed">
         <thead>
         <tr>
@@ -138,6 +129,11 @@
     $(".btnAgregarAuxiliar").click(function () {
         var idAsiento = $(this).attr('idAs');
         agregarAuxiliar(${comprobante?.id}, idAsiento, null)
+    });
+
+    $(".btnEditarAuxiliar").click(function () {
+        var idAux = $(this).attr('idAu');
+        agregarAuxiliar(${comprobante?.id}, null, idAux)
     });
 
     $(".btnEliminarAsiento").click(function () {
@@ -315,10 +311,9 @@
                             className : "btn-success",
                             callback  : function () {
                                 if($("#valorPagar").val() == 0 && $("#valorCobrar").val()== 0){
-                                    bootbox.alert("Ingrese un valor distinto a cero")
+                                    bootbox.alert("Ingrese un valor distinto a cero");
                                     return false;
                                 }else{
-//                                    if($("#idCuentaNueva").val()){
                                         openLoader("Guardando..");
                                         $.ajax({
                                             type: 'POST',
@@ -331,7 +326,8 @@
                                                 tipoPago: $("#tipoPago").val(),
                                                 fechaPago: $(".fechaPago").val(),
                                                 proveedor: $("#proveedor").val(),
-                                                descripcion:  $("#descripcionAux").val()
+                                                descripcion:  $("#descripcionAux").val(),
+                                                auxiliar: idAuxiliar
                                             },
                                             success: function (msg){
                                                 if(msg == 'ok'){
@@ -344,10 +340,6 @@
                                                 }
                                             }
                                         });
-//                                    }else{
-//                                        bootbox.alert("Seleccione una cuenta")
-//                                        return false;
-//                                    }
                                 }
                             }
                         }

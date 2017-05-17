@@ -985,39 +985,44 @@ class ProcesoController extends cratos.seguridad.Shield {
 
     def formAuxiliar_ajax() {
         def comprobante = Comprobante.get(params.comprobante)
-        def asiento = Asiento.get(params.asiento)
+        def asiento
         def auxiliar
         if(params.auxiliar){
             auxiliar = Auxiliar.get(params.auxiliar)
+            asiento = auxiliar.asiento
             return [asiento: asiento, auxiliar: auxiliar, comprobante: comprobante]
         }else{
+            asiento = Asiento.get(params.asiento)
             return [asiento: asiento, comprobante: comprobante]
         }
     }
 
     def guardarAuxiliar_ajax () {
-        println("params " + params)
-        def asiento = Asiento.get(params.asiento)
+//        println("params " + params)
+        def asiento
         def comprobante = Comprobante.get(params.comprobante)
         def tipoPago = TipoPago.get(params.tipoPago)
         def proveedor = Proveedor.get(params.proveedor)
         def fechaPago =  new Date().parse("dd-MM-yyyy", params.fechaPago)
         def auxiliar
-        if(params.auxiliar){
 
+        if(params.auxiliar){
+            auxiliar = Auxiliar.get(params.auxiliar)
         }else{
+            asiento = Asiento.get(params.asiento)
             auxiliar = new Auxiliar()
             auxiliar.asiento = asiento
-            auxiliar.descripcion = params.descripcion
-            auxiliar.fechaPago = fechaPago
-            auxiliar.proveedor = proveedor
-            auxiliar.tipoPago = tipoPago
-            auxiliar.debe = params.debe.toDouble()
-            auxiliar.haber = params.haber.toDouble()
         }
 
+        auxiliar.descripcion = params.descripcion
+        auxiliar.fechaPago = fechaPago
+        auxiliar.proveedor = proveedor
+        auxiliar.tipoPago = tipoPago
+        auxiliar.debe = params.debe.toDouble()
+        auxiliar.haber = params.haber.toDouble()
+
         try{
-            auxiliar.save(flus: true)
+            auxiliar.save(flush: true)
             render "ok"
         }catch (e){
             render "no"

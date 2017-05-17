@@ -38,7 +38,7 @@
         <label>Forma de Pago:</label>
     </div>
     <div class="col-md-3">
-        <g:select name="tipo_name" from="${cratos.TipoPago.list()}" optionKey="id" optionValue="descripcion" id="tipoPago" class="form-control" style="width: 400px"/>
+        <g:select name="tipo_name" from="${cratos.TipoPago.list()}" optionKey="id" optionValue="descripcion" id="tipoPago" class="form-control" style="width: 400px" value="${auxiliar?.tipoPago?.id}"/>
     </div>
 </div>
 <div class="row">
@@ -46,7 +46,7 @@
         <label>Proveedor:</label>
     </div>
     <div class="col-md-3">
-        <g:select name="proveedor_name" id="proveedor" from="${cratos.Proveedor.list().sort{it.nombre}}" class="form-control" optionValue="nombre" optionKey="id" style="width: 400px"/>
+        <g:select name="proveedor_name" id="proveedor" from="${cratos.Proveedor.list().sort{it.nombre}}" class="form-control" optionValue="nombre" optionKey="id" style="width: 400px" value="${auxiliar?.proveedor?.id}"/>
     </div>
 </div>
 <div class="row">
