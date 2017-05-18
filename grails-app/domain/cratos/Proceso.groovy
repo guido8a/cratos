@@ -50,6 +50,7 @@ class Proceso implements Serializable {
     String facturaAutorizacion
     Empresa empresa
     String tipoProceso /*para saber si es compra, venta etc etc........... C--> compra, V---> venta, A--> Ajuste, O--> otros, R->Depreciacion*/
+    Comprobante comprobante
 
     static auditable = true
     static mapping = {
@@ -108,6 +109,7 @@ class Proceso implements Serializable {
             empresa column: 'empr__id'
             tipoProceso column: 'prcstpps'
             facturaAutorizacion column: 'prcsfcat'
+            comprobante column: 'cmpr__id'
         }
     }
     static constraints = {
@@ -160,5 +162,6 @@ class Proceso implements Serializable {
         empresa(nullable: false,blank:false)
         tipoProceso(nullable: true,blank: true,size: 1..1)
         facturaAutorizacion(nullable: true,blank: true,size: 1..20)
+        comprobante(nullable: true,blank: true)
     }
 }

@@ -9,6 +9,7 @@ class Auxiliar implements Serializable {
     Date fechaPago
     Proveedor proveedor
     TipoPago tipoPago
+    Comprobante comprobante
 
 
     static mapping = {
@@ -26,6 +27,7 @@ class Auxiliar implements Serializable {
             fechaPago column: 'axlrfcpg'
             proveedor column: 'prve__id'
             tipoPago column: 'tppg__id'
+            comprobante column: 'cmpr__id'
         }
     }
     static constraints = {
@@ -36,6 +38,7 @@ class Auxiliar implements Serializable {
         fechaRegistro(blank: true, nullable: true)
         proveedor(blank: true, nullable: true)
         tipoPago (blank: true, nullable: true)
+        comprobante (blank: true, nullable: true)
     }
 
 
