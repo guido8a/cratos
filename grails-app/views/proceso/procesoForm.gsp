@@ -293,13 +293,10 @@
     </div>
 </g:form>
 <g:if test="${proceso}">
-    <div class="vertical-container" skip="1" style="margin-top: 25px;color: black;min-height: 500px;margin-bottom: 20px">
+    <div class="vertical-container" skip="1" style="margin-top: 25px;color: black;min-height: 410px;margin-bottom: 20px">
         <p class="css-vertical-text">Comprobante</p>
         <div class="linea"></div>
-        %{--<div id="registro" style=" margin-left: 40px;margin-bottom: 10px ;padding: 10px;display: none;margin-top: 5px;width: 850px;">--}%
-        %{--</div>--}%
-
-        <div id="divComprobante" class="col-md-12" style="margin-bottom: 20px ;padding: 10px;display: none;margin-top: 5px">
+        <div id="divComprobante" class="col-md-12" style="margin-bottom: 20px ;padding: 10px;display: none;margin-top: 5px;">
         </div>
     </div>
 </g:if>

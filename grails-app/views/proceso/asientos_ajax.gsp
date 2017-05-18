@@ -11,6 +11,15 @@
     color: #0b0b0b;
 }
 
+    .colorAsiento {
+        color: #0b0b0b;
+        background-color: #5aa6ff;
+    }
+
+    .derecha{
+        text-align: right;
+    }
+
 </style>
 
 
@@ -28,27 +37,27 @@
 <table class="table table-bordered table-hover table-condensed">
     <thead>
     <tr>
-        <th style="width: 100px;">Asiento</th>
-        <th style="width: 280px">Nombre</th>
-        <th style="width: 80px">DEBE</th>
-        <th style="width: 80px">HABER</th>
+        <th style="width: 90px;">Asiento</th>
+        <th style="width: 300px">Nombre</th>
+        <th style="width: 70px">DEBE</th>
+        <th style="width: 70px">HABER</th>
         <th style="width: 70px"><i class="fa fa-pencil"></i> </th>
     </tr>
     </thead>
 </table>
 
-<div class="row-fluid"  style="width: 99.7%;height: 130px;overflow-y: auto;float: right;margin-bottom: 20px">
+<div class="row-fluid"  style="width: 99.7%;height: 230px;overflow-y: auto;float: right;margin-bottom: 20px">
     <div class="span12">
-        <table class="table table-bordered table-hover table-condensed">
+        <table class="table table-bordered table-condensed">
             <tbody>
             <g:each in="${asientos}" var="asiento">
                 <g:if test="${asiento.comprobante == comprobante}">
-                    <tr>
+                    <tr class="colorAsiento">
                         <td style="width: 100px">${asiento?.cuenta?.numero}</td>
-                        <td style="width: 280px">${asiento?.cuenta?.descripcion}</td>
-                        <td style="width: 80px">${asiento.debe ? g.formatNumber(number: asiento.debe, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2) : 0.00}</td>
-                        <td style="width: 80px">${asiento.haber ? g.formatNumber(number: asiento.haber, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2) : 0.00}</td>
-                        <td style="text-align: center; width: 60px">
+                        <td style="width: 270px" colspan="3">${asiento?.cuenta?.descripcion}</td>
+                        <td style="width: 80px" class="derecha">${asiento.debe ? g.formatNumber(number: asiento.debe, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2) : 0.00}</td>
+                        <td style="width: 80px" class="derecha">${asiento.haber ? g.formatNumber(number: asiento.haber, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2) : 0.00}</td>
+                        <td style="text-align: center; width: 70px">
                             <div class="btn-group">
                                 <a href="#" class="btn btn-success btn-sm btnEditarAsiento" idAs="${asiento?.id}" title="Editar asiento">
                                     <i class="fa fa-pencil"></i>
@@ -62,6 +71,45 @@
                             </div>
                         </td>
                     </tr>
+
+                    <g:if test="${cratos.Auxiliar.findAllByAsiento(asiento)}">
+                        <g:set var="auxiliares1" value="${cratos.Auxiliar.findAllByAsiento(asiento)}" />
+                        <g:each in="${auxiliares1}" var="auxiliar">
+                            <g:if test="${auxiliar.asiento.comprobante == comprobante}">
+
+                            <tr>
+                            <th class="colorAtras">Auxiliar</th>
+                            <th style="width: 150px" class="colorAtras">Proveedor</th>
+                            <th style="width: 80px" class="colorAtras">F.Pago</th>
+                            <th style="width: 100px" class="colorAtras">Pagar a</th>
+                            <th style="width: 80px" class="colorAtras">Pagar</th>
+                            <th style="width: 80px" class="colorAtras">Cobrar</th>
+                            <th style="width: 60px" class="colorAtras"><i class="fa fa-pencil"></i> </th>
+                            </tr>
+                                <tr class="colorAtras">
+                                    <td></td>
+                                    <td style="width: 150px">${auxiliar?.proveedor?.nombre}</td>
+                                    <td style="width: 70px">${auxiliar?.fechaPago?.format("dd-MM-yyyy")}</td>
+                                    <td style="width: 100px"></td>
+                                    <td style="width: 70px" class="derecha">${auxiliar?.debe ? g.formatNumber(number: auxiliar.debe, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2) : 0.00}</td>
+                                    <td style="width: 70px" class="derecha">${auxiliar.haber ? g.formatNumber(number: auxiliar.haber, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2) : 0.00}</td>
+
+                                    <td style="text-align: center; width: 60px">
+                                        <div class="btn-group">
+                                            <a href="#" class="btn btn-success btn-sm btnEditarAuxiliar" idAu="${auxiliar?.id}" title="Editar auxiliar">
+                                                <i class="fa fa-pencil"></i>
+                                            </a>
+                                            <a href="#" class="btn btn-danger btn-sm btnEliminarAuxiliar" idAu="${auxiliar?.id}" title="Eliminar auxiliar">
+                                                <i class="fa fa-trash-o"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </g:if>
+                        </g:each>
+
+                    </g:if>
+
                 </g:if>
             </g:each>
             </tbody>
@@ -69,50 +117,50 @@
     </div>
 </div>
 
-<g:if test="${auxiliares}">
-    <table class="table table-bordered table-hover table-condensed">
-        <thead>
-        <tr>
-            <th style="width: 160px;" class="colorAtras">Auxiliar Cuenta</th>
-            <th style="width: 150px" class="colorAtras">Proveedor</th>
-            <th style="width: 80px" class="colorAtras">Fecha Pago</th>
-            <th style="width: 80px" class="colorAtras">Pagar</th>
-            <th style="width: 80px" class="colorAtras">Cobrar</th>
-            <th style="width: 60px" class="colorAtras"><i class="fa fa-pencil"></i> </th>
-        </tr>
-        </thead>
-    </table>
+%{--<g:if test="${auxiliares}">--}%
+    %{--<table class="table table-bordered table-hover table-condensed">--}%
+        %{--<thead>--}%
+        %{--<tr>--}%
+            %{--<th style="width: 160px;" class="colorAtras">Auxiliar Cuenta</th>--}%
+            %{--<th style="width: 150px" class="colorAtras">Proveedor</th>--}%
+            %{--<th style="width: 80px" class="colorAtras">Fecha Pago</th>--}%
+            %{--<th style="width: 80px" class="colorAtras">Pagar</th>--}%
+            %{--<th style="width: 80px" class="colorAtras">Cobrar</th>--}%
+            %{--<th style="width: 60px" class="colorAtras"><i class="fa fa-pencil"></i> </th>--}%
+        %{--</tr>--}%
+        %{--</thead>--}%
+    %{--</table>--}%
 
-    <div class="row-fluid"  style="width: 99.7%;height: 100px;overflow-y: auto;float: right; margin-bottom: 20px">
-        <div class="span12">
-            <table class="table table-bordered table-hover table-condensed">
-                <tbody>
-                <g:each in="${auxiliares}" var="auxiliar">
-                    <g:if test="${auxiliar.asiento.comprobante == comprobante}">
-                        <tr>
-                            <td style="width: 150px">${auxiliar?.asiento?.cuenta?.descripcion}</td>
-                            <td style="width: 150px">${auxiliar?.proveedor?.nombre}</td>
-                            <td style="width: 70px">${auxiliar?.fechaPago?.format("dd-MM-yyyy")}</td>
-                            <td style="width: 70px">${auxiliar?.debe ? g.formatNumber(number: auxiliar.debe, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2) : 0.00}</td>
-                            <td style="width: 70px">${auxiliar.haber ? g.formatNumber(number: auxiliar.haber, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2) : 0.00}</td>
-                            <td style="text-align: center; width: 60px">
-                                <div class="btn-group">
-                                    <a href="#" class="btn btn-success btn-sm btnEditarAuxiliar" idAu="${auxiliar?.id}" title="Editar auxiliar">
-                                        <i class="fa fa-pencil"></i>
-                                    </a>
-                                    <a href="#" class="btn btn-danger btn-sm btnEliminarAuxiliar" idAu="${auxiliar?.id}" title="Eliminar auxiliar">
-                                        <i class="fa fa-times"></i>
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                    </g:if>
-                </g:each>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</g:if>
+    %{--<div class="row-fluid"  style="width: 99.7%;height: 100px;overflow-y: auto;float: right; margin-bottom: 20px">--}%
+        %{--<div class="span12">--}%
+            %{--<table class="table table-bordered table-hover table-condensed">--}%
+                %{--<tbody>--}%
+                %{--<g:each in="${auxiliares}" var="auxiliar">--}%
+                    %{--<g:if test="${auxiliar.asiento.comprobante == comprobante}">--}%
+                        %{--<tr>--}%
+                            %{--<td style="width: 150px">${auxiliar?.asiento?.cuenta?.descripcion}</td>--}%
+                            %{--<td style="width: 150px">${auxiliar?.proveedor?.nombre}</td>--}%
+                            %{--<td style="width: 70px">${auxiliar?.fechaPago?.format("dd-MM-yyyy")}</td>--}%
+                            %{--<td style="width: 70px">${auxiliar?.debe ? g.formatNumber(number: auxiliar.debe, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2) : 0.00}</td>--}%
+                            %{--<td style="width: 70px">${auxiliar.haber ? g.formatNumber(number: auxiliar.haber, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2) : 0.00}</td>--}%
+                            %{--<td style="text-align: center; width: 60px">--}%
+                                %{--<div class="btn-group">--}%
+                                    %{--<a href="#" class="btn btn-success btn-sm btnEditarAuxiliar" idAu="${auxiliar?.id}" title="Editar auxiliar">--}%
+                                        %{--<i class="fa fa-pencil"></i>--}%
+                                    %{--</a>--}%
+                                    %{--<a href="#" class="btn btn-danger btn-sm btnEliminarAuxiliar" idAu="${auxiliar?.id}" title="Eliminar auxiliar">--}%
+                                        %{--<i class="fa fa-times"></i>--}%
+                                    %{--</a>--}%
+                                %{--</div>--}%
+                            %{--</td>--}%
+                        %{--</tr>--}%
+                    %{--</g:if>--}%
+                %{--</g:each>--}%
+                %{--</tbody>--}%
+            %{--</table>--}%
+        %{--</div>--}%
+    %{--</div>--}%
+%{--</g:if>--}%
 
 
 <script type="text/javascript">

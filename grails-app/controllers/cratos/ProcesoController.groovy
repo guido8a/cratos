@@ -960,7 +960,7 @@ class ProcesoController extends cratos.seguridad.Shield {
                         render "no_Error al borrar el asiento"
                     }
                } else{
-                   render "no_No se puede borrar el asiento, el asiento contable posee un auxiliar"
+                   render "no_No se puede borrar el asiento, debido a que posee un auxiliar"
                }
         }else{
             render "no_No se puede borrar el asiento, el comprobante ya se encuentra registrado"

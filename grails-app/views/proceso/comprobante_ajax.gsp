@@ -12,7 +12,7 @@
         </a>
     </g:each>
 %{--</div>--}%
-<div class="col-md-12" id="divAsientos"style="margin-bottom: 20px">
+<div class="col-md-12" id="divAsientos"style="margin-bottom: 20px;">
 
 </div>
 
