@@ -450,15 +450,16 @@ class ProcesoController extends cratos.seguridad.Shield {
 
     def buscarProveedor = {
         // println "buscar proveedor "+params
+        def empresa = Empresa.get(session.empresa.id)
         def provs = []
         if (params.par != "" && params.par != " ") {
             if (params.tipo == "1") {
-                provs = Proveedor.findAll("from Proveedor where ruc like '%${params.par}%' order by nombre")
+                provs = Proveedor.findAll("from Proveedor where ruc like '%${params.par}%' and empresa = '${empresa?.id}' order by nombre")
             } else {
-                provs = Proveedor.findAll("from Proveedor where upper(nombre) like '%${params.par.toUpperCase()}%' order by nombre")
+                provs = Proveedor.findAll("from Proveedor where upper(nombre) like '%${params.par.toUpperCase()}%' and empresa = '${empresa?.id}' order by nombre")
             }
         } else {
-            provs = Proveedor.list([sort: "nombre", max: 10])
+            provs = Proveedor.findAllByEmpresa(empresa,[sort: "nombre", max: 10])
         }
 
         [provs: provs]

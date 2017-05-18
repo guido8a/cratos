@@ -97,12 +97,6 @@
         </g:if>
 
         <g:if test="${proceso}">
-        %{--<g:if test="${!registro}">--}%
-        %{--<a href=# class="btn btn-primary" id="btnFormaPago">--}%
-        %{--<i class="fa fa-money"></i>--}%
-        %{--Formas de Pago--}%
-        %{--</a>--}%
-        %{--</g:if>--}%
             <g:if test="${!aux}">
                 <g:if test="${proceso?.tipoProceso!='P'}">
                     <g:form action="borrarProceso" class="br_prcs" style="margin:0px;display: inline" >
@@ -193,6 +187,14 @@
                     </g:if>
                 </div>
                 <input type="hidden" name="proveedor.id" id="prov_id" value="${proceso?.proveedor?.id}">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                Comprobante
+            </div>
+            <div class="col-md-9">
+            <g:textField name="comprobanteName" class="form-control" disabled="true"/>
             </div>
         </div>
         <div class="row">
