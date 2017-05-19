@@ -9,6 +9,7 @@ class ProcesoController extends cratos.seguridad.Shield {
     def procesoService
     def loginService
     def utilitarioService
+    def dbConnectionService
 
     /* todo acabar los dominios */
 
@@ -21,7 +22,7 @@ class ProcesoController extends cratos.seguridad.Shield {
     }
     def nuevoProceso = {
 //        println "nuevo proceso "+params
-        def tiposProceso = ["-1": "Seleccione ...", "C": "Compras", "V": "Ventas", "O": "Otros", "A": "Ajustes", "P": "Pagos", "NC": "Nota de Crédito"]
+        def tiposProceso = ["-1": "Seleccione...", "C": "Compras", "V": "Ventas", "O": "Otros", "A": "Ajustes", "P": "Pagos", "NC": "Nota de Crédito"]
         if (params.id) {
             def proceso = Proceso.get(params.id)
             def registro = (Comprobante.findAllByProceso(proceso)?.size() == 0) ? false : true
@@ -54,15 +55,14 @@ class ProcesoController extends cratos.seguridad.Shield {
             params.fechaIngresoSistema = new Date()
             if (params.id) {
                 p = Proceso.get(params.id)
-//                ProcesoFormaDePago.findAllByProceso(p).each {
-//                    it.delete(flush: true)
-//                }
             } else {
                 p = new Proceso()
             }
             p.properties = params
             p.contabilidad = session.contabilidad
             p.empresa = session.empresa
+            def comprobante = Comprobante.get(params.comprobanteSel_name)
+            p.comprobante = comprobante
             p.save(flush: true)
             println "errores proceso " + p.errors
             if (p.errors.getErrorCount() == 0) {
@@ -71,10 +71,6 @@ class ProcesoController extends cratos.seguridad.Shield {
                     // println "data "+data
                     data.each {
                         if (it != "") {
-//                            def fp = new ProcesoFormaDePago()
-//                            fp.proceso = p
-//                            fp.tipoPago = TipoPago.get(it)
-//                            fp.save(flush: true)
                         }
                     }
                 }
@@ -348,7 +344,8 @@ class ProcesoController extends cratos.seguridad.Shield {
     def show = {
 //        println "session "+session.contabilidad
         def proceso = Proceso.get(params.id)
-        def tiposProceso = ["-1": "Seleccione", "C": "Compras", "V": "Ventas", "O": "Otros", "A": "Ajustes"]
+//        def tiposProceso = ["-1": "Seleccione...", "C": "Compras", "V": "Ventas", "O": "Otros", "A": "Ajustes"]
+        def tiposProceso = ["-1": "Seleccione...", "C": "Compras", "V": "Ventas", "O": "Otros", "A": "Ajustes", "P": "Pagos", "NC": "Nota de Crédito"]
         def comprobante = Comprobante.findByProceso(proceso)
         def registro = (Comprobante.findAllByProceso(proceso)?.size() == 0) ? false : true
         def fps = ProcesoFormaDePago.findAllByProceso(proceso)
@@ -463,7 +460,6 @@ class ProcesoController extends cratos.seguridad.Shield {
         }
 
         [provs: provs]
-
     }
 
     def detallePagos = {
@@ -1028,6 +1024,28 @@ class ProcesoController extends cratos.seguridad.Shield {
         }catch (e){
             render "no"
         }
+    }
+
+    def tablaBuscarComprobante_ajax () {
+//        println("params " + params)
+
+        def cn = dbConnectionService.getConnection()
+        def proveedor = Proveedor.get(params.proveedor)
+        def sql
+        sql = "select * from porpagar(${proveedor?.id});"
+        def res = cn.rows(sql.toString())
+
+        return [res: res]
+    }
+
+    def filaComprobante_ajax () {
+        def proceso = Proceso.get(params.proceso)
+        return[proceso: proceso]
+    }
+
+    def valores_ajax () {
+        def proceso = Proceso.get(params.proceso)
+        return[proceso: proceso, tipo: params.tipo]
     }
 }
 

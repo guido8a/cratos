@@ -32,5 +32,7 @@
         $("#prov_nombre").val($(this).attr("nombre"))
         $("#prov_id").val($(this).attr("id"))
         $('#modal-proveedor').modal('hide')
+        $("#btnBuscarCom").removeClass('hidden')
+
     });
 </script>
