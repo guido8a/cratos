@@ -78,7 +78,7 @@
         </div>
 
         <div class="span-19">
-            <g:select id="item" name="item.id" from="${cratos.Item.list()}" optionKey="id" value="${detalleAdquisicionInstance?.item?.id}" class="field  many-to-one ui-corner-all" title="${DetalleAdquisicion.constraints.item.attributes.title}" noSelection="['null': '']"/>
+            <g:select id="item" name="item.id" from="${cratos.Item2.list()}" optionKey="id" value="${detalleAdquisicionInstance?.item?.id}" class="field  many-to-one ui-corner-all" title="${DetalleAdquisicion.constraints.item.attributes.title}" noSelection="['null': '']"/>
             
         </div>
     </div>

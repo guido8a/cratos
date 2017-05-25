@@ -127,7 +127,7 @@ class ConsumoController extends cratos.seguridad.Shield  {
                     consumo = Consumo.get(params.consumo.toLong())
                 }
                 consumo.factura = factura
-                consumo.item = Item.get(params.item.toLong())
+                consumo.item = Item2.get(params.item.toLong())
                 consumo.cantidad = params.cantidad.toDouble()
                 consumo.descuento = params.descuento.toDouble()
                 consumo.observaciones = params.observaciones

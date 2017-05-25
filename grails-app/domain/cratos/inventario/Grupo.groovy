@@ -1,10 +1,11 @@
-package cratos
+package cratos.inventario
 
 class Grupo implements Serializable {
-    String codigo
-    Cuenta cuenta
-    String descripcion
 
+    String codigo
+    String descripcion
+    
+    static auditable = true
     static mapping = {
         table 'grpo'
         cache usage: 'read-write', include: 'non-lazy'
@@ -14,16 +15,13 @@ class Grupo implements Serializable {
         columns {
             id column: 'grpo__id'
             codigo column: 'grpocdgo'
-            cuenta column: 'cnta__id'
             descripcion column: 'grpodscr'
         }
     }
     static constraints = {
-        codigo(size: 1..4, blank: true, nullable: true, attributes: [title: 'codigo'])
-        cuenta(blank: true, nullable: true, attributes: [title: 'cuenta'])
-        descripcion(blank: true, nullable: true, size: 1..63, attributes: [title: 'descripcion'])
+        codigo(size: 1..3, blank: false, attributes: [title: 'numero'])
+        descripcion(size: 1..31, blank: false, attributes: [title: 'descripcion'])
     }
-
     String toString() {
         descripcion
     }

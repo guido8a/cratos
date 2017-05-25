@@ -14,6 +14,7 @@ class Cuenta implements Serializable {
     String retencion    /*     S --> si    N--> no      */
     Impuesto impuesto
     String resultado = ""  /* Cuenta para el calculo de resultados S-->superavit D-->deficit A-->activos fijos P-->depreciacion G-->gasto*/
+
     static mapping = {
         table 'cnta'
         cache usage: 'read-write', include: 'non-lazy'
@@ -36,6 +37,7 @@ class Cuenta implements Serializable {
             resultado column: 'imptrstd'
         }
     }
+
     static constraints = {
         auxiliar(size: 1..1, inList: ['S', 'N'], blank: true, nullable: true, attributes: [title: 'Si puede o no tener auxiliares'])
         movimiento(size: 1..1, inList: ['1', '0'], blank: true, nullable: true, attributes: [title: 'Si puede o no tener movimientos'])

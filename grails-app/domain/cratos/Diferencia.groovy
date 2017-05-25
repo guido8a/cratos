@@ -3,7 +3,7 @@ package cratos
 class Diferencia implements Serializable {
     Date fecha
     Empresa empresa
-    Item item
+    Item2 item
     double cntd
     static mapping = {
         table 'diff'

@@ -21,6 +21,7 @@ class ProcesoController extends cratos.seguridad.Shield {
         def campos = ["estado": ["Estado", "string"], "descripcion": ["Descripción", "string"], "fecha": ["Fecha", "date"], "comp": ["Comprobante", "string"]]
         [campos: campos]
     }
+
     def nuevoProceso = {
 //        println "nuevo proceso "+params
         def tiposProceso = ["-1": "Seleccione...", "C": "Compras", "V": "Ventas", "O": "Otros", "A": "Ajustes", "P": "Pagos", "NC": "Nota de Crédito"]
@@ -166,7 +167,8 @@ class ProcesoController extends cratos.seguridad.Shield {
             if (pro.estado == "R") {
                 render("El proceso ya ha sido registrado previamente")
             } else {
-                def lista = procesoService.registrar(pro, session.perfil, session.usuario, session.contabilidad)
+//                def lista = procesoService.registrar(pro, session.perfil, session.usuario, session.contabilidad)
+                def lista = procesoService.registrar(pro)
                 if (lista[0] != false) {
                     render(view: "detalleProceso", model: [comprobantes: lista[1], asientos: lista[2], proceso: pro])
 
@@ -179,6 +181,7 @@ class ProcesoController extends cratos.seguridad.Shield {
             redirect(controller: "shield", action: "ataques")
         }
     }
+
     def cargaComprobantes = {
 //        println "cargar comprobantes " + params
         def proceso = Proceso.get(params.proceso)
@@ -579,7 +582,7 @@ class ProcesoController extends cratos.seguridad.Shield {
             proceso.empresa = session.empresa
             println "valor " + proceso.valor + " inp " + proceso.impuesto
             if (proceso.save(flush: true)) {
-                procesoService.registrar(proceso, session.perfil, session.usuario, session.contabilidad)
+                procesoService.registrar_old(proceso, session.perfil, session.usuario, session.contabilidad)
                 render "ok"
             } else {
                 println "error en el proceso " + proceso.errors
@@ -621,7 +624,7 @@ class ProcesoController extends cratos.seguridad.Shield {
             proceso.empresa = session.empresa
             println "valor " + proceso.valor + " inp " + proceso.impuesto
             if (proceso.save(flush: true)) {
-                procesoService.registrar(proceso, session.perfil, session.usuario, session.contabilidad)
+                procesoService.registrar_old(proceso, session.perfil, session.usuario, session.contabilidad)
                 render "ok"
             } else {
                 println "error en el proceso " + proceso.errors

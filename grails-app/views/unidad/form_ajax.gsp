@@ -1,4 +1,4 @@
-<%@ page import="cratos.Unidad" %>
+<%@ page import="cratos.Unidad2" %>
 
 <script type="text/javascript" src="${resource(dir: 'js', file: 'ui.js')}"></script>
 <g:if test="${!unidadInstance}">

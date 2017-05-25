@@ -1,5 +1,5 @@
 
-<%@ page import="cratos.Grupo" %>
+<%@ page import="cratos.inventario.Grupo" %>
 
 <g:if test="${!grupoInstance}">
     <elm:notFound elem="Grupo" genero="o" />

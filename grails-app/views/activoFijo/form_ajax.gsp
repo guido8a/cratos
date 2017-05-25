@@ -44,7 +44,7 @@
                     </label>
 
                     <div class="col-md-6">
-                        <g:select id="grupo" name="grupo.id" from="${cratos.Grupo.list()}" optionKey="id" required="" value="${activoFijoInstance?.grupo?.id}"
+                        <g:select id="grupo" name="grupo.id" from="${cratos.inventario.Grupo.list()}" optionKey="id" required="" value="${activoFijoInstance?.grupo?.id}"
                                   class="many-to-one form-control" optionValue="descripcion"/>
                     </div>
                     *

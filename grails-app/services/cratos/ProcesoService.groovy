@@ -14,7 +14,7 @@ class ProcesoService {
      * @param contabilidad
      * @return
      */
-    List registrar(proceso, perfil, usuario, contabilidad) {
+    List registrar_old(proceso, perfil, usuario, contabilidad) {
         def lista = [true]
         def p = new Proceso()
         p = proceso
@@ -262,6 +262,26 @@ class ProcesoService {
             p.save()
         }
 
+
+        return lista
+    }
+
+    def registrar(proceso) {
+        def lista = [true]
+        def cn = dbConnectionService.getConnection()
+        def cmpr
+        def anst
+
+        try {
+            cn.execute("select * from generar($proceso.id)".toString())
+            cmpr = Comprobante.findAllByProceso(proceso)
+            anst = Asiento.findAllByComprobanteInList(cmpr)
+            lista.add(cmpr)
+            lista.add(asnt)
+        } catch (e) {
+            lista[0] = false
+            println "errores: $e"
+        }
 
         return lista
     }

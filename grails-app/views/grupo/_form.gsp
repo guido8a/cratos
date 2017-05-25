@@ -1,4 +1,4 @@
-<%@ page import="cratos.Grupo" %>
+<%@ page import="cratos.inventario.Grupo" %>
 
 
 

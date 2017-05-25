@@ -1,6 +1,8 @@
 package cratos
 
-class Item implements Serializable {
+import cratos.inventario.Grupo
+
+class Item2 implements Serializable {
     Empresa empresa
     int iva
 
@@ -16,7 +18,7 @@ class Item implements Serializable {
     double precioUnitario
     String nombre
     String codigo
-    Unidad unidad
+    Unidad2 unidad
     Marca marca
     Grupo grupo
     String observaciones

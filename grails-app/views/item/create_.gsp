@@ -1,4 +1,4 @@
-<%@ page import="cratos.Item" %>
+<%@ page import="cratos.Item2" %>
 <!doctype html>
 <html>
     <head>

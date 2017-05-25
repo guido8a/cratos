@@ -1,4 +1,4 @@
-<%@ page import="cratos.Item" %>
+<%@ page import="cratos.Item2" %>
 
 <script type="text/javascript" src="${resource(dir: 'js', file: 'ui.js')}"></script>
 
@@ -53,7 +53,7 @@
                 Grupo
             </label>
             <div class="col-md-8">
-                <g:select id="grupo" name="grupo.id" from="${cratos.Grupo.list()}" optionKey="id" value="${itemInstance?.grupo?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                <g:select id="grupo" name="grupo.id" from="${cratos.inventario.Grupo.list()}" optionKey="id" value="${itemInstance?.grupo?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
             </div>
 
         </span>
@@ -206,7 +206,7 @@
                     Unidad
                 </label>
                 <div class="col-md-7">
-                    <g:select id="unidad" name="unidad.id" from="${cratos.Unidad.list()}" optionKey="id" value="${itemInstance?.unidad?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="unidad" name="unidad.id" from="${cratos.Unidad2.list()}" optionKey="id" value="${itemInstance?.unidad?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
                 </div>
                 
             </span>

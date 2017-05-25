@@ -2,7 +2,7 @@ package cratos
 
 class DetalleTransferencia implements Serializable {
     double cantidad
-    Item item
+    Item2 item
     Transferencia transferencia
     double precioUnitario
     static mapping = {

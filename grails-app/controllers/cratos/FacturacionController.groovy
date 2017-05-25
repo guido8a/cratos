@@ -17,7 +17,7 @@ class FacturacionController extends cratos.seguridad.Shield  {
 
         def iva = ParametrosAuxiliares.get(1).iva
 
-        def c = Item.createCriteria()
+        def c = Item2.createCriteria()
         def results = c.list {
             or {
                 marca {

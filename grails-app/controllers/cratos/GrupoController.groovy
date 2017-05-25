@@ -1,5 +1,7 @@
 package cratos
 
+import cratos.inventario.Grupo
+
 
 class GrupoController extends cratos.seguridad.Shield {
 
@@ -52,12 +54,13 @@ class GrupoController extends cratos.seguridad.Shield {
     } //form para cargar con ajax en un dialog
 
     def save_ajax() {
-        params.each { k, v ->
-            if (v != "date.struct" && v instanceof java.lang.String) {
-                params[k] = v.toUpperCase()
-            }
-        }
+//        params.each { k, v ->
+//            if (v != "date.struct" && v instanceof java.lang.String) {
+//                params[k] = v.toUpperCase()
+//            }
+//        }
 
+        params.codigo = params.codigo.toUpperCase()
         def grupoInstance = new Grupo()
         if(params.id) {
             grupoInstance = Grupo.get(params.id)

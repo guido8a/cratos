@@ -16,14 +16,14 @@ class UnidadController extends cratos.seguridad.Shield  {
 //    }
 
     def create() {
-        [unidadInstance: new Unidad(params)]
+        [unidadInstance: new Unidad2(params)]
     }
 
     def save() {
-        def unidadInstance = new Unidad(params)
+        def unidadInstance = new Unidad2(params)
 
         if(params.id) {
-            unidadInstance = Unidad.get(params.id)
+            unidadInstance = Unidad2.get(params.id)
             unidadInstance.properties = params
         }
 
@@ -49,7 +49,7 @@ class UnidadController extends cratos.seguridad.Shield  {
     }
 
     def show() {
-        def unidadInstance = Unidad.get(params.id)
+        def unidadInstance = Unidad2.get(params.id)
         if (!unidadInstance) {
             flash.message = "No se encontró Unidad con id "+params.id
             flash.clase = "error"
@@ -62,7 +62,7 @@ class UnidadController extends cratos.seguridad.Shield  {
     }
 
     def edit() {
-        def unidadInstance = Unidad.get(params.id)
+        def unidadInstance = Unidad2.get(params.id)
         if (!unidadInstance) {
             flash.message = "No se encontró Unidad con id "+params.id
             flash.clase = "error"
@@ -75,7 +75,7 @@ class UnidadController extends cratos.seguridad.Shield  {
     }
 
     def delete() {
-        def unidadInstance = Unidad.get(params.id)
+        def unidadInstance = Unidad2.get(params.id)
         if (!unidadInstance) {
 			flash.message = "No se encontró Unidad con id "+params.id
             flash.clase = "error"
@@ -104,12 +104,12 @@ class UnidadController extends cratos.seguridad.Shield  {
 
     def list() {
         params.max = Math.min(params.max ? params.max.toInteger() : 10, 100)
-        def unidadInstanceList = Unidad.list(params)
-        def unidadInstanceCount = Unidad.count()
+        def unidadInstanceList = Unidad2.list(params)
+        def unidadInstanceCount = Unidad2.count()
         if (unidadInstanceList.size() == 0 && params.offset && params.max) {
             params.offset = params.offset - params.max
         }
-        unidadInstanceList = Unidad.list(params)
+        unidadInstanceList = Unidad2.list(params)
         return [unidadInstanceList: unidadInstanceList, unidadInstanceCount: unidadInstanceCount]
     } //list
 
@@ -117,7 +117,7 @@ class UnidadController extends cratos.seguridad.Shield  {
 
 
         if (params.id) {
-            def unidadInstance = Unidad.get(params.id)
+            def unidadInstance = Unidad2.get(params.id)
             if (!unidadInstance) {
                 notFound_ajax()
                 return
@@ -129,9 +129,9 @@ class UnidadController extends cratos.seguridad.Shield  {
     } //show para cargar con ajax en un dialog
 
     def form_ajax() {
-        def unidadInstance = new Unidad(params)
+        def unidadInstance = new Unidad2(params)
         if (params.id) {
-            unidadInstance = Unidad.get(params.id)
+            unidadInstance = Unidad2.get(params.id)
             if (!unidadInstance) {
                 notFound_ajax()
                 return
@@ -160,9 +160,9 @@ class UnidadController extends cratos.seguridad.Shield  {
 
 
         //original
-        def unidadInstance = new Unidad()
+        def unidadInstance = new Unidad2()
         if (params.id) {
-            unidadInstance = Unidad.get(params.id)
+            unidadInstance = Unidad2.get(params.id)
             unidadInstance.properties = params
             if (!unidadInstance) {
                 notFound_ajax()
@@ -170,7 +170,7 @@ class UnidadController extends cratos.seguridad.Shield  {
             }
         }else {
 
-            unidadInstance = new Unidad()
+            unidadInstance = new Unidad2()
             unidadInstance.properties = params
 //            unidadInstance.estado = '1'
 //            unidadInstance.empresa = session.empresa
@@ -192,7 +192,7 @@ class UnidadController extends cratos.seguridad.Shield  {
 
     def delete_ajax() {
         if (params.id) {
-            def unidadInstance = Unidad.get(params.id)
+            def unidadInstance = Unidad2.get(params.id)
             if (unidadInstance) {
                 try {
                     unidadInstance.delete(flush: true)

@@ -5,7 +5,7 @@ class Consumo implements Serializable {
     double precioUnitario
     double descuento
     double cantidad
-    Item item
+    Item2 item
     Factura factura
     String observaciones
     static auditable = true

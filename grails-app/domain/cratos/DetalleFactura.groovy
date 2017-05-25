@@ -5,7 +5,7 @@ class DetalleFactura implements Serializable {
     double precioUnitario
     double cantidad
     Bodega bodega
-    Item item
+    Item2 item
     Factura factura
     String observaciones
     static auditable = true

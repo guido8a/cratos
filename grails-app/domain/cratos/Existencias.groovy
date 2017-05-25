@@ -4,7 +4,7 @@ class Existencias implements Serializable {
     Date fecha
     double cantidad
     Empresa empresa
-    Item item
+    Item2 item
     double existenciaInicial
 
     Bodega bodega

@@ -1,5 +1,5 @@
 
-<%@ page import="cratos.Grupo" %>
+<%@ page import="cratos.inventario.Grupo" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -39,7 +39,7 @@
                         
                         <g:sortableColumn property="codigo" title="Código" />
                         
-                        <th>Cuenta</th>
+                        %{--<th>Cuenta</th>--}%
                         
                         <g:sortableColumn property="descripcion" title="Descripción" />
                         
@@ -52,7 +52,7 @@
                             
                             <td>${fieldValue(bean: grupoInstance, field: "codigo")}</td>
                             
-                            <td>${fieldValue(bean: grupoInstance, field: "cuenta")}</td>
+                            %{--<td>${fieldValue(bean: grupoInstance, field: "cuenta")}</td>--}%
                             
                             <td>${fieldValue(bean: grupoInstance, field: "descripcion")}</td>
                             

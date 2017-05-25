@@ -37,7 +37,7 @@ class FacturaController extends cratos.seguridad.Shield {
         def iva = ParametrosAuxiliares.get(1).iva
         def results
 
-        results = Item.withCriteria {
+        results = Item2.withCriteria {
             eq("empresa", Empresa.get(session.empresa.id))
             or {
                 ilike("nombre", "%" + search + "%")
@@ -221,7 +221,7 @@ class FacturaController extends cratos.seguridad.Shield {
                 detalleFactura.descuento = descuento.toDouble()
                 detalleFactura.precioUnitario = precio.toDouble()
                 detalleFactura.cantidad = cantidad.toDouble()
-                detalleFactura.item = Item.get(id.toLong())
+                detalleFactura.item = Item2.get(id.toLong())
                 detalleFactura.factura = facturaInstance
                 detalleFactura.observaciones = observaciones
                 detalleFactura.bodega=bodega

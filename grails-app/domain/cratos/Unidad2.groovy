@@ -1,6 +1,6 @@
 package cratos
 
-class Unidad implements Serializable {
+class Unidad2 implements Serializable {
     String codigo
     String descripcion
     static mapping = {

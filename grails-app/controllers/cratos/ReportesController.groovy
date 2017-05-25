@@ -319,11 +319,11 @@ class ReportesController {
         file.eachLine {
             def parts = it.split("&")
 
-            def item = Item.findByNombre(parts[0])
+            def item = Item2.findByNombre(parts[0])
             if (!item) {
                 println "no item " + parts[0]
                 println "parts " + parts
-                def i = new Item()
+                def i = new Item2()
                 i.nombre = parts[0]
                 i.precioUnitario = parts[1].toDouble() * 1.11
                 i.codigo = "md-$cont"

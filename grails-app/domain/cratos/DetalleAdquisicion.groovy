@@ -7,7 +7,7 @@ class DetalleAdquisicion implements Serializable {
     double precioUnitario
     double cantidad
     Adquisiciones adquisiciones
-    Item item
+    Item2 item
     String estado //0: default: no recibido, 1: recibido
     Bodega bodega
     static auditable = true

@@ -8,7 +8,7 @@ class ItemController extends cratos.seguridad.Shield {
 
     def updatePrecio() {
         println params
-        def item = Item.get(params.id)
+        def item = Item2.get(params.id)
         def precio = (params.precio).toDouble()
 
         item.precioCosto = precio
@@ -26,7 +26,7 @@ class ItemController extends cratos.seguridad.Shield {
 
 
     def create() {
-        [itemInstance: new Item(params)]
+        [itemInstance: new Item2(params)]
     }
 
     def buscarItem() {
@@ -36,7 +36,7 @@ class ItemController extends cratos.seguridad.Shield {
 //        println "from Item where upper(nombre) like '%${search.toUpperCase()}%' and upper(codigo) like '%${search.toUpperCase()}%' "
 //        def results = Item.findAll("from Item where upper(nombre) like '%${search.toUpperCase()}%' or upper(codigo) like '%${search.toUpperCase()}%' ", [max: 20])
 
-        def results = Item.withCriteria {
+        def results = Item2.withCriteria {
             eq("empresa", Empresa.get(session.empresa.id))
             or {
                 ilike("nombre", "%" + search + "%")
@@ -56,7 +56,7 @@ class ItemController extends cratos.seguridad.Shield {
 //        println "from Item where upper(nombre) like '%${search.toUpperCase()}%' and upper(codigo) like '%${search.toUpperCase()}%' "
 //        def results = Item.findAll("from Item where upper(nombre) like '%${search.toUpperCase()}%' or upper(codigo) like '%${search.toUpperCase()}%' ", [max: 20])
 
-        def results = Item.withCriteria {
+        def results = Item2.withCriteria {
             eq("empresa", Empresa.get(session.empresa.id))
             or {
                 ilike("nombre", "%" + search + "%")
@@ -77,7 +77,7 @@ class ItemController extends cratos.seguridad.Shield {
         println("Items:" + params)
 
 
-        def itemInstance = new Item()
+        def itemInstance = new Item2()
 
         if (params.fecha) {
 
@@ -93,7 +93,7 @@ class ItemController extends cratos.seguridad.Shield {
 
         if (params.id) {
 
-            itemInstance = Item.get(params.id)
+            itemInstance = Item2.get(params.id)
 
 
             if (params.fecha) {
@@ -132,7 +132,7 @@ class ItemController extends cratos.seguridad.Shield {
     }
 
     def show() {
-        def itemInstance = Item.get(params.id)
+        def itemInstance = Item2.get(params.id)
         if (!itemInstance) {
             flash.message = "No se encontró Item con id " + params.id
             flash.clase = "error"
@@ -145,7 +145,7 @@ class ItemController extends cratos.seguridad.Shield {
     }
 
     def edit() {
-        def itemInstance = Item.get(params.id)
+        def itemInstance = Item2.get(params.id)
         if (!itemInstance) {
             flash.message = "No se encontró Item con id " + params.id
             flash.clase = "error"
@@ -158,7 +158,7 @@ class ItemController extends cratos.seguridad.Shield {
     }
 
     def delete() {
-        def itemInstance = Item.get(params.id)
+        def itemInstance = Item2.get(params.id)
         if (!itemInstance) {
             flash.message = "No se encontró Item con id " + params.id
             flash.clase = "error"
@@ -189,18 +189,18 @@ class ItemController extends cratos.seguridad.Shield {
 
     def list() {
         params.max = Math.min(params.max ? params.max.toInteger() : 10, 100)
-        def itemInstanceList = Item.list(params)
-        def itemInstanceCount = Item.count()
+        def itemInstanceList = Item2.list(params)
+        def itemInstanceCount = Item2.count()
         if (itemInstanceList.size() == 0 && params.offset && params.max) {
             params.offset = params.offset - params.max
         }
-        itemInstanceList = Item.list(params)
+        itemInstanceList = Item2.list(params)
         return [itemInstanceList: itemInstanceList, itemInstanceCount: itemInstanceCount]
     } //list
 
     def show_ajax() {
         if (params.id) {
-            def itemInstance = Item.get(params.id)
+            def itemInstance = Item2.get(params.id)
             if (!itemInstance) {
                 notFound_ajax()
                 return
@@ -212,9 +212,9 @@ class ItemController extends cratos.seguridad.Shield {
     } //show para cargar con ajax en un dialog
 
     def form_ajax() {
-        def itemInstance = new Item(params)
+        def itemInstance = new Item2(params)
         if (params.id) {
-            itemInstance = Item.get(params.id)
+            itemInstance = Item2.get(params.id)
             if (!itemInstance) {
                 notFound_ajax()
                 return
@@ -231,9 +231,9 @@ class ItemController extends cratos.seguridad.Shield {
 //            }
 //        }
 
-        def itemInstance = new Item()
+        def itemInstance = new Item2()
         if (params.id) {
-            itemInstance = Item.get(params.id)
+            itemInstance = Item2.get(params.id)
             if (!itemInstance) {
                 notFound_ajax()
                 return
@@ -253,7 +253,7 @@ class ItemController extends cratos.seguridad.Shield {
 
     def delete_ajax() {
         if (params.id) {
-            def itemInstance = Item.get(params.id)
+            def itemInstance = Item2.get(params.id)
             if (itemInstance) {
                 try {
                     itemInstance.delete(flush: true)

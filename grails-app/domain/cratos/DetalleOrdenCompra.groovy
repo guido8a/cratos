@@ -2,7 +2,7 @@ package cratos
 
 class DetalleOrdenCompra implements Serializable {
     OrdenCompra ordenCompra
-    Item item
+    Item2 item
     double cantidad
     double precioUnitario
 

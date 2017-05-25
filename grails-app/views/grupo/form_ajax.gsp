@@ -1,4 +1,4 @@
-<%@ page import="cratos.Grupo" %>
+<%@ page import="cratos.inventario.Grupo" %>
 
 <script type="text/javascript" src="${resource(dir: 'js', file: 'ui.js')}"></script>
 <g:if test="${!grupoInstance}">
@@ -22,6 +22,7 @@
             </span>
         </div>
 
+%{--
         <div class="form-group ${hasErrors(bean: grupoInstance, field: 'cuenta', 'error')} ">
             <span class="grupo">
                 <label for="cuenta" class="col-md-2 control-label text-info">
@@ -29,11 +30,6 @@
                 </label>
 
                 <div class="col-md-6">
-                    %{--<g:select id="cuenta" name="cuenta.id" from="${cratos.Cuenta.list()}" optionKey="id"--}%
-                              %{--value="${grupoInstance?.cuenta?.id}" class="many-to-one form-control"--}%
-                              %{--noSelection="['null': '']"/>--}%
-
-
                     <g:select id="cuenta" name="cuenta.id" from="${cuentas}" optionKey="id"
                               value="${grupoInstance?.cuenta?.id}" class="many-to-one form-control"
                               noSelection="['null': 'Seleccione...']"/>
@@ -41,6 +37,7 @@
 
             </span>
         </div>
+--}%
 
         <div class="form-group ${hasErrors(bean: grupoInstance, field: 'descripcion', 'error')} ">
             <span class="grupo">
@@ -49,7 +46,7 @@
                 </label>
 
                 <div class="col-md-6">
-                    <g:textField name="descripcion" maxlength="63" class="allCaps form-control required"
+                    <g:textField name="descripcion" maxlength="63" class="form-control required"
                                  value="${grupoInstance?.descripcion}"/>
                 </div>
 

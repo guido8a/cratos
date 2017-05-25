@@ -78,6 +78,7 @@ class FuncionesController extends cratos.seguridad.Shield{
     }
 
 
+    /** sube datos desde csv.csv en la tabla TPCP_SRI **/
     def cargaDatosCsv(){
         def file = new File("C:\\Users\\svt\\Desktop\\csv.csv")
         file.eachLine {l->

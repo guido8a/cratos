@@ -1,4 +1,4 @@
-<%@ page import="cratos.Item" %>
+<%@ page import="cratos.Item2" %>
 
 
 %{--<g:hiddenField name="id" value="${itemInstance?.id}"/>--}%
@@ -19,7 +19,7 @@
         <div class="span-6">
 
             <g:select class="field  required  ui-corner-all" name="estado" maxlength="1" required=""
-                      value="${itemInstance?.estado}" title="${Item.constraints.estado.attributes.title}" from="${[1:'Activo',2:'No Activo']}" optionKey="key" optionValue="value"/>
+                      value="${itemInstance?.estado}" title="${Item2.constraints.estado.attributes.title}" from="${[1:'Activo', 2:'No Activo']}" optionKey="key" optionValue="value"/>
             <span class="required-indicator">*</span>
         </div>
     </div>
@@ -33,7 +33,7 @@
         </div>
 
         <div class="span-6">
-            <elm:datePicker class="field ui-corner-all" title="${Item.constraints.fecha.attributes.title}"
+            <elm:datePicker class="field ui-corner-all" title="${Item2.constraints.fecha.attributes.title}"
                             name="fecha" format="yyyy-MM-dd" value="${itemInstance?.fecha}"/>
         </div>
 
@@ -57,7 +57,7 @@
 
         <div class="span-6">
             <g:textField class="field  required  ui-corner-all" name="codigo" id="codigo" maxlength="15" required=""
-                         value="${itemInstance?.codigo}" title="${Item.constraints.codigo.attributes.title}"/>
+                         value="${itemInstance?.codigo}" title="${Item2.constraints.codigo.attributes.title}"/>
             <span class="required-indicator">*</span>
         </div>
     </div>
@@ -82,7 +82,7 @@
         <div class="span-12">
             <g:textField class="field  required  ui-corner-all" name="nombre" maxlength="127" required=""
                          style="width: 350px"
-                         value="${itemInstance?.nombre}" title="${Item.constraints.nombre.attributes.title}"/>
+                         value="${itemInstance?.nombre}" title="${Item2.constraints.nombre.attributes.title}"/>
             <span class="required-indicator">*</span>
         </div>
 
@@ -104,7 +104,7 @@
         <div class="span-6">
             <g:select id="marca" name="marca.id" from="${cratos.Marca.list()}" optionKey="id" optionValue="descripcion"
                       value="${itemInstance?.marca?.id}" class="field  many-to-one ui-corner-all"
-                      title="${Item.constraints.marca.attributes.title}" noSelection="['null': '']"/>
+                      title="${Item2.constraints.marca.attributes.title}" noSelection="['null': '']"/>
 
         </div>
     </div>
@@ -121,9 +121,9 @@
         </div>
 
         <div class="span-6">
-            <g:select id="unidad" name="unidad.id" from="${cratos.Unidad.list()}" optionKey="id"
+            <g:select id="unidad" name="unidad.id" from="${cratos.Unidad2.list()}" optionKey="id"
                       value="${itemInstance?.unidad?.id}" class="field  many-to-one ui-corner-all"
-                      title="${Item.constraints.unidad.attributes.title}" noSelection="['null': '']"/>
+                      title="${Item2.constraints.unidad.attributes.title}" noSelection="['null': '']"/>
 
         </div>
     </div>
@@ -144,7 +144,7 @@
 
         <div class="span-6">
             <g:field class="field  required number  ui-corner-all" type="number" name="stock" required="" optionValue="value" optionKey="id"
-                     title='${Item.constraints.stock.attributes.title}'
+                     title='${Item2.constraints.stock.attributes.title}'
                      value="${fieldValue(bean: itemInstance, field: 'stock')}"/>
             <span class="required-indicator">*</span>
         </div>
@@ -160,7 +160,7 @@
         <div class="span-6">
             <g:field class="field  required number  ui-corner-all" type="number" name="stockMaximo" id="stockMaximo" optionValue="value" optionKey="id"
                      required=""
-                     title='${Item.constraints.stockMaximo.attributes.title}'
+                     title='${Item2.constraints.stockMaximo.attributes.title}'
                      value="${fieldValue(bean: itemInstance, field: 'stockMaximo')}"/>
             <span class="required-indicator">*</span>
         </div>
@@ -181,7 +181,7 @@
 
         <div class="span-6">
             <g:field class="field  required number  ui-corner-all" type="number" name="precioVenta" required=""
-                     title='${Item.constraints.precioVenta.attributes.title}'
+                     title='${Item2.constraints.precioVenta.attributes.title}'
                      value="${fieldValue(bean: itemInstance, field: 'precioVenta')}"/>
             <span class="required-indicator">*</span>
         </div>
@@ -198,7 +198,7 @@
         <div class="span-6">
             <g:field class="field  required number  ui-corner-all" type="number" name="precioUnitario"
                      required=""
-                     title='${Item.constraints.precioUnitario.attributes.title}'
+                     title='${Item2.constraints.precioUnitario.attributes.title}'
                      value="${fieldValue(bean: itemInstance, field: 'precioUnitario')}"/>
             <span class="required-indicator">*</span>
         </div>
@@ -221,7 +221,7 @@
 
         <div class="span-6">
             <g:field class="field  required number  ui-corner-all" type="number" name="precioCosto" required=""
-                     title='${Item.constraints.precioCosto.attributes.title}'
+                     title='${Item2.constraints.precioCosto.attributes.title}'
                      value="${fieldValue(bean: itemInstance, field: 'precioCosto')}"/>
             <span class="required-indicator">*</span>
         </div>
@@ -240,7 +240,7 @@
         <div class="span-6">
             <g:textField class="field  required  ui-corner-all" name="iva" id="iva" required=""
                          value="${itemInstance?.iva}"
-                         title="${Item.constraints.iva.attributes.title}"/>
+                         title="${Item2.constraints.iva.attributes.title}"/>
             <span class="required-indicator">*</span>
         </div>
     </div>
@@ -256,7 +256,7 @@
            <div class="span-6">
 
                <g:textField class="field ui-corner-all" name="ice" value="${fieldValue(bean: itemInstance, field: 'ice')}"
-                            title="${Item.constraints.ice.attributes.title}"/>
+                            title="${Item2.constraints.ice.attributes.title}"/>
            </div>
 
        </div>
@@ -277,7 +277,7 @@
 
         <div class="span-6">
             <g:field class="field  required number  ui-corner-all" type="number" name="peso" required=""
-                     title='${Item.constraints.peso.attributes.title}'
+                     title='${Item2.constraints.peso.attributes.title}'
                      value="${fieldValue(bean: itemInstance, field: 'peso')}"/>
             <span class="required-indicator">*</span>
         </div>
@@ -290,9 +290,9 @@
         </div>
 
         <div class="span-6">
-            <g:select id="grupo" name="grupo.id" from="${cratos.Grupo.list()}" optionKey="id"
+            <g:select id="grupo" name="grupo.id" from="${cratos.inventario.Grupo.list()}" optionKey="id"
                       value="${itemInstance?.grupo?.id}" class="field  many-to-one ui-corner-all"
-                      title="${Item.constraints.grupo.attributes.title}" noSelection="['null': '']"/>
+                      title="${Item2.constraints.grupo.attributes.title}" noSelection="['null': '']"/>
 
         </div>
     </div>
@@ -310,7 +310,7 @@
 
         <div class="span-6">
             <g:textField class="field  ui-corner-all" name="observaciones" maxlength="127" style="width: 350px"
-                         value="${fieldValue(bean: itemInstance, field: 'observaciones')}" title='${Item.constraints.observaciones.attributes.title}'/>
+                         value="${fieldValue(bean: itemInstance, field: 'observaciones')}" title='${Item2.constraints.observaciones.attributes.title}'/>
 
         </div>
     </div>

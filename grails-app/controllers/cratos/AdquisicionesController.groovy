@@ -275,9 +275,9 @@ class AdquisicionesController extends cratos.seguridad.Shield {
             }
         } else {
             if (params.search)
-                items = Item.findAll("from Item where nombre like '%${params.search}%' or codigo like '%${params.serach}%' and empresa = ${session.empresa.id}")
+                items = Item2.findAll("from Item where nombre like '%${params.search}%' or codigo like '%${params.serach}%' and empresa = ${session.empresa.id}")
             else
-                items = Item.findAllByEmpresa(session.empresa, [sort: "nombre", max: 20])
+                items = Item2.findAllByEmpresa(session.empresa, [sort: "nombre", max: 20])
 
             items.each() { item ->
                 cants.put(item.id.toString(), 999999999999)
@@ -501,7 +501,7 @@ class AdquisicionesController extends cratos.seguridad.Shield {
                     def ice = (parts[7]).toDouble()
 
 
-                    def prod = Item.get(id)
+                    def prod = Item2.get(id)
 
                     def subtotal = (precio * cantidad) - (precio * cantidad * (descuento / 100))
 
