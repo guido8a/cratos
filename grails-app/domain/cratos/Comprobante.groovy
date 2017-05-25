@@ -4,7 +4,7 @@ class Comprobante implements Serializable {
     Date fecha
     String descripcion
     String prefijo
-    String numero
+    int    numero
     Proceso proceso
     TipoComprobante tipo
     String registrado
