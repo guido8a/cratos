@@ -1,5 +1,6 @@
 package cratos
 
+import cratos.seguridad.Persona
 import cratos.sri.Pais
 
 class ProcesoController extends cratos.seguridad.Shield {
@@ -33,54 +34,128 @@ class ProcesoController extends cratos.seguridad.Shield {
     }
 
     def save = {
-        if (request.method == 'POST') {
-//             println "save proceso "+params
-            params.lang="en"
-            def key = "org.springframework.web.servlet.DispatcherServlet.LOCALE_RESOLVER"
-            def localeResolver = request.getAttribute(key)
-            localeResolver.setLocale(request, response, new Locale("en"))
-            def p
-            params.controllerName = controllerName
-            params.actionName = actionName
-            if (params.proveedor.id == "null")
-                params.proveedor.id = null
-            if (params.sustentoTributario.id == "-1")
-                params.sustentoTributario.id = null
-            if (params.tipoComprobanteSri.id == "-1")
-                params.tipoComprobanteSri.id = null
-            params.estado = "N"
-            params.valor = params.baseImponibleIva0.toDouble() + params.baseImponibleIva.toDouble() + params.baseImponibleNoIva.toDouble()
-            params.impuesto = params.ivaGenerado.toDouble() + params.iceGenerado.toDouble()
-            params.documento = params.facturaEstablecimiento + "-" + params.facturaPuntoEmision + "-" + params.facturaSecuencial
-            params.fechaIngresoSistema = new Date()
-            if (params.id) {
-                p = Proceso.get(params.id)
-            } else {
-                p = new Proceso()
-            }
-            p.properties = params
-            p.contabilidad = session.contabilidad
-            p.empresa = session.empresa
-            def comprobante = Comprobante.get(params.comprobanteSel_name)
-            p.comprobante = comprobante
-            p.save(flush: true)
-            println "errores proceso " + p.errors
-            if (p.errors.getErrorCount() == 0) {
-                if (params.data != "") {
-                    def data = params.data.split(";")
-                    // println "data "+data
-                    data.each {
-                        if (it != "") {
-                        }
-                    }
-                }
+//        if (request.method == 'POST') {
+        println "save proceso "+params
+        def proceso
+        def comprobante
 
-                redirect(action: 'show', id: p.id)
-            } else
-                render(view: 'procesoForm', model: ['proceso': p], error: true)
-        } else {
-            redirect(controller: "shield", action: "ataques")
+        if (params.sustentoTributario.id == "-1")
+            params.sustentoTributario.id = null
+        if (params.tipoComprobanteSri.id == "-1")
+            params.tipoComprobanteSri.id = null
+
+        def sustento = SustentoTributario.get(params."sustentoTributario.id")
+        def proveedor = Proveedor.get(params."proveedor.id")
+        def gestor = Gestor.get(params."gestor.id")
+        def tipoPago
+        def tipoComproSri = TipoComprobanteSri.get(params."tipoComprobanteSri.id")
+        def fechaRegistro = new Date().parse("dd-MM-yyyy",params.fecha_input)
+
+        if(params.id){
+            proceso = Proceso.get(params.id)
+            params.tipoProceso = proceso.tipoProceso
+        }else{
+            proceso = new Proceso()
+            proceso.estado = "N"
+            proceso.gestor = gestor
+            proceso.contabilidad = session.contabilidad
+            proceso.empresa = session.empresa
         }
+
+        proceso.proveedor = proveedor
+        proceso.tipoComprobanteSri = tipoComproSri
+        proceso.sustentoTributario = sustento
+        proceso.fechaRegistro = fechaRegistro
+        proceso.descripcion = params.descripcion
+        proceso.fecha = new Date()
+        proceso.tipoProceso = params.tipoProceso
+
+        if(params.tipoProceso == 'P'){
+            comprobante = Comprobante.get(params.comprobanteSel_name)
+            proceso.comprobante = comprobante
+            tipoPago = TipoPago.get(params.tipoPago_name)
+            proceso.tipoPago = tipoPago
+            proceso.valor = params.valorPago_name.toDouble()
+
+        }else
+        {
+            if(params.tipoProceso == 'NC'){
+                comprobante = Comprobante.get(params.comprobanteSel_name)
+                proceso.comprobante = comprobante
+                proceso.valor = params.valorPago_name.toDouble()
+                proceso.impuesto = params.ivaGenerado.toDouble()
+                tipoPago = TipoPago.get(params.tipoPago_name)
+                proceso.tipoPago = tipoPago
+            }
+            else{
+                proceso.valor = params.baseImponibleIva0.toDouble() + params.baseImponibleIva.toDouble() + params.baseImponibleNoIva.toDouble()
+                proceso.impuesto = params.ivaGenerado.toDouble() + params.iceGenerado.toDouble()
+                proceso.baseImponibleIva = params.baseImponibleIva.toDouble()
+                proceso.baseImponibleIva0 = params.baseImponibleIva0.toDouble()
+                proceso.baseImponibleNoIva = params.baseImponibleNoIva.toDouble()
+                proceso.ivaGenerado = params.ivaGenerado.toDouble()
+                proceso.iceGenerado = params.iceGenerado.toDouble()
+                proceso.documento = params.facturaEstablecimiento + "-" + params.facturaPuntoEmision + "-" + params.facturaSecuencial
+                proceso.facturaEstablecimiento = params.facturaEstablecimiento
+                proceso.facturaPuntoEmision = params.facturaPuntoEmision
+                proceso.facturaSecuencial = params.facturaSecuencial
+                proceso.facturaAutorizacion = params.facturaAutorizacion
+            }
+        }
+
+        try{
+            proceso.save(flush: true)
+            redirect(action: 'show', id: proceso.id)
+        }catch (e){
+            println("error al grabar el proceso " + e)
+        }
+
+//            params.lang="en"
+//            def key = "org.springframework.web.servlet.DispatcherServlet.LOCALE_RESOLVER"
+//            def localeResolver = request.getAttribute(key)
+//            localeResolver.setLocale(request, response, new Locale("en"))
+//            def p
+//            params.controllerName = controllerName
+//            params.actionName = actionName
+//            if (params.proveedor.id == "null")
+//                params.proveedor.id = null
+//            if (params.sustentoTributario.id == "-1")
+//                params.sustentoTributario.id = null
+//            if (params.tipoComprobanteSri.id == "-1")
+//                params.tipoComprobanteSri.id = null
+//            params.estado = "N"
+//            params.valor = params.baseImponibleIva0.toDouble() + params.baseImponibleIva.toDouble() + params.baseImponibleNoIva.toDouble()
+//            params.impuesto = params.ivaGenerado.toDouble() + params.iceGenerado.toDouble()
+//            params.documento = params.facturaEstablecimiento + "-" + params.facturaPuntoEmision + "-" + params.facturaSecuencial
+//            params.fechaIngresoSistema = new Date()
+//            if (params.id) {
+//                p = Proceso.get(params.id)
+//            } else {
+//                p = new Proceso()
+//            }
+//            p.properties = params
+//            p.contabilidad = session.contabilidad
+//            p.empresa = session.empresa
+//            def comprobante = Comprobante.get(params.comprobanteSel_name)
+//            p.comprobante = comprobante
+//            p.save(flush: true)
+//            println "errores proceso " + p.errors
+//            if (p.errors.getErrorCount() == 0) {
+//                if (params.data != "") {
+//                    def data = params.data.split(";")
+//                    // println "data "+data
+//                    data.each {
+//                        if (it != "") {
+//                        }
+//                    }
+//                }
+//
+//                redirect(action: 'show', id: p.id)
+//            } else
+//                render(view: 'procesoForm', model: ['proceso': p], error: true)
+//        } else {
+//            redirect(controller: "shield", action: "ataques")
+//        }
     }
 
 
@@ -816,10 +891,10 @@ class ProcesoController extends cratos.seguridad.Shield {
         def formaPago = ProcesoFormaDePago.get(params.id)
 
         try{
-         formaPago.delete(flush: true)
-         render "ok"
+            formaPago.delete(flush: true)
+            render "ok"
         }catch (e){
-          render "no"
+            render "no"
             println("error borrar forma pago " + formaPago.errors)
         }
     }
@@ -856,7 +931,6 @@ class ProcesoController extends cratos.seguridad.Shield {
     def comprobante_ajax () {
         def proceso = Proceso.get(params.proceso)
         def comprobantes = Comprobante.findAllByProceso(proceso).sort{it.tipo.descripcion}
-        println("comrp" + comprobantes)
         return [comprobantes: comprobantes, proceso: proceso]
     }
 
@@ -916,7 +990,7 @@ class ProcesoController extends cratos.seguridad.Shield {
         def asientos = Asiento.findAllByComprobante(comprobante).sort{it.numero}
         def siguiente = 0
         if(asientos){
-           siguiente = asientos.numero.last() + 1
+            siguiente = asientos.numero.last() + 1
         }
 //        println("asientos " + asientos.numero)
 
@@ -949,16 +1023,16 @@ class ProcesoController extends cratos.seguridad.Shield {
         def auxiliar = Auxiliar.findByAsiento(asiento)
 
         if(comprobante.registrado == 'N'){
-               if(!auxiliar){
-                    try{
-                        asiento.delete(flush: true)
-                        render "ok_Asiento borrado correctamente"
-                    }catch (e){
-                        render "no_Error al borrar el asiento"
-                    }
-               } else{
-                   render "no_No se puede borrar el asiento, debido a que posee un auxiliar"
-               }
+            if(!auxiliar){
+                try{
+                    asiento.delete(flush: true)
+                    render "ok_Asiento borrado correctamente"
+                }catch (e){
+                    render "no_Error al borrar el asiento"
+                }
+            } else{
+                render "no_No se puede borrar el asiento, debido a que posee un auxiliar"
+            }
         }else{
             render "no_No se puede borrar el asiento, el comprobante ya se encuentra registrado"
         }
@@ -969,12 +1043,12 @@ class ProcesoController extends cratos.seguridad.Shield {
         def auxiliar = Auxiliar.get(params.auxiliar)
 
         if(comprobante.registrado == 'N'){
-                try{
-                    auxiliar.delete(flush: true)
-                    render "ok_Auxiliar borrado correctamente"
-                }catch (e){
-                    render "no_Error al borrar el auxiliar"
-                }
+            try{
+                auxiliar.delete(flush: true)
+                render "ok_Auxiliar borrado correctamente"
+            }catch (e){
+                render "no_Error al borrar el auxiliar"
+            }
         }else{
             render "no_No se puede borrar el auxiliar, el comprobante ya se encuentra registrado"
         }
@@ -1028,24 +1102,73 @@ class ProcesoController extends cratos.seguridad.Shield {
 
     def tablaBuscarComprobante_ajax () {
 //        println("params " + params)
-
         def cn = dbConnectionService.getConnection()
         def proveedor = Proveedor.get(params.proveedor)
         def sql
         sql = "select * from porpagar(${proveedor?.id});"
         def res = cn.rows(sql.toString())
-
         return [res: res]
     }
 
     def filaComprobante_ajax () {
+//        println("params fila comprobante " + params)
         def proceso = Proceso.get(params.proceso)
-        return[proceso: proceso]
+//        def comprobante = Comprobante.get(params.comprobante)
+//        def proveedor =
+        def res
+        if(params.proceso){
+            def cn = dbConnectionService.getConnection()
+            def sql
+            sql = "select sldo from porpagar(${proceso?.proveedor?.id}) where cmpr__id = ${proceso?.comprobante?.id} ;"
+            res = cn.firstRow(sql.toString())
+        }else{
+//            def cn = dbConnectionService.getConnection()
+//            def sql
+//            sql = "select sldo from porpagar(${proceso?.proveedor?.id}) where cmpr__id = ${comprobante?.id} ;"
+//            res = cn.firstRow(sql.toString())
+        }
+        return[proceso: proceso, saldo: res?.sldo]
     }
 
     def valores_ajax () {
         def proceso = Proceso.get(params.proceso)
         return[proceso: proceso, tipo: params.tipo]
     }
+
+    def proveedor_ajax () {
+        def proceso = Proceso.get(params.proceso)
+        def proveedores = Proveedor.list()
+        def tr
+        switch (params.tipo) {
+            case "P":
+                tr = TipoRelacion.findAllByCodigoInList(['C','P'])
+                proveedores = Proveedor.findAllByTipoRelacionInList(tr)
+                break
+            case "NC" :
+                tr = TipoRelacion.findAllByCodigoInList(['C','E'])
+                proveedores = Proveedor.findAllByTipoRelacionInList(tr)
+                break
+            case "V"  :
+                tr = TipoRelacion.findAllByCodigoInList(['P','E'])
+                proveedores = Proveedor.findAllByTipoRelacionInList(tr)
+                break
+        }
+
+//        println("proveedores " + proveedores)
+
+        return [proveedores : proveedores, proceso: proceso, tipo: params.tipo]
+    }
+
+    def cambiarContabilidad_ajax () {
+        def usuario = Persona.get(session.usuario.id)
+        def contabilidad = Contabilidad.get(session.contabilidad.id)
+        def empresa = Empresa.get(session.empresa.id)
+
+        def contabilidades = Contabilidad.findAllByInstitucion(empresa, [sort: "fechaInicio"])
+        contabilidades.remove(contabilidad)
+
+        return [usuario: usuario, contabilidad: contabilidad, contabilidades: contabilidades]
+    }
+
 }
 

@@ -81,7 +81,8 @@
             Lista
         </g:link>
 
-        <g:if test="${!registro}">
+    %{--<g:if test="${!registro}">--}%
+        <g:if test="${!proceso || proceso?.estado == 'N'}">
             <a href="#" class="btn btn-success" id="guardarProceso">
                 <i class="fa fa-save"></i>
                 Guardar
@@ -103,7 +104,7 @@
                         <input type="hidden" name="id" value="${proceso?.id}">
                         <a class="btn btn-danger" id="btn-br-prcs" action="borrarProceso">
                             <i class="fa fa-trash-o"></i>
-                            Borrar Proceso
+                            Anular Proceso
                         </a>
                     </g:form>
                 </g:if>
@@ -152,7 +153,7 @@
             </div>
             <div class="col-xs-3 negrilla">
                 <g:select class="form-control required cmbRequired tipoProcesoSel" name="tipoProceso"  id="tipoProceso" from="${tiposProceso}"
-                          label="Proceso tipo: " value="${proceso?.tipoProceso}" optionKey="key" optionValue="value" title="Tipo de la transacción"  disabled="${registro?true:false}"/>
+                          label="Proceso tipo: " value="${proceso?.tipoProceso}" optionKey="key" optionValue="value" title="Tipo de la transacción" disabled="${proceso?.id ? 'true' : 'false'}" />
             </div>
 
         </div>
@@ -167,47 +168,47 @@
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-xs-2 negrilla">
-                Proveedor:
-            </div>
-            <div class="col-xs-9 negrilla">
-                <div class="col-xs-3" style="margin-left: -15px">
-                    <input type="text" name="proveedor.ruc" class="form-control " id="prov" disabled="true" value="${proceso?.proveedor?.ruc ?: ''}" title="RUC del proveedor o cliente" style="width: 140px" placeholder="RUC"/>
-                </div>
-                <div class="col-xs-5" style="margin-left: -55px">
-                    <input type="text" name="proveedor.nombre" class="form-control  label-shared" id="prov_nombre" disabled="true" value="${proceso?.proveedor?.nombre ?: ''}" title="Nombre del proveedor o cliente" style="width: 300px" placeholder="Nombre"/>
-                </div>
-                <div class="col-xs-2">
-                    <g:if test="${!registro}">
-                        <a href="#" id="btn_buscar" class="btn btn-info">
-                            <i class="fa fa-search"></i>
-                            Buscar
-                        </a>
-                    </g:if>
-                </div>
-                <input type="hidden" name="proveedor.id" id="prov_id" value="${proceso?.proveedor?.id}">
-            </div>
+        <div class="row" id="divCargaProveedor">
+            %{--<div class="col-xs-2 negrilla">--}%
+                %{--Proveedor:--}%
+            %{--</div>--}%
+            %{--<div class="col-xs-9 negrilla">--}%
+                %{--<div class="col-xs-3" style="margin-left: -15px">--}%
+                    %{--<input type="text" name="proveedor.ruc" class="form-control " id="prov" disabled="true" value="${proceso?.proveedor?.ruc ?: ''}" title="RUC del proveedor o cliente" style="width: 140px" placeholder="RUC"/>--}%
+                %{--</div>--}%
+                %{--<div class="col-xs-5" style="margin-left: -55px">--}%
+                    %{--<input type="text" name="proveedor.nombre" class="form-control  label-shared" id="prov_nombre" disabled="true" value="${proceso?.proveedor?.nombre ?: ''}" title="Nombre del proveedor o cliente" style="width: 300px" placeholder="Nombre"/>--}%
+                %{--</div>--}%
+                %{--<div class="col-xs-2">--}%
+                    %{--<g:if test="${!registro}">--}%
+                        %{--<a href="#" id="btn_buscar" class="btn btn-info">--}%
+                            %{--<i class="fa fa-search"></i>--}%
+                            %{--Buscar--}%
+                        %{--</a>--}%
+                    %{--</g:if>--}%
+                %{--</div>--}%
+                %{--<input type="hidden" name="proveedor.id" id="prov_id" value="${proceso?.proveedor?.id}">--}%
+            %{--</div>--}%
         </div>
 
         <div class="row" id="divFilaComprobante">
             %{--<div class="col-md-2 negrilla">--}%
-                %{--Comprobante--}%
+            %{--Comprobante--}%
             %{--</div>--}%
 
             %{--<div class="col-md-3">--}%
-                %{--<g:textField name="comprobanteName" id="comprobanteDesc" class="form-control" disabled="true" title="Comprobante" style="width: 270px" placeholder="Descripción" value="${proceso?.comprobante?.descripcion}"/>--}%
+            %{--<g:textField name="comprobanteName" id="comprobanteDesc" class="form-control" disabled="true" title="Comprobante" style="width: 270px" placeholder="Descripción" value="${proceso?.comprobante?.descripcion}"/>--}%
             %{--</div>--}%
             %{--<div class="col-md-2">--}%
             %{--<g:textField name="comprobanteSaldoName" id="comprobanteSaldo" class="form-control" disabled="true" title="Saldo del Comprobante" style="width:165px;" placeholder="Saldo" />--}%
             %{--</div>--}%
             %{--<div class="col-xs-2" style="margin-left: 20px">--}%
-                %{--<g:if test="${!registro}">--}%
-                    %{--<a href="#" id="btnBuscarCom" class="btn btn-info ${proceso?.id ? '' : 'hidden'}">--}%
-                        %{--<i class="fa fa-search"></i>--}%
-                        %{--Buscar--}%
-                    %{--</a>--}%
-                %{--</g:if>--}%
+            %{--<g:if test="${!registro}">--}%
+            %{--<a href="#" id="btnBuscarCom" class="btn btn-info ${proceso?.id ? '' : 'hidden'}">--}%
+            %{--<i class="fa fa-search"></i>--}%
+            %{--Buscar--}%
+            %{--</a>--}%
+            %{--</g:if>--}%
             %{--</div>--}%
             %{--<g:hiddenField name="comprobanteSel_name" id="comprobanteSel"/>--}%
         </div>
@@ -249,80 +250,80 @@
         <div id="divValores"></div>
 
         %{--<g:if test="${proceso?.tipoProceso == 'P'}">--}%
-            %{--<div class="row" style="font-size: 12px">--}%
-                %{--<div class="col-xs-2 negrilla" style="width: 120px">--}%
-                    %{--Valor:--}%
-                %{--</div>--}%
-                %{--<div class="col-xs-2 negrilla">--}%
-                    %{--<g:textField name="valorPago_name" class="form-control required number" value="${proceso?.valor}"/>--}%
-                %{--</div>--}%
-            %{--</div>--}%
-            %{--<div class="row" style="font-size: 12px">--}%
-                %{--<div class="col-xs-2 negrilla" style="width: 120px">--}%
-                    %{--Tipo de Pago:--}%
-                %{--</div>--}%
-                %{--<div class="col-xs-5">--}%
-                    %{--<g:select name="tipoPago_name" from="${cratos.TipoPago.list().sort{it.descripcion}}" optionKey="id" optionValue="descripcion" value="${proceso?.tipoPago}" class="form-control"/>--}%
-                %{--</div>--}%
-            %{--</div>--}%
+        %{--<div class="row" style="font-size: 12px">--}%
+        %{--<div class="col-xs-2 negrilla" style="width: 120px">--}%
+        %{--Valor:--}%
+        %{--</div>--}%
+        %{--<div class="col-xs-2 negrilla">--}%
+        %{--<g:textField name="valorPago_name" class="form-control required number" value="${proceso?.valor}"/>--}%
+        %{--</div>--}%
+        %{--</div>--}%
+        %{--<div class="row" style="font-size: 12px">--}%
+        %{--<div class="col-xs-2 negrilla" style="width: 120px">--}%
+        %{--Tipo de Pago:--}%
+        %{--</div>--}%
+        %{--<div class="col-xs-5">--}%
+        %{--<g:select name="tipoPago_name" from="${cratos.TipoPago.list().sort{it.descripcion}}" optionKey="id" optionValue="descripcion" value="${proceso?.tipoPago}" class="form-control"/>--}%
+        %{--</div>--}%
+        %{--</div>--}%
         %{--</g:if>--}%
         %{--<g:else>--}%
 
-            %{--<g:set var="iva" value="${cratos.ParametrosAuxiliares.list().first().iva}"/>--}%
-            %{--<div class="row" style="font-size: 12px">--}%
-                %{--<div class="col-xs-2 negrilla" style="width: 120px">--}%
-                    %{--Base imponible IVA ${iva}%:--}%
-                %{--</div>--}%
-                %{--<div class="col-xs-2 negrilla">--}%
-                    %{--<input type="text" name="baseImponibleIva" id="iva12" size="7" value="${proceso?.baseImponibleIva ?: 0.00}" class="required  number form-control" validate="required number" ${registro?'disabled':''} />--}%
-                %{--</div>--}%
-                %{--<div class="col-xs-2 negrilla" style="width: 120px">--}%
-                    %{--Base imponible IVA 0%:--}%
-                %{--</div>--}%
-                %{--<div class="col-xs-2 negrilla">--}%
-                    %{--<input type="text" name="baseImponibleIva0" size="7" id="iva0" value="${proceso?.baseImponibleIva0 ?: 0.00}" class="required number form-control" validate="required number" ${registro?'disabled':''} />--}%
-                %{--</div>--}%
-                %{--<div class="col-xs-2 negrilla" style="width: 120px">--}%
-                    %{--Base imponible no aplica IVA:--}%
-                %{--</div>--}%
-                %{--<div class="col-xs-2 negrilla">--}%
-                    %{--<input type="text" name="baseImponibleNoIva" id="noIva" size="7" value="${proceso?.baseImponibleNoIva ?: 0.00}" class="required number form-control" validate="required number" ${registro?'disabled':''} />--}%
-                %{--</div>--}%
-            %{--</div>--}%
-            %{--<div class="row" style="font-size: 12px">--}%
-                %{--<div class="col-xs-2 negrilla" style="width: 120px">--}%
-                    %{--IVA generado:--}%
-                %{--</div>--}%
-                %{--<div class="col-xs-2 negrilla">--}%
-                    %{--<input type="text" name="ivaGenerado" id="ivaGenerado"  value="${proceso?.ivaGenerado}" class="required number form-control" validate="required number" ${registro?'disabled':''} />--}%
-                %{--</div>--}%
-                %{--<div class="col-xs-2 negrilla" style="width: 120px">--}%
-                    %{--ICE generado:--}%
-                %{--</div>--}%
-                %{--<div class="col-xs-2 negrilla"  >--}%
-                    %{--<input type="text" name="iceGenerado"  id="iceGenerado" value="${proceso?.iceGenerado ?: 0.00}" class="required number form-control" validate="required number" ${registro?'disabled':''} />--}%
-                %{--</div>--}%
-            %{--</div>--}%
-            %{--<div class="row" style="font-size: 12px">--}%
-                %{--<div class="col-xs-2 negrilla" style="width: 120px">--}%
-                    %{--Documento:--}%
-                %{--</div>--}%
-                %{--<div class="col-xs-3 negrilla">--}%
-                    %{--<input type="text" name="facturaEstablecimiento" id="establecimiento" size="3" maxlength="3" value="${proceso?.facturaEstablecimiento}" class=" digits form-control label-shared " validate=" number"--}%
-                           %{--title="El número de establecimiento del documento " ${registro?'disabled':''} />--}%
-                    %{--<input type="text" name="facturaPuntoEmision" id="emision" size="3" maxlength="3" value="${proceso?.facturaPuntoEmision}" class=" digits form-control label-shared " validate=" number"--}%
-                           %{--title="El número de punto de emisión del documento" ${registro?'disabled':''} />--}%
-                    %{--<input type="text" name="facturaSecuencial" id="secuencial" size="10" maxlength="9" value="${proceso?.facturaSecuencial}" class=" digits form-control label-shared  " validate=" number"--}%
-                           %{--title="El número de secuencia del documento"  ${registro?'disabled':''} />--}%
-                %{--</div>--}%
-                %{--<div class="col-xs-2 negrilla" style="width: 120px;margin-left: -30px">--}%
-                    %{--Autorización:--}%
-                %{--</div>--}%
-                %{--<div class="col-xs-2 negrilla">--}%
-                    %{--<input type="text" name="facturaAutorizacion" id="auto" size="10" maxlength="15" value="${proceso?.facturaAutorizacion}" class=" digits form-control label-shared " validate=" number"--}%
-                           %{--title="El número autorización de la factura a registrar " ${registro?'disabled':''} />--}%
-                %{--</div>--}%
-            %{--</div>--}%
+        %{--<g:set var="iva" value="${cratos.ParametrosAuxiliares.list().first().iva}"/>--}%
+        %{--<div class="row" style="font-size: 12px">--}%
+        %{--<div class="col-xs-2 negrilla" style="width: 120px">--}%
+        %{--Base imponible IVA ${iva}%:--}%
+        %{--</div>--}%
+        %{--<div class="col-xs-2 negrilla">--}%
+        %{--<input type="text" name="baseImponibleIva" id="iva12" size="7" value="${proceso?.baseImponibleIva ?: 0.00}" class="required  number form-control" validate="required number" ${registro?'disabled':''} />--}%
+        %{--</div>--}%
+        %{--<div class="col-xs-2 negrilla" style="width: 120px">--}%
+        %{--Base imponible IVA 0%:--}%
+        %{--</div>--}%
+        %{--<div class="col-xs-2 negrilla">--}%
+        %{--<input type="text" name="baseImponibleIva0" size="7" id="iva0" value="${proceso?.baseImponibleIva0 ?: 0.00}" class="required number form-control" validate="required number" ${registro?'disabled':''} />--}%
+        %{--</div>--}%
+        %{--<div class="col-xs-2 negrilla" style="width: 120px">--}%
+        %{--Base imponible no aplica IVA:--}%
+        %{--</div>--}%
+        %{--<div class="col-xs-2 negrilla">--}%
+        %{--<input type="text" name="baseImponibleNoIva" id="noIva" size="7" value="${proceso?.baseImponibleNoIva ?: 0.00}" class="required number form-control" validate="required number" ${registro?'disabled':''} />--}%
+        %{--</div>--}%
+        %{--</div>--}%
+        %{--<div class="row" style="font-size: 12px">--}%
+        %{--<div class="col-xs-2 negrilla" style="width: 120px">--}%
+        %{--IVA generado:--}%
+        %{--</div>--}%
+        %{--<div class="col-xs-2 negrilla">--}%
+        %{--<input type="text" name="ivaGenerado" id="ivaGenerado"  value="${proceso?.ivaGenerado}" class="required number form-control" validate="required number" ${registro?'disabled':''} />--}%
+        %{--</div>--}%
+        %{--<div class="col-xs-2 negrilla" style="width: 120px">--}%
+        %{--ICE generado:--}%
+        %{--</div>--}%
+        %{--<div class="col-xs-2 negrilla"  >--}%
+        %{--<input type="text" name="iceGenerado"  id="iceGenerado" value="${proceso?.iceGenerado ?: 0.00}" class="required number form-control" validate="required number" ${registro?'disabled':''} />--}%
+        %{--</div>--}%
+        %{--</div>--}%
+        %{--<div class="row" style="font-size: 12px">--}%
+        %{--<div class="col-xs-2 negrilla" style="width: 120px">--}%
+        %{--Documento:--}%
+        %{--</div>--}%
+        %{--<div class="col-xs-3 negrilla">--}%
+        %{--<input type="text" name="facturaEstablecimiento" id="establecimiento" size="3" maxlength="3" value="${proceso?.facturaEstablecimiento}" class=" digits form-control label-shared " validate=" number"--}%
+        %{--title="El número de establecimiento del documento " ${registro?'disabled':''} />--}%
+        %{--<input type="text" name="facturaPuntoEmision" id="emision" size="3" maxlength="3" value="${proceso?.facturaPuntoEmision}" class=" digits form-control label-shared " validate=" number"--}%
+        %{--title="El número de punto de emisión del documento" ${registro?'disabled':''} />--}%
+        %{--<input type="text" name="facturaSecuencial" id="secuencial" size="10" maxlength="9" value="${proceso?.facturaSecuencial}" class=" digits form-control label-shared  " validate=" number"--}%
+        %{--title="El número de secuencia del documento"  ${registro?'disabled':''} />--}%
+        %{--</div>--}%
+        %{--<div class="col-xs-2 negrilla" style="width: 120px;margin-left: -30px">--}%
+        %{--Autorización:--}%
+        %{--</div>--}%
+        %{--<div class="col-xs-2 negrilla">--}%
+        %{--<input type="text" name="facturaAutorizacion" id="auto" size="10" maxlength="15" value="${proceso?.facturaAutorizacion}" class=" digits form-control label-shared " validate=" number"--}%
+        %{--title="El número autorización de la factura a registrar " ${registro?'disabled':''} />--}%
+        %{--</div>--}%
+        %{--</div>--}%
 
 
         %{--</g:else>--}%
@@ -422,26 +423,95 @@
 
 <script type="text/javascript">
 
+
+    cargarTipo($(".tipoProcesoSel option:selected").val());
+    cargarBotonGuardar($(".tipoProcesoSel option:selected").val());
+    cargarBotonBuscar($(".tipoProcesoSel option:selected").val());
+    <g:if test="${proceso?.id && (proceso?.tipoProceso == 'P' || proceso?.tipoProceso == 'NC')}">
+//    if($(".tipoProcesoSel option:selected").val() == 'P' || $(".tipoProcesoSel option:selected").val() == 'NC'){
+        cargarComPago();
+//    }
+    </g:if>
+    %{--<g:if test="${proceso?.id}">--}%
+    cargarProveedor($(".tipoProcesoSel option:selected").val());
+    %{--</g:if>--}%
+
     $("#tipoProceso").change(function () {
         var tipo = $(".tipoProcesoSel option:selected").val();
 
-        if(tipo == 'P'|| tipo == 'NC'){
-            $.ajax({
-                type:'POST',
-                async: 'true',
-                url: "${createLink(controller: 'proceso', action: 'filaComprobante_ajax')}",
-                data:{
-                    proceso: '${proceso?.id}'
-                },
-                success: function (msg){
-                    $("#divFilaComprobante").html(msg)
-               }
-            });
+        $("#listaErrores").html('');
+        $("#divErrores").hide();
 
+        if(tipo == 'NC' || tipo == 'P'){
+            cargarComPago()
         }else{
             $("#divFilaComprobante").html('')
         }
+        cargarTipo(tipo);
+        cargarBotonGuardar(tipo);
+        cargarBotonBuscar(tipo);
 
+        if(tipo != '-1'){
+            cargarProveedor(tipo);
+        }else{
+            $("#divFilaComprobante").html('');
+            $("#divCargaProveedor").html('');
+        }
+    });
+
+    function  cargarProveedor (tipo) {
+        if(tipo != '-1'){
+            $.ajax({
+                type: 'POST',
+                url: "${createLink(controller: 'proceso', action: 'proveedor_ajax')}",
+                data:{
+                    proceso: '${proceso?.id}',
+                    tipo: tipo
+                },
+                success: function (msg) {
+                    $("#divCargaProveedor").html(msg)
+                }
+            });
+        }else{
+            $("#divCargaProveedor").html('')
+        }
+    }
+
+    function cargarComPago(){
+        var idComprobante = $("#comprobanteSel").val();
+        var idProveedor = $("#prov_id").val();
+        $.ajax({
+            type:'POST',
+            async: 'true',
+            url: "${createLink(controller: 'proceso', action: 'filaComprobante_ajax')}",
+            data:{
+                proceso: '${proceso?.id}',
+                proveedor: idProveedor,
+                comprobante : idComprobante
+            },
+            success: function (msg){
+                $("#divFilaComprobante").html(msg)
+            }
+        });
+    }
+
+    function cargarBotonGuardar (tipo) {
+        if(tipo == '-1'){
+            $("#guardarProceso").addClass('hidden')
+        }else{
+            $("#guardarProceso").removeClass('hidden')
+        }
+    }
+
+    function cargarBotonBuscar (tipo) {
+        if(tipo != '-1'){
+            $("#btn_buscar").removeClass('hidden')
+        }else{
+            $("#btn_buscar").addClass('hidden')
+        }
+    }
+
+    function cargarTipo (tipo) {
         $.ajax({
             type:'POST',
             url: "${createLink(controller: 'proceso', action: 'valores_ajax')}",
@@ -453,7 +523,7 @@
                 $("#divValores").html(msg)
             }
         });
-    });
+    }
 
     jQuery.fn.svtContainer = function () {
 
@@ -533,31 +603,31 @@
         });
 
         %{--$("#btnBuscarCom").click(function(){--}%
-            %{--var idProveedor = $("#prov_id").val();--}%
-            %{--var tipoTransaccion = $("#tipoProceso").val();--}%
-            %{--$.ajax({--}%
-                %{--type    : "POST",--}%
-                %{--url     : "${g.createLink(controller: 'proceso',action: 'tablaBuscarComprobante_ajax')}",--}%
-                %{--data    : {--}%
-                        %{--proveedor: idProveedor,--}%
-                        %{--tipo: tipoTransaccion--}%
-                %{--},--}%
-                %{--success : function (msg) {--}%
-                    %{--bootbox.dialog({--}%
-                        %{--title   : "Alerta",--}%
-                        %{--message : msg,--}%
-                        %{--class :'long',--}%
-                        %{--buttons : {--}%
-                            %{--cancelar : {--}%
-                                %{--label     : "<i class='fa fa-times'></i> Cancelar",--}%
-                                %{--className : "btn-primary",--}%
-                                %{--callback  : function () {--}%
-                                %{--}--}%
-                            %{--}--}%
-                        %{--}--}%
-                    %{--});--}%
-                %{--}--}%
-            %{--});--}%
+        %{--var idProveedor = $("#prov_id").val();--}%
+        %{--var tipoTransaccion = $("#tipoProceso").val();--}%
+        %{--$.ajax({--}%
+        %{--type    : "POST",--}%
+        %{--url     : "${g.createLink(controller: 'proceso',action: 'tablaBuscarComprobante_ajax')}",--}%
+        %{--data    : {--}%
+        %{--proveedor: idProveedor,--}%
+        %{--tipo: tipoTransaccion--}%
+        %{--},--}%
+        %{--success : function (msg) {--}%
+        %{--bootbox.dialog({--}%
+        %{--title   : "Alerta",--}%
+        %{--message : msg,--}%
+        %{--class :'long',--}%
+        %{--buttons : {--}%
+        %{--cancelar : {--}%
+        %{--label     : "<i class='fa fa-times'></i> Cancelar",--}%
+        %{--className : "btn-primary",--}%
+        %{--callback  : function () {--}%
+        %{--}--}%
+        %{--}--}%
+        %{--}--}%
+        %{--});--}%
+        %{--}--}%
+        %{--});--}%
         %{--});--}%
 
         $("#agregarFP").click(function(){
@@ -590,99 +660,153 @@
             $(this).parent().remove()
         })
         /*todo guardar proceso..... move on*/
-        $("#guardarProceso").click(function() {
 
-            openLoader("Validando")
+
+
+
+
+
+        $("#guardarProceso").click(function() {
             var bandData=true
             var error=""
             var info=""
-            $("#listaErrores").html("")
-            if($("#fecha_input").val().length<10){
-                error+="<li>Seleccione la fecha de registro</li>"
-            }
-            if($("#descripcion").val().length<1){
-                error+="<li>Llene el campo Descripción</li>"
-            }
-            if($("#tipoProceso").val()=="-1"){
-                error+="<li>Seleccione el tipo de la transacción</li>"
-            }else{
-                if($("#tipoProceso").val()=="C" || $("#tipoProceso").val()=="V" ){
+            var tipoP = $(".tipoProcesoSel option:selected").val();
 
-                    if($("#sustento").val()=="-1"){
-                        error+="<li>Seleccione un sustento tributario (Necesario si el tipo de transacción es Compras o Ventas)</li>"
-                    }
-                    if($("#tipoComprobante").val()=="-1"){
-                        error+="<li>Seleccione el tipo de documento a registrar (Necesario si el tipo de transacción es Compras o Ventas)</li>"
-                    }else{
-                        if($("#establecimiento").val().length<3){
-                            error+="<li>Ingrese el número de establecimiento del documento (Primera parte del campo documento) </li>"
-                        }
-                        if($("#emision").val().length<3){
-                            error+="<li>Ingrese el número de emisión del documento (Segunda parte del campo documento)</li>"
-                        }
-                        if($("#secuencial").val().length<1){
-                            error+="<li>Ingrese el número de secuencia del documento (Tercera parte del campo documento)</li>"
-                        }
+
+//            $("#listaErrores").html('')
+//            $("#divErrores").hide()
+
+            openLoader("Guardando..");
+
+            if(tipoP == 'P' || tipoP == 'NC'){
+
+                $("#listaErrores").html('');
+                $("#divErrores").hide();
+
+                if($("#fecha_input").val().length<10){
+                    error+="<li>Seleccione la fecha de registro</li>"
+                }
+                if($("#descripcion").val().length<1){
+                    error+="<li>Llene el campo Descripción</li>"
+                }
+
+                if($("#prov").val()== "" || $("#prov").val()== null){
+                    error+="<li>Seleccione el proveedor</li>"
+                }
+
+                if($("#comprobanteDesc").val() == '' || $("#comprobanteDesc").val() == null){
+                    error+="<li>Seleccione un comprobante</li>"
+                }
+
+                if($("#valorPago").val() == 0 || $("#valorPago").val() == null){
+                    error+="<li>Ingrese un valor</li>"
+                }
+
+                if(tipoP == 'P'){
+
+                    console.log("pago " + parseFloat($("#valorPago").val()))
+                    console.log("saldo " + parseFloat($("#comprobanteSaldo1").val()))
+
+                    if( parseFloat($("#valorPago").val()) > parseFloat($("#comprobanteSaldo").val())){
+                        error+="<li>El valor ingresado es mayor al saldo del comprobante a pagar!</li>";
+
+                        $("#valorPago").removeClass('required');
+                        $("#valorPago").addClass('colorRojo');
                     }
                 }
-            }
-            var iva0=$("#iva0").val()
-            var iva12=$("#iva12").val()
-            var noIva=$("#noIva").val()
-            if(isNaN(iva12)){
-                iva12=-1
-            }
-            if(isNaN(noIva)){
-                noIva=-1
-            }
-            if(isNaN(iva0)){
-                iva0=-1
-            }
-            if(iva12*1<0 ){
-                error+="<li>La base imponible iva ${iva}% debe ser un número positivo</li>"
-            }
-            if(iva0*1<0 ){
-                error+="<li>La base imponible iva 0% debe ser un número positivo</li>"
-            }
-            if(noIva*1<0 ){
-                error+="<li>La base imponible no aplica iva debe ser un número positivo</li>"
-            }
-            var base=iva0*1+iva12*1+noIva*1
-            if(base<=0){
-                error+="<li>La suma de las bases imponibles no puede ser cero</li>"
+
             }else{
-                var impIva=$("#ivaGenerado").val()
-                var impIce=$("#iceGenerado").val()
-                if(isNaN(impIva)){
-                    impIva=-1
+
+                $("#listaErrores").html("")
+                if($("#fecha_input").val().length<10){
+                    error+="<li>Seleccione la fecha de registro</li>"
                 }
-                if(isNaN(impIce)){
-                    impIce=-1
+                if($("#descripcion").val().length<1){
+                    error+="<li>Llene el campo Descripción</li>"
                 }
-                if(impIva*1>0 && iva12*1<=0){
-                    error+="<li>No se puede generar IVA si la base imponible iva ${iva}% es cero</li>"
-                }
-                if(impIce*1*impIva*1<0){
-                    error+="<li>Los impuestos generados no pueden ser negativos</li>"
+                if($("#tipoProceso").val()=="-1"){
+                    error+="<li>Seleccione el tipo de la transacción</li>"
                 }else{
-                    if((impIce*1+impIva*1)>base){
-                        error+="<li>Los impuestos generados no pueden ser superiores a la suma de las bases imponibles</li>"
+                    if($("#tipoProceso").val()=="C" || $("#tipoProceso").val()=="V" ){
+
+                        if($("#sustento").val()=="-1"){
+                            error+="<li>Seleccione un sustento tributario (Necesario si el tipo de transacción es Compras o Ventas)</li>"
+                        }
+                        if($("#tipoComprobante").val()=="-1"){
+                            error+="<li>Seleccione el tipo de documento a registrar (Necesario si el tipo de transacción es Compras o Ventas)</li>"
+                        }else{
+                            if($("#establecimiento").val().length<3){
+                                error+="<li>Ingrese el número de establecimiento del documento (Primera parte del campo documento) </li>"
+                            }
+                            if($("#emision").val().length<3){
+                                error+="<li>Ingrese el número de emisión del documento (Segunda parte del campo documento)</li>"
+                            }
+                            if($("#secuencial").val().length<1){
+                                error+="<li>Ingrese el número de secuencia del documento (Tercera parte del campo documento)</li>"
+                            }
+                        }
                     }
                 }
-            }
+                var iva0=$("#iva0").val()
+                var iva12=$("#iva12").val()
+                var noIva=$("#noIva").val()
+                if(isNaN(iva12)){
+                    iva12=-1
+                }
+                if(isNaN(noIva)){
+                    noIva=-1
+                }
+                if(isNaN(iva0)){
+                    iva0=-1
+                }
+                if(iva12*1<0 ){
+                    error+="<li>La base imponible iva ${iva}% debe ser un número positivo</li>"
+                }
+                if(iva0*1<0 ){
+                    error+="<li>La base imponible iva 0% debe ser un número positivo</li>"
+                }
+                if(noIva*1<0 ){
+                    error+="<li>La base imponible no aplica iva debe ser un número positivo</li>"
+                }
+                var base=iva0*1+iva12*1+noIva*1
+                if(base<=0){
+                    error+="<li>La suma de las bases imponibles no puede ser cero</li>"
+                }else{
+                    var impIva=$("#ivaGenerado").val()
+                    var impIce=$("#iceGenerado").val()
+                    if(isNaN(impIva)){
+                        impIva=-1
+                    }
+                    if(isNaN(impIce)){
+                        impIce=-1
+                    }
+                    if(impIva*1>0 && iva12*1<=0){
+                        error+="<li>No se puede generar IVA si la base imponible iva ${iva}% es cero</li>"
+                    }
+                    if(impIce*1*impIva*1<0){
+                        error+="<li>Los impuestos generados no pueden ser negativos</li>"
+                    }else{
+                        if((impIce*1+impIva*1)>base){
+                            error+="<li>Los impuestos generados no pueden ser superiores a la suma de las bases imponibles</li>"
+                        }
+                    }
+                }
 //            if($(".filaFP").size() <1){
 //                info+="No ha asignado formas de pago para la transacción contable"
 //                bandData=false
 //            }
-            if(bandData){
-                var data =""
-                $(".filaFP").each(function(){
-                    data+=$(this).attr("fp")+";"
+                if(bandData){
+                    var data =""
+                    $(".filaFP").each(function(){
+                        data+=$(this).attr("fp")+";"
 
-                })
-                $("#data").val(data)
+                    })
+                    $("#data").val(data)
+                }
             }
+
             if(error!=""){
+
                 $("#listaErrores").append(error)
                 $("#listaErrores").show()
                 $("#divErrores").show()
@@ -690,15 +814,18 @@
                 if(info!=""){
                     info+=" Esta seguro de continuar?"
                     bootbox.confirm(info,function(result){
+
                         if(result){
+
                             $(".frmProceso").submit();
                         }
                     })
                 }else{
+                    openLoader("Guardando..");
                     $(".frmProceso").submit();
+                    closeLoader()
                 }
             }
-
             closeLoader()
 
         });
@@ -729,9 +856,9 @@
         });
 
         $("#registrarProceso").click(function () {
-            bootbox.confirm("Esta seguro?.<br>Una vez registrada la transacción no se podrá hacer modificaciones.", function(result){
+            bootbox.confirm("<i class='fa fa-exclamation-circle fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea registrar el proceso contable? </br> Una vez registrado, la información NO podrá ser cambiada.</p>", function(result){
                 if(result){
-                    openLoader()
+                    openLoader("Registrando...");
                     $.ajax({
                         type    : "POST",
                         url     : "${g.createLink(controller: 'proceso',action: 'registrar')}",
@@ -768,9 +895,6 @@
         });
     }
 
-
 </script>
-
 </body>
-
 </html>

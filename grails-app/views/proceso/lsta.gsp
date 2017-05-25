@@ -30,9 +30,16 @@
         </g:link>
         <span style="height: 30px;line-height: 30px;font-size: 14px;margin-left: 10px;vertical-align: middle">
             Usted esta trabajando en la contabilidad: <span class="text-info"><strong>${session.contabilidad}</strong></span>
-            <g:link class="btn btn-azul" action="cambiar" controller="contabilidad" style="margin-left:10px">
+            %{--<g:link class="btn btn-azul" action="cambiar" controller="contabilidad" style="margin-left:10px">--}%
+                %{--<i class="fa fa-refresh"></i> Cambiar--}%
+            %{--</g:link>--}%
+
+            <a href="#" class="btn btn-azul" id="btnCambiarConta">
                 <i class="fa fa-refresh"></i> Cambiar
-            </g:link>
+
+            </a>
+
+
         </span>
     </div>
 </div>
@@ -43,6 +50,32 @@
 </div>
 
 <script type="text/javascript">
+
+    $("#btnCambiarConta").click(function () {
+       $.ajax({
+           type: 'POST',
+           url: "${createLink(controller: 'proceso', action: 'cambiarContabilidad_ajax')}",
+           data:{
+
+           },
+           success: function(msg){
+               bootbox.dialog({
+                   title   : "Cambiar de contabilidad",
+                   message : msg,
+                   class    : "long",
+                   buttons : {
+                       cancelar : {
+                           label     : "<i class='fa fa-times'></i> Cancelar",
+                           className : "btn-primary",
+                           callback  : function () {
+                           }
+                       }
+                   }
+               });
+           }
+       })
+    });
+
 
     $(function () {
         $("#criterio").keydown(function (event) {

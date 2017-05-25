@@ -13,7 +13,7 @@
     <g:textField name="comprobanteName" id="comprobanteDesc" class="form-control" disabled="true" title="Comprobante" style="width: 270px" placeholder="Descripción" value="${proceso?.comprobante?.descripcion}"/>
 </div>
 <div class="col-md-2">
-    <g:textField name="comprobanteSaldoName" id="comprobanteSaldo" class="form-control" disabled="true" title="Saldo del Comprobante" style="width:165px;" placeholder="Saldo" />
+    <g:textField name="comprobanteSaldoName" id="comprobanteSaldo" class="form-control" disabled="true" title="Saldo del Comprobante" style="width:165px;" placeholder="Saldo" value="${saldo}" />
 </div>
 <div class="col-xs-2" style="margin-left: 20px">
     <g:if test="${proceso?.estado == 'N' || !proceso?.id}">
@@ -23,7 +23,8 @@
         </a>
     </g:if>
 </div>
-<g:hiddenField name="comprobanteSel_name" id="comprobanteSel"/>
+<g:hiddenField name="comprobanteSel_name" id="comprobanteSel" value="${proceso?.comprobante?.id}"/>
+<g:hiddenField name="comprobanteSaldo_name" id="comprobanteSaldo1" value="${saldo}"/>
 
 <script type="text/javascript">
 
