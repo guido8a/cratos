@@ -524,18 +524,43 @@ class ProcesoController extends cratos.seguridad.Shield {
     }
 
     def buscarProveedor = {
-        // println "buscar proveedor "+params
-        def empresa = Empresa.get(session.empresa.id)
+//         println "buscar proveedor "+params
         def provs = []
-        if (params.par != "" && params.par != " ") {
-            if (params.tipo == "1") {
-                provs = Proveedor.findAll("from Proveedor where ruc like '%${params.par}%' and empresa = '${empresa?.id}' order by nombre")
-            } else {
-                provs = Proveedor.findAll("from Proveedor where upper(nombre) like '%${params.par.toUpperCase()}%' and empresa = '${empresa?.id}' order by nombre")
-            }
-        } else {
-            provs = Proveedor.findAllByEmpresa(empresa,[sort: "nombre", max: 10])
+        def proceso = Proceso.get(params.proceso)
+        def tr = TipoRelacion.list()
+        def tipo =   " 1,2,3 "
+        switch (params.tipoProceso) {
+            case "P":
+                tr = TipoRelacion.findAllByCodigoInList(['C','P'])
+                tipo = " 1, 3 "
+                break
+            case "NC" :
+                tr = TipoRelacion.findAllByCodigoInList(['C','E'])
+                tipo = " 2,3 "
+                break
+            case "V"  :
+                tr = TipoRelacion.findAllByCodigoInList(['C','E'])
+                tipo = " 2, 3 "
+                break
         }
+
+        def cn = dbConnectionService.getConnection()
+        def sql
+
+        if(params?.par?.trim() == ""){
+            sql = "select prve__id id, prve_ruc ruc, prvenmbr nombre, tppvdscr tipoProveedor from prve, tppv " +
+                    "where tppv.tppv__id = prve.tppv__id and tprl__id in (${tipo}) and empr__id = ${session?.empresa?.id} order by prve_ruc;"
+        }else{
+            if(params.tipo == "1"){
+                sql = "select prve__id id, prve_ruc ruc, prvenmbr nombre, tppvdscr tipoProveedor from prve, tppv " +
+                        "where tppv.tppv__id = prve.tppv__id and tprl__id in (${tipo}) and empr__id = ${session?.empresa?.id} and prve_ruc like '%${params.par}%' order by prve_ruc;"
+            }else{
+                sql = "select prve__id id, prve_ruc ruc, prvenmbr nombre, tppvdscr tipoProveedor from prve, tppv " +
+                        "where tppv.tppv__id = prve.tppv__id and tprl__id in (${tipo}) and empr__id = ${session?.empresa?.id} and prvenmbr ilike '%${params.par}%' order by prve_ruc;"
+            }
+        }
+
+        provs = cn.rows(sql.toString())
 
         [provs: provs]
     }
@@ -1152,12 +1177,12 @@ class ProcesoController extends cratos.seguridad.Shield {
                 proveedores = Proveedor.findAllByTipoRelacionInList(tr)
                 break
             case "V"  :
-                tr = TipoRelacion.findAllByCodigoInList(['P','E'])
+                tr = TipoRelacion.findAllByCodigoInList(['C','E'])
                 proveedores = Proveedor.findAllByTipoRelacionInList(tr)
                 break
         }
 
-//        println("proveedores " + proveedores)
+        println("proveedores " + proveedores)
 
         return [proveedores : proveedores, proceso: proceso, tipo: params.tipo]
     }

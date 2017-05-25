@@ -1,25 +1,24 @@
 <script type="text/javascript" src="${resource(dir: 'js', file: 'ui.js')}"></script>
-%{--<table class="table table-striped">--}%
-    <table class="table table-bordered table-hover table-condensed">
+ <table class="table table-bordered table-hover table-condensed">
     <thead>
     <tr>
-        <th><i class="fa fa-check"></i></th>
-        <th>RUC</th>
-        <th>Nombre</th>
-        <th>Tipo</th>
+        <th style="width: 20px"><i class="fa fa-check"></i></th>
+        <th style="width: 37px">RUC</th>
+        <th style="width: 190px">Nombre</th>
+        <th style="width: 40px">Tipo</th>
     </tr>
     </thead>
     <tbody>
     <g:each in="${provs}" var="p">
         <tr>
-            <td>
-                <a href="#" class="btn_bsc btn btn-azul" id="${p.id}" ruc="${p.ruc}" nombre="${p?.nombre}" title="Seleccionar">
+            <td style="width: 20px">
+                <a href="#" class="btn_bsc btn btn-success" id="${p.id}" ruc="${p.ruc}" nombre="${p?.nombre}" title="Seleccionar">
                     <i class="fa fa-check"></i>
                 </a>
             </td>
-            <td>${p.ruc}</td>
-            <td>${p.nombre}</td>
-            <td>${p.tipoProveedor?.descripcion}</td>
+            <td style="width: 37px">${p.ruc}</td>
+            <td style="width: 190px">${p.nombre}</td>
+            <td style="width: 40px">${p.tipoProveedor}</td>
         </tr>
     </g:each>
     </tbody>

@@ -169,48 +169,9 @@
         </div>
 
         <div class="row" id="divCargaProveedor">
-            %{--<div class="col-xs-2 negrilla">--}%
-                %{--Proveedor:--}%
-            %{--</div>--}%
-            %{--<div class="col-xs-9 negrilla">--}%
-                %{--<div class="col-xs-3" style="margin-left: -15px">--}%
-                    %{--<input type="text" name="proveedor.ruc" class="form-control " id="prov" disabled="true" value="${proceso?.proveedor?.ruc ?: ''}" title="RUC del proveedor o cliente" style="width: 140px" placeholder="RUC"/>--}%
-                %{--</div>--}%
-                %{--<div class="col-xs-5" style="margin-left: -55px">--}%
-                    %{--<input type="text" name="proveedor.nombre" class="form-control  label-shared" id="prov_nombre" disabled="true" value="${proceso?.proveedor?.nombre ?: ''}" title="Nombre del proveedor o cliente" style="width: 300px" placeholder="Nombre"/>--}%
-                %{--</div>--}%
-                %{--<div class="col-xs-2">--}%
-                    %{--<g:if test="${!registro}">--}%
-                        %{--<a href="#" id="btn_buscar" class="btn btn-info">--}%
-                            %{--<i class="fa fa-search"></i>--}%
-                            %{--Buscar--}%
-                        %{--</a>--}%
-                    %{--</g:if>--}%
-                %{--</div>--}%
-                %{--<input type="hidden" name="proveedor.id" id="prov_id" value="${proceso?.proveedor?.id}">--}%
-            %{--</div>--}%
         </div>
 
         <div class="row" id="divFilaComprobante">
-            %{--<div class="col-md-2 negrilla">--}%
-            %{--Comprobante--}%
-            %{--</div>--}%
-
-            %{--<div class="col-md-3">--}%
-            %{--<g:textField name="comprobanteName" id="comprobanteDesc" class="form-control" disabled="true" title="Comprobante" style="width: 270px" placeholder="Descripción" value="${proceso?.comprobante?.descripcion}"/>--}%
-            %{--</div>--}%
-            %{--<div class="col-md-2">--}%
-            %{--<g:textField name="comprobanteSaldoName" id="comprobanteSaldo" class="form-control" disabled="true" title="Saldo del Comprobante" style="width:165px;" placeholder="Saldo" />--}%
-            %{--</div>--}%
-            %{--<div class="col-xs-2" style="margin-left: 20px">--}%
-            %{--<g:if test="${!registro}">--}%
-            %{--<a href="#" id="btnBuscarCom" class="btn btn-info ${proceso?.id ? '' : 'hidden'}">--}%
-            %{--<i class="fa fa-search"></i>--}%
-            %{--Buscar--}%
-            %{--</a>--}%
-            %{--</g:if>--}%
-            %{--</div>--}%
-            %{--<g:hiddenField name="comprobanteSel_name" id="comprobanteSel"/>--}%
         </div>
 
         <div class="row">
@@ -248,85 +209,6 @@
         <p class="css-vertical-text">Valores</p>
         <div class="linea"></div>
         <div id="divValores"></div>
-
-        %{--<g:if test="${proceso?.tipoProceso == 'P'}">--}%
-        %{--<div class="row" style="font-size: 12px">--}%
-        %{--<div class="col-xs-2 negrilla" style="width: 120px">--}%
-        %{--Valor:--}%
-        %{--</div>--}%
-        %{--<div class="col-xs-2 negrilla">--}%
-        %{--<g:textField name="valorPago_name" class="form-control required number" value="${proceso?.valor}"/>--}%
-        %{--</div>--}%
-        %{--</div>--}%
-        %{--<div class="row" style="font-size: 12px">--}%
-        %{--<div class="col-xs-2 negrilla" style="width: 120px">--}%
-        %{--Tipo de Pago:--}%
-        %{--</div>--}%
-        %{--<div class="col-xs-5">--}%
-        %{--<g:select name="tipoPago_name" from="${cratos.TipoPago.list().sort{it.descripcion}}" optionKey="id" optionValue="descripcion" value="${proceso?.tipoPago}" class="form-control"/>--}%
-        %{--</div>--}%
-        %{--</div>--}%
-        %{--</g:if>--}%
-        %{--<g:else>--}%
-
-        %{--<g:set var="iva" value="${cratos.ParametrosAuxiliares.list().first().iva}"/>--}%
-        %{--<div class="row" style="font-size: 12px">--}%
-        %{--<div class="col-xs-2 negrilla" style="width: 120px">--}%
-        %{--Base imponible IVA ${iva}%:--}%
-        %{--</div>--}%
-        %{--<div class="col-xs-2 negrilla">--}%
-        %{--<input type="text" name="baseImponibleIva" id="iva12" size="7" value="${proceso?.baseImponibleIva ?: 0.00}" class="required  number form-control" validate="required number" ${registro?'disabled':''} />--}%
-        %{--</div>--}%
-        %{--<div class="col-xs-2 negrilla" style="width: 120px">--}%
-        %{--Base imponible IVA 0%:--}%
-        %{--</div>--}%
-        %{--<div class="col-xs-2 negrilla">--}%
-        %{--<input type="text" name="baseImponibleIva0" size="7" id="iva0" value="${proceso?.baseImponibleIva0 ?: 0.00}" class="required number form-control" validate="required number" ${registro?'disabled':''} />--}%
-        %{--</div>--}%
-        %{--<div class="col-xs-2 negrilla" style="width: 120px">--}%
-        %{--Base imponible no aplica IVA:--}%
-        %{--</div>--}%
-        %{--<div class="col-xs-2 negrilla">--}%
-        %{--<input type="text" name="baseImponibleNoIva" id="noIva" size="7" value="${proceso?.baseImponibleNoIva ?: 0.00}" class="required number form-control" validate="required number" ${registro?'disabled':''} />--}%
-        %{--</div>--}%
-        %{--</div>--}%
-        %{--<div class="row" style="font-size: 12px">--}%
-        %{--<div class="col-xs-2 negrilla" style="width: 120px">--}%
-        %{--IVA generado:--}%
-        %{--</div>--}%
-        %{--<div class="col-xs-2 negrilla">--}%
-        %{--<input type="text" name="ivaGenerado" id="ivaGenerado"  value="${proceso?.ivaGenerado}" class="required number form-control" validate="required number" ${registro?'disabled':''} />--}%
-        %{--</div>--}%
-        %{--<div class="col-xs-2 negrilla" style="width: 120px">--}%
-        %{--ICE generado:--}%
-        %{--</div>--}%
-        %{--<div class="col-xs-2 negrilla"  >--}%
-        %{--<input type="text" name="iceGenerado"  id="iceGenerado" value="${proceso?.iceGenerado ?: 0.00}" class="required number form-control" validate="required number" ${registro?'disabled':''} />--}%
-        %{--</div>--}%
-        %{--</div>--}%
-        %{--<div class="row" style="font-size: 12px">--}%
-        %{--<div class="col-xs-2 negrilla" style="width: 120px">--}%
-        %{--Documento:--}%
-        %{--</div>--}%
-        %{--<div class="col-xs-3 negrilla">--}%
-        %{--<input type="text" name="facturaEstablecimiento" id="establecimiento" size="3" maxlength="3" value="${proceso?.facturaEstablecimiento}" class=" digits form-control label-shared " validate=" number"--}%
-        %{--title="El número de establecimiento del documento " ${registro?'disabled':''} />--}%
-        %{--<input type="text" name="facturaPuntoEmision" id="emision" size="3" maxlength="3" value="${proceso?.facturaPuntoEmision}" class=" digits form-control label-shared " validate=" number"--}%
-        %{--title="El número de punto de emisión del documento" ${registro?'disabled':''} />--}%
-        %{--<input type="text" name="facturaSecuencial" id="secuencial" size="10" maxlength="9" value="${proceso?.facturaSecuencial}" class=" digits form-control label-shared  " validate=" number"--}%
-        %{--title="El número de secuencia del documento"  ${registro?'disabled':''} />--}%
-        %{--</div>--}%
-        %{--<div class="col-xs-2 negrilla" style="width: 120px;margin-left: -30px">--}%
-        %{--Autorización:--}%
-        %{--</div>--}%
-        %{--<div class="col-xs-2 negrilla">--}%
-        %{--<input type="text" name="facturaAutorizacion" id="auto" size="10" maxlength="15" value="${proceso?.facturaAutorizacion}" class=" digits form-control label-shared " validate=" number"--}%
-        %{--title="El número autorización de la factura a registrar " ${registro?'disabled':''} />--}%
-        %{--</div>--}%
-        %{--</div>--}%
-
-
-        %{--</g:else>--}%
     </div>
 
 </g:form>
@@ -428,13 +310,10 @@
     cargarBotonGuardar($(".tipoProcesoSel option:selected").val());
     cargarBotonBuscar($(".tipoProcesoSel option:selected").val());
     <g:if test="${proceso?.id && (proceso?.tipoProceso == 'P' || proceso?.tipoProceso == 'NC')}">
-//    if($(".tipoProcesoSel option:selected").val() == 'P' || $(".tipoProcesoSel option:selected").val() == 'NC'){
         cargarComPago();
-//    }
     </g:if>
-    %{--<g:if test="${proceso?.id}">--}%
     cargarProveedor($(".tipoProcesoSel option:selected").val());
-    %{--</g:if>--}%
+    cargarComprobante('${proceso?.id}');
 
     $("#tipoProceso").change(function () {
         var tipo = $(".tipoProcesoSel option:selected").val();
@@ -602,33 +481,6 @@
             $('#modal-proveedor').modal('show')
         });
 
-        %{--$("#btnBuscarCom").click(function(){--}%
-        %{--var idProveedor = $("#prov_id").val();--}%
-        %{--var tipoTransaccion = $("#tipoProceso").val();--}%
-        %{--$.ajax({--}%
-        %{--type    : "POST",--}%
-        %{--url     : "${g.createLink(controller: 'proceso',action: 'tablaBuscarComprobante_ajax')}",--}%
-        %{--data    : {--}%
-        %{--proveedor: idProveedor,--}%
-        %{--tipo: tipoTransaccion--}%
-        %{--},--}%
-        %{--success : function (msg) {--}%
-        %{--bootbox.dialog({--}%
-        %{--title   : "Alerta",--}%
-        %{--message : msg,--}%
-        %{--class :'long',--}%
-        %{--buttons : {--}%
-        %{--cancelar : {--}%
-        %{--label     : "<i class='fa fa-times'></i> Cancelar",--}%
-        %{--className : "btn-primary",--}%
-        %{--callback  : function () {--}%
-        %{--}--}%
-        %{--}--}%
-        %{--}--}%
-        %{--});--}%
-        %{--}--}%
-        %{--});--}%
-        %{--});--}%
 
         $("#agregarFP").click(function(){
             var band = true
@@ -659,12 +511,6 @@
         $(".span-eliminar").bind("click", function () {
             $(this).parent().remove()
         })
-        /*todo guardar proceso..... move on*/
-
-
-
-
-
 
         $("#guardarProceso").click(function() {
             var bandData=true
@@ -844,10 +690,11 @@
         });
 
         $("#buscar").click(function () {
+            var tipo = $(".tipoProcesoSel option:selected").val();
             $.ajax({
                 type    : "POST",
                 url     : "${g.createLink(controller: 'proceso',action: 'buscarProveedor')}",
-                data    : "par=" + $("#parametro").val() + "&tipo=" + $("#tipoPar").val(),
+                data    : "par=" + $("#parametro").val() + "&tipo=" + $("#tipoPar").val() + "&tipoProceso=" + tipo,
                 success : function (msg) {
                     $("#resultados").html(msg).show("slide")
                 }
@@ -876,11 +723,7 @@
 
             })
         });
-
     });
-
-
-    cargarComprobante('${proceso?.id}');
 
     function cargarComprobante (proceso) {
         $.ajax({
