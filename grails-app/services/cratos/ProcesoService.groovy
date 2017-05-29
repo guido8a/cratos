@@ -287,30 +287,29 @@ class ProcesoService {
     }
 
 
-    def contabilizar(proceso) {
-        def comprobantes = Comprobante.findAllByProceso(proceso)
+    def mayorizar(cmpr) {
+        def cn = dbConnectionService.getConnection()
         def msg = ""
-        comprobantes.each {
-            msg += kerberosoldService.ejecutarProcedure("mayorizar", [it.id, 1]) + ";"
-            println "resultado mayorizar " + msg
-            it.registrado = "S"
-            it.save(flush: true)
-        }
-        proceso.estado = "R"
-        proceso.save(flush: true)
+            try {
+                cn.eachRow("select mayorizar from mayorizar($cmpr.id, 1)".toString()) {d ->
+                    msg = d.mayorizar
+                }
+            } catch (e) {
+                println "errores: $e"
+            }
         return msg
     }
 
-    def desContabilizar(proceso) {
-        def comprobantes = Comprobante.findAllByProceso(proceso)
+    def desmayorizar(cmpr) {
+        def cn = dbConnectionService.getConnection()
         def msg = ""
-        comprobantes.each {
-            msg += kerberosoldService.ejecutarProcedure("mayorizar", [it.id, 0]) + ";"
-            println "resultado mayorizar " + msg
-            it.registrado = "N"
+        try {
+            cn.eachRow("select mayorizar from mayorizar($cmpr.id, -1)".toString()) {d ->
+                msg = d.mayorizar
+            }
+        } catch (e) {
+            println "errores: $e"
         }
-        proceso.estado = "N"
-        proceso.save(flush: true)
         return msg
     }
 
