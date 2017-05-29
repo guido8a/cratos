@@ -213,7 +213,7 @@
 
 </g:form>
 <g:if test="${proceso}">
-    <div class="vertical-container" skip="1" style="margin-top: 25px;color: black;min-height: 410px;margin-bottom: 20px">
+    <div class="vertical-container" skip="1" style="margin-top: 25px;color: black;min-height: 500px;margin-bottom: 20px">
         <p class="css-vertical-text">Comprobante</p>
         <div class="linea"></div>
         <div id="divComprobante" class="col-md-12" style="margin-bottom: 20px ;padding: 10px;display: none;margin-top: 5px;">
@@ -482,32 +482,34 @@
         });
 
 
-        $("#agregarFP").click(function(){
-            var band = true
-            var message
-            if ($(".filaFP").size() == 5) {
-                message = "<b>Ya ha asignado el máximo de 5 formas de  pago</b>"
-                band = false
-            }
-            if ($(".fp-"+$("#comboFP").val()).size() >0) {
-                message = "<b>Ya ha asignado la forma de pago "+$("#comboFP option:selected").text()+ " previamente.</b>"
-                band = false
-            }
-            if (band) {
-                var div = $("<div class='filaFP ui-corner-all'>")
-                var span = $("<span class='span-eliminar ui-corner-all' title='Click para eliminar'>Eliminar</span>")
-                div.html($("#comboFP option:selected").text())
-                div.append(span)
-                div.addClass("fp-"+$("#comboFP").val())
-                div.attr("fp",$("#comboFP").val())
-                span.bind("click", function () {
-                    $(this).parent().remove()
-                })
-                $("#detalle-fp").append(div)
-            }else{
-                bootbox.alert(message)
-            }
-        });
+//        $("#agregarFP").click(function(){
+//            var band = true
+//            var message
+//            if ($(".filaFP").size() == 5) {
+//                message = "<b>Ya ha asignado el máximo de 5 formas de  pago</b>"
+//                band = false
+//            }
+//            if ($(".fp-"+$("#comboFP").val()).size() >0) {
+//                message = "<b>Ya ha asignado la forma de pago "+$("#comboFP option:selected").text()+ " previamente.</b>"
+//                band = false
+//            }
+//            if (band) {
+//                var div = $("<div class='filaFP ui-corner-all'>")
+//                var span = $("<span class='span-eliminar ui-corner-all' title='Click para eliminar'>Eliminar</span>")
+//                div.html($("#comboFP option:selected").text())
+//                div.append(span)
+//                div.addClass("fp-"+$("#comboFP").val())
+//                div.attr("fp",$("#comboFP").val())
+//                span.bind("click", function () {
+//                    $(this).parent().remove()
+//                })
+//                $("#detalle-fp").append(div)
+//            }else{
+//                bootbox.alert(message)
+//            }
+//        });
+//
+
         $(".span-eliminar").bind("click", function () {
             $(this).parent().remove()
         })

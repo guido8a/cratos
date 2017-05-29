@@ -292,23 +292,25 @@ class ProcesoService {
         def msg = ""
             try {
                 cn.eachRow("select mayorizar from mayorizar($cmpr.id, 1)".toString()) {d ->
-                    msg = d.mayorizar
+                    msg = "ok_" + d.mayorizar
                 }
             } catch (e) {
                 println "errores: $e"
+                msg = "no_Error al mayorizar"
             }
         return msg
     }
 
     def desmayorizar(cmpr) {
-        def cn = dbConnectionService.getConnection()
+        def cn1 = dbConnectionService.getConnection()
         def msg = ""
         try {
-            cn.eachRow("select mayorizar from mayorizar($cmpr.id, -1)".toString()) {d ->
-                msg = d.mayorizar
+            cn1.eachRow("select mayorizar from mayorizar($cmpr.id, -1)".toString()) {d ->
+                msg = "ok_" + d.mayorizar
             }
         } catch (e) {
             println "errores: $e"
+            msg = "no_Error al Desmayorizar"
         }
         return msg
     }

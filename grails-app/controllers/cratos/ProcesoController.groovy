@@ -236,7 +236,7 @@ class ProcesoController extends cratos.seguridad.Shield {
     /*TODO Crear periodos y probar el mayorizar y desmayorizar... move on*/
     def registrarComprobante = {
         if (request.method == 'POST') {
-//            println "registrar comprobante " + params
+            println "registrar comprobante " + params
             def comprobante = Comprobante.get(params.id)
             def msn = kerberosoldService.ejecutarProcedure("mayorizar", [comprobante.id, 1])
             println "LOG: mayorizando por comprobante ${comprobante.id}" + msn["mayorizar"]
@@ -251,15 +251,11 @@ class ProcesoController extends cratos.seguridad.Shield {
                 println "LOG: error del login de mayorizar " + msn["mayorizar"].toString()
             }
             if (msn["mayorizar"] =~ "Error") {
-//                def asientos=Asiento.findAllByComprobante(comprobante)
-//                println "error al mayorizar "+msn
-//                render(view: "detalleProceso", model: [comprobante: comprobante, asientos: asientos, msn: msn])
                 render " " + msn["mayorizar"]
             } else {
                 def proceso = comprobante.proceso
                 params.controllerName = controllerName
                 params.actionName = actionName
-//                kerberosService.generarEntradaAuditoria(params,Comprobante,"registrado","R",comprobante.registrado,session.perfil,session.usuario)
                 comprobante.registrado = "S"
                 comprobante.save(flush: true)
                 proceso.estado = "R"
@@ -1182,8 +1178,7 @@ class ProcesoController extends cratos.seguridad.Shield {
                 break
         }
 
-        println("proveedores " + proveedores)
-
+//        println("proveedores " + proveedores)
         return [proveedores : proveedores, proceso: proceso, tipo: params.tipo]
     }
 
@@ -1191,11 +1186,30 @@ class ProcesoController extends cratos.seguridad.Shield {
         def usuario = Persona.get(session.usuario.id)
         def contabilidad = Contabilidad.get(session.contabilidad.id)
         def empresa = Empresa.get(session.empresa.id)
-
         def contabilidades = Contabilidad.findAllByInstitucion(empresa, [sort: "fechaInicio"])
         contabilidades.remove(contabilidad)
-
         return [usuario: usuario, contabilidad: contabilidad, contabilidades: contabilidades]
+    }
+
+    def botonesMayo_ajax () {
+        def comprobante = Comprobante.get(params.comprobante).refresh()
+        def auxiliares = Auxiliar.findAllByComprobante(comprobante)
+        return[comprobante: comprobante, auxiliares: auxiliares]
+    }
+    def mayorizar_ajax () {
+        println("params " + params)
+        def comprobante = Comprobante.get(params.id)
+        def res = procesoService.mayorizar(comprobante)
+        println("res " + res)
+        render res
+    }
+
+    def desmayorizar_ajax () {
+        println("params " + params)
+        def comprobante = Comprobante.get(params.id)
+        def res = procesoService.desmayorizar(comprobante)
+        println("res " + res)
+        render res
     }
 
 }

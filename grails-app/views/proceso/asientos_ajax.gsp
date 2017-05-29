@@ -27,12 +27,13 @@
 <div class="etiqueta">Tipo:</div> ${comprobante?.tipo?.descripcion}<br>
 <div class="etiqueta">Número:</div> ${comprobante?.prefijo}${comprobante?.numero}<br>
 
-<div class="btn-group" style="float: right; margin-top: -40px">
-    <a href="#" class="btn btn-success btnAgregarAsiento" comp="${comprobante?.id}" title="Agregar asiento contable">
-        <i class="fa fa-plus"> Agregar Asiento</i>
-    </a>
-</div>
-
+<g:if test="${comprobante?.registrado != 'S'}">
+    <div class="btn-group" style="float: right; margin-top: -40px">
+        <a href="#" class="btn btn-success btnAgregarAsiento" comp="${comprobante?.id}" title="Agregar asiento contable">
+            <i class="fa fa-plus"> Agregar Asiento</i>
+        </a>
+    </div>
+</g:if>
 
 <table class="table table-bordered table-hover table-condensed">
     <thead>
@@ -58,17 +59,19 @@
                         <td style="width: 80px" class="derecha">${asiento.debe ? g.formatNumber(number: asiento.debe, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2) : 0.00}</td>
                         <td style="width: 80px" class="derecha">${asiento.haber ? g.formatNumber(number: asiento.haber, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2) : 0.00}</td>
                         <td style="text-align: center; width: 70px">
-                            <div class="btn-group">
-                                <a href="#" class="btn btn-success btn-sm btnEditarAsiento" idAs="${asiento?.id}" title="Editar asiento">
-                                    <i class="fa fa-pencil"></i>
-                                </a>
-                                <a href="#" class="btn btn-warning btn-sm btnAgregarAuxiliar" idAs="${asiento?.id}" title="Agregar auxiliar">
-                                    <i class="fa fa-plus"></i>
-                                </a>
-                                <a href="#" class="btn btn-danger btn-sm btnEliminarAsiento" idAs="${asiento?.id}" title="Eliminar asiento">
-                                    <i class="fa fa-times"></i>
-                                </a>
-                            </div>
+                            <g:if test="${asiento?.comprobante?.registrado != 'S'}">
+                                <div class="btn-group">
+                                    <a href="#" class="btn btn-success btn-sm btnEditarAsiento" idAs="${asiento?.id}" title="Editar asiento">
+                                        <i class="fa fa-pencil"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-warning btn-sm btnAgregarAuxiliar" idAs="${asiento?.id}" title="Agregar auxiliar">
+                                        <i class="fa fa-plus"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-danger btn-sm btnEliminarAsiento" idAs="${asiento?.id}" title="Eliminar asiento">
+                                        <i class="fa fa-times"></i>
+                                    </a>
+                                </div>
+                            </g:if>
                         </td>
                     </tr>
 
@@ -95,14 +98,16 @@
                                     <td style="width: 70px" class="derecha">${auxiliar.haber ? g.formatNumber(number: auxiliar.haber, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2) : 0.00}</td>
 
                                     <td style="text-align: center; width: 60px">
-                                        <div class="btn-group">
-                                            <a href="#" class="btn btn-success btn-sm btnEditarAuxiliar" idAu="${auxiliar?.id}" title="Editar auxiliar">
-                                                <i class="fa fa-pencil"></i>
-                                            </a>
-                                            <a href="#" class="btn btn-danger btn-sm btnEliminarAuxiliar" idAu="${auxiliar?.id}" title="Eliminar auxiliar">
-                                                <i class="fa fa-trash-o"></i>
-                                            </a>
-                                        </div>
+                                        <g:if test="${auxiliar?.asiento?.comprobante?.registrado != 'S'}">
+                                            <div class="btn-group">
+                                                <a href="#" class="btn btn-success btn-sm btnEditarAuxiliar" idAu="${auxiliar?.id}" title="Editar auxiliar">
+                                                    <i class="fa fa-pencil"></i>
+                                                </a>
+                                                <a href="#" class="btn btn-danger btn-sm btnEliminarAuxiliar" idAu="${auxiliar?.id}" title="Eliminar auxiliar">
+                                                    <i class="fa fa-trash-o"></i>
+                                                </a>
+                                            </div>
+                                        </g:if>
                                     </td>
                                 </tr>
                             </g:if>
@@ -116,51 +121,6 @@
         </table>
     </div>
 </div>
-
-%{--<g:if test="${auxiliares}">--}%
-    %{--<table class="table table-bordered table-hover table-condensed">--}%
-        %{--<thead>--}%
-        %{--<tr>--}%
-            %{--<th style="width: 160px;" class="colorAtras">Auxiliar Cuenta</th>--}%
-            %{--<th style="width: 150px" class="colorAtras">Proveedor</th>--}%
-            %{--<th style="width: 80px" class="colorAtras">Fecha Pago</th>--}%
-            %{--<th style="width: 80px" class="colorAtras">Pagar</th>--}%
-            %{--<th style="width: 80px" class="colorAtras">Cobrar</th>--}%
-            %{--<th style="width: 60px" class="colorAtras"><i class="fa fa-pencil"></i> </th>--}%
-        %{--</tr>--}%
-        %{--</thead>--}%
-    %{--</table>--}%
-
-    %{--<div class="row-fluid"  style="width: 99.7%;height: 100px;overflow-y: auto;float: right; margin-bottom: 20px">--}%
-        %{--<div class="span12">--}%
-            %{--<table class="table table-bordered table-hover table-condensed">--}%
-                %{--<tbody>--}%
-                %{--<g:each in="${auxiliares}" var="auxiliar">--}%
-                    %{--<g:if test="${auxiliar.asiento.comprobante == comprobante}">--}%
-                        %{--<tr>--}%
-                            %{--<td style="width: 150px">${auxiliar?.asiento?.cuenta?.descripcion}</td>--}%
-                            %{--<td style="width: 150px">${auxiliar?.proveedor?.nombre}</td>--}%
-                            %{--<td style="width: 70px">${auxiliar?.fechaPago?.format("dd-MM-yyyy")}</td>--}%
-                            %{--<td style="width: 70px">${auxiliar?.debe ? g.formatNumber(number: auxiliar.debe, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2) : 0.00}</td>--}%
-                            %{--<td style="width: 70px">${auxiliar.haber ? g.formatNumber(number: auxiliar.haber, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2) : 0.00}</td>--}%
-                            %{--<td style="text-align: center; width: 60px">--}%
-                                %{--<div class="btn-group">--}%
-                                    %{--<a href="#" class="btn btn-success btn-sm btnEditarAuxiliar" idAu="${auxiliar?.id}" title="Editar auxiliar">--}%
-                                        %{--<i class="fa fa-pencil"></i>--}%
-                                    %{--</a>--}%
-                                    %{--<a href="#" class="btn btn-danger btn-sm btnEliminarAuxiliar" idAu="${auxiliar?.id}" title="Eliminar auxiliar">--}%
-                                        %{--<i class="fa fa-times"></i>--}%
-                                    %{--</a>--}%
-                                %{--</div>--}%
-                            %{--</td>--}%
-                        %{--</tr>--}%
-                    %{--</g:if>--}%
-                %{--</g:each>--}%
-                %{--</tbody>--}%
-            %{--</table>--}%
-        %{--</div>--}%
-    %{--</div>--}%
-%{--</g:if>--}%
 
 
 <script type="text/javascript">
