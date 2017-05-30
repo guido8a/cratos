@@ -10,7 +10,7 @@ class Auxiliar implements Serializable {
     Proveedor proveedor
     TipoPago tipoPago
     Comprobante comprobante
-
+    String factura
 
     static mapping = {
         table 'axlr'
@@ -28,6 +28,7 @@ class Auxiliar implements Serializable {
             proveedor column: 'prve__id'
             tipoPago column: 'tppg__id'
             comprobante column: 'cmpr__id'
+            factura column: 'axlrfctr'
         }
     }
     static constraints = {
@@ -39,6 +40,7 @@ class Auxiliar implements Serializable {
         proveedor(blank: true, nullable: true)
         tipoPago (blank: true, nullable: true)
         comprobante (blank: true, nullable: true)
+        factura (blank: true, nullable: true)
     }
 
 
