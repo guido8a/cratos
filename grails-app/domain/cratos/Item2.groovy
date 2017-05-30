@@ -1,6 +1,7 @@
 package cratos
 
 import cratos.inventario.Grupo
+import cratos.inventario.Marca
 
 class Item2 implements Serializable {
     Empresa empresa

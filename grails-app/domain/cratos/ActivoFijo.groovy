@@ -1,6 +1,7 @@
 package cratos
 
 import cratos.inventario.Grupo
+import cratos.inventario.Marca
 import cratos.seguridad.Persona
 import groovy.time.TimeCategory
 

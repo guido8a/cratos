@@ -102,7 +102,7 @@
         </div>
 
         <div class="span-6">
-            <g:select id="marca" name="marca.id" from="${cratos.Marca.list()}" optionKey="id" optionValue="descripcion"
+            <g:select id="marca" name="marca.id" from="${cratos.inventario.Marca.list()}" optionKey="id" optionValue="descripcion"
                       value="${itemInstance?.marca?.id}" class="field  many-to-one ui-corner-all"
                       title="${Item2.constraints.marca.attributes.title}" noSelection="['null': '']"/>
 

@@ -1,5 +1,6 @@
 package cratos
 
+import cratos.inventario.Marca
 import org.springframework.dao.DataIntegrityViolationException
 
 class MarcaController extends cratos.seguridad.Shield  {

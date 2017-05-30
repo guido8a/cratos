@@ -24,7 +24,7 @@ class ProcesoController extends cratos.seguridad.Shield {
 
     def nuevoProceso = {
 //        println "nuevo proceso "+params
-        def tiposProceso = ["-1": "Seleccione...", "C": "Compras", "V": "Ventas", "O": "Otros", "A": "Ajustes", "P": "Pagos", "NC": "Nota de Crédito"]
+        def tiposProceso = ["-1": "Seleccione...", "C": "Compras", "V": "Ventas", "O": "Otros", "A": "Ajustes", "P": "Pagos", "N": "Nota de Crédito"]
         if (params.id) {
             def proceso = Proceso.get(params.id)
             def registro = (Comprobante.findAllByProceso(proceso)?.size() == 0) ? false : true

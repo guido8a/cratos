@@ -1,4 +1,4 @@
-<%@ page import="cratos.Marca" %>
+<%@ page import="cratos.inventario.Marca" %>
 
 <script type="text/javascript" src="${resource(dir: 'js', file: 'ui.js')}"></script>
 <g:if test="${!marcaInstance}">

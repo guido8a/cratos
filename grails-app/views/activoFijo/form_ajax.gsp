@@ -86,7 +86,7 @@
                     </label>
 
                     <div class="col-md-6">
-                        <g:select id="marca" name="marca.id" from="${cratos.Marca.list()}" optionKey="id" required="" value="${activoFijoInstance?.marca?.id}"
+                        <g:select id="marca" name="marca.id" from="${cratos.inventario.Marca.list()}" optionKey="id" required="" value="${activoFijoInstance?.marca?.id}"
                                   class="many-to-one form-control" optionValue="descripcion"/>
                     </div>
                     *

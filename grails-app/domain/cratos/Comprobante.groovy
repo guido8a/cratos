@@ -8,6 +8,8 @@ class Comprobante implements Serializable {
     Proceso proceso
     TipoComprobante tipo
     String registrado
+    String factura
+
     static auditable = true
     static mapping = {
         table 'cmpr'
@@ -23,6 +25,7 @@ class Comprobante implements Serializable {
             tipo column: 'tpcp__id'
             registrado column: 'cmprrgst'
             prefijo column: 'cmprprfj'
+            factura column: 'cmprfctr'
         }
     }
     static constraints = {
@@ -33,5 +36,6 @@ class Comprobante implements Serializable {
         tipo(blank: false, attributes: [title: 'tipoProveedor'])
         registrado(blank: false, maxSize: 1, attributes: [title: 'registrado'])
         prefijo(blank: true,nullable: true,size: 1..20)
+        factura(blank: true,nullable: true)
     }
 }

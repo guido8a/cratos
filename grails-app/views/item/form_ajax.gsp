@@ -193,7 +193,7 @@
                     Marca
                 </label>
                 <div class="col-md-7">
-                    <g:select id="marca" name="marca.id" from="${cratos.Marca.list()}" optionKey="id" optionValue="descripcion" value="${itemInstance?.marca?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
+                    <g:select id="marca" name="marca.id" from="${cratos.inventario.Marca.list()}" optionKey="id" optionValue="descripcion" value="${itemInstance?.marca?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
                 </div>
 
             </span>

@@ -1,5 +1,5 @@
 
-<%@ page import="cratos.Marca" %>
+<%@ page import="cratos.inventario.Marca" %>
 
 <g:if test="${!marcaInstance}">
     <elm:notFound elem="Marca" genero="o" />

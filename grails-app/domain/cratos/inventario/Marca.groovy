@@ -1,4 +1,4 @@
-package cratos
+package cratos.inventario
 
 class Marca implements Serializable {
     String descripcion
