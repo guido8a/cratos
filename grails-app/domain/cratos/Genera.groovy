@@ -4,6 +4,7 @@ class Genera implements Serializable {
     double valor
     double porcentajeImpuestos
     double porcentaje
+    double baseSinIva
     TipoComprobante tipoComprobante
     Cuenta cuenta
     Gestor gestor
@@ -23,6 +24,7 @@ class Genera implements Serializable {
             cuenta column: 'cnta__id'
             gestor column: 'gstr__id'
             debeHaber column: 'gnradbhb'
+            baseSinIva column: 'gnrapcbz'
         }
     }
     static constraints = {
@@ -33,5 +35,6 @@ class Genera implements Serializable {
         cuenta(blank: true, nullable: true, attributes: [title: 'cuenta'])
         gestor(blank: false, nullable: false, attributes: [title: 'gestor'])
         debeHaber(blank: false, maxSize: 1, attributes: [title: 'debe o haber'])
+        baseSinIva(blank: true, nullable: true)
     }
 }
