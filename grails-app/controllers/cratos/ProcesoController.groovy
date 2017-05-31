@@ -732,12 +732,27 @@ class ProcesoController extends cratos.seguridad.Shield {
 
     def detalleSri() {
 
+        def empresa = Empresa.get(session.empresa.id)
+
         println("params " + params)
 
         def proceso = Proceso.get(params.id)
+        def libreta
+
+//        libreta = DocumentoEmpresa.withCriteria {
+//            eq("empresa", empresa)
+//
+//                lt("fechaFin", new Date().format("yyyy-MM-dd"))
+//                gt("fechaInicio", new Date().format("yyyy-MM-dd"))
+//
+//        }
+        
+       libreta =  DocumentoEmpresa.findAllByEmpresaAndFechaInicioLessThanEqualsAndFechaFinGreaterThanEqualsAndTipo(empresa, new Date(), new Date(),'R')
+
+        println("libreta " + libreta)
 
 
-        return [proceso: proceso]
+        return [proceso: proceso, libreta: libreta]
 
 
 

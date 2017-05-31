@@ -103,49 +103,82 @@
         <p class="css-vertical-text">Retención</p>
         <div class="linea"></div>
 
-        <div class="fila " style="min-height: 15px;height: 15px;">
-            <div class="fac1">
-                <label style="">Fecha Emisión</label>
+        <div class="col-md-12" style="margin-bottom: 10px">
+            <div class="col-md-2 negrilla">
+                Comprobante N°:
             </div>
+            <div class="col-md-9 negrilla">
+                <div class="col-md-5">
+                    <g:select name="compro" from="${libreta}" value="" id="" class="form-control" optionKey="id" optionValue="${{"Desde: " + it?.numeroDesde + ' - Hasta: ' + it?.numeroHasta}}"/>
+                </div>
 
-            <div class="fac2" style="margin-left: 20px">
-                <label>N° Esta.</label>
-            </div>
+                <div class="col-md-2" id="divEsta">
 
-            <div class="fac2">
-                <label>N° Emisión</label>
-            </div>
+                </div>
+                <div class="col-md-2" id="divEmi">
 
-            <div class="fac1" style="margin-left: 40px">
-                <label>N° Secuencial</label>
-            </div>
+                </div>
+                <div class="col-md-2">
 
-            <div class="fac1" style="width: 300px;">
-                <label>N° Autorización del Comprobante</label>
+                </div>
             </div>
         </div>
 
-        <div class="fila" style="margin-bottom: 20px">
-            <div class="fac1">
-                <elm:datepicker name="fechaEmision" class="datepicker required form-control" value="${retencion?.fechaEmision}" />
-            </div>
 
-            <div class="fac2" style="margin-left: 20px">
-                <g:textField class=" form-control required digits" title="El número de establecimiento del comprobante de retención es obligatorio." maxlength="3" name="numeroEstablecimiento" style="width: 60px" value="${retencion?.numeroEstablecimiento}"/>
+        <div class="col-md-12" style="margin-bottom: 10px">
+            <div class="col-md-2 negrilla">
+                Fecha Emisión:
             </div>
-
-            <div class="fac2" style="margin-left: 20px">
-                <g:textField class=" form-control required digits" title="El número de punto de emisión del comprobante de retención es obligatorio." maxlength="3" name="numeroPuntoEmision" style="width: 60px" value="${retencion?.numeroPuntoEmision}"/>
-            </div>
-
-            <div class="fac1" style="margin-left: 20px">
-                <g:textField class=" form-control required digits" title="El número de secuencial del comprobante de retención es obligatorio." maxlength="9" name="retSecu" style="width: 100px" value="${retencion?.numeroSecuencial}"/>
-            </div>
-
-            <div class="fac1">
-                <g:textField class=" form-control required digits" title="El número de autorización del comprobante de retención es obligatorio." maxlength="10" name="retAutorizacion" value="${retencion?.numeroAutorizacionComprobante}"/>
+            <div class="col-md-9 negrilla">
+                <div class="col-md-3">
+                    <elm:datepicker name="fechaEmision" class="datepicker required form-control" value="${retencion?.fechaEmision}" />
+                </div>
             </div>
         </div>
+
+        %{--<div class="fila " style="min-height: 15px;height: 15px;">--}%
+            %{--<div class="fac1">--}%
+                %{--<label style="">Fecha Emisión</label>--}%
+            %{--</div>--}%
+
+            %{--<div class="fac2" style="margin-left: 20px">--}%
+                %{--<label>N° Esta.</label>--}%
+            %{--</div>--}%
+
+            %{--<div class="fac2">--}%
+                %{--<label>N° Emisión</label>--}%
+            %{--</div>--}%
+
+            %{--<div class="fac1" style="margin-left: 40px">--}%
+                %{--<label>N° Secuencial</label>--}%
+            %{--</div>--}%
+
+            %{--<div class="fac1" style="width: 300px;">--}%
+                %{--<label>N° Autorización del Comprobante</label>--}%
+            %{--</div>--}%
+        %{--</div>--}%
+
+        %{--<div class="fila" style="margin-bottom: 20px">--}%
+            %{--<div class="fac1">--}%
+                %{--<elm:datepicker name="fechaEmision" class="datepicker required form-control" value="${retencion?.fechaEmision}" />--}%
+            %{--</div>--}%
+
+            %{--<div class="fac2" style="margin-left: 20px">--}%
+                %{--<g:textField class=" form-control required digits" title="El número de establecimiento del comprobante de retención es obligatorio." maxlength="3" name="numeroEstablecimiento" style="width: 60px" value="${retencion?.numeroEstablecimiento}"/>--}%
+            %{--</div>--}%
+
+            %{--<div class="fac2" style="margin-left: 20px">--}%
+                %{--<g:textField class=" form-control required digits" title="El número de punto de emisión del comprobante de retención es obligatorio." maxlength="3" name="numeroPuntoEmision" style="width: 60px" value="${retencion?.numeroPuntoEmision}"/>--}%
+            %{--</div>--}%
+
+            %{--<div class="fac1" style="margin-left: 20px">--}%
+                %{--<g:textField class=" form-control required digits" title="El número de secuencial del comprobante de retención es obligatorio." maxlength="9" name="retSecu" style="width: 100px" value="${retencion?.numeroSecuencial}"/>--}%
+            %{--</div>--}%
+
+            %{--<div class="fac1">--}%
+                %{--<g:textField class=" form-control required digits" title="El número de autorización del comprobante de retención es obligatorio." maxlength="10" name="retAutorizacion" value="${retencion?.numeroAutorizacionComprobante}"/>--}%
+            %{--</div>--}%
+        %{--</div>--}%
 
         <div class="col-md-12">
             <div class="col-md-2 negrilla">
@@ -186,7 +219,6 @@
 
     </div>
 
-%{--<div class="">--}%
     <h3>Datos para informar al SRI (Anexo Transaccional Simplificado)</h3>
 
 

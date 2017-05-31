@@ -4,7 +4,7 @@
   Date: 23/05/17
   Time: 13:20
 --%>
-<g:if test="${tipo != 'NC'}">
+<g:if test="${tipo != 'N'}">
     <div class="col-xs-2 negrilla">
         Proveedor:
     </div>
