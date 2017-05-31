@@ -726,55 +726,70 @@ class ProcesoController extends cratos.seguridad.Shield {
 
 
     def detalleSri() {
-        def proceso = Proceso.get(params.id)  //CAMBIAR!!!!!
 
-        def retencion = Retencion.findByProceso(proceso)
-//        println("retencion " + retencion)
-        def detalleRetencion = []
-        if (retencion) {
-            detalleRetencion = DetalleRetencion.findAllByRetencion(retencion)
-        } else {
-            detalleRetencion = []
-        }
+        println("params " + params)
 
-        def hoy = new Date()
-        def anioFin = hoy.format("yyyy").toInteger()
-        def anios = []
-        3.times {
-            def p = getPeriodosByAnio(anioFin - it)
-            if (p.size() > 0) {
-                anios.add(anioFin - it)
-            }
-        }
-        def per = Periodo.withCriteria {
-            ge("fechaInicio", new Date().parse("dd-MM-yyyy", "01-01-" + hoy.format("yyyy")))
-            le("fechaFin", utilitarioService.getLastDayOfMonth(hoy))
-            order("fechaInicio", "asc")
-        }
-        def periodos = []
-        per.each { p ->
-            def key = p.fechaInicio.format("MM")
-            def val = fechaConFormato(p.fechaInicio, "MMMM yyyy").toUpperCase()
-            def m = [:]
-            m.id = key
-            m.val = val
-            periodos.add(m)
-        }
+        def proceso = Proceso.get(params.id)
 
 
-        def sustento = SustentoTributario.list()
-
-        def porIce = Impuesto.findAllBySri('ICE')
-        def porBns = Impuesto.findAllBySri('BNS')
-        def porSrv = Impuesto.findAllBySri('SRV')
-
-        def comprobante = Comprobante.findByProceso(proceso)
-        def asiento = Asiento.findAllByComprobante(comprobante)
-
-//        println("-->>>" + asiento)
+        return [proceso: proceso]
 
 
-        return [proceso: proceso, periodos: periodos, sustento: sustento, porIce: porIce, porBns: porBns, porSrv: porSrv, anios: anios, detalleRetencion: detalleRetencion, retencion: retencion]
+
+
+
+        //antiguo
+
+//        def proceso = Proceso.get(params.id)
+//
+//        def retencion = Retencion.findByProceso(proceso)
+//
+//
+//        def detalleRetencion = []
+//        if (retencion) {
+//            detalleRetencion = DetalleRetencion.findAllByRetencion(retencion)
+//        } else {
+//            detalleRetencion = []
+//        }
+//
+//        def hoy = new Date()
+//        def anioFin = hoy.format("yyyy").toInteger()
+//        def anios = []
+//        3.times {
+//            def p = getPeriodosByAnio(anioFin - it)
+//            if (p.size() > 0) {
+//                anios.add(anioFin - it)
+//            }
+//        }
+//        def per = Periodo.withCriteria {
+//            ge("fechaInicio", new Date().parse("dd-MM-yyyy", "01-01-" + hoy.format("yyyy")))
+//            le("fechaFin", utilitarioService.getLastDayOfMonth(hoy))
+//            order("fechaInicio", "asc")
+//        }
+//        def periodos = []
+//        per.each { p ->
+//            def key = p.fechaInicio.format("MM")
+//            def val = fechaConFormato(p.fechaInicio, "MMMM yyyy").toUpperCase()
+//            def m = [:]
+//            m.id = key
+//            m.val = val
+//            periodos.add(m)
+//        }
+//
+//
+//        def sustento = SustentoTributario.list()
+//
+//        def porIce = Impuesto.findAllBySri('ICE')
+//        def porBns = Impuesto.findAllBySri('BNS')
+//        def porSrv = Impuesto.findAllBySri('SRV')
+//
+//        def comprobante = Comprobante.findByProceso(proceso)
+//        def asiento = Asiento.findAllByComprobante(comprobante)
+//
+////        println("-->>>" + asiento)
+//
+//
+//        return [proceso: proceso, periodos: periodos, sustento: sustento, porIce: porIce, porBns: porBns, porSrv: porSrv, anios: anios, detalleRetencion: detalleRetencion, retencion: retencion]
     }
 
     def getPeriodosByAnio(anio) {

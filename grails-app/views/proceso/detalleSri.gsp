@@ -88,91 +88,20 @@
 </head>
 
 <body>
-<g:form name="sriForm">
-%{--<div class="">--}%
-    <h3>Datos para informar al SRI (Anexo Transaccional Simplificado)</h3>
 
+<div class="btn-toolbar toolbar">
+    <div class="btn-group">
+        <g:link class="btn regresar btn-primary btn-ajax" id="${proceso?.id}" action="show"> <i class="fa fa-chevron-left"></i> Regresar</g:link>
+        <g:link class="btn grabar btn-success btn-ajax" id="grabar"><i class="fa fa-floppy-o"></i> Guardar</g:link>
+    </div>
+</div>
+
+
+<g:form name="sriForm">
 
     <div class="vertical-container vertical-container-list">
-        <p class="css-vertical-text">Retención Imp. Renta</p>
+        <p class="css-vertical-text">Retención</p>
         <div class="linea"></div>
-
-        <div class="" style="margin-left: 40px; margin-top: 20px; margin-bottom: 25px">
-            <label style="margin-left: 320px">Impuesto a la Renta</label>
-        </div>
-
-        <div class="fila" style="margin-bottom: 20px">
-            <div class="uno"></div>
-
-            <div class="dos"></div>
-
-            <div class="tres"></div>
-
-            <div class="cuatro" style="margin-left: 50px">
-                <label>Base Imponible</label>
-            </div>
-
-            <div class="cuatro">
-                <label>%RBI</label>
-            </div>
-
-            <div class="cuatro">
-                <label>Valor Retenido IR</label>
-            </div>
-
-        </div>
-
-        <div class="" style="margin-left: 40px;margin-bottom: 35px">
-
-            <div class="uno" style="width: 230px">
-                <label>Concepto de la Retención del IR</label>
-            </div>
-
-            <div class="dos" style="margin-left: 15px">
-
-                <g:select class="form-control  " style="width: 330px" name="conceptoRetencionImpuestoRenta"
-                          from="${cratos.ConceptoRetencionImpuestoRenta?.list()}" optionKey="id" optionValue="${{
-                    it.codigo + ' - ' + it.descripcion
-                }}"/>
-            </div>
-
-            <div class="tres" style="width: 55px !important; margin-left: 110px"></div>
-            <g:each in="${detalleRetencion}" var="detalle">
-                <g:if test="${detalle?.impuesto?.sri == 'RNT'}">
-                    <div class="cuatro" style="margin-left: 35px">
-                        <g:textField class="form-control required number" title="La base imponible del IR es obligatoria. Puede ingresar 0." name="baseImponible" value="${detalleRetencion?.base}"/>
-                    </div>
-
-                    <div class="cuatro">
-                        <g:textField class="form-control required number" title="El porcentaje de rentención del IR es obligatorio. Puede ingresar 0." name="porcentajeIR" value="${detalleRetencion?.porcentaje}"/>
-                    </div>
-
-                    <div class="cuatro">
-                        <g:textField class="form-control required number" title="el valor retenido del IR es obligatorio. Puede ingresar 0." name="valorRetenido"/>
-                    </div>
-                </g:if>
-                <g:else>
-                    <div class="cuatro" style="margin-left: 35px">
-                        <g:textField class="form-control required number" title="La base imponible del IR es obligatoria. Puede ingresar 0." name="baseImponible" value="${0}"/>
-                    </div>
-
-                    <div class="cuatro">
-                        <g:textField class="form-control required number" title="El porcentaje de rentención del IR es obligatorio. Puede ingresar 0." name="porcentajeIR" value="${0}"/>
-                    </div>
-
-                    <div class="cuatro">
-                        <g:textField class="form-control required number" title="el valor retenido del IR es obligatorio. Puede ingresar 0." name="valorRetenido"/>
-                    </div>
-                </g:else>
-            </g:each>
-
-        </div>
-
-        <div class="" style="margin-left: 40px; margin-top: 80px !important; margin-bottom: 25px; margin-right: 25px">
-
-            <label style="margin-left: 320px">Datos del Comprobante de Retención</label>
-
-        </div>
 
         <div class="fila " style="min-height: 15px;height: 15px;">
             <div class="fac1">
@@ -196,15 +125,9 @@
             </div>
         </div>
 
-        <div class="fila ">
+        <div class="fila" style="margin-bottom: 20px">
             <div class="fac1">
-                %{--<elm:datepicker class=" form-control required date" name="fechaEmision" title="La fecha de emisión del comprobante de rentención es obligatoria."--}%
-                %{--minDate="'-1m'" maxDate="new Date()"--}%
-                %{--style="width: 80px;" format="yyyy-MM-dd" value="${retencion?.fechaEmision}"/>--}%
-
-                <elm:datepicker name="fechaEmision" class="datepicker required form-control"
-                                value="${retencion?.fechaEmision}" />
-
+                <elm:datepicker name="fechaEmision" class="datepicker required form-control" value="${retencion?.fechaEmision}" />
             </div>
 
             <div class="fac2" style="margin-left: 20px">
@@ -224,14 +147,157 @@
             </div>
         </div>
 
-
-        <div class="" style="margin-left: 40px; margin-top: 30px; margin-bottom: 15px; margin-right: 25px">
-            %{--<g:link class="btn regresar form-control" id="${proceso?.id}" action="show">Regresar</g:link>--}%
-            <g:link class="btn regresar btn-info btn-ajax" id="${proceso?.id}" action="show"><i class="fa fa-hand-o-left"></i> Regresar</g:link>
-        %{--<a href="#" class="btn btn-sucess btn-ajax grabar" id="grabar">Aceptar</a>--}%
-
-            <g:link class="btn grabar btn-success btn-ajax" id="grabar"><i class="fa fa-floppy-o"></i> Grabar</g:link>
+        <div class="col-md-12">
+            <div class="col-md-2 negrilla">
+                Proveedor:
+            </div>
+            <div class="col-md-9 negrilla">
+                <div class="col-md-3">
+                    <input type="text" name="proveedor.ruc" class="form-control " id="prov" disabled="true" value="${proceso?.proveedor?.ruc ?: ''}" title="RUC del proveedor o cliente" style="width: 140px" placeholder="RUC"/>
+                </div>
+                <div class="col-md-5">
+                    <input type="text" name="proveedor.nombre" class="form-control  label-shared" id="prov_nombre" disabled="true" value="${proceso?.proveedor?.nombre ?: ''}" title="Nombre del proveedor o cliente" style="width: 300px" placeholder="Nombre"/>
+                </div>
+            </div>
         </div>
+
+        <div class="col-md-12" style="margin-top: 20px">
+            <div class="col-md-2 negrilla">
+                Dirección:
+            </div>
+            <div class="col-md-9 negrilla">
+                <div class="col-md-8">
+                    <input type="text" name="proveedorDir" class="form-control " id="dir" disabled="true" value="${proceso?.proveedor?.direccion ?: ''}" title="Dirección del proveedor o cliente"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12" style="margin-top: 20px">
+            <div class="col-md-2 negrilla">
+                Teléfono:
+            </div>
+            <div class="col-md-9 negrilla">
+                <div class="col-md-3">
+                    <input type="text" name="proveedorTel" class="form-control " id="tel" disabled="true" value="${proceso?.proveedor?.telefono ?: ''}" title="Teléfono del proveedor o cliente"/>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+%{--<div class="">--}%
+    <h3>Datos para informar al SRI (Anexo Transaccional Simplificado)</h3>
+
+
+    <div class="vertical-container vertical-container-list">
+        <p class="css-vertical-text">Retención Imp. Renta</p>
+        <div class="linea"></div>
+
+        <div class="" style="margin-left: 40px; margin-top: 20px; margin-bottom: 25px">
+            <label style="margin-left: 320px">Impuesto a la Renta</label>
+        </div>
+
+        <div class="fila" style="margin-bottom: 10px">
+
+
+            <div class="col-md-4" style="margin-left: 40px">
+                <label>Concepto de la Retención del IR</label>
+            </div>
+
+            <div class="col-md-2" style="margin-left: 10px">
+                <label>Base Imponible</label>
+            </div>
+
+            <div class="col-md-2" style="margin-left: 40px">
+                <label>%RBI</label>
+            </div>
+
+            <div class="col-md-2">
+                <label>Valor Retenido IR</label>
+            </div>
+
+        </div>
+
+        <div class="col-md-12">
+
+            <div class=" col-md-4" style="margin-left: 15px">
+                <g:select class="form-control" style="width: 330px" name="conceptoRetencionImpuestoRenta"
+                          from="${cratos.ConceptoRetencionImpuestoRenta?.list()}" optionKey="id" optionValue="${{it.codigo + ' - ' + it.descripcion}}"/>
+            </div>
+
+            <div class="col-md-2" style="margin-left: 35px">
+                <g:textField class="form-control required number" title="La base imponible del IR es obligatoria. Puede ingresar 0." name="baseImponible" value="${detalleRetencion?.base}"/>
+            </div>
+
+            <div class="col-md-2" style="margin-left: 35px">
+                <g:textField class="form-control required number" title="El porcentaje de rentención del IR es obligatorio. Puede ingresar 0." name="porcentajeIR" value="${detalleRetencion?.porcentaje}"/>
+            </div>
+
+            <div class="col-md-2" style="margin-left: 35px">
+                <g:textField class="form-control required number" title="el valor retenido del IR es obligatorio. Puede ingresar 0." name="valorRetenido"/>
+            </div>
+
+        </div>
+
+        %{--<div class="" style="margin-left: 40px;margin-bottom: 35px">--}%
+
+            %{--<div class="uno" style="width: 230px">--}%
+                %{--<label>Concepto de la Retención del IR</label>--}%
+            %{--</div>--}%
+
+            %{--<div class="dos" style="margin-left: 15px">--}%
+
+                %{--<g:select class="form-control  " style="width: 330px" name="conceptoRetencionImpuestoRenta"--}%
+                          %{--from="${cratos.ConceptoRetencionImpuestoRenta?.list()}" optionKey="id" optionValue="${{--}%
+                    %{--it.codigo + ' - ' + it.descripcion--}%
+                %{--}}"/>--}%
+            %{--</div>--}%
+
+            %{--<div class="tres" style="width: 55px !important; margin-left: 110px"></div>--}%
+            %{--<g:each in="${detalleRetencion}" var="detalle">--}%
+                %{--<g:if test="${detalle?.impuesto?.sri == 'RNT'}">--}%
+                    %{--<div class="cuatro" style="margin-left: 35px">--}%
+                        %{--<g:textField class="form-control required number" title="La base imponible del IR es obligatoria. Puede ingresar 0." name="baseImponible" value="${detalleRetencion?.base}"/>--}%
+                    %{--</div>--}%
+
+                    %{--<div class="cuatro">--}%
+                        %{--<g:textField class="form-control required number" title="El porcentaje de rentención del IR es obligatorio. Puede ingresar 0." name="porcentajeIR" value="${detalleRetencion?.porcentaje}"/>--}%
+                    %{--</div>--}%
+
+                    %{--<div class="cuatro">--}%
+                        %{--<g:textField class="form-control required number" title="el valor retenido del IR es obligatorio. Puede ingresar 0." name="valorRetenido"/>--}%
+                    %{--</div>--}%
+                %{--</g:if>--}%
+                %{--<g:else>--}%
+                    %{--<div class="cuatro" style="margin-left: 35px">--}%
+                        %{--<g:textField class="form-control required number" title="La base imponible del IR es obligatoria. Puede ingresar 0." name="baseImponible" value="${0}"/>--}%
+                    %{--</div>--}%
+
+                    %{--<div class="cuatro">--}%
+                        %{--<g:textField class="form-control required number" title="El porcentaje de rentención del IR es obligatorio. Puede ingresar 0." name="porcentajeIR" value="${0}"/>--}%
+                    %{--</div>--}%
+
+                    %{--<div class="cuatro">--}%
+                        %{--<g:textField class="form-control required number" title="el valor retenido del IR es obligatorio. Puede ingresar 0." name="valorRetenido"/>--}%
+                    %{--</div>--}%
+                %{--</g:else>--}%
+            %{--</g:each>--}%
+
+        %{--</div>--}%
+
+        %{--<div class="" style="margin-left: 40px; margin-top: 80px !important; margin-bottom: 25px; margin-right: 25px;">--}%
+
+            %{--<label style="margin-left: 320px">Datos del Comprobante de Retención</label>--}%
+
+        %{--</div>--}%
+
+
+
+
+
+
+
     </div> %{--//texto vertical fin--}%
 
 
