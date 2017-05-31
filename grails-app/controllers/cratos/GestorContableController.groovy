@@ -367,11 +367,13 @@ class GestorContableController extends cratos.seguridad.Shield {
         genera.valor = params.valor.toDouble()
         genera.porcentajeImpuestos = params.impuesto.toDouble()
         genera.porcentaje = params.porcentaje.toDouble()
+        genera.baseSinIva = params.sinIva.toDouble()
 
-        if(!genera.save(flush: true)){
-            render "no"
-        }else{
+        try{
+            genera.save(flush: true)
             render "ok"
+        }catch (e){
+            render "no"
         }
     }
 
@@ -414,12 +416,14 @@ class GestorContableController extends cratos.seguridad.Shield {
         def baseD =  cuentasDebe.porcentaje.sum()
         def impD = cuentasDebe.porcentajeImpuestos.sum()
         def valorD =  cuentasDebe.valor.sum()
+        def sinD = cuentasDebe.baseSinIva.sum()
 
         def baseH =  cuentasHaber.porcentaje.sum()
         def impH = cuentasHaber.porcentajeImpuestos.sum()
         def valorH =  cuentasHaber.valor.sum()
+        def sinH = cuentasHaber.baseSinIva.sum()
 
-        return [baseD: baseD, impD: impD, valorD: valorD, baseH: baseH, impH: impH, valorH: valorH]
+        return [baseD: baseD, impD: impD, valorD: valorD, baseH: baseH, impH: impH, valorH: valorH, sinD: sinD, sinH: sinH]
     }
 
     def registrar_ajax () {

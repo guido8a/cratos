@@ -33,6 +33,10 @@
         float  : right;
         min-height: 40px;
     }
+
+        .letraP{
+            font-size: 10px;
+        }
     </style>
 
 </head>
@@ -181,28 +185,26 @@
             </a>
         </div>
     </g:if>
-
-
             </div>
-
-
             <table class="table table-bordered table-hover table-condensed">
                 <thead>
                 <tr>
                     <th></th>
-                    <th colspan="3">DEBE</th>
-                    <th colspan="3">HABER</th>
+                    <th colspan="4">DEBE</th>
+                    <th colspan="4">HABER</th>
                     <th></th>
                 </tr>
                 <tr>
-                    <th style="width: 280px;">Código (Cuenta)</th>
-                    <th style="width: 100px">% B. Imponible</th>
-                    <th style="width: 80px">Impuestos</th>
-                    <th style="width: 80px">Valor</th>
-                    <th style="width: 100px">% B. Imponible</th>
-                    <th style="width: 80px">Impuestos</th>
-                    <th style="width: 80px">Valor</th>
-                    <th style="width: 70px"><i class="fa fa-pencil"></i> </th>
+                    <th style="width: 280px;" class="letraP">Código (Cuenta)</th>
+                    <th style="width: 100px" class="letraP">% B. Imponible</th>
+                    <th style="width: 100px" class="letraP">% B.I. Sin IVA</th>
+                    <th style="width: 80px" class="letraP">Impuestos</th>
+                    <th style="width: 80px" class="letraP">Valor</th>
+                    <th style="width: 100px" class="letraP">% B. Imponible</th>
+                    <th style="width: 100px" class="letraP">% B.I. Sin IVA</th>
+                    <th style="width: 80px" class="letraP">Impuestos</th>
+                    <th style="width: 80px" class="letraP">Valor</th>
+                    <th style="width: 70px" class="letraP"><i class="fa fa-pencil"></i> </th>
                 </tr>
                 </thead>
             </table>
@@ -213,15 +215,9 @@
                     <div id="cuentaAgregada" style="width: 1070px; height: 280px;"></div>
                 </div>
             </div>
-
-            %{--<div class="row-fluid"  style="width: 99.7%;height: 250px;overflow-y: auto;float: right;">--}%
                 <div class="span12">
                     <div id="totales" style="width: 1070px; height: 20px;"></div>
                 </div>
-            %{--</div>--}%
-
-
-
         </div>
     </div>
 </g:if>

@@ -23,11 +23,12 @@
         <g:each in="${movimientos}" var="genera" status="i">
             <tr style="background-color: ${(genera.tipoComprobante.id.toInteger() == 1)?'#D4E6FC':((genera.tipoComprobante.id.toInteger() == 2)?'#99CC99':'#FFCC99')} !important; " class="movimiento">
             <td style="width: 285px;">${genera.cuenta.numero}<span style="font-size: 12px"> (${genera.cuenta.descripcion})</span></td>
-        %{--<td style="width: 280px;">${genera.cuenta.numero+'('+genera.cuenta.descripcion+')'}</td>--}%
             <g:if test="${genera.debeHaber=='D'}">
-                <td class="largo"><g:textField type="number" name="porcentaje" id="por_${genera?.id}" class="validacionNumero form-control" style="width: 90px;" value="${genera.porcentaje ?: 0}" /></td>
-                <td class="largo"><g:textField type="number" name="impuestos" id="imp_${genera?.id}" class="validacionNumero form-control" style="width: 90px;" value="${genera.porcentajeImpuestos?:0}" /></td>
-                <td class="largo"><g:textField type="number" name="valor" id="val_${genera?.id}" class="validacionNumero form-control" style="width: 90px;" value="${genera.valor?:0}" /></td>
+                <td class="largo"><g:textField type="number" name="porcentaje" id="por_${genera?.id}" class="validacionNumero form-control" style="width: 80px;" value="${genera.porcentaje ?: 0}" /></td>
+                <td class="largo"><g:textField type="number" name="porcentaje" id="sin_${genera?.id}" class="validacionNumero form-control" style="width: 80px;" value="${genera.baseSinIva ?: 0}" /></td>
+                <td class="largo"><g:textField type="number" name="impuestos" id="imp_${genera?.id}" class="validacionNumero form-control" style="width: 70px;" value="${genera.porcentajeImpuestos?:0}" /></td>
+                <td class="largo"><g:textField type="number" name="valor" id="val_${genera?.id}" class="validacionNumero form-control" style="width: 80px;" value="${genera.valor?:0}" /></td>
+                <td class="largo"></td>
                 <td class="largo"></td>
                 <td class="largo"></td>
                 <td class="largo"></td>
@@ -54,9 +55,11 @@
                 <td class="largo"></td>
                 <td class="largo"></td>
                 <td class="largo"></td>
-                <td class="largo"><g:textField type="number" name="porcentajeDown" id="por_${genera?.id}" class="validacionNumero form-control" style="width: 90px;" value="${genera.porcentaje ?: 0}" /></td>
-                <td class="largo"><g:textField type="number" name="impuestos" id="imp_${genera?.id}" class="validacionNumero form-control" style="width: 90px;" value="${genera.porcentajeImpuestos?:0}" /></td>
-                <td class="largo"><g:textField type="number" name="valor" id="val_${genera?.id}" class="validacionNumero form-control" style="width: 90px;" value="${genera.valor?:0}" /></td>
+                <td class="largo"></td>
+                <td class="largo"><g:textField type="number" name="porcentajeDown" id="por_${genera?.id}" class="validacionNumero form-control" style="width: 80px;" value="${genera.porcentaje ?: 0}" /></td>
+                <td class="largo"><g:textField type="number" name="porcentajeDown" id="sin_${genera?.id}" class="validacionNumero form-control" style="width: 80px;" value="${genera.baseSinIva ?: 0}" /></td>
+                <td class="largo"><g:textField type="number" name="impuestos" id="imp_${genera?.id}" class="validacionNumero form-control" style="width: 70px;" value="${genera.porcentajeImpuestos?:0}" /></td>
+                <td class="largo"><g:textField type="number" name="valor" id="val_${genera?.id}" class="validacionNumero form-control" style="width: 80px;" value="${genera.valor?:0}" /></td>
                 <td style="width: 70px">
                     <g:if test="${gestor?.estado != 'R'}">
                         <div class="btn-group">
@@ -74,16 +77,6 @@
                 <g:set var="valH" value="${valH+genera.valor?:0}" />
             </g:else>
         </g:each>
-    %{--<tr>--}%
-    %{--<td style="width: 250px">TOTAL:</td>--}%
-    %{--<td style="background-color: ${(por==porH)?'#d0ffd0':'#ffd0d0'}; width: 80px" >${por}</td>--}%
-    %{--<td style="background-color: ${(imp==impH)?'#d0ffd0':'#ffd0d0'}; width: 80px">${imp}</td>--}%
-    %{--<td style="background-color: ${(val==valH)?'#d0ffd0':'#ffd0d0'}; width: 80px">${val}</td>--}%
-    %{--<td style="background-color: ${(por==porH)?'#d0ffd0':'#ffd0d0'}; width: 80px">${porH}</td>--}%
-    %{--<td style="background-color: ${(imp==impH)?'#d0ffd0':'#ffd0d0'}; width: 80px">${impH}</td>--}%
-    %{--<td style="background-color: ${(val==valH)?'#d0ffd0':'#ffd0d0'}; width: 80px">${valH}</td>--}%
-    %{--<td style="width: 70px"></td>--}%
-    %{--</tr>--}%
     </g:if>
     <g:else>
         <tr class="danger text-center">
@@ -154,38 +147,11 @@
                                     cargarMovimientos(gestor, tipo);
                                     cargarTotales(gestor, tipo);
                                     log("Cuenta borrada correctamente","success");
-//                                    var b = bootbox.dialog({
-//                                        id      : "dlgBorradoC",
-//                                        title   : "Borrado Correctamente",
-//                                        message : "<i class='fa fa-check fa-3x pull-left text-success text-shadow'></i> Cuenta borrada correctamente.",
-//                                        buttons : {
-//                                            cancelar : {
-//                                                label     : "Aceptar",
-//                                                className : "btn-primary",
-//                                                callback  : function () {
-//                                                }
-//                                            }
-//                                       } //buttons
-//                                    }); //dialog
-
                                 }else{
                                     closeLoader();
                                     cargarMovimientos(gestor, tipo);
                                     cargarTotales(gestor, tipo);
                                     log("Error al borrarla cuenta!.","error");
-//                                    var c = bootbox.dialog({
-//                                        id      : "dlgBorradoE",
-//                                        title   : "Error al borrar ",
-//                                        message : "<i class='fa fa-times fa-3x pull-left text-danger text-shadow'></i> Error al eliminar la cuenta",
-//                                        buttons : {
-//                                            cancelar : {
-//                                                label     : "Aceptar",
-//                                                className : "btn-primary",
-//                                                callback  : function () {
-//                                                }
-//                                            }
-//                                        } //buttons
-//                                    }); //dialog
                                 }
                             }
                         });
@@ -202,6 +168,7 @@
         var valor = $("#val_"+ genera).val();
         var gestor = '${gestor?.id}';
         var tipo = '${tipo?.id}';
+        var sinIva = $("#sin_" + genera).val();
 
         $.ajax({
             type: 'POST',
@@ -210,7 +177,8 @@
                 genera: genera,
                 porcentaje: porcentaje,
                 impuesto: impuesto,
-                valor: valor
+                valor: valor,
+                sinIva: sinIva
             },
             success: function (msg){
                 if(msg == 'ok'){
