@@ -24,7 +24,12 @@ class ProcesoController extends cratos.seguridad.Shield {
 
     def nuevoProceso = {
 //        println "nuevo proceso "+params
-        def tiposProceso = ["-1": "Seleccione...", "C": "Compras", "V": "Ventas", "O": "Otros", "A": "Ajustes", "P": "Pagos", "N": "Nota de Crédito"]
+        def tiposProceso = ["-1": "Seleccione...",
+                            "C": "Compras (Compras Inventario, Compras Gasto)",
+                            "V": "Ventas (Ventas, Reposición de Gasto)",
+                            "A": "Ajustes (Diarios y Otros)",
+                            "P": "Pagos a proveedores",
+                            "N": "Nota de Crédito"]
         if (params.id) {
             def proceso = Proceso.get(params.id)
             def registro = (Comprobante.findAllByProceso(proceso)?.size() == 0) ? false : true
@@ -1140,17 +1145,23 @@ class ProcesoController extends cratos.seguridad.Shield {
     }
 
     def tablaBuscarComprobante_ajax () {
-//        println("params " + params)
+        println "tablaBuscarComprobante_ajax: $params"
         def cn = dbConnectionService.getConnection()
         def proveedor = Proveedor.get(params.proveedor)
         def sql
-        sql = "select * from porpagar(${proveedor?.id});"
+        if(params.tipo == 'P') {
+            sql = "select * from porpagar(${proveedor?.id}) where sldo <> 0;"
+        } else if(params.tipo == 'N') {
+            sql = "select cmpr__id, clntnmbr prvenmbr, dscr, debe hber, ntcr pgdo, sldo from ventas(${proveedor?.id}) " +
+                    "where sldo <> 0"
+        }
+
         def res = cn.rows(sql.toString())
         return [res: res]
     }
 
     def filaComprobante_ajax () {
-//        println("params fila comprobante " + params)
+        println "filaComprobante_ajax: $params"
         def proceso = Proceso.get(params.proceso)
 //        def comprobante = Comprobante.get(params.comprobante)
 //        def proveedor =

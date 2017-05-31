@@ -188,7 +188,7 @@
             </div>
             <table class="table table-bordered table-hover table-condensed">
                 <thead>
-                <tr>
+                <tr class="letraP">
                     <th></th>
                     <th colspan="4">DEBE</th>
                     <th colspan="4">HABER</th>

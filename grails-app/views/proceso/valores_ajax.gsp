@@ -35,7 +35,7 @@
 <g:elseif test="${tipo == '-1'}">
     <div class="row" style="height: 80px"></div>
 </g:elseif>
-<g:elseif test="${tipo == 'NC'}">
+<g:elseif test="${tipo == 'N'}">
     <div class="row" style="font-size: 12px">
         <div class="col-xs-2 negrilla" style="width: 120px">
             Valor:
@@ -91,7 +91,7 @@
     </div>
     <div class="row" style="font-size: 12px">
         <div class="col-xs-2 negrilla" style="width: 120px">
-            Documento:
+            Factura o Documento de compra:
         </div>
         <div class="col-xs-3 negrilla">
             <input type="text" name="facturaEstablecimiento" id="establecimiento" size="3" maxlength="3" value="${proceso?.facturaEstablecimiento}" class=" digits form-control label-shared validacionNumero" validate=" number"

@@ -159,12 +159,12 @@
                                     value="${proceso?.fecha}"  maxDate="new Date()" style="width: 80px; margin-left: 5px" />
                 </g:else>
             </div>
-            <div class="col-xs-2">
+            <div class="col-xs-1">
             </div>
             <div class="col-xs-2 negrilla">
                 Tipo de transacción:
             </div>
-            <div class="col-xs-3 negrilla">
+            <div class="col-xs-4 negrilla">
                 <g:select class="form-control required cmbRequired tipoProcesoSel" name="tipoProceso"  id="tipoProceso" from="${tiposProceso}"
                           label="Proceso tipo: " value="${proceso?.tipoProceso}" optionKey="key" optionValue="value" title="Tipo de la transacción" disabled="${proceso?.id ? 'true' : 'false'}" />
             </div>
@@ -192,7 +192,11 @@
                 Sustento Tributario:
             </div>
             <div class="col-xs-5 negrilla">
-                <g:select class=" form-control required cmbRequired" name="sustentoTributario.id" id="sustento" from="${SustentoTributario.list([sort:'codigo'])}" title="Necesario solo si la transacción debe reportarse al S.R.I." optionKey="id"   value="${proceso?.sustentoTributario?.id}"  noSelection="${['-1':'No aplica']}" disabled="${registro?true:false}" />
+                <g:select class=" form-control required cmbRequired" name="sustentoTributario.id" id="sustento"
+                          from="${SustentoTributario.list([sort:'codigo'])}"
+                          title="Necesario solo si la transacción debe reportarse al S.R.I." optionKey="id"
+                          value="${proceso?.sustentoTributario?.id}" noSelection="${['-1':'No aplica']}"
+                          disabled="${registro?true:false}" />
             </div>
             <div class="col-xs-2 " style="font-size: 10px;">
                 Necesario solo si la transacción debe reportarse al S.R.I.
@@ -322,7 +326,7 @@
     cargarTipo($(".tipoProcesoSel option:selected").val());
     cargarBotonGuardar($(".tipoProcesoSel option:selected").val());
     cargarBotonBuscar($(".tipoProcesoSel option:selected").val());
-    <g:if test="${proceso?.id && (proceso?.tipoProceso == 'P' || proceso?.tipoProceso == 'NC')}">
+    <g:if test="${proceso?.id && (proceso?.tipoProceso == 'P' || proceso?.tipoProceso == 'N')}">
         cargarComPago();
     </g:if>
     cargarProveedor($(".tipoProcesoSel option:selected").val());
@@ -334,7 +338,7 @@
         $("#listaErrores").html('');
         $("#divErrores").hide();
 
-        if(tipo == 'NC' || tipo == 'P'){
+        if(tipo == 'N' || tipo == 'P'){
             cargarComPago()
         }else{
             $("#divFilaComprobante").html('')
@@ -539,7 +543,7 @@
 
             openLoader("Guardando..");
 
-            if(tipoP == 'P' || tipoP == 'NC'){
+            if(tipoP == 'P' || tipoP == 'N'){
 
                 $("#listaErrores").html('');
                 $("#divErrores").hide();

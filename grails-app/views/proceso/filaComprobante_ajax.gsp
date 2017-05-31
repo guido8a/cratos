@@ -10,10 +10,14 @@
 </div>
 
 <div class="col-md-3">
-    <g:textField name="comprobanteName" id="comprobanteDesc" class="form-control" disabled="true" title="Comprobante" style="width: 270px" placeholder="Descripción" value="${proceso?.comprobante?.descripcion}"/>
+    <g:textField name="comprobanteName" id="comprobanteDesc" class="form-control" disabled="true"
+                 title="Comprobante" style="width: 270px" placeholder="Descripción"
+                 value="${proceso?.comprobante?.descripcion}"/>
 </div>
 <div class="col-md-2">
-    <g:textField name="comprobanteSaldoName" id="comprobanteSaldo" class="form-control" disabled="true" title="Saldo del Comprobante" style="width:165px;" placeholder="Saldo" value="${saldo}" />
+    <g:textField name="comprobanteSaldoName" id="comprobanteSaldo" class="form-control"
+                 disabled="true" title="Saldo del Comprobante" style="width:165px;" placeholder="Saldo"
+                 value="${saldo}" />
 </div>
 <div class="col-xs-2" style="margin-left: 20px">
     <g:if test="${proceso?.estado == 'N' || !proceso?.id}">
@@ -29,16 +33,22 @@
 <script type="text/javascript">
 
     $("#btnBuscarCom").click(function(){
+        var tipo = $("#tipoProceso").val();
         var idProveedor = $("#prov_id").val();
+        var titulo = "Pagos pendientes al Proveedor";
+        if(tipo == 'N') {
+            titulo = "Ventas realizadas al Cliente";
+        }
         $.ajax({
             type    : "POST",
             url     : "${g.createLink(controller: 'proceso',action: 'tablaBuscarComprobante_ajax')}",
             data    : {
-                proveedor: idProveedor
+                proveedor: idProveedor,
+                tipo:      tipo
             },
             success : function (msg) {
                 bootbox.dialog({
-                    title   : "Alerta",
+                    title   : titulo,
                     message : msg,
                     class :'long',
                     buttons : {

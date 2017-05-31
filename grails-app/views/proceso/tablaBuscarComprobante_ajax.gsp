@@ -8,9 +8,9 @@
 <table class="table table-bordered table-hover table-condensed">
     <thead>
     <tr>
-        <th style="width: 250px">Nombre</th>
-        <th style="width: 150px">Descripción</th>
-        <th style="width: 70px">Haber</th>
+        <th style="width: 150px">Nombre</th>
+        <th style="width: 250px">Concepto</th>
+        <th style="width: 70px">Por Pagar</th>
         <th style="width: 70px">Pagado</th>
         <th style="width: 70px">Saldo</th>
         <th style="width: 50px"><i class="fa fa-pencil"></i> </th>
@@ -24,8 +24,8 @@
             <tbody>
             <g:each in="${res}" var="comprobante">
                 <tr>
-                    <td style="width: 250px">${comprobante.prvenmbr}</td>
-                    <td style="width: 150px">${comprobante.dscr}</td>
+                    <td style="width: 150px">${comprobante.prvenmbr}</td>
+                    <td style="width: 250px">${comprobante.dscr}</td>
                     <td style="width: 70px; text-align: right">${comprobante.hber}</td>
                     <td style="width: 70px; text-align: right">${comprobante.pgdo}</td>
                     <td style="width: 70px; text-align: right">${comprobante.sldo}</td>
