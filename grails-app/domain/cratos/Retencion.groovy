@@ -1,34 +1,40 @@
 package cratos
 
 import cratos.sri.Pais
+import cratos.sri.PorcentajeIva
 
 class Retencion implements Serializable {
 
     Proceso proceso
-//    Contabilidad contabilidad
-    Date fecha
-    String ruc
-    String direccion
-    String telefono
-    String persona
-    String numero
-    Empresa empresa
-    Proveedor proveedor
-    String numeroComprobante
-
-//    ConceptoRetencionImpuestoRenta conceptoRetencionImpuestoRenta
-    String numeroEstablecimiento
-    String numeroPuntoEmision
-    String numeroSecuencial
-    String numeroAutorizacionComprobante
-    String creditoTributario
-    String tipoPago
-    Date fechaEmision
-
+    ConceptoRetencionImpuestoRenta conceptoRetencionImpuestoRenta
+    DocumentoEmpresa documentoEmpresa
+    PorcentajeIva porcentajeIva
     Pais pais
+
+    String direccion
+    Date fecha
+    String numero
+    String numeroComprobante
+    String persona
+    String telefono
+    String ruc
+    Date fechaEmision
     String convenio
     String normaLegal
-    DocumentoEmpresa documentoEmpresa
+    double baseIva
+    double iva
+    double baseRenta
+    double renta
+    double baseIce
+    double porcentajeIce
+    double ice
+    double baseBienes
+    double porcentajeBienes
+    double bienes
+    double baseServicios
+    double porcentajeServicios
+    double servicios
+
 
     static mapping = {
         table 'rtcn'
@@ -39,30 +45,34 @@ class Retencion implements Serializable {
         columns {
             id column: 'rtcn__id'
             proceso column: 'prcs__id'
-//            contabilidad column: 'cont'
-            fecha column: 'rtcnfcha'
-            ruc column: 'rtcn_ruc'
-            direccion column: 'rtcndrcn'
-            telefono column: 'rtcntlef'
-            persona column: 'rtcnprsn'
-            numero column: 'rtcnnmro'
-            empresa column: 'empr__id'
-            proveedor column: 'prve__id'
-            numeroComprobante column: 'rtcnnmcp'
-
-//            conceptoRetencionImpuestoRenta column: 'crir__id'
-            numeroEstablecimiento column: 'rtcnnmes'
-            numeroPuntoEmision column: 'rtcnnmpe'
-            numeroSecuencial column: 'rtcnnmsc'
-            numeroAutorizacionComprobante column: 'rtcnnmac'
-            creditoTributario column: 'rtcncrtr'
-            tipoPago column: 'rtcnpago'
-            fechaEmision column: 'rtcnfcem'
+            conceptoRetencionImpuestoRenta column: 'crir__id'
+            documentoEmpresa column: 'fcdt__id'
+            porcentajeIva column: 'pciv__id'
             pais column: 'pais__id'
+
+            direccion column: 'rtcndrcn'
+            fecha column: 'rtcnfcha'
+            numero column: 'rtcnnmro'
+            numeroComprobante column: 'rtcnnmcp'
+            persona column: 'rtcnprsn'
+            telefono column: 'rtcntlef'
+            fechaEmision column: 'rtcnfcem'
+            ruc column: 'rtcn_ruc'
             convenio column: 'rtcncnvn'
             normaLegal column: 'rtcnnmlg'
-            documentoEmpresa column: 'fcdt__id'
-
+            baseIva column: 'rtcnbsiv'
+            iva column: 'rtcn_iva'
+            baseRenta column: 'rtcnbsrt'
+            renta column: 'rtcnrnta'
+            baseIce column: 'rtcnbsic'
+            porcentajeIce column: 'rtcnpcic'
+            ice column: 'rtcn_ice'
+            baseBienes column: 'rtcnbsbn'
+            porcentajeBienes column: 'rtcnpcbn'
+            bienes column: 'rtcnbien'
+            baseServicios column: 'rtcnbssr'
+            porcentajeServicios column: 'rtcnpcsr'
+            servicios column: 'rtcnsrvc'
 
         }
     }
@@ -73,22 +83,23 @@ class Retencion implements Serializable {
         telefono(size: 1..15, blank: true, nullable: true, attributes: [title: 'telefono'])
         persona(size: 1..63, blank: true, nullable: true, attributes: [title: 'persona'])
         numero(size: 1..15, blank: true, nullable: true, attributes: [title: 'numero'])
-        empresa(blank: true, nullable: true, attributes: [title: 'empresa'])
-        proveedor(blank: true, nullable: true, attributes: [title: 'proveedor'])
-        numeroComprobante(size: 1..20, blank: true, nullable: true, attributes: [title: 'Número de comprobante'])
-
-//        conceptoRetencionImpuestoRenta(blank: true, nullable: true)
-        numeroEstablecimiento(blank: true, nullable: true)
-        numeroPuntoEmision(blank: true, nullable: true)
-        numeroSecuencial (blank: true, nullable: true)
-        numeroAutorizacionComprobante (blank: true, nullable: true)
-        creditoTributario (size: 1..2, blank: true, nullable: true)
-        tipoPago (blank: true, nullable: true)
         fechaEmision (blank: true, nullable: true)
         convenio (blank: true, nullable: true)
         normaLegal(blank: true, nullable: true)
         pais(blank: true, nullable: true)
         documentoEmpresa (blank: true, nullable: true)
-
+        baseIva(blank: true, nullable: true)
+        iva(blank: true, nullable: true)
+        baseRenta(blank: true, nullable: true)
+        renta(blank: true, nullable: true)
+        baseIce(blank: true, nullable: true)
+        porcentajeIce(blank: true, nullable: true)
+        ice(blank: true, nullable: true)
+        baseBienes(blank: true, nullable: true)
+        porcentajeBienes(blank: true, nullable: true)
+        bienes(blank: true, nullable: true)
+        baseServicios(blank: true, nullable: true)
+        porcentajeServicios(blank: true, nullable: true)
+        servicios(blank: true, nullable: true)
     }
 }
