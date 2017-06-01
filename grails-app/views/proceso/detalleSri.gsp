@@ -107,21 +107,19 @@
             <div class="col-md-2 negrilla">
                 Comprobante N°:
             </div>
-            <div class="col-md-9 negrilla">
-                <div class="col-md-5">
-                    <g:select name="compro" from="${libreta}" value="" id="" class="form-control" optionKey="id" optionValue="${{"Desde: " + it?.numeroDesde + ' - Hasta: ' + it?.numeroHasta}}"/>
+            %{--<div class="col-md-9 negrilla">--}%
+                <div class="col-md-4">
+                    <g:select name="compro" from="${libreta}" value="" class="form-control libretin" optionKey="id" optionValue="${{"Desde: " + it?.numeroDesde + ' - Hasta: ' + it?.numeroHasta + " - Autorización: " + it?.fechaAutorizacion?.format("dd-MM-yyyy")}}"/>
                 </div>
 
-                <div class="col-md-2" id="divEsta">
+                <div class="col-md-5" id="divNumeracion">
 
                 </div>
-                <div class="col-md-2" id="divEmi">
 
-                </div>
                 <div class="col-md-2">
 
                 </div>
-            </div>
+            %{--</div>--}%
         </div>
 
 
@@ -599,6 +597,28 @@
 %{--</div>--}%
 </g:form>
 <script type="text/javascript">
+
+    cargarNumeracion($(".libretin option:selected").val());
+
+    function cargarNumeracion (id) {
+        $.ajax({
+            type:'POST',
+            url: '${createLink(controller: 'proceso', action: 'numeracion_ajax')}',
+            data:{
+                libretin: id
+            },
+            success: function (msg) {
+              $("#divNumeracion").html(msg)
+            }
+        });
+    }
+
+    $(".libretin").change(function () {
+       var idLibretin = $(".libretin option:selected").val();
+        cargarNumeracion(idLibretin)
+    });
+
+
 
     function validarNum(ev) {
         /*

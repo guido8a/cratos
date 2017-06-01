@@ -1238,19 +1238,24 @@ class ProcesoController extends cratos.seguridad.Shield {
         return[comprobante: comprobante, auxiliares: auxiliares]
     }
     def mayorizar_ajax () {
-        println("params " + params)
+//        println("params " + params)
         def comprobante = Comprobante.get(params.id)
         def res = procesoService.mayorizar(comprobante)
-        println("res " + res)
+//        println("res " + res)
         render res
     }
 
     def desmayorizar_ajax () {
-        println("params " + params)
+//        println("params " + params)
         def comprobante = Comprobante.get(params.id)
         def res = procesoService.desmayorizar(comprobante)
-        println("res " + res)
+//        println("res " + res)
         render res
+    }
+
+    def numeracion_ajax () {
+        def documentoEmpresa = DocumentoEmpresa.get(params.libretin)
+        return [libreta : documentoEmpresa]
     }
 
 }
