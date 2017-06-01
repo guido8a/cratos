@@ -116,9 +116,10 @@
 
                 </div>
 
-                <div class="col-md-2">
+            <div class="col-md-2">
+                <g:textField name="serie" id="numSerie" value="${retencion?.numero}" readonly="true" style="width: 100px"/>
+            </div>
 
-                </div>
             %{--</div>--}%
         </div>
 
@@ -252,8 +253,8 @@
         <div class="col-md-12">
 
             <div class=" col-md-4" style="margin-left: 15px">
-                <g:select class="form-control" style="width: 330px" name="conceptoRetencionImpuestoRenta"
-                          from="${cratos.ConceptoRetencionImpuestoRenta?.list()}" optionKey="id" optionValue="${{it.codigo + ' - ' + it.descripcion}}"/>
+                %{--<g:select class="form-control" style="width: 330px" name="conceptoRetencionImpuestoRenta"--}%
+                          %{--from="${cratos.ConceptoRetencionImpuestoRenta?.list()}" optionKey="id" optionValue="${{it.codigo + ' - ' + it.descripcion}}"/>--}%
             </div>
 
             <div class="col-md-2" style="margin-left: 35px">

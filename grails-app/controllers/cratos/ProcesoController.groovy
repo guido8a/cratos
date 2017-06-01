@@ -737,6 +737,7 @@ class ProcesoController extends cratos.seguridad.Shield {
         println("params " + params)
 
         def proceso = Proceso.get(params.id)
+        def retencion = Retencion.findByProceso(proceso)
         def libreta
 
 //        libreta = DocumentoEmpresa.withCriteria {
@@ -752,7 +753,7 @@ class ProcesoController extends cratos.seguridad.Shield {
         println("libreta " + libreta)
 
 
-        return [proceso: proceso, libreta: libreta]
+        return [proceso: proceso, libreta: libreta, retencion: retencion]
 
 
 

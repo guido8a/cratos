@@ -209,58 +209,58 @@ class ProcesoService {
         }
 
 
-        if (lista[0] != false) {
-            println "RETENCION "
-            println retencion
-            if (retencion.size() > 0) {
-                def rt = new Retencion()
-                rt.proceso = p
-                rt.contabilidad = p.contabilidad
-                rt.empresa = p.gestor.empresa
-                rt.fecha = new Date()
-                def l = Retencion.list([sort: "id", order: "desc", max: 3])
-
-                /* TODO: ellos tienen que meter los numeros */
-                def num
-                if (l.size() > 0) {
-                    num = l[0].numero.toInteger() + 1
-                } else {
-                    num = 1
-                }
-
-                rt.numero = num
-                rt.numeroComprobante = ""
-                rt.proveedor = p.proveedor
-                if (p.proveedor?.nombre)
-                    rt.persona = p.proveedor.nombre
-                else {
-                    rt.persona = "" + p.proveedor.nombreContacto + " " + p.proveedor.apellidoContacto
-                }
-                rt.direccion = p.proveedor.direccion
-                rt.telefono = p.proveedor.telefono
-                rt.ruc = p.proveedor.ruc
-                if (rt.save(flush: true)) {
-                    retencion.each { dr ->
-                        def detalle = new DetalleRetencion()
-                        def cuenta = Cuenta.get(dr.cuenta)
-                        detalle.retencion = rt
-                        detalle.base = dr.base
-                        detalle.cuenta = cuenta
-                        detalle.porcentaje = dr.porcentaje
-                        detalle.impuesto = cuenta.impuesto
-                        detalle.total = (detalle.porcentaje/100)*detalle.base
-                        if (!detalle.save(flush: true))
-                            println "error detalle retencion " + detalle.errors
-                    }
-                } else {
-                    println "error al generar elcomprobante " + rt.errors
-                }
-            }
-            lista.add(comprobantes)
-            lista.add(asientos)
-            p.estado = "N"
-            p.save()
-        }
+//        if (lista[0] != false) {
+//            println "RETENCION "
+//            println retencion
+//            if (retencion.size() > 0) {
+//                def rt = new Retencion()
+//                rt.proceso = p
+//                rt.contabilidad = p.contabilidad
+//                rt.empresa = p.gestor.empresa
+//                rt.fecha = new Date()
+//                def l = Retencion.list([sort: "id", order: "desc", max: 3])
+//
+//                /* TODO: ellos tienen que meter los numeros */
+//                def num
+//                if (l.size() > 0) {
+//                    num = l[0].numero.toInteger() + 1
+//                } else {
+//                    num = 1
+//                }
+//
+//                rt.numero = num
+//                rt.numeroComprobante = ""
+//                rt.proveedor = p.proveedor
+//                if (p.proveedor?.nombre)
+//                    rt.persona = p.proveedor.nombre
+//                else {
+//                    rt.persona = "" + p.proveedor.nombreContacto + " " + p.proveedor.apellidoContacto
+//                }
+//                rt.direccion = p.proveedor.direccion
+//                rt.telefono = p.proveedor.telefono
+//                rt.ruc = p.proveedor.ruc
+//                if (rt.save(flush: true)) {
+//                    retencion.each { dr ->
+//                        def detalle = new DetalleRetencion()
+//                        def cuenta = Cuenta.get(dr.cuenta)
+//                        detalle.retencion = rt
+//                        detalle.base = dr.base
+//                        detalle.cuenta = cuenta
+//                        detalle.porcentaje = dr.porcentaje
+//                        detalle.impuesto = cuenta.impuesto
+//                        detalle.total = (detalle.porcentaje/100)*detalle.base
+//                        if (!detalle.save(flush: true))
+//                            println "error detalle retencion " + detalle.errors
+//                    }
+//                } else {
+//                    println "error al generar elcomprobante " + rt.errors
+//                }
+//            }
+//            lista.add(comprobantes)
+//            lista.add(asientos)
+//            p.estado = "N"
+//            p.save()
+//        }
 
 
         return lista
