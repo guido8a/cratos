@@ -5,7 +5,7 @@ import cratos.sri.Pais
 class Retencion implements Serializable {
 
     Proceso proceso
-    Contabilidad contabilidad
+//    Contabilidad contabilidad
     Date fecha
     String ruc
     String direccion
@@ -38,7 +38,7 @@ class Retencion implements Serializable {
         columns {
             id column: 'rtcn__id'
             proceso column: 'prcs__id'
-            contabilidad column: 'cont'
+//            contabilidad column: 'cont'
             fecha column: 'rtcnfcha'
             ruc column: 'rtcn_ruc'
             direccion column: 'rtcndrcn'
