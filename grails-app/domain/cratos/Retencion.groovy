@@ -28,6 +28,7 @@ class Retencion implements Serializable {
     Pais pais
     String convenio
     String normaLegal
+    DocumentoEmpresa documentoEmpresa
 
     static mapping = {
         table 'rtcn'
@@ -60,6 +61,8 @@ class Retencion implements Serializable {
             pais column: 'pais__id'
             convenio column: 'rtcncnvn'
             normaLegal column: 'rtcnnmlg'
+            documentoEmpresa column: 'fcdt__id'
+
 
         }
     }
@@ -84,8 +87,8 @@ class Retencion implements Serializable {
         fechaEmision (blank: true, nullable: true)
         convenio (blank: true, nullable: true)
         normaLegal(blank: true, nullable: true)
-
         pais(blank: true, nullable: true)
+        documentoEmpresa (blank: true, nullable: true)
 
     }
 }
