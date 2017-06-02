@@ -1,4 +1,4 @@
-<%@ page import="cratos.Asiento; cratos.TipoComprobanteSri; cratos.SustentoTributario" %>
+<%@ page import="cratos.Asiento; cratos.sri.TipoComprobanteSri; cratos.sri.SustentoTributario" %>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -192,11 +192,13 @@
                 Sustento Tributario:
             </div>
             <div class="col-xs-5 negrilla">
+%{--
                 <g:select class=" form-control required cmbRequired" name="sustentoTributario.id" id="sustento"
                           from="${SustentoTributario.list([sort:'codigo'])}"
                           title="Necesario solo si la transacción debe reportarse al S.R.I." optionKey="id"
                           value="${proceso?.sustentoTributario?.id}" noSelection="${['-1':'No aplica']}"
                           disabled="${registro?true:false}" />
+--}%
             </div>
             <div class="col-xs-2 " style="font-size: 10px;">
                 Necesario solo si la transacción debe reportarse al S.R.I.
@@ -206,9 +208,11 @@
             <div class="col-xs-2 negrilla">
                 Tipo de documento:
             </div>
+%{--
             <div class="col-xs-5 negrilla">
                 <g:select class="form-control cmbRequired" name="tipoComprobanteSri.id" id="tipoComprobante" from="${TipoComprobanteSri.findAllByIdNotInList([16.toLong(),17.toLong()],[sort:'codigo'])}" optionKey="id" title="Tipo del documento a registrar" optionValue="descripcion"  noSelection="${['-1':'No aplica']}" value="${proceso?.tipoComprobanteSri?.id}" disabled="${registro?true:false}" />
             </div>
+--}%
             <div class="col-xs-2 " style="font-size: 10px">
                 Tipo del documento a registrar.
             </div>
