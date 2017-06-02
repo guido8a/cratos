@@ -107,20 +107,22 @@
             <div class="col-md-2 negrilla">
                 Comprobante N°:
             </div>
-            %{--<div class="col-md-9 negrilla">--}%
-                <div class="col-md-4">
-                    <g:select name="compro" from="${libreta}" value="" class="form-control libretin" optionKey="id" optionValue="${{"Desde: " + it?.numeroDesde + ' - Hasta: ' + it?.numeroHasta + " - Autorización: " + it?.fechaAutorizacion?.format("dd-MM-yyyy")}}"/>
-                </div>
-
-                <div class="col-md-5" id="divNumeracion">
-
-                </div>
-
-            <div class="col-md-2">
-                <g:textField name="serie" id="numSerie" value="${retencion?.numero}" readonly="true" style="width: 100px"/>
+            <div class="col-md-3">
+                <g:select name="compro" from="${libreta}" value="" class="form-control libretin" optionKey="id" optionValue="${{"Desde: " + it?.numeroDesde + ' - Hasta: ' + it?.numeroHasta + " - Autorización: " + it?.fechaAutorizacion?.format("dd-MM-yyyy")}}"/>
             </div>
 
-            %{--</div>--}%
+            <div class="col-md-7">
+                <div class="col-md-5" id="divNumeracion">
+                </div>
+
+                %{--<g:form class="retencion" name="frm-retencion" action="#">--}%
+                    <div class="col-md-3 grupo">
+                        <g:textField name="serie" value="${retencion?.numero}" class="serie form-control required validacionNumero numSerie" style="width: 170px" maxlength="15"/>
+                        <p class="help-block ui-helper-hidden"></p>
+                    </div>
+                %{--</g:form>--}%
+            </div>
+
         </div>
 
 
@@ -136,47 +138,47 @@
         </div>
 
         %{--<div class="fila " style="min-height: 15px;height: 15px;">--}%
-            %{--<div class="fac1">--}%
-                %{--<label style="">Fecha Emisión</label>--}%
-            %{--</div>--}%
+        %{--<div class="fac1">--}%
+        %{--<label style="">Fecha Emisión</label>--}%
+        %{--</div>--}%
 
-            %{--<div class="fac2" style="margin-left: 20px">--}%
-                %{--<label>N° Esta.</label>--}%
-            %{--</div>--}%
+        %{--<div class="fac2" style="margin-left: 20px">--}%
+        %{--<label>N° Esta.</label>--}%
+        %{--</div>--}%
 
-            %{--<div class="fac2">--}%
-                %{--<label>N° Emisión</label>--}%
-            %{--</div>--}%
+        %{--<div class="fac2">--}%
+        %{--<label>N° Emisión</label>--}%
+        %{--</div>--}%
 
-            %{--<div class="fac1" style="margin-left: 40px">--}%
-                %{--<label>N° Secuencial</label>--}%
-            %{--</div>--}%
+        %{--<div class="fac1" style="margin-left: 40px">--}%
+        %{--<label>N° Secuencial</label>--}%
+        %{--</div>--}%
 
-            %{--<div class="fac1" style="width: 300px;">--}%
-                %{--<label>N° Autorización del Comprobante</label>--}%
-            %{--</div>--}%
+        %{--<div class="fac1" style="width: 300px;">--}%
+        %{--<label>N° Autorización del Comprobante</label>--}%
+        %{--</div>--}%
         %{--</div>--}%
 
         %{--<div class="fila" style="margin-bottom: 20px">--}%
-            %{--<div class="fac1">--}%
-                %{--<elm:datepicker name="fechaEmision" class="datepicker required form-control" value="${retencion?.fechaEmision}" />--}%
-            %{--</div>--}%
+        %{--<div class="fac1">--}%
+        %{--<elm:datepicker name="fechaEmision" class="datepicker required form-control" value="${retencion?.fechaEmision}" />--}%
+        %{--</div>--}%
 
-            %{--<div class="fac2" style="margin-left: 20px">--}%
-                %{--<g:textField class=" form-control required digits" title="El número de establecimiento del comprobante de retención es obligatorio." maxlength="3" name="numeroEstablecimiento" style="width: 60px" value="${retencion?.numeroEstablecimiento}"/>--}%
-            %{--</div>--}%
+        %{--<div class="fac2" style="margin-left: 20px">--}%
+        %{--<g:textField class=" form-control required digits" title="El número de establecimiento del comprobante de retención es obligatorio." maxlength="3" name="numeroEstablecimiento" style="width: 60px" value="${retencion?.numeroEstablecimiento}"/>--}%
+        %{--</div>--}%
 
-            %{--<div class="fac2" style="margin-left: 20px">--}%
-                %{--<g:textField class=" form-control required digits" title="El número de punto de emisión del comprobante de retención es obligatorio." maxlength="3" name="numeroPuntoEmision" style="width: 60px" value="${retencion?.numeroPuntoEmision}"/>--}%
-            %{--</div>--}%
+        %{--<div class="fac2" style="margin-left: 20px">--}%
+        %{--<g:textField class=" form-control required digits" title="El número de punto de emisión del comprobante de retención es obligatorio." maxlength="3" name="numeroPuntoEmision" style="width: 60px" value="${retencion?.numeroPuntoEmision}"/>--}%
+        %{--</div>--}%
 
-            %{--<div class="fac1" style="margin-left: 20px">--}%
-                %{--<g:textField class=" form-control required digits" title="El número de secuencial del comprobante de retención es obligatorio." maxlength="9" name="retSecu" style="width: 100px" value="${retencion?.numeroSecuencial}"/>--}%
-            %{--</div>--}%
+        %{--<div class="fac1" style="margin-left: 20px">--}%
+        %{--<g:textField class=" form-control required digits" title="El número de secuencial del comprobante de retención es obligatorio." maxlength="9" name="retSecu" style="width: 100px" value="${retencion?.numeroSecuencial}"/>--}%
+        %{--</div>--}%
 
-            %{--<div class="fac1">--}%
-                %{--<g:textField class=" form-control required digits" title="El número de autorización del comprobante de retención es obligatorio." maxlength="10" name="retAutorizacion" value="${retencion?.numeroAutorizacionComprobante}"/>--}%
-            %{--</div>--}%
+        %{--<div class="fac1">--}%
+        %{--<g:textField class=" form-control required digits" title="El número de autorización del comprobante de retención es obligatorio." maxlength="10" name="retAutorizacion" value="${retencion?.numeroAutorizacionComprobante}"/>--}%
+        %{--</div>--}%
         %{--</div>--}%
 
         <div class="col-md-12">
@@ -254,7 +256,7 @@
 
             <div class=" col-md-4" style="margin-left: 15px">
                 %{--<g:select class="form-control" style="width: 330px" name="conceptoRetencionImpuestoRenta"--}%
-                          %{--from="${cratos.ConceptoRetencionImpuestoRenta?.list()}" optionKey="id" optionValue="${{it.codigo + ' - ' + it.descripcion}}"/>--}%
+                %{--from="${cratos.ConceptoRetencionImpuestoRenta?.list()}" optionKey="id" optionValue="${{it.codigo + ' - ' + it.descripcion}}"/>--}%
             </div>
 
             <div class="col-md-2" style="margin-left: 35px">
@@ -273,53 +275,53 @@
 
         %{--<div class="" style="margin-left: 40px;margin-bottom: 35px">--}%
 
-            %{--<div class="uno" style="width: 230px">--}%
-                %{--<label>Concepto de la Retención del IR</label>--}%
-            %{--</div>--}%
+        %{--<div class="uno" style="width: 230px">--}%
+        %{--<label>Concepto de la Retención del IR</label>--}%
+        %{--</div>--}%
 
-            %{--<div class="dos" style="margin-left: 15px">--}%
+        %{--<div class="dos" style="margin-left: 15px">--}%
 
-                %{--<g:select class="form-control  " style="width: 330px" name="conceptoRetencionImpuestoRenta"--}%
-                          %{--from="${cratos.ConceptoRetencionImpuestoRenta?.list()}" optionKey="id" optionValue="${{--}%
-                    %{--it.codigo + ' - ' + it.descripcion--}%
-                %{--}}"/>--}%
-            %{--</div>--}%
+        %{--<g:select class="form-control  " style="width: 330px" name="conceptoRetencionImpuestoRenta"--}%
+        %{--from="${cratos.ConceptoRetencionImpuestoRenta?.list()}" optionKey="id" optionValue="${{--}%
+        %{--it.codigo + ' - ' + it.descripcion--}%
+        %{--}}"/>--}%
+        %{--</div>--}%
 
-            %{--<div class="tres" style="width: 55px !important; margin-left: 110px"></div>--}%
-            %{--<g:each in="${detalleRetencion}" var="detalle">--}%
-                %{--<g:if test="${detalle?.impuesto?.sri == 'RNT'}">--}%
-                    %{--<div class="cuatro" style="margin-left: 35px">--}%
-                        %{--<g:textField class="form-control required number" title="La base imponible del IR es obligatoria. Puede ingresar 0." name="baseImponible" value="${detalleRetencion?.base}"/>--}%
-                    %{--</div>--}%
+        %{--<div class="tres" style="width: 55px !important; margin-left: 110px"></div>--}%
+        %{--<g:each in="${detalleRetencion}" var="detalle">--}%
+        %{--<g:if test="${detalle?.impuesto?.sri == 'RNT'}">--}%
+        %{--<div class="cuatro" style="margin-left: 35px">--}%
+        %{--<g:textField class="form-control required number" title="La base imponible del IR es obligatoria. Puede ingresar 0." name="baseImponible" value="${detalleRetencion?.base}"/>--}%
+        %{--</div>--}%
 
-                    %{--<div class="cuatro">--}%
-                        %{--<g:textField class="form-control required number" title="El porcentaje de rentención del IR es obligatorio. Puede ingresar 0." name="porcentajeIR" value="${detalleRetencion?.porcentaje}"/>--}%
-                    %{--</div>--}%
+        %{--<div class="cuatro">--}%
+        %{--<g:textField class="form-control required number" title="El porcentaje de rentención del IR es obligatorio. Puede ingresar 0." name="porcentajeIR" value="${detalleRetencion?.porcentaje}"/>--}%
+        %{--</div>--}%
 
-                    %{--<div class="cuatro">--}%
-                        %{--<g:textField class="form-control required number" title="el valor retenido del IR es obligatorio. Puede ingresar 0." name="valorRetenido"/>--}%
-                    %{--</div>--}%
-                %{--</g:if>--}%
-                %{--<g:else>--}%
-                    %{--<div class="cuatro" style="margin-left: 35px">--}%
-                        %{--<g:textField class="form-control required number" title="La base imponible del IR es obligatoria. Puede ingresar 0." name="baseImponible" value="${0}"/>--}%
-                    %{--</div>--}%
+        %{--<div class="cuatro">--}%
+        %{--<g:textField class="form-control required number" title="el valor retenido del IR es obligatorio. Puede ingresar 0." name="valorRetenido"/>--}%
+        %{--</div>--}%
+        %{--</g:if>--}%
+        %{--<g:else>--}%
+        %{--<div class="cuatro" style="margin-left: 35px">--}%
+        %{--<g:textField class="form-control required number" title="La base imponible del IR es obligatoria. Puede ingresar 0." name="baseImponible" value="${0}"/>--}%
+        %{--</div>--}%
 
-                    %{--<div class="cuatro">--}%
-                        %{--<g:textField class="form-control required number" title="El porcentaje de rentención del IR es obligatorio. Puede ingresar 0." name="porcentajeIR" value="${0}"/>--}%
-                    %{--</div>--}%
+        %{--<div class="cuatro">--}%
+        %{--<g:textField class="form-control required number" title="El porcentaje de rentención del IR es obligatorio. Puede ingresar 0." name="porcentajeIR" value="${0}"/>--}%
+        %{--</div>--}%
 
-                    %{--<div class="cuatro">--}%
-                        %{--<g:textField class="form-control required number" title="el valor retenido del IR es obligatorio. Puede ingresar 0." name="valorRetenido"/>--}%
-                    %{--</div>--}%
-                %{--</g:else>--}%
-            %{--</g:each>--}%
+        %{--<div class="cuatro">--}%
+        %{--<g:textField class="form-control required number" title="el valor retenido del IR es obligatorio. Puede ingresar 0." name="valorRetenido"/>--}%
+        %{--</div>--}%
+        %{--</g:else>--}%
+        %{--</g:each>--}%
 
         %{--</div>--}%
 
         %{--<div class="" style="margin-left: 40px; margin-top: 80px !important; margin-bottom: 25px; margin-right: 25px;">--}%
 
-            %{--<label style="margin-left: 320px">Datos del Comprobante de Retención</label>--}%
+        %{--<label style="margin-left: 320px">Datos del Comprobante de Retención</label>--}%
 
         %{--</div>--}%
 
@@ -599,26 +601,6 @@
 </g:form>
 <script type="text/javascript">
 
-    cargarNumeracion($(".libretin option:selected").val());
-
-    function cargarNumeracion (id) {
-        $.ajax({
-            type:'POST',
-            url: '${createLink(controller: 'proceso', action: 'numeracion_ajax')}',
-            data:{
-                libretin: id
-            },
-            success: function (msg) {
-              $("#divNumeracion").html(msg)
-            }
-        });
-    }
-
-    $(".libretin").change(function () {
-       var idLibretin = $(".libretin option:selected").val();
-        cargarNumeracion(idLibretin)
-    });
-
 
 
     function validarNum(ev) {
@@ -637,8 +619,120 @@
         return ((ev.keyCode >= 48 && ev.keyCode <= 57) ||
         (ev.keyCode >= 96 && ev.keyCode <= 105) ||
         ev.keyCode == 8 || ev.keyCode == 46 || ev.keyCode == 9 ||
-        ev.keyCode == 37 || ev.keyCode == 39);
+        ev.keyCode == 37 || ev.keyCode == 39 ||
+        ev.keyCode == 110 || ev.keyCode == 190);
     }
+
+    $(".validacionNumero").keydown(function (ev) {
+        return validarNum(ev);
+    }).keyup(function () {
+
+    });
+
+
+    cargarNumeracion($(".libretin option:selected").val());
+
+    function cargarNumeracion (id) {
+        $.ajax({
+            type:'POST',
+            url: '${createLink(controller: 'proceso', action: 'numeracion_ajax')}',
+            data:{
+                libretin: id
+            },
+            success: function (msg) {
+                $("#divNumeracion").html(msg)
+            }
+        });
+    }
+
+    $(".libretin").change(function () {
+        var idLibretin = $(".libretin option:selected").val();
+        cargarNumeracion(idLibretin);
+//        $("#numSerie").val('')
+
+    });
+
+
+
+//    foo(function(result) {
+//        // Code that depends on 'result'
+//    });
+//
+//
+//
+//    function foo(callback) {
+//        console.log("callback " + callback)
+//        if(callback){
+//            log("Número de serie válido","success")
+//        }else{
+//            log("El número de serie ingresado no es válido!", "error")
+//        }
+//    }
+
+
+
+    $("#sriForm").validate({
+        errorClass     : "help-block",
+        errorPlacement : function (error, element) {
+            if (element.parent().hasClass("input-group")) {
+                error.insertAfter(element.parent());
+            } else {
+                error.insertAfter(element);
+            }
+            element.parents(".grupo").addClass('has-error');
+        },
+        success        : function (label) {
+            label.parents(".grupo").removeClass('has-error');
+        },
+        rules  : {
+            serie : {
+                remote : {
+                    type: 'POST',
+                    url:"${createLink(controller: 'proceso', action: 'validarSerie_ajax')}",
+                    data:{
+                        numero: $(".numSerie").val(),
+                        libretin: $(".libretin option:selected").val()
+                    }
+                }
+            }
+        },
+        messages       : {
+            serie : {
+                remote : "Número de serie incorrecto"
+            }
+        }
+    });
+
+
+
+    %{--function validarSerie (num) {--}%
+        %{--$.ajax({--}%
+            %{--type: 'POST',--}%
+            %{--url:"${createLink(controller: 'proceso', action: 'validarSerie_ajax')}",--}%
+            %{--data:{--}%
+                %{--numero: num,--}%
+                %{--libretin: $(".libretin option:selected").val()--}%
+            %{--},--}%
+            %{--success: function (msg) {--}%
+                %{--console.log("---> " + msg)--}%
+                %{--if(msg == 'true'){--}%
+                    %{--log("Número de serie válido","success")--}%
+                %{--}else{--}%
+                    %{--log("El número de serie ingresado no es válido!", "error")--}%
+                %{--}--}%
+            %{--}--}%
+        %{--});--}%
+    %{--}--}%
+
+
+
+    %{--$(".numSerie").keydown(function (ev) {--}%
+
+    %{--}).keydown(function () {--}%
+        %{--var numeracion = $(".numSerie").val();--}%
+        %{--validarSerie(numeracion)--}%
+    %{--});--}%
+
 
     function validarNumDec(ev) {
         /*
@@ -677,8 +771,8 @@
 //                        console.log("**" + errors);
                 if (errors) {
                     var message = errors == 1
-                            ? 'Se encontró 1 error.'
-                            : 'Se encontraron ' + errors + ' errores';
+                        ? 'Se encontró 1 error.'
+                        : 'Se encontraron ' + errors + ' errores';
                     $("#divErrores").show();
                     $("#spanError").html(message);
 

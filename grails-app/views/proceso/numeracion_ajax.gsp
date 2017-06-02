@@ -7,12 +7,12 @@
 
 
 
-    <div class="col-md-3">
-        <g:textField name="esta" id="numEsta" value="${libreta?.numeroEstablecimiento}" readonly="true" style="width: 100px"/>
-    </div>
-    -
-    <div class="col-md-2">
-        <g:textField name="emi" id="numEmi" value="${libreta?.numeroEmision}" readonly="true" style="width: 100px"/>
-    </div>
+    %{--<div class="col-md-3">--}%
+        <g:textField name="esta" id="numEsta" value="${libreta?.numeroEstablecimiento}" readonly="true" style="width: 100px" title="Numeración Establecimento"/> -
+    %{--</div>--}%
+    %{----}%
+    %{--<div class="col-md-2">--}%
+        <g:textField name="emi" id="numEmi" value="${libreta?.numeroEmision}" readonly="true" style="width: 100px" title="Numeración Emisión"/>
+    %{--</div>--}%
 
 

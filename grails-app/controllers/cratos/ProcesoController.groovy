@@ -1299,5 +1299,18 @@ class ProcesoController extends cratos.seguridad.Shield {
         return [data: data, msg: msg, tpps: tpps]
     }
 
+    def validarSerie_ajax () {
+//        println("params validar " + params)
+        def documentoEmpresa = DocumentoEmpresa.get(params.libretin)
+        def desde = documentoEmpresa.numeroDesde
+        def hasta = documentoEmpresa.numeroHasta
+
+        if((params.serie.toInteger() >= desde.toInteger()) && (params.serie.toInteger() <= hasta.toInteger())){
+            render true
+        }else{
+            render false
+        }
+    }
+
 }
 
