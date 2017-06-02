@@ -1,4 +1,4 @@
-<%@ page import="cratos.SustentoTributario" %>
+<%@ page import="cratos.sri.SustentoTributario" %>
 
 
 

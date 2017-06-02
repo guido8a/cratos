@@ -2,6 +2,8 @@ package cratos
 
 import cratos.seguridad.Persona
 import cratos.sri.Pais
+import cratos.sri.SustentoTributario
+import cratos.sri.TipoComprobanteSri
 
 class ProcesoController extends cratos.seguridad.Shield {
 
@@ -1257,6 +1259,44 @@ class ProcesoController extends cratos.seguridad.Shield {
     def numeracion_ajax () {
         def documentoEmpresa = DocumentoEmpresa.get(params.libretin)
         return [libreta : documentoEmpresa]
+    }
+
+    def buscarPrcs() {
+//        println "busqueda "
+    }
+
+    def tablaBuscarPrcs() {
+        println "buscar .... $params"
+        def data = []
+        def cn = dbConnectionService.getConnection()
+/*
+        def sql = "select prcs__id id, prcsfcha, prcsdscr, prcsetdo, cmprnmro, tptrdscr, prvenmbr " +
+                "from prcs, cmpr, prve, tptr where prcs.empr__id = ${session.empresa.id} and " +
+                "cmpr.prcs__id = prcs.prcs__id and prve.preve__id = prcs.prve__id and " +
+                "tptr.tptr__id = prcs.tptr__id" +
+                "order by prcsfcha"
+*/
+        def sql = "select prcs.prcs__id id, prcsfcha, prcsdscr, prcsetdo, cmprprfj||cmprnmro cmprnmro, prcstpps, prvenmbr " +
+                "from prcs, cmpr, prve where prcs.empr__id = ${session.empresa.id} and " +
+                "cmpr.prcs__id = prcs.prcs__id and prve.prve__id = prcs.prve__id " +
+                "order by prcsfcha"
+
+        println "buscar .. ${sql}"
+
+        data = cn.rows(sql.toString())
+
+        def tpps = ["P": "Pago", "C": "Compra", "V": "Venta", "A": "Ajuste", "O": "Otro"]
+
+        def msg = ""
+        if(data?.size() > 20){
+            data = data[0..19]
+            msg = "<div class='alert-danger' style='margin-top:-20px; diplay:block; height:25px;margin-bottom: 20px;'>" +
+                    " <i class='fa fa-warning fa-2x pull-left'></i> Su búsqueda ha generado más de 20 resultados. " +
+                    "Use más palabras para especificar mejor la búsqueda.</div>"
+        }
+        cn.close()
+
+        return [data: data, msg: msg, tpps: tpps]
     }
 
 }

@@ -1,5 +1,7 @@
 package cratos
 
+import cratos.sri.TipoComprobanteSri
+
 
 class TipoComprobanteSriController extends cratos.seguridad.Shield {
 

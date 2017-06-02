@@ -1,5 +1,6 @@
 package cratos
 
+import cratos.sri.SustentoTributario
 import org.springframework.dao.DataIntegrityViolationException
 
 class SustentoTributarioController extends cratos.seguridad.Shield {

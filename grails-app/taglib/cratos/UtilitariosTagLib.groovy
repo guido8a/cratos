@@ -162,4 +162,9 @@ class UtilitariosTagLib {
         out << strFecha
     }
 
+    def renderHTML = { attrs ->
+        out << attrs.html
+    }
+
+
 }

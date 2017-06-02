@@ -1,5 +1,5 @@
 
-<%@ page import="cratos.TipoComprobanteSri" %>
+<%@ page import="cratos.sri.TipoComprobanteSri" %>
 <!DOCTYPE html>
 <html>
     <head>

@@ -1,4 +1,4 @@
-package cratos
+package cratos.sri
 
 class SustentoTributario implements Serializable {
 

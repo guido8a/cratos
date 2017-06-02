@@ -17,7 +17,7 @@ class IdentificacionProveedor implements Serializable {
     }
     static constraints = {
         codigo(blank:true,nullable: true,size: 1..4)
-        descripcion(blank:true,nullable: true,size: 1..120)
+        descripcion(blank:true,nullable: true,size: 1..63)
     }
     String toString() {
 

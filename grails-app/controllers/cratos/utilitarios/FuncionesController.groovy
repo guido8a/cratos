@@ -2,7 +2,7 @@ package cratos.utilitarios
 
 import cratos.Cuenta
 import cratos.Nivel
-import cratos.TipoComprobanteSri
+import cratos.sri.TipoComprobanteSri
 
 class FuncionesController extends cratos.seguridad.Shield{
 

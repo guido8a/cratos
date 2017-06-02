@@ -1,4 +1,4 @@
-<%@ page import="cratos.TipoComprobanteSri" %>
+<%@ page import="cratos.sri.TipoComprobanteSri" %>
 
 <script type="text/javascript" src="${resource(dir: 'js', file: 'ui.js')}"></script>
 <g:if test="${!tipoComprobanteSriInstance}">

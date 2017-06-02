@@ -71,6 +71,9 @@
         <script src="${resource(dir: 'js/plugins', file: 'date.js')}"></script>
         %{--<script src="${resource(dir: 'js/plugins/homeycombs', file: '/js/jquery.homeycombs.js')}"></script>--}%
 
+        <link href="${resource(dir: 'js/plugins/lzm.context/css', file: 'lzm.context-0.5.css')}" rel="stylesheet">
+        <script src="${resource(dir: 'js/plugins/lzm.context/js', file: 'lzm.context-0.5.js')}"></script>
+
         <!-- Custom styles -->
         <link href="${resource(dir: 'css', file: 'custom.css')}" rel="stylesheet">
         <link href="${resource(dir: 'css', file: 'custom/loader.css')}" rel="stylesheet">

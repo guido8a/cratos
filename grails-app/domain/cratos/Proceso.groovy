@@ -1,26 +1,34 @@
 package cratos
 
+import cratos.sri.SustentoTributario
+import cratos.sri.TipoComprobanteSri
+
 class Proceso implements Serializable {
-    int padre
+    Gestor gestor
+    Contabilidad contabilidad
+    Empresa empresa
+    Proveedor proveedor
+    Comprobante comprobante  /* relacionado para NC */
+    cratos.seguridad.Persona usuario
+    CentroCosto centroCosto
+
+    RolPagos rolPagos
+    Adquisiciones adquisicion
+    Factura fact
+    Transferencia transferencia
+
+    cratos.sri.TipoTransaccion tipoTransaccion
+    cratos.sri.TipoCmprTransaccion tipoCmprTransaccion
+    cratos.sri.TipoCmprSustento tipoCmprSustento
+
+
     double impuesto
     double valor
     Date fecha
     String descripcion
-    Gestor gestor
-    cratos.seguridad.Persona usuario
-    Contabilidad contabilidad
-    Proveedor proveedor
-    TipoPago tipoPago
+
     String estado
-    Adquisiciones adquisicion
-    Factura fact
     String documento
-    CentroCosto centroCosto
-    OrdenCompra ordenCompra
-    Transferencia transferencia
-    RolPagos rolPagos
-    TipoComprobanteId tipoComprobanteId
-    TipoSoporte tipoSoporte
     Date fechaRegistro
     Date fechaEmision
     String procesoSerie01
@@ -40,17 +48,12 @@ class Proceso implements Serializable {
     String retencionSerie2
     String retencionSecuencial
     String retencionAutorizacion
-    PagoAux pagoAux
-    SustentoTributario sustentoTributario
-    TipoComprobanteSri tipoComprobanteSri
     Date fechaIngresoSistema
     String facturaEstablecimiento
     String facturaPuntoEmision
     String facturaSecuencial
     String facturaAutorizacion
-    Empresa empresa
     String tipoProceso /*para saber si es compra, venta etc etc........... C--> compra, V---> venta, A--> Ajuste, O--> otros, R->Depreciacion*/
-    Comprobante comprobante
 
     static auditable = true
     static mapping = {
@@ -60,7 +63,7 @@ class Proceso implements Serializable {
         id generator: 'identity'
         version false
         columns {
-            padre column: 'prcspdre'
+//            padre column: 'prcspdre'
             impuesto column: 'prcsimpt'
             valor column: 'prcsvlor'
             fecha column: 'prcsfcha'
@@ -69,17 +72,17 @@ class Proceso implements Serializable {
             usuario column: 'prsn__id'
             contabilidad column: 'cont__id'
             proveedor column: 'prve__id'
-            tipoPago column: 'tppg__id'
+//            tipoPago column: 'tppg__id'
             estado column: 'prcsetdo'
             adquisicion column: 'adqc__id'
             fact column: 'fctr__id'
             documento column: 'prcsdcmt'
             centroCosto column: 'cncs__id'
-            ordenCompra column: 'odcp__id'
+//            ordenCompra column: 'odcp__id'
             transferencia column: 'trnf__id'
             rolPagos column: 'rlpg__id'
-            tipoComprobanteId column: 'tcti__id'
-            tipoSoporte column: 'tpst__id'
+//            tipoComprobanteId column: 'tcti__id'
+//            tipoSoporte column: 'tpst__id'
             fechaRegistro column: 'prcsfcrg'
             fechaEmision column: 'prcsfcem'
             procesoSerie01 column: 'prcssr01'
@@ -99,9 +102,9 @@ class Proceso implements Serializable {
             retencionSerie2 column: 'prcsrts2'
             retencionSecuencial column: 'prcsrtsc'
             retencionAutorizacion column: 'prcsrtat'
-            pagoAux column: 'pgax__id'
-            sustentoTributario column: 'sstr__id'
-            tipoComprobanteSri column: 'tpcp__id'
+//            pagoAux column: 'pgax__id'
+//            sustentoTributario column: 'sstr__id'
+//            tipoComprobanteSri column: 'tpcp__id'
             fechaIngresoSistema column: 'prcsfcis'
             facturaEstablecimiento column: 'prcsfces'
             facturaPuntoEmision column: 'prcsfcpe'
@@ -110,10 +113,14 @@ class Proceso implements Serializable {
             tipoProceso column: 'prcstpps'
             facturaAutorizacion column: 'prcsfcat'
             comprobante column: 'cmpr__id'
+
+            tipoTransaccion column: 'tptr__id'
+            tipoCmprTransaccion column: 'tctt__id'
+            tipoCmprSustento column: 'tcst__id'
         }
     }
     static constraints = {
-        padre(blank: true, nullable: true, attributes: [title: 'padre'])
+//        padre(blank: true, nullable: true, attributes: [title: 'padre'])
         impuesto(blank: true, nullable: true, attributes: [title: 'impuesto'])
         valor(blank: true, nullable: true, attributes: [title: 'valor'])
         fecha(blank: true, nullable: true, attributes: [title: 'fecha'])
@@ -122,17 +129,17 @@ class Proceso implements Serializable {
         usuario(blank: true, nullable: true, attributes: [title: 'usuario'])
         contabilidad(blank: true, nullable: true, attributes: [title: 'contabilidad'])
         proveedor(blank: true, nullable: true, attributes: [title: 'proveedor'])
-        tipoPago(blank: true, nullable: true, attributes: [title: 'tipoPago'])
+//        tipoPago(blank: true, nullable: true, attributes: [title: 'tipoPago'])
         estado(blank: true, maxSize: 1, attributes: [title: 'estado'])
         adquisicion(blank: true, nullable: true, attributes: [title: 'adquisicion'])
         fact(blank: true, nullable: true, attributes: [title: 'factura'])
         documento(blank: true, nullable: true, size: 1..40)
         centroCosto(blank: true, nullable: true, attributes: [title: 'centroCosto'])
-        ordenCompra(blank: true, nullable: true, attributes: [title: 'ordenCompra'])
+//        ordenCompra(blank: true, nullable: true, attributes: [title: 'ordenCompra'])
         transferencia(blank: true, nullable: true, attributes: [title: 'transferencia'])
         rolPagos(blank: true, nullable: true, attributes: [title: 'rolPagos'])
-        tipoComprobanteId(blank: true, nullable: true, attributes: [title: 'tipoComprobanteId'])
-        tipoSoporte(blank: true, nullable: true, attributes: [title: 'tipoSoporte'])
+//        tipoComprobanteId(blank: true, nullable: true, attributes: [title: 'tipoComprobanteId'])
+//        tipoSoporte(blank: true, nullable: true, attributes: [title: 'tipoSoporte'])
         fechaRegistro(blank: true, nullable: true, attributes: [title: 'fechaRegistro'])
         fechaEmision(blank: true, nullable: true, attributes: [title: 'fechaEmision'])
         procesoSerie01(blank: true, nullable: true, maxSize: 3, attributes: [title: 'procesoSerie01'])
@@ -152,9 +159,9 @@ class Proceso implements Serializable {
         retencionSerie2(blank: true, nullable: true)
         retencionSecuencial(blank: true, nullable: true)
         retencionAutorizacion(blank: true, nullable: true)
-        pagoAux(blank: true, nullable: true)
-        sustentoTributario(blank: true, nullable: true)
-        tipoComprobanteSri(blank: true, nullable: true)
+//        pagoAux(blank: true, nullable: true)
+//        sustentoTributario(blank: true, nullable: true)
+//        tipoComprobanteSri(blank: true, nullable: true)
         fechaIngresoSistema(blank: true, nullable: true)
         facturaEstablecimiento(blank: true, nullable: true)
         facturaPuntoEmision(blank: true, nullable: true)
@@ -163,5 +170,10 @@ class Proceso implements Serializable {
         tipoProceso(nullable: true,blank: true,size: 1..1)
         facturaAutorizacion(nullable: true,blank: true,size: 1..20)
         comprobante(nullable: true,blank: true)
+
+        tipoTransaccion(nullable: false, blank: false)
+        tipoCmprTransaccion(nullable: true, blank: true)
+        tipoCmprSustento(nullable: true, blank: true)
+
     }
 }
