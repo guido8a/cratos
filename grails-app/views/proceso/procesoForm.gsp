@@ -76,11 +76,12 @@
 <div class="btn-toolbar toolbar">
     <div class="btn-group">
 
-        <g:link class="btn btn-primary" action="index">
+        <g:link class="btn btn-info" action="buscarPrcs">
             <i class="fa fa-chevron-left"></i>
-            Lista
+            Lista de Procesos
         </g:link>
-
+    </div>
+    <div class="btn-group">
     %{--<g:if test="${!registro}">--}%
         <g:if test="${!proceso || proceso?.estado == 'N'}">
             <a href="#" class="btn btn-success" id="guardarProceso">
@@ -118,7 +119,7 @@
 
 
             <g:if test="${cratos.Retencion.countByProceso(proceso) > 0}">
-                <g:link class="btn btn-info" action="detalleSri" id="${proceso?.id}" style="margin-bottom: 10px;">
+                <g:link class="btn btn-primary" action="detalleSri" id="${proceso?.id}" style="margin-bottom: 10px;">
                     <i class="fa fa-shield"></i> SRI
                 </g:link>
                 %{--<g:if test="${cratos.Retencion.findByProceso(proceso).numeroSecuencial}">--}%

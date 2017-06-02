@@ -23,7 +23,7 @@ class ContabilidadController extends cratos.seguridad.Shield {
     def cambiarContabilidad() {
         def contabilidad = Contabilidad.get(params.contabilidad)
         session.contabilidad = contabilidad
-        redirect controller: 'proceso', action: 'lsta'
+        redirect controller: 'proceso', action: 'buscarPrcs'
     }
 
     /* ************************ COPIAR DESDE AQUI ****************************/

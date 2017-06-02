@@ -1269,6 +1269,12 @@ class ProcesoController extends cratos.seguridad.Shield {
         println "buscar .... $params"
         def data = []
         def cn = dbConnectionService.getConnection()
+        def wh = ""
+        def buscar = params.buscar.trim()
+        if(params.buscar) {
+            session.buscar = buscar
+            wh = " and prcsdscr ilike '%${buscar}%' "
+        }
 /*
         def sql = "select prcs__id id, prcsfcha, prcsdscr, prcsetdo, cmprnmro, tptrdscr, prvenmbr " +
                 "from prcs, cmpr, prve, tptr where prcs.empr__id = ${session.empresa.id} and " +
@@ -1276,12 +1282,13 @@ class ProcesoController extends cratos.seguridad.Shield {
                 "tptr.tptr__id = prcs.tptr__id" +
                 "order by prcsfcha"
 */
-        def sql = "select prcs.prcs__id id, prcsfcha, prcsdscr, prcsetdo, cmprprfj||cmprnmro cmprnmro, prcstpps, prvenmbr " +
+        def sql = "select prcs.prcs__id id, prcsfcha, prcsdscr, prcsetdo, cmprprfj||cmprnmro cmprnmro, " +
+                "prcstpps, prvenmbr, prcsetdo " +
                 "from prcs, cmpr, prve where prcs.empr__id = ${session.empresa.id} and " +
-                "cmpr.prcs__id = prcs.prcs__id and prve.prve__id = prcs.prve__id " +
-                "order by prcsfcha"
+                "cmpr.prcs__id = prcs.prcs__id and prve.prve__id = prcs.prve__id ${wh}" +
+                "order by prcsfcha limit 21"
 
-        println "buscar .. ${sql}"
+//        println "buscar .. ${sql}"
 
         data = cn.rows(sql.toString())
 
@@ -1289,10 +1296,10 @@ class ProcesoController extends cratos.seguridad.Shield {
 
         def msg = ""
         if(data?.size() > 20){
-            data = data[0..19]
+            data.pop()   //descarta el último puesto que son 21
             msg = "<div class='alert-danger' style='margin-top:-20px; diplay:block; height:25px;margin-bottom: 20px;'>" +
                     " <i class='fa fa-warning fa-2x pull-left'></i> Su búsqueda ha generado más de 20 resultados. " +
-                    "Use más palabras para especificar mejor la búsqueda.</div>"
+                    "Use más letras para especificar mejor la búsqueda.</div>"
         }
         cn.close()
 

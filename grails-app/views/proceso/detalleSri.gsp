@@ -91,7 +91,12 @@
 
 <div class="btn-toolbar toolbar">
     <div class="btn-group">
-        <g:link class="btn regresar btn-primary btn-ajax" id="${proceso?.id}" action="show"> <i class="fa fa-chevron-left"></i> Regresar</g:link>
+        <g:link class="btn regresar btn-primary btn-ajax" id="${proceso?.id}" action="show">
+            <i class="fa fa-chevron-left"></i> Proceso</g:link>
+        <g:link class="btn regresar btn-info btn-ajax" action="buscarPrcs">
+            <i class="fa fa-chevron-left"></i> Lista de Procesos</g:link>
+    </div>
+    <div class="btn-group">
         <g:link class="btn grabar btn-success btn-ajax" id="grabar"><i class="fa fa-floppy-o"></i> Guardar</g:link>
     </div>
 </div>

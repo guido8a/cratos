@@ -12,27 +12,27 @@
     <div class="panel-body">
         <g:form controller="contabilidad" action="cambiarContabilidad" name="frmContabilidad">
             <div class="row">
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <b>Usuario:</b>
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-md-8">
                     ${usuario?.nombre} ${usuario?.apellido} (${usuario?.login})
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <b>Contabilidad actual:</b>
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-md-8">
                     ${contabilidad}
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <b>Cambiar a contabilidad:</b>
                 </div>
 
@@ -55,7 +55,10 @@
     $("#btnSave").click(function () {
         $("#frmContabilidad").submit();
     });
+
+/*
     $("#btnCancelar").click(function () {
-        window.location.href = "${createLink(controller: 'proceso', action: 'lsta')}";
+        window.location.href = "${createLink(controller: 'proceso', action: 'buscarPrcs')}";
     });
+*/
 </script>
