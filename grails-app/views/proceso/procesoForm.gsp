@@ -121,12 +121,12 @@
                 <g:link class="btn btn-info" action="detalleSri" id="${proceso?.id}" style="margin-bottom: 10px;">
                     <i class="fa fa-shield"></i> SRI
                 </g:link>
-                <g:if test="${cratos.Retencion.findByProceso(proceso).numeroSecuencial}">
+                %{--<g:if test="${cratos.Retencion.findByProceso(proceso).numeroSecuencial}">--}%
                     <g:link controller="reportes3" action="imprimirRetencion" class="btn btn-default btnRetencion" id="${proceso?.id}" params="[empresa: session.empresa.id]" style="margin-bottom: 10px;">
                         <i class="fa fa-print"></i>
                         Imprimir retención
                     </g:link>
-                </g:if>
+                %{--</g:if>--}%
             </g:if>
         </g:if>
     </div>

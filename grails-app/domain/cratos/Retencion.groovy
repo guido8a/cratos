@@ -21,19 +21,19 @@ class Retencion implements Serializable {
     Date fechaEmision
     String convenio
     String normaLegal
-    double baseIva
-    double iva
-    double baseRenta
-    double renta
-    double baseIce
-    double porcentajeIce
-    double ice
-    double baseBienes
-    double porcentajeBienes
-    double bienes
-    double baseServicios
-    double porcentajeServicios
-    double servicios
+    double baseIva = 0
+    double iva = 0
+    double baseRenta = 0
+    double renta = 0
+    double baseIce = 0
+    double porcentajeIce = 0
+    double ice = 0
+    double baseBienes = 0
+    double porcentajeBienes = 0
+    double bienes = 0
+    double baseServicios = 0
+    double porcentajeServicios = 0
+    double servicios = 0
 
 
     static mapping = {
