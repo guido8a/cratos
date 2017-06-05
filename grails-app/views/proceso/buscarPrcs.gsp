@@ -219,11 +219,19 @@
             }
         };
 
+        var imprimir = {
+            label: " Imprimir Comprobante",
+            icon: "fa fa-file",
+            action: function () {
+                location.href = '${createLink(controller: "proceso", action: "detalleSri")}?id=' + id;
+            }
+        };
+
         var auxiliar = {
             label: " Auxiliar",
             icon: "fa fa-table",
             action: function () {
-                location.href = '${createLink(controller: "base", action: "aprobar")}?id=' + id;
+                location.href = '${createLink(controller: "axlr", action: "show")}?id=' + id;
             }
         };
 
@@ -232,6 +240,7 @@
 
         if(etdo == 'R') {
             items.retencion = retencion;
+            items.imprimir = imprimir;
         }
 
         return items
