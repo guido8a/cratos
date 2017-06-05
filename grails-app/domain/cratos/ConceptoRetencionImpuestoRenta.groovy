@@ -1,10 +1,12 @@
 package cratos
 
-class ConceptoRetencionImpuestoRenta implements Serializable {
+import cratos.sri.ModalidadPago
 
+class ConceptoRetencionImpuestoRenta implements Serializable {
     String codigo
     String descripcion
     double porcentaje
+    ModalidadPago modalidadPago
 
     static auditable = true
     static mapping = {
@@ -17,11 +19,13 @@ class ConceptoRetencionImpuestoRenta implements Serializable {
             codigo column: 'crircdgo'
             descripcion column: 'crirdscr'
             porcentaje column: 'crirpcnt'
+            modalidadPago column: 'mdpg__id'
         }
     }
     static constraints = {
         codigo(size: 1..4, blank: false, attributes: [title: 'codigo'])
         descripcion(blank: false, maxSize: 63, attributes: [title: 'descripcion'])
-        porcentaje(blank: true, nullable:true, attributes: [title: 'porcentaje'])
+        porcentaje(blank: false, nullable: false, attributes: [title: 'porcentaje'])
+        modalidadPago(blank: false, nullable: false, attributes: [title: 'Modalidad de pago'])
     }
 }
