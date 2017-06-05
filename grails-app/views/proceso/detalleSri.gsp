@@ -119,84 +119,31 @@
             <div class="col-md-7">
                 <div class="col-md-5" id="divNumeracion">
                 </div>
-
-                %{--<g:form class="retencion" name="frm-retencion" action="#">--}%
-                    <div class="col-md-3 grupo">
-                        <g:textField name="serie" value="${retencion?.numero}" class="serie form-control required validacionNumero numSerie" style="width: 170px" maxlength="15"/>
-                        <p class="help-block ui-helper-hidden"></p>
-                    </div>
-                %{--</g:form>--}%
+                <div class="col-md-3 grupo">
+                    <g:textField name="serie" value="${retencion?.numero}" class="serie form-control required validacionNumero numSerie" style="width: 170px" maxlength="15"/>
+                    <p class="help-block ui-helper-hidden"></p>
+                </div>
             </div>
-
         </div>
-
 
         <div class="col-md-12" style="margin-bottom: 10px">
             <div class="col-md-2 negrilla">
                 Fecha Emisión:
             </div>
-            <div class="col-md-9 negrilla">
-                <div class="col-md-3">
-                    <elm:datepicker name="fechaEmision" class="datepicker required form-control" value="${retencion?.fechaEmision}" />
-                </div>
+            <div class="col-md-2">
+                <elm:datepicker name="fechaEmision" class="datepicker required form-control" value="${retencion?.fechaEmision}" />
             </div>
         </div>
-
-        %{--<div class="fila " style="min-height: 15px;height: 15px;">--}%
-        %{--<div class="fac1">--}%
-        %{--<label style="">Fecha Emisión</label>--}%
-        %{--</div>--}%
-
-        %{--<div class="fac2" style="margin-left: 20px">--}%
-        %{--<label>N° Esta.</label>--}%
-        %{--</div>--}%
-
-        %{--<div class="fac2">--}%
-        %{--<label>N° Emisión</label>--}%
-        %{--</div>--}%
-
-        %{--<div class="fac1" style="margin-left: 40px">--}%
-        %{--<label>N° Secuencial</label>--}%
-        %{--</div>--}%
-
-        %{--<div class="fac1" style="width: 300px;">--}%
-        %{--<label>N° Autorización del Comprobante</label>--}%
-        %{--</div>--}%
-        %{--</div>--}%
-
-        %{--<div class="fila" style="margin-bottom: 20px">--}%
-        %{--<div class="fac1">--}%
-        %{--<elm:datepicker name="fechaEmision" class="datepicker required form-control" value="${retencion?.fechaEmision}" />--}%
-        %{--</div>--}%
-
-        %{--<div class="fac2" style="margin-left: 20px">--}%
-        %{--<g:textField class=" form-control required digits" title="El número de establecimiento del comprobante de retención es obligatorio." maxlength="3" name="numeroEstablecimiento" style="width: 60px" value="${retencion?.numeroEstablecimiento}"/>--}%
-        %{--</div>--}%
-
-        %{--<div class="fac2" style="margin-left: 20px">--}%
-        %{--<g:textField class=" form-control required digits" title="El número de punto de emisión del comprobante de retención es obligatorio." maxlength="3" name="numeroPuntoEmision" style="width: 60px" value="${retencion?.numeroPuntoEmision}"/>--}%
-        %{--</div>--}%
-
-        %{--<div class="fac1" style="margin-left: 20px">--}%
-        %{--<g:textField class=" form-control required digits" title="El número de secuencial del comprobante de retención es obligatorio." maxlength="9" name="retSecu" style="width: 100px" value="${retencion?.numeroSecuencial}"/>--}%
-        %{--</div>--}%
-
-        %{--<div class="fac1">--}%
-        %{--<g:textField class=" form-control required digits" title="El número de autorización del comprobante de retención es obligatorio." maxlength="10" name="retAutorizacion" value="${retencion?.numeroAutorizacionComprobante}"/>--}%
-        %{--</div>--}%
-        %{--</div>--}%
 
         <div class="col-md-12">
             <div class="col-md-2 negrilla">
                 Proveedor:
             </div>
-            <div class="col-md-9 negrilla">
-                <div class="col-md-3">
-                    <input type="text" name="proveedor.ruc" class="form-control " id="prov" disabled="true" value="${proceso?.proveedor?.ruc ?: ''}" title="RUC del proveedor o cliente" style="width: 140px" placeholder="RUC"/>
-                </div>
-                <div class="col-md-5">
-                    <input type="text" name="proveedor.nombre" class="form-control  label-shared" id="prov_nombre" disabled="true" value="${proceso?.proveedor?.nombre ?: ''}" title="Nombre del proveedor o cliente" style="width: 300px" placeholder="Nombre"/>
-                </div>
+            <div class="col-md-3">
+                <input type="text" name="proveedor.ruc" class="form-control " id="prov" disabled="true" value="${proceso?.proveedor?.ruc ?: ''}" title="RUC del proveedor o cliente" style="width: 140px" placeholder="RUC"/>
+            </div>
+            <div class="col-md-5">
+                <input type="text" name="proveedor.nombre" class="form-control  label-shared" id="prov_nombre" disabled="true" value="${proceso?.proveedor?.nombre ?: ''}" title="Nombre del proveedor o cliente" style="width: 300px" placeholder="Nombre"/>
             </div>
         </div>
 
@@ -204,10 +151,8 @@
             <div class="col-md-2 negrilla">
                 Dirección:
             </div>
-            <div class="col-md-9 negrilla">
-                <div class="col-md-8">
-                    <input type="text" name="proveedorDir" class="form-control " id="dir" disabled="true" value="${proceso?.proveedor?.direccion ?: ''}" title="Dirección del proveedor o cliente"/>
-                </div>
+            <div class="col-md-8">
+                <input type="text" name="proveedorDir" class="form-control " id="dir" disabled="true" value="${proceso?.proveedor?.direccion ?: ''}" title="Dirección del proveedor o cliente"/>
             </div>
         </div>
 
@@ -215,14 +160,10 @@
             <div class="col-md-2 negrilla">
                 Teléfono:
             </div>
-            <div class="col-md-9 negrilla">
-                <div class="col-md-3">
-                    <input type="text" name="proveedorTel" class="form-control " id="tel" disabled="true" value="${proceso?.proveedor?.telefono ?: ''}" title="Teléfono del proveedor o cliente"/>
-                </div>
+            <div class="col-md-3">
+                <input type="text" name="proveedorTel" class="form-control " id="tel" disabled="true" value="${proceso?.proveedor?.telefono ?: ''}" title="Teléfono del proveedor o cliente"/>
             </div>
         </div>
-
-
     </div>
 
     <h3>Datos para informar al SRI (Anexo Transaccional Simplificado)</h3>
@@ -260,8 +201,8 @@
         <div class="col-md-12">
 
             <div class=" col-md-4" style="margin-left: 15px">
-                %{--<g:select class="form-control" style="width: 330px" name="conceptoRetencionImpuestoRenta"--}%
-                %{--from="${cratos.ConceptoRetencionImpuestoRenta?.list()}" optionKey="id" optionValue="${{it.codigo + ' - ' + it.descripcion}}"/>--}%
+                <g:select class="form-control" style="width: 330px" name="conceptoRetencionImpuestoRenta"
+                from="${cratos.ConceptoRetencionImpuestoRenta.list()}" optionKey="id" optionValue="${{it.codigo + ' - ' + it.descripcion}}"/>
             </div>
 
             <div class="col-md-2" style="margin-left: 35px">
@@ -659,20 +600,20 @@
 
 
 
-//    foo(function(result) {
-//        // Code that depends on 'result'
-//    });
-//
-//
-//
-//    function foo(callback) {
-//        console.log("callback " + callback)
-//        if(callback){
-//            log("Número de serie válido","success")
-//        }else{
-//            log("El número de serie ingresado no es válido!", "error")
-//        }
-//    }
+    //    foo(function(result) {
+    //        // Code that depends on 'result'
+    //    });
+    //
+    //
+    //
+    //    function foo(callback) {
+    //        console.log("callback " + callback)
+    //        if(callback){
+    //            log("Número de serie válido","success")
+    //        }else{
+    //            log("El número de serie ingresado no es válido!", "error")
+    //        }
+    //    }
 
 
 
@@ -711,22 +652,22 @@
 
 
     %{--function validarSerie (num) {--}%
-        %{--$.ajax({--}%
-            %{--type: 'POST',--}%
-            %{--url:"${createLink(controller: 'proceso', action: 'validarSerie_ajax')}",--}%
-            %{--data:{--}%
-                %{--numero: num,--}%
-                %{--libretin: $(".libretin option:selected").val()--}%
-            %{--},--}%
-            %{--success: function (msg) {--}%
-                %{--console.log("---> " + msg)--}%
-                %{--if(msg == 'true'){--}%
-                    %{--log("Número de serie válido","success")--}%
-                %{--}else{--}%
-                    %{--log("El número de serie ingresado no es válido!", "error")--}%
-                %{--}--}%
-            %{--}--}%
-        %{--});--}%
+    %{--$.ajax({--}%
+    %{--type: 'POST',--}%
+    %{--url:"${createLink(controller: 'proceso', action: 'validarSerie_ajax')}",--}%
+    %{--data:{--}%
+    %{--numero: num,--}%
+    %{--libretin: $(".libretin option:selected").val()--}%
+    %{--},--}%
+    %{--success: function (msg) {--}%
+    %{--console.log("---> " + msg)--}%
+    %{--if(msg == 'true'){--}%
+    %{--log("Número de serie válido","success")--}%
+    %{--}else{--}%
+    %{--log("El número de serie ingresado no es válido!", "error")--}%
+    %{--}--}%
+    %{--}--}%
+    %{--});--}%
     %{--}--}%
 
 
@@ -734,8 +675,8 @@
     %{--$(".numSerie").keydown(function (ev) {--}%
 
     %{--}).keydown(function () {--}%
-        %{--var numeracion = $(".numSerie").val();--}%
-        %{--validarSerie(numeracion)--}%
+    %{--var numeracion = $(".numSerie").val();--}%
+    %{--validarSerie(numeracion)--}%
     %{--});--}%
 
 

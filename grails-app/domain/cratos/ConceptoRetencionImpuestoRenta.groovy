@@ -1,6 +1,7 @@
 package cratos
 
 class ConceptoRetencionImpuestoRenta implements Serializable {
+
     String codigo
     String descripcion
     double porcentaje
@@ -15,7 +16,7 @@ class ConceptoRetencionImpuestoRenta implements Serializable {
         columns {
             codigo column: 'crircdgo'
             descripcion column: 'crirdscr'
-            porcentaje column: 'crirpctj'
+            porcentaje column: 'crirpcnt'
         }
     }
     static constraints = {
