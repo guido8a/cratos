@@ -1,6 +1,7 @@
 package cratos
 
 import cratos.sri.TipoComprobanteSri
+import cratos.sri.TipoIdentificacion
 
 class TipoComprobanteId implements Serializable {
     TipoIdentificacion tipoIdentificacion

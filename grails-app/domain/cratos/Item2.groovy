@@ -5,7 +5,7 @@ import cratos.inventario.Marca
 
 class Item2 implements Serializable {
     Empresa empresa
-    int iva
+//    int iva
 
     double ice = 0 //porcentaje de ice q paga el item en decimal: 0.35 para 35%
 
@@ -31,7 +31,7 @@ class Item2 implements Serializable {
         version false
         columns {
             empresa column: 'empr__id'
-            iva column: 'item_iva'
+//            iva column: 'item_iva'
 
             ice column: 'item_ice'
 
@@ -53,7 +53,7 @@ class Item2 implements Serializable {
     }
     static constraints = {
         empresa(blank: false, nullable: false)
-        iva(size: 1..1, blank: false, attributes: [title: 'iva'])
+//        iva(size: 1..1, blank: false, attributes: [title: 'iva'])
         ice(blank: false, attributes: [title: 'ice'])
         peso(blank: true, nullable: true, attributes: [title: 'peso'])
         stockMaximo(blank: true, nullable: true, attributes: [title: 'stockMaximo'])

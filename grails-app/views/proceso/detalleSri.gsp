@@ -646,11 +646,11 @@
 </g:form>
 <script type="text/javascript">
 
-    cargarRBI($("#conceptoRetencionImpuestoRenta option:selected").val(), '${base}');
+    cargarRBI($("#conceptoRIRBienes option:selected").val(), '${base}');
 
 
-    $("#conceptoRetencionImpuestoRenta").change(function () {
-        var idConcepto = $("#conceptoRetencionImpuestoRenta option:selected").val();
+    $("#conceptoRIRBienes").change(function () {
+        var idConcepto = $("#conceptoRIRBienes option:selected").val();
         var base = ${base}
             cargarRBI(idConcepto, base);
     });
@@ -901,7 +901,7 @@
                         numeroEmision          : $("#numeroPuntoEmision").val(),
                         numeroSecuencial       : $("#retSecu").val(),
                         numeroAutorizacion     : $("#retAutorizacion").val(),
-                        concepto               : $("#conceptoRetencionImpuestoRenta").val(),
+                        concepto               : $("#conceptoRIRBienes").val(),
                         base                   : $("#baseImponible").val(),
                         porcentaje             : $("#porcentajeIR").val(),
                         valorRetenido          : $("#valorRetenido").val(),

@@ -6,7 +6,8 @@ import cratos.sri.PorcentajeIva
 class Retencion implements Serializable {
 
     Proceso proceso
-    ConceptoRetencionImpuestoRenta conceptoRetencionImpuestoRenta
+    ConceptoRetencionImpuestoRenta conceptoRIRBienes
+    ConceptoRetencionImpuestoRenta conceptoRIRServicios
     DocumentoEmpresa documentoEmpresa
     PorcentajeIva porcentajeIva
     Pais pais
@@ -25,6 +26,8 @@ class Retencion implements Serializable {
     double iva = 0
     double baseRenta = 0
     double renta = 0
+    double baseRentaServicios = 0
+    double rentaServicios = 0
     double baseIce = 0
     double porcentajeIce = 0
     double ice = 0
@@ -45,7 +48,8 @@ class Retencion implements Serializable {
         columns {
             id column: 'rtcn__id'
             proceso column: 'prcs__id'
-            conceptoRetencionImpuestoRenta column: 'crir__id'
+            conceptoRIRBienes column: 'crir__id'
+            conceptoRIRServicios column: 'crirsrvc'
             documentoEmpresa column: 'fcdt__id'
             porcentajeIva column: 'pciv__id'
             pais column: 'pais__id'
@@ -64,6 +68,8 @@ class Retencion implements Serializable {
             iva column: 'rtcn_iva'
             baseRenta column: 'rtcnbsrt'
             renta column: 'rtcnrnta'
+            baseRentaServicios column: 'rtcnbrsr'
+            rentaServicios column: 'rtcnrnsr'
             baseIce column: 'rtcnbsic'
             porcentajeIce column: 'rtcnpcic'
             ice column: 'rtcn_ice'
@@ -101,5 +107,7 @@ class Retencion implements Serializable {
         baseServicios(blank: true, nullable: true)
         porcentajeServicios(blank: true, nullable: true)
         servicios(blank: true, nullable: true)
+        conceptoRIRServicios(blank: true, nullable: true)
+        conceptoRIRBienes(blank: true, nullable: true)
     }
 }

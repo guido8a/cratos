@@ -86,7 +86,7 @@
 
             <div class="span-6">
                 <g:select id="tipoIdentificacion" name="tipoIdentificacion.id"
-                          from="${cratos.TipoIdentificacion.list()}" optionKey="id" optionValue="descripcion"
+                          from="${cratos.sri.TipoIdentificacion.list()}" optionKey="id" optionValue="descripcion"
                           value="${proveedorInstance?.tipoIdentificacion?.id}"
                           class="field many-to-one ui-corner-all required"
                           noSelection="${['': '']}"/>

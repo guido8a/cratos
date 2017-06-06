@@ -108,6 +108,31 @@
             <input type="text" name="facturaAutorizacion" id="auto" size="10" maxlength="15" value="${proceso?.facturaAutorizacion}" class=" digits form-control label-shared validacionNumero" validate=" number"
                    title="El número autorización de la factura a registrar " ${registro?'disabled':''} />
         </div>
+        <div class="col-xs-2 negrilla" style="width: 120px;margin-left: -30px">
+            Forma de pago  (emitir factura):
+        </div>
+        <div class="col-xs-2 negrilla">
+            <input type="text" name="facturaAutorizacion" id="auto" size="10" maxlength="15" value="${proceso?.facturaAutorizacion}" class=" digits form-control label-shared validacionNumero" validate=" number"
+                   title="El número autorización de la factura a registrar " ${registro?'disabled':''} />
+        </div>
+    </div>
+
+    <div class="row" style="font-size: 12px">
+        <div class="col-xs-2 negrilla" style="width: 120px">
+            Datos de la retención a la venta:
+        </div>
+        <div class="col-xs-3 negrilla">
+            Retenido por concepto de IVA:
+            <input type="text" name="facturaSecuencial" id="secuencial" size="10" maxlength="9" value="${proceso?.facturaSecuencial}" class=" digits form-control label-shared validacionNumero " validate=" number"
+                   title="El número de secuencia del documento"  ${proceso?.estado == 'R' ?'disabled':''} />
+        </div>
+        <div class="col-xs-2 negrilla" style="width: 120px;margin-left: -30px">
+            Retenido por concepto de Renta:
+        </div>
+        <div class="col-xs-2 negrilla">
+            <input type="text" name="facturaAutorizacion" id="auto" size="10" maxlength="15" value="${proceso?.facturaAutorizacion}" class=" digits form-control label-shared validacionNumero" validate=" number"
+                   title="El número autorización de la factura a registrar " ${registro?'disabled':''} />
+        </div>
     </div>
 </g:else>
 

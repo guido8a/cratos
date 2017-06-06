@@ -94,7 +94,7 @@
                     </label>
 
                     <div class="col-md-5">
-                        <g:select id="tipoIdentificacion" name="tipoIdentificacion.id" from="${cratos.TipoIdentificacion.list()}"
+                        <g:select id="tipoIdentificacion" name="tipoIdentificacion.id" from="${cratos.sri.TipoIdentificacion.list()}"
                                   optionKey="id" value="${proveedorInstance?.tipoIdentificacion?.id}"
                                   class="many-to-one form-control" optionValue="descripcion" noSelection="['null': 'Seleccione...']"/>
                     </div>

@@ -15,7 +15,7 @@
                 </label>
 
                 <div class="col-md-6">
-                    <g:select id="tipoIdentificacion" name="tipoIdentificacion.id" from="${cratos.TipoIdentificacion.list()}" optionKey="id" required="" optionValue="descripcion" value="${tipoComprobanteIdInstance?.tipoIdentificacion?.id}" class="many-to-one form-control"/>
+                    <g:select id="tipoIdentificacion" name="tipoIdentificacion.id" from="${cratos.sri.TipoIdentificacion.list()}" optionKey="id" required="" optionValue="descripcion" value="${tipoComprobanteIdInstance?.tipoIdentificacion?.id}" class="many-to-one form-control"/>
                 </div>
                 *
             </span>

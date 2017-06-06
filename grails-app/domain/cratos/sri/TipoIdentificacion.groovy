@@ -1,4 +1,4 @@
-package cratos
+package cratos.sri
 
 class TipoIdentificacion implements Serializable {
 

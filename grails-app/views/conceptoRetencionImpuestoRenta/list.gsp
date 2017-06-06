@@ -30,9 +30,9 @@
                     <thead>
                         <tr>
                             
-                            <g:sortableColumn property="codigo" title="${message(code: 'conceptoRetencionImpuestoRenta.codigo.label', default: 'Codigo')}" />
+                            <g:sortableColumn property="codigo" title="${message(code: 'conceptoRIRBienes.codigo.label', default: 'Codigo')}" />
                             
-                            <g:sortableColumn property="descripcion" title="${message(code: 'conceptoRetencionImpuestoRenta.descripcion.label', default: 'Descripcion')}" />
+                            <g:sortableColumn property="descripcion" title="${message(code: 'conceptoRIRBienes.descripcion.label', default: 'Descripcion')}" />
                             
                         </tr>
                     </thead>
@@ -87,26 +87,26 @@
                             id : id
                         },
                         success : function (msg) {
-                            $("#dlg-conceptoRetencionImpuestoRenta").html(msg);
+                            $("#dlg-conceptoRIRBienes").html(msg);
                         },
                         complete : function () {
                             $("#dlgLoad").dialog("close");
                         }
                     });
-                    $("#dlg-conceptoRetencionImpuestoRenta").dialog("option", "width", 420);
+                    $("#dlg-conceptoRIRBienes").dialog("option", "width", 420);
                 } else {
-                $("#dlg-conceptoRetencionImpuestoRenta").html(cont);
+                $("#dlg-conceptoRIRBienes").html(cont);
                 }
-                $("#dlg-conceptoRetencionImpuestoRenta").dialog("option", "title", title);
-                $("#dlg-conceptoRetencionImpuestoRenta").dialog("option", "buttons", buttons);
-                $("#dlg-conceptoRetencionImpuestoRenta").dialog("open");
+                $("#dlg-conceptoRIRBienes").dialog("option", "title", title);
+                $("#dlg-conceptoRIRBienes").dialog("option", "buttons", buttons);
+                $("#dlg-conceptoRIRBienes").dialog("open");
             }
 
             function submitForm() {
-                if ($("#frm-conceptoRetencionImpuestoRenta").valid()) {
+                if ($("#frm-conceptoRIRBienes").valid()) {
                     $("#dlgLoad").dialog("open");
-                    var data = $("#frm-conceptoRetencionImpuestoRenta").serialize();
-                    var url = $("#frm-conceptoRetencionImpuestoRenta").attr("action");
+                    var data = $("#frm-conceptoRIRBienes").serialize();
+                    var url = $("#frm-conceptoRIRBienes").attr("action");
 
                     $.ajax({
                         type    : "POST",
@@ -132,7 +132,7 @@
                     }
                 });
 
-                $("#dlg-conceptoRetencionImpuestoRenta").dialog({
+                $("#dlg-conceptoRIRBienes").dialog({
                     modal    : true,
                     autoOpen : false,
                     width    : 420,
@@ -143,14 +143,14 @@
                 $("th").hover(function () {
                     $(this).addClass("hover");
                     var i = $(this).index();
-                    $("#tb-conceptoRetencionImpuestoRenta").find("tr").each(function () {
+                    $("#tb-conceptoRIRBienes").find("tr").each(function () {
                         $(this).children().eq(i).addClass("hover");
                     });
                 }, function () {
                     $(".hover").removeClass("hover");
                 });
 
-                $("#tb-conceptoRetencionImpuestoRenta").find("tr").hover(function () {
+                $("#tb-conceptoRIRBienes").find("tr").hover(function () {
                     $(this).addClass("hover");
                 }, function () {
                     $(".hover").removeClass("hover");
@@ -169,18 +169,18 @@
                                     submitForm();
                                 },
                                 "Cancelar" : function () {
-                                    $("#dlg-conceptoRetencionImpuestoRenta").dialog("close");
+                                    $("#dlg-conceptoRIRBienes").dialog("close");
                                 }
                             };
                             openDlg(url, id, "", true, title, buttons);
                             return false;
                         });
 
-                $("#tb-conceptoRetencionImpuestoRenta").find("tr").contextMenu({
-                            menu : "menu-conceptoRetencionImpuestoRenta"
+                $("#tb-conceptoRIRBienes").find("tr").contextMenu({
+                            menu : "menu-conceptoRIRBienes"
                         },
                         function (action, el, pos) {
-                            $("#dlg-conceptoRetencionImpuestoRenta").html("");
+                            $("#dlg-conceptoRIRBienes").html("");
                             var id = $(el).attr("id");
                             var title, buttons, url, cont;
                             switch (action) {
@@ -191,7 +191,7 @@
                                             submitForm();
                                         },
                                         "Cancelar" : function () {
-                                            $("#dlg-conceptoRetencionImpuestoRenta").dialog("close");
+                                            $("#dlg-conceptoRIRBienes").dialog("close");
                                         }
                                     };
                                     url = "${createLink(action:'edit')}/" + id;
@@ -200,7 +200,7 @@
                                     title = "Ver ConceptoRetencionImpuestoRenta";
                                     buttons = {
                                         "Aceptar" : function () {
-                                            $("#dlg-conceptoRetencionImpuestoRenta").dialog("close");
+                                            $("#dlg-conceptoRIRBienes").dialog("close");
                                         }
                                     };
                                     url = "${createLink(action:'show')}/" + id;
@@ -222,12 +222,12 @@
                                             });
                                         },
                                         "Cancelar" : function () {
-                                            $("#dlg-conceptoRetencionImpuestoRenta").dialog("close");
+                                            $("#dlg-conceptoRIRBienes").dialog("close");
                                         }
                                     };
                                     cont = "<span style='font-size: 16px;'> Est&aacute; seguro de querer eliminar este ConceptoRetencionImpuestoRenta?";
                                     cont += "<br/>Esta acci&oacute;n es definitiva.</span>"
-                                    $("#dlg-conceptoRetencionImpuestoRenta").dialog("option", "width", 360);
+                                    $("#dlg-conceptoRIRBienes").dialog("option", "width", 360);
                                     break;
                             }
                             openDlg(url, id, cont, action != "delete", title, buttons);

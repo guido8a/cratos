@@ -1,5 +1,7 @@
 package cratos
 
+import cratos.sri.TipoIdentificacion
+
 class Proveedor {
     TipoProveedor tipoProveedor
     TipoPersona tipoPersona

@@ -149,7 +149,7 @@
 
         <div class="row">
             <div class="col-xs-2 negrilla">
-                Fecha:
+                Fecha de Emisión:
             </div>
             <div class="col-xs-2">
                 <g:if test="${registro}">
@@ -160,6 +160,20 @@
                                     value="${proceso?.fecha}"  maxDate="new Date()" style="width: 80px; margin-left: 5px" />
                 </g:else>
             </div>
+
+            <div class="col-xs-2 negrilla">
+                Fecha de registro:
+            </div>
+            <div class="col-xs-2">
+                <g:if test="${registro}">
+                    ${proceso?.fecha.format("dd-MM-yyyy")}
+                </g:if>
+                <g:else>
+                    <elm:datepicker name="fecha"  title="Fecha de registro a la contabilidad " class="datepicker form-control required col-xs-3"
+                                    value="${proceso?.fecha}"  maxDate="new Date()" style="width: 80px; margin-left: 5px" />
+                </g:else>
+            </div>
+
             <div class="col-xs-1">
             </div>
             <div class="col-xs-2 negrilla">
@@ -207,7 +221,7 @@
         </div>
         <div class="row">
             <div class="col-xs-2 negrilla">
-                Tipo de documento:
+                Tipo de comprobante:
             </div>
 %{--
             <div class="col-xs-5 negrilla">
@@ -218,12 +232,22 @@
                 Tipo del documento a registrar.
             </div>
         </div>
+
         <div class="row">
             <div class="col-xs-2 negrilla">
                 Descripción:
             </div>
             <div class="col-xs-3 negrilla">
                 <textArea style='height:80px;width: 700px;resize: none' maxlength="255" name="descripcion" id="descripcion" title="La descripción de la transacción contable" class="form-control required cmbRequired required" ${registro?'disabled':''} >${proceso?.descripcion}</textArea>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-2 negrilla">
+                Libretín de Facturas/Retenciones:
+            </div>
+            <div class="col-xs-3 negrilla">
+                Selecciona el libretín y fija el secuencial a utilizarse
             </div>
         </div>
     </div>

@@ -1,4 +1,4 @@
-<%@ page import="cratos.TipoIdentificacion" %>
+<%@ page import="cratos.sri.TipoIdentificacion" %>
 
 <script type="text/javascript" src="${resource(dir: 'js', file: 'ui.js')}"></script>
 <g:if test="${!tipoIdentificacionInstance}">

@@ -1,4 +1,4 @@
-<%@ page import="cratos.TipoIdentificacion" %>
+<%@ page import="cratos.sri.TipoIdentificacion" %>
 
 
 

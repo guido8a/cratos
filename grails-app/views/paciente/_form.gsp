@@ -210,9 +210,9 @@
 
         <div class="span-6">
             <g:hiddenField id="tipoIdentificacion" name="tipoIdentificacion.id"
-                      from="${cratos.TipoIdentificacion.list()}" optionKey="id" optionValue="descripcion"
-                      value="2"
-                      class="field many-to-one ui-corner-all"
+                           from="${cratos.sri.TipoIdentificacion.list()}" optionKey="id" optionValue="descripcion"
+                           value="2"
+                           class="field many-to-one ui-corner-all"
                       />
 
         </div>

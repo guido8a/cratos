@@ -1,4 +1,4 @@
-<%@ page import="cratos.TipoIdentificacion" %>
+<%@ page import="cratos.sri.TipoIdentificacion" %>
 
 <g:if test="${!tipoIdentificacionInstance}">
     <elm:notFound elem="TipoIdentificacion" genero="o"/>

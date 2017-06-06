@@ -2,7 +2,7 @@ package cratos.sri
 
 class TipoIdentificacionTransaccion implements Serializable {
 
-    IdentificacionProveedor identificacionProveedor
+    TipoIdentificacion tipoIdentificacion
     TipoTransaccion tipoTransaccion
     String codigo
 
@@ -14,7 +14,7 @@ class TipoIdentificacionTransaccion implements Serializable {
         version false
         columns {
             codigo column: 'tittcdgo'
-            identificacionProveedor column: 'tpid__id'
+            tipoIdentificacion column: 'tpid__id'
             tipoTransaccion column: 'tptr__id'
         }
     }

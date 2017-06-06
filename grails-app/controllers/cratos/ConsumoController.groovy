@@ -1,5 +1,6 @@
 package cratos
 
+import cratos.sri.TipoIdentificacion
 import org.springframework.dao.DataIntegrityViolationException
 
 class ConsumoController extends cratos.seguridad.Shield  {

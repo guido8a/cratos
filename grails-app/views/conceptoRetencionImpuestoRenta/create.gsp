@@ -6,9 +6,9 @@
 
 <script type="text/javascript">
     $(function() {
-        $("#frm-conceptoRetencionImpuestoRenta").validate();
+        $("#frm-conceptoRIRBienes").validate();
 
-        $("#frm-conceptoRetencionImpuestoRenta").find("input, select, textarea").keypress(function (evt) {
+        $("#frm-conceptoRIRBienes").find("input, select, textarea").keypress(function (evt) {
             if (evt.keyCode == 13) {
                 submitForm();
                 return false;
