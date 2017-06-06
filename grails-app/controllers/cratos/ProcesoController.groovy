@@ -735,27 +735,13 @@ class ProcesoController extends cratos.seguridad.Shield {
     def detalleSri() {
 
         def empresa = Empresa.get(session.empresa.id)
-
-        println("params " + params)
-
         def proceso = Proceso.get(params.id)
         def retencion = Retencion.findByProceso(proceso)
-        def libreta
+        def libreta = DocumentoEmpresa.findAllByEmpresaAndFechaInicioLessThanEqualsAndFechaFinGreaterThanEqualsAndTipo(empresa, new Date(), new Date(),'R')
 
-//        libreta = DocumentoEmpresa.withCriteria {
-//            eq("empresa", empresa)
-//
-//                lt("fechaFin", new Date().format("yyyy-MM-dd"))
-//                gt("fechaInicio", new Date().format("yyyy-MM-dd"))
-//
-//        }
-        
-       libreta =  DocumentoEmpresa.findAllByEmpresaAndFechaInicioLessThanEqualsAndFechaFinGreaterThanEqualsAndTipo(empresa, new Date(), new Date(),'R')
+        def baseImponible = (proceso?.baseImponibleIva ?: 0) + (proceso?.baseImponibleIva0 ?: 0) + (proceso?.baseImponibleNoIva ?: 0)
 
-        println("libreta " + libreta)
-
-
-        return [proceso: proceso, libreta: libreta, retencion: retencion]
+        return [proceso: proceso, libreta: libreta, retencion: retencion, base: baseImponible]
 
 
 
@@ -1307,7 +1293,6 @@ class ProcesoController extends cratos.seguridad.Shield {
     }
 
     def validarSerie_ajax () {
-//        println("params validar " + params)
         def documentoEmpresa = DocumentoEmpresa.get(params.libretin)
         def desde = documentoEmpresa.numeroDesde
         def hasta = documentoEmpresa.numeroHasta
@@ -1317,6 +1302,12 @@ class ProcesoController extends cratos.seguridad.Shield {
         }else{
             render false
         }
+    }
+
+    def concepto_ajax () {
+       def concepto = ConceptoRetencionImpuestoRenta.get(params.idConcepto)
+        def valorRetenido = params.base.toDouble() * (concepto.porcentaje.toDouble() / 100)
+        return [concepto: concepto, retenido: valorRetenido]
     }
 
 }
