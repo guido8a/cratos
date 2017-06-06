@@ -3,7 +3,7 @@ package cratos
 class Gestor implements Serializable {
     String estado
     Date fecha
-    String descripcion
+//    String descripcion
     String nombre
     Empresa empresa
     Fuente fuente
@@ -20,7 +20,7 @@ class Gestor implements Serializable {
         columns {
             estado column: 'gstretdo'
             fecha column: 'gstrfcha'
-            descripcion column: 'gstrdscr'
+//            descripcion column: 'gstrdscr'
             nombre column: 'gdtrnmbr'
             empresa column: 'empr__id'
             fuente column: 'fnte__id'
@@ -31,7 +31,7 @@ class Gestor implements Serializable {
     static constraints = {
         estado(size: 1..1, blank: false, attributes: [title: 'estado'])
         fecha(blank: true, nullable: true, attributes: [title: 'fecha'])
-        descripcion(size: 1..255, blank: false, attributes: [title: 'descripcion'])
+//        descripcion(size: 1..255, blank: false, attributes: [title: 'descripcion'])
         nombre(size: 1..127, blank: false, attributes: [title: 'nombre'])
         empresa(blank: true, nullable: true, attributes: [title: 'empresa'])
         fuente(blank: true, nullable: true, attributes: [title: 'fuente'])

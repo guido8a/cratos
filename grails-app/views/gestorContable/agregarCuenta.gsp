@@ -38,14 +38,18 @@
             <tr style="background-color: ${(genera.tipoComprobante.id==1)?'#D4E6FC':((genera.tipoComprobante.id==2)?'#99CC99':'#FFCC99')} !important; " class="movimiento">
             <td style="max-width: 250px;">${cuenta.numero+'('+cuenta.descripcion+')'}</td>
             <g:if test="${genera.debeHaber=='D'}">
-                    <td><g:textField type="number" name="porcentaje" id="por_${i}" class="validacionNumero form-control" style="width: 62px;" value="${genera.porcentaje ?: 0}" /></td>
-                    <td><g:textField type="number" name="impuestos" id="imp_${i}" class="validacionNumero form-control" style="width: 62px;" value="${genera.porcentajeImpuestos?:0}" /></td>
-                    <td><g:textField type="number" name="valor" id="val_${i}" class="validacionNumero form-control" style="width: 62px;" value="${genera.valor?:0}" /></td>
+                    <td><g:textField type="number" name="porcentaje" id="por_${i}" class="validacionNumero form-control"
+                                     style="width: 62px;" value="${genera.porcentaje ?: 0}" /></td>
+                    <td><g:textField type="number" name="impuestos" id="imp_${i}" class="validacionNumero form-control"
+                                     style="width: 62px;" value="${genera.porcentajeImpuestos?:0}" /></td>
+                    <td><g:textField type="number" name="valor" id="val_${i}" class="validacionNumero form-control"
+                                     style="width: 62px;" value="${genera.valor?:0}" /></td>
                     <td></td>
                 <td></td>
                 <td></td>
                 <td>
-                    <div  style="float: left; margin-right: 5px;" class="guardarDatos btnpq ui-state-default ui-corner-all" id="guardar_${i}" posicion="${i}" >
+                    <div  style="float: left; margin-right: 5px;" class="guardarDatos btnpq ui-state-default ui-corner-all"
+                          id="guardar_${i}" posicion="${i}" >
                         <span class="ui-icon ui-icon-circle-check"></span>
                     </div>
                     <div  style="float: left;" class="eliminar btnpq ui-state-default ui-corner-all" id="eliminar_${i}" posicion="${i}">

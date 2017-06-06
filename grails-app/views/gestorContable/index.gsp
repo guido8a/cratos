@@ -57,19 +57,16 @@
         </g:form>
     </div>
 
-    <table class="table table-bordered table-hover table-condensed">
+    <table class="table table-bordered table-hover table-condensed" width="800px">
         <thead>
         <tr>
-            <th style="width: 260px">
+            <th style="width: 440px">
                 Nombre
             </th>
-            <th style="width: 260px">
-                Descripción
-            </th>
-            <th style="width: 50px">
+            <th style="width: 300px">
                 Observaciones
             </th>
-            <th style="width: 90px">Acciones</th>
+            <th style="width: 60px">Acciones</th>
         </tr>
         </thead>
     </table>

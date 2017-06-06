@@ -9,19 +9,19 @@
 <html>
 <head>
     <meta name="layout" content="main"/>
-    <title>${(gestorInstance) ? 'Editar Gestor' : 'Nuevo Gestor'}</title>
+    <title>${titulo}</title>
 
     <style type="text/css">
     .fila {
-        width  : 800px;
-        min-height : 40px;
+        width: 800px;
+        min-height: 40px;
     }
 
     .label {
-        width       : 80px;
-        float       : left;
-        height      : 30px;
-        line-height : 30px;
+        width: 80px;
+        float: left;
+        height: 30px;
+        line-height: 30px;
         color: #000000;
         font-size: inherit;
         text-align: left;
@@ -29,14 +29,14 @@
     }
 
     .campo {
-        width  : 670px;
-        float  : right;
+        width: 670px;
+        float: right;
         min-height: 40px;
     }
 
-        .letraP{
-            font-size: 10px;
-        }
+    .letraP {
+        font-size: 10px;
+    }
     </style>
 
 </head>
@@ -67,97 +67,94 @@
             Lista de Gestores
         </g:link>
 
-        <g:if test="${gestorInstance?.estado != 'R'}">
-
-            <a href="#" id="btnGuardar" class="btn btn-success">
-                <i class="fa fa-save"></i>
-                Guardar
-            </a>
+        <g:if test="${verGestor}">
+            <g:if test="${gestorInstance?.estado != 'R'}">
+                <a href="${g.createLink(action: 'formGestor', id:gestorInstance?.id)}" class="btn btn-success" title="Editar">
+                    <i class="fa fa-pencil"></i> Editar
+                </a>
+            </g:if>
         </g:if>
+        <g:else>
+            <g:if test="${(gestorInstance?.estado != 'R') && !verGestor}">
+                <a href="#" id="btnGuardar" class="btn btn-success">
+                    <i class="fa fa-save"></i>
+                    Guardar
+                </a>
+            </g:if>
 
             <g:if test="${gestorInstance?.id && gestorInstance?.estado != 'R'}">
-            <a href="#" id="btnRegistrar" class="btn btn-info">
-                <i class="fa fa-check"></i>
-                Registrar
-            </a>
-        </g:if>
+                <a href="#" id="btnRegistrar" class="btn btn-info">
+                    <i class="fa fa-check"></i>
+                    Registrar
+                </a>
+            </g:if>
+
+            <g:if test="${gestorInstance?.id}">
+                <g:link action="deleteGestor" id="${gestorInstance?.id}" class="btn btn-danger" name="eliminarGestor">
+                    <i class="fa fa-trash-o"></i>
+                    Eliminar
+                </g:link>
+            </g:if>
+        </g:else>
+
     </div>
 </div>
+
 <div class="vertical-container" style="margin-top: 25px;color: black">
-    <p class="css-vertical-text">Gestor Contable</p>
+    <p class="css-vertical-text">Gestor</p>
+
     <div class="linea"></div>
     %{--<g:form action="save" class="frmGestor" controller="gestorContable">--}%
-        <div id="contenido" >
-            %{--<input type="hidden" name="id" value="${gestorInstance?.id}"/>--}%
+    <div id="contenido">
+        %{--<input type="hidden" name="id" value="${gestorInstance?.id}"/>--}%
 
-%{--
-            <div class="fila">
-                <div class="label">
-                    Empresa:
-                </div>
-
-                <div class="campo">
-                    <strong>${session.empresa}</strong>
-                </div>
-            </div>
---}%
-
-            <div class="fila">
-                <div class="label">
-                    Nombre:
-                </div>
-
-                <div class="campo">
-                    %{--<span class="grupo">--}%
-                        <input name="nombre_name" id="nombre" type="text" value="${gestorInstance?.nombre}" maxlength="127"
-                               class="form-control required"/>
-                    %{--</span>--}%
-                </div>
+        <div class="fila">
+            <div class="label">
+                Nombre:
             </div>
 
-            <div class="fila">
-                <div class="label">
-                    Descripción:
-                </div>
-
-                <div class="campo">
-                    <span class="grupo">
-                        <input name="descripcion_name" id="descripcion" type="textArea" value="${gestorInstance?.descripcion}"
-                               maxlength="255"  class="form-control required" style="width:800px;"/>
-                    </span>
-                </div>
-            </div>
-
-            <div class="fila">
-                <div class="label">
-                    Observaciones:
-                </div>
-
-                <div class="campo">
-                    <input name="observaciones_name" id="observaciones" type="textArea" value="${gestorInstance?.observaciones}"
-                           maxlength="125" class="form-control col-md-8"/>
-                </div>
-            </div>
-
-            <div class="fila">
-                <div class="label">
-                    Fuente:
-                </div>
-
-                <div class="campo">
-                    <g:select name="fuente.id" type="select" campo="fuente" from="${cratos.Fuente.list([sort: 'descripcion'])}"
-                              label="Fuente: " value="${gestorInstance?.fuente?.id}" optionKey="id" optionValue="descripcion"
-                              class="form-control required col-md-3" id="fuenteGestor"/>
-                </div>
-
+            <div class="campo">
+                %{--<span class="grupo">--}%
+                <input name="nombre_name" id="nombre" type="text" value="${gestorInstance?.nombre}" maxlength="127"
+                       class="form-control required" style="width: 800px"/>
+                %{--</span>--}%
             </div>
         </div>
+
+        <div class="fila">
+            <div class="label">
+                Observaciones:
+            </div>
+
+            <div class="campo">
+                <input name="observaciones_name" id="observaciones" type="textArea"
+                       value="${gestorInstance?.observaciones}"
+                       maxlength="125" class="form-control col-md-8" style="width: 800px;"/>
+            </div>
+        </div>
+
+        <div class="fila">
+            <div class="label">
+                Fuente:
+            </div>
+
+            <div class="campo">
+                <g:select name="fuente.id" type="select" campo="fuente"
+                          from="${cratos.Fuente.list([sort: 'descripcion'])}"
+                          label="Fuente: " value="${gestorInstance?.fuente?.id}" optionKey="id"
+                          optionValue="descripcion"
+                          class="form-control required col-md-3" id="fuenteGestor" style="width: 300px;"/>
+            </div>
+
+        </div>
+    </div>
     %{--</g:form>--}%
 </div>
 
 <g:if test="${gestorInstance?.id}">
     <div class="vertical-container" style="margin-top: 25px;color: black; height: 500px">
-        <p class="css-vertical-text">Cuentas del asiento</p>
+        <p class="css-vertical-text">Comprobantes y Asientos a generarse</p>
+
         <div class="linea"></div>
 
         <div class="contenido">
@@ -169,8 +166,10 @@
 
                 <div class="col-md-3">
                     <span class="grupo">
-                        <g:select name="tipoCom" type="select" campo="tipo" from="${cratos.TipoComprobante.list([sort: 'descripcion'])}"
-                                  label="Tipo comprobante: " value="${''}" optionKey="id" id="tipo" class="form-control required col-md-3"
+                        <g:select name="tipoCom" campo="tipo"
+                                  from="${cratos.TipoComprobante.list([sort: 'descripcion'])}"
+                                  label="Tipo comprobante: " value="${''}" optionKey="id" id="tipo"
+                                  class="form-control required col-md-2"
                                   optionValue="descripcion" style="margin-left: 80px; font-weight: bold"/>
                     </span>
                 </div>
@@ -178,13 +177,13 @@
 
                 </span>
 
-    <g:if test="${gestorInstance?.estado != 'R'}">
-        <div class="btn-group col-md-3">
-            <a href="#" id="btnAgregarMovimiento" class="btn btn-info" title="Agregar una cuenta al gestor">
-                <i class="fa fa-plus"></i> Agregar Cuenta
-            </a>
-        </div>
-    </g:if>
+                <g:if test="${(gestorInstance?.estado != 'R') && !verGestor}">
+                    <div class="btn-group col-md-3">
+                        <a href="#" id="btnAgregarMovimiento" class="btn btn-info" title="Agregar una cuenta al gestor">
+                            <i class="fa fa-plus"></i> Agregar Cuenta
+                        </a>
+                    </div>
+                </g:if>
             </div>
             <table class="table table-bordered table-hover table-condensed">
                 <thead>
@@ -204,20 +203,21 @@
                     <th style="width: 100px" class="letraP">% B.I. Sin IVA</th>
                     <th style="width: 80px" class="letraP">Impuestos</th>
                     <th style="width: 80px" class="letraP">Valor</th>
-                    <th style="width: 70px" class="letraP"><i class="fa fa-pencil"></i> </th>
+                    <th style="width: 70px" class="letraP"><i class="fa fa-pencil"></i></th>
                 </tr>
                 </thead>
             </table>
 
 
-            <div class="row-fluid"  style="width: 99.7%;height: 320px;overflow-y: auto;float: right;">
+            <div class="row-fluid" style="width: 99.7%;height: 320px;overflow-y: auto;float: right;">
                 <div class="span12">
                     <div id="cuentaAgregada" style="width: 1070px; height: 280px;"></div>
                 </div>
             </div>
-                <div class="span12">
-                    <div id="totales" style="width: 1070px; height: 20px;"></div>
-                </div>
+
+            <div class="span12">
+                <div id="totales" style="width: 1070px; height: 20px;"></div>
+            </div>
         </div>
     </div>
 </g:if>
@@ -228,35 +228,35 @@
 
     $("#btnRegistrar").click(function () {
         bootbox.dialog({
-            title   : "Alerta",
-            message : "<i class='fa fa-check fa-3x pull-left text-warning text-shadow'></i><p>¿Está seguro que desea registrar el gestor contable? </br> Una vez registrado, la información NO podrá ser cambiada.</p>",
-            buttons : {
-                cancelar : {
-                    label     : "<i class='fa fa-times'></i> Cancelar",
-                    className : "btn-primary",
-                    callback  : function () {
+            title: "Alerta",
+            message: "<i class='fa fa-check fa-3x pull-left text-warning text-shadow'></i><p>¿Está seguro que desea registrar el gestor contable? </br> Una vez registrado, la información NO podrá ser cambiada.</p>",
+            buttons: {
+                cancelar: {
+                    label: "<i class='fa fa-times'></i> Cancelar",
+                    className: "btn-primary",
+                    callback: function () {
                     }
                 },
-                eliminar : {
-                    label     : "<i class='fa fa-check'></i> Registrar",
-                    className : "btn-success",
-                    callback  : function () {
+                eliminar: {
+                    label: "<i class='fa fa-check'></i> Registrar",
+                    className: "btn-success",
+                    callback: function () {
                         openLoader("Registrando..");
                         $.ajax({
                             type: 'POST',
                             url: '${createLink(controller: 'gestorContable', action: 'registrar_ajax')}',
-                            data:{
+                            data: {
                                 id: '${gestorInstance?.id}'
                             },
-                            success: function (msg){
+                            success: function (msg) {
                                 var parts = msg.split("_");
-                                  if(parts[0] == 'ok'){
-                                    log(parts[1],"success");
+                                if (parts[0] == 'ok') {
+                                    log(parts[1], "success");
                                     setTimeout(function () {
-                                        location.href="${createLink(controller: 'gestorContable', action: 'formGestor')}/" + '${gestorInstance?.id}'
+                                        location.href = "${createLink(controller: 'gestorContable', action: 'formGestor')}/" + '${gestorInstance?.id}'
                                     }, 1000);
-                                }else{
-                                    log(parts[1],"error");
+                                } else {
+                                    log(parts[1], "error");
                                     closeLoader();
                                 }
                             }
@@ -272,25 +272,25 @@
     $("#btnAgregarMovimiento").click(function () {
         var tipo = $("#tipo").val();
         $.ajax({
-            type   : "POST",
-            url    : "${createLink(controller: 'gestorContable', action:'buscarMovimiento_ajax')}",
-            data   : {
-                    empresa: '${session.empresa.id}',
-                    id: '${gestorInstance?.id}',
-                    tipo: tipo
+            type: "POST",
+            url: "${createLink(controller: 'gestorContable', action:'buscarMovimiento_ajax')}",
+            data: {
+                empresa: '${session.empresa.id}',
+                id: '${gestorInstance?.id}',
+                tipo: tipo
 
             },
             success: function (msg) {
                 var b = bootbox.dialog({
-                    id   : "dlgBuscar",
+                    id: "dlgBuscar",
                     title: "Buscar cuenta",
-                    class   : "long",
+                    class: "long",
                     message: msg,
                     buttons: {
                         cancelar: {
-                            label    : "<i class='fa fa-times'></i> Cancelar",
+                            label: "<i class='fa fa-times'></i> Cancelar",
                             className: "btn-primary",
-                            callback : function () {
+                            callback: function () {
                             }
                         }
                     } //buttons
@@ -303,77 +303,77 @@
     });
 
 
-    if('${gestorInstance?.id}'){
+    if ('${gestorInstance?.id}') {
         var tipoC = $("#tipo").val();
         cargarMovimientos('${gestorInstance?.id}', tipoC);
         cargarTotales('${gestorInstance?.id}', tipoC);
     }
 
-        $("#tipo").change(function () {
-            var tipoVal = $(this).val();
-            cargarMovimientos('${gestorInstance?.id}', tipoVal);
-            cargarTotales('${gestorInstance?.id}', tipoVal);
+    $("#tipo").change(function () {
+        var tipoVal = $(this).val();
+        cargarMovimientos('${gestorInstance?.id}', tipoVal);
+        cargarTotales('${gestorInstance?.id}', tipoVal);
+    });
+
+    function cargarMovimientos(idGestor, idTipo) {
+        $.ajax({
+            type: 'POST',
+            url: '${createLink(controller: 'gestorContable', action: 'tablaGestor_ajax')}',
+            data: {
+                id: idGestor,
+                tipo: idTipo
+            },
+            success: function (msg) {
+                $("#cuentaAgregada").html(msg)
+            }
         });
+    }
 
-        function cargarMovimientos (idGestor, idTipo) {
-            $.ajax({
-                type:'POST',
-                url: '${createLink(controller: 'gestorContable', action: 'tablaGestor_ajax')}',
-                data:{
-                    id: idGestor,
-                    tipo: idTipo
-                },
-                success: function (msg){
-                    $("#cuentaAgregada").html(msg)
-                }
-            });
-        }
-
-        function cargarTotales(idGestor, idTipo) {
-            $.ajax({
-                type:'POST',
-                url: '${createLink(controller: 'gestorContable', action: 'totales_ajax')}',
-                data:{
-                    id: idGestor,
-                    tipo: idTipo
-                },
-                success: function (msg){
-                    $("#totales").html(msg)
-                }
-            });
-        }
-
-
-        $("#btnGuardar").click(function () {
-            var gestor = '${gestorInstance?.id}';
-            var nombreGestor = $("#nombre").val();
-            var descripcion = $("#descripcion").val();
-            var observacion = $("#observaciones").val();
-            var fuente = $("#fuenteGestor").val();
-            $.ajax({
-                type: 'POST',
-                url: "${createLink(controller: 'gestorContable', action: 'guardarGestor')}",
-                data:{
-                    gestor: gestor,
-                    nombre: nombreGestor,
-                    descripcion: descripcion,
-                    observacion: observacion,
-                    fuente: fuente
-                },
-                success: function (msg){
-                    var parts = msg.split("_");
-                    if(parts[0] == 'ok'){
-                        log("Información del gestor guardada correctamente","success")
-                        setTimeout(function () {
-                          location.href="${createLink(controller: 'gestorContable', action: 'formGestor')}/" + parts[1]
-                        }, 800);
-                    }else{
-                        log("Error al guardar la información del gestor","error")
-                    }
-                }
-
-            });
+    function cargarTotales(idGestor, idTipo) {
+        $.ajax({
+            type: 'POST',
+            url: '${createLink(controller: 'gestorContable', action: 'totales_ajax')}',
+            data: {
+                id: idGestor,
+                tipo: idTipo
+            },
+            success: function (msg) {
+                $("#totales").html(msg)
+            }
         });
+    }
+
+
+    $("#btnGuardar").click(function () {
+        var gestor = '${gestorInstance?.id}';
+        var nombreGestor = $("#nombre").val();
+        var descripcion = $("#descripcion").val();
+        var observacion = $("#observaciones").val();
+        var fuente = $("#fuenteGestor").val();
+        $.ajax({
+            type: 'POST',
+            url: "${createLink(controller: 'gestorContable', action: 'guardarGestor')}",
+            data: {
+                gestor: gestor,
+                nombre: nombreGestor,
+                descripcion: descripcion,
+                observacion: observacion,
+                fuente: fuente
+            },
+            success: function (msg) {
+                var parts = msg.split("_");
+                if (parts[0] == 'ok') {
+                    log("Información del gestor guardada correctamente", "success")
+                    setTimeout(function () {
+                        location.href = "${createLink(controller: 'gestorContable', action: 'formGestor')}/" + parts[1]
+                    }, 800);
+                } else {
+                    log("Error al guardar la información del gestor", "error")
+                }
+            }
+
+        });
+    });
 
 
 </script>

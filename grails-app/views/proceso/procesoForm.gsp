@@ -5,14 +5,6 @@
     <meta name="layout" content="main"/>
     <title>Transacciones</title>
     <style type="text/css">
-    .etiqueta {
-        width       : 100px;
-        height      : 20px;
-        line-height : 20px;
-        font-weight : bold;
-        display     : inline-block;
-    }
-
     .number{
         text-align: right;
     }
@@ -82,8 +74,7 @@
         </g:link>
     </div>
     <div class="btn-group">
-    %{--<g:if test="${!registro}">--}%
-        <g:if test="${!proceso || proceso?.estado == 'N'}">
+        <g:if test="${!proceso || (proceso?.estado == 'N')}">
             <a href="#" class="btn btn-success" id="guardarProceso">
                 <i class="fa fa-save"></i>
                 Guardar
@@ -143,54 +134,55 @@
         <div class="linea"></div>
 
         <input type="hidden" name="id" value="${proceso?.id}" id="idProceso"/>
+%{--
         <input type="hidden" name="empleado.id" value="${session.usuario.id}"/>
         <input type="hidden" name="periodoContable.id" value="${session?.contabilidad?.id}"/>
         <input type="hidden" name="data" id="data" value="${session?.contabilidad?.id}"/>
-
+--}%
         <div class="row">
-            <div class="col-xs-2 negrilla">
-                Fecha de Emisión:
-            </div>
-            <div class="col-xs-2">
-                <g:if test="${registro}">
-                    ${proceso?.fecha.format("dd-MM-yyyy")}
-                </g:if>
-                <g:else>
-                    <elm:datepicker name="fecha"  title="Fecha de registro a la contabilidad " class="datepicker form-control required col-xs-3"
-                                    value="${proceso?.fecha}"  maxDate="new Date()" style="width: 80px; margin-left: 5px" />
-                </g:else>
-            </div>
-
-            <div class="col-xs-2 negrilla">
-                Fecha de registro:
-            </div>
-            <div class="col-xs-2">
-                <g:if test="${registro}">
-                    ${proceso?.fecha.format("dd-MM-yyyy")}
-                </g:if>
-                <g:else>
-                    <elm:datepicker name="fecha"  title="Fecha de registro a la contabilidad " class="datepicker form-control required col-xs-3"
-                                    value="${proceso?.fecha}"  maxDate="new Date()" style="width: 80px; margin-left: 5px" />
-                </g:else>
-            </div>
-
-            <div class="col-xs-1">
-            </div>
-            <div class="col-xs-2 negrilla">
+            <div class="col-md-2 negrilla">
                 Tipo de transacción:
             </div>
-            <div class="col-xs-4 negrilla">
-                <g:select class="form-control required cmbRequired tipoProcesoSel" name="tipoProceso"  id="tipoProceso" from="${tiposProceso}"
-                          label="Proceso tipo: " value="${proceso?.tipoProceso}" optionKey="key" optionValue="value" title="Tipo de la transacción" disabled="${proceso?.id ? 'true' : 'false'}" />
+            <div class="col-md-4 negrilla">
+                <g:select class="form-control required cmbRequired tipoProcesoSel" name="tipoProceso"  id="tipoProceso"
+                          from="${tiposProceso}" label="Proceso tipo: " value="${proceso?.tipoProceso}" optionKey="key"
+                          optionValue="value" title="Tipo de la transacción" disabled="${proceso?.id ? 'true':'false'}"/>
             </div>
+
+            <div class="col-md-1 negrilla">
+                Fecha de Emisión:
+            </div>
+            <div class="col-md-2">
+                <g:if test="${registro}">
+                    ${proceso?.fecha.format("dd-MM-yyyy")}
+                </g:if>
+                <g:else>
+                    <elm:datepicker name="fecha"  title="Fecha de emisión del comprobante" class="datepicker form-control required col-md-3"
+                                    value="${proceso?.fecha}"  maxDate="new Date()" style="width: 80px; margin-left: 5px" />
+                </g:else>
+            </div>
+
+            <div class="col-md-1 negrilla">
+                Fecha de registro:
+            </div>
+            <div class="col-md-2">
+                <g:if test="${registro}">
+                    ${proceso?.fecha.format("dd-MM-yyyy")}
+                </g:if>
+                <g:else>
+                    <elm:datepicker name="fecharegistro"  title="Fecha de registro en el sistema" class="datepicker form-control required col-md-3"
+                                    value="${proceso?.fecha}"  maxDate="new Date()" style="width: 80px; margin-left: 5px" />
+                </g:else>
+            </div>
+
 
         </div>
 
         <div class="row">
-            <div class="col-xs-2 negrilla">
-                Gestor:
+            <div class="col-md-2 negrilla">
+                Gestor a utilizar:
             </div>
-            <div class="col-xs-10 negrilla">
+            <div class="col-md-10 negrilla">
                 <g:select class="form-control required" name="gestor.id" from="${cratos.Gestor.findAllByEstadoAndEmpresa('R', session.empresa, [sort: 'nombre'])}"
                           label="Proceso tipo: " value="${proceso?.gestor?.id}" optionKey="id" optionValue="nombre" title="Proceso tipo" disabled="${registro?true:false}" />
             </div>
@@ -203,10 +195,10 @@
         </div>
 
         <div class="row">
-            <div class="col-xs-2 negrilla">
+            <div class="col-md-2 negrilla">
                 Sustento Tributario:
             </div>
-            <div class="col-xs-5 negrilla">
+            <div class="col-md-5 negrilla">
 %{--
                 <g:select class=" form-control required cmbRequired" name="sustentoTributario.id" id="sustento"
                           from="${SustentoTributario.list([sort:'codigo'])}"
@@ -215,38 +207,41 @@
                           disabled="${registro?true:false}" />
 --}%
             </div>
-            <div class="col-xs-2 " style="font-size: 10px;">
+            <div class="col-md-2 " style="font-size: 10px;">
                 Necesario solo si la transacción debe reportarse al S.R.I.
             </div>
         </div>
         <div class="row">
-            <div class="col-xs-2 negrilla">
+            <div class="col-md-2 negrilla">
                 Tipo de comprobante:
             </div>
 %{--
-            <div class="col-xs-5 negrilla">
+            <div class="col-md-5 negrilla">
                 <g:select class="form-control cmbRequired" name="tipoComprobanteSri.id" id="tipoComprobante" from="${TipoComprobanteSri.findAllByIdNotInList([16.toLong(),17.toLong()],[sort:'codigo'])}" optionKey="id" title="Tipo del documento a registrar" optionValue="descripcion"  noSelection="${['-1':'No aplica']}" value="${proceso?.tipoComprobanteSri?.id}" disabled="${registro?true:false}" />
             </div>
 --}%
-            <div class="col-xs-2 " style="font-size: 10px">
+            <div class="col-md-2 " style="font-size: 10px">
                 Tipo del documento a registrar.
             </div>
         </div>
 
         <div class="row">
-            <div class="col-xs-2 negrilla">
+            <div class="col-md-2 negrilla">
                 Descripción:
             </div>
-            <div class="col-xs-3 negrilla">
-                <textArea style='height:80px;width: 700px;resize: none' maxlength="255" name="descripcion" id="descripcion" title="La descripción de la transacción contable" class="form-control required cmbRequired required" ${registro?'disabled':''} >${proceso?.descripcion}</textArea>
+            <div class="col-md-3 negrilla">
+                <textArea style='height:80px;width: 700px;resize: none' maxlength="255" name="descripcion"
+                          id="descripcion" title="La descripción de la transacción contable"
+                          class="form-control required cmbRequired required" ${registro?'disabled':''} >
+                    ${proceso?.descripcion}</textArea>
             </div>
         </div>
 
         <div class="row">
-            <div class="col-xs-2 negrilla">
+            <div class="col-md-2 negrilla">
                 Libretín de Facturas/Retenciones:
             </div>
-            <div class="col-xs-3 negrilla">
+            <div class="col-md-3 negrilla">
                 Selecciona el libretín y fija el secuencial a utilizarse
             </div>
         </div>
@@ -278,13 +273,13 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-xs-2 negrilla" style="width: 140px">
+                    <div class="col-md-2 negrilla" style="width: 140px">
                         Tipo de pago:
                     </div>
-                    <div class="col-xs-6 negrilla" style="margin-left: -20px" >
+                    <div class="col-md-6 negrilla" style="margin-left: -20px" >
                         <g:select name="tipoPago.id" id="comboFP" class=" form-control" from="${cratos.TipoPago.list()}" label="Tipo de pago: " optionKey="id"  optionValue="descripcion" />
                     </div>
-                    <div class="col-xs-1 negrilla" style="width: 140px">
+                    <div class="col-md-1 negrilla" style="width: 140px">
                         <g:if test="${!registro}">
                             <a href="#" id="agregarFP" class="btn btn-azul">
                                 <i class="fa fa-plus"></i>
@@ -322,16 +317,16 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-xs-2 negrilla" style="width: 140px">
+                    <div class="col-md-2 negrilla" style="width: 140px">
                         <select id="tipoPar" style="margin-right: 5px;" class="form-control">
                             <option value="1">RUC</option>
                             <option value="2">Nombre</option>
                         </select>
                     </div>
-                    <div class="col-xs-5 negrilla" style="margin-left: -20px" >
+                    <div class="col-md-5 negrilla" style="margin-left: -20px" >
                         <input type="text" id="parametro" class="form-control" style="margin-right: 10px;">
                     </div>
-                    <div class="col-xs-1 negrilla" style="width: 140px">
+                    <div class="col-md-1 negrilla" style="width: 140px">
                         <a href="#" id="buscar" class="btn btn-azul">
                             <i class="fa fa-search"></i>
                             Buscar
@@ -353,7 +348,7 @@
 
 
     cargarTipo($(".tipoProcesoSel option:selected").val());
-    cargarBotonGuardar($(".tipoProcesoSel option:selected").val());
+//    cargarBotonGuardar($(".tipoProcesoSel option:selected").val());
     cargarBotonBuscar($(".tipoProcesoSel option:selected").val());
     <g:if test="${proceso?.id && (proceso?.tipoProceso == 'P' || proceso?.tipoProceso == 'N')}">
         cargarComPago();
@@ -373,7 +368,7 @@
             $("#divFilaComprobante").html('')
         }
         cargarTipo(tipo);
-        cargarBotonGuardar(tipo);
+//        cargarBotonGuardar(tipo);
         cargarBotonBuscar(tipo);
 
         if(tipo != '-1'){
@@ -420,6 +415,7 @@
         });
     }
 
+/*
     function cargarBotonGuardar (tipo) {
         if(tipo == '-1'){
             $("#guardarProceso").addClass('hidden')
@@ -427,6 +423,7 @@
             $("#guardarProceso").removeClass('hidden')
         }
     }
+*/
 
     function cargarBotonBuscar (tipo) {
         if(tipo != '-1'){
@@ -497,7 +494,8 @@
         </g:if>
 
         $("#btn-br-prcs").click(function(){
-            bootbox.confirm("Está seguro? si esta transacción tiene un comprobante, este será anulado. Esta acción es irreversible",function(result){
+            bootbox.confirm("Está seguro? si esta transacción tiene un comprobante, este será anulado. " +
+                    "Esta acción es irreversible",function(result){
                 if(result){
                     $(".br_prcs").submit()
                 }
@@ -566,138 +564,141 @@
             var info=""
             var tipoP = $(".tipoProcesoSel option:selected").val();
 
+            console.log("guardar con tipoP:", tipoP);
 
-//            $("#listaErrores").html('')
-//            $("#divErrores").hide()
+            if($("#tipoProceso").val()=="-1") {
+                error += "<li>Seleccione el tipo de la transacción</li>"
+            } else {
+                if(tipoP == 'P' || tipoP == 'N'){
 
-            openLoader("Guardando..");
+                    $("#listaErrores").html('');
+                    $("#divErrores").hide();
 
-            if(tipoP == 'P' || tipoP == 'N'){
-
-                $("#listaErrores").html('');
-                $("#divErrores").hide();
-
-                if($("#fecha_input").val().length<10){
-                    error+="<li>Seleccione la fecha de registro</li>"
-                }
-                if($("#descripcion").val().length<1){
-                    error+="<li>Llene el campo Descripción</li>"
-                }
-
-                if($("#prov").val()== "" || $("#prov").val()== null){
-                    error+="<li>Seleccione el proveedor</li>"
-                }
-
-                if($("#comprobanteDesc").val() == '' || $("#comprobanteDesc").val() == null){
-                    error+="<li>Seleccione un comprobante</li>"
-                }
-
-                if($("#valorPago").val() == 0 || $("#valorPago").val() == null){
-                    error+="<li>Ingrese un valor</li>"
-                }
-
-                if(tipoP == 'P'){
-
-                    console.log("pago " + parseFloat($("#valorPago").val()))
-                    console.log("saldo " + parseFloat($("#comprobanteSaldo1").val()))
-
-                    if( parseFloat($("#valorPago").val()) > parseFloat($("#comprobanteSaldo").val())){
-                        error+="<li>El valor ingresado es mayor al saldo del comprobante a pagar!</li>";
-
-                        $("#valorPago").removeClass('required');
-                        $("#valorPago").addClass('colorRojo');
+                    if($("#fecha").val().length<10){
+                        error+="<li>Seleccione la fecha del comprobante</li>"
                     }
-                }
+                    if($("#fecharegsitro").val().length<10){
+                        error+="<li>Seleccione la fecha de registro</li>"
+                    }
+                    if($("#descripcion").val().length<1){
+                        error+="<li>Llene el campo Descripción</li>"
+                    }
 
-            }else{
+                    if($("#prov").val()== "" || $("#prov").val()== null){
+                        error+="<li>Seleccione el proveedor</li>"
+                    }
 
-                $("#listaErrores").html("")
-                if($("#fecha_input").val().length<10){
-                    error+="<li>Seleccione la fecha de registro</li>"
-                }
-                if($("#descripcion").val().length<1){
-                    error+="<li>Llene el campo Descripción</li>"
-                }
-                if($("#tipoProceso").val()=="-1"){
-                    error+="<li>Seleccione el tipo de la transacción</li>"
-                }else{
-                    if($("#tipoProceso").val()=="C" || $("#tipoProceso").val()=="V" ){
+                    if($("#comprobanteDesc").val() == '' || $("#comprobanteDesc").val() == null){
+                        error+="<li>Seleccione un comprobante</li>"
+                    }
 
-                        if($("#sustento").val()=="-1"){
-                            error+="<li>Seleccione un sustento tributario (Necesario si el tipo de transacción es Compras o Ventas)</li>"
-                        }
-                        if($("#tipoComprobante").val()=="-1"){
-                            error+="<li>Seleccione el tipo de documento a registrar (Necesario si el tipo de transacción es Compras o Ventas)</li>"
-                        }else{
-                            if($("#establecimiento").val().length<3){
-                                error+="<li>Ingrese el número de establecimiento del documento (Primera parte del campo documento) </li>"
-                            }
-                            if($("#emision").val().length<3){
-                                error+="<li>Ingrese el número de emisión del documento (Segunda parte del campo documento)</li>"
-                            }
-                            if($("#secuencial").val().length<1){
-                                error+="<li>Ingrese el número de secuencia del documento (Tercera parte del campo documento)</li>"
-                            }
+                    if($("#valorPago").val() == 0 || $("#valorPago").val() == null){
+                        error+="<li>Ingrese un valor</li>"
+                    }
+
+                    if(tipoP == 'P'){
+
+                        console.log("pago " + parseFloat($("#valorPago").val()))
+                        console.log("saldo " + parseFloat($("#comprobanteSaldo1").val()))
+
+                        if( parseFloat($("#valorPago").val()) > parseFloat($("#comprobanteSaldo").val())){
+                            error+="<li>El valor ingresado es mayor al saldo del comprobante a pagar!</li>";
+
+                            $("#valorPago").removeClass('required');
+                            $("#valorPago").addClass('colorRojo');
                         }
                     }
-                }
-                var iva0=$("#iva0").val()
-                var iva12=$("#iva12").val()
-                var noIva=$("#noIva").val()
-                if(isNaN(iva12)){
-                    iva12=-1
-                }
-                if(isNaN(noIva)){
-                    noIva=-1
-                }
-                if(isNaN(iva0)){
-                    iva0=-1
-                }
-                if(iva12*1<0 ){
-                    error+="<li>La base imponible iva ${iva}% debe ser un número positivo</li>"
-                }
-                if(iva0*1<0 ){
-                    error+="<li>La base imponible iva 0% debe ser un número positivo</li>"
-                }
-                if(noIva*1<0 ){
-                    error+="<li>La base imponible no aplica iva debe ser un número positivo</li>"
-                }
-                var base=iva0*1+iva12*1+noIva*1
-                if(base<=0){
-                    error+="<li>La suma de las bases imponibles no puede ser cero</li>"
-                }else{
-                    var impIva=$("#ivaGenerado").val()
-                    var impIce=$("#iceGenerado").val()
-                    if(isNaN(impIva)){
-                        impIva=-1
+                } else {
+                    $("#listaErrores").html("")
+                    if($("#fecha").val().length<10){
+                        error+="<li>Seleccione la fecha de registro</li>"
                     }
-                    if(isNaN(impIce)){
-                        impIce=-1
+                    if($("#descripcion").val().length<1){
+                        error+="<li>Llene el campo Descripción</li>"
                     }
-                    if(impIva*1>0 && iva12*1<=0){
-                        error+="<li>No se puede generar IVA si la base imponible iva ${iva}% es cero</li>"
-                    }
-                    if(impIce*1*impIva*1<0){
-                        error+="<li>Los impuestos generados no pueden ser negativos</li>"
+                    if($("#tipoProceso").val()=="-1"){
+                        error+="<li>Seleccione el tipo de la transacción</li>"
                     }else{
-                        if((impIce*1+impIva*1)>base){
-                            error+="<li>Los impuestos generados no pueden ser superiores a la suma de las bases imponibles</li>"
+                        if($("#tipoProceso").val()=="C" || $("#tipoProceso").val()=="V" ){
+
+                            if($("#sustento").val()=="-1"){
+                                error+="<li>Seleccione un sustento tributario (Necesario si el tipo de transacción es Compras o Ventas)</li>"
+                            }
+                            if($("#tipoComprobante").val()=="-1"){
+                                error+="<li>Seleccione el tipo de documento a registrar (Necesario si el tipo de transacción es Compras o Ventas)</li>"
+                            }else{
+                                if($("#establecimiento").val().length<3){
+                                    error+="<li>Ingrese el número de establecimiento del documento (Primera parte del campo documento) </li>"
+                                }
+                                if($("#emision").val().length<3){
+                                    error+="<li>Ingrese el número de emisión del documento (Segunda parte del campo documento)</li>"
+                                }
+                                if($("#secuencial").val().length<1){
+                                    error+="<li>Ingrese el número de secuencia del documento (Tercera parte del campo documento)</li>"
+                                }
+                            }
                         }
                     }
-                }
+                    var iva0=$("#iva0").val()
+                    var iva12=$("#iva12").val()
+                    var noIva=$("#noIva").val()
+                    if(isNaN(iva12)){
+                        iva12=-1
+                    }
+                    if(isNaN(noIva)){
+                        noIva=-1
+                    }
+                    if(isNaN(iva0)){
+                        iva0=-1
+                    }
+                    if(iva12*1<0 ){
+                        error+="<li>La base imponible iva ${iva}% debe ser un número positivo</li>"
+                    }
+                    if(iva0*1<0 ){
+                        error+="<li>La base imponible iva 0% debe ser un número positivo</li>"
+                    }
+                    if(noIva*1<0 ){
+                        error+="<li>La base imponible no aplica iva debe ser un número positivo</li>"
+                    }
+                    var base=iva0*1+iva12*1+noIva*1
+                    if(base<=0){
+                        error+="<li>La suma de las bases imponibles no puede ser cero</li>"
+                    }else{
+                        var impIva=$("#ivaGenerado").val()
+                        var impIce=$("#iceGenerado").val()
+                        if(isNaN(impIva)){
+                            impIva=-1
+                        }
+                        if(isNaN(impIce)){
+                            impIce=-1
+                        }
+                        if(impIva*1>0 && iva12*1<=0){
+                            error+="<li>No se puede generar IVA si la base imponible iva ${iva}% es cero</li>"
+                        }
+                        if(impIce*1*impIva*1<0){
+                            error+="<li>Los impuestos generados no pueden ser negativos</li>"
+                        }else{
+                            if((impIce*1+impIva*1)>base){
+                                error+="<li>Los impuestos generados no pueden ser superiores a la suma de las bases imponibles</li>"
+                            }
+                        }
+                    }
 //            if($(".filaFP").size() <1){
 //                info+="No ha asignado formas de pago para la transacción contable"
 //                bandData=false
 //            }
-                if(bandData){
-                    var data =""
-                    $(".filaFP").each(function(){
-                        data+=$(this).attr("fp")+";"
+                    if(bandData){
+                        var data =""
+                        $(".filaFP").each(function(){
+                            data+=$(this).attr("fp")+";"
 
-                    })
-                    $("#data").val(data)
+                        })
+                        $("#data").val(data)
+                    }
                 }
+
             }
+
 
             if(error!=""){
 

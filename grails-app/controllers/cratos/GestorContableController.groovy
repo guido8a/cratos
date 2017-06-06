@@ -189,7 +189,7 @@ class GestorContableController extends cratos.seguridad.Shield {
     }
 
     def verGestor() {
-
+/*
         def gestor = Gestor.get(params.id)
         def c = Genera.findAllByGestor(gestor)
         println "ver gestor "
@@ -202,6 +202,9 @@ class GestorContableController extends cratos.seguridad.Shield {
         } else {
             [gestor: gestor, cuentas: session.movimientos]
         }
+*/
+        params.ver = 1
+        redirect(action: 'formGestor', params: params)
     }
 
     def editarGestor() {
@@ -270,10 +273,13 @@ class GestorContableController extends cratos.seguridad.Shield {
     }
 
     def formGestor () {
+        def titulo = "Nuevo Gestor"
         if(params.id){
+            titulo = params.ver? "Ver Gestor" : "Editar Gestor"
             def gestorInstance = Gestor.get(params.id)
-            return [gestorInstance: gestorInstance]
-        }
+            return [gestorInstance: gestorInstance, verGestor: params.ver, titulo: titulo]
+        } else
+            return [verGestor: params.ver, titulo: titulo]
     }
 
     def tablaGestor_ajax () {
@@ -385,13 +391,13 @@ class GestorContableController extends cratos.seguridad.Shield {
         if(params.gestor){
             gestor = Gestor.get(params.gestor)
             gestor.nombre = params.nombre
-            gestor.descripcion = params.descripcion
+//            gestor.descripcion = params.descripcion
             gestor.observaciones = params.observacion
             gestor.fuente = fuente
         }else{
             gestor = new Gestor()
             gestor.nombre = params.nombre
-            gestor.descripcion = params.descripcion
+//            gestor.descripcion = params.descripcion
             gestor.observaciones = params.observacion
             gestor.fuente = fuente
             gestor.empresa = empresa

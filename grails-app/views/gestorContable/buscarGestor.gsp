@@ -1,6 +1,6 @@
 <script type="text/javascript" src="${resource(dir: 'js', file: 'ui.js')}"></script>
 %{--<table border="0" class="table table-bordered ">--}%
-<table class="table table-bordered table-hover table-condensed">
+<table class="table table-bordered table-hover table-condensed" width="800px">
 
         %{--<thead>--}%
         %{--<tr>--}%
@@ -20,10 +20,9 @@
     <g:if test="${lista.size()>0}">
         <g:each var="gestor" in="${lista}">
             <tr>
-                <td>${gestor.nombre}</td>
-                <td>${gestor.descripcion}</td>
-                <td>${gestor.observaciones}</td>
-                <td style="width: 100px">
+                <td style="width: 440px">${gestor.nombre}</td>
+                <td style="width: 300px">${gestor.observaciones}</td>
+                <td style="width: 60px">
                     <a href="${g.createLink(action: 'verGestor',id:gestor.id)}" class="btn btn-small btn-info" title="Ver">
                         <i class="fa fa-laptop" title="Ver"></i>
                     </a>

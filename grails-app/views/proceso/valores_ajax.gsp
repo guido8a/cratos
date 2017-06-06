@@ -1,18 +1,8 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: gato
-  Date: 19/05/17
-  Time: 14:41
---%>
 <style type="text/css">
-
     .colorRojo{
         border-color: #ff0f24;
     }
-
-
 </style>
-
 
 <g:if test="${tipo == 'P'}">
     <div class="row" style="font-size: 12px">
@@ -20,15 +10,17 @@
             Valor:
         </div>
         <div class="col-xs-2 negrilla">
-            <g:textField name="valorPago_name" id="valorPago" class="form-control required number validacionNumero" value="${proceso?.valor}"/>
+            <g:textField name="valorPago_name" id="valorPago" class="form-control required number validacionNumero"
+                         value="${proceso?.valor}"/>
         </div>
     </div>
     <div class="row" style="font-size: 12px">
         <div class="col-xs-2 negrilla" style="width: 120px">
-            Tipo de Pago:
+            Forma de Pago:
         </div>
         <div class="col-xs-5">
-            <g:select name="tipoPago_name" from="${cratos.TipoPago.list().sort{it.descripcion}}" optionKey="id" optionValue="descripcion" value="${proceso?.tipoPago}" class="form-control"/>
+            <g:select name="tipoPago_name" from="${cratos.TipoPago.list().sort{it.descripcion}}" optionKey="id"
+                      optionValue="descripcion" value="${proceso?.tipoPago}" class="form-control"/>
         </div>
     </div>
 </g:if>
