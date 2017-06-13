@@ -2,10 +2,10 @@ package cratos
 
 class Anexo implements Serializable {
 
-    TipoComprobanteId tipoComprobantePorId
+//    TipoComprobanteId tipoComprobantePorId
     Proveedor proveedor
     TipoSoporte tipoSoporte
-    TipoComprobanteId tipoComprobantePorIdModificacion
+//    TipoComprobanteId tipoComprobantePorIdModificacion
 
     Date fechaRegistro
     Date fechaEmision
@@ -49,10 +49,10 @@ class Anexo implements Serializable {
         id generator: 'identity'
         version false
         columns {
-            tipoComprobantePorId column: 'tcti__id'
+//            tipoComprobantePorId column: 'tcti__id'
             proveedor column: 'prve__id'
             tipoSoporte column: 'tpst__id'
-            tipoComprobantePorIdModificacion column: 'tctimdfc'
+//            tipoComprobantePorIdModificacion column: 'tctimdfc'
 
             fechaRegistro column: 'anxofcrg'
             fechaEmision column: 'anxofcem'
@@ -90,10 +90,10 @@ class Anexo implements Serializable {
         }
     }
     static constraints = {
-        tipoComprobantePorId(blank: false, nullable: false, attributes: [title: 'tipoComprobantePorId'])
+//        tipoComprobantePorId(blank: false, nullable: false, attributes: [title: 'tipoComprobantePorId'])
         proveedor(blank: false, nullable: false, attributes: [title: 'proveedor'])
         tipoSoporte(blank: false, nullable: false, attributes: [title: 'tipoSoporte'])
-        tipoComprobantePorIdModificacion(blank: false, nullable: false, attributes: [title: 'tipoComprobantePorIdModificacion'])
+//        tipoComprobantePorIdModificacion(blank: false, nullable: false, attributes: [title: 'tipoComprobantePorIdModificacion'])
 
         fechaRegistro(blank: true, nullable: true, attributes: [title: 'fechaRegistro'])
         fechaEmision(blank: true, nullable: true, attributes: [title: 'fechaEmision'])

@@ -6,6 +6,7 @@ import cratos.sri.SustentoTributario
 import cratos.sri.TipoCmprSustento
 import cratos.sri.TipoCmprTransaccion
 import cratos.sri.TipoComprobanteSri
+import cratos.sri.TipoTransaccion
 
 import java.sql.Connection
 
@@ -50,18 +51,27 @@ class ProcesoController extends cratos.seguridad.Shield {
         def proceso
         def comprobante
 
-/*
-        if (params.sustentoTributario.id == "-1")
-            params.sustentoTributario.id = null
-        if (params.tipoComprobanteSri.id == "-1")
-            params.tipoComprobanteSri.id = null
-*/
+        def tptr
+        switch (params.tipoProceso) {
+            case 'C':
+                tptr = 1
+                break
+            case 'V':
+                tptr = 2
+                break
+        }
 
+        def tipoTran
+        if(tptr) {
+            tipoTran = TipoTransaccion.get(tptr)  //????
+        }
+
+        def cmpr = TipoCmprTransaccion.get(params."sustentoTributario.id")  //????
         def sustento = TipoCmprSustento.get(params."sustentoTributario.id")
+
         def proveedor = Proveedor.get(params."proveedor.id")
         def gestor = Gestor.get(params."gestor.id")
         def tipoPago
-        def tipoComproSri = TipoComprobanteSri.get(params."tipoComprobanteSri.id")
         def fechaRegistro = new Date().parse("dd-MM-yyyy", params.fecha_input)   //fecha del cmpr
         def fechaIngresoSistema = new Date().parse("dd-MM-yyyy",params.fecharegistro_input)   //registro
 
@@ -74,6 +84,7 @@ class ProcesoController extends cratos.seguridad.Shield {
             proceso.gestor = gestor
             proceso.contabilidad = session.contabilidad
             proceso.empresa = session.empresa
+            proceso.tipoTransaccion = tipoTran
         }
 
         proceso.proveedor = proveedor
@@ -90,8 +101,6 @@ class ProcesoController extends cratos.seguridad.Shield {
         if(params.tipoProceso == 'P') {
             comprobante = Comprobante.get(params.comprobanteSel_name)
             proceso.comprobante = comprobante
-            tipoPago = TipoPago.get(params.tipoPago_name)
-            proceso.tipoPago = tipoPago
             proceso.valor = params.valorPago_name.toDouble()
 
         } else {
@@ -100,8 +109,6 @@ class ProcesoController extends cratos.seguridad.Shield {
                 proceso.comprobante = comprobante
                 proceso.valor = params.valorPago_name.toDouble()
                 proceso.impuesto = params.ivaGenerado.toDouble()
-                tipoPago = TipoPago.get(params.tipoPago_name)
-                proceso.tipoPago = tipoPago
             } else {
                 println "...3"
                 proceso.valor = params.baseImponibleIva0.toDouble() + params.baseImponibleIva.toDouble() + params.baseImponibleNoIva.toDouble()
@@ -120,6 +127,7 @@ class ProcesoController extends cratos.seguridad.Shield {
             }
         }
 
+        println "<<<<< ${proceso.tipoTransaccion}, ${proceso.tipoCmprSustento}, ${proceso.tipoCmprTransaccion}"
         try {
             println "...4: $proceso"
             proceso.save(flush: true)

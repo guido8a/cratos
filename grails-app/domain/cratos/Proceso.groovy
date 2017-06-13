@@ -1,5 +1,7 @@
 package cratos
 
+import cratos.sri.TipoDePagoSri
+
 class Proceso implements Serializable {
     Gestor gestor
     Contabilidad contabilidad
@@ -16,6 +18,7 @@ class Proceso implements Serializable {
     cratos.sri.TipoTransaccion tipoTransaccion //incluir en controller
     cratos.sri.TipoCmprTransaccion tipoCmprTransaccion
     cratos.sri.TipoCmprSustento tipoCmprSustento
+//    TipoPago tipoPago
 
 
     Date fecha
@@ -79,6 +82,7 @@ class Proceso implements Serializable {
             tipoTransaccion column: 'tptr__id'
             tipoCmprTransaccion column: 'tctt__id'
             tipoCmprSustento column: 'tcst__id'
+//            tipoPago column: 'tppg__id'
 
             fecha column: 'prcsfcha'
             fechaRegistro column: 'prcsfcrg'
@@ -115,7 +119,6 @@ class Proceso implements Serializable {
 //            retencionSerie2 column: 'prcsrts2'
 //            retencionSecuencial column: 'prcsrtsc'
 //            retencionAutorizacion column: 'prcsrtat'
-//            tipoPago column: 'tppg__id'
 //            ordenCompra column: 'odcp__id'
 //            tipoComprobanteId column: 'tcti__id'
 //            tipoSoporte column: 'tpst__id'
@@ -141,6 +144,7 @@ class Proceso implements Serializable {
         tipoTransaccion(nullable: false, blank: false)
         tipoCmprTransaccion(nullable: true, blank: true)
         tipoCmprSustento(nullable: true, blank: true)
+//        tipoPago(blank: true, nullable: true, attributes: [title: 'tipoPago'])
 
         fecha(blank: true, nullable: true, attributes: [title: 'fecha'])
         fechaRegistro(blank: true, nullable: true, attributes: [title: 'fechaRegistro'])
@@ -178,7 +182,6 @@ class Proceso implements Serializable {
 //        retencionSerie2(blank: true, nullable: true)
 //        retencionSecuencial(blank: true, nullable: true)
 //        retencionAutorizacion(blank: true, nullable: true)
-//        tipoPago(blank: true, nullable: true, attributes: [title: 'tipoPago'])
 //        ordenCompra(blank: true, nullable: true, attributes: [title: 'ordenCompra'])
 //        tipoComprobanteId(blank: true, nullable: true, attributes: [title: 'tipoComprobanteId'])
 //        tipoSoporte(blank: true, nullable: true, attributes: [title: 'tipoSoporte'])

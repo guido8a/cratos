@@ -2,7 +2,7 @@ package cratos
 
 class ComprobantesAnulados implements Serializable {
     TipoComprobante tipoComprobante
-    TipoComprobanteId tipoComprobanteId
+//    TipoComprobanteId tipoComprobanteId
     Proveedor proveedor
     String serial01
     String serial02
@@ -18,7 +18,7 @@ class ComprobantesAnulados implements Serializable {
         version false
         columns {
             tipoComprobante column: 'tpcp__id'
-            tipoComprobanteId column: 'tcti__id'
+//            tipoComprobanteId column: 'tcti__id'
             proveedor column: 'prve__id'
             serial01 column: 'anldsr01'
             serial02 column: 'anldsr02'
@@ -29,7 +29,7 @@ class ComprobantesAnulados implements Serializable {
     }
     static constraints = {
         tipoComprobante(blank: false, attributes: [title: 'tipoComprobante'])
-        tipoComprobanteId(blank: false, attributes: [title: 'tipoComprobanteId'])
+//        tipoComprobanteId(blank: false, attributes: [title: 'tipoComprobanteId'])
         proveedor(blank: false, attributes: [title: 'proveedor'])
         serial01(blank: true, attributes: [title: 'serial01'])
         serial02(blank: true, attributes: [title: 'serial02'])

@@ -4,7 +4,7 @@ class DocumentosProceso implements Serializable {
 
     Proceso proceso
     TipoDocumentoProveedor tipoDocumentoProveedor
-    TipoComprobanteId tipoComprobanteId
+//    TipoComprobanteId tipoComprobanteId
     String documentosProcesoSerie01
     String documentosProcesoSerie02
     int secuencial
@@ -23,7 +23,7 @@ class DocumentosProceso implements Serializable {
         columns {
             proceso column: 'prcs__id'
             tipoDocumentoProveedor column: 'tpdp__id'
-            tipoComprobanteId column: 'tcti__id'
+//            tipoComprobanteId column: 'tcti__id'
             documentosProcesoSerie01 column: 'dcprsr01'
             documentosProcesoSerie02 column: 'dcprsr02'
             secuencial column: 'dcprscnc'
@@ -34,7 +34,7 @@ class DocumentosProceso implements Serializable {
     static constraints = {
         proceso(blank: false, attributes: [title: 'proceso'])
         tipoDocumentoProveedor(blank: false, attributes: [title: 'tipoDocumentoProveedor'])
-        tipoComprobanteId(blank: false, attributes: [title: 'tipoComprobanteId'])
+//        tipoComprobanteId(blank: false, attributes: [title: 'tipoComprobanteId'])
         documentosProcesoSerie01(blank: true, maxSize: 3, attributes: [title: 'documentosProcesoSerie01'])
         documentosProcesoSerie02(blank: true, maxSize: 3, attributes: [title: 'documentosProcesoSerie02'])
         secuencial(blank: false, attributes: [title: 'secuencial'])
