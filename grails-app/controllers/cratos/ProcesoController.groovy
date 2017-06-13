@@ -3,7 +3,11 @@ package cratos
 import cratos.seguridad.Persona
 import cratos.sri.Pais
 import cratos.sri.SustentoTributario
+import cratos.sri.TipoCmprSustento
+import cratos.sri.TipoCmprTransaccion
 import cratos.sri.TipoComprobanteSri
+
+import java.sql.Connection
 
 class ProcesoController extends cratos.seguridad.Shield {
 
@@ -27,11 +31,11 @@ class ProcesoController extends cratos.seguridad.Shield {
     def nuevoProceso = {
 //        println "nuevo proceso "+params
         def tiposProceso = ["-1": "Seleccione...",
-                            "C": "Compras (Compras Inventario, Compras Gasto)",
-                            "V": "Ventas (Ventas, Reposición de Gasto)",
-                            "A": "Ajustes (Diarios y Otros)",
-                            "P": "Pagos a proveedores",
-                            "N": "Nota de Crédito"]
+                            "C": "C-Compras (Compras Inventario, Compras Gasto)",
+                            "V": "V-Ventas (Ventas, Reposición de Gasto)",
+                            "A": "A-Ajustes (Diarios y Otros)",
+                            "P": "P-Pagos a proveedores",
+                            "N": "N-Nota de Crédito"]
         if (params.id) {
             def proceso = Proceso.get(params.id)
             def registro = (Comprobante.findAllByProceso(proceso)?.size() == 0) ? false : true
@@ -42,23 +46,24 @@ class ProcesoController extends cratos.seguridad.Shield {
     }
 
     def save = {
-//        if (request.method == 'POST') {
-        println "save proceso "+params
+        println "save proceso: $params"
         def proceso
         def comprobante
 
+/*
         if (params.sustentoTributario.id == "-1")
             params.sustentoTributario.id = null
         if (params.tipoComprobanteSri.id == "-1")
             params.tipoComprobanteSri.id = null
+*/
 
-        def sustento = SustentoTributario.get(params."sustentoTributario.id")
+        def sustento = TipoCmprSustento.get(params."sustentoTributario.id")
         def proveedor = Proveedor.get(params."proveedor.id")
         def gestor = Gestor.get(params."gestor.id")
         def tipoPago
         def tipoComproSri = TipoComprobanteSri.get(params."tipoComprobanteSri.id")
-        def fechaRegistro = new Date().parse("dd-MM-yyyy",params.fecha_input)   //fecha del cmpr
-        def fechaIngresoSistema = new Date().parse("dd-MM-yyyy",params.fecharegistro)   //registro
+        def fechaRegistro = new Date().parse("dd-MM-yyyy", params.fecha_input)   //fecha del cmpr
+        def fechaIngresoSistema = new Date().parse("dd-MM-yyyy",params.fecharegistro_input)   //registro
 
         if(params.id){
             proceso = Proceso.get(params.id)
@@ -72,31 +77,33 @@ class ProcesoController extends cratos.seguridad.Shield {
         }
 
         proceso.proveedor = proveedor
-        proceso.tipoComprobanteSri = tipoComproSri
-        proceso.sustentoTributario = sustento
+        println "...1"
+        proceso.tipoCmprSustento = sustento
+        proceso.tipoCmprTransaccion = TipoCmprTransaccion.get(params.sustento)
         proceso.fechaRegistro = fechaRegistro
+        proceso.fechaIngresoSistema = fechaIngresoSistema
         proceso.descripcion = params.descripcion
         proceso.fecha = new Date()
         proceso.tipoProceso = params.tipoProceso
+        println "...2"
 
-        if(params.tipoProceso == 'P'){
+        if(params.tipoProceso == 'P') {
             comprobante = Comprobante.get(params.comprobanteSel_name)
             proceso.comprobante = comprobante
             tipoPago = TipoPago.get(params.tipoPago_name)
             proceso.tipoPago = tipoPago
             proceso.valor = params.valorPago_name.toDouble()
 
-        }else
-        {
-            if(params.tipoProceso == 'NC'){
+        } else {
+            if(params.tipoProceso == 'NC') {
                 comprobante = Comprobante.get(params.comprobanteSel_name)
                 proceso.comprobante = comprobante
                 proceso.valor = params.valorPago_name.toDouble()
                 proceso.impuesto = params.ivaGenerado.toDouble()
                 tipoPago = TipoPago.get(params.tipoPago_name)
                 proceso.tipoPago = tipoPago
-            }
-            else{
+            } else {
+                println "...3"
                 proceso.valor = params.baseImponibleIva0.toDouble() + params.baseImponibleIva.toDouble() + params.baseImponibleNoIva.toDouble()
                 proceso.impuesto = params.ivaGenerado.toDouble() + params.iceGenerado.toDouble()
                 proceso.baseImponibleIva = params.baseImponibleIva.toDouble()
@@ -109,14 +116,20 @@ class ProcesoController extends cratos.seguridad.Shield {
                 proceso.facturaPuntoEmision = params.facturaPuntoEmision
                 proceso.facturaSecuencial = params.facturaSecuencial
                 proceso.facturaAutorizacion = params.facturaAutorizacion
+                println "...4"
             }
         }
 
-        try{
+        try {
+            println "...4: $proceso"
             proceso.save(flush: true)
+            println "...5"
+            proceso.refresh()
             redirect(action: 'show', id: proceso.id)
-        }catch (e){
-            println("error al grabar el proceso " + e)
+            println "...6 proceso: ${proceso.id}"
+        } catch (e) {
+            println "...7"
+            println "error al grabar el proceso $e"
         }
 
 //            params.lang="en"
@@ -207,6 +220,67 @@ class ProcesoController extends cratos.seguridad.Shield {
         }
         //println "comp "+comprobantes+" as "+asientos
         render(view: "detalleProceso", model: [comprobantes: comprobantes, asientos: asientos, proceso: proceso, aux: aux])
+    }
+
+    def cargaTcsr() {
+        println "cargatcsr $params"
+        def cn = dbConnectionService.getConnection()
+        def tipo = 0
+        switch (params.tptr) {
+            case 'C':
+                tipo = 1
+                break
+            case 'V':
+                tipo = 2
+                break
+            default:
+                tipo = 0
+        }
+        def sql = "select cast(tittcdgo as integer) cdgo from titt, prve, tptr " +
+                "where prve.tpid__id = titt.tpid__id and prve__id = ${params.prve} and " +
+                "tptr.tptr__id = titt.tptr__id and tptrcdgo = '${tipo}'"
+        println "sql: $sql"
+        def titt = cn.rows(sql.toString())[0]?.cdgo
+        println "identif: $titt"
+        sql = "select tcst__id id, tcsrcdgo codigo, tcsrdscr descripcion from tcst, tcsr " +
+                "where tcsr.tcsr__id = tcst.tcsr__id and titt @> '{${titt}}' and " +
+                "sstr @> '{${params.sstr}}' order by tcsrcdgo"
+
+        def data = cn.rows(sql.toString())
+        cn.close()
+        [data: data]
+    }
+
+    def cargaSstr() {
+        println "cargaSstr $params"
+        def cn = dbConnectionService.getConnection()
+        def tipo = 0
+        switch (params.tptr) {
+            case 'C':
+                tipo = 1
+                break
+            case 'V':
+                tipo = 2
+                break
+            default:
+                tipo = 0
+        }
+
+        def sql = "select cast(tittcdgo as integer) cdgo from titt, prve, tptr " +
+                "where prve.tpid__id = titt.tpid__id and prve__id = ${params.prve} and " +
+                "tptr.tptr__id = titt.tptr__id and tptrcdgo = '${tipo}'"
+        println "sql: $sql"
+
+        def titt = cn.rows(sql.toString())[0]?.cdgo
+        println "identif: $titt"
+
+        sql = "select sstr__id id, sstrcdgo codigo, sstrdscr descripcion from sstr " +
+                "where sstr__id in (select distinct(unnest(sstr)) " +
+                "from tcst where titt @> '{${titt}}') order by 1;"
+
+        def data = cn.rows(sql.toString())
+        cn.close()
+        [data: data]
     }
 
     def valorAsiento = {
@@ -1194,6 +1268,11 @@ class ProcesoController extends cratos.seguridad.Shield {
         def proceso = Proceso.get(params.proceso)
         def proveedores = Proveedor.list()
         def tr
+        def prve
+        if(params.id) {
+            prve = Proveedor.get(params.id.toInteger())
+        }
+
         switch (params.tipo) {
             case "P":
                 tr = TipoRelacion.findAllByCodigoInList(['C','P'])
@@ -1210,7 +1289,7 @@ class ProcesoController extends cratos.seguridad.Shield {
         }
 
 //        println("proveedores " + proveedores)
-        return [proveedores : proveedores, proceso: proceso, tipo: params.tipo]
+        return [proveedores : proveedores, proceso: proceso, tipo: params.tipo, proveedor: prve]
     }
 
     def cambiarContabilidad_ajax () {

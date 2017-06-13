@@ -1,48 +1,49 @@
-<%@ page import="cratos.Asiento; cratos.sri.TipoComprobanteSri; cratos.sri.SustentoTributario" %>
+<%@ page import="cratos.Asiento; cratos.sri.TipoComprobanteSri" %>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="layout" content="main"/>
     <title>Transacciones</title>
     <style type="text/css">
-    .number{
+    .number {
         text-align: right;
     }
+
     .filaFP {
-        width          : 95%;
-        height         : 20px;
-        border-bottom  : 1px solid black;
-        margin         : 10px;
-        vertical-align : middle;
-        text-align     : left;
-        line-height    : 10px;
-        padding-left   : 10px;
-        padding-bottom : 20px;
-        font-size      : 10px;
+        width: 95%;
+        height: 20px;
+        border-bottom: 1px solid black;
+        margin: 10px;
+        vertical-align: middle;
+        text-align: left;
+        line-height: 10px;
+        padding-left: 10px;
+        padding-bottom: 20px;
+        font-size: 10px;
     }
 
     .span-rol {
-        padding-right : 10px;
-        padding-left  : 10px;
-        height        : 16px;
-        line-height   : 16px;
-        background    : #FFBD4C;
-        margin-right  : 5px;
-        font-weight   : bold;
-        font-size     : 12px;
+        padding-right: 10px;
+        padding-left: 10px;
+        height: 16px;
+        line-height: 16px;
+        background: #FFBD4C;
+        margin-right: 5px;
+        font-weight: bold;
+        font-size: 12px;
     }
 
     .span-eliminar {
-        padding-right : 10px;
-        padding-left  : 10px;
-        height        : 16px;
-        line-height   : 16px;
-        background    : rgba(255, 2, 10, 0.35);
-        margin-right  : 5px;
-        font-weight   : bold;
-        font-size     : 12px;
-        cursor        : pointer;
-        float         : right;
+        padding-right: 10px;
+        padding-left: 10px;
+        height: 16px;
+        line-height: 16px;
+        background: rgba(255, 2, 10, 0.35);
+        margin-right: 5px;
+        font-weight: bold;
+        font-size: 12px;
+        cursor: pointer;
+        float: right;
     }
     </style>
 </head>
@@ -73,6 +74,7 @@
             Lista de Procesos
         </g:link>
     </div>
+
     <div class="btn-group">
         <g:if test="${!proceso || (proceso?.estado == 'N')}">
             <a href="#" class="btn btn-success" id="guardarProceso">
@@ -81,7 +83,7 @@
             </a>
         </g:if>
         <g:if test="${params.id}">
-            <g:if test="${proceso.adquisicion == null && proceso.fact == null && proceso.transferencia == null && !registro}">
+            <g:if test="${proceso.adquisicion == null && proceso.factura == null && proceso.transferencia == null && !registro}">
                 <a href="#" class="btn btn-info" id="registrarProceso">
                     <i class="fa fa-check"></i>
                     Registrar
@@ -91,8 +93,8 @@
 
         <g:if test="${proceso}">
             <g:if test="${!aux}">
-                <g:if test="${proceso?.tipoProceso!='P'}">
-                    <g:form action="borrarProceso" class="br_prcs" style="margin:0px;display: inline" >
+                <g:if test="${proceso?.tipoProceso != 'P'}">
+                    <g:form action="borrarProceso" class="br_prcs" style="margin:0px;display: inline">
                         <input type="hidden" name="id" value="${proceso?.id}">
                         <a class="btn btn-danger" id="btn-br-prcs" action="borrarProceso">
                             <i class="fa fa-trash-o"></i>
@@ -102,7 +104,7 @@
                 </g:if>
             </g:if>
             <g:else>
-                <a href="#" class="btn btn-default" style="cursor: default" >
+                <a href="#" class="btn btn-default" style="cursor: default">
                     <i class="fa fa-ban"></i>
                     Esta transacción no puede ser eliminada ni desmayorizada porque tiene auxiliares registrados.
                 </a>
@@ -113,68 +115,79 @@
                 <g:link class="btn btn-primary" action="detalleSri" id="${proceso?.id}" style="margin-bottom: 10px;">
                     <i class="fa fa-shield"></i> SRI
                 </g:link>
-                %{--<g:if test="${cratos.Retencion.findByProceso(proceso).numeroSecuencial}">--}%
-                    <g:link controller="reportes3" action="imprimirRetencion" class="btn btn-default btnRetencion" id="${proceso?.id}" params="[empresa: session.empresa.id]" style="margin-bottom: 10px;">
-                        <i class="fa fa-print"></i>
-                        Imprimir retención
-                    </g:link>
-                %{--</g:if>--}%
+            %{--<g:if test="${cratos.Retencion.findByProceso(proceso).numeroSecuencial}">--}%
+                <g:link controller="reportes3" action="imprimirRetencion" class="btn btn-default btnRetencion"
+                        id="${proceso?.id}" params="[empresa: session.empresa.id]" style="margin-bottom: 10px;">
+                    <i class="fa fa-print"></i>
+                    Imprimir retención
+                </g:link>
+            %{--</g:if>--}%
             </g:if>
         </g:if>
     </div>
 </div>
+
 <div style="padding: 0.7em; margin-top:5px; display: none;" class="alert alert-danger ui-corner-all" id="divErrores">
-    <i class="fa fa-exclamation-triangle"> </i>
+    <i class="fa fa-exclamation-triangle"></i>
     <span style="" id="spanError">Se encontraron los siguientes errores:</span>
     <ul id="listaErrores"></ul>
 </div>
 <g:form name="procesoForm" action="save" method="post" class="frmProceso">
+    <input type="hidden" name="proveedor.id" id="prve__id">
     <div class="vertical-container" style="margin-top: 25px;color: black;padding-bottom: 10px">
         <p class="css-vertical-text">Descripción</p>
+
         <div class="linea"></div>
 
         <input type="hidden" name="id" value="${proceso?.id}" id="idProceso"/>
-%{--
-        <input type="hidden" name="empleado.id" value="${session.usuario.id}"/>
-        <input type="hidden" name="periodoContable.id" value="${session?.contabilidad?.id}"/>
-        <input type="hidden" name="data" id="data" value="${session?.contabilidad?.id}"/>
---}%
+        %{--
+                <input type="hidden" name="empleado.id" value="${session.usuario.id}"/>
+                <input type="hidden" name="periodoContable.id" value="${session?.contabilidad?.id}"/>
+                <input type="hidden" name="data" id="data" value="${session?.contabilidad?.id}"/>
+        --}%
         <div class="row">
             <div class="col-md-2 negrilla">
                 Tipo de transacción:
             </div>
+
             <div class="col-md-4 negrilla">
-                <g:select class="form-control required cmbRequired tipoProcesoSel" name="tipoProceso"  id="tipoProceso"
+                <g:select class="form-control required cmbRequired tipoProcesoSel" name="tipoProceso" id="tipoProceso"
                           from="${tiposProceso}" label="Proceso tipo: " value="${proceso?.tipoProceso}" optionKey="key"
-                          optionValue="value" title="Tipo de la transacción" disabled="${proceso?.id ? 'true':'false'}"/>
+                          optionValue="value" title="Tipo de la transacción"
+                          disabled="${proceso?.id ? 'true' : 'false'}"/>
             </div>
 
             <div class="col-md-1 negrilla">
                 Fecha de Emisión:
             </div>
+
             <div class="col-md-2">
                 <g:if test="${registro}">
                     ${proceso?.fecha.format("dd-MM-yyyy")}
                 </g:if>
                 <g:else>
-                    <elm:datepicker name="fecha"  title="Fecha de emisión del comprobante" class="datepicker form-control required col-md-3"
-                                    value="${proceso?.fecha}"  maxDate="new Date()" style="width: 80px; margin-left: 5px" />
+                    <elm:datepicker name="fecha" title="Fecha de emisión del comprobante"
+                                    class="datepicker form-control required col-md-3"
+                                    value="${proceso?.fecha}" maxDate="new Date()"
+                                    style="width: 80px; margin-left: 5px"/>
                 </g:else>
             </div>
 
             <div class="col-md-1 negrilla">
                 Fecha de registro:
             </div>
+
             <div class="col-md-2">
                 <g:if test="${registro}">
                     ${proceso?.fecha.format("dd-MM-yyyy")}
                 </g:if>
                 <g:else>
-                    <elm:datepicker name="fecharegistro"  title="Fecha de registro en el sistema" class="datepicker form-control required col-md-3"
-                                    value="${proceso?.fecha}"  maxDate="new Date()" style="width: 80px; margin-left: 5px" />
+                    <elm:datepicker name="fecharegistro" title="Fecha de registro en el sistema"
+                                    class="datepicker form-control required col-md-3"
+                                    value="${proceso?.fecha}" maxDate="new Date()"
+                                    style="width: 80px; margin-left: 5px"/>
                 </g:else>
             </div>
-
 
         </div>
 
@@ -182,9 +195,12 @@
             <div class="col-md-2 negrilla">
                 Gestor a utilizar:
             </div>
+
             <div class="col-md-10 negrilla">
-                <g:select class="form-control required" name="gestor.id" from="${cratos.Gestor.findAllByEstadoAndEmpresa('R', session.empresa, [sort: 'nombre'])}"
-                          label="Proceso tipo: " value="${proceso?.gestor?.id}" optionKey="id" optionValue="nombre" title="Proceso tipo" disabled="${registro?true:false}" />
+                <g:select class="form-control required" name="gestor.id"
+                          from="${cratos.Gestor.findAllByEstadoAndEmpresa('R', session.empresa, [sort: 'nombre'])}"
+                          label="Proceso tipo: " value="${proceso?.gestor?.id}" optionKey="id" optionValue="nombre"
+                          title="Proceso tipo" disabled="${registro ? true : false}"/>
             </div>
         </div>
 
@@ -194,45 +210,41 @@
         <div class="row" id="divFilaComprobante">
         </div>
 
-        <div class="row">
+%{--
+        <div class="row" id="sstr">
             <div class="col-md-2 negrilla">
                 Sustento Tributario:
             </div>
-            <div class="col-md-5 negrilla">
-%{--
-                <g:select class=" form-control required cmbRequired" name="sustentoTributario.id" id="sustento"
-                          from="${SustentoTributario.list([sort:'codigo'])}"
+
+            <div class="col-md-8 negrilla">
+                <g:select class=" form-control required cmbRequired  sustentoSri" name="sustentoTributario.id" id="sustento"
+                          from="${SustentoTributario.list([sort: 'codigo'])}"
                           title="Necesario solo si la transacción debe reportarse al S.R.I." optionKey="id"
-                          value="${proceso?.sustentoTributario?.id}" noSelection="${['-1':'No aplica']}"
-                          disabled="${registro?true:false}" />
---}%
+                          value="${proceso?.sustentoTributario?.id}" noSelection="${['-1': 'Seleccione...']}"/>
             </div>
+
             <div class="col-md-2 " style="font-size: 10px;">
-                Necesario solo si la transacción debe reportarse al S.R.I.
+                Necesario para el ATS
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-2 negrilla">
-                Tipo de comprobante:
-            </div>
-%{--
-            <div class="col-md-5 negrilla">
-                <g:select class="form-control cmbRequired" name="tipoComprobanteSri.id" id="tipoComprobante" from="${TipoComprobanteSri.findAllByIdNotInList([16.toLong(),17.toLong()],[sort:'codigo'])}" optionKey="id" title="Tipo del documento a registrar" optionValue="descripcion"  noSelection="${['-1':'No aplica']}" value="${proceso?.tipoComprobanteSri?.id}" disabled="${registro?true:false}" />
-            </div>
 --}%
-            <div class="col-md-2 " style="font-size: 10px">
-                Tipo del documento a registrar.
-            </div>
+
+
+        <div class="row" id="divSustento">
+        </div>
+
+        <div class="row" id="divComprobanteSustento">
         </div>
 
         <div class="row">
             <div class="col-md-2 negrilla">
                 Descripción:
             </div>
+
             <div class="col-md-3 negrilla">
-                <textArea style='height:80px;width: 700px;resize: none' maxlength="255" name="descripcion"
+                <textArea style="height:80px;width: 700px;resize: none" maxlength="255" name="descripcion"
                           id="descripcion" title="La descripción de la transacción contable"
-                          class="form-control required cmbRequired required" ${registro?'disabled':''} >
+                          class="form-control" ${registro ? 'readonly' : ''}>
                     ${proceso?.descripcion}</textArea>
             </div>
         </div>
@@ -241,44 +253,57 @@
             <div class="col-md-2 negrilla">
                 Libretín de Facturas/Retenciones:
             </div>
+
             <div class="col-md-3 negrilla">
                 Selecciona el libretín y fija el secuencial a utilizarse
             </div>
         </div>
     </div>
+
     <div class="vertical-container" style="margin-top: 25px;color: black;padding-bottom: 10px;">
         <p class="css-vertical-text">Valores</p>
+
         <div class="linea"></div>
+
         <div id="divValores"></div>
     </div>
 
 </g:form>
 <g:if test="${proceso}">
-    <div class="vertical-container" skip="1" style="margin-top: 25px;color: black;min-height: 500px;margin-bottom: 20px">
+    <div class="vertical-container" skip="1"
+         style="margin-top: 25px;color: black;min-height: 500px;margin-bottom: 20px">
         <p class="css-vertical-text">Comprobante</p>
+
         <div class="linea"></div>
-        <div id="divComprobante" class="col-md-12" style="margin-bottom: 20px ;padding: 10px;display: none;margin-top: 5px;">
+
+        <div id="divComprobante" class="col-md-12"
+             style="margin-bottom: 20px ;padding: 10px;display: none;margin-top: 5px;">
         </div>
     </div>
 </g:if>
 
 
 <!-- Modal -->
-<div class="modal fade" id="modal-formas-pago" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="modal-formas-pago" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title" id="myModalLabel">Formas de pago</h4>
             </div>
+
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-2 negrilla" style="width: 140px">
                         Tipo de pago:
                     </div>
-                    <div class="col-md-6 negrilla" style="margin-left: -20px" >
-                        <g:select name="tipoPago.id" id="comboFP" class=" form-control" from="${cratos.TipoPago.list()}" label="Tipo de pago: " optionKey="id"  optionValue="descripcion" />
+
+                    <div class="col-md-6 negrilla" style="margin-left: -20px">
+                        <g:select name="tipoPago.id" id="comboFP" class=" form-control" from="${cratos.TipoPago.list()}"
+                                  label="Tipo de pago: " optionKey="id" optionValue="descripcion"/>
                     </div>
+
                     <div class="col-md-1 negrilla" style="width: 140px">
                         <g:if test="${!registro}">
                             <a href="#" id="agregarFP" class="btn btn-azul">
@@ -288,9 +313,12 @@
                         </g:if>
                     </div>
                 </div>
-                <div class="ui-corner-all" style="height: 170px;border: 1px solid #000000;width: 100%;margin-left: 5px;margin-top: 20px" id="detalle-fp">
+
+                <div class="ui-corner-all"
+                     style="height: 170px;border: 1px solid #000000;width: 100%;margin-left: 5px;margin-top: 20px"
+                     id="detalle-fp">
                     <g:each in="${fps}" var="f">
-                        <div class="filaFP ui-corner-all fp-${f.tipoPago.id}" fp="${f.tipoPago.id}" >
+                        <div class="filaFP ui-corner-all fp-${f.tipoPago.id}" fp="${f.tipoPago.id}">
                             <g:if test="${!registro}">
                                 <span class='span-eliminar ui-corner-all' title='Click para eliminar'>Eliminar</span>
                             </g:if>
@@ -300,21 +328,25 @@
                 </div>
 
             </div>
+
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" data-dismiss="modal" id="btnCerrarPagos"><i class="fa fa-save"></i> Cerrar y continuar</button>
+                <button type="button" class="btn btn-success" data-dismiss="modal" id="btnCerrarPagos"><i
+                        class="fa fa-save"></i> Cerrar y continuar</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
 <!-- Modal -->
-<div class="modal fade" id="modal-proveedor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="modal-proveedor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel-proveedor">Proveedor</h4>
+                <h4 class="modal-title" id="myModalLabel-proveedor">Seleccione el Proveedor</h4>
             </div>
+
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-2 negrilla" style="width: 140px">
@@ -323,20 +355,28 @@
                             <option value="2">Nombre</option>
                         </select>
                     </div>
-                    <div class="col-md-5 negrilla" style="margin-left: -20px" >
+
+                    <div class="col-md-5 negrilla" style="margin-left: -20px">
                         <input type="text" id="parametro" class="form-control" style="margin-right: 10px;">
                     </div>
+
                     <div class="col-md-1 negrilla" style="width: 140px">
                         <a href="#" id="buscar" class="btn btn-azul">
                             <i class="fa fa-search"></i>
                             Buscar
                         </a>
                     </div>
+
                 </div>
-                <div class="ui-corner-all" style="height: 400px;border: 1px solid #000000; width: 100%;margin-left: 0px;margin-top: 20px;overflow-y: auto" id="resultados"></div>
+
+                <div class="ui-corner-all"
+                     style="height: 400px;border: 1px solid #000000; width: 100%;margin-left: 0px;margin-top: 20px;overflow-y: auto"
+                     id="resultados"></div>
             </div>
+
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-times"></i> Cerrar</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-times"></i> Cerrar
+                </button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
@@ -348,100 +388,170 @@
 
 
     cargarTipo($(".tipoProcesoSel option:selected").val());
-//    cargarBotonGuardar($(".tipoProcesoSel option:selected").val());
+    //    cargarBotonGuardar($(".tipoProcesoSel option:selected").val());
     cargarBotonBuscar($(".tipoProcesoSel option:selected").val());
     <g:if test="${proceso?.id && (proceso?.tipoProceso == 'P' || proceso?.tipoProceso == 'N')}">
-        cargarComPago();
+    cargarComPago();
     </g:if>
-    cargarProveedor($(".tipoProcesoSel option:selected").val());
+//    cargarProveedor($(".tipoProcesoSel option:selected").val());
     cargarComprobante('${proceso?.id}');
+
+    $(document).ready(function () {
+        var tipo = $(".tipoProcesoSel option:selected").val();
+        var prve = $("#prve__id").val();
+        console.log("prve__id:", prve);
+        $("#tipoProceso").change();
+        if(tipo == 'C') {
+            $("#sustento").change();
+        }
+        if(prve && (tipo =='C' || tipo == 'V')) {
+            cargarProveedor(tipo);
+            console.log("buscar prve");
+        }
+    });
 
     $("#tipoProceso").change(function () {
         var tipo = $(".tipoProcesoSel option:selected").val();
+        console.log('tipo:', tipo);
+/*
+        if (tipo == 'C') {
+            $("#divSustento").show();
+        } else {
+            $("#divSustento").hide();
+        }
+*/
 
         $("#listaErrores").html('');
         $("#divErrores").hide();
 
-        if(tipo == 'N' || tipo == 'P'){
+        if (tipo == 'N' || tipo == 'P') {
             cargarComPago()
-        }else{
+        } else {
             $("#divFilaComprobante").html('')
         }
+
         cargarTipo(tipo);
-//        cargarBotonGuardar(tipo);
         cargarBotonBuscar(tipo);
 
-        if(tipo != '-1'){
+        if (tipo == 'C' || tipo == 'V' || tipo == 'P' || tipo == 'N') {
             cargarProveedor(tipo);
-        }else{
+        } else {
             $("#divFilaComprobante").html('');
-            $("#divCargaProveedor").html('');
         }
     });
 
-    function  cargarProveedor (tipo) {
-        if(tipo != '-1'){
+/*
+    $("#sustento").click(function () {
+        console.log("clic en sustento")
+        var prve = $("#prve__id").val();
+        if(!prve) {
+            $("#btn_buscar").click()
+        }
+    });
+*/
+
+    function cargarSstr(prve) {
+        var tptr = $(".tipoProcesoSel option:selected").val();
+
+        $.ajax({
+            type: 'POST',
+            url: "${createLink(controller: 'proceso', action: 'cargaSstr')}",
+            data: {
+                tptr: tptr,
+                prve: prve
+            },
+            success: function (msg) {
+                $("#divSustento").html(msg)
+            }
+        });
+    };
+
+/*
+    $("#sustento").change(function () {
+        var tptr = $(".tipoProcesoSel option:selected").val();
+        var sstr = $(".sustentoSri option:selected").val();
+        var prve = $("#prve__id").val();
+
+        console.log("cambia sustento")
+        $.ajax({
+            type: 'POST',
+            url: "${createLink(controller: 'proceso', action: 'cargaTcsr')}",
+            data: {
+                tptr: tptr,
+                prve: prve,
+                sstr: sstr
+            },
+            success: function (msg) {
+                $("#divComprobanteSustento").html(msg)
+            }
+        });
+    });
+*/
+
+    function cargarProveedor(tipo) {
+        if (tipo != '-1') {
             $.ajax({
                 type: 'POST',
                 url: "${createLink(controller: 'proceso', action: 'proveedor_ajax')}",
-                data:{
+                data: {
                     proceso: '${proceso?.id}',
-                    tipo: tipo
+                    tipo: tipo,
+                    id: $("#prve__id").val()
                 },
                 success: function (msg) {
                     $("#divCargaProveedor").html(msg)
                 }
             });
-        }else{
+        } else {
             $("#divCargaProveedor").html('')
         }
     }
 
-    function cargarComPago(){
+    function cargarComPago() {
         var idComprobante = $("#comprobanteSel").val();
-        var idProveedor = $("#prov_id").val();
+        var idProveedor = $("#prve_id").val();
         $.ajax({
-            type:'POST',
+            type: 'POST',
             async: 'true',
             url: "${createLink(controller: 'proceso', action: 'filaComprobante_ajax')}",
-            data:{
+            data: {
                 proceso: '${proceso?.id}',
                 proveedor: idProveedor,
-                comprobante : idComprobante
+                comprobante: idComprobante
             },
-            success: function (msg){
+            success: function (msg) {
                 $("#divFilaComprobante").html(msg)
             }
         });
     }
 
-/*
-    function cargarBotonGuardar (tipo) {
-        if(tipo == '-1'){
-            $("#guardarProceso").addClass('hidden')
-        }else{
-            $("#guardarProceso").removeClass('hidden')
-        }
-    }
-*/
+    /*
+     function cargarBotonGuardar (tipo) {
+     if(tipo == '-1'){
+     $("#guardarProceso").addClass('hidden')
+     }else{
+     $("#guardarProceso").removeClass('hidden')
+     }
+     }
+     */
 
-    function cargarBotonBuscar (tipo) {
-        if(tipo != '-1'){
+    function cargarBotonBuscar(tipo) {
+        if (tipo != '-1') {
             $("#btn_buscar").removeClass('hidden')
-        }else{
+        } else {
             $("#btn_buscar").addClass('hidden')
         }
     }
 
-    function cargarTipo (tipo) {
+    function cargarTipo(tipo) {
         $.ajax({
-            type:'POST',
+            type: 'POST',
             url: "${createLink(controller: 'proceso', action: 'valores_ajax')}",
-            data:{
+            data: {
                 proceso: '${proceso?.id}',
                 tipo: tipo
             },
-            success: function (msg){
+            success: function (msg) {
                 $("#divValores").html(msg)
             }
         });
@@ -450,29 +560,29 @@
     jQuery.fn.svtContainer = function () {
 
         var title = this.find(".css-vertical-text")
-        title.css({"cursor":"pointer"})
-        title.attr("title","Minimizar")
-        var fa=$("<i class='fa fa-arrow-left fa-fw' style='font-size: 20px !important;'></i>")
-        var texto=$("<span class='texto' style='display: none;margin-left: 10px;color:#0088CC'> (Clic aquí para expandir)</span>")
+        title.css({"cursor": "pointer"})
+        title.attr("title", "Minimizar")
+        var fa = $("<i class='fa fa-arrow-left fa-fw' style='font-size: 20px !important;'></i>")
+        var texto = $("<span class='texto' style='display: none;margin-left: 10px;color:#0088CC'> (Clic aquí para expandir)</span>")
         title.addClass("open")
         title.prepend(fa)
         title.append(texto)
-        title.bind("click",function(){
-            if($(this).parent().attr("skip")!="1"){
-                if($(this).hasClass("open")){
+        title.bind("click", function () {
+            if ($(this).parent().attr("skip") != "1") {
+                if ($(this).hasClass("open")) {
                     $(this).parent().find(".row").hide("blind")
                     $(this).removeClass("open");
                     $(this).addClass("closed")
                     $(this).removeClass("css-vertical-text")
                     $(this).find(".texto").show()
-                    setTimeout('$(this).parent().css({"height":"30px"});',30)
-                }else{
-                    $(this).parent().css({"height":"auto"});
+                    setTimeout('$(this).parent().css({"height":"30px"});', 30)
+                } else {
+                    $(this).parent().css({"height": "auto"});
                     $(this).parent().find(".row").show("slide")
                     $(this).removeClass("closed");
                     $(this).addClass("open")
                     $(this).addClass("css-vertical-text")
-                    $(this).attr("title","Maximizar")
+                    $(this).attr("title", "Maximizar")
                     $(this).find(".texto").hide()
                 }
             }
@@ -493,37 +603,49 @@
         $(".css-vertical-text").click()
         </g:if>
 
-        $("#btn-br-prcs").click(function(){
+        $("#btn-br-prcs").click(function () {
             bootbox.confirm("Está seguro? si esta transacción tiene un comprobante, este será anulado. " +
-                    "Esta acción es irreversible",function(result){
-                if(result){
+                    "Esta acción es irreversible", function (result) {
+                if (result) {
                     $(".br_prcs").submit()
                 }
             })
         });
 
-        $("#tipoProceso").change(function(){
-            if($(this).val()=="A"){
+        $("#tipoProceso").change(function () {
+            if ($(this).val() == "A") {
                 bootbox.alert('Para realizar un ajuste, ponga el valor total dentro del campo "Base imponible no aplica IVA" y asegurese de seleccionar el gestor contable correcto')
-                $("#iva0").val("0.00").attr("disabled",true)
-                $("#iva12").val("0.00").attr("disabled",true)
-                $("#ivaGenerado").val("0.00").attr("disabled",true)
-                $("#iceGenerado").val("0.00").attr("disabled",true)
-            }else{
-                $("#iva0").attr("disabled",false)
-                $("#iva12").attr("disabled",false)
-                $("#ivaGenerado").attr("disabled",false)
-                $("#iceGenerado").attr("disabled",false)
+                $("#iva0").val("0.00").attr("disabled", true)
+                $("#iva12").val("0.00").attr("disabled", true)
+                $("#ivaGenerado").val("0.00").attr("disabled", true)
+                $("#iceGenerado").val("0.00").attr("disabled", true)
+            } else {
+                $("#iva0").attr("disabled", false)
+                $("#iva12").attr("disabled", false)
+                $("#ivaGenerado").attr("disabled", false)
+                $("#iceGenerado").attr("disabled", false)
             }
+            $("#divSustento").html('');
+            $("#divComprobanteSustento").html('');
+            $("#divCargaProveedor").html('');
         })
 
-        $("#abrir-fp").click(function(){
+
+        $("#abrir-fp").click(function () {
             $('#modal-formas-pago').modal('show')
         })
 
-        $("#btn_buscar").click(function(){
+        $("#btn_buscar").click(function () {
+            console.log("clickf1")
             $('#modal-proveedor').modal('show')
         });
+
+        $("#prve").dblclick(function(){
+            console.log("clickfff")
+            $("#btn_buscar").click()
+        });
+
+
 
 
 //        $("#agregarFP").click(function(){
@@ -558,51 +680,51 @@
             $(this).parent().remove()
         })
 
-        $("#guardarProceso").click(function() {
-            var bandData=true
-            var error=""
-            var info=""
+        $("#guardarProceso").click(function () {
+            var bandData = true
+            var error = ""
+            var info = ""
             var tipoP = $(".tipoProcesoSel option:selected").val();
 
-            console.log("guardar con tipoP:", tipoP);
+            console.log("fecha: ",$("#fecha_input").val().length);
 
-            if($("#tipoProceso").val()=="-1") {
+            if ($("#tipoProceso").val() == "-1") {
                 error += "<li>Seleccione el tipo de la transacción</li>"
             } else {
-                if(tipoP == 'P' || tipoP == 'N'){
+                if (tipoP != 'A') {
 
                     $("#listaErrores").html('');
                     $("#divErrores").hide();
 
-                    if($("#fecha").val().length<10){
-                        error+="<li>Seleccione la fecha del comprobante</li>"
+                    if ($("#fecha_input").val().length < 10) {
+                        error += "<li>Seleccione la fecha del comprobante</li>"
                     }
-                    if($("#fecharegsitro").val().length<10){
-                        error+="<li>Seleccione la fecha de registro</li>"
+                    if ($("#fecharegistro_input").val().length < 10) {
+                        error += "<li>Seleccione la fecha de registro</li>"
                     }
-                    if($("#descripcion").val().length<1){
-                        error+="<li>Llene el campo Descripción</li>"
-                    }
-
-                    if($("#prov").val()== "" || $("#prov").val()== null){
-                        error+="<li>Seleccione el proveedor</li>"
+                    if ($("#descripcion").val().length < 1) {
+                        error += "<li>Llene el campo Descripción</li>"
                     }
 
-                    if($("#comprobanteDesc").val() == '' || $("#comprobanteDesc").val() == null){
-                        error+="<li>Seleccione un comprobante</li>"
+                    if ($("#prve").val() == "" || $("#prve").val() == null) {
+                        error += "<li>Seleccione el proveedor</li>"
                     }
 
-                    if($("#valorPago").val() == 0 || $("#valorPago").val() == null){
-                        error+="<li>Ingrese un valor</li>"
+                    if ($("#tipoComprobante").val() == '' || $("#tipoComprobante").val() == null) {
+                        error += "<li>Seleccione un comprobante</li>"
                     }
 
-                    if(tipoP == 'P'){
+                    if ($("#iva12").val() == 0 && $("#iva0").val() == 0 && $("#noIva").val() == 0 ) {
+                        error += "<li>Ingrese valores en la base imponible</li>"
+                    }
+
+                    if (tipoP == 'P') {
 
                         console.log("pago " + parseFloat($("#valorPago").val()))
                         console.log("saldo " + parseFloat($("#comprobanteSaldo1").val()))
 
-                        if( parseFloat($("#valorPago").val()) > parseFloat($("#comprobanteSaldo").val())){
-                            error+="<li>El valor ingresado es mayor al saldo del comprobante a pagar!</li>";
+                        if (parseFloat($("#valorPago").val()) > parseFloat($("#comprobanteSaldo").val())) {
+                            error += "<li>El valor ingresado es mayor al saldo del comprobante a pagar!</li>";
 
                             $("#valorPago").removeClass('required');
                             $("#valorPago").addClass('colorRojo');
@@ -610,76 +732,76 @@
                     }
                 } else {
                     $("#listaErrores").html("")
-                    if($("#fecha").val().length<10){
-                        error+="<li>Seleccione la fecha de registro</li>"
+                    if ($("#fecha").val().length < 10) {
+                        error += "<li>Seleccione la fecha de emisión</li>"
                     }
-                    if($("#descripcion").val().length<1){
-                        error+="<li>Llene el campo Descripción</li>"
+                    if ($("#descripcion").val().length < 1) {
+                        error += "<li>Llene el campo Descripción</li>"
                     }
-                    if($("#tipoProceso").val()=="-1"){
-                        error+="<li>Seleccione el tipo de la transacción</li>"
-                    }else{
-                        if($("#tipoProceso").val()=="C" || $("#tipoProceso").val()=="V" ){
+                    if ($("#tipoProceso").val() == "-1") {
+                        error += "<li>Seleccione el tipo de la transacción</li>"
+                    } else {
+                        if ($("#tipoProceso").val() == "C" || $("#tipoProceso").val() == "V") {
 
-                            if($("#sustento").val()=="-1"){
-                                error+="<li>Seleccione un sustento tributario (Necesario si el tipo de transacción es Compras o Ventas)</li>"
+                            if ($("#sustento").val() == "-1") {
+                                error += "<li>Seleccione un sustento tributario (Necesario si el tipo de transacción es Compras o Ventas)</li>"
                             }
-                            if($("#tipoComprobante").val()=="-1"){
-                                error+="<li>Seleccione el tipo de documento a registrar (Necesario si el tipo de transacción es Compras o Ventas)</li>"
-                            }else{
-                                if($("#establecimiento").val().length<3){
-                                    error+="<li>Ingrese el número de establecimiento del documento (Primera parte del campo documento) </li>"
+                            if ($("#tipoComprobante").val() == "-1") {
+                                error += "<li>Seleccione el tipo de comprobante a registrar (Necesario si el tipo de transacción es Compras o Ventas)</li>"
+                            } else {
+                                if ($("#establecimiento").val().length < 3) {
+                                    error += "<li>Ingrese el número de establecimiento del documento (Primera parte del campo documento) </li>"
                                 }
-                                if($("#emision").val().length<3){
-                                    error+="<li>Ingrese el número de emisión del documento (Segunda parte del campo documento)</li>"
+                                if ($("#emision").val().length < 3) {
+                                    error += "<li>Ingrese el número de emisión del documento (Segunda parte del campo documento)</li>"
                                 }
-                                if($("#secuencial").val().length<1){
-                                    error+="<li>Ingrese el número de secuencia del documento (Tercera parte del campo documento)</li>"
+                                if ($("#secuencial").val().length < 1) {
+                                    error += "<li>Ingrese el número de secuencia del documento (Tercera parte del campo documento)</li>"
                                 }
                             }
                         }
                     }
-                    var iva0=$("#iva0").val()
-                    var iva12=$("#iva12").val()
-                    var noIva=$("#noIva").val()
-                    if(isNaN(iva12)){
-                        iva12=-1
+                    var iva0 = $("#iva0").val()
+                    var iva12 = $("#iva12").val()
+                    var noIva = $("#noIva").val()
+                    if (isNaN(iva12)) {
+                        iva12 = -1
                     }
-                    if(isNaN(noIva)){
-                        noIva=-1
+                    if (isNaN(noIva)) {
+                        noIva = -1
                     }
-                    if(isNaN(iva0)){
-                        iva0=-1
+                    if (isNaN(iva0)) {
+                        iva0 = -1
                     }
-                    if(iva12*1<0 ){
-                        error+="<li>La base imponible iva ${iva}% debe ser un número positivo</li>"
+                    if (iva12 * 1 < 0) {
+                        error += "<li>La base imponible iva ${iva}% debe ser un número positivo</li>"
                     }
-                    if(iva0*1<0 ){
-                        error+="<li>La base imponible iva 0% debe ser un número positivo</li>"
+                    if (iva0 * 1 < 0) {
+                        error += "<li>La base imponible iva 0% debe ser un número positivo</li>"
                     }
-                    if(noIva*1<0 ){
-                        error+="<li>La base imponible no aplica iva debe ser un número positivo</li>"
+                    if (noIva * 1 < 0) {
+                        error += "<li>La base imponible no aplica iva debe ser un número positivo</li>"
                     }
-                    var base=iva0*1+iva12*1+noIva*1
-                    if(base<=0){
-                        error+="<li>La suma de las bases imponibles no puede ser cero</li>"
-                    }else{
-                        var impIva=$("#ivaGenerado").val()
-                        var impIce=$("#iceGenerado").val()
-                        if(isNaN(impIva)){
-                            impIva=-1
+                    var base = iva0 * 1 + iva12 * 1 + noIva * 1
+                    if (base <= 0) {
+                        error += "<li>La suma de las bases imponibles no puede ser cero</li>"
+                    } else {
+                        var impIva = $("#ivaGenerado").val()
+                        var impIce = $("#iceGenerado").val()
+                        if (isNaN(impIva)) {
+                            impIva = -1
                         }
-                        if(isNaN(impIce)){
-                            impIce=-1
+                        if (isNaN(impIce)) {
+                            impIce = -1
                         }
-                        if(impIva*1>0 && iva12*1<=0){
-                            error+="<li>No se puede generar IVA si la base imponible iva ${iva}% es cero</li>"
+                        if (impIva * 1 > 0 && iva12 * 1 <= 0) {
+                            error += "<li>No se puede generar IVA si la base imponible iva ${iva}% es cero</li>"
                         }
-                        if(impIce*1*impIva*1<0){
-                            error+="<li>Los impuestos generados no pueden ser negativos</li>"
-                        }else{
-                            if((impIce*1+impIva*1)>base){
-                                error+="<li>Los impuestos generados no pueden ser superiores a la suma de las bases imponibles</li>"
+                        if (impIce * 1 * impIva * 1 < 0) {
+                            error += "<li>Los impuestos generados no pueden ser negativos</li>"
+                        } else {
+                            if ((impIce * 1 + impIva * 1) > base) {
+                                error += "<li>Los impuestos generados no pueden ser superiores a la suma de las bases imponibles</li>"
                             }
                         }
                     }
@@ -687,10 +809,10 @@
 //                info+="No ha asignado formas de pago para la transacción contable"
 //                bandData=false
 //            }
-                    if(bandData){
-                        var data =""
-                        $(".filaFP").each(function(){
-                            data+=$(this).attr("fp")+";"
+                    if (bandData) {
+                        var data = ""
+                        $(".filaFP").each(function () {
+                            data += $(this).attr("fp") + ";"
 
                         })
                         $("#data").val(data)
@@ -700,22 +822,22 @@
             }
 
 
-            if(error!=""){
+            if (error != "") {
 
                 $("#listaErrores").append(error)
                 $("#listaErrores").show()
                 $("#divErrores").show()
-            }else{
-                if(info!=""){
-                    info+=" Esta seguro de continuar?"
-                    bootbox.confirm(info,function(result){
+            } else {
+                if (info != "") {
+                    info += " Esta seguro de continuar?"
+                    bootbox.confirm(info, function (result) {
 
-                        if(result){
+                        if (result) {
 
                             $(".frmProceso").submit();
                         }
                     })
-                }else{
+                } else {
                     openLoader("Guardando..");
                     $(".frmProceso").submit();
                     closeLoader()
@@ -732,39 +854,44 @@
         });
 
         $(".number").blur(function () {
-            if(isNaN($(this).val()))
+            if (isNaN($(this).val()))
                 $(this).val("0.00")
-            if($(this).val()=="")
+            if ($(this).val() == "")
                 $(this).val("0.00")
         });
 
         $("#buscar").click(function () {
             var tipo = $(".tipoProcesoSel option:selected").val();
             $.ajax({
-                type    : "POST",
-                url     : "${g.createLink(controller: 'proceso',action: 'buscarProveedor')}",
-                data    : "par=" + $("#parametro").val() + "&tipo=" + $("#tipoPar").val() + "&tipoProceso=" + tipo,
-                success : function (msg) {
+                type: "POST",
+                url: "${g.createLink(controller: 'proceso',action: 'buscarProveedor')}",
+                data: "par=" + $("#parametro").val() + "&tipo=" + $("#tipoPar").val() + "&tipoProceso=" + tipo,
+                success: function (msg) {
                     $("#resultados").html(msg).show("slide")
                 }
             });
+        });
 
+        $("#parametro").keyup(function (ev) {
+            if (ev.keyCode == 13) {
+                $("#buscar").click();
+            }
         });
 
         $("#registrarProceso").click(function () {
-            bootbox.confirm("<i class='fa fa-exclamation-circle fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea registrar el proceso contable? </br> Una vez registrado, la información NO podrá ser cambiada.</p>", function(result){
-                if(result){
+            bootbox.confirm("<i class='fa fa-exclamation-circle fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea registrar el proceso contable? </br> Una vez registrado, la información NO podrá ser cambiada.</p>", function (result) {
+                if (result) {
                     openLoader("Registrando...");
                     $.ajax({
-                        type    : "POST",
-                        url     : "${g.createLink(controller: 'proceso',action: 'registrar')}",
-                        data    : "id=" + $("#idProceso").val(),
-                        success : function (msg) {
+                        type: "POST",
+                        url: "${g.createLink(controller: 'proceso',action: 'registrar')}",
+                        data: "id=" + $("#idProceso").val(),
+                        success: function (msg) {
                             // $("#registro").html(msg).show("slide");
                             closeLoader()
                             location.reload(true);
                         },
-                        error   : function () {
+                        error: function () {
                             bootbox.alert("Ha ocurrido un error. Por favor revise el gestor y los valores del proceso.")
                         }
                     });
@@ -774,11 +901,11 @@
         });
     });
 
-    function cargarComprobante (proceso) {
+    function cargarComprobante(proceso) {
         $.ajax({
-            type:'POST',
-            url:"${createLink(controller: 'proceso',action: 'comprobante_ajax')}",
-            data:{
+            type: 'POST',
+            url: "${createLink(controller: 'proceso',action: 'comprobante_ajax')}",
+            data: {
                 proceso: proceso
             },
             success: function (msg) {

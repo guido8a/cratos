@@ -198,11 +198,11 @@
                     <th style="width: 100px" class="letraP">% B. Imponible</th>
                     <th style="width: 100px" class="letraP">% B.I. Sin IVA</th>
                     <th style="width: 80px" class="letraP">Impuestos</th>
-                    <th style="width: 80px" class="letraP">Valor</th>
+                    <th style="width: 80px" class="letraP">ICE</th>
                     <th style="width: 100px" class="letraP">% B. Imponible</th>
                     <th style="width: 100px" class="letraP">% B.I. Sin IVA</th>
                     <th style="width: 80px" class="letraP">Impuestos</th>
-                    <th style="width: 80px" class="letraP">Valor</th>
+                    <th style="width: 80px" class="letraP">ICE</th>
                     <th style="width: 70px" class="letraP"><i class="fa fa-pencil"></i></th>
                 </tr>
                 </thead>

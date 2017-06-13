@@ -234,7 +234,7 @@
                             Balance general con auxiliares, o Estado de situación financiera
                         </li>
 
-                        %{--<li text="fact">--}%
+                        %{--<li text="factura">--}%
 
                         %{--<g:link controller="reportes" action="reporteFacturacion" file="Reporte_Ventas_Facturacion.pdf" class="link" dialog="dlgVentasFacturacion">--}%
 

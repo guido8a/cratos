@@ -27,11 +27,16 @@
 
 <script type="text/javascript">
     $(".btn_bsc").click(function(){
-        $("#prov").val($(this).attr("ruc"))
-        $("#prov_nombre").val($(this).attr("nombre"))
-        $("#prov_id").val($(this).attr("id"))
+        $("#prve").val($(this).attr("ruc"))
+        $("#prve_nombre").val($(this).attr("nombre"))
+        $("#prve_id").val($(this).attr("id"))
+        $("#prve__id").val($(this).attr("id"))
+//        console.log("pone valores ok", $("#prve__id").val())
+
         $('#modal-proveedor').modal('hide')
         $("#btnBuscarCom").removeClass('hidden')
+
+        cargarSstr($(this).attr("id"))
 
     });
 </script>

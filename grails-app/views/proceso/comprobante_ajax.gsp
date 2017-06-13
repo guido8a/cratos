@@ -1,11 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: gato
-  Date: 11/05/17
-  Time: 11:30
---%>
-
-
 <style type="text/css">
 
 .tab-pane {

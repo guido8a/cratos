@@ -282,7 +282,7 @@ class FacturaController extends cratos.seguridad.Shield {
             proceso.documento=facturaInstance.facturaSerie01+""+facturaInstance.facturaSerie02+""+facturaInstance.secuencial
             proceso.valor = facturaInstance.subtotal
             proceso.impuesto = facturaInstance.iva
-            proceso.fact=facturaInstance
+            proceso.factura=facturaInstance
 
 
             if (proceso.save(flush: true)) {
