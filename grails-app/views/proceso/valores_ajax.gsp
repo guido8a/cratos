@@ -64,15 +64,17 @@
             Autorización:
         </div>
         <div class="col-md-2 negrilla">
-            <input type="text" name="facturaAutorizacion" id="autorizacion" size="10" maxlength="15" value="${proceso?.facturaAutorizacion}" class=" digits form-control label-shared validacionNumero" validate=" number"
+            <input type="text" name="facturaAutorizacion" id="facturaAutorizacion" size="10" maxlength="15"
+                   value="${proceso?.facturaAutorizacion}" class=" digits form-control label-shared validacionNumero" validate=" number"
                    title="El número autorización de la factura a registrar " ${registro?'disabled':''} />
         </div>
         <div class="col-md-2 negrilla" style="width: 120px;margin-left: -30px">
             Forma de pago  (emitir factura):
         </div>
         <div class="col-md-1 negrilla">
-            <input type="text" name="facturaAutorizacion" id="auto" size="10" maxlength="15" value="${proceso?.facturaAutorizacion}" class=" digits form-control label-shared validacionNumero" validate=" number"
-                   title="El número autorización de la factura a registrar " ${registro?'disabled':''} />
+            <input type="text" name="formaPago" id="formaPago" size="10" maxlength="15"
+                   class=" digits form-control label-shared validacionNumero" validate=" number"
+                   title="El número autorización de la factura a registrar " />
         </div>
     </div>
 

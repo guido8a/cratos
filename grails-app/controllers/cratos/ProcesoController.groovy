@@ -40,7 +40,6 @@ class ProcesoController extends cratos.seguridad.Shield {
         if (params.id) {
             def proceso = Proceso.get(params.id)
             def registro = (Comprobante.findAllByProceso(proceso)?.size() == 0) ? false : true
-            //println "registro " + registro
             render(view: "procesoForm", model: [proceso: proceso, registro: registro, tiposProceso: tiposProceso])
         } else
             render(view: "procesoForm", model: [registro: false, tiposProceso: tiposProceso])
@@ -66,31 +65,31 @@ class ProcesoController extends cratos.seguridad.Shield {
             tipoTran = TipoTransaccion.get(tptr)  //????
         }
 
-        def cmpr = TipoCmprTransaccion.get(params."sustentoTributario.id")  //????
-        def sustento = TipoCmprSustento.get(params."sustentoTributario.id")
+        def cmpr = TipoCmprTransaccion.get(params."tipoComprobanteSri.id")  //????
+        def sustento = TipoCmprSustento.get(params.tipoCmprSustento)
 
         def proveedor = Proveedor.get(params."proveedor.id")
         def gestor = Gestor.get(params."gestor.id")
-        def tipoPago
         def fechaRegistro = new Date().parse("dd-MM-yyyy", params.fecha_input)   //fecha del cmpr
         def fechaIngresoSistema = new Date().parse("dd-MM-yyyy",params.fecharegistro_input)   //registro
 
         if(params.id){
             proceso = Proceso.get(params.id)
             params.tipoProceso = proceso.tipoProceso
-        }else{
+        } else {
             proceso = new Proceso()
             proceso.estado = "N"
             proceso.gestor = gestor
-            proceso.contabilidad = session.contabilidad
-            proceso.empresa = session.empresa
-            proceso.tipoTransaccion = tipoTran
+            proceso.contabilidad = Contabilidad.get(session.contabilidad.id)
+            proceso.empresa = Empresa.get(session.empresa.id)
+//            proceso.tipoTransaccion = tipoTran
         }
 
         proceso.proveedor = proveedor
         println "...1"
         proceso.tipoCmprSustento = sustento
         proceso.tipoCmprTransaccion = TipoCmprTransaccion.get(params.sustento)
+
         proceso.fechaRegistro = fechaRegistro
         proceso.fechaIngresoSistema = fechaIngresoSistema
         proceso.descripcion = params.descripcion
@@ -98,6 +97,25 @@ class ProcesoController extends cratos.seguridad.Shield {
         proceso.tipoProceso = params.tipoProceso
         println "...2"
 
+        if(params.tipoProceso == 'C') {
+            proceso.valor = params.baseImponibleIva0.toDouble() + params.baseImponibleIva.toDouble() +
+                    params.baseImponibleNoIva.toDouble()
+            proceso.impuesto = params.ivaGenerado.toDouble() + params.iceGenerado.toDouble()
+            proceso.baseImponibleIva = params.baseImponibleIva.toDouble()
+            proceso.baseImponibleIva0 = params.baseImponibleIva0.toDouble()
+            proceso.baseImponibleNoIva = params.baseImponibleNoIva.toDouble()
+            proceso.ivaGenerado = params.ivaGenerado.toDouble()
+            proceso.iceGenerado = params.iceGenerado.toDouble()
+            proceso.documento = params.facturaEstablecimiento + "-" + params.facturaPuntoEmision + "-" + params.facturaSecuencial
+            println "documento: ${proceso.factura}"
+            proceso.facturaEstablecimiento = params.facturaEstablecimiento
+            proceso.facturaPuntoEmision = params.facturaPuntoEmision
+            proceso.facturaSecuencial = params.facturaSecuencial
+            proceso.facturaAutorizacion = params.facturaAutorizacion
+            println "...4"
+        }
+
+/*
         if(params.tipoProceso == 'P') {
             comprobante = Comprobante.get(params.comprobanteSel_name)
             proceso.comprobante = comprobante
@@ -119,6 +137,7 @@ class ProcesoController extends cratos.seguridad.Shield {
                 proceso.ivaGenerado = params.ivaGenerado.toDouble()
                 proceso.iceGenerado = params.iceGenerado.toDouble()
                 proceso.documento = params.facturaEstablecimiento + "-" + params.facturaPuntoEmision + "-" + params.facturaSecuencial
+                println "documento: ${proceso.factura}"
                 proceso.facturaEstablecimiento = params.facturaEstablecimiento
                 proceso.facturaPuntoEmision = params.facturaPuntoEmision
                 proceso.facturaSecuencial = params.facturaSecuencial
@@ -126,17 +145,22 @@ class ProcesoController extends cratos.seguridad.Shield {
                 println "...4"
             }
         }
+*/
 
-        println "<<<<< ${proceso.tipoTransaccion}, ${proceso.tipoCmprSustento}, ${proceso.tipoCmprTransaccion}"
+        println "<<<<< gestor: ${proceso.gestor?.id}, cont: ${proceso.contabilidad?.id}, empr: ${proceso.empresa?.id}, " +
+                "proveedor: ${proceso.proveedor?.id}, cmpr: ${proceso.comprobante?.id}, usro: ${proceso.usuario}"
+        println "tptr: ${proceso.tipoTransaccion}, tpss: ${proceso.tipoCmprSustento}, tpcp: ${proceso.tipoCmprTransaccion}"
+        println "tpps: ${proceso.tipoProceso}, fcha: ${proceso.fecha}, fcig: ${proceso.fechaIngresoSistema}"
+        println "fcrg: ${proceso.fechaRegistro}, fcem: ${proceso.fechaEmision}"
         try {
-            println "...4: $proceso"
+            println "...5: $proceso"
             proceso.save(flush: true)
-            println "...5"
+            println "...6"
             proceso.refresh()
             redirect(action: 'show', id: proceso.id)
-            println "...6 proceso: ${proceso.id}"
+            println "...7 proceso: ${proceso.id}"
         } catch (e) {
-            println "...7"
+            println "...8"
             println "error al grabar el proceso $e"
         }
 
@@ -288,7 +312,7 @@ class ProcesoController extends cratos.seguridad.Shield {
 
         def data = cn.rows(sql.toString())
         cn.close()
-        [data: data]
+        [data: data, sstr: params.sstr]
     }
 
     def valorAsiento = {
@@ -519,6 +543,7 @@ class ProcesoController extends cratos.seguridad.Shield {
                 aux = true
         }
 //        println "registro "+registro
+        println "sustento: ${proceso?.tipoCmprSustento?.id}"
 
         render(view: "procesoForm", model: [proceso: proceso, registro: registro, comprobante: comprobante, tiposProceso: tiposProceso, fps: fps, registro: registro, aux: aux])
     }

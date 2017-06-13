@@ -3,10 +3,10 @@
 </div>
 
 <div class="col-md-8 negrilla">
-    <g:select class=" form-control required cmbRequired  sustentoSri" name="tipoCmprSustento.id" id="sustento"
+    <g:select class=" form-control required cmbRequired sustentoSri" name="tipoCmprSustento" id="sustento"
               from="${data}"
               title="Sustento tributario" optionKey="id" optionValue="${{it.codigo  + ' - ' + it.descripcion}}"
-               noSelection="${['-1': 'Seleccione...']}" value="${proceso?.tipoCmprSustento?.id}"/>
+               noSelection="${['-1': 'Seleccione...']}" value="${sstr}"/>
 </div>
 
 <div class="col-md-2 " style="font-size: 10px;">

@@ -2,7 +2,7 @@ package cratos.sri
 
 class TipoCmprSustento implements Serializable {
 
-    SustentoTributario sustentoTributario
+    TipoComprobanteSri tipoComprobanteSri
     static mapping = {
         table 'tcst'
         cache usage: 'read-write', include: 'non-lazy'
@@ -10,8 +10,7 @@ class TipoCmprSustento implements Serializable {
         id generator: 'identity'
         version false
         columns {
-            sustentoTributario column: 'sstr__id'
-//            tipoComprobanteSri column: 'tcsr__id'
+            tipoComprobanteSri column: 'tcsr__id'
         }
     }
     static constraints = {
@@ -19,7 +18,7 @@ class TipoCmprSustento implements Serializable {
     }
 
     String toString(){
-        "${this.sustentoTributario.codigo} ${this.sustentoTributario.descripcion}"
+        "${this.tipoComprobanteSri.codigo} ${this.tipoComprobanteSri.descripcion}"
     }
 
 }

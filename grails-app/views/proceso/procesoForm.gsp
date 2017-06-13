@@ -133,7 +133,7 @@
     <ul id="listaErrores"></ul>
 </div>
 <g:form name="procesoForm" action="save" method="post" class="frmProceso">
-    <input type="hidden" name="proveedor.id" id="prve__id">
+    <input type="hidden" name="proveedor.id" id="prve__id" value="${proceso?.proveedor?.id}">
     <div class="vertical-container" style="margin-top: 25px;color: black;padding-bottom: 10px">
         <p class="css-vertical-text">Descripción</p>
 
@@ -408,6 +408,14 @@
             cargarProveedor(tipo);
             console.log("buscar prve");
         }
+        if("${proceso.tipoCmprSustento}"){
+            console.log("proceso:", "${proceso.tipoCmprSustento.id}");
+            cargarSstr("${proceso.proveedor.id}")
+        }
+        if("${proceso.tipoCmprSustento}"){
+            console.log("proceso:", "${proceso.tipoCmprSustento.id}");
+            cargarSstr("${proceso.proveedor.id}")
+        }
     });
 
     $("#tipoProceso").change(function () {
@@ -458,7 +466,8 @@
             url: "${createLink(controller: 'proceso', action: 'cargaSstr')}",
             data: {
                 tptr: tptr,
-                prve: prve
+                prve: prve,
+                sstr: ${proceso?.tipoCmprSustento?.id}
             },
             success: function (msg) {
                 $("#divSustento").html(msg)

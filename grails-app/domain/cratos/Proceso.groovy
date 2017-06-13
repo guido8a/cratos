@@ -16,10 +16,9 @@ class Proceso implements Serializable {
     Transferencia transferencia
 
     cratos.sri.TipoTransaccion tipoTransaccion //incluir en controller
-    cratos.sri.TipoCmprTransaccion tipoCmprTransaccion
+    cratos.sri.SustentoTributario sustentoTributario
     cratos.sri.TipoCmprSustento tipoCmprSustento
 //    TipoPago tipoPago
-
 
     Date fecha
     Date fechaRegistro
@@ -80,7 +79,7 @@ class Proceso implements Serializable {
             transferencia column: 'trnf__id'
 
             tipoTransaccion column: 'tptr__id'
-            tipoCmprTransaccion column: 'tctt__id'
+            sustentoTributario column: 'sstr__id'
             tipoCmprSustento column: 'tcst__id'
 //            tipoPago column: 'tppg__id'
 
@@ -133,7 +132,7 @@ class Proceso implements Serializable {
         contabilidad(blank: true, nullable: true, attributes: [title: 'contabilidad'])
         empresa(nullable: false,blank:false)
         proveedor(blank: true, nullable: true, attributes: [title: 'proveedor'])
-        comprobante(nullable: true,blank: true)
+        comprobante(nullable: true, blank: true)
         usuario(blank: true, nullable: true, attributes: [title: 'usuario'])
 
         rolPagos(blank: true, nullable: true, attributes: [title: 'rolPagos'])
@@ -141,8 +140,8 @@ class Proceso implements Serializable {
         factura(blank: true, nullable: true, attributes: [title: 'factura'])
         transferencia(blank: true, nullable: true, attributes: [title: 'transferencia'])
 
-        tipoTransaccion(nullable: false, blank: false)
-        tipoCmprTransaccion(nullable: true, blank: true)
+        tipoTransaccion(nullable: true, blank: true)
+        sustentoTributario(nullable: true, blank: true)
         tipoCmprSustento(nullable: true, blank: true)
 //        tipoPago(blank: true, nullable: true, attributes: [title: 'tipoPago'])
 
