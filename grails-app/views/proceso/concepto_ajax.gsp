@@ -5,7 +5,7 @@
   Time: 10:51
 --%>
 
-<div class="col-md-5">
+<div class="col-md-3">
     <g:textField class="form-control" title="El porcentaje de rentención del IR" name="porcentajeIR" value="${concepto?.porcentaje}" readonly="true" style="text-align: right"/>
 </div>
 

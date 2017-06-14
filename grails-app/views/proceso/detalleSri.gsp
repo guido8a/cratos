@@ -89,7 +89,18 @@
         color: #0088cc;
     }
 
+    .colorS{
+        border-color: #ff0f24;
+    }
 
+    .soloLectura {
+        /*display: none;*/
+        pointer-events: none;
+    }
+
+    .esconder{
+        display: none;
+    }
     </style>
 </head>
 
@@ -103,23 +114,33 @@
             <i class="fa fa-chevron-left"></i> Lista de Procesos</g:link>
     </div>
     <div class="btn-group">
-        <g:link class="btn grabar btn-success btn-ajax" id="grabar"><i class="fa fa-floppy-o"></i> Guardar</g:link>
+        <a href="#" class="btn btn-success" id="btnGuardarRetencion"><i class="fa fa-floppy-o"></i> Guardar</a>
     </div>
 </div>
 
 
-<g:form name="sriForm">
+<div style="padding: 0.7em; margin-top:5px; display: none;" class="alert alert-danger ui-corner-all" id="divErroresDetalle">
+    <i class="fa fa-exclamation-triangle"> </i>
+    <span style="" id="spanError">Se encontraron los siguientes errores:</span>
+    <ul id="listaErrores"></ul>
+</div>
 
-    <div class="vertical-container vertical-container-list">
+
+
+<g:form name="sriForm">
+    <div class="vertical-container vertical-container-list ancho">
         <p class="css-vertical-text">Retención</p>
         <div class="linea"></div>
-
-        <div class="col-md-12" style="margin-bottom: 10px">
+        <div class="col-md-12" style="margin-bottom: 10px" id="divComprobanteR">
             <div class="col-md-2 negrilla">
                 Comprobante N°:
             </div>
             <div class="col-md-3">
-                <g:select name="compro" from="${libreta}" value="" class="form-control libretin" optionKey="id" optionValue="${{"Desde: " + it?.numeroDesde + ' - Hasta: ' + it?.numeroHasta + " - Autorización: " + it?.fechaAutorizacion?.format("dd-MM-yyyy")}}"/>
+                <g:select name="comprobanteSel"
+                          from="${libreta}"  value="${retencion?.documentoEmpresa}"
+                          class="form-control libretin" optionKey="id" libre="1"
+                          optionValue="${{"Desde: " + it?.numeroDesde + ' - Hasta: ' + it?.numeroHasta + " - Autorización: " + it?.fechaAutorizacion?.format("dd-MM-yyyy")}}"/>
+                <g:hiddenField name="libretinName" id="idLibre" value=""/>
             </div>
 
             <div class="col-md-7">
@@ -132,24 +153,15 @@
             </div>
         </div>
 
-        <div class="col-md-12" style="margin-bottom: 10px">
-            <div class="col-md-2 negrilla">
-                Fecha Emisión:
-            </div>
-            <div class="col-md-2">
-                <elm:datepicker name="fechaEmision" class="datepicker required form-control" value="${retencion?.fechaEmision}" />
-            </div>
-        </div>
-
-        <div class="col-md-12">
+       <div class="col-md-12">
             <div class="col-md-2 negrilla">
                 Proveedor:
             </div>
             <div class="col-md-3">
-                <input type="text" name="proveedor.ruc" class="form-control " id="prov" disabled="true" value="${proceso?.proveedor?.ruc ?: ''}" title="RUC del proveedor o cliente" style="width: 140px" placeholder="RUC"/>
+                <input type="text" name="proveedor.ruc" class="form-control " id="prov" readonly="true" value="${proceso?.proveedor?.ruc ?: ''}" title="RUC del proveedor o cliente" style="width: 150px" placeholder="RUC"/>
             </div>
             <div class="col-md-5">
-                <input type="text" name="proveedor.nombre" class="form-control  label-shared" id="prov_nombre" disabled="true" value="${proceso?.proveedor?.nombre ?: ''}" title="Nombre del proveedor o cliente" style="width: 300px" placeholder="Nombre"/>
+                <input type="text" name="proveedor.nombre" class="form-control  label-shared" id="prov_nombre" readonly="true" value="${proceso?.proveedor?.nombre ?: ''}" title="Nombre del proveedor o cliente" style="width: 300px; margin-left: -100px" placeholder="Nombre"/>
             </div>
         </div>
 
@@ -158,7 +170,7 @@
                 Dirección:
             </div>
             <div class="col-md-8">
-                <input type="text" name="proveedorDir" class="form-control " id="dir" disabled="true" value="${proceso?.proveedor?.direccion ?: ''}" title="Dirección del proveedor o cliente"/>
+                <input type="text" name="proveedorDir" class="form-control " id="dir" value="${retencion?.direccion ?: proceso?.proveedor?.direccion}" title="Dirección del proveedor o cliente"/>
             </div>
         </div>
 
@@ -166,163 +178,133 @@
             <div class="col-md-2 negrilla">
                 Teléfono:
             </div>
-            <div class="col-md-3">
-                <input type="text" name="proveedorTel" class="form-control " id="tel" disabled="true" value="${proceso?.proveedor?.telefono ?: ''}" title="Teléfono del proveedor o cliente"/>
+            <div class="col-md-2">
+                <input type="text" name="proveedorTel" class="form-control " id="tel"  value="${retencion?.telefono ?: proceso?.proveedor?.telefono}" title="Teléfono del proveedor o cliente"/>
             </div>
-        </div>
-    </div>
 
-    <div class="col-md-12" style="margin-top: 10px; margin-bottom: 10px">
-        <div class="col-md-3"></div>
-        <div class="col-md-5"><strong>Datos para informar al SRI (Anexo Transaccional Simplificado)</strong></div>
+            <div class="col-md-2 negrilla">
+                Fecha Registro:
+            </div>
+            <div class="col-md-2">
+                <elm:datepicker name="fechaRegistro_name" class="datepicker required form-control fechaRegistro" value="${retencion?.fecha}" />
+            </div>
+
+            <div class="col-md-2 negrilla">
+                Fecha Emisión:
+            </div>
+            <div class="col-md-2">
+                <elm:datepicker name="fechaEmision_name" class="datepicker required form-control fechaEmision" value="${retencion?.fechaEmision}" />
+            </div>
+
+        </div>
+
     </div>
 
     <div class="vertical-container vertical-container-list">
         <p class="css-vertical-text">Retención Imp. Renta</p>
         <div class="linea"></div>
 
-        <div class="" style="margin-left: 40px; margin-top: 20px; margin-bottom: 25px">
-            <label style="margin-left: 320px" class="colorT">Impuesto a la Renta</label>
+        <div class="panel panel-success">
+            <div class="panel-heading">Bienes</div>
+            <div class="panel-body">
+
+                <div class="fila" style="margin-bottom: 10px">
+                    <div class="col-md-4" style="margin-left: 40px">
+                        <label>Concepto de la Retención del IR</label>
+                    </div>
+
+                    <div class="col-md-2" style="margin-left: 10px">
+                        <label>Base Imponible</label>
+                    </div>
+
+                    <div class="col-md-1" style="margin-left: 40px">
+                        <label>%</label>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label>Valor Retenido Bienes</label>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class=" col-md-4" style="margin-left: 15px">
+                        <g:select class="form-control" name="conceptoRetencionImpuestoRenta"
+                                  from="${cratos.ConceptoRetencionImpuestoRenta.list().sort{it.codigo}}" optionKey="id" optionValue="${{it.codigo + ' - ' + it.descripcion}}"/>
+                    </div>
+
+                    <div class="col-md-2" style="margin-left: 35px">
+                        <g:textField class="form-control number baseB" title="La base imponible del IR." style="text-align: right" name="baseImponible" value="${base ?: retencion?.baseRenta}"/>
+                        <p class="help-block ui-helper-hidden"></p>
+                    </div>
+
+                    <div class="col-md-5" style="margin-left: 35px" id="divRBI">
+
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="fila" style="margin-bottom: 10px">
+        <div class="panel panel-info" id="divRetencionServicios">
+            <div class="panel-heading">Servicios</div>
+            <div class="panel-body">
 
-            <div class="col-md-4" style="margin-left: 40px">
-                <label>Concepto de la Retención del IR</label>
+                <div class="fila" style="margin-bottom: 10px">
+
+                    <div class="col-md-4" style="margin-left: 40px">
+                        <label>Concepto de la Retención del IR</label>
+                    </div>
+
+                    <div class="col-md-2" style="margin-left: 10px">
+                        <label>Base Imponible</label>
+                    </div>
+
+                    <div class="col-md-1" style="margin-left: 40px">
+                        <label>%</label>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label>Valor Retenido Servicios</label>
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-12">
+                    <div class=" col-md-4" style="margin-left: 15px">
+                        <g:select class="form-control" name="conceptoServicios"
+                                  from="${cratos.ConceptoRetencionImpuestoRenta.list().sort{it.codigo}}" optionKey="id" optionValue="${{it.codigo + ' - ' + it.descripcion}}"/>
+                    </div>
+
+                    <div class="col-md-2" style="margin-left: 35px">
+                        <g:textField class="form-control number baseS" title="La base imponible del IR."  style="text-align: right" name="baseImponibleSV" value="${retencion?.baseRentaServicios ?: 0}"/>
+                    </div>
+
+                    <div class="col-md-5" style="margin-left: 35px" id="divRSV">
+
+                    </div>
+                </div>
             </div>
-
-            <div class="col-md-2" style="margin-left: 10px">
-                <label>Base Imponible</label>
-            </div>
-
-            <div class="col-md-2" style="margin-left: 40px">
-                <label>%RBI</label>
-            </div>
-
-            <div class="col-md-2">
-                <label>Valor Retenido IR</label>
-            </div>
-
         </div>
 
-        <div class="col-md-12">
-            <div class=" col-md-4" style="margin-left: 15px">
-                <g:select class="form-control" name="conceptoRetencionImpuestoRenta"
-                          from="${cratos.ConceptoRetencionImpuestoRenta.list()}" optionKey="id" optionValue="${{it.codigo + ' - ' + it.descripcion}}"/>
+        <div class="panel panel-primary">
+            <div class="panel-body">
+                <div class="col-md-4" style="margin-right: 56px; text-align: center">
+                    <label>Total Base Imponible</label>
+                </div>
+                <div class="col-md-2" id="divTotalesRenta">
+
+                </div>
             </div>
-
-            <div class="col-md-2" style="margin-left: 35px">
-                <g:textField class="form-control required number" title="La base imponible del IR." readonly="true" style="text-align: right" name="baseImponible" value="${base}"/>
-            </div>
-
-            <div class="col-md-5" style="margin-left: 35px" id="divRBI">
-
-            </div>
-
         </div>
-
-
-        <div class="fila" style="margin-bottom: 10px">
-
-            <div class="col-md-4" style="margin-left: 40px">
-                <label>Concepto de la Retención del IR</label>
-            </div>
-
-            <div class="col-md-2" style="margin-left: 10px">
-                <label>Base Imponible</label>
-            </div>
-
-            <div class="col-md-2" style="margin-left: 40px">
-                <label>%RBI</label>
-            </div>
-
-            <div class="col-md-2">
-                <label>Valor Retenido IR</label>
-            </div>
-
-        </div>
-
-
-        <div class="col-md-12">
-            <div class=" col-md-4" style="margin-left: 15px">
-                <g:select class="form-control" name="conceptoRetencionImpuestoRenta"
-                          from="${cratos.ConceptoRetencionImpuestoRenta.list()}" optionKey="id" optionValue="${{it.codigo + ' - ' + it.descripcion}}"/>
-            </div>
-
-            <div class="col-md-2" style="margin-left: 35px">
-                <g:textField class="form-control required number" title="La base imponible del IR." readonly="true" style="text-align: right" name="baseImponible" value="${base}"/>
-            </div>
-
-            <div class="col-md-5" style="margin-left: 35px" id="divRBI">
-
-            </div>
-
-        </div>
-
-
     </div>
 
 
-    <div class="vertical-container vertical-container-list">
+    <div class="vertical-container vertical-container-list" id="divIVA">
         <p class="css-vertical-text">Retención IVA</p>
         <div class="linea"></div>
 
-        <div class="" style="margin-left: 40px; margin-top: 20px; margin-bottom: 15px">
-            <label style="margin-left: 320px" class="colorT">Retención IVA</label>
-        </div>
-
-        %{--<div style="padding: 0.7em; margin-top:5px;"  class="alert alert-success hide" id="divSuccess">--}%
-        %{--<i class="fa fa-check pull-left"></i>--}%
-
-        %{--<span id="spanSuc">Grabado Correctamente</span>--}%
-
-        %{--<ul id="listaSuc"></ul>--}%
-        %{--</div>--}%
-
-        %{--<div style="padding: 0.7em; margin-top:5px; " class="alert alert-danger hide" id="divErrores">--}%
-        %{--<i class="fa fa-warning pull-left"></i>--}%
-        %{--<span id="spanError">Ha ocurrido un error</span>--}%
-
-        %{--<ul id="listaErrores"></ul>--}%
-        %{--</div>--}%
-
-        %{--<div class="" style="margin-left: 40px; margin-top: 10px; margin-bottom: -5px">--}%
-        %{--<label>N° Establecimiento</label>--}%
-        %{--<label style="margin-left: 25px">N° Emisión</label>--}%
-        %{--<label style="margin-left: 65px">N° Autorización del Comprobante</label>--}%
-        %{--</div>--}%
-
-        %{--<div class="" style="margin-left: 40px; margin-top: 10px; margin-bottom: 15px">--}%
-        %{--<g:textField name="facturaEstablecimiento" style="width: 100px;" disabled="disabled" >${proceso?.facturaEstablecimiento}</g:textField>--}%
-        %{--<g:textField name="facturaPuntoEmision" style="width: 100px; margin-left: 50px" disabled="disabled" >${proceso?.facturaPuntoEmision}</g:textField>--}%
-        %{--<g:textField name="autorizacionSri" style="width: 250px; margin-left: 50px" disabled="disabled" >${proceso?.proveedor?.autorizacionSri}</g:textField>--}%
-        %{--</div>--}%
-
-
-        %{--<div class="col-md-12" style="margin-bottom: 20px">--}%
-        %{--<div class="col-md-5">--}%
-        %{--<div class="col-md-4 negrilla">--}%
-        %{--Porcentaje IVA--}%
-        %{--</div>--}%
-        %{--<div class="col-md-8">--}%
-        %{--<g:select name="porcentajeIva_name" from="${cratos.sri.PorcentajeIva.list()}" class="form-control" optionValue="descripcion" optionKey="id"/>--}%
-        %{--</div>--}%
-        %{--</div>--}%
-
-
-        %{--<div class="col-md-5">--}%
-        %{--<div class="col-md-2 negrilla">--}%
-        %{--IVA--}%
-        %{--</div>--}%
-        %{--<div class="col-md-4">--}%
-        %{--<g:textField class="form-control" name="iva12" value="${proceso?.ivaGenerado ?: 0}" readonly="true" style="text-align: right"/>--}%
-        %{--</div>--}%
-        %{--</div>--}%
-        %{--</div>--}%
-
-
         <div class="col-md-12">
-            <div class="col-md-8"></div>
+            <div class="col-md-9"></div>
             <div class="col-md-1"><span class="input-group-addon"><strong>Base</strong></span></div>
             <div class="col-md-1" style="margin-left: -15px"><span class="input-group-addon"><strong>%</strong></span></div>
             <div class="col-md-1"><span class="input-group-addon"><strong>Valor</strong></span></div>
@@ -333,24 +315,23 @@
                 Porcentaje IVA
             </div>
             <div class="col-md-3">
-                <g:select name="porcentajeIva_name" from="${cratos.sri.PorcentajeIva.list()}" class="form-control" optionValue="descripcion" optionKey="id"/>
+                <g:select name="porcentajeIva_name" id="porcentajeIva" from="${cratos.sri.PorcentajeIva.list().sort{it.descripcion}}" class="form-control" optionValue="descripcion" optionKey="id"/>
             </div>
-
+            <div class="col-md-1">
+            </div>
 
             <div class="col-md-2 negrilla">
                 ICE
             </div>
             <div class="fac2">
-                <g:textField class=" form-control number" title="La base imponible del ICE es obligatoria. Puede ingresar 0." name="iceBase" value="${0}" style="text-align: right"/>
+                <g:textField class=" form-control number" title="La base imponible del ICE es obligatoria. Puede ingresar 0." name="iceBase_name" id="iceBase" value="${0}" style="text-align: right"/>
             </div>
 
-            <div class="fac2">
-                <g:textField class=" form-control number" title="El porcentaje del ICE es obligatorio. Puede ingresar 0." name="icePorcentaje" value="${0}" style="text-align: right"/>
+            <div class="fac2" id="divP1">
+                <g:textField class=" form-control number" title="El porcentaje del ICE es obligatorio. Puede ingresar 0." name="icePorcentaje_name" id="icePorcentaje" value="${0}" style="text-align: right"/>
             </div>
 
-            <div class="fac2">
-                <g:textField class=" form-control number" title="El valor retenido del ICE es obligatorio. Puede ingresar 0." name="valorRetenidoIce" value="${0}" style="text-align: right"/>
-            </div>
+            <div class="fac2" id="divV1"></div>
         </div>
 
         <div class="col-md-12">
@@ -361,56 +342,51 @@
             <div class="col-md-3">
                 <g:textField class="form-control" name="iva12" value="${proceso?.ivaGenerado ?: 0}" readonly="true" style="text-align: right"/>
             </div>
+            <div class="col-md-1">
+            </div>
+
 
             <div class="col-md-2 negrilla">
                 BIENES
             </div>
             <div class="fac2">
-                <g:textField class=" form-control number" title="La base imponible de Bienes es obligatoria. Puede ingresar 0." name="iceBase" value="${0}" style="text-align: right"/>
+                <g:textField class=" form-control number" title="La base imponible de Bienes es obligatoria. Puede ingresar 0." name="bienesBase_name"  id="bienesBase" value="${0}" style="text-align: right"/>
             </div>
 
-            <div class="fac2">
-                <g:textField class=" form-control number" title="El porcentaje de Bienes es obligatorio. Puede ingresar 0." name="icePorcentaje" value="${0}" style="text-align: right"/>
+            <div class="fac2" id="divP2">
+                <g:textField class=" form-control number" title="El porcentaje de Bienes es obligatorio. Puede ingresar 0." name="bienesPorcentaje_name" id="bienesPorcentaje" value="${0}" style="text-align: right"/>
             </div>
 
-            <div class="fac2">
-                <g:textField class=" form-control number" title="El valor retenido de Bienes es obligatorio. Puede ingresar 0." name="valorRetenidoIce" value="${0}" style="text-align: right"/>
+            <div class="fac2" id="divV2">
             </div>
         </div>
         <div class="col-md-12" style="margin-bottom: 20px;">
-
-
             <div class="col-md-3 negrilla">
                 Aplica Crédito Tributario
             </div>
             <div class="col-md-3">
-                <g:select class=" form-control" name="credito" from="${['SI', 'NO']}"/>
+                <g:select class=" form-control" name="credito" from="${['SI', 'NO']}" readonly="false"/>
             </div>
 
+            <div class="col-md-1">
+            </div>
 
             <div class="col-md-2 negrilla">
                 SERVICIOS
             </div>
             <div class="fac2">
-                <g:textField class=" form-control number" title="La base imponible de Servicios es obligatoria. Puede ingresar 0." name="iceBase" value="${0}" style="text-align: right"/>
+                <g:textField class=" form-control number" title="La base imponible de Servicios es obligatoria. Puede ingresar 0." name="servicioBase_name" id="servicioBase" value="${0}" style="text-align: right"/>
             </div>
 
-            <div class="fac2">
-                <g:textField class=" form-control number" title="El porcentaje de Servicios es obligatorio. Puede ingresar 0." name="icePorcentaje" value="${0}" style="text-align: right"/>
+            <div class="fac2" id="divP3">
+                <g:textField class=" form-control number" title="El porcentaje de Servicios es obligatorio. Puede ingresar 0." name="serviciosPorcentaje_name" id="serviciosPorcentaje" value="${0}" style="text-align: right"/>
             </div>
 
-            <div class="fac2">
-                <g:textField class=" form-control number" title="El valor retenido de Servicios es obligatorio. Puede ingresar 0." name="valorRetenidoIce" value="${0}" style="text-align: right"/>
+            <div class="fac2" id="divV3">
             </div>
         </div>
 
-
-
-
-
-
         <div class="col-md-12">
-            %{--<div class="col-md-5">--}%
             <div class="col-md-3 negrilla">
                 <label>Pago Local o Exterior</label>
             </div>
@@ -418,24 +394,11 @@
                 <g:select class="form-control" name="pago"
                           from="${['01': 'LOCAL', '02': 'EXTERIOR']}" optionKey="key" optionValue="value"/>
             </div>
-            %{--</div>--}%
-            %{--<div class="col-md-5">--}%
-            %{--<div class="col-md-6 negrilla">--}%
-            %{--Aplica Crédito Tributario--}%
-            %{--</div>--}%
-            %{--<div class="col-md-3">--}%
-            %{--<g:select class=" form-control" name="credito" from="${['SI', 'NO']}" style="margin-left: 10px;"/>--}%
-            %{--</div>--}%
-            %{--</div>--}%
-
+            <div class="col-md-3">
+            </div>
+            <div class="fac2" id="divTotalBase">
+            </div>
         </div>
-
-
-
-
-
-
-
 
         <div class="exterior" style="margin-left: 40px; margin-right: 30px; margin-top: 10px; margin-bottom: 15px" hidden="hidden">
             <fieldset>
@@ -447,212 +410,383 @@
                     </div>
                     <div class="dos">
                         <g:select class="form-control " name="pais" from="${cratos.sri.Pais.list([sort: 'nombre'])}" optionKey="id" optionValue="nombre" style="width: 250px; margin-left: -100px"/>
-
                     </div>
                 </div>
 
                 <div style="margin-top: 20px">
                     <label style="margin-right: 30px">Aplica convenio de doble tributación?</label>
-                    <g:radioGroup class="convenio" labels="['SI', 'NO']" values="['SI', 'NO']" name="convenio" value="">${it?.label} ${it?.radio}</g:radioGroup>
+                    <g:radioGroup class="convenio" labels="['SI', 'NO']" values="['SI', 'NO']" name="convenio_name" value="">${it?.label} ${it?.radio}</g:radioGroup>
                 </div>
 
                 <div style="margin-top: 20px">
                     <label style="margin-right: 30px">Pago sujeto a retención en aplicación de la norma legal</label>
-                    <g:radioGroup class="norma" labels="['SI', 'NO']" values="['SI', 'NO']" name="norma" value="">${it?.label} ${it?.radio}</g:radioGroup>
+                    <g:radioGroup class="norma" labels="['SI', 'NO']" values="['SI', 'NO']" name="norma_name" value="">${it?.label} ${it?.radio}</g:radioGroup>
                 </div>
                 <legend></legend>
             </fieldset>
         </div>  %{--//exterior--}%
-
-    %{--<div class="fila" style="margin-bottom: 20px">--}%
-    %{--<div class="uno"></div>--}%
-
-    %{--<div class="dos"></div>--}%
-
-    %{--<div class="tres"></div>--}%
-
-    %{--<div class="cuatro" style="margin-left: 45px">--}%
-    %{--<label>Base Retención</label>--}%
-    %{--</div>--}%
-
-    %{--<div class="cuatro">--}%
-    %{--<label>% Ret</label>--}%
-    %{--</div>--}%
-
-    %{--<div class="cuatro">--}%
-    %{--<label>Valor Retenido</label>--}%
-    %{--</div>--}%
-    %{--</div>--}%
-
-
-    %{--//old--}%
-
-        <g:each in="${detalleRetencion}" var="detalle">
-            <div class="fila" >
-
-                <div class="uno">
-                    <label style="width: 230px">Base Imponible no Objeto de IVA</label>
-                </div>
-
-                <div class="dos" style="margin-left: 15px">
-                    <g:textField class="form-control" name="noObjetoIva" value="${proceso?.baseImponibleNoIva}" disabled="disabled"/>
-                </div>
-
-                <div class="tres" style="margin-left: 35px">
-                    <label>ICE</label>
-                </div>
-
-
-                <g:if test="${detalle?.impuesto?.sri == 'ICE'}">
-                    <div class="cuatro">
-                        <g:textField class=" form-control required number" title="La base imponible del ICE es obligatoria. Puede ingresar 0." name="iceBase" value="${detalle?.base}"/>
-                    </div>
-
-                    <div class="cuatro">
-                        <g:textField class=" form-control required number" title="El porcentaje del ICE es obligatorio. Puede ingresar 0." name="icePorcentaje" value="${detalle?.porcentaje}"/>
-                    </div>
-
-                    <div class="cuatro">
-                        <g:textField class=" form-control required number" title="El valor retenido del ICE es obligatorio. Puede ingresar 0." name="valorRetenidoIce" value="${detalle?.total}"/>
-                    </div>
-                </g:if>
-                <g:else>
-                    <div class="cuatro">
-                        <g:textField class=" form-control required number" title="La base imponible del ICE es obligatoria. Puede ingresar 0." name="iceBase" value="${0}"/>
-                    </div>
-
-                    <div class="cuatro">
-                        <g:textField class=" form-control required number" title="El porcentaje del ICE es obligatorio. Puede ingresar 0." name="icePorcentaje" value="${0}"/>
-                    </div>
-
-                    <div class="cuatro">
-                        <g:textField class=" form-control required number" title="El valor retenido del ICE es obligatorio. Puede ingresar 0." name="valorRetenidoIce" value="${0}"/>
-                    </div>
-                </g:else>
-
-            </div>
-
-
-        %{--<div class="fila">--}%
-        %{--<div class="uno">--}%
-        %{--<label>Base Imponible IVA 0%</label>--}%
-        %{--</div>--}%
-
-        %{--<div class="dos" style="margin-left: 15px">--}%
-        %{--<g:textField class="form-control" name="biIva0" value="${proceso?.baseImponibleIva0}" disabled="disabled"/>--}%
-        %{--</div>--}%
-
-        %{--<div class="tres" style="margin-left: 35px">--}%
-        %{--<label>IVA(1) Bienes</label>--}%
-        %{--</div>--}%
-
-        %{--<g:if test="${detalle?.impuesto?.sri == 'BNS'}">--}%
-        %{--<div class="cuatro">--}%
-        %{--<g:textField class="form-control required number" title="La base imponible del IVA es obligatoria. Puede ingresar 0." name="bienesBase" value="${detalle?.base}"/>--}%
-        %{--</div>--}%
-
-        %{--<div class="cuatro">--}%
-        %{--<g:textField class="form-control required number" title="El porcentaje del IVA es obligatorio. Puede ingresar 0." name="bienesPorcentaje" value="${detalle?.porcentaje}"/>--}%
-        %{--</div>--}%
-
-        %{--<div class="cuatro">--}%
-        %{--<g:textField class="form-control required number" title="El valor retenido del IVA es obligatorio. Puede ingresar 0." name="valorRetenidoBienes" value="${detalle?.total}"/>--}%
-        %{--</div>--}%
-        %{--</g:if>--}%
-        %{--<g:else>--}%
-        %{--<div class="cuatro">--}%
-        %{--<g:textField class="form-control required number" title="La base imponible del IVA es obligatoria. Puede ingresar 0." name="bienesBase" value="${0}"/>--}%
-        %{--</div>--}%
-
-        %{--<div class="cuatro">--}%
-        %{--<g:textField class="form-control required number" title="El porcentaje del IVA es obligatorio. Puede ingresar 0." name="bienesPorcentaje" value="${0}"/>--}%
-        %{--</div>--}%
-
-        %{--<div class="cuatro">--}%
-        %{--<g:textField class="form-control required number" title="El valor retenido del IVA es obligatorio. Puede ingresar 0." name="valorRetenidoBienes" value="${0}"/>--}%
-        %{--</div>--}%
-
-        %{--</g:else>--}%
-        %{--</div>--}%
-
-            <div class="fila">
-                <div class="uno">
-                    <label>Base Imponible IVA 12%</label>
-                </div>
-
-                <div class="dos" style="margin-left: 15px">
-                    <g:textField class="form-control" name="biIva12" value="${proceso?.baseImponibleIva}" disabled="disabled"/>
-
-                </div>
-
-                <div class="tres" style="margin-left: 35px">
-                    <label>IVA(2) Servicios y 100%</label>
-                </div>
-                <g:if test="${detalle?.impuesto?.sri == 'SRV'}">
-                    <div class="cuatro">
-                        <g:textField class="form-control required number" title="La base imponible del IVA es obligatoria. Puede ingresar 0." name="serviciosBase" value="${detalle?.base}"/>
-                    </div>
-
-                    <div class="cuatro">
-                        <g:textField class="form-control required number" title="El porcentaje del IVA es obligatorio. Puede ingresar 0." name="serviciosPorcentaje" value="${detalle?.porcentaje}"/>
-                    </div>
-
-                    <div class="cuatro">
-                        <g:textField class="form-control required number" title="El valor retenido del IVA es obligatorio. Puede ingresar 0." name="valorRetenidoServicios" value="${detalle?.total}"/>
-                    </div>
-                </g:if>
-                <g:else>
-                    <div class="cuatro">
-                        <g:textField class="form-control required number" title="La base imponible del IVA es obligatoria. Puede ingresar 0." name="serviciosBase" value="${0}"/>
-                    </div>
-
-                    <div class="cuatro">
-                        <g:textField class="form-control required number" title="El porcentaje del IVA es obligatorio. Puede ingresar 0." name="serviciosPorcentaje" value="${0}"/>
-                    </div>
-
-                    <div class="cuatro">
-                        <g:textField class="form-control required number" title="El valor retenido del IVA es obligatorio. Puede ingresar 0." name="valorRetenidoServicios" value="${0}"/>
-                    </div>
-                </g:else>
-
-            </div>
-        </g:each>
-
-
-    %{--<div class="" style="margin-left: 40px; margin-top: 10px; margin-bottom: 15px">--}%
-    %{--<div class="fila" style="margin-bottom: 30px">--}%
-    %{--<div class="uno">--}%
-    %{--<label>IVA</label>--}%
-    %{--</div>--}%
-
-    %{--<div class="dos" style="margin-left: 15px">--}%
-    %{--<g:textField class="form-control  " name="iva12" value="${proceso?.ivaGenerado}" disabled="disabled"/>--}%
-    %{--</div>--}%
-
-    %{--<div class="tres"></div>--}%
-
-    %{--<div class="cuatro"></div>--}%
-
-    %{--<div class="cuatro"></div>--}%
-
-    %{--<div class="cuatro"></div>--}%
-
-    %{--</div>--}%
-
     </div>
 
-
-%{--</div>--}%
 </g:form>
 <script type="text/javascript">
 
-    cargarRBI($("#conceptoRIRBienes option:selected").val(), '${base}');
+
+    $("#conceptoRetencionImpuestoRenta").change(function (){
+        var concepto = $("#conceptoRetencionImpuestoRenta option:selected").val();
+        if(concepto == '23'){
+            $("#divRetencionServicios").addClass('esconder')
+            $("#divIVA").addClass('esconder')
+            $("#divComprobanteR").addClass('esconder')
+        }else{
+            $("#divRetencionServicios").removeClass('esconder')
+            $("#divIVA").removeClass('esconder')
+            $("#divComprobanteR").removeClass('esconder')
+        }
+    });
+
+    $("#porcentajeIva").change(function () {
+        var porcentaje = $("#porcentajeIva option:selected").val()
+        if(porcentaje == '7'){
+            $("#credito").addClass('soloLectura')
+            $(".exterior").hide();
+            $("#pago").val('01').addClass('soloLectura')
+            $("#icePorcentaje").addClass('soloLectura')
+            $("#bienesPorcentaje").addClass('soloLectura')
+            $("#serviciosPorcentaje").addClass('soloLectura')
+            $("#iceBase").addClass('soloLectura')
+            $("#bienesBase").addClass('soloLectura')
+            $("#servicioBase").addClass('soloLectura')
+            $("#porcentajeIva").addClass('colorS')
+        }else{
+            $("#credito").removeClass('soloLectura')
+            $("#pago").removeClass('soloLectura')
+            $("#icePorcentaje").removeClass('soloLectura')
+            $("#bienesPorcentaje").removeClass('soloLectura')
+            $("#serviciosPorcentaje").removeClass('soloLectura')
+            $("#iceBase").removeClass('soloLectura')
+            $("#bienesBase").removeClass('soloLectura')
+            $("#servicioBase").removeClass('soloLectura')
+            $("#porcentajeIva").removeClass('colorS')
+        }
+
+    });
+
+    $("#btnGuardarRetencion").click(function (){
+
+        var error = '';
+        var concepto = $("#conceptoRetencionImpuestoRenta option:selected").val();
+
+        $("#listaErrores").html('');
+
+        if(!$(".fechaEmision").val()){
+            error+="<li>Seleccione la fecha de emisión de la retención</li>"
+        }
+        if(!$(".fechaRegistro").val()){
+            error+="<li>Seleccione la fecha de registro de la retención</li>"
+        }
+        if($("#serie").val() == ''){
+            if(concepto != '23'){
+                error+="<li>Ingrese el número de comprobante de la retención</li>"
+            }
+        }else{
+            if(concepto != '23'){
+                if(revisarSerie() == 'no'){
+                    error+="<li>El numero de comprobante ingresado no se encuentra en el rango del libretin seleccionado</li>"
+                }
+                if(validarSerie() == 'no'){
+                    error+="<li>El numero de comprobante ingresado ya se encuentra asignado</li>"
+
+                }
+            }
+        }
+
+        if($("#dir").val() == ''){
+            error+="<li>Ingrese la dirección del proveedor</li>"
+        }
+
+        if($("#tel").val() == ''){
+            error+="<li>Ingrese el teléfono del proveedor</li>"
+        }
+
+        if(($("#baseImponible").val() == 0 || !$("#baseImponible").val()) && ($("#baseImponibleSV").val() == 0 || !$("#baseImponibleSV").val())){
+            error+="<li>Ingrese una base imponible para el Impuesto a la Renta</li>"
+        }else{
+            var bi = $("#baseImponible").val()
+            var bis = $("#baseImponibleSV").val()
+            console.log("bi " + bi)
+            console.log("bis " + bis)
+            console.log("suma " + parseFloat(bi) + parseFloat(bis))
+            if( ( (bi ? bi : 0) + (bis ? bis : 0)) > ${base}){
+                error+="<li>Ingrese un valor menor o igual a la base imponible</li>"
+            }
+        }
+
+        if($("#pago").val() == '02' && concepto != '23'){
+            if(!$(".convenio:checked").val()){
+                error+="<li>Seleccione si aplica o no el convenio de doble tributación</li>"
+            }
+            if(!$(".norma:checked").val()){
+                error+="<li>Seleccione si el pago de la retencion esta sujeto a la norma legal </li>"
+            }
+        }
+
+        if(($("#iceBase").val() == 0 || !$("#iceBase").val()) && ($("#bienesBase").val() == 0 || !$("#bienesBase").val()) && ($("#servicioBase").val() == 0 || !$("#servicioBase").val())){
+            if(concepto != '23'){
+                error+="<li>Ingrese al menos un valor diferente de cero (Retención IVA)</li>"
+            }
+        }else{
+            if($("#iceBase").val() + $("#bienesBase").val() + $("#servicioBase").val() > ${base} ){
+                if(concepto != '23'){
+                    error+="<li>La suma de las bases debe ser menor o igual a la base imponible (Retención IVA)</li>"
+                }
+            }
+        }
 
 
-    $("#conceptoRIRBienes").change(function () {
-        var idConcepto = $("#conceptoRIRBienes option:selected").val();
-        var base = ${base}
-            cargarRBI(idConcepto, base);
+        if(error == ''){
+            $("#divErroresDetalle").hide();
+            openLoader("Guardando..");
+            $.ajax({
+                type: 'POST',
+                url: '${createLink(controller: 'proceso', action: 'saveRetencion_ajax')}',
+                data:{
+                    proceso: '${proceso?.id}',
+                    conceptoRIRBienes: $("#conceptoRetencionImpuestoRenta").val(),
+                    conceptoRIRServicios : $("#conceptoServicios").val(),
+                    documentoEmpresa: $("#comprobanteSel").val(),
+                    porcentajeIva: $("#porcentajeIva").val(),
+                    pais: $("#pais").val(),
+                    direccion: $("#dir").val(),
+                    fecha: $(".fechaRegistro").val(),
+                    numeroComprobante: $("#serie").val(),
+                    telefono: $("#tel").val(),
+                    fechaEmision: $(".fechaEmision").val(),
+                    convenio: $(".convenio:checked").val(),
+                    normaLegal: $(".norma:checked").val() ,
+                    creditoTributario:$("#credito").val(),
+                    baseRenta: $(".baseB").val(),
+                    renta: $("#valorRetenido").val(),
+                    baseRentaServicios: $(".baseS").val(),
+                    rentaServicios: $("#valorRetenidoSV").val(),
+                    baseIce: $("#iceBase").val(),
+                    porcentajeIce: $("#icePorcentaje").val(),
+                    ice: $("#valorRetenidoICE").val(),
+                    baseBienes: $("#bienesBase").val(),
+                    porcentajeBienes: $("#bienesPorcentaje").val(),
+                    bienes: $("#valorRetenidoBienes").val(),
+                    baseServicios: $("#servicioBase").val(),
+                    porcentajeServicios: $("#serviciosPorcentaje").val(),
+                    servicios: $("#valorRetenidoServicios").val(),
+                    iva: $("#iva12").val(),
+                    pago: $("#pago").val(),
+                    retencion: '${retencion?.id}'
+                },
+                success: function (msg){
+                    closeLoader()
+                }
+            });
+
+        }else{
+            $("#listaErrores").append(error);
+            $("#listaErrores").show();
+            $("#divErroresDetalle").show()
+        }
+
+    });
+
+
+
+    function revisarSerie () {
+        var regresa = $.ajax({
+            type: 'POST',
+            async: false,
+            url:'${createLink(controller: 'proceso', action: 'comprobarSerie_ajax')}',
+            data:{
+                libretin: $("#comprobanteSel option:selected").val(),
+                serie: $("#serie").val()
+            },
+            success: function (msg){
+            }
+        });
+        return regresa.responseText
+    }
+
+    function validarSerie () {
+        var regresaV = $.ajax({
+            type: 'POST',
+            async: false,
+            url:'${createLink(controller: 'proceso', action: 'validarSerie_ajax')}',
+            data:{
+                retencion: '${retencion?.id}',
+                serie: $("#serie").val()
+            },
+            success: function (msg){
+            }
+        });
+        return regresaV.responseText
+    }
+
+
+
+    cargarTotalesRenta();
+
+    $(".baseB").keyup(function () {
+        cargarTotalesRenta();
+    });
+
+    $(".baseS").keyup(function () {
+        cargarTotalesRenta();
+    });
+
+    function cargarTotalesRenta () {
+        $.ajax({
+            type: 'POST',
+            url: "${createLink(controller: 'proceso', action: 'totalesRenta_ajax')}",
+            data:{
+                bienes: $(".baseB").val(),
+                servicios: $(".baseS").val(),
+                base: '${base}'
+            },
+            success: function (msg) {
+                $("#divTotalesRenta").html(msg)
+            }
+        });
+    }
+
+
+
+    $("#iceBase").keyup(function () {
+//        cargarValorRetencionICE(porcentajeI, $("#iceBase").val());
+        cargarValorRetencionICE($("#icePorcentaje").val(), $("#iceBase").val());
+        cargarTotalBase();
+    });
+
+    $("#bienesBase").keyup(function () {
+//        cargarValorRetencionBI(porcentajeI, $("#bienesBase").val());
+        cargarValorRetencionBI($("#bienesPorcentaje").val(), $("#bienesBase").val());
+        cargarTotalBase();
+    });
+
+    $("#servicioBase").keyup(function () {
+//        cargarValorRetencionSV(porcentajeI, $("#servicioBase").val());
+        cargarValorRetencionSV($("#serviciosPorcentaje").val(), $("#servicioBase").val());
+        cargarTotalBase();
+    });
+
+    $("#icePorcentaje").keyup(function () {
+        cargarValorRetencionICE($("#icePorcentaje").val(), $("#iceBase").val());
+    });
+
+    $("#bienesPorcentaje").keyup(function () {
+        cargarValorRetencionBI($("#bienesPorcentaje").val(), $("#bienesBase").val());
+    });
+
+    $("#serviciosPorcentaje").keyup(function () {
+        cargarValorRetencionSV($("#serviciosPorcentaje").val(), $("#servicioBase").val());
+    });
+
+    //    cargarCeldaPorcentaje(porcentajeI);
+    //    cargarValorRetencionICE(porcentajeI, $("#iceBase").val());
+    //    cargarValorRetencionBI(porcentajeI, $("#bienesBase").val());
+    //    cargarValorRetencionSV(porcentajeI, $("#servicioBase").val());
+
+
+    cargarValorRetencionICE($("#icePorcentaje").val(), $("#iceBase").val());
+    cargarValorRetencionBI($("#bienesPorcentaje").val(), $("#bienesBase").val());
+    cargarValorRetencionSV($("#serviciosPorcentaje").val(), $("#servicioBase").val());
+    cargarTotalBase();
+
+    //    $("#porcentajeIva").change(function () {
+    //        var porcentaje = $("#porcentajeIva option:selected").val();
+    //        var baseICE = $("#iceBase").val();
+    //        var baseBienes = $("#bienesBase").val();
+    //        var baseServicios = $("#servicioBase").val();
+    //        cargarCeldaPorcentaje(porcentaje);
+    //        cargarValorRetencionICE(porcentaje, baseICE);
+    //        cargarValorRetencionBI(porcentaje, baseBienes);
+    //        cargarValorRetencionSV(porcentaje, baseServicios);
+    //    });
+
+    function cargarValorRetencionSV (porcentaje, base) {
+        $.ajax({
+            type: 'POST',
+            url: '${createLink(controller: 'proceso', action:'calcularValorSV_ajax')}',
+            data: {
+                porcentaje: porcentaje,
+                base: base
+            },
+            success: function (msg) {
+                $("#divV3").html(msg)
+            }
+        });
+    }
+
+    function cargarValorRetencionBI (porcentaje, base) {
+        $.ajax({
+            type: 'POST',
+            url: '${createLink(controller: 'proceso', action:'calcularValorBI_ajax')}',
+            data: {
+                porcentaje: porcentaje,
+                base: base
+            },
+            success: function (msg) {
+                $("#divV2").html(msg)
+            }
+        });
+    }
+
+    function cargarValorRetencionICE (porcentaje, base) {
+        $.ajax({
+            type: 'POST',
+            url: '${createLink(controller: 'proceso', action:'calcularValorICE_ajax')}',
+            data: {
+                porcentaje: porcentaje,
+                base: base
+            },
+            success: function (msg) {
+                $("#divV1").html(msg)
+            }
+        });
+    }
+
+    function cargarCeldaPorcentaje (porcentaje){
+        $.ajax({
+            type: 'POST',
+            url: "${createLink(controller: 'proceso', action: 'porcentaje_ajax')}",
+            data:{
+                porcentaje: porcentaje
+            },
+            success: function (msg){
+                $("#divP1").html(msg)
+                $("#divP2").html(msg)
+                $("#divP3").html(msg)
+            }
+        });
+    }
+
+    function cargarTotalBase () {
+        $.ajax({
+            type: 'POST',
+            url: "${createLink(controller: 'proceso', action: 'totalBase_ajax')}",
+            data:{
+                ice:  $("#iceBase").val(),
+                bienes: $("#bienesBase").val(),
+                servicios: $("#servicioBase").val(),
+                base: '${base}'
+            },
+            success: function (msg1){
+                $("#divTotalBase").html(msg1)
+            }
+        });
+    }
+
+
+    cargarRBI($("#conceptoRetencionImpuestoRenta option:selected").val(), $("#baseImponible").val());
+
+    $("#conceptoRetencionImpuestoRenta").change(function () {
+        var idConcepto = $("#conceptoRetencionImpuestoRenta option:selected").val();
+        var baseBI = $("#baseImponible").val();
+        cargarRBI(idConcepto, baseBI);
     });
 
     function cargarRBI (id, base) {
@@ -667,7 +801,55 @@
                 $("#divRBI").html(msg)
             }
         });
+    }
 
+
+    $("#baseImponibleSV").keyup(function () {
+        cargarRSV($("#conceptoServicios option:selected").val(), $("#baseImponibleSV").val())
+    });
+
+
+    cargarRSV($("#conceptoServicios option:selected").val(), $("#baseImponibleSV").val());
+
+    $("#conceptoServicios").change(function () {
+        var idConcepto = $("#conceptoServicios option:selected").val();
+        var baseSV = $("#baseImponibleSV").val();
+        cargarRSV(idConcepto, baseSV);
+    });
+
+
+    function cargarRSV(idConceptoSV, baseSV){
+        $.ajax({
+            type: 'POST',
+            url: "${createLink(controller: 'proceso', action: 'conceptoSV_ajax')}",
+            data:{
+                idConcepto: idConceptoSV,
+                base: baseSV
+            },
+            success: function (msg) {
+                $("#divRSV").html(msg)
+            }
+        });
+    }
+
+
+    function validarNumSinPuntos(ev) {
+        /*
+         48-57      -> numeros
+         96-105     -> teclado numerico
+         188        -> , (coma)
+         190        -> . (punto) teclado
+         110        -> . (punto) teclado numerico
+         8          -> backspace
+         46         -> delete
+         9          -> tab
+         37         -> flecha izq
+         39         -> flecha der
+         */
+        return ((ev.keyCode >= 48 && ev.keyCode <= 57) ||
+        (ev.keyCode >= 96 && ev.keyCode <= 105) ||
+        ev.keyCode == 8 || ev.keyCode == 46 || ev.keyCode == 9 ||
+        ev.keyCode == 37 || ev.keyCode == 39 );
     }
 
 
@@ -692,7 +874,8 @@
     }
 
     $(".validacionNumero").keydown(function (ev) {
-        return validarNum(ev);
+//        return validarNum(ev);
+        return validarNumSinPuntos(ev);
     }).keyup(function () {
 
     });
@@ -713,14 +896,11 @@
         });
     }
 
-    $(".libretin").change(function () {
+
+    $(".libretin").change(function  () {
         var idLibretin = $(".libretin option:selected").val();
         cargarNumeracion(idLibretin);
-//        $("#numSerie").val('')
-
     });
-
-
 
 
     $("#sriForm").validate({
@@ -737,20 +917,34 @@
             label.parents(".grupo").removeClass('has-error');
         },
         rules  : {
-            serie : {
+            %{--serie : {--}%
+            %{--remote : {--}%
+            %{--type: 'POST',--}%
+            %{--url:"${createLink(controller: 'proceso', action: 'validarSerie_ajax')}",--}%
+            %{--data:{--}%
+            %{--numero: $(".numSerie").val(),--}%
+            %{--retencion: '${retencion?.id}'--}%
+            %{--}--}%
+            %{--}--}%
+            %{--},--}%
+            baseImponible:{
                 remote : {
                     type: 'POST',
-                    url:"${createLink(controller: 'proceso', action: 'validarSerie_ajax')}",
+                    url:"${createLink(controller: 'proceso', action: 'validarBase_ajax')}",
                     data:{
-                        numero: $(".numSerie").val(),
-                        libretin: $(".libretin option:selected").val()
+                        baseBienes: $(".baseB").val(),
+                        baseServicios: $(".baseS").val(),
+                        baseImponible: ${base}
                     }
                 }
             }
         },
         messages       : {
-            serie : {
-                remote : "Número de serie incorrecto"
+//            serie : {
+//                remote : "Número de comprobante ya existente!"
+//            },
+            baseImponible :{
+                remote : "Error, valor ingresado mayor a la base"
             }
         }
     });
@@ -947,10 +1141,8 @@
         $("#pago").change(function () {
             if ($(this).val() == '02') {
                 $(".exterior").show();
-//                        $(".exterior").attr("hidden", false);
             } else {
                 $(".exterior").hide();
-//                        $(".exterior").attr("hidden", true);
                 $(".norma").attr("checked", false);
                 $(".convenio").attr("checked", false);
             }

@@ -11,6 +11,8 @@ class Retencion implements Serializable {
     DocumentoEmpresa documentoEmpresa
     PorcentajeIva porcentajeIva
     Pais pais
+    Empresa empresa
+    Proveedor proveedor
 
     String direccion
     Date fecha
@@ -22,6 +24,7 @@ class Retencion implements Serializable {
     Date fechaEmision
     String convenio
     String normaLegal
+    String creditoTributario
     double baseIva = 0
     double iva = 0
     double baseRenta = 0
@@ -37,6 +40,8 @@ class Retencion implements Serializable {
     double baseServicios = 0
     double porcentajeServicios = 0
     double servicios = 0
+    String pago
+
 
 
     static mapping = {
@@ -53,6 +58,8 @@ class Retencion implements Serializable {
             documentoEmpresa column: 'fcdt__id'
             porcentajeIva column: 'pciv__id'
             pais column: 'pais__id'
+            empresa column: 'empr__id'
+            proveedor column: 'prve__id'
 
             direccion column: 'rtcndrcn'
             fecha column: 'rtcnfcha'
@@ -79,6 +86,8 @@ class Retencion implements Serializable {
             baseServicios column: 'rtcnbssr'
             porcentajeServicios column: 'rtcnpcsr'
             servicios column: 'rtcnsrvc'
+            creditoTributario column: 'rtcncrtr'
+            pago column: 'rtcnpago'
 
         }
     }
@@ -88,7 +97,7 @@ class Retencion implements Serializable {
         direccion(size: 1..127, blank: true, nullable: true, attributes: [title: 'direccion'])
         telefono(size: 1..15, blank: true, nullable: true, attributes: [title: 'telefono'])
         persona(size: 1..63, blank: true, nullable: true, attributes: [title: 'persona'])
-        numero(size: 1..15, blank: true, nullable: true, attributes: [title: 'numero'])
+        numero(blank: true, nullable: true, attributes: [title: 'numero'])
         fechaEmision (blank: true, nullable: true)
         convenio (blank: true, nullable: true)
         normaLegal(blank: true, nullable: true)
@@ -109,5 +118,8 @@ class Retencion implements Serializable {
         servicios(blank: true, nullable: true)
         conceptoRIRServicios(blank: true, nullable: true)
         conceptoRIRBienes(blank: true, nullable: true)
+        creditoTributario(blank: true, nullable: true)
+        numeroComprobante(blank: true, nullable: true)
+        pago(blank: true, nullable: true)
     }
 }

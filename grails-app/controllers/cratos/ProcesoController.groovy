@@ -2,6 +2,7 @@ package cratos
 
 import cratos.seguridad.Persona
 import cratos.sri.Pais
+import cratos.sri.PorcentajeIva
 import cratos.sri.SustentoTributario
 import cratos.sri.TipoCmprSustento
 import cratos.sri.TipoCmprTransaccion
@@ -1406,22 +1407,183 @@ class ProcesoController extends cratos.seguridad.Shield {
     }
 
     def validarSerie_ajax () {
+//        println("params " + params)
+//        def documentoEmpresa = DocumentoEmpresa.get(params.libretin)
+//        def desde = documentoEmpresa.numeroDesde
+//        def hasta = documentoEmpresa.numeroHasta
+        def retencion
+        def todas
+
+//        if((params.serie.toInteger() >= desde.toInteger()) && (params.serie.toInteger() <= hasta.toInteger())){
+        if(params.retencion){
+            retencion = Retencion.get(params.retencion)
+            todas = Retencion.findAllByEmpresa(retencion.empresa) - retencion
+            if(todas.numero.contains(params.serie)){
+                render 'no'
+            }else{
+                render 'ok'
+            }
+        }else{
+            render 'ok'
+        }
+//        }else{
+//                render false
+//        }
+//
+
+    }
+
+    def concepto_ajax () {
+        def concepto = ConceptoRetencionImpuestoRenta.get(params.idConcepto)
+        def valorRetenido = (params.base ? params.base.toDouble() : 0) * (concepto.porcentaje.toDouble() / 100)
+        return [concepto: concepto, retenido: valorRetenido]
+    }
+
+    def conceptoSV_ajax () {
+        def concepto = ConceptoRetencionImpuestoRenta.get(params.idConcepto)
+        def valorRetenido = (params.base ? params.base.toDouble() : 0) * (concepto.porcentaje.toDouble() / 100)
+        return [concepto: concepto, retenido: valorRetenido]
+    }
+
+    def validarBase_ajax () {
+        println("params " + params)
+        def sumatoria = params.baseBienes.toDouble() + params.baseServicios.toDouble()
+        if(params.baseBienes.toDouble() > params.baseImponible.toDouble() || params.baseBienes.toDouble() > sumatoria ){
+            render false
+        }else{
+            render true
+        }
+    }
+
+    def porcentaje_ajax () {
+        def porcentaje = PorcentajeIva.get(params.porcentaje)
+        return [porcentaje: porcentaje.valor]
+    }
+
+    def calcularValorICE_ajax () {
+//        def porcentaje = PorcentajeIva.get(params.porcentaje)
+//        def valor = params.base.toDouble() * (porcentaje.valor / 100)
+        def valor = (params.base ? params.base.toDouble() : 0) * (params.porcentaje ? (params.porcentaje.toDouble()  / 100) : 0)
+        return [valor: valor]
+    }
+
+    def calcularValorBI_ajax () {
+//       def porcentaje = PorcentajeIva.get(params.porcentaje)
+//       def valor = params.base.toDouble() * (porcentaje.valor / 100)
+        def valor = (params.base ? params.base.toDouble() : 0) * (params.porcentaje ? (params.porcentaje.toDouble()  / 100) : 0)
+        return [valor: valor]
+    }
+
+    def calcularValorSV_ajax () {
+//       def porcentaje = PorcentajeIva.get(params.porcentaje)
+//       def valor = params.base.toDouble() * (porcentaje.valor / 100)
+        def valor = (params.base ? params.base.toDouble() : 0) * (params.porcentaje ? (params.porcentaje.toDouble() / 100) : 0)
+        return [valor: valor]
+    }
+
+    def totalBase_ajax () {
+        def total = (params.ice ? params.ice.toDouble() : 0) + (params.bienes ? params.bienes.toDouble() : 0) + (params.servicios ? params.servicios.toDouble() : 0)
+        def base = params.base.toDouble()
+        return [total: total.toDouble(), base: base]
+    }
+
+    def totalesRenta_ajax () {
+        def total = (params.bienes ? params.bienes.toDouble() : 0) + (params.servicios ? params.servicios.toDouble() : 0)
+        def base = params.base.toDouble()
+        return [total: total.toDouble(), base: base]
+    }
+
+    def comprobarSerie_ajax () {
         def documentoEmpresa = DocumentoEmpresa.get(params.libretin)
         def desde = documentoEmpresa.numeroDesde
         def hasta = documentoEmpresa.numeroHasta
 
         if((params.serie.toInteger() >= desde.toInteger()) && (params.serie.toInteger() <= hasta.toInteger())){
-            render true
+            render 'ok'
         }else{
-            render false
+            render 'no'
         }
     }
 
-    def concepto_ajax () {
-       def concepto = ConceptoRetencionImpuestoRenta.get(params.idConcepto)
-        def valorRetenido = params.base.toDouble() * (concepto.porcentaje.toDouble() / 100)
-        return [concepto: concepto, retenido: valorRetenido]
-    }
+    def saveRetencion_ajax () {
+        println("params save " + params)
+        def proceso = Proceso.get(params.proceso)
+        def retencion
+        def conceptoBienes
+        def conceptoServicios
+        def proveedor = Proveedor.get(proceso.proveedor.id)
+        def libretin
+        def porcentajeIva
+        if(params.retencion){
+            retencion = Retencion.get(params.retencion)
+        }else{
+            retencion = new Retencion()
+            retencion.proceso = proceso
+            retencion.proveedor = proveedor
+        }
+        retencion.direccion = params.direccion
+        retencion.telefono = params.telefono
+        retencion.fecha = new Date().parse("dd-MM-yyyy",params.fecha)
+        retencion.fechaEmision = new Date().parse("dd-MM-yyyy",params.fechaEmision)
+        conceptoBienes = ConceptoRetencionImpuestoRenta.get(params.conceptoRIRBienes)
+        retencion.proveedor
+        retencion.conceptoRIRBienes = conceptoBienes
+        retencion.baseRenta = params.baseRenta.toDouble()
+        retencion.renta = params.renta.toDouble()
+        retencion.empresa = proceso.empresa
+        if(params.conceptoRIRBienes != '23'){
+            conceptoServicios = ConceptoRetencionImpuestoRenta.get(params.conceptoRIRServicios)
+            retencion.conceptoRIRServicios = conceptoServicios
+            retencion.baseRentaServicios = params.baseRentaServicios.toDouble()
+            retencion.rentaServicios = params.servicios.toDouble()
+            libretin = DocumentoEmpresa.get(params.documentoEmpresa)
+            retencion.documentoEmpresa = libretin
+            retencion.numeroComprobante = params.numeroComprobante
+            retencion.numero = (libretin.numeroEstablecimiento + "-" + libretin.numeroEmision + "-" + params.numeroComprobante)
+            porcentajeIva = PorcentajeIva.get(params.porcentajeIva)
+            retencion.porcentajeIva = porcentajeIva
+                if(porcentajeIva.codigo != '0'){
+                    retencion.baseIva = params.iva
+                    retencion.creditoTributario = params.creditoTributario
+                    retencion.baseIce = params.baseIce.toDouble()
+                    retencion.porcentajeIce = params.porcentajeIce.toDouble()
+                    retencion.ice = params.ice.toDouble()
+                    retencion.baseBienes = params.baseBienes.toDouble()
+                    retencion.porcentajeBienes = params.porcentajeBienes.toDouble()
+                    retencion.bienes = params.bienes.toDouble()
+                    retencion.servicios = params.servicios.toDouble()
+                    retencion.porcentajeServicios = params.porcentajeServicios.toDouble()
+                    retencion.baseServicios = params.baseServicios.toDouble()
+                    retencion.pago = params.pago
+                        if(params.pago == '02'){
+                            retencion.pais = Pais.get(params.pais)
+                            retencion.convenio = params.convenio
+                            retencion.normaLegal = params.normaLegal
+                        }
+                }else{
+                    retencion.baseIce = 0
+                    retencion.porcentajeIce = 0
+                    retencion.ice = 0
+                    retencion.baseBienes = 0
+                    retencion.porcentajeBienes = 0
+                    retencion.bienes = 0
+                    retencion.servicios = 0
+                    retencion.porcentajeServicios = 0
+                    retencion.baseServicios = 0
+                }
+        }else{
+            retencion.baseRentaServicios = 0
+            retencion.rentaServicios = 0
+        }
 
+        try {
+            retencion.save(flush: true)
+            render "ok"
+        }catch (e){
+            pritnln("errores " + e)
+            render "no"
+        }
+
+    }
 }
 
