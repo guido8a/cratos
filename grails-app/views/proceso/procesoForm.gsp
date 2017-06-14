@@ -258,8 +258,11 @@
                 Libretín de Facturas/Retenciones:
             </div>
 
-            <div class="col-md-3 negrilla">
-                Selecciona el libretín y fija el secuencial a utilizarse
+            <div class="col-md-6 negrilla">
+                <g:select name="comprobanteSel"
+                          from="${libreta}"  value="${''}"
+                          class="form-control" optionKey="id" libre="1"
+                          optionValue="${{"Desde: " + it?.numeroDesde + ' - Hasta: ' + it?.numeroHasta + " - Autorización: " + it?.fechaAutorizacion?.format("dd-MM-yyyy")}}"/>
             </div>
         </div>
     </div>
