@@ -108,7 +108,7 @@
 
 <div class="btn-toolbar toolbar">
     <div class="btn-group">
-        <g:link class="btn regresar btn-primary btn-ajax" id="${proceso?.id}" action="show">
+        <g:link class="btn regresar btn-primary btn-ajax" id="${proceso?.id}" action="nuevoProceso">
             <i class="fa fa-chevron-left"></i> Proceso</g:link>
         <g:link class="btn regresar btn-info btn-ajax" action="buscarPrcs">
             <i class="fa fa-chevron-left"></i> Lista de Procesos</g:link>
@@ -515,7 +515,7 @@
             var bis = $("#baseImponibleSV").val()
             console.log("bi " + bi)
             console.log("bis " + bis)
-            console.log("suma " + parseFloat(bi) + parseFloat(bis))
+            console.log("suma ", parseFloat(bi) + parseFloat(bis))
             if( ( (bi ? bi : 0) + (bis ? bis : 0)) > ${base}){
                 error+="<li>Ingrese un valor menor o igual a la base imponible</li>"
             }

@@ -185,7 +185,7 @@
             label: " Ir al proceso",
             icon: "fa fa-file-text-o",
             action: function () {
-                location.href = '${createLink(controller: "proceso", action: "show")}?id=' + id;
+                location.href = '${createLink(controller: "proceso", action: "nuevoProceso")}?id=' + id;
             }
         };
 

@@ -151,10 +151,15 @@
             </div>
 
             <div class="col-md-4 negrilla">
+%{--
                 <g:select class="form-control required cmbRequired tipoProcesoSel" name="tipoProceso" id="tipoProceso"
                           from="${tiposProceso}" label="Proceso tipo: " value="${proceso?.tipoProceso}" optionKey="key"
                           optionValue="value" title="Tipo de la transacción"
                           disabled="${proceso?.id ? 'true' : 'false'}"/>
+--}%
+                <g:select class="form-control required cmbRequired tipoProcesoSel" name="tipoProceso" id="tipoProceso"
+                          from="${tiposProceso}" label="Proceso tipo: " value="${proceso?.tipoProceso}" optionKey="key"
+                          optionValue="value" title="Tipo de la transacción"/>
             </div>
 
             <div class="col-md-1 negrilla">
@@ -241,11 +246,10 @@
                 Descripción:
             </div>
 
-            <div class="col-md-3 negrilla">
-                <textArea style="height:80px;width: 700px;resize: none" maxlength="255" name="descripcion"
+            <div class="col-md-10 negrilla">
+                <textArea style="height:55px;resize: none" maxlength="255" name="descripcion"
                           id="descripcion" title="La descripción de la transacción contable"
-                          class="form-control" ${registro ? 'readonly' : ''}>
-                    ${proceso?.descripcion}</textArea>
+                          class="form-control" ${registro ? 'readonly' : ''}>${proceso?.descripcion}</textArea>
             </div>
         </div>
 
@@ -401,21 +405,20 @@
         var prve = $("#prve__id").val();
         console.log("prve__id:", prve);
         $("#tipoProceso").change();
-        if(tipo == 'C') {
-            $("#sustento").change();
-        }
         if(prve && (tipo =='C' || tipo == 'V')) {
             cargarProveedor(tipo);
             console.log("buscar prve");
         }
-        if("${proceso.tipoCmprSustento}"){
-            console.log("proceso:", "${proceso.tipoCmprSustento.id}");
-            cargarSstr("${proceso.proveedor.id}")
+        if("${proceso?.sustentoTributario}") {
+            console.log("proceso:", "${proceso?.tipoCmprSustento?.id}");
+            cargarSstr("${proceso?.proveedor?.id}")
         }
-        if("${proceso.tipoCmprSustento}"){
-            console.log("proceso:", "${proceso.tipoCmprSustento.id}");
-            cargarSstr("${proceso.proveedor.id}")
-        }
+
+        setTimeout(function () {
+                if("${proceso?.tipoCmprSustento}") {
+                    $("#sustento").change();
+                }
+            }, 400);
     });
 
     $("#tipoProceso").change(function () {
@@ -467,35 +470,14 @@
             data: {
                 tptr: tptr,
                 prve: prve,
-                sstr: ${proceso?.tipoCmprSustento?.id}
+                sstr: "${proceso?.sustentoTributario?.id}",
+                tpcp: "${proceso?.tipoCmprSustento?.id}"
             },
             success: function (msg) {
                 $("#divSustento").html(msg)
             }
         });
     };
-
-/*
-    $("#sustento").change(function () {
-        var tptr = $(".tipoProcesoSel option:selected").val();
-        var sstr = $(".sustentoSri option:selected").val();
-        var prve = $("#prve__id").val();
-
-        console.log("cambia sustento")
-        $.ajax({
-            type: 'POST',
-            url: "${createLink(controller: 'proceso', action: 'cargaTcsr')}",
-            data: {
-                tptr: tptr,
-                prve: prve,
-                sstr: sstr
-            },
-            success: function (msg) {
-                $("#divComprobanteSustento").html(msg)
-            }
-        });
-    });
-*/
 
     function cargarProveedor(tipo) {
         if (tipo != '-1') {
@@ -534,15 +516,6 @@
         });
     }
 
-    /*
-     function cargarBotonGuardar (tipo) {
-     if(tipo == '-1'){
-     $("#guardarProceso").addClass('hidden')
-     }else{
-     $("#guardarProceso").removeClass('hidden')
-     }
-     }
-     */
 
     function cargarBotonBuscar(tipo) {
         if (tipo != '-1') {

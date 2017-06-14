@@ -8,10 +8,18 @@
               title="Sustento tributario" optionKey="id" optionValue="${{it.codigo  + ' - ' + it.descripcion}}"
                noSelection="${['-1': 'Seleccione...']}" value="${sstr}"/>
 </div>
+<g:if test="${proceso?.estado != 'R'}">
+    <a href="#" id="btn_cargarCp" class="btn btn-info">
+        <i class="fa fa-check"></i>
+    </a>
+</g:if>
+
+%{--
 
 <div class="col-md-2 " style="font-size: 10px;">
     Necesario para el ATS
 </div>
+--}%
 
 <script type="text/javascript">
 
@@ -22,6 +30,13 @@
             $("#btn_buscar").click()
         }
     });
+
+    $("#btn_cargarCp").click(function () {
+        console.log("change...")
+        $("#sustento").change()
+    });
+
+
 
     $("#sustento").change(function () {
         var tptr = $(".tipoProcesoSel option:selected").val();
@@ -35,7 +50,8 @@
             data: {
                 tptr: tptr,
                 prve: prve,
-                sstr: sstr
+                sstr: sstr,
+                tpcp: "${tpcpSri}"
             },
             success: function (msg) {
                 $("#divComprobanteSustento").html(msg)

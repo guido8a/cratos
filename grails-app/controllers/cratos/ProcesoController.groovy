@@ -41,7 +41,9 @@ class ProcesoController extends cratos.seguridad.Shield {
         if (params.id) {
             def proceso = Proceso.get(params.id)
             def registro = (Comprobante.findAllByProceso(proceso)?.size() == 0) ? false : true
-            render(view: "procesoForm", model: [proceso: proceso, registro: registro, tiposProceso: tiposProceso])
+            def fps = ProcesoFormaDePago.findAllByProceso(proceso)
+
+            render(view: "procesoForm", model: [proceso: proceso, registro: registro, tiposProceso: tiposProceso, fps: fps])
         } else
             render(view: "procesoForm", model: [registro: false, tiposProceso: tiposProceso])
     }
@@ -66,8 +68,8 @@ class ProcesoController extends cratos.seguridad.Shield {
             tipoTran = TipoTransaccion.get(tptr)  //????
         }
 
-        def cmpr = TipoCmprTransaccion.get(params."tipoComprobanteSri.id")  //????
-        def sustento = TipoCmprSustento.get(params.tipoCmprSustento)
+        def sustento = SustentoTributario.get(params.tipoCmprSustento)  //????
+        def comprobanteSri = TipoCmprSustento.get(params."tipoComprobanteSri.id")
 
         def proveedor = Proveedor.get(params."proveedor.id")
         def gestor = Gestor.get(params."gestor.id")
@@ -88,8 +90,8 @@ class ProcesoController extends cratos.seguridad.Shield {
 
         proceso.proveedor = proveedor
         println "...1"
-        proceso.tipoCmprSustento = sustento
-        proceso.tipoCmprTransaccion = TipoCmprTransaccion.get(params.sustento)
+        proceso.tipoCmprSustento = comprobanteSri
+        proceso.sustentoTributario = sustento
 
         proceso.fechaRegistro = fechaRegistro
         proceso.fechaIngresoSistema = fechaIngresoSistema
@@ -116,101 +118,23 @@ class ProcesoController extends cratos.seguridad.Shield {
             println "...4"
         }
 
-/*
-        if(params.tipoProceso == 'P') {
-            comprobante = Comprobante.get(params.comprobanteSel_name)
-            proceso.comprobante = comprobante
-            proceso.valor = params.valorPago_name.toDouble()
-
-        } else {
-            if(params.tipoProceso == 'NC') {
-                comprobante = Comprobante.get(params.comprobanteSel_name)
-                proceso.comprobante = comprobante
-                proceso.valor = params.valorPago_name.toDouble()
-                proceso.impuesto = params.ivaGenerado.toDouble()
-            } else {
-                println "...3"
-                proceso.valor = params.baseImponibleIva0.toDouble() + params.baseImponibleIva.toDouble() + params.baseImponibleNoIva.toDouble()
-                proceso.impuesto = params.ivaGenerado.toDouble() + params.iceGenerado.toDouble()
-                proceso.baseImponibleIva = params.baseImponibleIva.toDouble()
-                proceso.baseImponibleIva0 = params.baseImponibleIva0.toDouble()
-                proceso.baseImponibleNoIva = params.baseImponibleNoIva.toDouble()
-                proceso.ivaGenerado = params.ivaGenerado.toDouble()
-                proceso.iceGenerado = params.iceGenerado.toDouble()
-                proceso.documento = params.facturaEstablecimiento + "-" + params.facturaPuntoEmision + "-" + params.facturaSecuencial
-                println "documento: ${proceso.factura}"
-                proceso.facturaEstablecimiento = params.facturaEstablecimiento
-                proceso.facturaPuntoEmision = params.facturaPuntoEmision
-                proceso.facturaSecuencial = params.facturaSecuencial
-                proceso.facturaAutorizacion = params.facturaAutorizacion
-                println "...4"
-            }
-        }
-*/
-
-        println "<<<<< gestor: ${proceso.gestor?.id}, cont: ${proceso.contabilidad?.id}, empr: ${proceso.empresa?.id}, " +
-                "proveedor: ${proceso.proveedor?.id}, cmpr: ${proceso.comprobante?.id}, usro: ${proceso.usuario}"
-        println "tptr: ${proceso.tipoTransaccion}, tpss: ${proceso.tipoCmprSustento}, tpcp: ${proceso.tipoCmprTransaccion}"
-        println "tpps: ${proceso.tipoProceso}, fcha: ${proceso.fecha}, fcig: ${proceso.fechaIngresoSistema}"
-        println "fcrg: ${proceso.fechaRegistro}, fcem: ${proceso.fechaEmision}"
+//        println "<<<<< gestor: ${proceso.gestor?.id}, cont: ${proceso.contabilidad?.id}, empr: ${proceso.empresa?.id}, " +
+//                "proveedor: ${proceso.proveedor?.id}, cmpr: ${proceso.comprobante?.id}, usro: ${proceso.usuario}"
+//        println "tptr: ${proceso.tipoTransaccion}, tpss: ${proceso.tipoCmprSustento}, tpcp: ${proceso.sustentoTributario}"
+//        println "tpps: ${proceso.tipoProceso}, fcha: ${proceso.fecha}, fcig: ${proceso.fechaIngresoSistema}"
+//        println "fcrg: ${proceso.fechaRegistro}, fcem: ${proceso.fechaEmision}"
         try {
             println "...5: $proceso"
             proceso.save(flush: true)
             println "...6"
             proceso.refresh()
-            redirect(action: 'show', id: proceso.id)
+            redirect(action: 'nuevoProceso', id: proceso.id)
             println "...7 proceso: ${proceso.id}"
         } catch (e) {
             println "...8"
             println "error al grabar el proceso $e"
         }
 
-//            params.lang="en"
-//            def key = "org.springframework.web.servlet.DispatcherServlet.LOCALE_RESOLVER"
-//            def localeResolver = request.getAttribute(key)
-//            localeResolver.setLocale(request, response, new Locale("en"))
-//            def p
-//            params.controllerName = controllerName
-//            params.actionName = actionName
-//            if (params.proveedor.id == "null")
-//                params.proveedor.id = null
-//            if (params.sustentoTributario.id == "-1")
-//                params.sustentoTributario.id = null
-//            if (params.tipoComprobanteSri.id == "-1")
-//                params.tipoComprobanteSri.id = null
-//            params.estado = "N"
-//            params.valor = params.baseImponibleIva0.toDouble() + params.baseImponibleIva.toDouble() + params.baseImponibleNoIva.toDouble()
-//            params.impuesto = params.ivaGenerado.toDouble() + params.iceGenerado.toDouble()
-//            params.documento = params.facturaEstablecimiento + "-" + params.facturaPuntoEmision + "-" + params.facturaSecuencial
-//            params.fechaIngresoSistema = new Date()
-//            if (params.id) {
-//                p = Proceso.get(params.id)
-//            } else {
-//                p = new Proceso()
-//            }
-//            p.properties = params
-//            p.contabilidad = session.contabilidad
-//            p.empresa = session.empresa
-//            def comprobante = Comprobante.get(params.comprobanteSel_name)
-//            p.comprobante = comprobante
-//            p.save(flush: true)
-//            println "errores proceso " + p.errors
-//            if (p.errors.getErrorCount() == 0) {
-//                if (params.data != "") {
-//                    def data = params.data.split(";")
-//                    // println "data "+data
-//                    data.each {
-//                        if (it != "") {
-//                        }
-//                    }
-//                }
-//
-//                redirect(action: 'show', id: p.id)
-//            } else
-//                render(view: 'procesoForm', model: ['proceso': p], error: true)
-//        } else {
-//            redirect(controller: "shield", action: "ataques")
-//        }
     }
 
 
@@ -281,7 +205,7 @@ class ProcesoController extends cratos.seguridad.Shield {
 
         def data = cn.rows(sql.toString())
         cn.close()
-        [data: data]
+        [data: data, tpcpSri: params.tpcp]
     }
 
     def cargaSstr() {
@@ -313,7 +237,7 @@ class ProcesoController extends cratos.seguridad.Shield {
 
         def data = cn.rows(sql.toString())
         cn.close()
-        [data: data, sstr: params.sstr]
+        [data: data, sstr: params.sstr, tpcpSri: params.tpcp]
     }
 
     def valorAsiento = {
@@ -530,24 +454,19 @@ class ProcesoController extends cratos.seguridad.Shield {
 
     }
 
-    def show = {
-//        println "session "+session.contabilidad
-        def proceso = Proceso.get(params.id)
-//        def tiposProceso = ["-1": "Seleccione...", "C": "Compras", "V": "Ventas", "O": "Otros", "A": "Ajustes"]
-        def tiposProceso = ["-1": "Seleccione...", "C": "Compras", "V": "Ventas", "O": "Otros", "A": "Ajustes", "P": "Pagos", "NC": "Nota de Crédito"]
-        def comprobante = Comprobante.findByProceso(proceso)
-        def registro = (Comprobante.findAllByProceso(proceso)?.size() == 0) ? false : true
-        def fps = ProcesoFormaDePago.findAllByProceso(proceso)
-        def aux = false
-        Asiento.findAllByComprobante(comprobante).each {
-            if (Auxiliar.findAllByAsiento(it).size() > 1)
-                aux = true
-        }
-//        println "registro "+registro
-        println "sustento: ${proceso?.tipoCmprSustento?.id}"
-
-        render(view: "procesoForm", model: [proceso: proceso, registro: registro, comprobante: comprobante, tiposProceso: tiposProceso, fps: fps, registro: registro, aux: aux])
-    }
+//    def show = {
+//        def proceso = Proceso.get(params.id)
+//        def tiposProceso = ["-1": "Seleccione...", "C": "Compras", "V": "Ventas", "O": "Otros", "A": "Ajustes", "P": "Pagos", "NC": "Nota de Crédito"]
+//        def comprobante = Comprobante.findByProceso(proceso)
+//        def registro = (Comprobante.findAllByProceso(proceso)?.size() == 0) ? false : true
+//        def fps = ProcesoFormaDePago.findAllByProceso(proceso)
+//        def aux = false
+//        Asiento.findAllByComprobante(comprobante).each {
+//            if (Auxiliar.findAllByAsiento(it).size() > 1)
+//                aux = true
+//        }
+//        render(view: "procesoForm", model: [proceso: proceso, registro: registro, comprobante: comprobante, tiposProceso: tiposProceso, fps: fps, registro: registro, aux: aux])
+//    }
 
     def comprobarPassword = {
         if (request.method == 'POST') {
@@ -1384,8 +1303,8 @@ class ProcesoController extends cratos.seguridad.Shield {
 */
         def sql = "select prcs.prcs__id id, prcsfcha, prcsdscr, prcsetdo, cmprprfj||cmprnmro cmprnmro, " +
                 "prcstpps, prvenmbr, prcsetdo " +
-                "from prcs, cmpr, prve where prcs.empr__id = ${session.empresa.id} and " +
-                "cmpr.prcs__id = prcs.prcs__id and prve.prve__id = prcs.prve__id ${wh}" +
+                "from prcs left join cmpr on cmpr.prcs__id = prcs.prcs__id, prve where prcs.empr__id = ${session.empresa.id} and " +
+                "prve.prve__id = prcs.prve__id ${wh}" +
                 "order by prcsfcha limit 21"
 
 //        println "buscar .. ${sql}"

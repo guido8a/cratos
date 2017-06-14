@@ -36,8 +36,7 @@
             </g:if>
             <g:if test="${proceso?.estado != 'R'}">
                 <a href="#" id="btn_cargar" class="btn btn-info">
-                    <i class="fa fa-retry"></i>
-                    Cont.
+                    <i class="fa fa-check"></i>
                 </a>
             </g:if>
         </div>
@@ -76,9 +75,8 @@
 
 <script type="text/javascript">
     $("#btn_buscar").click(function () {
-        console.log("clickf2222")
+//        console.log("clickf2222")
         $('#modal-proveedor').modal('show')
-//        cargaSstr()
     });
 
     $(".proveedor").dblclick(function(){
@@ -86,9 +84,7 @@
     });
 
     $("#btn_cargar").click(function(){
+        if($("#tipoProceso").val() == 'C' || $("#tipoProceso").val() == 'V')
         cargarSstr($("#prve__id").val())
     });
-
-
-
 </script>
