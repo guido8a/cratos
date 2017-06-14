@@ -229,11 +229,11 @@
                 <div class="col-md-12">
                     <div class=" col-md-4" style="margin-left: 15px">
                         <g:select class="form-control" name="conceptoRetencionImpuestoRenta"
-                                  from="${cratos.ConceptoRetencionImpuestoRenta.list().sort{it.codigo}}" optionKey="id" optionValue="${{it.codigo + ' - ' + it.descripcion}}"/>
+                                  from="${cratos.ConceptoRetencionImpuestoRenta.list().sort{it.codigo}}" optionKey="id" optionValue="${{it.codigo + ' - ' + it.descripcion}}" value="${retencion?.conceptoRIRBienes?.id}"/>
                     </div>
 
                     <div class="col-md-2" style="margin-left: 35px">
-                        <g:textField class="form-control number baseB" title="La base imponible del IR." style="text-align: right" name="baseImponible" value="${base ?: retencion?.baseRenta}"/>
+                        <g:textField class="form-control number baseB" title="La base imponible del IR." style="text-align: right" name="baseImponible" value="${retencion?.baseRenta ?: base}"/>
                         <p class="help-block ui-helper-hidden"></p>
                     </div>
 
@@ -268,15 +268,15 @@
 
                 </div>
 
-
                 <div class="col-md-12">
                     <div class=" col-md-4" style="margin-left: 15px">
                         <g:select class="form-control" name="conceptoServicios"
-                                  from="${cratos.ConceptoRetencionImpuestoRenta.list().sort{it.codigo}}" optionKey="id" optionValue="${{it.codigo + ' - ' + it.descripcion}}"/>
+                                  from="${cratos.ConceptoRetencionImpuestoRenta.list().sort{it.codigo}}" optionKey="id" optionValue="${{it.codigo + ' - ' + it.descripcion}}" value="${retencion?.conceptoRIRServicios?.id}"/>
                     </div>
 
                     <div class="col-md-2" style="margin-left: 35px">
-                        <g:textField class="form-control number baseS" title="La base imponible del IR."  style="text-align: right" name="baseImponibleSV" value="${retencion?.baseRentaServicios ?: 0}"/>
+                        <g:textField class="form-control number baseS"
+                                     title="La base imponible del IR."  style="text-align: right" name="baseImponibleSV" value="${retencion?.baseRentaServicios ?: 0}"/>
                     </div>
 
                     <div class="col-md-5" style="margin-left: 35px" id="divRSV">
@@ -315,7 +315,8 @@
                 Porcentaje IVA
             </div>
             <div class="col-md-3">
-                <g:select name="porcentajeIva_name" id="porcentajeIva" from="${cratos.sri.PorcentajeIva.list().sort{it.descripcion}}" class="form-control" optionValue="descripcion" optionKey="id"/>
+                <g:select name="porcentajeIva_name" id="porcentajeIva"
+                          from="${cratos.sri.PorcentajeIva.list().sort{it.descripcion}}" class="form-control" optionValue="descripcion" optionKey="id" value="${retencion?.porcentajeIva?.id}"/>
             </div>
             <div class="col-md-1">
             </div>
@@ -324,11 +325,13 @@
                 ICE
             </div>
             <div class="fac2">
-                <g:textField class=" form-control number" title="La base imponible del ICE es obligatoria. Puede ingresar 0." name="iceBase_name" id="iceBase" value="${0}" style="text-align: right"/>
+                <g:textField class=" form-control number"
+                             title="La base imponible del ICE es obligatoria. Puede ingresar 0." name="iceBase_name" id="iceBase" value="${retencion?.baseIce ?: 0}" style="text-align: right"/>
             </div>
 
             <div class="fac2" id="divP1">
-                <g:textField class=" form-control number" title="El porcentaje del ICE es obligatorio. Puede ingresar 0." name="icePorcentaje_name" id="icePorcentaje" value="${0}" style="text-align: right"/>
+                <g:textField class=" form-control number"
+                             title="El porcentaje del ICE es obligatorio. Puede ingresar 0." name="icePorcentaje_name" id="icePorcentaje" value="${retencion?.porcentajeIce ?: 0}" style="text-align: right"/>
             </div>
 
             <div class="fac2" id="divV1"></div>
@@ -350,11 +353,13 @@
                 BIENES
             </div>
             <div class="fac2">
-                <g:textField class=" form-control number" title="La base imponible de Bienes es obligatoria. Puede ingresar 0." name="bienesBase_name"  id="bienesBase" value="${0}" style="text-align: right"/>
+                <g:textField class=" form-control number"
+                             title="La base imponible de Bienes es obligatoria. Puede ingresar 0." name="bienesBase_name"  id="bienesBase" value="${retencion?.baseBienes ?: 0}" style="text-align: right"/>
             </div>
 
             <div class="fac2" id="divP2">
-                <g:textField class=" form-control number" title="El porcentaje de Bienes es obligatorio. Puede ingresar 0." name="bienesPorcentaje_name" id="bienesPorcentaje" value="${0}" style="text-align: right"/>
+                <g:textField class=" form-control number"
+                             title="El porcentaje de Bienes es obligatorio. Puede ingresar 0." name="bienesPorcentaje_name" id="bienesPorcentaje" value="${retencion?.porcentajeBienes ?: 0}" style="text-align: right"/>
             </div>
 
             <div class="fac2" id="divV2">
@@ -365,7 +370,7 @@
                 Aplica Crédito Tributario
             </div>
             <div class="col-md-3">
-                <g:select class=" form-control" name="credito" from="${['SI', 'NO']}" readonly="false"/>
+                <g:select class=" form-control" name="credito" from="${['SI', 'NO']}" readonly="false" value="${retencion?.creditoTributario}"/>
             </div>
 
             <div class="col-md-1">
@@ -375,11 +380,15 @@
                 SERVICIOS
             </div>
             <div class="fac2">
-                <g:textField class=" form-control number" title="La base imponible de Servicios es obligatoria. Puede ingresar 0." name="servicioBase_name" id="servicioBase" value="${0}" style="text-align: right"/>
+                <g:textField class=" form-control number"
+                             title="La base imponible de Servicios es obligatoria. Puede ingresar 0."
+                             name="servicioBase_name" id="servicioBase" value="${retencion?.baseServicios ?: 0}" style="text-align: right"/>
             </div>
 
             <div class="fac2" id="divP3">
-                <g:textField class=" form-control number" title="El porcentaje de Servicios es obligatorio. Puede ingresar 0." name="serviciosPorcentaje_name" id="serviciosPorcentaje" value="${0}" style="text-align: right"/>
+                <g:textField class=" form-control number"
+                             title="El porcentaje de Servicios es obligatorio. Puede ingresar 0."
+                             name="serviciosPorcentaje_name" id="serviciosPorcentaje" value="${retencion?.porcentajeServicios ?: 0}" style="text-align: right"/>
             </div>
 
             <div class="fac2" id="divV3">
@@ -392,7 +401,7 @@
             </div>
             <div class="col-md-3">
                 <g:select class="form-control" name="pago"
-                          from="${['01': 'LOCAL', '02': 'EXTERIOR']}" optionKey="key" optionValue="value"/>
+                          from="${['01': 'LOCAL', '02': 'EXTERIOR']}" optionKey="key" optionValue="value" value="${retencion?.pago}"/>
             </div>
             <div class="col-md-3">
             </div>
@@ -409,18 +418,20 @@
                         <label style="margin-left: -40px">País</label>
                     </div>
                     <div class="dos">
-                        <g:select class="form-control " name="pais" from="${cratos.sri.Pais.list([sort: 'nombre'])}" optionKey="id" optionValue="nombre" style="width: 250px; margin-left: -100px"/>
+                        <g:select class="form-control"
+                                  name="pais" from="${cratos.sri.Pais.list([sort: 'nombre'])}"
+                                  optionKey="id" optionValue="nombre" style="width: 250px; margin-left: -100px" value="${retencion?.pais?.id}"/>
                     </div>
                 </div>
 
                 <div style="margin-top: 20px">
                     <label style="margin-right: 30px">Aplica convenio de doble tributación?</label>
-                    <g:radioGroup class="convenio" labels="['SI', 'NO']" values="['SI', 'NO']" name="convenio_name" value="">${it?.label} ${it?.radio}</g:radioGroup>
+                    <g:radioGroup class="convenio" labels="['SI', 'NO']" values="['SI', 'NO']" name="convenio_name" value="${retencion?.convenio}">${it?.label} ${it?.radio}</g:radioGroup>
                 </div>
 
                 <div style="margin-top: 20px">
                     <label style="margin-right: 30px">Pago sujeto a retención en aplicación de la norma legal</label>
-                    <g:radioGroup class="norma" labels="['SI', 'NO']" values="['SI', 'NO']" name="norma_name" value="">${it?.label} ${it?.radio}</g:radioGroup>
+                    <g:radioGroup class="norma" labels="['SI', 'NO']" values="['SI', 'NO']" name="norma_name" value="${retencion?.normaLegal}">${it?.label} ${it?.radio}</g:radioGroup>
                 </div>
                 <legend></legend>
             </fieldset>
@@ -444,9 +455,16 @@
         }
     });
 
+
+    cargarPorcentajeIva($("#porcentajeIva option:selected").val())
+
     $("#porcentajeIva").change(function () {
         var porcentaje = $("#porcentajeIva option:selected").val()
-        if(porcentaje == '7'){
+        cargarPorcentajeIva(porcentaje)
+    });
+
+    function cargarPorcentajeIva (sel){
+        if(sel == '7'){
             $("#credito").addClass('soloLectura')
             $(".exterior").hide();
             $("#pago").val('01').addClass('soloLectura')
@@ -468,8 +486,8 @@
             $("#servicioBase").removeClass('soloLectura')
             $("#porcentajeIva").removeClass('colorS')
         }
+    }
 
-    });
 
     $("#btnGuardarRetencion").click(function (){
 
@@ -513,10 +531,7 @@
         }else{
             var bi = $("#baseImponible").val()
             var bis = $("#baseImponibleSV").val()
-            console.log("bi " + bi)
-            console.log("bis " + bis)
-            console.log("suma ", parseFloat(bi) + parseFloat(bis))
-            if( ( (bi ? bi : 0) + (bis ? bis : 0)) > ${base}){
+            if(parseFloat(bi ? bi : 0) + parseFloat(bis ? bis : 0) > ${base}){
                 error+="<li>Ingrese un valor menor o igual a la base imponible</li>"
             }
         }
@@ -535,13 +550,15 @@
                 error+="<li>Ingrese al menos un valor diferente de cero (Retención IVA)</li>"
             }
         }else{
-            if($("#iceBase").val() + $("#bienesBase").val() + $("#servicioBase").val() > ${base} ){
+            var ib = $("#iceBase").val()
+            var bb = $("#bienesBase").val()
+            var sb =  $("#servicioBase").val()
+            if( parseFloat(ib ? ib : 0)+ parseFloat(bb ? bb : 0) + parseFloat(sb ? sb : 0) > ${base} ){
                 if(concepto != '23'){
                     error+="<li>La suma de las bases debe ser menor o igual a la base imponible (Retención IVA)</li>"
                 }
             }
         }
-
 
         if(error == ''){
             $("#divErroresDetalle").hide();
@@ -582,6 +599,15 @@
                     retencion: '${retencion?.id}'
                 },
                 success: function (msg){
+                    if(msg == 'ok'){
+                        log("Retención guardada correctamente","success")
+                        setTimeout(function () {
+//                              location.reload()
+                            location.href='${createLink(controller: 'proceso', action: 'detalleSri')}/' + ${proceso?.id}
+                        }, 800);
+                    }else{
+                        log("Error al guardar la información de la retención","error")
+                    }
                     closeLoader()
                 }
             });
@@ -593,8 +619,6 @@
         }
 
     });
-
-
 
     function revisarSerie () {
         var regresa = $.ajax({
@@ -626,8 +650,6 @@
         return regresaV.responseText
     }
 
-
-
     cargarTotalesRenta();
 
     $(".baseB").keyup(function () {
@@ -654,21 +676,17 @@
     }
 
 
-
     $("#iceBase").keyup(function () {
-//        cargarValorRetencionICE(porcentajeI, $("#iceBase").val());
         cargarValorRetencionICE($("#icePorcentaje").val(), $("#iceBase").val());
         cargarTotalBase();
     });
 
     $("#bienesBase").keyup(function () {
-//        cargarValorRetencionBI(porcentajeI, $("#bienesBase").val());
         cargarValorRetencionBI($("#bienesPorcentaje").val(), $("#bienesBase").val());
         cargarTotalBase();
     });
 
     $("#servicioBase").keyup(function () {
-//        cargarValorRetencionSV(porcentajeI, $("#servicioBase").val());
         cargarValorRetencionSV($("#serviciosPorcentaje").val(), $("#servicioBase").val());
         cargarTotalBase();
     });
@@ -685,27 +703,10 @@
         cargarValorRetencionSV($("#serviciosPorcentaje").val(), $("#servicioBase").val());
     });
 
-    //    cargarCeldaPorcentaje(porcentajeI);
-    //    cargarValorRetencionICE(porcentajeI, $("#iceBase").val());
-    //    cargarValorRetencionBI(porcentajeI, $("#bienesBase").val());
-    //    cargarValorRetencionSV(porcentajeI, $("#servicioBase").val());
-
-
     cargarValorRetencionICE($("#icePorcentaje").val(), $("#iceBase").val());
     cargarValorRetencionBI($("#bienesPorcentaje").val(), $("#bienesBase").val());
     cargarValorRetencionSV($("#serviciosPorcentaje").val(), $("#servicioBase").val());
     cargarTotalBase();
-
-    //    $("#porcentajeIva").change(function () {
-    //        var porcentaje = $("#porcentajeIva option:selected").val();
-    //        var baseICE = $("#iceBase").val();
-    //        var baseBienes = $("#bienesBase").val();
-    //        var baseServicios = $("#servicioBase").val();
-    //        cargarCeldaPorcentaje(porcentaje);
-    //        cargarValorRetencionICE(porcentaje, baseICE);
-    //        cargarValorRetencionBI(porcentaje, baseBienes);
-    //        cargarValorRetencionSV(porcentaje, baseServicios);
-    //    });
 
     function cargarValorRetencionSV (porcentaje, base) {
         $.ajax({
@@ -917,16 +918,7 @@
             label.parents(".grupo").removeClass('has-error');
         },
         rules  : {
-            %{--serie : {--}%
-            %{--remote : {--}%
-            %{--type: 'POST',--}%
-            %{--url:"${createLink(controller: 'proceso', action: 'validarSerie_ajax')}",--}%
-            %{--data:{--}%
-            %{--numero: $(".numSerie").val(),--}%
-            %{--retencion: '${retencion?.id}'--}%
-            %{--}--}%
-            %{--}--}%
-            %{--},--}%
+
             baseImponible:{
                 remote : {
                     type: 'POST',
@@ -1138,15 +1130,23 @@
             }
         });
 
+        cargarExterior($("#pago option:selected").val());
+
         $("#pago").change(function () {
-            if ($(this).val() == '02') {
+            cargarExterior($(this).val())
+        });
+
+        function cargarExterior (pago) {
+            if (pago == '02') {
                 $(".exterior").show();
             } else {
                 $(".exterior").hide();
                 $(".norma").attr("checked", false);
                 $(".convenio").attr("checked", false);
             }
-        });
+        }
+
+
 
         function getNorma() {
             var result;

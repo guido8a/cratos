@@ -16,7 +16,7 @@ class Retencion implements Serializable {
 
     String direccion
     Date fecha
-    String numero
+    int numero
     String numeroComprobante
     String persona
     String telefono

@@ -1425,7 +1425,7 @@ class ProcesoController extends cratos.seguridad.Shield {
     }
 
     def saveRetencion_ajax () {
-        println("params save " + params)
+//        println("params save " + params)
         def proceso = Proceso.get(params.proceso)
         def retencion
         def conceptoBienes
@@ -1447,32 +1447,32 @@ class ProcesoController extends cratos.seguridad.Shield {
         conceptoBienes = ConceptoRetencionImpuestoRenta.get(params.conceptoRIRBienes)
         retencion.proveedor
         retencion.conceptoRIRBienes = conceptoBienes
-        retencion.baseRenta = params.baseRenta.toDouble()
+        retencion.baseRenta = (params.baseRenta ? params.baseRenta.toDouble() : 0)
         retencion.renta = params.renta.toDouble()
         retencion.empresa = proceso.empresa
         if(params.conceptoRIRBienes != '23'){
             conceptoServicios = ConceptoRetencionImpuestoRenta.get(params.conceptoRIRServicios)
             retencion.conceptoRIRServicios = conceptoServicios
-            retencion.baseRentaServicios = params.baseRentaServicios.toDouble()
+            retencion.baseRentaServicios = (params.baseRentaServicios ? params.baseRentaServicios.toDouble() : 0)
             retencion.rentaServicios = params.servicios.toDouble()
             libretin = DocumentoEmpresa.get(params.documentoEmpresa)
             retencion.documentoEmpresa = libretin
-            retencion.numeroComprobante = params.numeroComprobante
-            retencion.numero = (libretin.numeroEstablecimiento + "-" + libretin.numeroEmision + "-" + params.numeroComprobante)
+            retencion.numero = params.numeroComprobante.toInteger()
+            retencion.numeroComprobante = (libretin.numeroEstablecimiento + "-" + libretin.numeroEmision + "-" + params.numeroComprobante)
             porcentajeIva = PorcentajeIva.get(params.porcentajeIva)
             retencion.porcentajeIva = porcentajeIva
-                if(porcentajeIva.codigo != '0'){
-                    retencion.baseIva = params.iva
+                if(porcentajeIva.codigo.toInteger() != 0){
+                    retencion.baseIva = params.iva.toDouble()
                     retencion.creditoTributario = params.creditoTributario
-                    retencion.baseIce = params.baseIce.toDouble()
-                    retencion.porcentajeIce = params.porcentajeIce.toDouble()
+                    retencion.baseIce = (params.baseIce ? params.baseIce.toDouble() : 0)
+                    retencion.porcentajeIce = (params.porcentajeIce ? params.porcentajeIce.toDouble() : 0)
                     retencion.ice = params.ice.toDouble()
-                    retencion.baseBienes = params.baseBienes.toDouble()
-                    retencion.porcentajeBienes = params.porcentajeBienes.toDouble()
+                    retencion.baseBienes = (params.baseBienes ? params.baseBienes.toDouble() : 0)
+                    retencion.porcentajeBienes = (params.porcentajeBienes ? params.porcentajeBienes.toDouble(): 0)
                     retencion.bienes = params.bienes.toDouble()
                     retencion.servicios = params.servicios.toDouble()
-                    retencion.porcentajeServicios = params.porcentajeServicios.toDouble()
-                    retencion.baseServicios = params.baseServicios.toDouble()
+                    retencion.porcentajeServicios = (params.baseServicios ? params.porcentajeServicios.toDouble() : 0)
+                    retencion.baseServicios = (params.baseServicios ? params.baseServicios.toDouble() : 0 )
                     retencion.pago = params.pago
                         if(params.pago == '02'){
                             retencion.pais = Pais.get(params.pais)
@@ -1499,7 +1499,7 @@ class ProcesoController extends cratos.seguridad.Shield {
             retencion.save(flush: true)
             render "ok"
         }catch (e){
-            pritnln("errores " + e)
+            println("errores " + e)
             render "no"
         }
 
