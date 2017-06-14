@@ -1517,19 +1517,28 @@ class ProcesoController extends cratos.seguridad.Shield {
     }
 
     def validarSerieFactura_ajax () {
+        println("params " + params)
         def proceso
         def todas
+        def empresaF = Empresa.get(session.empresa.id)
 
         if(params.proceso){
             proceso = Proceso.get(params.retencion)
             todas = Proceso.findAllByEmpresa(proceso.empresa) - proceso
-            if(todas.facturaSecuencial.contains(params.serie)){
+            if(todas.facturaSecuencial.contains(params.serie.toInteger())){
                 render 'no'
             }else{
                 render 'ok'
             }
         }else{
-            render 'ok'
+            println("entro!!!!")
+            todas = Proceso.findAllByEmpresa(empresaF)
+            println("todas " + todas.facturaSecuencial)
+            if(todas.facturaSecuencial.contains(params.serie.toInteger())){
+                render 'no'
+            }else{
+                render 'ok'
+            }
         }
     }
 }

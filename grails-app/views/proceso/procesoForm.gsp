@@ -756,7 +756,6 @@
                     }
 
 
-
                     if($("#serieFactura").val() == ''){
                         error+="<li>Ingrese el número de serie de la factura</li>"
                     }else{
