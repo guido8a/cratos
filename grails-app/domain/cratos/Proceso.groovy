@@ -44,7 +44,7 @@ class Proceso implements Serializable {
 
     String facturaEstablecimiento
     String facturaPuntoEmision
-    String facturaSecuencial
+    int facturaSecuencial
     String facturaAutorizacion
 
 //    double retencionIvaBienes = 0

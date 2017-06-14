@@ -1330,14 +1330,9 @@ class ProcesoController extends cratos.seguridad.Shield {
     }
 
     def validarSerie_ajax () {
-//        println("params " + params)
-//        def documentoEmpresa = DocumentoEmpresa.get(params.libretin)
-//        def desde = documentoEmpresa.numeroDesde
-//        def hasta = documentoEmpresa.numeroHasta
         def retencion
         def todas
 
-//        if((params.serie.toInteger() >= desde.toInteger()) && (params.serie.toInteger() <= hasta.toInteger())){
         if(params.retencion){
             retencion = Retencion.get(params.retencion)
             todas = Retencion.findAllByEmpresa(retencion.empresa) - retencion
@@ -1349,11 +1344,6 @@ class ProcesoController extends cratos.seguridad.Shield {
         }else{
             render 'ok'
         }
-//        }else{
-//                render false
-//        }
-//
-
     }
 
     def concepto_ajax () {
@@ -1507,6 +1497,40 @@ class ProcesoController extends cratos.seguridad.Shield {
             render "no"
         }
 
+    }
+
+    def numeracionFactura_ajax () {
+        def documentoEmpresa = DocumentoEmpresa.get(params.libretin)
+        return [libreta : documentoEmpresa]
+    }
+
+    def comprobarSerieFactura_ajax () {
+        def documentoEmpresa = DocumentoEmpresa.get(params.libretin)
+        def desde = documentoEmpresa.numeroDesde
+        def hasta = documentoEmpresa.numeroHasta
+
+        if((params.serie.toInteger() >= desde.toInteger()) && (params.serie.toInteger() <= hasta.toInteger())){
+            render 'ok'
+        }else{
+            render 'no'
+        }
+    }
+
+    def validarSerieFactura_ajax () {
+        def proceso
+        def todas
+
+        if(params.proceso){
+            proceso = Proceso.get(params.retencion)
+            todas = Proceso.findAllByEmpresa(proceso.empresa) - proceso
+            if(todas.facturaSecuencial.contains(params.serie)){
+                render 'no'
+            }else{
+                render 'ok'
+            }
+        }else{
+            render 'ok'
+        }
     }
 }
 

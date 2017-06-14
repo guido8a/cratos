@@ -151,12 +151,12 @@
             </div>
 
             <div class="col-md-4 negrilla">
-%{--
-                <g:select class="form-control required cmbRequired tipoProcesoSel" name="tipoProceso" id="tipoProceso"
-                          from="${tiposProceso}" label="Proceso tipo: " value="${proceso?.tipoProceso}" optionKey="key"
-                          optionValue="value" title="Tipo de la transacción"
-                          disabled="${proceso?.id ? 'true' : 'false'}"/>
---}%
+                %{--
+                                <g:select class="form-control required cmbRequired tipoProcesoSel" name="tipoProceso" id="tipoProceso"
+                                          from="${tiposProceso}" label="Proceso tipo: " value="${proceso?.tipoProceso}" optionKey="key"
+                                          optionValue="value" title="Tipo de la transacción"
+                                          disabled="${proceso?.id ? 'true' : 'false'}"/>
+                --}%
                 <g:select class="form-control required cmbRequired tipoProcesoSel" name="tipoProceso" id="tipoProceso"
                           from="${tiposProceso}" label="Proceso tipo: " value="${proceso?.tipoProceso}" optionKey="key"
                           optionValue="value" title="Tipo de la transacción"/>
@@ -215,24 +215,24 @@
         <div class="row" id="divFilaComprobante">
         </div>
 
-%{--
-        <div class="row" id="sstr">
-            <div class="col-md-2 negrilla">
-                Sustento Tributario:
-            </div>
+        %{--
+                <div class="row" id="sstr">
+                    <div class="col-md-2 negrilla">
+                        Sustento Tributario:
+                    </div>
 
-            <div class="col-md-8 negrilla">
-                <g:select class=" form-control required cmbRequired  sustentoSri" name="sustentoTributario.id" id="sustento"
-                          from="${SustentoTributario.list([sort: 'codigo'])}"
-                          title="Necesario solo si la transacción debe reportarse al S.R.I." optionKey="id"
-                          value="${proceso?.sustentoTributario?.id}" noSelection="${['-1': 'Seleccione...']}"/>
-            </div>
+                    <div class="col-md-8 negrilla">
+                        <g:select class=" form-control required cmbRequired  sustentoSri" name="sustentoTributario.id" id="sustento"
+                                  from="${SustentoTributario.list([sort: 'codigo'])}"
+                                  title="Necesario solo si la transacción debe reportarse al S.R.I." optionKey="id"
+                                  value="${proceso?.sustentoTributario?.id}" noSelection="${['-1': 'Seleccione...']}"/>
+                    </div>
 
-            <div class="col-md-2 " style="font-size: 10px;">
-                Necesario para el ATS
-            </div>
-        </div>
---}%
+                    <div class="col-md-2 " style="font-size: 10px;">
+                        Necesario para el ATS
+                    </div>
+                </div>
+        --}%
 
 
         <div class="row" id="divSustento">
@@ -258,11 +258,16 @@
                 Libretín de Facturas/Retenciones:
             </div>
 
-            <div class="col-md-6 negrilla">
-                <g:select name="comprobanteSel"
+            <div class="col-md-5">
+                <g:select name="comprobanteFactura"
                           from="${libreta}"  value="${''}"
-                          class="form-control" optionKey="id" libre="1"
+                          class="form-control libretinFactura" optionKey="id" libre="1"
                           optionValue="${{"Desde: " + it?.numeroDesde + ' - Hasta: ' + it?.numeroHasta + " - Autorización: " + it?.fechaAutorizacion?.format("dd-MM-yyyy")}}"/>
+            </div>
+            <div class="col-md-3" id="divNumeracionFactura">
+            </div>
+            <div class="col-md-2 grupo" style="margin-left: -20px">
+                <g:textField name="serieFactura" value="${''}" class="form-control validacionNumeroSinPuntos required" style="width: 170px" maxlength="15"/>
             </div>
         </div>
     </div>
@@ -394,13 +399,60 @@
 <script type="text/javascript">
 
 
+
+    function validarNumSinPuntos(ev) {
+        /*
+         48-57      -> numeros
+         96-105     -> teclado numerico
+         188        -> , (coma)
+         190        -> . (punto) teclado
+         110        -> . (punto) teclado numerico
+         8          -> backspace
+         46         -> delete
+         9          -> tab
+         37         -> flecha izq
+         39         -> flecha der
+         */
+        return ((ev.keyCode >= 48 && ev.keyCode <= 57) ||
+        (ev.keyCode >= 96 && ev.keyCode <= 105) ||
+        ev.keyCode == 8 || ev.keyCode == 46 || ev.keyCode == 9 ||
+        ev.keyCode == 37 || ev.keyCode == 39 );
+    }
+
+
+    $(".validacionNumeroSinPuntos").keydown(function (ev) {
+        return validarNumSinPuntos(ev);
+    }).keyup(function () {
+    });
+
+    cargarNumeracionFactura($(".libretinFactura option:selected").val());
+
+    function cargarNumeracionFactura (id) {
+        $.ajax({
+            type:'POST',
+            url: '${createLink(controller: 'proceso', action: 'numeracionFactura_ajax')}',
+            data:{
+                libretin: id
+            },
+            success: function (msg) {
+                $("#divNumeracionFactura").html(msg)
+            }
+        });
+    }
+
+    $(".libretinFactura").change(function  () {
+        var idLibretin = $(".libretinFactura option:selected").val();
+        cargarNumeracionFactura(idLibretin);
+    });
+
+
     cargarTipo($(".tipoProcesoSel option:selected").val());
     //    cargarBotonGuardar($(".tipoProcesoSel option:selected").val());
     cargarBotonBuscar($(".tipoProcesoSel option:selected").val());
     <g:if test="${proceso?.id && (proceso?.tipoProceso == 'P' || proceso?.tipoProceso == 'N')}">
     cargarComPago();
     </g:if>
-//    cargarProveedor($(".tipoProcesoSel option:selected").val());
+    //    cargarProveedor($(".tipoProcesoSel option:selected").val());
     cargarComprobante('${proceso?.id}');
 
     $(document).ready(function () {
@@ -418,22 +470,22 @@
         }
 
         setTimeout(function () {
-                if("${proceso?.tipoCmprSustento}") {
-                    $("#sustento").change();
-                }
-            }, 400);
+            if("${proceso?.tipoCmprSustento}") {
+                $("#sustento").change();
+            }
+        }, 400);
     });
 
     $("#tipoProceso").change(function () {
         var tipo = $(".tipoProcesoSel option:selected").val();
         console.log('tipo:', tipo);
-/*
-        if (tipo == 'C') {
-            $("#divSustento").show();
-        } else {
-            $("#divSustento").hide();
-        }
-*/
+        /*
+         if (tipo == 'C') {
+         $("#divSustento").show();
+         } else {
+         $("#divSustento").hide();
+         }
+         */
 
         $("#listaErrores").html('');
         $("#divErrores").hide();
@@ -454,15 +506,15 @@
         }
     });
 
-/*
-    $("#sustento").click(function () {
-        console.log("clic en sustento")
-        var prve = $("#prve__id").val();
-        if(!prve) {
-            $("#btn_buscar").click()
-        }
-    });
-*/
+    /*
+     $("#sustento").click(function () {
+     console.log("clic en sustento")
+     var prve = $("#prve__id").val();
+     if(!prve) {
+     $("#btn_buscar").click()
+     }
+     });
+     */
 
     function cargarSstr(prve) {
         var tptr = $(".tipoProcesoSel option:selected").val();
@@ -590,7 +642,7 @@
 
         $("#btn-br-prcs").click(function () {
             bootbox.confirm("Está seguro? si esta transacción tiene un comprobante, este será anulado. " +
-                    "Esta acción es irreversible", function (result) {
+                "Esta acción es irreversible", function (result) {
                 if (result) {
                     $(".br_prcs").submit()
                 }
@@ -671,7 +723,7 @@
             var info = ""
             var tipoP = $(".tipoProcesoSel option:selected").val();
 
-            console.log("fecha: ",$("#fecha_input").val().length);
+//            console.log("fecha: ",$("#fecha_input").val().length);
 
             if ($("#tipoProceso").val() == "-1") {
                 error += "<li>Seleccione el tipo de la transacción</li>"
@@ -703,10 +755,24 @@
                         error += "<li>Ingrese valores en la base imponible</li>"
                     }
 
+
+
+                    if($("#serieFactura").val() == ''){
+                        error+="<li>Ingrese el número de serie de la factura</li>"
+                    }else{
+                        if(revisarSerieFactura() == 'no'){
+                            error+="<li>El numero de serie ingresado no se encuentra en el rango del libretin seleccionado</li>"
+                        }
+                        if(validarSerieFactura() == 'no'){
+                            error+="<li>El numero de serie ingresado ya se encuentra asignado</li>"
+                        }
+                    }
+
+
                     if (tipoP == 'P') {
 
-                        console.log("pago " + parseFloat($("#valorPago").val()))
-                        console.log("saldo " + parseFloat($("#comprobanteSaldo1").val()))
+//                        console.log("pago " + parseFloat($("#valorPago").val()))
+//                        console.log("saldo " + parseFloat($("#comprobanteSaldo1").val()))
 
                         if (parseFloat($("#valorPago").val()) > parseFloat($("#comprobanteSaldo").val())) {
                             error += "<li>El valor ingresado es mayor al saldo del comprobante a pagar!</li>";
@@ -833,6 +899,37 @@
         });
 
         calculaIva();
+
+
+        function revisarSerieFactura () {
+            var regresa = $.ajax({
+                type: 'POST',
+                async: false,
+                url:'${createLink(controller: 'proceso', action: 'comprobarSerieFactura_ajax')}',
+                data:{
+                    libretin: $("#comprobanteFactura option:selected").val(),
+                    serie: $("#serieFactura").val()
+                },
+                success: function (msg){
+                }
+            });
+            return regresa.responseText
+        }
+
+        function validarSerieFactura () {
+            var regresaV = $.ajax({
+                type: 'POST',
+                async: false,
+                url:'${createLink(controller: 'proceso', action: 'validarSerieFactura_ajax')}',
+                data:{
+                    proceso: '${proceso?.id}',
+                    serie: $("#serieFactura").val()
+                },
+                success: function (msg){
+                }
+            });
+            return regresaV.responseText
+        }
 
         $("#iva12").keyup(function () {
             calculaIva();
