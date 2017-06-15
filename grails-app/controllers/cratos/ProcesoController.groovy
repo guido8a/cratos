@@ -1332,6 +1332,7 @@ class ProcesoController extends cratos.seguridad.Shield {
     def validarSerie_ajax () {
         def retencion
         def todas
+        def empresa = Empresa.get(session.empresa.id)
 
         if(params.retencion){
             retencion = Retencion.get(params.retencion)
@@ -1342,7 +1343,12 @@ class ProcesoController extends cratos.seguridad.Shield {
                 render 'ok'
             }
         }else{
-            render 'ok'
+            todas = Retencion.findAllByEmpresa(empresa)
+            if(todas.numero.contains(params.serie)){
+                render 'no'
+            }else{
+                render 'ok'
+            }
         }
     }
 
@@ -1537,6 +1543,16 @@ class ProcesoController extends cratos.seguridad.Shield {
                 render 'ok'
             }
         }
+    }
+
+    def totalesAsientos_ajax () {
+        def proceso = Proceso.get(params.proceso)
+        def comprobante = Comprobante.get(params.comprobante)
+        def asientos = Asiento.findAllByComprobante(comprobante).sort{it.numero}
+        def auxiliares = Auxiliar.findAllByAsientoInList(asientos)
+        def debeTotal = asientos.debe.sum()
+        def haberTotal = asientos.haber.sum()
+        return [asientos: asientos, comprobante: comprobante, proceso: proceso, auxiliares: auxiliares, debeT: debeTotal, haberT: haberTotal]
     }
 }
 

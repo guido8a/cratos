@@ -215,25 +215,6 @@
         <div class="row" id="divFilaComprobante">
         </div>
 
-        %{--
-                <div class="row" id="sstr">
-                    <div class="col-md-2 negrilla">
-                        Sustento Tributario:
-                    </div>
-
-                    <div class="col-md-8 negrilla">
-                        <g:select class=" form-control required cmbRequired  sustentoSri" name="sustentoTributario.id" id="sustento"
-                                  from="${SustentoTributario.list([sort: 'codigo'])}"
-                                  title="Necesario solo si la transacción debe reportarse al S.R.I." optionKey="id"
-                                  value="${proceso?.sustentoTributario?.id}" noSelection="${['-1': 'Seleccione...']}"/>
-                    </div>
-
-                    <div class="col-md-2 " style="font-size: 10px;">
-                        Necesario para el ATS
-                    </div>
-                </div>
-        --}%
-
 
         <div class="row" id="divSustento">
         </div>
@@ -283,7 +264,7 @@
 </g:form>
 <g:if test="${proceso}">
     <div class="vertical-container" skip="1"
-         style="margin-top: 25px;color: black;min-height: 500px;margin-bottom: 20px">
+         style="margin-top: 25px;color: black;min-height: 550px;margin-bottom: 20px">
         <p class="css-vertical-text">Comprobante</p>
 
         <div class="linea"></div>
@@ -397,7 +378,6 @@
 
 
 <script type="text/javascript">
-
 
 
     function validarNumSinPuntos(ev) {
