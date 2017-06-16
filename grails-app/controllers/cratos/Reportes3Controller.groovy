@@ -8,26 +8,31 @@ class Reportes3Controller {
     def kerberosoldService
 
     def reporteComprobante() {
-        def contabilidad = params.cont
-        def numComp = params.num
+        def contabilidad = Contabilidad.get(params.cont)
+        def tipoComprobante = TipoComprobante.get(params.tipo)
+
+        def numComp = params.num.toInteger()
         def tipoComp = params.tipo
 
         def comp = Comprobante.withCriteria {
-            proceso {
-                eq("contabilidad", Contabilidad.get(contabilidad))
-            }
+//            proceso {
+//                eq("contabilidad", contabilidad)
+//            }
             eq("numero", numComp)
-            eq("tipo", TipoComprobante.get(tipoComp))
+            eq("tipo", tipoComprobante)
         }
-        if (comp) {
-            if (comp.size() == 1) {
-                render comp[0].procesoId
-            } else {
-                render "NO_Se encontró más de un comprobante"
-            }
-        } else {
-            render "NO_No se encontró el comprobante"
-        }
+
+
+
+//        if (comp) {
+//            if (comp.size() == 1) {
+//                render comp[0].procesoId
+//            } else {
+//                render "NO_Se encontró más de un comprobante"
+//            }
+//        } else {
+//            render "NO_No se encontró el comprobante"
+//        }
     }
 
     /*Reporte de cuentas por pagar

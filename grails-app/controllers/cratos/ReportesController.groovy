@@ -224,7 +224,8 @@ class ReportesController {
             def nombre = generas.gestor.nombre
             def fecha = generas.gestor.fecha
 
-            def descripcion = generas.gestor.descripcion
+//            def descripcion = generas.gestor.descripcion
+            def descripcion = generas.gestor.nombre
 
             if (!res.containsKey(nombre)) {
                 res[nombre] = [:]

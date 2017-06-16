@@ -11,6 +11,10 @@ import cratos.sri.TipoTransaccion
 
 import java.sql.Connection
 
+import org.apache.poi.ss.usermodel.Row
+
+
+
 class ProcesoController extends cratos.seguridad.Shield {
 
     def buscadorService
@@ -19,8 +23,6 @@ class ProcesoController extends cratos.seguridad.Shield {
     def loginService
     def utilitarioService
     def dbConnectionService
-
-    /* todo acabar los dominios */
 
 
     def index = { redirect(action: "lsta") }
