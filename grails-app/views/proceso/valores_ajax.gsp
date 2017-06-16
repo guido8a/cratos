@@ -4,7 +4,7 @@
     }
 </style>
 
-<g:if test="${tipo == 'P'}">
+<g:if test="${tipo == 'P' || tipo == 'A'}">
     <div class="row" style="font-size: 12px">
         <div class="col-md-2 negrilla" style="width: 120px">
             Valor:
@@ -14,19 +14,7 @@
                          value="${proceso?.valor}"/>
         </div>
     </div>
-    <div class="row" style="font-size: 12px">
-        <div class="col-md-2 negrilla" style="width: 120px">
-            Forma de Pago:
-        </div>
-        <div class="col-md-5">
-            <g:select name="tipoPago_name" from="${cratos.TipoPago.list().sort{it.descripcion}}" optionKey="id"
-                      optionValue="descripcion" value="${proceso?.tipoPago}" class="form-control"/>
-        </div>
-    </div>
 </g:if>
-<g:elseif test="${tipo == '-1'}">
-    <div class="row" style="height: 80px"></div>
-</g:elseif>
 <g:elseif test="${tipo == 'N'}">
     <div class="row" style="font-size: 12px">
         <div class="col-md-2 negrilla" style="width: 120px">
@@ -45,38 +33,37 @@
         </div>
     </div>
 </g:elseif>
-<g:else>
+<g:elseif test="${tipo == 'C' || tipo == 'V'}">
     <g:set var="iva" value="${cratos.ParametrosAuxiliares.list().first().iva}"/>
 
+    <g:if test="${tipo == 'C'}">
     <div class="row" style="font-size: 12px">
         <div class="col-md-3 negrilla">
-            Factura o Documento de compra:
+            Documento registrado:
         </div>
-        <div class="col-md-3 negrilla">
-            <input type="text" name="facturaEstablecimiento" id="establecimiento" size="3" maxlength="3" value="${proceso?.facturaEstablecimiento}" class=" digits form-control label-shared validacionNumero" validate=" number"
+        <div class="col-md-3 negrilla" style="margin-left: -95px">
+            <input type="text" name="dcmtEstablecimiento" id="dcmtEstablecimiento" size="3" maxlength="3"
+                   value="${proceso?.procesoSerie01}" class=" digits form-control label-shared validacionNumero"
+                   validate=" number" placeholder="Establ."
                    title="El número de establecimiento del documento " ${proceso?.estado == 'R' ? 'disabled':''} />
-            <input type="text" name="facturaPuntoEmision" id="emision" size="3" maxlength="3" value="${proceso?.facturaPuntoEmision}" class=" digits form-control label-shared validacionNumero " validate=" number"
+            <input type="text" name="dcmtEmision" id="dcmtEmision" size="3" maxlength="3" value="${proceso?.procesoSerie02}"
+                   class=" digits form-control label-shared validacionNumero " validate=" number" placeholder="Emisión"
                    title="El número de punto de emisión del documento" ${proceso?.estado == 'R' ?'disabled':''} />
-            <input type="text" name="facturaSecuencial" id="secuencial" size="10" maxlength="9" value="${proceso?.facturaSecuencial}" class=" digits form-control label-shared validacionNumero " validate=" number"
-                   title="El número de secuencia del documento"  ${proceso?.estado == 'R' ?'disabled':''} />
+            <input type="text" name="dcmtSecuencial" id="dcmtSecuencial" size="10" maxlength="9" value="${proceso?.secuencial}"
+                   class=" digits form-control label-shared validacionNumero " validate=" number"
+                   title="El número de secuencia del documento"  ${proceso?.estado == 'R' ?'disabled':''} placeholder="Secuencial" />
         </div>
-        <div class="col-md-1 negrilla" style="width: 120px;margin-left: -30px; text-align: right">
+        <div class="col-md-2 negrilla" style="width: 120px;margin-left: -30px; text-align: right">
             Autorización:
         </div>
         <div class="col-md-2 negrilla">
-            <input type="text" name="facturaAutorizacion" id="facturaAutorizacion" size="10" maxlength="15"
-                   value="${proceso?.facturaAutorizacion}" class=" digits form-control label-shared validacionNumero" validate=" number"
+            <input type="text" name="dcmtAutorizacion" id="dcmtAutorizacion" size="10" maxlength="15"
+                   value="${proceso?.autorizacion}" class=" digits form-control label-shared validacionNumero"
+                   validate=" number" placeholder="Autorización"
                    title="El número autorización de la factura a registrar " ${registro?'disabled':''} />
         </div>
-        <div class="col-md-2 negrilla" style="width: 120px;margin-left: -30px">
-            Forma de pago  (emitir factura):
-        </div>
-        <div class="col-md-1 negrilla">
-            <input type="text" name="formaPago" id="formaPago" size="10" maxlength="15"
-                   class=" digits form-control label-shared validacionNumero" validate=" number"
-                   title="El número autorización de la factura a registrar " />
-        </div>
     </div>
+    </g:if>
 
     <div class="row" style="font-size: 12px">
         <div class="col-md-2 negrilla" style="width: 120px">
@@ -112,8 +99,7 @@
             <input type="text" name="iceGenerado"  id="iceGenerado" value="${proceso?.iceGenerado ?: 0.00}" class="required number form-control validacionNumero" validate="required number" ${proceso?.estado == 'R' ?'disabled':''} />
         </div>
     </div>
-
-</g:else>
+</g:elseif>
 
 
 <script type="text/javascript">

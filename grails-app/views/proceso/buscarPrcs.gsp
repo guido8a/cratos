@@ -144,7 +144,6 @@
     $(".btnBusqueda").click(function () {
         $("#bandeja").html("").append($("<div style='width:100%; text-align: center;'/>").append(spinnerSquare64));
         var buscar = $("#buscar").val();
-
         var datos = "buscar=" + buscar;
 
         $.ajax({

@@ -6,7 +6,7 @@
     border-right: 1px solid #ddd;
     border-bottom: 1px solid #ddd;
     border-radius: 0px 0px 5px 5px;
-    padding: 10px;
+    /*padding: 10px;*/
     background-color: #eeeeee;
 }
 
@@ -29,7 +29,7 @@
 <div class="tab-content">
     <div class="tab-pane fade in active">
         <div class="col-md-12" id="divBotones" style="margin-top: 20px"></div>
-        <div class="col-md-12" id="divAsientos"style="margin-bottom: 20px;"></div>
+        <div class="col-md-12" id="divAsientos"style="margin-bottom: 10px;"></div>
     </div>
 </div>
 

@@ -39,7 +39,7 @@ class Proceso implements Serializable {
     String procesoSerie01
     String procesoSerie02
     String secuencial = 0
-    String autorizacionSRI
+    String autorizacion
     String documento
 
     String facturaEstablecimiento
@@ -102,7 +102,7 @@ class Proceso implements Serializable {
             procesoSerie01 column: 'prcssr01'
             procesoSerie02 column: 'prcssr02'
             secuencial column: 'prcsscnc'
-            autorizacionSRI column: 'prcsatrz'
+            autorizacion column: 'prcsatrz'
             documento column: 'prcsdcmt'
 
             facturaEstablecimiento column: 'prcsfces'
@@ -161,10 +161,10 @@ class Proceso implements Serializable {
         impuesto(blank: true, nullable: true, attributes: [title: 'impuesto'])
         valor(blank: true, nullable: true, attributes: [title: 'valor'])
 
-        procesoSerie01(blank: true, nullable: true, maxSize: 3, attributes: [title: 'procesoSerie01'])
-        procesoSerie02(blank: true, nullable: true, maxSize: 3, attributes: [title: 'procesoSerie02'])
+        procesoSerie01(blank: true, nullable: true, maxSize: 3, attributes: [title: 'establecimeinto documento'])
+        procesoSerie02(blank: true, nullable: true, maxSize: 3, attributes: [title: 'punto de emisión documento'])
         secuencial(blank: true, nullable: true, attributes: [title: 'secuencial'], size: 1..14)
-        autorizacionSRI(blank: true, nullable: true, maxSize: 10, attributes: [title: 'autorizacionSRI'])
+        autorizacion(blank: true, nullable: true, maxSize: 10, attributes: [title: 'autorizacion documento'])
         documento(blank: true, nullable: true, size: 1..40)
 
         facturaEstablecimiento(blank: true, nullable: true)

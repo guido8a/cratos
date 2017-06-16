@@ -9,6 +9,8 @@
               noSelection="${['-1': 'Seleccione...']}" value="${tpcpSri}"/>
 </div>
 
+%{--
 <div class="col-md-2 " style="font-size: 10px">
     Necesario para el ATS
 </div>
+--}%

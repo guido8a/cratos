@@ -134,6 +134,7 @@
 </div>
 <g:form name="procesoForm" action="save" method="post" class="frmProceso">
     <input type="hidden" name="proveedor.id" id="prve__id" value="${proceso?.proveedor?.id}">
+
     <div class="vertical-container" style="margin-top: 25px;color: black;padding-bottom: 10px">
         <p class="css-vertical-text">Descripción</p>
 
@@ -234,27 +235,37 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="row" id="libretinFacturas">
             <div class="col-md-2 negrilla">
-                Libretín de Facturas/Retenciones:
+                Libretín de Facturas:
             </div>
 
             <div class="col-md-5">
-                <g:select name="comprobanteFactura"
-                          from="${libreta}"  value="${''}"
+                <g:select name="comprobanteFactura" from="${libreta}" value="${''}"
                           class="form-control libretinFactura" optionKey="id" libre="1"
-                          optionValue="${{"Desde: " + it?.numeroDesde + ' - Hasta: ' + it?.numeroHasta + " - Autorización: " + it?.fechaAutorizacion?.format("dd-MM-yyyy")}}"/>
+                          optionValue="${{
+                              "Desde: " + it?.numeroDesde + ' - Hasta: ' + it?.numeroHasta +
+                                      " - Autorización: " + it?.fechaAutorizacion?.format("dd-MM-yyyy")
+                          }}"
+                          noSelection="${['-1': 'Seleccione...']}"/>
             </div>
-            <div class="col-md-3" id="divNumeracionFactura">
+
+            <div class="col-md-2" id="divNumeracionFactura">
             </div>
-            <div class="col-md-2 grupo" style="margin-left: -20px">
-                <g:textField name="serieFactura" value="${''}" class="form-control validacionNumeroSinPuntos required" style="width: 170px" maxlength="15"/>
+
+            <div class="col-md-1 negrilla" style="margin-left: -90px">
+                Secuencial:
+            </div>
+
+            <div class="col-md-2 grupo" style="margin-left: 0px; display: inline">
+                <g:textField name="secuencial" value="${''}" class="form-control validacionNumeroSinPuntos required"
+                             style="width: 120px" maxlength="15"/>
             </div>
         </div>
     </div>
 
     <div class="vertical-container" style="margin-top: 25px;color: black;padding-bottom: 10px;">
-        <p class="css-vertical-text">Valores</p>
+        <p class="css-vertical-text" id="lblValores">Val</p>
 
         <div class="linea"></div>
 
@@ -263,14 +274,13 @@
 
 </g:form>
 <g:if test="${proceso}">
-    <div class="vertical-container" skip="1"
-         style="margin-top: 25px;color: black;min-height: 550px;margin-bottom: 20px">
+    <div class="vertical-container" skip="1" style="margin-top: 5px; color:black; margin-bottom:20px; height:520px">
         <p class="css-vertical-text">Comprobante</p>
 
         <div class="linea"></div>
 
         <div id="divComprobante" class="col-md-12"
-             style="margin-bottom: 20px ;padding: 10px;display: none;margin-top: 5px;">
+             style="margin-bottom: 0px ;padding: 0px;display: none;margin-top: 5px;">
         </div>
     </div>
 </g:if>
@@ -399,7 +409,6 @@
         ev.keyCode == 37 || ev.keyCode == 39 );
     }
 
-
     $(".validacionNumeroSinPuntos").keydown(function (ev) {
         return validarNumSinPuntos(ev);
     }).keyup(function () {
@@ -407,11 +416,11 @@
 
     cargarNumeracionFactura($(".libretinFactura option:selected").val());
 
-    function cargarNumeracionFactura (id) {
+    function cargarNumeracionFactura(id) {
         $.ajax({
-            type:'POST',
+            type: 'POST',
             url: '${createLink(controller: 'proceso', action: 'numeracionFactura_ajax')}',
-            data:{
+            data: {
                 libretin: id
             },
             success: function (msg) {
@@ -420,13 +429,13 @@
         });
     }
 
-    $(".libretinFactura").change(function  () {
+    $(".libretinFactura").change(function () {
         var idLibretin = $(".libretinFactura option:selected").val();
         cargarNumeracionFactura(idLibretin);
     });
 
 
-    cargarTipo($(".tipoProcesoSel option:selected").val());
+//    cargarTipo($(".tipoProcesoSel option:selected").val());
     //    cargarBotonGuardar($(".tipoProcesoSel option:selected").val());
     cargarBotonBuscar($(".tipoProcesoSel option:selected").val());
     <g:if test="${proceso?.id && (proceso?.tipoProceso == 'P' || proceso?.tipoProceso == 'N')}">
@@ -440,32 +449,25 @@
         var prve = $("#prve__id").val();
         console.log("prve__id:", prve);
         $("#tipoProceso").change();
-        if(prve && (tipo =='C' || tipo == 'V')) {
+        if (prve && (tipo == 'C' || tipo == 'V')) {
             cargarProveedor(tipo);
             console.log("buscar prve");
         }
-        if("${proceso?.sustentoTributario}") {
+        if ("${proceso?.sustentoTributario}") {
             console.log("proceso:", "${proceso?.tipoCmprSustento?.id}");
             cargarSstr("${proceso?.proveedor?.id}")
         }
 
         setTimeout(function () {
-            if("${proceso?.tipoCmprSustento}") {
+            if ("${proceso?.tipoCmprSustento}") {
                 $("#sustento").change();
             }
-        }, 400);
+        }, 1000);
     });
 
     $("#tipoProceso").change(function () {
         var tipo = $(".tipoProcesoSel option:selected").val();
         console.log('tipo:', tipo);
-        /*
-         if (tipo == 'C') {
-         $("#divSustento").show();
-         } else {
-         $("#divSustento").hide();
-         }
-         */
 
         $("#listaErrores").html('');
         $("#divErrores").hide();
@@ -473,7 +475,8 @@
         if (tipo == 'N' || tipo == 'P') {
             cargarComPago()
         } else {
-            $("#divFilaComprobante").html('')
+            $("#divFilaComprobante").html('');
+            $("#divFilaComprobante").hide('');
         }
 
         cargarTipo(tipo);
@@ -481,8 +484,12 @@
 
         if (tipo == 'C' || tipo == 'V' || tipo == 'P' || tipo == 'N') {
             cargarProveedor(tipo);
+        }
+
+        if (tipo != 'V') {
+            $("#libretinFacturas").hide()
         } else {
-            $("#divFilaComprobante").html('');
+            $("#libretinFacturas").show()
         }
     });
 
@@ -512,7 +519,8 @@
                 $("#divSustento").html(msg)
             }
         });
-    };
+    }
+    ;
 
     function cargarProveedor(tipo) {
         if (tipo != '-1') {
@@ -561,6 +569,7 @@
     }
 
     function cargarTipo(tipo) {
+        var flecha = "<i class='fa fa-arrow-left fa-fw' style='font-size: 20px !important; margin-left: -30px'></i>"
         $.ajax({
             type: 'POST',
             url: "${createLink(controller: 'proceso', action: 'valores_ajax')}",
@@ -570,6 +579,11 @@
             },
             success: function (msg) {
                 $("#divValores").html(msg)
+                if(tipo == 'C' || tipo == 'V' || tipo == 'N') {
+                    $("#lblValores").html(flecha + "Valores")
+                } else {
+                    $("#lblValores").html(flecha + "Val")
+                }
             }
         });
     }
@@ -579,8 +593,8 @@
         var title = this.find(".css-vertical-text")
         title.css({"cursor": "pointer"})
         title.attr("title", "Minimizar")
-        var fa = $("<i class='fa fa-arrow-left fa-fw' style='font-size: 20px !important;'></i>")
-        var texto = $("<span class='texto' style='display: none;margin-left: 10px;color:#0088CC'> (Clic aquí para expandir)</span>")
+        var fa = $("<i class='fa fa-arrow-left fa-fw' style='font-size: 20px !important; margin-left: -30px'></i>")
+        var texto = $("<span class='texto' style='display: none; margin-left: 10px; color:#0088CC; font-size: 20px ' > (Clic aquí para expandir)</span>")
         title.addClass("open")
         title.prepend(fa)
         title.append(texto)
@@ -588,6 +602,7 @@
             if ($(this).parent().attr("skip") != "1") {
                 if ($(this).hasClass("open")) {
                     $(this).parent().find(".row").hide("blind")
+                    $(this).parent().find(".linea").hide("blind")
                     $(this).removeClass("open");
                     $(this).addClass("closed")
                     $(this).removeClass("css-vertical-text")
@@ -596,6 +611,7 @@
                 } else {
                     $(this).parent().css({"height": "auto"});
                     $(this).parent().find(".row").show("slide")
+                    $(this).parent().find(".linea").show("slide")
                     $(this).removeClass("closed");
                     $(this).addClass("open")
                     $(this).addClass("css-vertical-text")
@@ -622,7 +638,7 @@
 
         $("#btn-br-prcs").click(function () {
             bootbox.confirm("Está seguro? si esta transacción tiene un comprobante, este será anulado. " +
-                "Esta acción es irreversible", function (result) {
+                    "Esta acción es irreversible", function (result) {
                 if (result) {
                     $(".br_prcs").submit()
                 }
@@ -630,6 +646,7 @@
         });
 
         $("#tipoProceso").change(function () {
+/*
             if ($(this).val() == "A") {
                 bootbox.alert('Para realizar un ajuste, ponga el valor total dentro del campo "Base imponible no aplica IVA" y asegurese de seleccionar el gestor contable correcto')
                 $("#iva0").val("0.00").attr("disabled", true)
@@ -642,9 +659,13 @@
                 $("#ivaGenerado").attr("disabled", false)
                 $("#iceGenerado").attr("disabled", false)
             }
+*/
+            cargarTipo($("#tipoProceso").val())
+/*
             $("#divSustento").html('');
             $("#divComprobanteSustento").html('');
             $("#divCargaProveedor").html('');
+*/
         })
 
 
@@ -657,12 +678,10 @@
             $('#modal-proveedor').modal('show')
         });
 
-        $("#prve").dblclick(function(){
+        $("#prve").dblclick(function () {
             console.log("clickfff")
             $("#btn_buscar").click()
         });
-
-
 
 
 //        $("#agregarFP").click(function(){
@@ -703,152 +722,161 @@
             var info = ""
             var tipoP = $(".tipoProcesoSel option:selected").val();
 
-//            console.log("fecha: ",$("#fecha_input").val().length);
+            if (tipoP != 'A') {
 
-            if ($("#tipoProceso").val() == "-1") {
-                error += "<li>Seleccione el tipo de la transacción</li>"
-            } else {
-                if (tipoP != 'A') {
+                $("#listaErrores").html('');
+                $("#divErrores").hide();
 
-                    $("#listaErrores").html('');
-                    $("#divErrores").hide();
+                if ($("#fecha_input").val().length < 10) {
+                    error += "<li>Seleccione la fecha del comprobante</li>"
+                }
+                if ($("#fecharegistro_input").val().length < 10) {
+                    error += "<li>Seleccione la fecha de registro</li>"
+                }
+                if ($("#descripcion").val().length < 1) {
+                    error += "<li>Llene el campo Descripción</li>"
+                }
 
-                    if ($("#fecha_input").val().length < 10) {
-                        error += "<li>Seleccione la fecha del comprobante</li>"
-                    }
-                    if ($("#fecharegistro_input").val().length < 10) {
-                        error += "<li>Seleccione la fecha de registro</li>"
-                    }
-                    if ($("#descripcion").val().length < 1) {
-                        error += "<li>Llene el campo Descripción</li>"
-                    }
+                if ($("#prve").val() == "" || $("#prve").val() == null) {
+                    error += "<li>Seleccione el proveedor</li>"
+                }
 
-                    if ($("#prve").val() == "" || $("#prve").val() == null) {
-                        error += "<li>Seleccione el proveedor</li>"
-                    }
+                if ($("#tipoComprobante").val() == '' || $("#tipoComprobante").val() == null) {
+                    error += "<li>Seleccione un comprobante</li>"
+                }
 
-                    if ($("#tipoComprobante").val() == '' || $("#tipoComprobante").val() == null) {
-                        error += "<li>Seleccione un comprobante</li>"
-                    }
+                if ($("#iva12").val() == 0 && $("#iva0").val() == 0 && $("#noIva").val() == 0) {
+                    error += "<li>Ingrese valores en la base imponible</li>"
+                }
 
-                    if ($("#iva12").val() == 0 && $("#iva0").val() == 0 && $("#noIva").val() == 0 ) {
-                        error += "<li>Ingrese valores en la base imponible</li>"
-                    }
-
-
-                    if($("#serieFactura").val() == ''){
-                        error+="<li>Ingrese el número de serie de la factura</li>"
-                    }else{
-                        if(revisarSerieFactura() == 'no'){
-                            error+="<li>El numero de serie ingresado no se encuentra en el rango del libretin seleccionado</li>"
+                if (tipoP == 'V') {
+                    if ($("#secuencial").val() == '' && tipoP == 'V') {
+                        error += "<li>Ingrese el número secuencial de la factura</li>"
+                    } else {
+                        if (revisarSerieFactura() == 'no') {
+                            error += "<li>El numero de serie ingresado no se encuentra en el rango del libretin seleccionado</li>"
                         }
-                        if(validarSerieFactura() == 'no'){
-                            error+="<li>El numero de serie ingresado ya se encuentra asignado</li>"
+                        if (validarSerieFactura() == 'no') {
+                            error += "<li>El numero de serie ingresado ya se encuentra asignado</li>"
                         }
                     }
+                }
+
+                if (tipoP == 'C' || tipoP == 'N' || tipoP == 'D') {
+                    if ($("#dcmtEstablecimiento").val() == '') {
+                        error += "<li>Ingrese el número de establecimiento del Documento</li>"
+                    }
+                    if ($("#dcmtEmision").val() == '') {
+                        error += "<li>Ingrese punto de emisión del Documento</li>"
+                    }
+                    if (parseInt($("#dcmtSecuencial").val()) < 1) {
+                        error += "<li>Ingrese el número del Documento</li>"
+                    }
+                    if ($("#dcmtAutorizacion").val() == '') {
+                        error += "<li>Ingrese el número de autorización del Documento</li>"
+                    }
+                }
 
 
-                    if (tipoP == 'P') {
+                if (tipoP == 'P') {
 
 //                        console.log("pago " + parseFloat($("#valorPago").val()))
 //                        console.log("saldo " + parseFloat($("#comprobanteSaldo1").val()))
 
-                        if (parseFloat($("#valorPago").val()) > parseFloat($("#comprobanteSaldo").val())) {
-                            error += "<li>El valor ingresado es mayor al saldo del comprobante a pagar!</li>";
+                    if (parseFloat($("#valorPago").val()) > parseFloat($("#comprobanteSaldo").val())) {
+                        error += "<li>El valor ingresado es mayor al saldo del comprobante a pagar!</li>";
 
-                            $("#valorPago").removeClass('required');
-                            $("#valorPago").addClass('colorRojo');
-                        }
+                        $("#valorPago").removeClass('required');
+                        $("#valorPago").addClass('colorRojo');
                     }
+                }
+            } else {
+                $("#listaErrores").html("")
+                if ($("#fecha").val().length < 10) {
+                    error += "<li>Seleccione la fecha de emisión</li>"
+                }
+                if ($("#descripcion").val().length < 1) {
+                    error += "<li>Llene el campo Descripción</li>"
+                }
+                if ($("#tipoProceso").val() == "-1") {
+                    error += "<li>Seleccione el tipo de la transacción</li>"
                 } else {
-                    $("#listaErrores").html("")
-                    if ($("#fecha").val().length < 10) {
-                        error += "<li>Seleccione la fecha de emisión</li>"
-                    }
-                    if ($("#descripcion").val().length < 1) {
-                        error += "<li>Llene el campo Descripción</li>"
-                    }
-                    if ($("#tipoProceso").val() == "-1") {
-                        error += "<li>Seleccione el tipo de la transacción</li>"
-                    } else {
-                        if ($("#tipoProceso").val() == "C" || $("#tipoProceso").val() == "V") {
+                    if ($("#tipoProceso").val() == "C" || $("#tipoProceso").val() == "V") {
 
-                            if ($("#sustento").val() == "-1") {
-                                error += "<li>Seleccione un sustento tributario (Necesario si el tipo de transacción es Compras o Ventas)</li>"
-                            }
-                            if ($("#tipoComprobante").val() == "-1") {
-                                error += "<li>Seleccione el tipo de comprobante a registrar (Necesario si el tipo de transacción es Compras o Ventas)</li>"
-                            } else {
-                                if ($("#establecimiento").val().length < 3) {
-                                    error += "<li>Ingrese el número de establecimiento del documento (Primera parte del campo documento) </li>"
-                                }
-                                if ($("#emision").val().length < 3) {
-                                    error += "<li>Ingrese el número de emisión del documento (Segunda parte del campo documento)</li>"
-                                }
-                                if ($("#secuencial").val().length < 1) {
-                                    error += "<li>Ingrese el número de secuencia del documento (Tercera parte del campo documento)</li>"
-                                }
-                            }
+                        if ($("#sustento").val() == "-1") {
+                            error += "<li>Seleccione un sustento tributario (Necesario si el tipo de transacción es Compras o Ventas)</li>"
                         }
-                    }
-                    var iva0 = $("#iva0").val()
-                    var iva12 = $("#iva12").val()
-                    var noIva = $("#noIva").val()
-                    if (isNaN(iva12)) {
-                        iva12 = -1
-                    }
-                    if (isNaN(noIva)) {
-                        noIva = -1
-                    }
-                    if (isNaN(iva0)) {
-                        iva0 = -1
-                    }
-                    if (iva12 * 1 < 0) {
-                        error += "<li>La base imponible iva ${iva}% debe ser un número positivo</li>"
-                    }
-                    if (iva0 * 1 < 0) {
-                        error += "<li>La base imponible iva 0% debe ser un número positivo</li>"
-                    }
-                    if (noIva * 1 < 0) {
-                        error += "<li>La base imponible no aplica iva debe ser un número positivo</li>"
-                    }
-                    var base = iva0 * 1 + iva12 * 1 + noIva * 1
-                    if (base <= 0) {
-                        error += "<li>La suma de las bases imponibles no puede ser cero</li>"
-                    } else {
-                        var impIva = $("#ivaGenerado").val()
-                        var impIce = $("#iceGenerado").val()
-                        if (isNaN(impIva)) {
-                            impIva = -1
-                        }
-                        if (isNaN(impIce)) {
-                            impIce = -1
-                        }
-                        if (impIva * 1 > 0 && iva12 * 1 <= 0) {
-                            error += "<li>No se puede generar IVA si la base imponible iva ${iva}% es cero</li>"
-                        }
-                        if (impIce * 1 * impIva * 1 < 0) {
-                            error += "<li>Los impuestos generados no pueden ser negativos</li>"
+                        if ($("#tipoComprobante").val() == "-1") {
+                            error += "<li>Seleccione el tipo de comprobante a registrar (Necesario si el tipo de transacción es Compras o Ventas)</li>"
                         } else {
-                            if ((impIce * 1 + impIva * 1) > base) {
-                                error += "<li>Los impuestos generados no pueden ser superiores a la suma de las bases imponibles</li>"
+                            if ($("#establecimiento").val().length < 3) {
+                                error += "<li>Ingrese el número de establecimiento del documento (Primera parte del campo documento) </li>"
+                            }
+                            if ($("#emision").val().length < 3) {
+                                error += "<li>Ingrese el número de emisión del documento (Segunda parte del campo documento)</li>"
+                            }
+                            if ($("#secuencial").val().length < 1) {
+                                error += "<li>Ingrese el número de secuencia del documento (Tercera parte del campo documento)</li>"
                             }
                         }
                     }
+                }
+                var iva0 = $("#iva0").val()
+                var iva12 = $("#iva12").val()
+                var noIva = $("#noIva").val()
+                if (isNaN(iva12)) {
+                    iva12 = -1
+                }
+                if (isNaN(noIva)) {
+                    noIva = -1
+                }
+                if (isNaN(iva0)) {
+                    iva0 = -1
+                }
+                if (iva12 * 1 < 0) {
+                    error += "<li>La base imponible iva ${iva}% debe ser un número positivo</li>"
+                }
+                if (iva0 * 1 < 0) {
+                    error += "<li>La base imponible iva 0% debe ser un número positivo</li>"
+                }
+                if (noIva * 1 < 0) {
+                    error += "<li>La base imponible no aplica iva debe ser un número positivo</li>"
+                }
+                var base = iva0 * 1 + iva12 * 1 + noIva * 1
+                if (base <= 0) {
+                    error += "<li>La suma de las bases imponibles no puede ser cero</li>"
+                } else {
+                    var impIva = $("#ivaGenerado").val()
+                    var impIce = $("#iceGenerado").val()
+                    if (isNaN(impIva)) {
+                        impIva = -1
+                    }
+                    if (isNaN(impIce)) {
+                        impIce = -1
+                    }
+                    if (impIva * 1 > 0 && iva12 * 1 <= 0) {
+                        error += "<li>No se puede generar IVA si la base imponible iva ${iva}% es cero</li>"
+                    }
+                    if (impIce * 1 * impIva * 1 < 0) {
+                        error += "<li>Los impuestos generados no pueden ser negativos</li>"
+                    } else {
+                        if ((impIce * 1 + impIva * 1) > base) {
+                            error += "<li>Los impuestos generados no pueden ser superiores a la suma de las bases imponibles</li>"
+                        }
+                    }
+                }
 //            if($(".filaFP").size() <1){
 //                info+="No ha asignado formas de pago para la transacción contable"
 //                bandData=false
 //            }
-                    if (bandData) {
-                        var data = ""
-                        $(".filaFP").each(function () {
-                            data += $(this).attr("fp") + ";"
+                if (bandData) {
+                    var data = ""
+                    $(".filaFP").each(function () {
+                        data += $(this).attr("fp") + ";"
 
-                        })
-                        $("#data").val(data)
-                    }
+                    })
+                    $("#data").val(data)
                 }
-
             }
 
 
@@ -880,31 +908,31 @@
         calculaIva();
 
 
-        function revisarSerieFactura () {
+        function revisarSerieFactura() {
             var regresa = $.ajax({
                 type: 'POST',
                 async: false,
-                url:'${createLink(controller: 'proceso', action: 'comprobarSerieFactura_ajax')}',
-                data:{
+                url: '${createLink(controller: 'proceso', action: 'comprobarSerieFactura_ajax')}',
+                data: {
                     libretin: $("#comprobanteFactura option:selected").val(),
                     serie: $("#serieFactura").val()
                 },
-                success: function (msg){
+                success: function (msg) {
                 }
             });
             return regresa.responseText
         }
 
-        function validarSerieFactura () {
+        function validarSerieFactura() {
             var regresaV = $.ajax({
                 type: 'POST',
                 async: false,
-                url:'${createLink(controller: 'proceso', action: 'validarSerieFactura_ajax')}',
-                data:{
+                url: '${createLink(controller: 'proceso', action: 'validarSerieFactura_ajax')}',
+                data: {
                     proceso: '${proceso?.id}',
                     serie: $("#serieFactura").val()
                 },
-                success: function (msg){
+                success: function (msg) {
                 }
             });
             return regresaV.responseText

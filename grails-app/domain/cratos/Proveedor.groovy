@@ -25,6 +25,7 @@ class Proveedor {
     String nombreCheque
     String autorizacionSri
     Date fechaCaducidad
+    String relacionado = 'NO'
 
     static auditable = [ignore: ['lugar', 'tipoProveedor']]
 
@@ -54,13 +55,13 @@ class Proveedor {
             telefono column: 'prvetlfn'
 
             tipoRelacion column: 'tprl__id'
-
             actividad column: 'prveactv'
             email column: 'prvemail'
             pais column: 'prvepais'
             nombreCheque column: 'prvenmch'
             autorizacionSri column: 'autr_sri'
             fechaCaducidad column: 'fchacdcd'
+            relacionado column: 'prverlcn'
         }
     }
     static constraints = {
@@ -92,8 +93,9 @@ class Proveedor {
         email(blank: true, nullable: true, attributes: [title: 'email'])
         pais(blank: true, nullable: true, attributes: [title: 'pais'])
         nombreCheque(blank: true, nullable: true, attributes: [title: 'nombreCheque'])
-        autorizacionSri(blank: true,nullable: true,size: 1..40)
+        autorizacionSri(blank: true,nullable: true, size: 1..40)
         fechaCaducidad(blank:true,nullable: true)
+        relacionado(blank:false, nullable: false, size: 2..2)
     }
 
     String toString() {

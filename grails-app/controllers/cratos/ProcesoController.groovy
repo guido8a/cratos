@@ -32,8 +32,7 @@ class ProcesoController extends cratos.seguridad.Shield {
 
     def nuevoProceso = {
 //        println "nuevo proceso "+params
-        def tiposProceso = ["-1": "Seleccione...",
-                            "C": "C-Compras (Compras Inventario, Compras Gasto)",
+        def tiposProceso = ["C": "C-Compras (Compras Inventario, Compras Gasto)",
                             "V": "V-Ventas (Ventas, Reposición de Gasto)",
                             "A": "A-Ajustes (Diarios y Otros)",
                             "P": "P-Pagos a proveedores",
@@ -57,21 +56,6 @@ class ProcesoController extends cratos.seguridad.Shield {
         def proceso
         def comprobante
 
-        def tptr
-        switch (params.tipoProceso) {
-            case 'C':
-                tptr = 1
-                break
-            case 'V':
-                tptr = 2
-                break
-        }
-
-        def tipoTran
-        if(tptr) {
-            tipoTran = TipoTransaccion.get(tptr)  //????
-        }
-
         def sustento = SustentoTributario.get(params.tipoCmprSustento)  //????
         def comprobanteSri = TipoCmprSustento.get(params."tipoComprobanteSri.id")
 
@@ -92,6 +76,47 @@ class ProcesoController extends cratos.seguridad.Shield {
 //            proceso.tipoTransaccion = tipoTran
         }
 
+        switch (params.tipoProceso) {
+            case 'C':
+                proceso.tipoTransaccion = TipoTransaccion.get(1)
+                proceso.valor = params.baseImponibleIva0.toDouble() + params.baseImponibleIva.toDouble() +
+                        params.baseImponibleNoIva.toDouble()
+                proceso.impuesto = params.ivaGenerado.toDouble() + params.iceGenerado.toDouble()
+                proceso.baseImponibleIva = params.baseImponibleIva.toDouble()
+                proceso.baseImponibleIva0 = params.baseImponibleIva0.toDouble()
+                proceso.baseImponibleNoIva = params.baseImponibleNoIva.toDouble()
+                proceso.ivaGenerado = params.ivaGenerado.toDouble()
+                proceso.iceGenerado = params.iceGenerado.toDouble()
+                println "documento: ${proceso.factura}"
+                proceso.procesoSerie01 = params.dcmtEstablecimiento
+                proceso.procesoSerie02 = params.dcmtEmision
+                proceso.secuencial = params.dcmtSecuencial?:0
+                proceso.autorizacion = params.dcmtAutorizacion
+                proceso.documento = params.dcmtEstablecimiento + "-" + params.dcmtEmision + "-" + '0' * (9-params.dcmtSecuencial.size()) + params.dcmtSecuencial
+                proceso.facturaAutorizacion = params.dcmtAutorizacion
+                println "...4 --> ${proceso.documento}"
+
+                break
+            case 'V':
+                proceso.tipoTransaccion = TipoTransaccion.get(2)
+                    proceso.valor = params.baseImponibleIva0.toDouble() + params.baseImponibleIva.toDouble() +
+                            params.baseImponibleNoIva.toDouble()
+                    proceso.impuesto = params.ivaGenerado.toDouble() + params.iceGenerado.toDouble()
+                    proceso.baseImponibleIva = params.baseImponibleIva.toDouble()
+                    proceso.baseImponibleIva0 = params.baseImponibleIva0.toDouble()
+                    proceso.baseImponibleNoIva = params.baseImponibleNoIva.toDouble()
+                    proceso.ivaGenerado = params.ivaGenerado.toDouble()
+                    proceso.iceGenerado = params.iceGenerado.toDouble()
+                    println "documento: ${proceso.factura}"
+                    proceso.facturaEstablecimiento = params.facturaEstablecimiento
+                    proceso.facturaPuntoEmision = params.facturaPuntoEmision
+                    proceso.facturaSecuencial = params.facturaSecuencial?:0
+                    proceso.facturaAutorizacion = params.facturaAutorizacion
+                    println "...4"
+
+                break
+        }
+
         proceso.proveedor = proveedor
         println "...1"
         proceso.tipoCmprSustento = comprobanteSri
@@ -104,23 +129,6 @@ class ProcesoController extends cratos.seguridad.Shield {
         proceso.tipoProceso = params.tipoProceso
         println "...2"
 
-        if(params.tipoProceso == 'C') {
-            proceso.valor = params.baseImponibleIva0.toDouble() + params.baseImponibleIva.toDouble() +
-                    params.baseImponibleNoIva.toDouble()
-            proceso.impuesto = params.ivaGenerado.toDouble() + params.iceGenerado.toDouble()
-            proceso.baseImponibleIva = params.baseImponibleIva.toDouble()
-            proceso.baseImponibleIva0 = params.baseImponibleIva0.toDouble()
-            proceso.baseImponibleNoIva = params.baseImponibleNoIva.toDouble()
-            proceso.ivaGenerado = params.ivaGenerado.toDouble()
-            proceso.iceGenerado = params.iceGenerado.toDouble()
-            proceso.documento = params.facturaEstablecimiento + "-" + params.facturaPuntoEmision + "-" + params.facturaSecuencial
-            println "documento: ${proceso.factura}"
-            proceso.facturaEstablecimiento = params.facturaEstablecimiento
-            proceso.facturaPuntoEmision = params.facturaPuntoEmision
-            proceso.facturaSecuencial = params.facturaSecuencial
-            proceso.facturaAutorizacion = params.facturaAutorizacion
-            println "...4"
-        }
 
 //        println "<<<<< gestor: ${proceso.gestor?.id}, cont: ${proceso.contabilidad?.id}, empr: ${proceso.empresa?.id}, " +
 //                "proveedor: ${proceso.proveedor?.id}, cmpr: ${proceso.comprobante?.id}, usro: ${proceso.usuario}"
@@ -1217,13 +1225,14 @@ class ProcesoController extends cratos.seguridad.Shield {
     }
 
     def valores_ajax () {
+        println "valores_ajax $params"
         def proceso = Proceso.get(params.proceso)
         return[proceso: proceso, tipo: params.tipo]
     }
 
     def proveedor_ajax () {
         def proceso = Proceso.get(params.proceso)
-        def proveedores = Proveedor.list()
+        def proveedores
         def tr
         def prve
         if(params.id) {
@@ -1293,6 +1302,7 @@ class ProcesoController extends cratos.seguridad.Shield {
         def data = []
         def cn = dbConnectionService.getConnection()
         def wh = ""
+        def cont = session.contabilidad.id
         def buscar = params.buscar.trim()
         if(params.buscar) {
             session.buscar = buscar
@@ -1307,11 +1317,12 @@ class ProcesoController extends cratos.seguridad.Shield {
 */
         def sql = "select prcs.prcs__id id, prcsfcha, prcsdscr, prcsetdo, cmprprfj||cmprnmro cmprnmro, " +
                 "prcstpps, prvenmbr, prcsetdo " +
-                "from prcs left join cmpr on cmpr.prcs__id = prcs.prcs__id, prve where prcs.empr__id = ${session.empresa.id} and " +
+                "from prcs left join cmpr on cmpr.prcs__id = prcs.prcs__id, prve " +
+                "where prcs.empr__id = ${session.empresa.id} and prcs.cont__id = ${cont} and " +
                 "prve.prve__id = prcs.prve__id ${wh}" +
                 "order by prcsfcha limit 21"
 
-//        println "buscar .. ${sql}"
+        println "buscar .. ${sql}"
 
         data = cn.rows(sql.toString())
 
@@ -1546,13 +1557,13 @@ class ProcesoController extends cratos.seguridad.Shield {
     }
 
     def totalesAsientos_ajax () {
-        def proceso = Proceso.get(params.proceso)
         def comprobante = Comprobante.get(params.comprobante)
-        def asientos = Asiento.findAllByComprobante(comprobante).sort{it.numero}
-        def auxiliares = Auxiliar.findAllByAsientoInList(asientos)
+        def asientos = Asiento.findAllByComprobante(comprobante)
+
         def debeTotal = asientos.debe.sum()
         def haberTotal = asientos.haber.sum()
-        return [asientos: asientos, comprobante: comprobante, proceso: proceso, auxiliares: auxiliares, debeT: debeTotal, haberT: haberTotal]
+
+        return [debeT: debeTotal, haberT: haberTotal]
     }
 }
 
