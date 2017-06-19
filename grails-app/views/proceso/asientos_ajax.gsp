@@ -19,6 +19,11 @@
         font-weight: normal;
         background-color:  #fffddc;
     }
+    .total {
+        /*font-weight: bold;*/
+        background-color: #1270c3;
+        color: #fdcfa0;
+    }
 </style>
 
 
@@ -53,8 +58,12 @@
     <div class="span12">
         <table class="table table-bordered table-condensed" width="980px">
             <tbody>
+            <g:set var="sumadebe" value="${0.0}"/>
+            <g:set var="sumahber" value="${0.0}"/>
             <g:each in="${asientos}" var="asiento">
-                <g:if test="${asiento.comprobante == comprobante}">
+                %{--<g:if test="${asiento.comprobante == comprobante}">--}%
+                <g:set var="sumadebe" value="${sumadebe + asiento.debe}"/>
+                <g:set var="sumahber" value="${sumahber + asiento.haber}"/>
                     <tr class="colorAsiento">
                         <td width="100px">${asiento?.cuenta?.numero}</td>
                         <td width="580px">${asiento?.cuenta?.descripcion}</td>
@@ -118,39 +127,20 @@
                         </g:each>
                     </g:if>
 
-                </g:if>
+                %{--</g:if>--}%
             </g:each>
+            <tr class="colorAsiento">
+                <td colspan="2" class="total derecha">Totales del asiento</td>
+                <td class="total derecha">${sumadebe}</td>
+                <td class="total derecha">${sumahber}</td>
+                <td class="total derecha">Dif: ${sumadebe - sumahber}</td>
+            </tr>
             </tbody>
         </table>
     </div>
 </div>
 
-<div class="span12">
-    <div id="divTotalesAsientos" style="width: 1020px; height: 20px;"></div>
-</div>
-
 <script type="text/javascript">
-
-    <g:if test="${proceso?.id}">
-    cargarTotalesAsientos('${proceso?.id}', '${comprobante?.id}');
-    </g:if>
-
-
-    function cargarTotalesAsientos(proceso, comprobante) {
-        $.ajax({
-            type: 'POST',
-            url: '${createLink(controller: 'proceso', action: 'totalesAsientos_ajax')}',
-            data: {
-                proceso: proceso,
-                comprobante: comprobante
-            },
-            success: function (msg) {
-                $("#divTotalesAsientos").html(msg)
-            }
-        });
-    }
-    ;
-
 
     $(".btnAgregarAsiento").click(function () {
         agregar('${comprobante?.id}', null)

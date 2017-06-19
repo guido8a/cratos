@@ -54,7 +54,7 @@ class ProcesoController extends cratos.seguridad.Shield {
     }
 
     def save = {
-        println "save proceso: $params"
+        println "save proceso: $params.data"
         def proceso
         def comprobante
 
@@ -142,8 +142,43 @@ class ProcesoController extends cratos.seguridad.Shield {
             proceso.save(flush: true)
             println "...6"
             proceso.refresh()
+            if (proceso.errors.getErrorCount() == 0) {
+                if (params.data != "") {
+                    def data = params.data.split(";")
+                    def fp
+                    def tppgLista = []
+                    // println "data "+data
+                    data.each {
+                        if (it != "") {
+                            println "porcesando... $it"
+                            def tppg = TipoPago.get(it)
+                            fp = ProcesoFormaDePago.findByProcesoAndTipoPago(proceso, tppg)
+                            if(!fp) {
+                                def psfp = new ProcesoFormaDePago()
+                                psfp.proceso = proceso
+                                psfp.tipoPago = tppg
+                                psfp.save(flush: true)
+                            }
+                            tppgLista.add(tppg)
+                        }
+                    }
+                    println "existentes: $tppgLista"
+                    if(tppgLista) {
+                        fp = ProcesoFormaDePago.findAllByProcesoAndTipoPagoNotInList(proceso, tppgLista)
+                    } else {
+                        println "borrar todo........."
+                    }
+
+                    println "a borrar: $fp"
+                    fp.each {
+                        println "borrando: ${it}"
+                        it.delete(flush: true)
+                    }
+                }
+            }
+
             redirect(action: 'nuevoProceso', id: proceso.id)
-            println "...7 proceso: ${proceso.id}"
+
         } catch (e) {
             println "...8"
             println "error al grabar el proceso $e"
@@ -1558,14 +1593,5 @@ class ProcesoController extends cratos.seguridad.Shield {
         }
     }
 
-    def totalesAsientos_ajax () {
-        def comprobante = Comprobante.get(params.comprobante)
-        def asientos = Asiento.findAllByComprobante(comprobante)
-
-        def debeTotal = asientos.debe.sum()
-        def haberTotal = asientos.haber.sum()
-
-        return [debeT: debeTotal, haberT: haberTotal]
-    }
 }
 

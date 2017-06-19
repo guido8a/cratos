@@ -12,7 +12,7 @@
     .filaFP {
         width: 95%;
         height: 20px;
-        border-bottom: 1px solid black;
+        border-bottom: 1px solid #d0d0d0;
         margin: 10px;
         vertical-align: middle;
         text-align: left;
@@ -40,7 +40,7 @@
         line-height: 16px;
         background: rgba(255, 2, 10, 0.35);
         margin-right: 5px;
-        font-weight: bold;
+        /*font-weight: bold;*/
         font-size: 12px;
         cursor: pointer;
         float: right;
@@ -113,7 +113,7 @@
 
             <g:if test="${cratos.Retencion.countByProceso(proceso) > 0}">
                 <g:link class="btn btn-primary" action="detalleSri" id="${proceso?.id}" style="margin-bottom: 10px;">
-                    <i class="fa fa-shield"></i> SRI
+                    <i class="fa fa-money"></i> Retenciones
                 </g:link>
             %{--<g:if test="${cratos.Retencion.findByProceso(proceso).numeroSecuencial}">--}%
                 <g:link controller="reportes3" action="imprimirRetencion" class="btn btn-default btnRetencion"
@@ -124,6 +124,10 @@
             %{--</g:if>--}%
             </g:if>
         </g:if>
+        <a href="#" class="btn btn-default" style="cursor: default" id="abrir-fp">
+            <i class="fa fa-usd"></i>
+            Forma de Pago
+        </a>
     </div>
 </div>
 
@@ -141,11 +145,9 @@
         <div class="linea"></div>
 
         <input type="hidden" name="id" value="${proceso?.id}" id="idProceso"/>
-        %{--
-                <input type="hidden" name="empleado.id" value="${session.usuario.id}"/>
-                <input type="hidden" name="periodoContable.id" value="${session?.contabilidad?.id}"/>
-                <input type="hidden" name="data" id="data" value="${session?.contabilidad?.id}"/>
-        --}%
+                %{--<input type="hidden" name="empleado.id" value="${session.usuario.id}"/>--}%
+                %{--<input type="hidden" name="periodoContable.id" value="${session?.contabilidad?.id}"/>--}%
+            <input type="hidden" name="data" id="data"/>
         <div class="row">
             <div class="col-md-2 negrilla">
                 Tipo de transacción:
@@ -160,7 +162,7 @@
                 --}%
                 <g:select class="form-control required cmbRequired tipoProcesoSel" name="tipoProceso" id="tipoProceso"
                           from="${tiposProceso}" label="Proceso tipo: " value="${proceso?.tipoProceso}" optionKey="key"
-                          optionValue="value" title="Tipo de la transacción"/>
+                          optionValue="value" title="Tipo de la transacción" disabled="${registro ? true : false}"/>
             </div>
 
             <div class="col-md-1 negrilla">
@@ -298,16 +300,16 @@
 
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-md-2 negrilla" style="width: 140px">
+                    <div class="col-md-3 negrilla" style="width: 140px">
                         Tipo de pago:
                     </div>
 
-                    <div class="col-md-6 negrilla" style="margin-left: -20px">
+                    <div class="col-md-7 negrilla" style="margin-left: -20px">
                         <g:select name="tipoPago.id" id="comboFP" class=" form-control" from="${cratos.TipoPago.list()}"
                                   label="Tipo de pago: " optionKey="id" optionValue="descripcion"/>
                     </div>
 
-                    <div class="col-md-1 negrilla" style="width: 140px">
+                    <div class="col-md-2 negrilla">
                         <g:if test="${!registro}">
                             <a href="#" id="agregarFP" class="btn btn-azul">
                                 <i class="fa fa-plus"></i>
@@ -684,33 +686,33 @@
         });
 
 
-//        $("#agregarFP").click(function(){
-//            var band = true
-//            var message
-//            if ($(".filaFP").size() == 5) {
-//                message = "<b>Ya ha asignado el máximo de 5 formas de  pago</b>"
-//                band = false
-//            }
-//            if ($(".fp-"+$("#comboFP").val()).size() >0) {
-//                message = "<b>Ya ha asignado la forma de pago "+$("#comboFP option:selected").text()+ " previamente.</b>"
-//                band = false
-//            }
-//            if (band) {
-//                var div = $("<div class='filaFP ui-corner-all'>")
-//                var span = $("<span class='span-eliminar ui-corner-all' title='Click para eliminar'>Eliminar</span>")
-//                div.html($("#comboFP option:selected").text())
-//                div.append(span)
-//                div.addClass("fp-"+$("#comboFP").val())
-//                div.attr("fp",$("#comboFP").val())
-//                span.bind("click", function () {
-//                    $(this).parent().remove()
-//                })
-//                $("#detalle-fp").append(div)
-//            }else{
-//                bootbox.alert(message)
-//            }
-//        });
-//
+        $("#agregarFP").click(function(){
+            var band = true
+            var message
+            if ($(".filaFP").size() == 5) {
+                message = "<b>Ya ha asignado el máximo de 5 formas de  pago</b>"
+                band = false
+            }
+            if ($(".fp-"+$("#comboFP").val()).size() >0) {
+                message = "<b>Ya ha asignado la forma de pago "+$("#comboFP option:selected").text()+ " previamente.</b>"
+                band = false
+            }
+            if (band) {
+                var div = $("<div class='filaFP ui-corner-all'>")
+                var span = $("<span class='span-eliminar ui-corner-all' title='Click para eliminar'>Eliminar</span>")
+                div.html($("#comboFP option:selected").text())
+                div.append(span)
+                div.addClass("fp-"+$("#comboFP").val())
+                div.attr("fp",$("#comboFP").val())
+                span.bind("click", function () {
+                    $(this).parent().remove()
+                })
+                $("#detalle-fp").append(div)
+            }else{
+                bootbox.alert(message)
+            }
+        });
+
 
         $(".span-eliminar").bind("click", function () {
             $(this).parent().remove()
@@ -722,7 +724,7 @@
             var info = ""
             var tipoP = $(".tipoProcesoSel option:selected").val();
 
-            if (tipoP != 'A') {
+            if (tipoP != 'A') {   /* no es ajuste */
 
                 $("#listaErrores").html('');
                 $("#divErrores").hide();
@@ -865,20 +867,20 @@
                         }
                     }
                 }
-//            if($(".filaFP").size() <1){
-//                info+="No ha asignado formas de pago para la transacción contable"
-//                bandData=false
-//            }
-                if (bandData) {
-                    var data = ""
-                    $(".filaFP").each(function () {
-                        data += $(this).attr("fp") + ";"
-
-                    })
-                    $("#data").val(data)
-                }
             }
 
+            if($(".filaFP").size() <1){
+                info+="No ha asignado formas de pago para la transacción contable"
+                bandData=false
+            }
+
+            if (bandData) {
+                var data = ""
+                $(".filaFP").each(function () {
+                    data += $(this).attr("fp") + ";"
+                })
+                $("#data").val(data)
+            }
 
             if (error != "") {
 
