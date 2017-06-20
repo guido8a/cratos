@@ -112,11 +112,11 @@ class ReportesController {
         // class="ui-widget-content ui-corner-all"/>
         def sel
         if (cont)
-            sel = g.select(name: "periodo" + params.cual, from: periodos, optionKey: "id", "class": "ui-widget-content ui-corner-all dos", noSelection: ["-1": "Todos"])
+            sel = g.select(name: "periodo" + params.cual, from: periodos, optionKey: "id", "class": "form-control dos", noSelection: ["-1": "Todos"], style: "width: 300px")
         else
-            sel = g.select(name: "periodo" + params.cual, from: periodos, optionKey: "id", "class": "ui-widget-content ui-corner-all dos", noSelection: ["-1": "Todos"])
+            sel = g.select(name: "periodo" + params.cual, from: periodos, optionKey: "id", "class": "form-control dos", noSelection: ["-1": "Todos"], style: "width: 300px")
 
-        def html = "<label class='uno'>Periodo:</label>" + sel
+        def html = "<label class='uno'>Período:</label>" + sel
 
         def js = ""
         if (params.cual == "2") {
@@ -138,11 +138,11 @@ class ReportesController {
         def periodos = Periodo.findAllByContabilidad(cont, [sort: 'fechaInicio'])
         def sel
         if (cont)
-            sel = g.select(name: "periodo" + params.cual, from: periodos, optionKey: "id", "class": "ui-widget-content ui-corner-all dos")
+            sel = g.select(name: "periodo" + params.cual, from: periodos, optionKey: "id", "class": "form-control dos", style: "width: 300px")
         else
-            sel = g.select(name: "periodo" + params.cual, from: periodos, optionKey: "id", "class": "ui-widget-content ui-corner-all dos")
+            sel = g.select(name: "periodo" + params.cual, from: periodos, optionKey: "id", "class": "form-control dos", style: "width: 300px")
 
-        def html = "<label class='uno'>Periodo:</label>" + sel
+        def html = "<label class='uno'>Período:</label>" + sel
 
         def js = ""
         if (params.cual == "2") {
@@ -169,39 +169,31 @@ class ReportesController {
 
     def balanceComprobacion() {
 
-        println("paramsBC" + params )
+//        println("paramsBC" + params )
 
            def sp = kerberosoldService.ejecutarProcedure("saldos", params.cont)
            def periodo = []
            def saldos = []
            def saldoPeriodo = []
-
-
-            def contabilidad = Contabilidad.get(params.cont)
+           def contabilidad = Contabilidad.get(params.cont)
 
             if(params.per == '-1'){
 
                 periodo = Periodo.findAllByContabilidad(contabilidad)
                 periodo.each {
-
                    saldoPeriodo = SaldoMensual.findAllByPeriodo(it)
-
-//                    saldos.add(saldoPeriodo)
-//                    saldos += saldoPeriodo
-                    saldos = saldoPeriodo
+                   saldos = saldoPeriodo
                 }
             }else {
-
                 periodo = Periodo.get(params.per)
                 saldos = SaldoMensual.findAllByPeriodo(periodo)
             }
-
           saldos.sort {
                 it.refresh()
                 it.cuenta.numero
             }
-        return [res: saldos, contabilidad: contabilidad, periodo: periodo]
 
+        return [res: saldos, contabilidad: contabilidad, periodo: periodo]
     }
 
     def presupuesto() {
@@ -467,14 +459,7 @@ order by rplnnmro
 
     def auxiliaresContables() {
 
-//        params.cont = 1
-//        params.per = 10
-//        params.cnta = 1108
-        // println "aux contables"
-        // println("paramsCont:" + params)
-        // println("periodoCont:" + params.per)
-        // println("cuenta-->>" + params.cnta)
-
+        println("params  ac " + params)
 
         def contabilidad = Contabilidad.get(params.cont);
         def fini
@@ -486,61 +471,27 @@ order by rplnnmro
             fini = periodo.fechaInicio
             fin = periodo.fechaFin
         } else {
-//            println "else"
             def periodos = Periodo.findAllByContabilidad(contabilidad, [sort: "fechaInicio"]);
             perIni = periodos[0]
-//            println "periodos "     +periodos
             fini = periodos[0].fechaInicio
             periodo = periodos.last()
             fin = periodo.fechaFin
             println " inicio: " + fini + " fin: " + fin + "  periodo " + periodo + "  params " + params
         }
-        //println "inicio "+fini;
-        // println "fin "+ fin;
-
 
         def proceso = Proceso.findAllByContabilidadAndFechaBetween(contabilidad, fini, fin)
-
-//        println(proceso.descripcion);
-//
-//        println("contabilidadCont:" + contabilidad.descripcion)
-//
-//        println("procesos:" + proceso)
-
         def cuenta
 
-
         if (params.cnta == '-1') {
-
             println("entro!! cuenta ID")
-
             cuenta = Cuenta.all
-
-//            println("cuenta" + cuenta.id)
-
             cuenta.each { g ->
-
                 println(g.id)
-
                 def cuentaP
-
                 cuentaP = Cuenta.get(g.id)
-
-//                println("cuentaP: " + cuentaP)
-
                 def saldoMensual = SaldoMensual.findByCuentaAndPeriodo(cuentaP, periodo)?.refresh()
-
                 println("SM con refres :" + saldoMensual)
-
-
                 def comprobante = Comprobante.findAllByProcesoInList(proceso)
-
-//                println("comprobante" + comprobante)
-
-//                def asiento = Asiento.findAllByCuentatAndComprobanteInList(cuenta, comprobante)
-
-//                println("asiento" + asiento)
-
             }
 
 
@@ -550,11 +501,7 @@ order by rplnnmro
         } else {
 
             cuenta = Cuenta.get(params.cnta);
-
-            println("cuentaC: " + cuenta.id)
-
             def saldoMensual = SaldoMensual.findByCuentaAndPeriodo(cuenta, periodo)?.refresh()
-//            println "saldos 1 " + saldoMensual?.debe + "  " + saldoMensual.haber + "  " + saldoMensual.saldoInicial
             if (!saldoMensual) {
                 saldoMensual = SaldoMensual.findAllByCuenta(cuenta)
                 saldoMensual.sort { it.periodo.fechaInicio }
@@ -566,16 +513,8 @@ order by rplnnmro
             println("saldoMensual: refresh " + saldoMensual)
 
             def comprobante = Comprobante.findAllByProcesoInListAndRegistrado(proceso, "S")
-
-//            println("comprobante" + comprobante)
-
             def asiento = Asiento.findAllByCuentaAndComprobanteInList(cuenta, comprobante)
-
-//            println("asiento" + asiento)
-
-
             def saldo = []
-
             def saldoInicial
 
             if (params.per == "-1") {
@@ -583,17 +522,13 @@ order by rplnnmro
                 if (si != null) {
                     saldoInicial = si.saldoInicial;
                 } else {
-
                     saldoInicial = 0;
-
                 }
             } else {
                 if (saldoMensual != null) {
                     saldoInicial = saldoMensual.saldoInicial;
                 } else {
-
                     saldoInicial = 0;
-
                 }
             }
 
@@ -601,7 +536,6 @@ order by rplnnmro
             println "saldo inicial:" + saldoInicial
 
             asiento.each { v ->
-
                 def m = v
                 def saldos = [:]
 
@@ -609,28 +543,15 @@ order by rplnnmro
                 saldos.haber = m.haber
 
                 if (saldoInicial == 0) {
-
                     saldoInicial = saldos.debe - saldos.haber
-
-
                 } else {
-
                     if (saldos.debe != 0) {
-
-
                         saldoInicial = saldoInicial + saldos.debe
-
                     } else {
-
                         saldoInicial = saldoInicial - saldos.haber
                     }
-
-
                 }
-//                println(saldoInicial)
-
                 saldo.add(saldoInicial)
-
             }
 
             return [contabilidad: contabilidad, periodo: periodo, proceso: proceso, cuenta: cuenta, asiento:
@@ -917,6 +838,22 @@ order by rplnnmro
         return cuentas
     }
 
+    def prefijo_ajax () {
+    def tipoComprobante = TipoComprobante.get(params.tipo)
+    def prefijo = ''
+        switch (tipoComprobante.codigo){
+            case "I":
+                prefijo = 'CI'
+                break;
+            case "E":
+                prefijo = 'CE'
+                break;
+            case "D":
+                prefijo = 'CD'
+                break;
+        }
+    return[prefijo: prefijo]
+    }
 
 }
 

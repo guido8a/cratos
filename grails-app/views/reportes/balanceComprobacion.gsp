@@ -56,13 +56,10 @@
 
 <body>
 <div class="hoja">
-    %{--<h1>${contabilidad.institucion.nombre}</h1>--}%
     <h1><util:clean str="${session.empresa}"></util:clean></h1>
     <h1>Balance de comprobación</h1>
-%{--<h2>${contabilidad.descripcion}</h2>--}%
 
     <g:each in="${periodo}" var="per">
-
 
 
         <h3>Del ${per.fechaInicio.format("dd-MM-yyyy")} al ${per.fechaFin.format("dd-MM-yyyy")}</h3>

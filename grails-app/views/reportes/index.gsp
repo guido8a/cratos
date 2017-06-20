@@ -321,6 +321,26 @@
                         <p>Balance de cierre del periodo contable</p>
                     </div>
                 </li>
+
+                <li>
+                    <span>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <a href="#" class="link btn btn-info btn-ajax" id="excelPrueba">
+                                   Excel Prueba
+                                </a>
+                            </div>
+                            <div class="col-md-8">
+                                Excel Prueba
+                            </div>
+                        </div>
+                    </span>
+
+                    <div class="descripcion hide">
+                        <h4> Excel Prueba</h4>
+
+                    </div>
+                </li>
             </ul>
         </div>
 
@@ -394,25 +414,24 @@
             </div>
 
             <div class="modal-body">
-                <div class="fila">
+                <div class="fila" style="margin-bottom: 10px">
                     <label class="uno">Contabilidad:</label>
 
                     <g:select name="contComp" id="contComp"
                               from="${cratos.Contabilidad.findAllByInstitucion(session.empresa, [sort: 'fechaInicio'])}"
                               optionKey="id" optionValue="descripcion"
-                              class="ui-widget-content ui-corner-all dos"/>
+                              class="form-control dos"/>
                 </div>
 
-                <div class="fila">
-
+                <div class="fila" style="margin-bottom: 15px">
                     <label class="uno">Tipo:</label>
-
-                    <g:select class="dos" name="compTipo" from="${cratos.TipoComprobante.list()}" optionKey="id" optionValue="descripcion"/>
+                    <g:select class="form-control dos" name="compTipo" from="${cratos.TipoComprobante.list()}"  optionKey="id" optionValue="descripcion"/>
                 </div>
 
                 <div class="fila">
                     <label class="uno">Número:</label>
-                    <g:textField type="text" class="ui-widget-content ui-corner-all dos" name="compNum" maxlength="25"/>
+                    <div class="col-md-2" id="divNumComp" style="margin-left: -10px"></div>
+                        <g:textField type="text" class="form-control dos number" name="compNum" maxlength="25" style="width: 200px; margin-top: -1px"/>
                 </div>
 
             </div>
@@ -437,12 +456,12 @@
             </div>
 
             <div class="modal-body" id="bodyBalance">
-                <div class="fila">
+                <div class="fila" style="margin-bottom: 15px">
                     <label class="uno">Contabilidad:</label>
                     <g:select name="contP" id="contP"
                               from="${cratos.Contabilidad.findAllByInstitucion(session.empresa, [sort: 'fechaInicio'])}"
                               optionKey="id" optionValue="descripcion" noSelection="['-1': 'Seleccione la contabilidad']"
-                              class="ui-widget-content ui-corner-all dos"/>
+                              class="form-control dos"/>
                 </div>
 
                 <div id="divPeriodo" class="fila">
@@ -472,12 +491,12 @@
             </div>
 
             <div class="modal-body" id="bodySituacion">
-                <div class="fila">
+                <div class="fila" style="margin-bottom: 15px">
                     <label class="uno">Contabilidad:</label>
                     <g:select name="contP8" id="contP8"
                               from="${cratos.Contabilidad.findAllByInstitucion(session.empresa, [sort: 'fechaInicio'])}"
                               optionKey="id" optionValue="descripcion" noSelection="['-1': 'Seleccione la contabilidad']"
-                              class="ui-widget-content ui-corner-all dos"/>
+                              class="form-control dos" />
                 </div>
 
                 <div id="divPeriodo8" class="fila">
@@ -505,13 +524,13 @@
             </div>
 
             <div class="modal-body" id="bodyIntegral">
-                <div class="fila">
+                <div class="fila" style="margin-bottom: 15px">
                     <label class="uno">Contabilidad:</label>
 
                     <g:select name="contP9" id="contP9"
                               from="${cratos.Contabilidad.findAllByInstitucion(session.empresa, [sort: 'fechaInicio'])}"
                               optionKey="id" optionValue="descripcion" noSelection="['-1': 'Seleccione la contabilidad']"
-                              class="ui-widget-content ui-corner-all dos"/>
+                              class="form-control dos"/>
                 </div>
 
                 <div id="divPeriodo9" class="fila">
@@ -540,16 +559,16 @@
             </div>
 
             <div class="modal-body" id="bodyAuxiliar">
-                <div class="fila">
+                <div class="fila" style="margin-bottom: 15px">
                     <label class="uno">Contabilidad:</label>
 
                     <g:select name="contP3" id="contP3"
                               from="${cratos.Contabilidad.findAllByInstitucion(session.empresa, [sort: 'fechaInicio'])}"
                               optionKey="id" optionValue="descripcion" noSelection="['-1': 'Seleccione la contabilidad']"
-                              class="ui-widget-content ui-corner-all dos"/>
+                              class="form-control dos"/>
                 </div>
 
-                <div id="divPeriodo3" class="fila">
+                <div id="divPeriodo3" class="fila" style="margin-bottom: 15px">
                     <label class="uno">Periodo:</label>
 
                 </div>
@@ -557,7 +576,7 @@
                 <div id="divCuenta3" class="fila">
                     <label class="uno">Cuenta:</label>
                     <g:select name="cnta3" from="${cratos.Cuenta.findAllByEmpresa(session.empresa, [sort: 'numero'])}"
-                              optionKey="id" class="ui-widget-content ui-corner-all dos"/>
+                              optionKey="id" class="form-control dos"/>
 
                 </div>
 
@@ -773,6 +792,30 @@
 
 <script type="text/javascript">
 
+
+
+    cargarSelComprobante($("#compTipo option:selected").val());
+
+
+    $("#compTipo").change(function () {
+       var tipo = $("#compTipo option:selected").val();
+        cargarSelComprobante(tipo)
+    });
+
+    function cargarSelComprobante (sel) {
+        $.ajax({
+            type: 'POST',
+            url: '${createLink(controller: 'reportes', action: 'prefijo_ajax')}',
+            data:{
+                tipo: sel
+            },
+            success: function (msg){
+                $("#divNumComp").html(msg)
+            }
+        });
+    }
+
+
     function prepare() {
         $(".fa-ul li span").each(function () {
             var id = $(this).parents(".tab-pane").attr("id");
@@ -918,6 +961,7 @@
             location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=gestorContable.pdf"
             closeLoader()
         });
+
         $(".btnAceptarComprobante").click(function () {
             var cont = $("#contComp").val();
             var tipo = $("#compTipo").val();
@@ -935,57 +979,48 @@
                     if (parts[0] != "NO") {
                         var url = "${createLink(controller: 'reportesNew', action: 'imprimirComprobante')}" + "?id=" + msg + "&filename=comprobante";
                         location.href = url
-                        %{--location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=comprobante.pdf"--}%
                     } else {
-                        alert(parts[1]);
+                        bootbox.alert(parts[1])
                     }
                 }
             });
         });
 
+
+        $("#excelPrueba").click(function () {
+            location.href = "${g.createLink(controller: 'reportes3', action: 'reporteExcel')}"
+        });
+
+
         $(".btnAceptarBalance").click(function () {
             var cont = $("#contP").val();
             var per = $("#periodo").val();
-
             if (cont == '-1') {
-
-                alert("Debe elegir una contabilidad!")
-
+                bootbox.alert("Debe elegir una contabilidad!")
             } else {
-
                 url = "${g.createLink(controller:'reportes' , action: 'balanceComprobacion')}?cont=" + cont + "Wempresa=${session.empresa.id}" + "Wper=" + per;
                 location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=balanceComprobacion.pdf"
-
             }
-
         });
 
         $(".btnAceptarSituacion").click(function () {
-
             var cont = $("#contP8").val();
             var per = $("#periodo8").val();
 
             if (cont == '-1') {
-
-                alert("Debe elegir una contabilidad!")
-
+                bootbox.alert("Debe elegir una contabilidad!")
             } else {
-
                 url = "${g.createLink(controller:'reportes2' , action: 'situacionFinanciera')}?cont=" + cont + "Wempresa=${session.empresa.id}" + "Wper=" + per;
                 location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=situacionFinanciera.pdf"
             }
-
         });
 
         $(".btnAceptarIntegral").click(function () {
-
             var cont = $("#contP9").val();
             var per = $("#periodo9").val();
 
             if (cont == '-1') {
-
-                alert("Debe elegir una contabilidad!")
-
+                bootbox.alert("Debe elegir una contabilidad!")
             } else {
                 url = "${g.createLink(controller:'reportes2' , action: 'estadoDeResultados')}?cont=" + cont + "Wempresa=${session.empresa.id}" + "Wper=" + per;
                 location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=resultadoIntegral.pdf"
@@ -998,7 +1033,7 @@
             var cnta = $("#cnta3").val();
 
             if (cont == '-1') {
-                alert("Debe elegir una contabilidad!")
+                bootbox.alert("Debe elegir una contabilidad!")
             } else {
                 if (per != null) {
                     url = "${g.createLink(controller:'reportes' , action: 'auxiliaresContables')}?cont=" + cont + "Wemp=${session.empresa.id}" + "Wper=" + per + "Wcnta=" + cnta;
@@ -1014,9 +1049,7 @@
             var cli = $("#listaClientes").val();
 
             if (cont == '-1') {
-
-                alert("Debe elegir una contabilidad!")
-
+                bootbox.alert("Debe elegir una contabilidad!")
             } else {
                 var url = "${g.createLink(controller:'reportesNew' , action: 'auxiliarPorCliente')}?cont=" + cont + "&emp=${session.empresa.id}" + "&per=" + per + "&cli=" + cli + "&filename=auxiliaresXcliente";
                 location.href = url
@@ -1029,9 +1062,7 @@
             var per = $("#periodo0").val();
 
             if (cont == '-1') {
-
-                alert("Debe elegir una contabilidad!")
-
+                bootbox.alert("Debe elegir una contabilidad!")
             } else {
 
                 url = "${g.createLink(controller:'reportes4' , action: 'balanceGeneralAux')}?cont=" + cont + "&emp=${session.empresa.id}" + "&per=" + per + "&filename=balancexAuxiliar";
@@ -1057,13 +1088,9 @@
             }
 
             if (cont == '-1') {
-
-                alert("Debe elegir una contabilidad!")
-
+                bootbox.alert("Debe elegir una contabilidad!")
             } else {
-
                 url = "${g.createLink(controller:'reportes' , action: 'balanceG')}?contabilidad=" + cont + "Wperiodo=" + per + "Wempresa=${session.empresa.id}Wnivel=" + $("#nivel").val() + "Wceros=" + ceros + "Wfirma1=" + firma1 + "Wfirma2=" + firma2;
-//                            console.log(url)
                 location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=BalanceG.pdf"
             }
 
@@ -1084,11 +1111,8 @@
             }
 
             if (cont == '-1') {
-
-                alert("Debe elegir una contabilidad!")
-
+                bootbox.alert("Debe elegir una contabilidad!")
             } else {
-
                 url = "${g.createLink(controller:'reportes' , action: 'balanceCierre')}?contabilidad=" + cont + "Wempresa=${session.empresa.id}Wnivel=" + $("#nivelCierre").val() + "Wceros=" + ceros + "Wfirma1=" + firma1 + "Wfirma2=" + firma2;
 //                            console.log(url)
                 location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=BalanceCierre.pdf"

@@ -55,6 +55,14 @@
             font-size: 12px;
     }
 
+    .even {
+        background : #ddd;
+    }
+
+    .odd {
+        background : #efefef;
+    }
+
     </style>
 
 </head>

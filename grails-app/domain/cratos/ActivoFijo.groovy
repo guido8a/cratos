@@ -21,7 +21,6 @@ class ActivoFijo implements Serializable {
     Integer aniosVidaUtil
     String numeroSerie
     String modelo
-    Color color
     Date fechaInicioDepreciacion
     String observaciones
 
@@ -49,7 +48,6 @@ class ActivoFijo implements Serializable {
             aniosVidaUtil column: 'acfjavut'
             numeroSerie column: 'acfjnmsr'
             modelo column: 'acfjmodl'
-            color column: 'clor__id'
             fechaInicioDepreciacion column: 'acfjfcid'
             observaciones column: 'acfjobsv'
 
@@ -73,7 +71,6 @@ class ActivoFijo implements Serializable {
         aniosVidaUtil(blank: false, nullable: false, attributes: [title: 'años de vida útil'])
         numeroSerie(blank: true, nullable: true, maxSize: 20, attributes: [title: 'número de serie'])
         modelo(blank: true, nullable: true, maxSize: 20, attributes: [title: 'modelo'])
-        color(blank: true, nullable: true, attributes: [title: 'color'])
         fechaInicioDepreciacion(blank: true, nullable: true, attributes: [title: 'fecha inicio de depreciación'])
         observaciones(blank: true, nullable: true, maxSize: 63, attributes: [title: 'observaciones'])
 

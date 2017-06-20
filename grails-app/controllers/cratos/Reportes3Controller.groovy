@@ -1,5 +1,10 @@
 package cratos
 
+import com.lowagie.text.Element
+import com.lowagie.text.Paragraph
+import org.apache.poi.ss.usermodel.Row
+import org.apache.poi.xssf.usermodel.XSSFWorkbook
+
 class Reportes3Controller {
 
     def dbConnectionService
@@ -15,24 +20,22 @@ class Reportes3Controller {
         def tipoComp = params.tipo
 
         def comp = Comprobante.withCriteria {
-//            proceso {
-//                eq("contabilidad", contabilidad)
-//            }
+            proceso {
+                eq("contabilidad", contabilidad)
+            }
             eq("numero", numComp)
             eq("tipo", tipoComprobante)
         }
 
-
-
-//        if (comp) {
-//            if (comp.size() == 1) {
-//                render comp[0].procesoId
-//            } else {
-//                render "NO_Se encontró más de un comprobante"
-//            }
-//        } else {
-//            render "NO_No se encontró el comprobante"
-//        }
+        if (comp) {
+            if (comp.size() == 1) {
+                render comp[0].procesoId
+            } else {
+                render "NO_Se encontró más de un comprobante"
+            }
+        } else {
+            render "NO_No se encontró el comprobante"
+        }
     }
 
     /*Reporte de cuentas por pagar
@@ -461,6 +464,82 @@ class Reportes3Controller {
         def meses = ["", "enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"]
 
         [empresa: empresa, retencion: retencion, meses: meses, proceso: proceso]
+    }
+
+
+    def reporteExcel() {
+
+        def comprobantes = cuentasService.getComprobante(563)
+        def tipoComprobante = []
+        comprobantes.each { i ->
+            tipoComprobante += i.tipo.codigo
+        }
+
+        def asiento = []
+        def comprobante = null
+        def numero = null
+        if (comprobantes) {
+            numero = "" + comprobantes[0].prefijo + "" + comprobantes[0].numero
+            comprobante = comprobantes[0]
+            asiento = cuentasService.getAsiento(comprobantes?.pop()?.id)
+        }
+        def comp = [:]
+
+        asiento.each { asientos ->
+            def fecha = asientos.comprobante.fecha
+            def descripcion = asientos.comprobante.descripcion
+            if (!comp.containsKey(numero)) {
+                comp[numero] = [:]
+                comp[numero].fecha = fecha
+                comp[numero].descripcion = descripcion
+                comp[numero].tipo = asientos.comprobante.tipo.descripcion
+                comp[numero].items = []
+            }
+            def c = [:]
+            c.debe = asientos.debe
+            c.haber = asientos.haber
+            c.cuenta = asientos.cuenta.numero
+            c.descripcion = asientos.cuenta.descripcion
+            def cont = comp[numero].items.add(c)
+        }
+        comp[numero].items.sort { it.cuenta }
+
+
+        XSSFWorkbook wb = new XSSFWorkbook()
+        org.apache.poi.ss.usermodel.Sheet sheet = wb.createSheet("PAC")
+
+        Row row = sheet.createRow(0)
+        row.createCell(0).setCellValue("")
+
+        Row row0 = sheet.createRow(1)
+        row0.createCell(1).setCellValue("COMPROBANTE")
+
+        Row row1 = sheet.createRow(2)
+        row1.createCell(1).setCellValue("NÚMERO")
+        row1.createCell(2).setCellValue("CUENTA")
+        row1.createCell(3).setCellValue("DEBE")
+        row1.createCell(4).setCellValue("HABER")
+
+        comp.each { item ->
+            def val = item.value
+            val.items.eachWithIndex { i, j ->
+                if (i.debe + i.haber > 0) {
+                 Row row2 = sheet.createRow(j+3)
+                    row2.createCell(1).setCellValue(i.cuenta)
+                    row2.createCell(2).setCellValue(i.descripcion)
+                    row2.createCell(3).setCellValue(i.debe)
+                    row2.createCell(4).setCellValue(i.haber)
+                }
+            }
+        }
+
+
+        def output = response.getOutputStream()
+        def header = "attachment; filename=" + "Excel.xlsx";
+        response.setContentType("application/octet-stream")
+        response.setHeader("Content-Disposition", header);
+        wb.write(output)
+
     }
 
 }

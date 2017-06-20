@@ -307,7 +307,7 @@ class ReportesNewController {
     }
 
     def imprimirComprobante() {
-//        println "AQUI"
+        println "AQUI" + params
         def comprobantes = cuentasService.getComprobante(params.id)
         def tipoComprobante = []
         comprobantes.each { i ->
@@ -322,8 +322,6 @@ class ReportesNewController {
             comprobante = comprobantes[0]
             asiento = cuentasService.getAsiento(comprobantes?.pop()?.id)
         }
-        //def cuentas = cuentasService.getCuentas(params.cont, params.emp)
-
         def comp = [:]
 
         asiento.each { asientos ->
@@ -348,15 +346,9 @@ class ReportesNewController {
         def baos = new ByteArrayOutputStream()
         def baos2 = new ByteArrayOutputStream()
         def name = "reporte_de_" + params.filename.replaceAll(" ", "_") + "_" + new Date().format("ddMMyyyy_hhmm");
-//        println "name " + name
         Font fontTitulo = new Font(Font.TIMES_ROMAN, 18, Font.BOLD);
-        Font fontSubtitulo = new Font(Font.TIMES_ROMAN, 14, Font.BOLD);
-        Font fontInfo = new Font(Font.TIMES_ROMAN, 10, Font.NORMAL);
-        Font fontError = new Font(Font.TIMES_ROMAN, 12, Font.BOLDITALIC, new Color(128, 0, 0));
-        Font fontEmpresa = new Font(Font.TIMES_ROMAN, 13, Font.BOLDITALIC, new Color(0, 0, 128));
-        Font fontCuenta = new Font(Font.TIMES_ROMAN, 12, Font.BOLDITALIC);
-        Font fontDatos = new Font(Font.TIMES_ROMAN, 11, Font.NORMAL);
-        Font fontDatosHeader = new Font(Font.TIMES_ROMAN, 11, Font.BOLD);
+        Font fontDatos = new Font(Font.TIMES_ROMAN, 10, Font.NORMAL);
+        Font fontDatosHeader = new Font(Font.TIMES_ROMAN, 10, Font.BOLD);
         Document document = reportesPdfService.crearDocumento("v")
         def pdfw = PdfWriter.getInstance(document, baos);
         def pdfw2 = PdfWriter.getInstance(document, baos2);
@@ -372,11 +364,6 @@ class ReportesNewController {
         reportesPdfService.addEmptyLine(preface, 1);
         document.add(preface);
 
-//        Paragraph generado = new Paragraph("Generado por: " + session.usuario.nombre + " " + session.usuario.apellido + "   el: " + new Date().format("dd/MM/yyyy hh:mm"), fontInfo)
-//        reportesPdfService.addEmptyLine(generado, 1);
-//        generado.setAlignment(Element.ALIGN_RIGHT);
-//        document.add(generado);
-
         comp.each { item ->
             def val = item.value
             def tablaInfo = new PdfPTable(4)
@@ -384,26 +371,26 @@ class ReportesNewController {
             tablaInfo.setWidthPercentage(100)
             tablaInfo.setSpacingBefore(15)
 
-            reportesPdfService.addCellTabla(tablaInfo, new Paragraph("Número", fontDatosHeader), [borderColor: Color.WHITE, valign: Element.ALIGN_MIDDLE, align: Element.ALIGN_LEFT])
-            reportesPdfService.addCellTabla(tablaInfo, new Paragraph("" + item.key + ((comprobante.registrado == "B") ? " Anulado" : ""), fontDatos), [borderColor: Color.WHITE, valign: Element.ALIGN_MIDDLE, align: Element.ALIGN_LEFT])
-            reportesPdfService.addCellTabla(tablaInfo, new Paragraph("Fecha", fontDatosHeader), [borderColor: Color.WHITE, valign: Element.ALIGN_MIDDLE, align: Element.ALIGN_LEFT])
-            reportesPdfService.addCellTabla(tablaInfo, new Paragraph(util.fechaConFormato(fecha: val.fecha, format: "dd-MM-yyyy").toString(), fontDatos), [borderColor: Color.WHITE, valign: Element.ALIGN_MIDDLE, align: Element.ALIGN_LEFT])
+            reportesPdfService.addCellTabla(tablaInfo, new Paragraph("Número", fontDatosHeader), [borderColor:java.awt.Color.WHITE, valign: Element.ALIGN_MIDDLE, align: Element.ALIGN_LEFT])
+            reportesPdfService.addCellTabla(tablaInfo, new Paragraph("" + item.key + ((comprobante.registrado == "B") ? " Anulado" : ""), fontDatos), [borderColor: java.awt.Color.WHITE, valign: Element.ALIGN_MIDDLE, align: Element.ALIGN_LEFT])
+            reportesPdfService.addCellTabla(tablaInfo, new Paragraph("Fecha", fontDatosHeader), [borderColor: java.awt.Color.WHITE, valign: Element.ALIGN_MIDDLE, align: Element.ALIGN_LEFT])
+            reportesPdfService.addCellTabla(tablaInfo, new Paragraph(util.fechaConFormato(fecha: val.fecha, format: "dd-MM-yyyy").toString(), fontDatos), [borderColor: java.awt.Color.WHITE, valign: Element.ALIGN_MIDDLE, align: Element.ALIGN_LEFT])
 
-            reportesPdfService.addCellTabla(tablaInfo, new Paragraph("Descripción", fontDatosHeader), [borderColor: Color.WHITE, valign: Element.ALIGN_MIDDLE, align: Element.ALIGN_LEFT])
-            reportesPdfService.addCellTabla(tablaInfo, new Paragraph("" + val.descripcion, fontDatos), [borderColor: Color.WHITE, valign: Element.ALIGN_MIDDLE, align: Element.ALIGN_LEFT])
-            reportesPdfService.addCellTabla(tablaInfo, new Paragraph("Tipo", fontDatosHeader), [borderColor: Color.WHITE, valign: Element.ALIGN_MIDDLE, align: Element.ALIGN_LEFT])
-            reportesPdfService.addCellTabla(tablaInfo, new Paragraph("" + val.tipo, fontDatos), [borderColor: Color.WHITE, valign: Element.ALIGN_MIDDLE, align: Element.ALIGN_LEFT])
+            reportesPdfService.addCellTabla(tablaInfo, new Paragraph("Descripción", fontDatosHeader), [borderColor: java.awt.Color.WHITE, valign: Element.ALIGN_MIDDLE, align: Element.ALIGN_LEFT])
+            reportesPdfService.addCellTabla(tablaInfo, new Paragraph("" + val.descripcion, fontDatos), [borderColor: java.awt.Color.WHITE, valign: Element.ALIGN_MIDDLE, align: Element.ALIGN_LEFT])
+            reportesPdfService.addCellTabla(tablaInfo, new Paragraph("Tipo", fontDatosHeader), [borderColor: java.awt.Color.WHITE, valign: Element.ALIGN_MIDDLE, align: Element.ALIGN_LEFT])
+            reportesPdfService.addCellTabla(tablaInfo, new Paragraph("" + val.tipo, fontDatos), [borderColor: java.awt.Color.WHITE, valign: Element.ALIGN_MIDDLE, align: Element.ALIGN_LEFT])
             document.add(tablaInfo)
 
             def tablaDatos = new PdfPTable(4)
-            tablaDatos.setWidths(reportesPdfService.arregloEnteros([20, 50, 15, 15]))
+            tablaDatos.setWidths(reportesPdfService.arregloEnteros([15, 55, 15, 15]))
             tablaDatos.setWidthPercentage(100)
             tablaDatos.setSpacingBefore(15)
 
-            reportesPdfService.addCellTabla(tablaDatos, new Paragraph("Número", fontDatosHeader), [height: 20, valign: Element.ALIGN_MIDDLE, align: Element.ALIGN_CENTER])
-            reportesPdfService.addCellTabla(tablaDatos, new Paragraph("Cuenta", fontDatosHeader), [height: 20, valign: Element.ALIGN_MIDDLE, align: Element.ALIGN_CENTER])
-            reportesPdfService.addCellTabla(tablaDatos, new Paragraph("Debe", fontDatosHeader), [height: 20, valign: Element.ALIGN_MIDDLE, align: Element.ALIGN_CENTER])
-            reportesPdfService.addCellTabla(tablaDatos, new Paragraph("Haber", fontDatosHeader), [height: 20, valign: Element.ALIGN_MIDDLE, align: Element.ALIGN_CENTER])
+            reportesPdfService.addCellTabla(tablaDatos, new Paragraph("NÚMERO", fontDatosHeader), [height: 20, valign: Element.ALIGN_MIDDLE, align: Element.ALIGN_CENTER])
+            reportesPdfService.addCellTabla(tablaDatos, new Paragraph("CUENTA", fontDatosHeader), [height: 20, valign: Element.ALIGN_MIDDLE, align: Element.ALIGN_CENTER])
+            reportesPdfService.addCellTabla(tablaDatos, new Paragraph("DEBE", fontDatosHeader), [height: 20, valign: Element.ALIGN_MIDDLE, align: Element.ALIGN_CENTER])
+            reportesPdfService.addCellTabla(tablaDatos, new Paragraph("HABER", fontDatosHeader), [height: 20, valign: Element.ALIGN_MIDDLE, align: Element.ALIGN_CENTER])
 
             def totalDebe = 0
             def totalHaber = 0
@@ -429,49 +416,7 @@ class ReportesNewController {
         document.close();
         pdfw.close()
 
-//        try {
-//            def path = servletContext.getRealPath("/") + "images/watermark/anuladoA4.png"
-//            PdfReader Read_PDF_To_Watermark = new PdfReader("Sample.pdf");
-//            int number_of_pages = Read_PDF_To_Watermark.getNumberOfPages();
-//            PdfStamper stamp = new PdfStamper(Read_PDF_To_Watermark, new FileOutputStream("New_PDF_With_Watermark_Image.pdf"));
-//            int i = 0;
-//            Image watermark_image = Image.getInstance(path);
-//            watermark_image.setAbsolutePosition(200, 400);
-//            PdfContentByte add_watermark;
-//            while (i < number_of_pages) {
-//                i++;
-//                add_watermark = stamp.getUnderContent(i);
-//                add_watermark.addImage(watermark_image);
-//            }
-//            stamp.close();
-//        }
-//        catch (Exception i1) {
-//            i1.printStackTrace();
-//        }
-
         byte[] b = baos.toByteArray();
-//        try {
-//            def path = servletContext.getRealPath("/") + "images/watermark/anuladoA4.jpg"
-//            PdfReader Read_PDF_To_Watermark = new PdfReader(b);
-//            int number_of_pages = Read_PDF_To_Watermark.getNumberOfPages();
-////            PdfStamper stamp = new PdfStamper(Read_PDF_To_Watermark, baos2);
-//            PdfStamper stamp = new PdfStamper(Read_PDF_To_Watermark, new FileOutputStream("/home/luz/pdfTest.pdf"));
-//            int i = 0;
-//            Image watermark_image = Image.getInstance(path);
-//            watermark_image.setAbsolutePosition(100f, 150f);
-//            PdfContentByte add_watermark;
-//            while (i < number_of_pages) {
-//                i++;
-//                add_watermark = stamp.getUnderContent(i);
-//                add_watermark.addImage(watermark_image);
-//            }
-//            stamp.close();
-//        }
-//        catch (Exception i1) {
-//            i1.printStackTrace();
-//        }
-//
-//        byte[] b2 = baos2.toByteArray();
 
         response.setContentType("application/pdf")
         response.setHeader("Content-disposition", "attachment; filename=" + name + ".pdf")
