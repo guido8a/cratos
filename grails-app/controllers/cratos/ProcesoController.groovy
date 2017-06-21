@@ -819,6 +819,8 @@ class ProcesoController extends cratos.seguridad.Shield {
 
         def baseImponible = (proceso?.baseImponibleIva ?: 0) + (proceso?.baseImponibleIva0 ?: 0) + (proceso?.baseImponibleNoIva ?: 0)
 
+        println("retencion " + retencion)
+
         return [proceso: proceso, libreta: libreta, retencion: retencion, base: baseImponible]
 
 
@@ -1488,6 +1490,7 @@ class ProcesoController extends cratos.seguridad.Shield {
             retencion = new Retencion()
             retencion.proceso = proceso
             retencion.proveedor = proveedor
+            retencion.ruc = proveedor.ruc
         }
         retencion.direccion = params.direccion
         retencion.telefono = params.telefono
@@ -1546,6 +1549,7 @@ class ProcesoController extends cratos.seguridad.Shield {
 
         try {
             retencion.save(flush: true)
+//            println("retencion id " + retencion.errors)
             render "ok"
         }catch (e){
             println("errores " + e)

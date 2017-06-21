@@ -55,13 +55,12 @@
                     class="fa fa-check-square-o"></i> Buscar</a>
         </div>
 
-        <div class="col-md-2" style="margin-right: 0px; font-size: large; padding: 0 ">
-            <span class="text-info"><strong>${session.contabilidad.descripcion}</strong></span>
+        <div class="col-md-2" style="margin-right: 0px; padding: 0 ">
+            <span class="text-info" style="font-size: 15px"><strong>${session.contabilidad.descripcion}</strong></span>
         </div>
         <div class="col-md-1" >
         <a href="#" class="btn btn-azul" id="btnCambiarConta" style="margin-left: 0">
             <i class="fa fa-refresh"></i> Cambiar
-
         </a>
         </div>
     </div>

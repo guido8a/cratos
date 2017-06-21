@@ -83,7 +83,7 @@
             </a>
         </g:if>
         <g:if test="${params.id}">
-            <g:if test="${proceso.adquisicion == null && proceso.factura == null && proceso.transferencia == null && !registro}">
+            <g:if test="${proceso.adquisicion == null && proceso.factura == null && proceso.transferencia == null && !registro && cratos.Retencion.findByProceso(proceso)}">
                 <a href="#" class="btn btn-info" id="registrarProceso">
                     <i class="fa fa-check"></i>
                     Registrar
@@ -111,19 +111,22 @@
             </g:else>
 
 
-            <g:if test="${cratos.Retencion.countByProceso(proceso) > 0}">
+            <g:if test="${proceso?.estado != 'R'}">
                 <g:link class="btn btn-primary" action="detalleSri" id="${proceso?.id}" style="margin-bottom: 10px;">
                     <i class="fa fa-money"></i> Retenciones
                 </g:link>
-            %{--<g:if test="${cratos.Retencion.findByProceso(proceso).numeroSecuencial}">--}%
+            </g:if>
+
+            <g:if test="${cratos.Retencion.findByProceso(proceso)}">
                 <g:link controller="reportes3" action="imprimirRetencion" class="btn btn-default btnRetencion"
                         id="${proceso?.id}" params="[empresa: session.empresa.id]" style="margin-bottom: 10px;">
                     <i class="fa fa-print"></i>
                     Imprimir retención
                 </g:link>
-            %{--</g:if>--}%
             </g:if>
         </g:if>
+
+
         <a href="#" class="btn btn-default" style="cursor: default" id="abrir-fp">
             <i class="fa fa-usd"></i>
             Forma de Pago
@@ -217,7 +220,6 @@
 
         <div class="row" id="divFilaComprobante">
         </div>
-
 
         <div class="row" id="divSustento">
         </div>

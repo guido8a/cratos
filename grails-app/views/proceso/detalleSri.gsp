@@ -153,7 +153,7 @@
             </div>
         </div>
 
-       <div class="col-md-12">
+        <div class="col-md-12">
             <div class="col-md-2 negrilla">
                 Proveedor:
             </div>
@@ -286,16 +286,23 @@
             </div>
         </div>
 
-        <div class="panel panel-primary">
-            <div class="panel-body">
-                <div class="col-md-4" style="margin-right: 56px; text-align: center">
-                    <label>Total Base Imponible</label>
-                </div>
-                <div class="col-md-2" id="divTotalesRenta">
+        %{--<div class="panel panel-primary">--}%
+        %{--<div class="panel-body">--}%
+        %{----}%
+        %{--</div>--}%
+        %{--</div>--}%
 
-                </div>
+
+
+        <div class="alert alert-warning" role="alert" style="height: 60px;">
+            <div class="col-md-4" style="margin-right: 56px; text-align: center">
+                <label>Total Base Imponible</label>
+            </div>
+            <div class="col-md-2" id="divTotalesRenta">
+
             </div>
         </div>
+
     </div>
 
 
