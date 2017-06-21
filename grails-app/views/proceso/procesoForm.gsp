@@ -276,7 +276,7 @@
 
 </g:form>
 <g:if test="${proceso}">
-    <div class="vertical-container" skip="1" style="margin-top: 5px; color:black; margin-bottom:20px; height:520px">
+    <div class="vertical-container" skip="1" style="margin-top: 5px; color:black; margin-bottom:20px; height:auto; max-height: 520px; overflow: auto;">
         <p class="css-vertical-text">Comprobante</p>
 
         <div class="linea"></div>
@@ -601,7 +601,7 @@
         var title = this.find(".css-vertical-text")
         title.css({"cursor": "pointer"})
         title.attr("title", "Minimizar")
-        var fa = $("<i class='fa fa-arrow-left fa-fw' style='font-size: 20px !important; margin-left: -30px'></i>")
+        var fa = $("<i class='fa fa-arrow-left fa-fw' style='font-size: 20px !important; margin-left: -30px; color: #0088CC'></i>")
         var texto = $("<span class='texto' style='display: none; margin-left: 10px; color:#0088CC; font-size: 20px ' > (Clic aquí para expandir)</span>")
         title.addClass("open")
         title.prepend(fa)
