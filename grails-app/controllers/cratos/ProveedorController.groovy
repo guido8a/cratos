@@ -190,6 +190,7 @@ class ProveedorController extends cratos.seguridad.Shield {
     } //show para cargar con ajax en un dialog
 
     def form_ajax() {
+        println("params " + params)
         def proveedorInstance = new Proveedor(params)
         if (params.id) {
             proveedorInstance = Proveedor.get(params.id)
@@ -208,9 +209,16 @@ class ProveedorController extends cratos.seguridad.Shield {
             }
         }
 
+        def soloLectura = false
+
+        if(params.edi){
+            soloLectura = params.edi
+        }
+
+
 //        println("--- " + countries)
 
-        return [proveedorInstance: proveedorInstance, paises: countries]
+        return [proveedorInstance: proveedorInstance, paises: countries, lectura: soloLectura]
     } //form para cargar con ajax en un dialog
 
     def save_ajax() {

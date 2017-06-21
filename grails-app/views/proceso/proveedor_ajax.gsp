@@ -64,7 +64,7 @@
             <input type="text" name="proveedor?.ruc" class="form-control proveedor" id="prve" readonly
                    value="${proceso?.proveedor?.ruc ?: proveedor?.ruc}" title="RUC del proveedor o cliente"
                    style="width: 130px"
-                   placeholder="RUC"/>
+                   placeholder="RUC" idP="${proveedor?.id}"/>
         </div>
 
         <div class="col-md-5" style="margin-left: -15px">
@@ -101,6 +101,87 @@
 </g:else>
 
 <script type="text/javascript">
+
+
+    $("#btn_crear").click(function () {
+        crearEditar(null, false)
+    });
+
+
+    $("#btn_editar").click(function () {
+        var pro = $("#prve__id").val();
+        if(pro != ''){
+            crearEditar(pro, true);
+        }
+    });
+
+    function crearEditar(id, edi) {
+        $.ajax({
+            type: 'POST',
+            url:'${createLink(controller: 'proveedor', action: 'form_ajax')}',
+            data:{
+                id: id,
+                edi: edi
+            },
+            success: function (msg){
+                var b = bootbox.dialog({
+                    id      : "dlgCreateEdit",
+                    title   : "Editar Proveedor",
+                    class: "long",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "<i class='fa fa-times'></i> Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                return submitForm();
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+                setTimeout(function () {
+                    b.find(".form-control").not(".datepicker").first().focus()
+                }, 500);
+            }
+        });
+    }
+
+    function submitForm() {
+        var $form = $("#frmProveedor");
+        var $btn = $("#dlgCreateEdit").find("#btnSave");
+        if ($form.valid()) {
+            $btn.replaceWith(spinner);
+            openLoader("Grabando");
+            $.ajax({
+                type    : "POST",
+                url     : $form.attr("action"),
+                data    : $form.serialize(),
+                success : function (msg) {
+                    var parts = msg.split("_");
+                    log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
+                    if (parts[0] == "OK") {
+                        setTimeout(function () {
+                            location.reload(true);
+                        }, 1000);
+                    } else {
+                        closeLoader();
+                        spinner.replaceWith($btn);
+                        return false;
+                    }
+                }
+            });
+        } else {
+            return false;
+        } //else
+    }
+
     $("#btn_buscar").click(function () {
 //        console.log("clickf2222")
         $('#modal-proveedor').modal('show')
@@ -113,7 +194,7 @@
     $("#btn_cargar").click(function(){
 //        console.log("ttpp: ", $("#prve").val());
         if($("#prve").val() != '' && ($("#tipoProceso").val() == 'C' || $("#tipoProceso").val() == 'V'))
-        cargarSstr($("#prve__id").val())
+            cargarSstr($("#prve__id").val())
     });
 
     $("#btn_cargarCl").click(function(){

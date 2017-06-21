@@ -20,7 +20,7 @@
 
                     <div class="col-md-4">
                         <g:textField name="ruc" maxlength="13" required="" class=" form-control required"
-                                     value="${proveedorInstance?.ruc}"/>
+                                     value="${proveedorInstance?.ruc}" readonly="${lectura}"/>
                     </div>
 
                 </span>

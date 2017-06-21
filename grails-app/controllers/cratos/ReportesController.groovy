@@ -232,6 +232,7 @@ class ReportesController {
             m.porcentaje = generas.porcentaje
             m.porcentajeImpuestos = generas.porcentajeImpuestos
             m.valor = generas.valor
+            m.base = generas.baseSinIva
             m.debeHaber = generas.debeHaber
 
             res[nombre].items.add(m)

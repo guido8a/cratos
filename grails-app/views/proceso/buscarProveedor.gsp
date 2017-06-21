@@ -35,7 +35,7 @@
         $('#modal-proveedor').modal('hide')
         $("#btnBuscarCom").removeClass('hidden')
 
-        console.log("carga sustento desde buscarProveedor");
+//        console.log("carga sustento desde buscarProveedor");
         if($("#tipoProceso").val() == 'C' || $("#tipoProceso").val() == 'V')
             cargarSstr($(this).attr("id"))
 

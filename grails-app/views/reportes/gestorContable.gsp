@@ -35,7 +35,7 @@
 
     .item {
         /*background: #e6e6fa;*/
-        border-bottom: solid 2px #555;
+        border-bottom: solid 1px #555;
 
     }
 
@@ -48,19 +48,19 @@
     }
 
     th{
-            font-size: 12px;
+            font-size: 11px;
     }
 
     td{
-            font-size: 12px;
+            font-size: 11px;
     }
 
-    .even {
-        background : #ddd;
+    table {
+        border-collapse: collapse;
     }
 
-    .odd {
-        background : #efefef;
+    table, th, td {
+        border: 1px solid black;
     }
 
     </style>
@@ -69,50 +69,51 @@
 
 <body>
 <div class="hoja">
-    <div  style="width: 500px" align="center"><strong>GESTOR CONTABLE</strong></div>
+    <div style="width: 500px" align="center"><strong>GESTOR CONTABLE</strong></div>
 
     <g:each in="${res}" var="item">
         <g:set var="val" value="${item.value}"/>
+
         %{--<table style="margin-top: 20px; margin-bottom: 10px">--}%
-        <table class="table table-bordered table-hover table-condensed" style="margin-top: 20px; margin-bottom: 10px">
-            <tr>
-                <td width="500px">
-                    <strong>Nombre:</strong>   <util:clean str="${item.key}"></util:clean>
-                </td>
-
-                <td style="width: 100px">
-                    <strong>Fecha:</strong>
-                    %{--<g:formatDate format="dd/MM/yyyy"  type="datetime" date="${val.fecha}"> </g:formatDate>--}%
-                    <g:formatDate format="dd/MM/yyyy"  date="${val.fecha}"> </g:formatDate>
-                </td>
-            </tr>
-
             %{--<tr>--}%
-                %{--<td height="50px">--}%
-                    %{--Descripción:  <util:clean str="${val.descripcion}"></util:clean>--}%
+                %{--<td width="500px">--}%
+                    %{--<strong>Nombre:</strong>   <util:clean str="${item.key}"></util:clean>--}%
                 %{--</td>--}%
 
+                %{--<td style="width: 100px">--}%
+                    %{--<strong>Fecha:</strong>--}%
+                    %{--<g:formatDate format="dd/MM/yyyy"  date="${val.fecha}"> </g:formatDate>--}%
+                %{--</td>--}%
             %{--</tr>--}%
+        %{--</table>--}%
 
-        </table>
+            <div style="width: 600px; font-size: 11px; margin-bottom: 10px; margin-top: 20px;">
+                <strong>Nombre:</strong><util:clean str="${item.key}"></util:clean>
+                <div style="width: 100px; float: right">
+                <strong>Fecha:</strong><g:formatDate format="dd/MM/yyyy"  date="${val.fecha}"> </g:formatDate>
+                </div>
+            </div>
 
-        <table border="1" width="600px">
+        <table width="600px" >
 
             <tr>
                 <th style="width: 70px" align="center">
-                    Número
+                    Código
                 </th>
                 <th style="width: 320px" align="center">
-                    Descripción
+                    Cuenta
                 </th>
                 <th style="width: 40px" align="center">
-                    Porcentaje
+                    %B. Imponible
+                </th>
+                <th style="width: 40px" align="center">
+                    %B.I. Sin Iva
                 </th>
                 <th style="width: 40px" align="center">
                     Impuestos
                 </th>
                 <th style="width: 40px" align="center">
-                    Valor
+                    ICE
                 </th>
                 <th style="width: 40px" align="center">
                     D/H
@@ -130,6 +131,9 @@
                     </td>
                     <td align="right">
                         ${i.porcentaje}
+                    </td>
+                    <td align="right">
+                        ${i.base}
                     </td>
                     <td align="right">
                         ${i.porcentajeImpuestos}
