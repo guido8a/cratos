@@ -440,7 +440,7 @@
 //    cargarTipo($(".tipoProcesoSel option:selected").val());
     //    cargarBotonGuardar($(".tipoProcesoSel option:selected").val());
     cargarBotonBuscar($(".tipoProcesoSel option:selected").val());
-    <g:if test="${proceso?.id && (proceso?.tipoProceso == 'P' || proceso?.tipoProceso == 'N')}">
+    <g:if test="${proceso?.id && (proceso?.tipoProceso == 'P' || proceso?.tipoProceso == 'N' || proceso?.tipoProceso == 'D')}">
     cargarComPago();
     </g:if>
     //    cargarProveedor($(".tipoProcesoSel option:selected").val());
@@ -450,11 +450,13 @@
         var tipo = $(".tipoProcesoSel option:selected").val();
         var prve = $("#prve__id").val();
         console.log("prve__id:", prve);
+
         $("#tipoProceso").change();
         if (prve && (tipo == 'C' || tipo == 'V')) {
             cargarProveedor(tipo);
             console.log("buscar prve");
         }
+
         if ("${proceso?.sustentoTributario}") {
             console.log("proceso:", "${proceso?.tipoCmprSustento?.id}");
             cargarSstr("${proceso?.proveedor?.id}")
@@ -469,22 +471,26 @@
 
     $("#tipoProceso").change(function () {
         var tipo = $(".tipoProcesoSel option:selected").val();
-        console.log('tipo:', tipo);
+        console.log('tipo...:', tipo);
 
         $("#listaErrores").html('');
         $("#divErrores").hide();
-
-        if (tipo == 'N' || tipo == 'P') {
-            cargarComPago()
+        if (tipo == 'N' || tipo == 'P' || tipo == 'D') {
+            cargarComPago();
+            $("#divFilaComprobante").show();
         } else {
             $("#divFilaComprobante").html('');
-            $("#divFilaComprobante").hide('');
+            $("#divFilaComprobante").hide();
         }
+
+        console.log('pone hide');
+        $("#divComprobanteSustento").html('');
+        $("#divSustento").html('');
 
         cargarTipo(tipo);
         cargarBotonBuscar(tipo);
 
-        if (tipo == 'C' || tipo == 'V' || tipo == 'P' || tipo == 'N') {
+        if (tipo == 'C' || tipo == 'V' || tipo == 'P' || tipo == 'N' || tipo == 'D') {
             cargarProveedor(tipo);
         }
 
@@ -544,16 +550,16 @@
     }
 
     function cargarComPago() {
-        var idComprobante = $("#comprobanteSel").val();
+//        var idComprobante = $("#comprobanteSel").val();
         var idProveedor = $("#prve_id").val();
+        console.log('buca prve...');
         $.ajax({
             type: 'POST',
             async: 'true',
             url: "${createLink(controller: 'proceso', action: 'filaComprobante_ajax')}",
             data: {
                 proceso: '${proceso?.id}',
-                proveedor: idProveedor,
-                comprobante: idComprobante
+                proveedor: idProveedor
             },
             success: function (msg) {
                 $("#divFilaComprobante").html(msg)
@@ -581,7 +587,7 @@
             },
             success: function (msg) {
                 $("#divValores").html(msg)
-                if(tipo == 'C' || tipo == 'V' || tipo == 'N') {
+                if(tipo == 'C' || tipo == 'V' || tipo == 'N' || tipo == 'D') {
                     $("#lblValores").html(flecha + "Valores")
                 } else {
                     $("#lblValores").html(flecha + "Val")
@@ -647,30 +653,6 @@
             })
         });
 
-        $("#tipoProceso").change(function () {
-/*
-            if ($(this).val() == "A") {
-                bootbox.alert('Para realizar un ajuste, ponga el valor total dentro del campo "Base imponible no aplica IVA" y asegurese de seleccionar el gestor contable correcto')
-                $("#iva0").val("0.00").attr("disabled", true)
-                $("#iva12").val("0.00").attr("disabled", true)
-                $("#ivaGenerado").val("0.00").attr("disabled", true)
-                $("#iceGenerado").val("0.00").attr("disabled", true)
-            } else {
-                $("#iva0").attr("disabled", false)
-                $("#iva12").attr("disabled", false)
-                $("#ivaGenerado").attr("disabled", false)
-                $("#iceGenerado").attr("disabled", false)
-            }
-*/
-            cargarTipo($("#tipoProceso").val())
-/*
-            $("#divSustento").html('');
-            $("#divComprobanteSustento").html('');
-            $("#divCargaProveedor").html('');
-*/
-        })
-
-
         $("#abrir-fp").click(function () {
             $('#modal-formas-pago').modal('show')
         })
@@ -730,7 +712,7 @@
                 $("#divErrores").hide();
 
                 if ($("#fecha_input").val().length < 10) {
-                    error += "<li>Seleccione la fecha del comprobante</li>"
+                    error += "<li>Seleccione la fecha de emisión</li>"
                 }
                 if ($("#fecharegistro_input").val().length < 10) {
                     error += "<li>Seleccione la fecha de registro</li>"

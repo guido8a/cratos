@@ -188,28 +188,6 @@
             }
         };
 
-
-/*
-        var editar = {
-            label: 'Ir al proceso',
-            icon: "fa fa-search",
-            action: function (e) {
-                $("#dialog-body").html(spinner);
-                $.ajax({
-                    type: 'POST',
-                    url: '${createLink(controller: 'proceso', action: 'show')}',
-                    data: {
-                        id: id
-                    },
-                    success: function (msg) {
-                        $("#dialog-body").html(msg)
-                    }
-                });
-                $("#dialog").modal("show");
-            }
-        };
-*/
-
         var retencion = {
             label: " Retenciones",
             icon: "fa fa-money",

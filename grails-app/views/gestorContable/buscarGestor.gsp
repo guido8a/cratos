@@ -20,8 +20,9 @@
     <g:if test="${lista.size()>0}">
         <g:each var="gestor" in="${lista}">
             <tr>
-                <td style="width: 440px">${gestor.nombre}</td>
-                <td style="width: 300px">${gestor.observaciones}</td>
+                <td style="width: 560px">${gestor.nombre}</td>
+                <td style="width: 60px; text-align: center">${gestor.estado}</td>
+                <td style="width: 120px">${gestor.observaciones}</td>
                 <td style="width: 60px">
                     <a href="${g.createLink(action: 'verGestor',id:gestor.id)}" class="btn btn-small btn-info" title="Ver">
                         <i class="fa fa-laptop" title="Ver"></i>

@@ -38,7 +38,8 @@ class ProcesoController extends cratos.seguridad.Shield {
                             "V": "V-Ventas (Ventas, Reposición de Gasto)",
                             "A": "A-Ajustes (Diarios y Otros)",
                             "P": "P-Pagos a proveedores",
-                            "N": "N-Nota de Crédito"]
+                            "N": "N-Nota de Crédito",
+                            "D": "D-Nota de Débito"]
 
         def empresa = Empresa.get(session.empresa.id)
         def libreta = DocumentoEmpresa.findAllByEmpresaAndFechaInicioLessThanEqualsAndFechaFinGreaterThanEqualsAndTipo(empresa, new Date(), new Date(),'F')
@@ -1232,7 +1233,7 @@ class ProcesoController extends cratos.seguridad.Shield {
         def sql
         if(params.tipo == 'P') {
             sql = "select * from porpagar(${proveedor?.id}) where sldo <> 0;"
-        } else if(params.tipo == 'N') {
+        } else if(params.tipo in ['N', 'D']) {
             sql = "select cmpr__id, clntnmbr prvenmbr, dscr, debe hber, ntcr pgdo, sldo from ventas(${proveedor?.id}) " +
                     "where sldo <> 0"
         }

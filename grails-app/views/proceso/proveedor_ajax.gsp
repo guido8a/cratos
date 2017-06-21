@@ -4,21 +4,21 @@
   Date: 23/05/17
   Time: 13:20
 --%>
-<g:if test="${tipo != 'N'}">
+<g:if test="${!(tipo == 'N' || tipo == 'D')}">
     <div class="col-md-2 negrilla">
         Proveedor:
     </div>
 
     <div class="col-md-10 negrilla">
         <div class="col-md-2" style="margin-left: -15px;">
-            <input type="text" name="proveedor.ruc" class="form-control proveedor" id="prve" readonly
+            <input type="text" name="proveedor?.ruc" class="form-control proveedor" id="prve" readonly
                    value="${proceso?.proveedor?.ruc ?: proveedor?.ruc}" title="RUC del proveedor o cliente"
                    style="width: 130px"
                    placeholder="RUC"/>
         </div>
 
         <div class="col-md-5" style="margin-left: -15px">
-            <input type="text" name="proveedor.nombre" class="form-control label-shared proveedor" id="prve_nombre"
+            <input type="text" name="proveedor?.nombre" class="form-control label-shared proveedor" id="prve_nombre"
                    readonly value="${proceso?.proveedor?.nombre ?: proveedor?.nombre}" title="Nombre del proveedor o cliente"
                    style="width: 100%" placeholder="Nombre"/>
         </div>
@@ -31,17 +31,22 @@
 
         <div class="col-md-4">
             <g:if test="${proceso?.estado != 'R'}">
-                <a href="#" id="btn_buscar" class="btn btn-info">
+                <a href="#" id="btn_buscar" class="btn btn-info" title="Buscar proveedor">
                     <i class="fa fa-search"></i>
                 </a>
             </g:if>
             <g:if test="${proceso?.estado != 'R'}">
-                <a href="#" id="btn_ingresar" class="btn btn-info">
+                <a href="#" id="btn_editar" class="btn btn-info" title="Editar proveedor">
                     <i class="fa fa-pencil"></i>
                 </a>
             </g:if>
             <g:if test="${proceso?.estado != 'R'}">
-                <a href="#" id="btn_cargar" class="btn btn-info">
+                <a href="#" id="btn_crear" class="btn btn-info" title="Crear proveedor">
+                    <i class="fa fa-plus"></i>
+                </a>
+            </g:if>
+            <g:if test="${proceso?.estado != 'R'}">
+                <a href="#" id="btn_cargar" class="btn btn-info" title="Aceptar proveedor">
                     <i class="fa fa-check"></i>
                 </a>
             </g:if>
@@ -54,25 +59,41 @@
         Cliente:
     </div>
 
-    <div class="col-md-9 negrilla">
-        <div class="col-md-3" style="margin-left: -15px">
-            <input type="text" name="proveedor.ruc" class="form-control proveedor" id="prve" readonly
-                   value="${proceso?.proveedor?.ruc ?: proveedor.ruc}" title="RUC del proveedor o cliente" style="width: 140px"
+    <div class="col-md-10 negrilla">
+        <div class="col-md-2" style="margin-left: -15px">
+            <input type="text" name="proveedor?.ruc" class="form-control proveedor" id="prve" readonly
+                   value="${proceso?.proveedor?.ruc ?: proveedor?.ruc}" title="RUC del proveedor o cliente"
+                   style="width: 130px"
                    placeholder="RUC"/>
         </div>
 
-        <div class="col-md-5" style="margin-left: -55px">
-            <input type="text" name="proveedor.nombre" class="form-control label-shared proveedor" id="prve_nombre"
-                   readonly value="${proceso?.proveedor?.nombre ?: proveedor.nombre}" title="Nombre del proveedor o cliente"
+        <div class="col-md-5" style="margin-left: -15px">
+            <input type="text" name="proveedor?.nombre" class="form-control label-shared proveedor" id="prve_nombre"
+                   readonly value="${proceso?.proveedor?.nombre ?: proveedor?.nombre}" title="Nombre del proveedor o cliente"
                    style="width: 300px" placeholder="Nombre"/>
         </div>
 
-        <div class="col-md-2">
+        <div class="col-md-4">
             <g:if test="${proceso?.estado != 'R'}">
-                <a href="#" id="btn_buscar" class="btn btn-info">
+                <a href="#" id="btn_buscar" class="btn btn-info" title="Buscar cliente">
                     <i class="fa fa-search"></i>
                     Buscar
                 </a>
+                <g:if test="${proceso?.estado != 'R'}">
+                    <a href="#" id="btn_editar" class="btn btn-info" title="Editar proveedor">
+                        <i class="fa fa-pencil"></i>
+                    </a>
+                </g:if>
+                <g:if test="${proceso?.estado != 'R'}">
+                    <a href="#" id="btn_crear" class="btn btn-info" title="Crear proveedor">
+                        <i class="fa fa-plus"></i>
+                    </a>
+                </g:if>
+                <g:if test="${proceso?.estado != 'R'}">
+                    <a href="#" id="btn_cargarCl" class="btn btn-info" title="Aceptar proveedor">
+                        <i class="fa fa-check"></i>
+                    </a>
+                </g:if>
             </g:if>
         </div>
         <input type="hidden" name="proveedor.id" id="prve_id" value="${proceso?.proveedor?.id}">
@@ -90,7 +111,14 @@
     });
 
     $("#btn_cargar").click(function(){
-        if($("#tipoProceso").val() == 'C' || $("#tipoProceso").val() == 'V')
+//        console.log("ttpp: ", $("#prve").val());
+        if($("#prve").val() != '' && ($("#tipoProceso").val() == 'C' || $("#tipoProceso").val() == 'V'))
         cargarSstr($("#prve__id").val())
+    });
+
+    $("#btn_cargarCl").click(function(){
+        console.log("ttpp: ", $("#tipoProceso").val());
+        if($("#prve").val() != '' && ($("#tipoProceso").val() == 'N' || $("#tipoProceso").val() == 'D'))
+            $("#btnBuscarCom").removeClass('hidden')
     });
 </script>

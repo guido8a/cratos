@@ -31,12 +31,13 @@
         $("#prve_nombre").val($(this).attr("nombre"))
         $("#prve_id").val($(this).attr("id"))
         $("#prve__id").val($(this).attr("id"))
-//        console.log("pone valores ok", $("#prve__id").val())
 
         $('#modal-proveedor').modal('hide')
         $("#btnBuscarCom").removeClass('hidden')
 
-        cargarSstr($(this).attr("id"))
+        console.log("carga sustento desde buscarProveedor");
+        if($("#tipoProceso").val() == 'C' || $("#tipoProceso").val() == 'V')
+            cargarSstr($(this).attr("id"))
 
     });
 </script>

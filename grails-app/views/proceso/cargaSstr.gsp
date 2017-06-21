@@ -32,8 +32,10 @@
     });
 
     $("#btn_cargarCp").click(function () {
-        console.log("change...")
-        $("#sustento").change()
+        console.log("change...", $("#sustento").val());
+        if($("#sustento").val() != '-1') {
+            $("#sustento").change()
+        }
     });
 
 

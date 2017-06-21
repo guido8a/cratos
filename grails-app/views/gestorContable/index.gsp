@@ -60,10 +60,13 @@
     <table class="table table-bordered table-hover table-condensed" width="800px">
         <thead>
         <tr>
-            <th style="width: 440px">
+            <th style="width: 560px">
                 Nombre
             </th>
-            <th style="width: 300px">
+            <th style="width: 60px">
+                Estado
+            </th>
+            <th style="width: 120px">
                 Observaciones
             </th>
             <th style="width: 60px">Acciones</th>
