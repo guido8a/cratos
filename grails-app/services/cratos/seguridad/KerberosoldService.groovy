@@ -259,13 +259,17 @@ class KerberosoldService {
             return false
     }
 
+
+    //kerberosoldService.generarEntradaAuditoria(params, proceso, "registrado", "R", session.usuario)
     public generarEntradaAuditoria(params, dominio, campo, newValue, oldValue, perfil, usuario) {
         def cn = dbConnectionService.getConnection()
         def band = true
-        def sql = """insert into audt (audt__id,usro__id,prfl__id,audtaccn,audtctrl,reg_id,audttbla,audtcmpo,audtoldv,audtnewv,audtfcha,audtoprc)
-                                values (default,${usuario.id},${perfil.id},'${params.actionName}','${params.controllerName}',
-                                           ${params.id},'${dominio.getName()}','${campo}','${oldValue}',' ${newValue} ','${new Date().format("yyyy/MM/dd hh:mm:ss")}','UPDATE') """
-        //println "entrada audt " + sql
+        def sql = """insert into audt (audt__id, usro__id, prfl__id, audtaccn, audtctrl, reg_id, audttbla,
+                     audtcmpo, audtoldv, audtnewv, audtfcha, audtoprc)
+                     values (default, ${usuario.id}, ${perfil.id}, '${params.actionName}', '${params.controllerName}',
+                            ${params.id}, '${dominio.getName()}', '${campo}','${oldValue}', ' ${newValue} ',
+                            '${new Date().format("yyyy/MM/dd hh:mm:ss")}','UPDATE') """
+        println "entrada audt " + sql
         if (!cn.execute(sql)) {
             band = false
             println "ERROR: en auditoria (delete)"

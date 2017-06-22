@@ -340,9 +340,8 @@
                 </label>
 
                 <div class="col-md-8">
-
-                    <g:textArea name="observaciones" maxlength="127" class="form-control" value="${proveedorInstance?.observaciones}" style="resize: none"/>
-
+                    <g:textArea name="observaciones" maxlength="127" class="form-control"
+                                value="${proveedorInstance?.observaciones}" style="resize: none"/>
                 </div>
 
             </span>

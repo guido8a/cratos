@@ -25,12 +25,7 @@ class ProcesoController extends cratos.seguridad.Shield {
     def dbConnectionService
 
 
-    def index = { redirect(action: "lsta") }
-
-    def lsta = {
-        def campos = ["estado": ["Estado", "string"], "descripcion": ["Descripción", "string"], "fecha": ["Fecha", "date"], "comp": ["Comprobante", "string"]]
-        [campos: campos]
-    }
+    def index = { redirect(action: "buscarPrcs") }
 
     def nuevoProceso = {
 //        println "nuevo proceso "+params
@@ -45,7 +40,7 @@ class ProcesoController extends cratos.seguridad.Shield {
         def libreta = DocumentoEmpresa.findAllByEmpresaAndFechaInicioLessThanEqualsAndFechaFinGreaterThanEqualsAndTipo(empresa, new Date(), new Date(),'F')
 
         if (params.id) {
-            def proceso = Proceso.get(params.id)
+            def proceso = Proceso.get(params.id).refresh()
             def registro = (Comprobante.findAllByProceso(proceso)?.size() == 0) ? false : true
             def fps = ProcesoFormaDePago.findAllByProceso(proceso)
 
@@ -191,19 +186,17 @@ class ProcesoController extends cratos.seguridad.Shield {
     def registrar = {
         if (request.method == 'POST') {
             println "registrar " + params
-            def pro = Proceso.get(params.id)
-            if (pro.estado == "R") {
+            def proceso = Proceso.get(params.id)
+            if (proceso.estado == "R") {
                 render("El proceso ya ha sido registrado previamente")
             } else {
-//                def lista = procesoService.registrar(pro, session.perfil, session.usuario, session.contabilidad)
-                def lista = procesoService.registrar(pro)
+                def lista = procesoService.registrar(proceso)
+                kerberosoldService.generarEntradaAuditoria(params, proceso, "registrado", "R", session.usuario)
                 if (lista[0] != false) {
-                    render(view: "detalleProceso", model: [comprobantes: lista[1], asientos: lista[2], proceso: pro])
-
+                    render("ok_Proceso registrado exitosamente")
                 } else {
-                    render("Error registrando el proceso")
+                    render("Error_No se ha podido registrar el proceso")
                 }
-
             }
         } else {
             redirect(controller: "shield", action: "ataques")
