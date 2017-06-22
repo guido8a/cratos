@@ -1491,6 +1491,7 @@ class ProcesoController extends cratos.seguridad.Shield {
             retencion.proceso = proceso
             retencion.proveedor = proveedor
             retencion.ruc = proveedor.ruc
+            retencion.persona = proveedor.nombre
         }
         retencion.direccion = params.direccion
         retencion.telefono = params.telefono
