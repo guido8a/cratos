@@ -5,31 +5,31 @@
   Time: 13:20
 --%>
 <g:if test="${!(tipo == 'N' || tipo == 'D')}">
-    <div class="col-md-2 negrilla">
+    <div class="col-xs-2 negrilla">
         Proveedor:
     </div>
 
-    <div class="col-md-10 negrilla">
-        <div class="col-md-2" style="margin-left: -15px;">
+    <div class="col-xs-10 negrilla">
+        <div class="col-xs-2" style="margin-left: -15px;">
             <input type="text" name="proveedor?.ruc" class="form-control proveedor" id="prve" readonly
                    value="${proceso?.proveedor?.ruc ?: proveedor?.ruc}" title="RUC del proveedor o cliente"
                    style="width: 130px"
                    placeholder="RUC"/>
         </div>
 
-        <div class="col-md-5" style="margin-left: -15px">
+        <div class="col-xs-5" style="margin-left: -15px">
             <input type="text" name="proveedor?.nombre" class="form-control label-shared proveedor" id="prve_nombre"
                    readonly value="${proceso?.proveedor?.nombre ?: proveedor?.nombre}" title="Nombre del proveedor o cliente"
                    style="width: 100%" placeholder="Nombre"/>
         </div>
 
-        <div class="col-md-1" style="margin-left: -25px; margin-right: 10px">
+        <div class="col-xs-1" style="margin-left: -25px; margin-right: 10px">
             <input type="text" name="proveedor.relacionado" class="form-control label-shared proveedor" id="prve_rlcn"
                    readonly value="Rel: ${proceso?.proveedor?.relacionado}" title="Relacionado" style="width: 76px"
                    placeholder="Rel."/>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-xs-4">
             <g:if test="${proceso?.estado != 'R'}">
                 <a href="#" id="btn_buscar" class="btn btn-info" title="Buscar proveedor">
                     <i class="fa fa-search"></i>
@@ -55,25 +55,25 @@
     </div>
 </g:if>
 <g:else>
-    <div class="col-md-2 negrilla">
+    <div class="col-xs-2 negrilla">
         Cliente:
     </div>
 
-    <div class="col-md-10 negrilla">
-        <div class="col-md-2" style="margin-left: -15px">
+    <div class="col-xs-10 negrilla">
+        <div class="col-xs-2" style="margin-left: -15px">
             <input type="text" name="proveedor?.ruc" class="form-control proveedor" id="prve" readonly
                    value="${proceso?.proveedor?.ruc ?: proveedor?.ruc}" title="RUC del proveedor o cliente"
                    style="width: 130px"
                    placeholder="RUC" idP="${proveedor?.id}"/>
         </div>
 
-        <div class="col-md-5" style="margin-left: -15px">
+        <div class="col-xs-5" style="margin-left: -15px">
             <input type="text" name="proveedor?.nombre" class="form-control label-shared proveedor" id="prve_nombre"
                    readonly value="${proceso?.proveedor?.nombre ?: proveedor?.nombre}" title="Nombre del proveedor o cliente"
                    style="width: 300px" placeholder="Nombre"/>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-xs-4">
             <g:if test="${proceso?.estado != 'R'}">
                 <a href="#" id="btn_buscar" class="btn btn-info" title="Buscar cliente">
                     <i class="fa fa-search"></i>
@@ -185,6 +185,7 @@
     $("#btn_buscar").click(function () {
 //        console.log("clickf2222")
         $('#modal-proveedor').modal('show')
+        $("#resultados").html('')
     });
 
     $(".proveedor").dblclick(function(){

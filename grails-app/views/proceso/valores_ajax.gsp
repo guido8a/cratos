@@ -6,10 +6,10 @@
 
 <g:if test="${tipo == 'P' || tipo == 'A'}">
     <div class="row" style="font-size: 12px">
-        <div class="col-md-2 negrilla" style="width: 120px">
+        <div class="col-xs-2 negrilla" style="width: 120px">
             Valor:
         </div>
-        <div class="col-md-2 negrilla">
+        <div class="col-xs-2 negrilla">
             <g:textField name="valorPago_name" id="valorPago" class="form-control required number validacionNumero"
                          value="${proceso?.valor}"/>
         </div>
@@ -17,18 +17,18 @@
 </g:if>
 <g:elseif test="${tipo == 'N'}">
     <div class="row" style="font-size: 12px">
-        <div class="col-md-2 negrilla" style="width: 120px">
+        <div class="col-xs-2 negrilla" style="width: 120px">
             Valor:
         </div>
-        <div class="col-md-2 negrilla">
+        <div class="col-xs-2 negrilla">
             <g:textField name="valorPagoNC_name" id="valorPagoNC" class="form-control required number validacionNumero" value="${proceso?.valor}"/>
         </div>
     </div>
     <div class="row" style="font-size: 12px">
-        <div class="col-md-2 negrilla" style="width: 120px">
+        <div class="col-xs-2 negrilla" style="width: 120px">
             IVA generado:
         </div>
-        <div class="col-md-2 negrilla">
+        <div class="col-xs-2 negrilla">
             <input type="text" name="ivaGenerado" id="ivaGenerado"  value="${proceso?.ivaGenerado}" class="required number form-control validacionNumero" validate="required number" ${proceso?.estado == 'R' ?'disabled':''} />
         </div>
     </div>
@@ -38,10 +38,10 @@
 
     <g:if test="${tipo == 'C'}">
     <div class="row" style="font-size: 12px">
-        <div class="col-md-3 negrilla">
+        <div class="col-xs-3 negrilla">
             Documento registrado:
         </div>
-        <div class="col-md-3 negrilla" style="margin-left: -95px">
+        <div class="col-xs-3 negrilla" style="margin-left: -95px">
             <input type="text" name="dcmtEstablecimiento" id="dcmtEstablecimiento" size="3" maxlength="3"
                    value="${proceso?.procesoSerie01}" class=" digits form-control label-shared validacionNumero"
                    validate=" number" placeholder="Establ."
@@ -53,10 +53,10 @@
                    class=" digits form-control label-shared validacionNumero " validate=" number"
                    title="El número de secuencia del documento"  ${proceso?.estado == 'R' ?'disabled':''} placeholder="Secuencial" />
         </div>
-        <div class="col-md-2 negrilla" style="width: 120px;margin-left: -30px; text-align: right">
+        <div class="col-xs-2 negrilla" style="width: 120px;margin-left: -30px; text-align: right">
             Autorización:
         </div>
-        <div class="col-md-2 negrilla">
+        <div class="col-xs-2 negrilla">
             <input type="text" name="dcmtAutorizacion" id="dcmtAutorizacion" size="10" maxlength="15"
                    value="${proceso?.autorizacion}" class=" digits form-control label-shared validacionNumero"
                    validate=" number" placeholder="Autorización"
@@ -66,36 +66,36 @@
     </g:if>
 
     <div class="row" style="font-size: 12px">
-        <div class="col-md-2 negrilla" style="width: 120px">
+        <div class="col-xs-2 negrilla" style="width: 120px">
             Base imponible IVA ${iva}%:
         </div>
-        <div class="col-md-2 negrilla">
+        <div class="col-xs-2 negrilla">
             <input type="text" name="baseImponibleIva" id="iva12" size="7" value="${proceso?.baseImponibleIva ?: 0.00}" class="required  number form-control validacionNumero" validate="required number" ${proceso?.estado == 'R' ?'disabled':''} />
         </div>
-        <div class="col-md-2 negrilla" style="width: 120px">
+        <div class="col-xs-2 negrilla" style="width: 120px">
             Base imponible IVA 0%:
         </div>
-        <div class="col-md-2 negrilla">
+        <div class="col-xs-2 negrilla">
             <input type="text" name="baseImponibleIva0" size="7" id="iva0" value="${proceso?.baseImponibleIva0 ?: 0.00}" class="required number form-control validacionNumero" validate="required number" ${proceso?.estado == 'R' ?'disabled':''} />
         </div>
-        <div class="col-md-2 negrilla" style="width: 120px">
+        <div class="col-xs-2 negrilla" style="width: 120px">
             Base imponible no aplica IVA:
         </div>
-        <div class="col-md-2 negrilla">
+        <div class="col-xs-2 negrilla">
             <input type="text" name="baseImponibleNoIva" id="noIva" size="7" value="${proceso?.baseImponibleNoIva ?: 0.00}" class="required number form-control validacionNumero" validate="required number" ${proceso?.estado == 'R' ?'disabled':''} />
         </div>
     </div>
     <div class="row" style="font-size: 12px">
-        <div class="col-md-2 negrilla" style="width: 120px">
+        <div class="col-xs-2 negrilla" style="width: 120px">
             IVA generado:
         </div>
-        <div class="col-md-2 negrilla">
+        <div class="col-xs-2 negrilla">
             <input type="text" name="ivaGenerado" id="ivaGenerado"  value="${proceso?.ivaGenerado}" class="required number form-control validacionNumero" validate="required number" ${proceso?.estado == 'R' ?'disabled':''} />
         </div>
-        <div class="col-md-2 negrilla" style="width: 120px">
+        <div class="col-xs-2 negrilla" style="width: 120px">
             ICE generado:
         </div>
-        <div class="col-md-2 negrilla"  >
+        <div class="col-xs-2 negrilla"  >
             <input type="text" name="iceGenerado"  id="iceGenerado" value="${proceso?.iceGenerado ?: 0.00}" class="required number form-control validacionNumero" validate="required number" ${proceso?.estado == 'R' ?'disabled':''} />
         </div>
     </div>

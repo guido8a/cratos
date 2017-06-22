@@ -152,11 +152,11 @@
                 %{--<input type="hidden" name="periodoContable.id" value="${session?.contabilidad?.id}"/>--}%
             <input type="hidden" name="data" id="data"/>
         <div class="row">
-            <div class="col-md-2 negrilla">
+            <div class="col-xs-2 negrilla">
                 Tipo de transacción:
             </div>
 
-            <div class="col-md-4 negrilla">
+            <div class="col-xs-4 negrilla">
                 %{--
                                 <g:select class="form-control required cmbRequired tipoProcesoSel" name="tipoProceso" id="tipoProceso"
                                           from="${tiposProceso}" label="Proceso tipo: " value="${proceso?.tipoProceso}" optionKey="key"
@@ -168,33 +168,33 @@
                           optionValue="value" title="Tipo de la transacción" disabled="${registro ? true : false}"/>
             </div>
 
-            <div class="col-md-1 negrilla">
+            <div class="col-xs-1 negrilla">
                 Fecha de Emisión:
             </div>
 
-            <div class="col-md-2">
+            <div class="col-xs-2">
                 <g:if test="${registro}">
                     ${proceso?.fecha.format("dd-MM-yyyy")}
                 </g:if>
                 <g:else>
                     <elm:datepicker name="fecha" title="Fecha de emisión del comprobante"
-                                    class="datepicker form-control required col-md-3"
+                                    class="datepicker form-control required col-xs-3"
                                     value="${proceso?.fecha}" maxDate="new Date()"
                                     style="width: 80px; margin-left: 5px"/>
                 </g:else>
             </div>
 
-            <div class="col-md-1 negrilla">
+            <div class="col-xs-1 negrilla">
                 Fecha de registro:
             </div>
 
-            <div class="col-md-2">
+            <div class="col-xs-2">
                 <g:if test="${registro}">
                     ${proceso?.fecha.format("dd-MM-yyyy")}
                 </g:if>
                 <g:else>
                     <elm:datepicker name="fecharegistro" title="Fecha de registro en el sistema"
-                                    class="datepicker form-control required col-md-3"
+                                    class="datepicker form-control required col-xs-3"
                                     value="${proceso?.fecha}" maxDate="new Date()"
                                     style="width: 80px; margin-left: 5px"/>
                 </g:else>
@@ -203,11 +203,11 @@
         </div>
 
         <div class="row">
-            <div class="col-md-2 negrilla">
+            <div class="col-xs-2 negrilla">
                 Gestor a utilizar:
             </div>
 
-            <div class="col-md-10 negrilla">
+            <div class="col-xs-10 negrilla">
                 <g:select class="form-control required" name="gestor.id"
                           from="${cratos.Gestor.findAllByEstadoAndEmpresa('R', session.empresa, [sort: 'nombre'])}"
                           label="Proceso tipo: " value="${proceso?.gestor?.id}" optionKey="id" optionValue="nombre"
@@ -228,11 +228,11 @@
         </div>
 
         <div class="row">
-            <div class="col-md-2 negrilla">
+            <div class="col-xs-2 negrilla">
                 Descripción:
             </div>
 
-            <div class="col-md-10 negrilla">
+            <div class="col-xs-10 negrilla">
                 <textArea style="height:55px;resize: none" maxlength="255" name="descripcion"
                           id="descripcion" title="La descripción de la transacción contable"
                           class="form-control" ${registro ? 'readonly' : ''}>${proceso?.descripcion}</textArea>
@@ -240,11 +240,11 @@
         </div>
 
         <div class="row" id="libretinFacturas">
-            <div class="col-md-2 negrilla">
+            <div class="col-xs-2 negrilla">
                 Libretín de Facturas:
             </div>
 
-            <div class="col-md-5">
+            <div class="col-xs-5">
                 <g:select name="comprobanteFactura" from="${libreta}" value="${''}"
                           class="form-control libretinFactura" optionKey="id" libre="1"
                           optionValue="${{
@@ -254,16 +254,18 @@
                           noSelection="${['-1': 'Seleccione...']}"/>
             </div>
 
-            <div class="col-md-2" id="divNumeracionFactura">
+            <div class="col-xs-2" id="divNumeracionFactura" style="text-align: right">
             </div>
 
-            <div class="col-md-1 negrilla" style="margin-left: -90px">
+%{--
+            <div class="col-xs-1 negrilla" style="margin-left:-5%">
                 Secuencial:
             </div>
+--}%
 
-            <div class="col-md-2 grupo" style="margin-left: 0px; display: inline">
+            <div class="col-xs-3 grupo" style="margin-left: 0px; display: inline">
                 <g:textField name="secuencial" value="${''}" class="form-control validacionNumeroSinPuntos required"
-                             style="width: 120px" maxlength="15"/>
+                             style="width: 120px" maxlength="15" placeholder="Secuencial"/>
             </div>
         </div>
     </div>
@@ -283,7 +285,7 @@
 
         <div class="linea"></div>
 
-        <div id="divComprobante" class="col-md-12"
+        <div id="divComprobante" class="col-xs-12"
              style="margin-bottom: 0px ;padding: 0px;display: none;margin-top: 5px;">
         </div>
     </div>
@@ -302,16 +304,16 @@
 
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-md-3 negrilla" style="width: 140px">
+                    <div class="col-xs-3 negrilla" style="width: 140px">
                         Tipo de pago:
                     </div>
 
-                    <div class="col-md-7 negrilla" style="margin-left: -20px">
+                    <div class="col-xs-7 negrilla" style="margin-left: -20px">
                         <g:select name="tipoPago.id" id="comboFP" class=" form-control" from="${cratos.TipoPago.list()}"
                                   label="Tipo de pago: " optionKey="id" optionValue="descripcion"/>
                     </div>
 
-                    <div class="col-md-2 negrilla">
+                    <div class="col-xs-2 negrilla">
                         <g:if test="${!registro}">
                             <a href="#" id="agregarFP" class="btn btn-azul">
                                 <i class="fa fa-plus"></i>
@@ -356,18 +358,18 @@
 
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-md-2 negrilla" style="width: 140px">
+                    <div class="col-xs-2 negrilla" style="width: 140px">
                         <select id="tipoPar" style="margin-right: 5px;" class="form-control">
                             <option value="1">RUC</option>
                             <option value="2">Nombre</option>
                         </select>
                     </div>
 
-                    <div class="col-md-5 negrilla" style="margin-left: -20px">
+                    <div class="col-xs-5 negrilla" style="margin-left: -20px">
                         <input type="text" id="parametro" class="form-control" style="margin-right: 10px;">
                     </div>
 
-                    <div class="col-md-1 negrilla" style="width: 140px">
+                    <div class="col-xs-1 negrilla" style="width: 140px">
                         <a href="#" id="buscar" class="btn btn-azul">
                             <i class="fa fa-search"></i>
                             Buscar
@@ -954,7 +956,7 @@
         });
 
         $("#registrarProceso").click(function () {
-            bootbox.confirm("<i class='fa fa-exclamation-circle fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea registrar el proceso contable? </br> Una vez registrado, la información NO podrá ser cambiada.</p>", function (result) {
+            bootbox.confirm("<i class='fa fa-exclamation-circle fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea registrar la transacción? </br> Una vez registrado, la información NO podrá ser cambiada.</p>", function (result) {
                 if (result) {
                     openLoader("Registrando...");
                     $.ajax({
