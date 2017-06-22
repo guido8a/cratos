@@ -1438,16 +1438,17 @@ class ProcesoController extends cratos.seguridad.Shield {
     }
 
     def calcularValorBI_ajax () {
-//       def porcentaje = PorcentajeIva.get(params.porcentaje)
+       def porcentaje = PorcentajeIva.get(params.porcentaje)
 //       def valor = params.base.toDouble() * (porcentaje.valor / 100)
-        def valor = (params.base ? params.base.toDouble() : 0) * (params.porcentaje ? (params.porcentaje.toDouble()  / 100) : 0)
+        def valor = (params.base ? params.base.toDouble() : 0) * (porcentaje ? (porcentaje?.valor?.toDouble()  / 100) : 0) * 0.12
         return [valor: valor]
     }
 
     def calcularValorSV_ajax () {
-//       def porcentaje = PorcentajeIva.get(params.porcentaje)
+        println("params " + params)
+       def porcentaje = PorcentajeIva.get(params.porcentaje)
 //       def valor = params.base.toDouble() * (porcentaje.valor / 100)
-        def valor = (params.base ? params.base.toDouble() : 0) * (params.porcentaje ? (params.porcentaje.toDouble() / 100) : 0)
+        def valor = (params.base ? params.base.toDouble() : 0) * (porcentaje ? (porcentaje?.valor?.toDouble() / 100) : 0) * 0.12
         return [valor: valor]
     }
 
@@ -1597,6 +1598,16 @@ class ProcesoController extends cratos.seguridad.Shield {
                 render 'ok'
             }
         }
+    }
+
+    def valoresBienes_ajax (){
+        def porcentajeIva = PorcentajeIva.get(params.porcentaje)
+        return [porcentajeIva: porcentajeIva]
+    }
+
+    def valoresServicio_ajax () {
+        def porcentajeIva = PorcentajeIva.get(params.porcentaje)
+        return [porcentajeIva: porcentajeIva]
     }
 
 }

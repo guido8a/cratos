@@ -286,14 +286,6 @@
             </div>
         </div>
 
-        %{--<div class="panel panel-primary">--}%
-        %{--<div class="panel-body">--}%
-        %{----}%
-        %{--</div>--}%
-        %{--</div>--}%
-
-
-
         <div class="alert alert-warning" role="alert" style="height: 60px;">
             <div class="col-md-4" style="margin-right: 56px; text-align: center">
                 <label>Total Base Imponible</label>
@@ -323,7 +315,7 @@
             </div>
             <div class="col-md-3">
                 <g:select name="porcentajeIva_name" id="porcentajeIva"
-                          from="${cratos.sri.PorcentajeIva.list().sort{it.descripcion}}" class="form-control" optionValue="descripcion" optionKey="id" value="${retencion?.porcentajeIva?.id}"/>
+                          from="${cratos.sri.PorcentajeIva.list().sort{it.descripcion}}" class="form-control pori" optionValue="descripcion" optionKey="id" value="${retencion?.porcentajeIva?.id}"/>
             </div>
             <div class="col-md-1">
             </div>
@@ -365,12 +357,14 @@
             </div>
 
             <div class="fac2" id="divP2">
-                <g:textField class=" form-control number"
-                             title="El porcentaje de Bienes es obligatorio. Puede ingresar 0." name="bienesPorcentaje_name" id="bienesPorcentaje" value="${retencion?.porcentajeBienes ?: 0}" style="text-align: right"/>
+                %{--<g:textField class=" form-control number"--}%
+                             %{--title="El porcentaje de Bienes es obligatorio. Puede ingresar 0." name="bienesPorcentaje_name" id="bienesPorcentaje" value="${retencion?.porcentajeBienes ?: 0}" style="text-align: right"/>--}%
             </div>
 
             <div class="fac2" id="divV2">
             </div>
+
+
         </div>
         <div class="col-md-12" style="margin-bottom: 20px;">
             <div class="col-md-3 negrilla">
@@ -393,9 +387,9 @@
             </div>
 
             <div class="fac2" id="divP3">
-                <g:textField class=" form-control number"
-                             title="El porcentaje de Servicios es obligatorio. Puede ingresar 0."
-                             name="serviciosPorcentaje_name" id="serviciosPorcentaje" value="${retencion?.porcentajeServicios ?: 0}" style="text-align: right"/>
+                %{--<g:textField class=" form-control number"--}%
+                             %{--title="El porcentaje de Servicios es obligatorio. Puede ingresar 0."--}%
+                             %{--name="serviciosPorcentaje_name" id="serviciosPorcentaje" value="${retencion?.porcentajeServicios ?: 0}" style="text-align: right"/>--}%
             </div>
 
             <div class="fac2" id="divV3">
@@ -463,12 +457,49 @@
     });
 
 
-    cargarPorcentajeIva($("#porcentajeIva option:selected").val())
+//    cargarPorcentajeIva($("#porcentajeIva option:selected").val())
+    cargarBienes($("#porcentajeIva option:selected").val())
+    cargarServicios($("#porcentajeIva option:selected").val())
 
     $("#porcentajeIva").change(function () {
         var porcentaje = $("#porcentajeIva option:selected").val()
-        cargarPorcentajeIva(porcentaje)
+//        cargarPorcentajeIva(porcentaje)
+        cargarBienes(porcentaje)
+        cargarServicios(porcentaje)
+        cargarValorRetencionBI(porcentaje, $("#bienesBase").val());
+        cargarValorRetencionSV(porcentaje, $("#servicioBase").val());
     });
+
+
+    function cargarBienes(porcentaje) {
+        $.ajax({
+           type: 'POST',
+            async: true,
+            url: '${createLink(controller: 'proceso', action: 'valoresBienes_ajax')}',
+            data:{
+                porcentaje: porcentaje,
+                bienesBase: $("#bienesBase").val()
+            },
+            success: function (msg){
+                $("#divP2").html(msg)
+            }
+        });
+    }
+    function cargarServicios (porcentaje){
+        $.ajax({
+            type: 'POST',
+            async: true,
+            url: '${createLink(controller: 'proceso', action: 'valoresServicio_ajax')}',
+            data:{
+                porcentaje: porcentaje,
+                serviciosBase: $("#servicioBase").val()
+            },
+            success: function (msg){
+                $("#divP3").html(msg)
+            }
+        });
+    }
+
 
     function cargarPorcentajeIva (sel){
         if(sel == '7'){
@@ -689,12 +720,14 @@
     });
 
     $("#bienesBase").keyup(function () {
-        cargarValorRetencionBI($("#bienesPorcentaje").val(), $("#bienesBase").val());
+//        cargarValorRetencionBI($("#bienesPorcentaje").val(), $("#bienesBase").val());
+        cargarValorRetencionBI($("#porcentajeIva").val(), $("#bienesBase").val());
         cargarTotalBase();
     });
 
     $("#servicioBase").keyup(function () {
-        cargarValorRetencionSV($("#serviciosPorcentaje").val(), $("#servicioBase").val());
+//        cargarValorRetencionSV($("#serviciosPorcentaje").val(), $("#servicioBase").val());
+        cargarValorRetencionSV($("#porcentajeIva").val(), $("#servicioBase").val());
         cargarTotalBase();
     });
 
@@ -702,17 +735,17 @@
         cargarValorRetencionICE($("#icePorcentaje").val(), $("#iceBase").val());
     });
 
-    $("#bienesPorcentaje").keyup(function () {
-        cargarValorRetencionBI($("#bienesPorcentaje").val(), $("#bienesBase").val());
-    });
+//    $("#bienesPorcentaje").keyup(function () {
+//        cargarValorRetencionBI($("#bienesPorcentaje").val(), $("#bienesBase").val());
+//    });
 
-    $("#serviciosPorcentaje").keyup(function () {
-        cargarValorRetencionSV($("#serviciosPorcentaje").val(), $("#servicioBase").val());
-    });
+//    $("#serviciosPorcentaje").keyup(function () {
+//        cargarValorRetencionSV($("#serviciosPorcentaje").val(), $("#servicioBase").val());
+//    });
 
     cargarValorRetencionICE($("#icePorcentaje").val(), $("#iceBase").val());
-    cargarValorRetencionBI($("#bienesPorcentaje").val(), $("#bienesBase").val());
-    cargarValorRetencionSV($("#serviciosPorcentaje").val(), $("#servicioBase").val());
+    cargarValorRetencionBI($("#porcentajeIva").val(), $("#bienesBase").val());
+    cargarValorRetencionSV($("#porcentajeIva").val(), $("#servicioBase").val());
     cargarTotalBase();
 
     function cargarValorRetencionSV (porcentaje, base) {
