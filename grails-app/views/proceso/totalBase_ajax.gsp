@@ -23,6 +23,7 @@
 </style>
 
 
-<g:textField class="form-control number ${total > base ? 'mal' : (total == base ? 'igual' : 'bien')}" title="Total Base Imponible" name="totalBase_name" id="totalBase" readonly="true" value="${g.formatNumber(number: total, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2)}"
-             style="text-align: right;"/>
+    <g:textField class="form-control number ${total > base ? 'mal' : (total == base ? 'igual' : 'bien')}" title="Total Base Imponible" name="totalBase_name" id="totalBase" readonly="true" value="${g.formatNumber(number: total, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2)}"
+                 style="text-align: right;"/>
+
 

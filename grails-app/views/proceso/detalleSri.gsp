@@ -408,6 +408,8 @@
             </div>
             <div class="fac2" id="divTotalBase">
             </div>
+            <div class="fac2"></div>
+            <div class="fac2" id="divTotal2"></div>
         </div>
 
         <div class="exterior" style="margin-left: 40px; margin-right: 30px; margin-top: 10px; margin-bottom: 15px" hidden="hidden">
@@ -468,6 +470,7 @@
         cargarServicios(porcentaje)
         cargarValorRetencionBI(porcentaje, $("#bienesBase").val());
         cargarValorRetencionSV(porcentaje, $("#servicioBase").val());
+//        cargarTotalValor();
     });
 
 
@@ -723,12 +726,14 @@
 //        cargarValorRetencionBI($("#bienesPorcentaje").val(), $("#bienesBase").val());
         cargarValorRetencionBI($("#porcentajeIva").val(), $("#bienesBase").val());
         cargarTotalBase();
+        cargarTotalValor();
     });
 
     $("#servicioBase").keyup(function () {
 //        cargarValorRetencionSV($("#serviciosPorcentaje").val(), $("#servicioBase").val());
         cargarValorRetencionSV($("#porcentajeIva").val(), $("#servicioBase").val());
         cargarTotalBase();
+        cargarTotalValor();
     });
 
     $("#icePorcentaje").keyup(function () {
@@ -747,6 +752,7 @@
     cargarValorRetencionBI($("#porcentajeIva").val(), $("#bienesBase").val());
     cargarValorRetencionSV($("#porcentajeIva").val(), $("#servicioBase").val());
     cargarTotalBase();
+    cargarTotalValor();
 
     function cargarValorRetencionSV (porcentaje, base) {
         $.ajax({
@@ -821,6 +827,23 @@
         });
     }
 
+
+    function cargarTotalValor () {
+        $.ajax({
+            type: 'POST',
+            url: "${createLink(controller: 'proceso', action: 'totaValor_ajax')}",
+            data:{
+//                ice:  $("#iceBase").val(),
+                bienes: $("#valorRetenidoBienes").val(),
+                servicios: $("#valorRetenidoServicios").val(),
+                base: '${base}',
+                porcentaje: $("#porcentajeIva option:selected").val()
+            },
+            success: function (msg1){
+                $("#divTotal2").html(msg1)
+            }
+        });
+    }
 
     cargarRBI($("#conceptoRetencionImpuestoRenta option:selected").val(), $("#baseImponible").val());
 

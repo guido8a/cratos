@@ -1603,5 +1603,13 @@ class ProcesoController extends cratos.seguridad.Shield {
         return [porcentajeIva: porcentajeIva]
     }
 
+    def totaValor_ajax() {
+        println("params--> " + params)
+        def total = (params.bienes ? params.bienes.toDouble() : 0) + (params.servicios ? params.servicios.toDouble() : 0)
+        def porcentajeIva = PorcentajeIva.get(params.porcentaje)
+        def base = params.base.toDouble() * porcentajeIva.codigo.toDouble() * 0.12
+        return [total: total.toDouble(), base: base]
+    }
+
 }
 
