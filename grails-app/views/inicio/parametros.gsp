@@ -306,6 +306,19 @@
                                 <p>Esta información debe ser concordante con lo establecido por el SRI.</p>
                             </div>
                         </li>
+                        <li>
+                            <i class="fa-li ${iconGen}"></i>
+                            <span id="paramsAux">
+                                <g:link controller="parametrosAuxiliares" action="list">Parámetros Auxiliares</g:link> para definir
+                                valores de impuestos.
+                            </span>
+
+                            <div class="descripcion hide">
+                                <h4>Parámtros de Funcionamiento</h4>
+
+                                <p>Parámetros de funcionamiento generales como el valor del IVA.</p>
+                            </div>
+                        </li>
 
                     </ul>
 
@@ -402,20 +415,6 @@
                                 <p>Por lo general siempre se definirán los mismo reportes para cada empresa, conforme las normas NIIF.</p>
                             </div>
                         </li>
-                        <li>
-                            <i class="fa-li ${iconEmpr}"></i>
-                            <span id="paramsAux">
-                                <g:link controller="parametrosAuxiliares" action="list">Parámetros Auxiliares</g:link> para definir
-                                valores de impuestos.
-                            </span>
-
-                            <div class="descripcion hide">
-                                <h4>Parámtros de Funcionamiento</h4>
-
-                                <p>Parámetros de funcionamiento generales como el valor del IVA.</p>
-                            </div>
-                        </li>
-
                     </ul>
                 </div>
 

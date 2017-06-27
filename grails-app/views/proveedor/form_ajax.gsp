@@ -48,7 +48,7 @@
                 </label>
 
                 <div class="col-md-8">
-                    <g:textField name="direccion" maxlength="127" class=" form-control"
+                    <g:textField name="direccion" maxlength="127" class=" form-control required"
                                  value="${proveedorInstance?.direccion}"/>
                 </div>
 
@@ -56,6 +56,22 @@
         </div>
 
         <div class="col2">
+
+            <div class="form-group ${hasErrors(bean: proveedorInstance, field: 'telefono', 'error')} ">
+                <span class="grupo">
+                    <label for="telefono" class="col-md-6 control-label text-info">
+                        Teléfono
+                    </label>
+
+                    <div class="col-md-5">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-phone"></i></span>
+                            <g:textField name="telefono" maxlength="63" class=" form-control required"
+                                         value="${proveedorInstance?.telefono}"/>
+                        </div>
+                    </div>
+                </span>
+            </div>
 
             <div class="form-group ${hasErrors(bean: proveedorInstance, field: 'tipoProveedor', 'error')} ">
                 <span class="grupo">
@@ -117,86 +133,62 @@
                 </span>
             </div>
 
-            %{--<div class="form-group ${hasErrors(bean: proveedorInstance, field: 'empresa', 'error')} ">--}%
-            %{--<span class="grupo">--}%
-            %{--<label for="empresa" class="col-md-6 control-label text-info">--}%
-            %{--Empresa--}%
-            %{--</label>--}%
-
-            %{--<div class="col-md-5">--}%
-            %{--<g:textField name="empresa" value="${session.empresa}" class="form-control" readonly="true"/>--}%
-            %{--</div>--}%
-
-            %{--</span>--}%
-            %{--</div>--}%
-
-            <div class="form-group ${hasErrors(bean: proveedorInstance, field: 'nombreContacto', 'error')} required">
+            <div class="form-group ${hasErrors(bean: proveedorInstance, field: 'nombreContacto', 'error')}">
                 <span class="grupo">
                     <label for="nombreContacto" class="col-md-6 control-label text-info">
                         Nombre Contacto
                     </label>
 
                     <div class="col-md-5">
-                        <g:textField name="nombreContacto" maxlength="40" required="" class=" form-control required"
+                        <g:textField name="nombreContacto" maxlength="40"  class=" form-control"
                                      value="${proveedorInstance?.nombreContacto}"/>
                     </div>
                     *
                 </span>
             </div>
 
-            <div class="form-group ${hasErrors(bean: proveedorInstance, field: 'apellidoContacto', 'error')} required">
+            <div class="form-group ${hasErrors(bean: proveedorInstance, field: 'apellidoContacto', 'error')}">
                 <span class="grupo">
                     <label for="apellidoContacto" class="col-md-6 control-label text-info">
                         Apellido Contacto
                     </label>
 
                     <div class="col-md-5">
-                        <g:textField name="apellidoContacto" maxlength="40" required="" class=" form-control required"
+                        <g:textField name="apellidoContacto" maxlength="40" class=" form-control"
                                      value="${proveedorInstance?.apellidoContacto}"/>
                     </div>
                     *
                 </span>
             </div>
 
-            <div class="form-group ${hasErrors(bean: proveedorInstance, field: 'pais', 'error')}">
+
+
+            <div class="form-group ${hasErrors(bean: proveedorInstance, field: 'descuento', 'error')}">
                 <span class="grupo">
-                    <label for="pais" class="col-md-6 control-label text-info">
-                        País
+                    <label for="descuento" class="col-md-6 control-label text-info">
+                        Descuento
                     </label>
 
-                    <div class="col-md-5">
-                        %{--<g:textField name="pais" class=" form-control" value="${proveedorInstance?.pais}"/>--}%
-                        <g:select id="pais" name="pais.id" from="${paises}"
-                                  value="${proveedorInstance?.pais}" class="many-to-one form-control"
-                                  noSelection="['null': 'Seleccione...']"/>
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <g:textField name="descuento" class="number form-control" maxlength="3" value="${fieldValue(bean: proveedorInstance, field: 'descuento')}"/>
+                            <span class="input-group-addon"><i class="fa fa-percent"></i>%</span>
+                        </div>
                     </div>
-
                 </span>
             </div>
 
-            <div class="form-group ${hasErrors(bean: proveedorInstance, field: 'canton', 'error')} ">
-                <span class="grupo">
-                    <label for="canton" class="col-md-6 control-label text-info">
-                        Cantón
-                    </label>
 
-                    <div class="col-md-5">
-                        <g:select id="canton" name="canton.id" from="${cratos.Canton.list()}" optionKey="id"
-                                  value="${proveedorInstance?.canton?.id}" optionValue="nombre" class="many-to-one form-control"
-                                  noSelection="['null': 'Seleccione...']"/>
-                    </div>
 
-                </span>
-            </div>
 
-            <div class="form-group">
-                <span class="grupo">
-                    <label>
+            %{--<div class="form-group">--}%
+                %{--<span class="grupo">--}%
+                    %{--<label>--}%
 
-                    </label>
-                    <div></div>
-                </span>
-            </div>
+                    %{--</label>--}%
+                    %{--<div></div>--}%
+                %{--</span>--}%
+            %{--</div>--}%
 
             <div class="form-group ${hasErrors(bean: proveedorInstance, field: 'estado', 'error')} ">
                 <span class="grupo">
@@ -209,6 +201,21 @@
                     </div>
                 </span>
             </div>
+
+
+            <div class="form-group ${hasErrors(bean: proveedorInstance, field: 'relacionado', 'error')}">
+                <span class="grupo">
+                    <label for="relacionado" class="col-md-4 control-label text-info">
+                        Relacionado
+                    </label>
+
+                    <div class="col-md-3">
+                        <g:select id="relacionado" name="relacionado.id" from="${['NO','SI']}"
+                                  value="${proveedorInstance?.relacionado}" class="many-to-one form-control"/>
+                    </div>
+                </span>
+            </div>
+
 
             <div class="form-group ${hasErrors(bean: proveedorInstance, field: 'autorizacionSri', 'error')} ">
                 <span class="grupo">
@@ -223,22 +230,7 @@
                 </span>
             </div>
 
-            <div class="form-group ${hasErrors(bean: proveedorInstance, field: 'telefono', 'error')} ">
-                <span class="grupo">
-                    <label for="telefono" class="col-md-4 control-label text-info">
-                        Teléfono
-                    </label>
 
-                    <div class="col-md-6">
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-phone"></i></span>
-                            <g:textField name="telefono" maxlength="63" class=" form-control"
-                                         value="${proveedorInstance?.telefono}"/>
-                        </div>
-                    </div>
-
-                </span>
-            </div>
 
             <div class="form-group ${hasErrors(bean: proveedorInstance, field: 'email', 'error')} required ">
                 <span class="grupo">
@@ -253,8 +245,6 @@
 
                         </div>
                     </div>
-
-
                 </span>
             </div>
 
@@ -281,54 +271,68 @@
                     <div class="col-md-6">
                         <g:textField name="nombreCheque" class=" form-control" value="${proveedorInstance?.nombreCheque}"/>
                     </div>
-
-                </span>
-            </div>
-
-            <div class="form-group ${hasErrors(bean: proveedorInstance, field: 'descuento', 'error')}">
-                <span class="grupo">
-                    <label for="descuento" class="col-md-4 control-label text-info">
-                        Descuento
-                    </label>
-
-                    <div class="col-md-3">
-                        <div class="input-group">
-                            <g:textField name="descuento" class="number form-control" maxlength="3" value="${fieldValue(bean: proveedorInstance, field: 'descuento')}"/>
-                            <span class="input-group-addon"><i class="fa fa-percent"></i>%</span>
-                        </div>
-                    </div>
                 </span>
             </div>
 
 
-            <div class="form-group ${hasErrors(bean: proveedorInstance, field: 'fecha', 'error')} ">
+            <div class="form-group ${hasErrors(bean: proveedorInstance, field: 'pais', 'error')}">
                 <span class="grupo">
-                    <label for="fecha" class="col-md-4 control-label text-info">
-                        Fecha
+                    <label for="pais" class="col-md-4 control-label text-info">
+                        País
                     </label>
 
-                    <div class="col-md-3">
-                        <elm:datepicker name="fecha" title="fecha" class="datepicker form-control"
-                                        value="${proveedorInstance?.fecha}"/>
+                    <div class="col-md-6">
+                        <g:select id="pais" name="pais.id" from="${paises}"
+                                  value="${proveedorInstance?.pais}" class="many-to-one form-control"
+                                  noSelection="['null': 'Seleccione...']"/>
                     </div>
 
                 </span>
             </div>
 
-
-            <div class="form-group ${hasErrors(bean: proveedorInstance, field: 'fechaCaducidad', 'error')} ">
+            <div class="form-group ${hasErrors(bean: proveedorInstance, field: 'canton', 'error')} ">
                 <span class="grupo">
-                    <label for="fechaCaducidad" class="col-md-4 control-label text-info">
-                        Fecha de Caducidad
+                    <label for="canton" class="col-md-4 control-label text-info">
+                        Cantón
                     </label>
 
-                    <div class="col-md-3">
-                        <elm:datepicker name="fechaCaducidad" class="datepicker form-control"
-                                        value="${proveedorInstance?.fechaCaducidad}"/>
+                    <div class="col-md-6">
+                        <g:select id="canton" name="canton.id" from="${cratos.Canton.list()}" optionKey="id"
+                                  value="${proveedorInstance?.canton?.id}" optionValue="nombre" class="many-to-one form-control"
+                                  noSelection="['null': 'Seleccione...']"/>
                     </div>
-
                 </span>
             </div>
+
+
+            %{--<div class="form-group ${hasErrors(bean: proveedorInstance, field: 'fecha', 'error')} ">--}%
+                %{--<span class="grupo">--}%
+                    %{--<label for="fecha" class="col-md-4 control-label text-info">--}%
+                        %{--Fecha--}%
+                    %{--</label>--}%
+
+                    %{--<div class="col-md-3">--}%
+                        %{--<elm:datepicker name="fecha" title="fecha" class="datepicker form-control"--}%
+                                        %{--value="${proveedorInstance?.fecha}"/>--}%
+                    %{--</div>--}%
+
+                %{--</span>--}%
+            %{--</div>--}%
+
+
+            %{--<div class="form-group ${hasErrors(bean: proveedorInstance, field: 'fechaCaducidad', 'error')} ">--}%
+                %{--<span class="grupo">--}%
+                    %{--<label for="fechaCaducidad" class="col-md-4 control-label text-info">--}%
+                        %{--Fecha de Caducidad--}%
+                    %{--</label>--}%
+
+                    %{--<div class="col-md-3">--}%
+                        %{--<elm:datepicker name="fechaCaducidad" class="datepicker form-control"--}%
+                                        %{--value="${proveedorInstance?.fechaCaducidad}"/>--}%
+                    %{--</div>--}%
+
+                %{--</span>--}%
+            %{--</div>--}%
 
 
         </div>

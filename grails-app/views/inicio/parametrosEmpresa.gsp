@@ -1,0 +1,220 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: gato
+  Date: 26/06/17
+  Time: 11:49
+--%>
+
+<%@ page contentType="text/html;charset=UTF-8" %>
+<html>
+<head>
+    <meta name="layout" content="main"/>
+    <title>Parámetros de la Empresa</title>
+
+    <style type="text/css">
+
+    .tab-content, .left, .right {
+        height : 600px;
+    }
+
+    .tab-content {
+        /*background  : #EFE4D1;*/
+        background    : #EEEEEE;
+        border-left   : solid 1px #DDDDDD;
+        border-bottom : solid 1px #DDDDDD;
+        border-right  : solid 1px #DDDDDD;
+        padding-top   : 10px;
+    }
+
+    .descripcion {
+        /*margin-left : 20px;*/
+        font-size : 12px;
+        border    : solid 2px cadetblue;
+        padding   : 0 10px;
+        margin    : 0 10px 0 0;
+    }
+
+    .info {
+        font-style : italic;
+        color      : navy;
+    }
+
+    .descripcion h4 {
+        color      : cadetblue;
+        text-align : center;
+    }
+
+    .left {
+        width : 600px;
+        text-align: justify;
+        /*background : red;*/
+    }
+
+    .right {
+        width       : 300px;
+        margin-left : 20px;
+        padding: 20px;
+        /*background  : blue;*/
+    }
+
+    .fa-ul li {
+        margin-bottom : 10px;
+    }
+
+    </style>
+
+</head>
+
+<body>
+<g:set var="iconEmpr" value="fa fa-building-o"/>
+
+<ul class="nav nav-tabs">
+    <li class="active"><a href="#parametros" data-toggle="tab">Parámetros</a></li>
+</ul>
+<div class="tab-pane" id="empresa">
+    <div class="left pull-left">
+        <ul class="fa-ul">
+            <li>
+                <i class="fa-li ${iconEmpr}"></i>
+                <span id="paramsEmp">
+                    <g:link controller="empresa" action="list">Parámetros de la Empresa</g:link> para definir la forma de
+                    funcionamiento de la contabilidad, centros de costos y control de inventarios.
+                </span>
+
+                <div class="descripcion hide">
+                    <h4>Parámetros de la Empresa</h4>
+
+                    <p>Parámetros de funcionamiento de la contabilidad, control de costos y valores del IVA, en la Empresa,</p>
+                </div>
+            </li>
+            <li>
+                <i class="fa-li ${iconEmpr}"></i>
+                <span id="centroCostos">
+                    <g:link controller="centroCosto" action="list">Centro de Costos</g:link> de la empresa de acuerdo a
+                    los cuales se llevará el control de bodegas, inventarios y existencias.
+                </span>
+
+                <div class="descripcion hide">
+                    <h4>Centro de Costos</h4>
+
+                    <p>Centro de costos para el control de adquisiciones, ventas, inventario y bodegas.</p>
+
+                    <p>Si la empresa no lleva el control de varios centros de costos, se debe definir uno general a la
+                    cual pretenecerán todas las bodegas.</p>
+                </div>
+            </li>
+            <li>
+                <i class="fa-li ${iconEmpr}"></i>
+                <span id="banco">
+                    <g:link controller="banco" action="list">Bancos</g:link> en los cuales posee cuentas asociadas a la
+                    contabilidad
+                </span>
+
+                <div class="descripcion hide">
+                    <h4>Bancos</h4>
+
+                    <p>Registro de los bancos relacionados con la empresa, ya sea por cuentas de ahorro o corrientes.</p>
+                </div>
+            </li>
+            <li>
+                <i class="fa-li ${iconEmpr}"></i>
+                <span id="departamento">
+                    <g:link controller="departamento" action="list">Departamento</g:link> de la empresa que poseen
+                    personal
+                </span>
+
+                <div class="descripcion hide">
+                    <h4>Departamentos de Personal</h4>
+
+                    <p>Departamentos de personal de la empresa para el control de la nómina. Cada empleado será vinculado a un
+                    departamento y un cargo.</p>
+                </div>
+            </li>
+            <li>
+                <i class="fa-li ${iconEmpr}"></i>
+                <span id="libretin">
+                    <g:link controller="documentoEmpresa" action="list">Libretín de Facturas</g:link> de la empresa
+                </span>
+                <div class="descripcion hide">
+                    <h4>Libretín de Facturas</h4>
+                    <p>Todos los libretines de facturas para ser usados digitalmente.</p>
+                </div>
+            </li>
+            <li>
+                <i class="fa-li ${iconEmpr}"></i>
+                <span id="subgrupoItems">
+                    <g:link controller="subgrupoItems" action="list" data="123">Subgrupo de Items</g:link> de la empresa
+                </span>
+                <div class="descripcion hide">
+                    <h4>Subgrupo de Items</h4>
+                    <p>Subgrupos.</p>
+                </div>
+            </li>
+            <li>
+                <i class="fa-li ${iconEmpr}"></i>
+                <span id="proveedores">
+                    <g:link controller="proveedor" action="list">Proveedores</g:link> de la empresa
+                </span>
+                <div class="descripcion hide">
+                    <h4>Proveedores</h4>
+                    <p>Proveedores.</p>
+                </div>
+            </li>
+            <li>
+                <i class="fa-li ${iconEmpr}"></i>
+                <span id="reporteContable">
+                    <g:link controller="reporteCuenta" action="list">Reportes Contables</g:link> Reportes contables
+                    especiales del sistema conforme a las normas NIIF
+                </span>
+
+                <div class="descripcion hide">
+                    <h4>Reportes de la Contabilidad</h4>
+
+                    <p>Sirve para definir reportes especiales por empresa.</p>
+
+                    <p>Por lo general siempre se definirán los mismo reportes para cada empresa, conforme las normas NIIF.</p>
+                </div>
+            </li>
+            %{--<li>--}%
+                %{--<i class="fa-li ${iconEmpr}"></i>--}%
+                %{--<span id="cuenta">--}%
+                    %{--<g:link controller="" action="list">Transferencia</g:link> de la empresa--}%
+                %{--</span>--}%
+                %{--<div class="descripcion hide">--}%
+                    %{--<h4>Transferencia</h4>--}%
+                    %{--<p>Transferencia.</p>--}%
+                %{--</div>--}%
+            %{--</li>--}%
+        </ul>
+    </div>
+
+    <div class="empresa right pull-right">
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    function prepare() {
+        $(".fa-ul li span").each(function () {
+            var id = $(this).parents(".tab-pane").attr("id");
+            var thisId = $(this).attr("id");
+            $(this).siblings(".descripcion").addClass(thisId).addClass("ui-corner-all").appendTo($(".right." + id));
+        });
+    }
+
+    $(function () {
+        prepare();
+        $(".fa-ul li span").hover(function () {
+            var thisId = $(this).attr("id");
+            $("." + thisId).removeClass("hide");
+        }, function () {
+            var thisId = $(this).attr("id");
+            $("." + thisId).addClass("hide");
+        });
+    });
+</script>
+
+
+
+</body>
+</html>

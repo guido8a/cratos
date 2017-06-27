@@ -153,4 +153,8 @@ class InicioController extends Shield {
 
     }
 
+    def parametrosEmpresa () {
+
+    }
+
 }

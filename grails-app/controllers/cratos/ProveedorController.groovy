@@ -172,7 +172,7 @@ class ProveedorController extends cratos.seguridad.Shield {
         if (proveedorInstanceList.size() == 0 && params.offset && params.max) {
             params.offset = params.offset - params.max
         }
-        proveedorInstanceList = Proveedor.findAllByEmpresa(session.empresa, params)
+        proveedorInstanceList = Proveedor.findAllByEmpresa(session.empresa, params).sort{it.nombre}
         return [proveedorInstanceList: proveedorInstanceList, proveedorInstanceCount: proveedorInstanceCount]
     } //list
 
@@ -223,7 +223,7 @@ class ProveedorController extends cratos.seguridad.Shield {
 
     def save_ajax() {
 
-//        println("params:" + params)
+        println("params:" + params)
 
         def persona
 
@@ -241,7 +241,6 @@ class ProveedorController extends cratos.seguridad.Shield {
 
             proveedorInstance = new Proveedor()
             proveedorInstance.properties = params
-//            proveedorInstance.estado = '1'
             proveedorInstance.empresa = session.empresa
             proveedorInstance.pais = params."pais.id"
 
