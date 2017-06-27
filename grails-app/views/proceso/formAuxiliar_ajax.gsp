@@ -27,6 +27,15 @@
 </div>
 <div class="row">
     <div class="col-md-2">
+        <label>Proveedor:</label>
+    </div>
+    <div class="col-md-3">
+        %{--<g:select name="proveedor_name" id="proveedor" from="${cratos.Proveedor.list().sort{it.nombre}}" class="form-control" optionValue="nombre" optionKey="id" style="width: 400px" value="${auxiliar?.proveedor?.id}"/>--}%
+        <g:textField name="proveedor_name" id="proveedor" value="${auxiliar?.proveedor?.nombre}" class="form-control" readonly="true" style="width: 400px"/>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-2">
         <label>Fecha Pago:</label>
     </div>
     <div class="col-md-4">
@@ -41,14 +50,7 @@
         <g:select name="tipo_name" from="${cratos.TipoPago.list()}" optionKey="id" optionValue="descripcion" id="tipoPago" class="form-control" style="width: 400px" value="${auxiliar?.tipoPago?.id}"/>
     </div>
 </div>
-<div class="row">
-    <div class="col-md-2">
-        <label>Proveedor:</label>
-    </div>
-    <div class="col-md-3">
-        <g:select name="proveedor_name" id="proveedor" from="${cratos.Proveedor.list().sort{it.nombre}}" class="form-control" optionValue="nombre" optionKey="id" style="width: 400px" value="${auxiliar?.proveedor?.id}"/>
-    </div>
-</div>
+
 <div class="row">
     <div class="col-md-2">
         <label>Valor:</label>
@@ -56,11 +58,11 @@
     <div class="col-md-10">
         <div class="col-md-2">Pagar</div>
         <div class="col-md-3">
-            <g:textField type="number" name="valorAuxiliarP_name" id="valorPagar" class="validacionNumero form-control valorP" style="width: 90px;" value="${auxiliar ? auxiliar?.debe : asiento?.debe}" />
+            <g:textField type="number" name="valorAuxiliarP_name" id="valorPagar" class="validacionNumero form-control valorP" placeholder="${auxiliar ? auxiliar?.debe : asiento?.debe}" style="width: 90px;" value="${auxiliar ? auxiliar?.debe : asiento?.debe}" />
         </div>
         <div class="col-md-2">Cobrar</div>
         <div class="col-md-3">
-            <g:textField type="number" name="valorAuxiliarC_name" id="valorCobrar" class="validacionNumero form-control valorC" style="width: 90px;" value="${auxiliar ? auxiliar?.haber : asiento?.haber}" />
+            <g:textField type="number" name="valorAuxiliarC_name" id="valorCobrar" placeholder="${auxiliar ? auxiliar?.haber : asiento?.haber}" class="validacionNumero form-control valorC" style="width: 90px;" value="${auxiliar ? auxiliar?.haber : asiento?.haber}" />
         </div>
     </div>
 </div>
