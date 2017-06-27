@@ -11,9 +11,9 @@ class Empresa implements Serializable {
     Canton canton
     TipoEmpresa tipoEmpresa
     String sigla
-    String numeroComprobanteDiario = 0
-    String numeroComprobanteEgreso = 0
-    String numeroComprobanteIngreso = 0
+    int numeroComprobanteDiario = 0
+    int numeroComprobanteEgreso = 0
+    int numeroComprobanteIngreso = 0
     String prefijoDiario
     String prefijoEgreso
     String prefijoIngreso

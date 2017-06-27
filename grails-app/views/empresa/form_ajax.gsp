@@ -129,7 +129,7 @@
                     </label>
 
                     <div class="col-md-2">
-                        <g:textField name="numeroComprobanteDiario" maxlength="20" class="form-control" value="${empresaInstance?.numeroComprobanteDiario}"/>
+                        <g:textField name="numeroComprobanteDiario" maxlength="20" class="number form-control" value="${empresaInstance?.numeroComprobanteDiario}" type="number"/>
                     </div>
 
                 </span>
@@ -142,7 +142,7 @@
                     </label>
 
                     <div class="col-md-2">
-                        <g:textField name="numeroComprobanteIngreso" maxlength="20" class="form-control" value="${empresaInstance?.numeroComprobanteIngreso}"/>
+                        <g:textField name="numeroComprobanteIngreso" maxlength="20" class="number form-control" value="${empresaInstance?.numeroComprobanteIngreso}" type="number"/>
                     </div>
 
                 </span>
@@ -155,7 +155,7 @@
                     </label>
 
                     <div class="col-md-2">
-                        <g:textField name="numeroComprobanteEgreso" maxlength="20" class="form-control" value="${empresaInstance?.numeroComprobanteEgreso}"/>
+                        <g:textField name="numeroComprobanteEgreso" maxlength="20" class="number form-control" value="${empresaInstance?.numeroComprobanteEgreso}" type="number"/>
                     </div>
 
                 </span>

@@ -66,17 +66,21 @@
                 <g:set var="sumahber" value="${sumahber + asiento.haber}"/>
                     <tr class="colorAsiento">
                         <td width="100px">${asiento?.cuenta?.numero}</td>
-                        <td width="580px">${asiento?.cuenta?.descripcion}</td>
+                        <td width="500px">${asiento?.cuenta?.descripcion}</td>
                         <td width="100px"
                             class="derecha">${asiento.debe ? g.formatNumber(number: asiento.debe, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2) : 0.00}</td>
                         <td width="100px"
                             class="derecha">${asiento.haber ? g.formatNumber(number: asiento.haber, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2) : 0.00}</td>
-                        <td width="100px" style="text-align: center">
+                        <td width="180px" style="text-align: center">
                             <g:if test="${asiento?.comprobante?.registrado != 'S'}">
                                 <div class="btn-group">
                                     <a href="#" class="btn btn-success btn-sm btnEditarAsiento" idAs="${asiento?.id}"
                                        title="Editar asiento">
                                         <i class="fa fa-pencil"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-azul btn-sm btnCentroCostos" idAs="${asiento?.id}"
+                                       title="Centro de Costos">
+                                        <i class="fa fa-dollar"></i>
                                     </a>
                                     <a href="#" class="btn btn-warning btn-sm btnAgregarAuxiliar" idAs="${asiento?.id}"
                                        title="Agregar auxiliar">

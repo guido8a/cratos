@@ -22,7 +22,7 @@
         <label>Descripción:</label>
     </div>
     <div class="col-md-3">
-        <g:textField name="descripcion_name" id="descripcionAux" class="form-control" style="width: 400px" value="${auxiliar?.descripcion ?: ''}"/>
+        <g:textField name="descripcion_name" id="descripcionAux" class="form-control" style="width: 400px" value="${auxiliar?.descripcion ?: ''}" readonly="${auxiliar ? true : false}"/>
     </div>
 </div>
 <div class="row">
@@ -31,7 +31,8 @@
     </div>
     <div class="col-md-3">
         %{--<g:select name="proveedor_name" id="proveedor" from="${cratos.Proveedor.list().sort{it.nombre}}" class="form-control" optionValue="nombre" optionKey="id" style="width: 400px" value="${auxiliar?.proveedor?.id}"/>--}%
-        <g:textField name="proveedor_name" id="proveedor" value="${auxiliar?.proveedor?.nombre}" class="form-control" readonly="true" style="width: 400px"/>
+        <g:textField name="proveedorName" id="proveedor_nombre" value="${auxiliar ? auxiliar?.proveedor?.nombre : asiento?.comprobante?.proceso?.proveedor?.nombre}" class="form-control" readonly="true" style="width: 400px"/>
+        <g:hiddenField name="proveedor_name" id="proveedor" value="${auxiliar?.proveedor?.id}"/>
     </div>
 </div>
 <div class="row">
@@ -58,11 +59,11 @@
     <div class="col-md-10">
         <div class="col-md-2">Pagar</div>
         <div class="col-md-3">
-            <g:textField type="number" name="valorAuxiliarP_name" id="valorPagar" class="validacionNumero form-control valorP" placeholder="${auxiliar ? auxiliar?.debe : asiento?.debe}" style="width: 90px;" value="${auxiliar ? auxiliar?.debe : asiento?.debe}" />
+            <g:textField type="number" name="valorAuxiliarP_name" id="valorPagar" readonly="${auxiliar ? true : false}" class="validacionNumero form-control valorP" placeholder="${auxiliar ? auxiliar?.debe : asiento?.debe}" style="width: 90px;" value="${auxiliar ? auxiliar?.debe : asiento?.debe}" />
         </div>
         <div class="col-md-2">Cobrar</div>
         <div class="col-md-3">
-            <g:textField type="number" name="valorAuxiliarC_name" id="valorCobrar" placeholder="${auxiliar ? auxiliar?.haber : asiento?.haber}" class="validacionNumero form-control valorC" style="width: 90px;" value="${auxiliar ? auxiliar?.haber : asiento?.haber}" />
+            <g:textField type="number" name="valorAuxiliarC_name" id="valorCobrar" readonly="${auxiliar ? true : false}" placeholder="${auxiliar ? auxiliar?.haber : asiento?.haber}" class="validacionNumero form-control valorC" style="width: 90px;" value="${auxiliar ? auxiliar?.haber : asiento?.haber}" />
         </div>
     </div>
 </div>

@@ -127,7 +127,11 @@ class EmpresaController extends cratos.seguridad.Shield {
                 return
             }
         } //update
+        params.numeroComprobanteDiario = params.numeroComprobanteDiario.toInteger()
+        params.numeroComprobanteEgreso = params.numeroComprobanteEgreso.toInteger()
+        params.numeroComprobanteIngreso = params.numeroComprobanteIngreso.toInteger()
         empresaInstance.properties = params
+
         if (!empresaInstance.save(flush: true)) {
             def msg = "NO_No se pudo ${params.id ? 'actualizar' : 'crear'} Empresa."
             msg += renderErrors(bean: empresaInstance)

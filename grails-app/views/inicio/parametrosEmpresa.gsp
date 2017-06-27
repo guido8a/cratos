@@ -71,14 +71,18 @@
 <ul class="nav nav-tabs">
     <li class="active"><a href="#parametros" data-toggle="tab">Parámetros</a></li>
 </ul>
-<div class="tab-pane" id="empresa">
+
+
+
+
+<div class="tab-content ui-corner-bottom">
+<div class="tab-pane active" id="empresa">
     <div class="left pull-left">
         <ul class="fa-ul">
             <li>
                 <i class="fa-li ${iconEmpr}"></i>
                 <span id="paramsEmp">
-                    <g:link controller="empresa" action="list">Parámetros de la Empresa</g:link> para definir la forma de
-                    funcionamiento de la contabilidad, centros de costos y control de inventarios.
+                    <g:link action="form" class="btnEmpresa">Parámetros de la Empresa</g:link> datos pertenecientes a la empresa.
                 </span>
 
                 <div class="descripcion hide">
@@ -175,21 +179,12 @@
                     <p>Por lo general siempre se definirán los mismo reportes para cada empresa, conforme las normas NIIF.</p>
                 </div>
             </li>
-            %{--<li>--}%
-                %{--<i class="fa-li ${iconEmpr}"></i>--}%
-                %{--<span id="cuenta">--}%
-                    %{--<g:link controller="" action="list">Transferencia</g:link> de la empresa--}%
-                %{--</span>--}%
-                %{--<div class="descripcion hide">--}%
-                    %{--<h4>Transferencia</h4>--}%
-                    %{--<p>Transferencia.</p>--}%
-                %{--</div>--}%
-            %{--</li>--}%
         </ul>
     </div>
 
     <div class="empresa right pull-right">
     </div>
+</div>
 </div>
 
 <script type="text/javascript">
@@ -212,6 +207,79 @@
             $("." + thisId).addClass("hide");
         });
     });
+
+
+
+    function createEditRow(id) {
+        var title = id ? "Editar" : "Crear";
+        var data = id ? { id : id } : {};
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(controller: 'empresa', action:'form_ajax')}",
+            data    : data,
+            success : function (msg) {
+                var b = bootbox.dialog({
+                    id      : "dlgCreateEdit",
+                    title   : title + " Empresa",
+                    class   : "long",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                return submitForm();
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+                setTimeout(function () {
+                    b.find(".form-control").not(".datepicker").first().focus()
+                }, 500);
+            } //success
+        }); //ajax
+    } //createEdit
+
+    $(".btnEmpresa").click(function () {
+        createEditRow(${empresa});
+        return false;
+    });
+
+    function submitForm() {
+        var $form = $("#frmEmpresa");
+        var $btn = $("#dlgCreateEdit").find("#btnSave");
+        if ($form.valid()) {
+            $btn.replaceWith(spinner);
+            openLoader("Grabando");
+            $.ajax({
+                type    : "POST",
+                url     : $form.attr("action"),
+                data    : $form.serialize(),
+                success : function (msg) {
+                    var parts = msg.split("_");
+                    log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
+                    if (parts[0] == "OK") {
+                        location.reload(true);
+                    } else {
+                        closeLoader();
+                        spinner.replaceWith($btn);
+                        return false;
+                    }
+                }
+            });
+        } else {
+            return false;
+        } //else
+    }
+
+
 </script>
 
 

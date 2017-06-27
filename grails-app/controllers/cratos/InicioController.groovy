@@ -154,7 +154,8 @@ class InicioController extends Shield {
     }
 
     def parametrosEmpresa () {
-
+        def empresa = session.empresa.id
+        return[empresa: empresa]
     }
 
 }
