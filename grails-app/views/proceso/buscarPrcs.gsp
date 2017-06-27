@@ -33,7 +33,6 @@
 <body>
 <div style="margin-top: 0px; min-height: 50px" class="vertical-container">
     <p class="css-icono" style="margin-bottom: -15px"><i class="fa fa-folder-open-o"></i></p>
-    %{--<p class="css-icono" style="margin-bottom: -15px"><i class="fa fa-search"></i></p>--}%
 
     <div class="linea45"></div>
 
@@ -64,22 +63,6 @@
         </a>
         </div>
     </div>
-    %{----------}%
-    %{--<div class="btn-toolbar toolbar">--}%
-        %{--<div class="btn-group">--}%
-                %{--<g:link class="btn btn-azul" action="cambiar" controller="contabilidad" style="margin-left:10px">--}%
-                %{--<i class="fa fa-refresh"></i> Cambiar--}%
-                %{--</g:link>--}%
-
-
-
-
-            </span>
-        %{--</div>--}%
-    %{--</div>--}%
-
-
-    %{--------}%
 </div>
 
 <div style="margin-top: 30px; min-height: 650px" class="vertical-container">
@@ -130,7 +113,6 @@
 
 <script>
     $(function () {
-
         $("#limpiaBuscar").click(function () {
             $("#buscar").val('');
         });
@@ -156,7 +138,6 @@
                 $("#bandeja").html("Ha ocurrido un error");
             }
         });
-
     });
 
     $("input").keyup(function (ev) {

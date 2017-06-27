@@ -4,7 +4,7 @@
     }
 </style>
 
-<g:if test="${tipo == 'P' || tipo == 'A'}">
+<g:if test="${tipo == 'P' || tipo == 'A' || tipo == 'I'}">
     <div class="row" style="font-size: 12px">
         <div class="col-xs-2 negrilla" style="width: 120px">
             Valor:
@@ -15,7 +15,7 @@
         </div>
     </div>
 </g:if>
-<g:elseif test="${tipo == 'N'}">
+<g:elseif test="${tipo == 'N' || tipo == 'D'}">
     <div class="row" style="font-size: 12px">
         <div class="col-xs-2 negrilla" style="width: 120px">
             Valor:

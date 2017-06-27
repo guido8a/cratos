@@ -7,6 +7,7 @@ class ConceptoRetencionImpuestoRenta implements Serializable {
     String descripcion
     double porcentaje
     ModalidadPago modalidadPago
+    String tipo
 
     static auditable = true
     static mapping = {
@@ -20,6 +21,7 @@ class ConceptoRetencionImpuestoRenta implements Serializable {
             descripcion column: 'crirdscr'
             porcentaje column: 'crirpcnt'
             modalidadPago column: 'mdpg__id'
+            tipo column: 'crirtipo'
         }
     }
     static constraints = {
@@ -27,5 +29,6 @@ class ConceptoRetencionImpuestoRenta implements Serializable {
         descripcion(blank: false, maxSize: 63, attributes: [title: 'descripcion'])
         porcentaje(blank: false, nullable: false, attributes: [title: 'porcentaje'])
         modalidadPago(blank: false, nullable: false, attributes: [title: 'Modalidad de pago'])
+        tipo(blank: true, nullable: true)
     }
 }

@@ -9,38 +9,36 @@ class Retencion implements Serializable {
     ConceptoRetencionImpuestoRenta conceptoRIRBienes
     ConceptoRetencionImpuestoRenta conceptoRIRServicios
     DocumentoEmpresa documentoEmpresa
-    PorcentajeIva porcentajeIva
-    Pais pais
+    PorcentajeIva pcntIvaBienes
+    PorcentajeIva pcntIvaServicios
+
+//    Pais pais
+//    String convenio
+//    String normaLegal
+//    String creditoTributario
+//    String pago
+
     Empresa empresa
     Proveedor proveedor
-
     String direccion
     Date fecha
+
     int numero
     String numeroComprobante
     String persona
     String telefono
     String ruc
     Date fechaEmision
-    String convenio
-    String normaLegal
-    String creditoTributario
-    double baseIva = 0
-    double iva = 0
+
+    double baseIvaBienes = 0
+    double ivaBienes = 0
+    double baseIvaServicios = 0
+    double ivaServicios = 0
     double baseRenta = 0
     double renta = 0
     double baseRentaServicios = 0
     double rentaServicios = 0
-    double baseIce = 0
-    double porcentajeIce = 0
-    double ice = 0
-    double baseBienes = 0
-    double porcentajeBienes = 0
-    double bienes = 0
-    double baseServicios = 0
-    double porcentajeServicios = 0
-    double servicios = 0
-    String pago
+
 
 
 
@@ -56,8 +54,7 @@ class Retencion implements Serializable {
             conceptoRIRBienes column: 'crir__id'
             conceptoRIRServicios column: 'crirsrvc'
             documentoEmpresa column: 'fcdt__id'
-            porcentajeIva column: 'pciv__id'
-            pais column: 'pais__id'
+//            pais column: 'pais__id'
             empresa column: 'empr__id'
             proveedor column: 'prve__id'
 
@@ -67,59 +64,60 @@ class Retencion implements Serializable {
             numeroComprobante column: 'rtcnnmcp'
             persona column: 'rtcnprsn'
             telefono column: 'rtcntlef'
-            fechaEmision column: 'rtcnfcem'
             ruc column: 'rtcn_ruc'
-            convenio column: 'rtcncnvn'
-            normaLegal column: 'rtcnnmlg'
-            baseIva column: 'rtcnbsiv'
-            iva column: 'rtcn_iva'
+            fechaEmision column: 'rtcnfcem'
+
+//            convenio column: 'rtcncnvn'
+//            normaLegal column: 'rtcnnmlg'
+            pcntIvaBienes column: 'pciv__id'
+            baseIvaBienes column: 'rtcnbsiv'
+            ivaBienes column: 'rtcn_iva'
+//            baseBienes column: 'rtcnbsbn'
+            pcntIvaServicios column: 'pcivsrvc'
+            baseIvaServicios column: 'rtcnbisr'
+            ivaServicios column: 'rtcnivsr'
+//            porcentajeBienes column: 'rtcnpcbn'
+
             baseRenta column: 'rtcnbsrt'
             renta column: 'rtcnrnta'
             baseRentaServicios column: 'rtcnbrsr'
             rentaServicios column: 'rtcnrnsr'
-            baseIce column: 'rtcnbsic'
-            porcentajeIce column: 'rtcnpcic'
-            ice column: 'rtcn_ice'
-            baseBienes column: 'rtcnbsbn'
-            porcentajeBienes column: 'rtcnpcbn'
-            bienes column: 'rtcnbien'
-            baseServicios column: 'rtcnbssr'
-            porcentajeServicios column: 'rtcnpcsr'
-            servicios column: 'rtcnsrvc'
-            creditoTributario column: 'rtcncrtr'
-            pago column: 'rtcnpago'
+//            baseServicios column: 'rtcnbssr'
+//            porcentajeServicios column: 'rtcnpcsr'
+//            servicios column: 'rtcnsrvc'
+//            creditoTributario column: 'rtcncrtr'
+//            pago column: 'rtcnpago'
 
         }
     }
     static constraints = {
-        fecha(blank: true, nullable: true, attributes: [title: 'fecha'])
-        ruc(blank: false, nullable: false, size: 10..13)
-        direccion(size: 1..127, blank: true, nullable: true, attributes: [title: 'direccion'])
-        telefono(size: 1..15, blank: true, nullable: true, attributes: [title: 'telefono'])
-        persona(size: 1..63, blank: true, nullable: true, attributes: [title: 'persona'])
-        numero(blank: true, nullable: true, attributes: [title: 'numero'])
-        fechaEmision (blank: true, nullable: true)
-        convenio (blank: true, nullable: true)
-        normaLegal(blank: true, nullable: true)
-        pais(blank: true, nullable: true)
+        conceptoRIRBienes(blank: true, nullable: true)
+        conceptoRIRServicios(blank: true, nullable: true)
         documentoEmpresa (blank: true, nullable: true)
-        baseIva(blank: true, nullable: true)
-        iva(blank: true, nullable: true)
+
+        direccion(size: 1..127, blank: true, nullable: true, attributes: [title: 'direccion'])
+        fecha(blank: false, nullable: false, attributes: [title: 'fecha'])
+        numero(blank: true, nullable: true, attributes: [title: 'numero'])
+        numeroComprobante(blank: true, nullable: true)
+        persona(size: 1..63, blank: true, nullable: true, attributes: [title: 'persona'])
+        telefono(size: 1..15, blank: true, nullable: true, attributes: [title: 'telefono'])
+        ruc(blank: false, nullable: false, size: 10..13)
+        fechaEmision (blank: false, nullable: false)
+
+        pcntIvaBienes(blank: true, nullable: true)
+        baseIvaBienes(blank: true, nullable: true)
+        ivaBienes(blank: true, nullable: true)
+        pcntIvaServicios(blank: true, nullable: true)
+        baseIvaServicios(blank: true, nullable: true)
+        ivaServicios(blank: true, nullable: true)
+
         baseRenta(blank: true, nullable: true)
         renta(blank: true, nullable: true)
-        baseIce(blank: true, nullable: true)
-        porcentajeIce(blank: true, nullable: true)
-        ice(blank: true, nullable: true)
-        baseBienes(blank: true, nullable: true)
-        porcentajeBienes(blank: true, nullable: true)
-        bienes(blank: true, nullable: true)
-        baseServicios(blank: true, nullable: true)
-        porcentajeServicios(blank: true, nullable: true)
-        servicios(blank: true, nullable: true)
-        conceptoRIRServicios(blank: true, nullable: true)
-        conceptoRIRBienes(blank: true, nullable: true)
-        creditoTributario(blank: true, nullable: true)
-        numeroComprobante(blank: true, nullable: true)
-        pago(blank: true, nullable: true)
+        baseRentaServicios(blank: true, nullable: true)
+        rentaServicios(blank: true, nullable: true)
+//        convenio (blank: true, nullable: true)
+//        normaLegal(blank: true, nullable: true)
+//        pais(blank: true, nullable: true)
+
     }
 }

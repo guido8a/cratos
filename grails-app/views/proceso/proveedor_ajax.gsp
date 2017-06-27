@@ -4,7 +4,7 @@
   Date: 23/05/17
   Time: 13:20
 --%>
-<g:if test="${!(tipo == 'N' || tipo == 'D')}">
+<g:if test="${(tipo == 'C' || tipo == 'P')}">
     <div class="col-xs-2 negrilla">
         Proveedor:
     </div>
@@ -54,7 +54,7 @@
         <input type="hidden" name="proveedor.id" id="prve_id" value="${proceso?.proveedor?.id}">
     </div>
 </g:if>
-<g:else>
+<g:elseif test="${tipo == 'V' || tipo == 'I' || tipo == 'N' || tipo == 'D'}">
     <div class="col-xs-2 negrilla">
         Cliente:
     </div>
@@ -98,7 +98,7 @@
         </div>
         <input type="hidden" name="proveedor.id" id="prve_id" value="${proceso?.proveedor?.id}">
     </div>
-</g:else>
+</g:elseif>
 
 <script type="text/javascript">
 
@@ -193,14 +193,20 @@
     });
 
     $("#btn_cargar").click(function(){
-//        console.log("ttpp: ", $("#prve").val());
-        if($("#prve").val() != '' && ($("#tipoProceso").val() == 'C' || $("#tipoProceso").val() == 'V'))
+        console.log("btn_cargar");
+        console.log("ruc: ", $("#prve").val());
+//        if($("#prve").val() != '' && ($("#tipoProceso").val() == 'C' || $("#tipoProceso").val() == 'V'))
+        if($("#prve").val() != '' && ($("#tipoProceso").val() == 'C'))
             cargarSstr($("#prve__id").val())
     });
 
     $("#btn_cargarCl").click(function(){
+        var tipo = $("#tipoProceso").val()
+        var prve = $("#prve__id").val()
         console.log("ttpp: ", $("#tipoProceso").val());
-        if($("#prve").val() != '' && ($("#tipoProceso").val() == 'N' || $("#tipoProceso").val() == 'D'))
+        if($("#prve").val() != '' && (tipo == 'N' || tipo == 'D'))
             $("#btnBuscarCom").removeClass('hidden')
+        if($("#prve").val() != '' && (tipo == 'V'))
+            cargarTcsr(prve)
     });
 </script>

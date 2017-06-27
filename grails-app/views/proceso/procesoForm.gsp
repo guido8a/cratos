@@ -83,7 +83,8 @@
             </a>
         </g:if>
         <g:if test="${params.id}">
-            <g:if test="${proceso.adquisicion == null && proceso.factura == null && proceso.transferencia == null && !registro && cratos.Retencion.findByProceso(proceso)}">
+            %{--<g:if test="${proceso.adquisicion == null && proceso.factura == null && proceso.transferencia == null && !registro && cratos.Retencion.findByProceso(proceso)}">--}%
+            <g:if test="${proceso.adquisicion == null && proceso.factura == null && proceso.transferencia == null && !registro}">
                 <a href="#" class="btn btn-info" id="registrarProceso">
                     <i class="fa fa-check"></i>
                     Registrar
@@ -111,11 +112,11 @@
             </g:else>
 
 
-            <g:if test="${proceso?.estado != 'R'}">
+            %{--<g:if test="${proceso?.estado != 'R'}">--}%
                 <g:link class="btn btn-primary" action="detalleSri" id="${proceso?.id}" style="margin-bottom: 10px;">
                     <i class="fa fa-money"></i> Retenciones
                 </g:link>
-            </g:if>
+            %{--</g:if>--}%
 
             <g:if test="${cratos.Retencion.findByProceso(proceso)}">
                 <g:link controller="reportes3" action="imprimirRetencion" class="btn btn-default btnRetencion"
@@ -256,18 +257,58 @@
 
             <div class="col-xs-2" id="divNumeracionFactura" style="text-align: right">
             </div>
-
-%{--
-            <div class="col-xs-1 negrilla" style="margin-left:-5%">
-                Secuencial:
-            </div>
---}%
-
             <div class="col-xs-3 grupo" style="margin-left: 0px; display: inline">
                 <g:textField name="secuencial" value="${''}" class="form-control validacionNumeroSinPuntos required"
                              style="width: 120px" maxlength="15" placeholder="Secuencial"/>
             </div>
+
+
+            <div class="col-xs-2 negrilla">
+                <label>Pago Local o Exterior</label>
+            </div>
+            <div class="col-xs-2">
+                <g:select class="form-control" name="pago"
+                          from="${['01': 'LOCAL', '02': 'EXTERIOR']}" optionKey="key" optionValue="value"
+                          value="${retencion?.pago}"/>
+            </div>
+
+            <div class="exterior col-xs-12" hidden="hidden">
+                <fieldset>
+                    <div class="col-xs-12">
+                        <div class="col-xs-1">
+                            <label>País:</label>
+                        </div>
+                        <div class="col-xs-2">
+                            <g:select class="form-control" style="margin-left: -20px;"
+                                      name="pais" from="${cratos.sri.Pais.list([sort: 'nombre'])}"
+                                      optionKey="id" optionValue="nombre" value="${retencion?.pais?.id}"/>
+                        </div>
+
+                        <div class="col-xs-4">
+                            <label>Aplica convenio de doble tributación?</label> <br/>
+                            <g:radioGroup class="convenio" labels="['SI', 'NO']" values="['SI', 'NO']" name="convenio_name"
+                                          value="${retencion?.convenio}">
+                                ${it?.label} ${it?.radio}
+                            </g:radioGroup>
+                        </div>
+
+                        <div class="col-xs-5">
+                            <label>Pago sujeto a retención en aplicación de la norma legal</label><br/>
+                            <g:radioGroup class="norma" labels="['SI', 'NO']" values="['SI', 'NO']" name="norma_name"
+                                          value="${retencion?.normaLegal}">${it?.label} ${it?.radio}</g:radioGroup>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>  %{--//exterior--}%
+
+
+
         </div>
+
+
+
+
+
     </div>
 
     <div class="vertical-container" style="margin-top: 25px;color: black;padding-bottom: 10px;">
@@ -457,8 +498,8 @@
 
         $("#tipoProceso").change();
         if (prve && (tipo == 'C' || tipo == 'V')) {
-            cargarProveedor(tipo);
-            console.log("buscar prve");
+//            cargarProveedor(tipo);
+            cargarTcsr(prve)
         }
 
         if ("${proceso?.sustentoTributario}") {
@@ -479,7 +520,7 @@
 
         $("#listaErrores").html('');
         $("#divErrores").hide();
-        if (tipo == 'N' || tipo == 'P' || tipo == 'D') {
+        if (tipo == 'N' || tipo == 'I' || tipo == 'P' || tipo == 'D') {
             cargarComPago();
             $("#divFilaComprobante").show();
         } else {
@@ -489,13 +530,18 @@
 
         console.log('pone hide');
         $("#divComprobanteSustento").html('');
+        $("#divComprobanteSustento").hide();
         $("#divSustento").html('');
+        $("#divSustento").hide();
 
         cargarTipo(tipo);
         cargarBotonBuscar(tipo);
 
-        if (tipo == 'C' || tipo == 'V' || tipo == 'P' || tipo == 'N' || tipo == 'D') {
+        if (tipo == 'C' || tipo == 'V' || tipo == 'P' || tipo == 'I' || tipo == 'N' || tipo == 'D') {
             cargarProveedor(tipo);
+        } else {
+            $("#divCargaProveedor").html('');
+            $("#divCargaProveedor").hide();
         }
 
         if (tipo != 'V') {
@@ -525,16 +571,37 @@
                 tptr: tptr,
                 prve: prve,
                 sstr: "${proceso?.sustentoTributario?.id}",
-                tpcp: "${proceso?.tipoCmprSustento?.id}"
+                tpcp: "${proceso?.tipoCmprSustento?.id}",
+                etdo: "${proceso?.estado}"
             },
             success: function (msg) {
                 $("#divSustento").html(msg)
+                $("#divSustento").show()
             }
         });
-    }
-    ;
+    };
+
+    function cargarTcsr(prve) {
+        var tptr = $(".tipoProcesoSel option:selected").val();
+        $.ajax({
+            type: 'POST',
+            url: "${createLink(controller: 'proceso', action: 'cargaTcsr')}",
+            data: {
+                tptr: tptr,
+                prve: prve,
+                sstr: "${proceso?.sustentoTributario?.id}",
+                tpcp: "${proceso?.tipoCmprSustento?.id}",
+                etdo: "${proceso?.estado}"
+            },
+            success: function (msg) {
+                $("#divComprobanteSustento").html(msg)
+                $("#divComprobanteSustento").show()
+            }
+        });
+    };
 
     function cargarProveedor(tipo) {
+        console.log('cargar prve:', tipo)
         if (tipo != '-1') {
             $.ajax({
                 type: 'POST',
@@ -546,10 +613,12 @@
                 },
                 success: function (msg) {
                     $("#divCargaProveedor").html(msg)
+                    $("#divCargaProveedor").show()
                 }
             });
         } else {
             $("#divCargaProveedor").html('')
+            $("#divCargaProveedor").hidel()
         }
     }
 
@@ -581,7 +650,7 @@
     }
 
     function cargarTipo(tipo) {
-        var flecha = "<i class='fa fa-arrow-left fa-fw' style='font-size: 20px !important; margin-left: -30px'></i>"
+//        var flecha = "<i class='fa fa-arrow-left fa-fw' style='font-size: 20px !important; margin-left: -30px'></i>"
         $.ajax({
             type: 'POST',
             url: "${createLink(controller: 'proceso', action: 'valores_ajax')}",
@@ -592,16 +661,18 @@
             success: function (msg) {
                 $("#divValores").html(msg)
                 if(tipo == 'C' || tipo == 'V' || tipo == 'N' || tipo == 'D') {
-                    $("#lblValores").html(flecha + "Valores")
+//                    $("#lblValores").html(flecha + "Valores")
+                    $("#lblValores").html("Valores")
                 } else {
-                    $("#lblValores").html(flecha + "Val")
+//                    $("#lblValores").html(flecha + "Val")
+                    $("#lblValores").html("Val")
                 }
             }
         });
     }
 
+/*
     jQuery.fn.svtContainer = function () {
-
         var title = this.find(".css-vertical-text")
         title.css({"cursor": "pointer"})
         title.attr("title", "Minimizar")
@@ -634,6 +705,7 @@
         });
         return this;
     }
+*/
 
     function calculaIva() {
         var iva = ${iva ?: 0};
@@ -990,6 +1062,26 @@
             }
         });
     }
+
+
+    cargarExterior($("#pago option:selected").val());
+
+    $("#pago").change(function () {
+        cargarExterior($(this).val())
+    });
+
+    function cargarExterior(pago) {
+        if (pago == '02') {
+            $(".exterior").show();
+        } else {
+            $(".exterior").hide();
+            $(".norma").attr("checked", false);
+            $(".convenio").attr("checked", false);
+        }
+    }
+
+
+
 
 </script>
 </body>

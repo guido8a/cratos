@@ -6,9 +6,9 @@
     <g:select class=" form-control required cmbRequired sustentoSri" name="tipoCmprSustento" id="sustento"
               from="${data}"
               title="Sustento tributario" optionKey="id" optionValue="${{it.codigo  + ' - ' + it.descripcion}}"
-               noSelection="${['-1': 'Seleccione...']}" value="${sstr}"/>
+              noSelection="${['-1': 'Seleccione...']}" value="${sstr}" readonly="${estado == 'R'? true : false}"/>
 </div>
-<g:if test="${proceso?.estado != 'R'}">
+<g:if test="${estado != 'R'}">
     <a href="#" id="btn_cargarCp" class="btn btn-info">
         <i class="fa fa-check"></i>
     </a>
@@ -53,7 +53,8 @@
                 tptr: tptr,
                 prve: prve,
                 sstr: sstr,
-                tpcp: "${tpcpSri}"
+                tpcp: "${tpcpSri}",
+                etdo: ${estado}
             },
             success: function (msg) {
                 $("#divComprobanteSustento").html(msg)

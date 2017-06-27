@@ -1,5 +1,6 @@
 package cratos
 
+import cratos.inventario.Item
 import cratos.seguridad.Persona
 import cratos.sri.Pais
 import cratos.sri.PorcentajeIva
@@ -33,11 +34,13 @@ class ProcesoController extends cratos.seguridad.Shield {
                             "V": "V-Ventas (Ventas, Reposición de Gasto)",
                             "A": "A-Ajustes (Diarios y Otros)",
                             "P": "P-Pagos a proveedores",
+                            "I": "I-Ingresos",
                             "N": "N-Nota de Crédito",
                             "D": "D-Nota de Débito"]
 
         def empresa = Empresa.get(session.empresa.id)
-        def libreta = DocumentoEmpresa.findAllByEmpresaAndFechaInicioLessThanEqualsAndFechaFinGreaterThanEqualsAndTipo(empresa, new Date(), new Date(),'F')
+        def libreta = DocumentoEmpresa.findAllByEmpresaAndFechaInicioLessThanEqualsAndFechaFinGreaterThanEqualsAndTipo(empresa,
+                new Date(), new Date(),'F', [sort: 'fechaAutorizacion'])
 
         if (params.id) {
             def proceso = Proceso.get(params.id).refresh()
@@ -239,16 +242,22 @@ class ProcesoController extends cratos.seguridad.Shield {
         def sql = "select cast(tittcdgo as integer) cdgo from titt, prve, tptr " +
                 "where prve.tpid__id = titt.tpid__id and prve__id = ${params.prve} and " +
                 "tptr.tptr__id = titt.tptr__id and tptrcdgo = '${tipo}'"
-        println "sql: $sql"
+//        println "sql1: $sql"
         def titt = cn.rows(sql.toString())[0]?.cdgo
         println "identif: $titt"
-        sql = "select tcst__id id, tcsrcdgo codigo, tcsrdscr descripcion from tcst, tcsr " +
-                "where tcsr.tcsr__id = tcst.tcsr__id and titt @> '{${titt}}' and " +
-                "sstr @> '{${params.sstr}}' order by tcsrcdgo"
-
+        if(tipo == 2) {
+            sql = "select tcst__id id, tcsrcdgo codigo, tcsrdscr descripcion from tcst, tcsr " +
+                    "where tcsr.tcsr__id = tcst.tcsr__id and titt @> '{${titt}}' " +
+                    "order by tcsrcdgo"
+        } else {
+            sql = "select tcst__id id, tcsrcdgo codigo, tcsrdscr descripcion from tcst, tcsr " +
+                    "where tcsr.tcsr__id = tcst.tcsr__id and titt @> '{${titt}}' and " +
+                    "sstr @> '{${params.sstr}}' order by tcsrcdgo"
+        }
+//        println "sql2: $sql"
         def data = cn.rows(sql.toString())
         cn.close()
-        [data: data, tpcpSri: params.tpcp]
+        [data: data, tpcpSri: params.tpcp, estado: params.etdo]
     }
 
     def cargaSstr() {
@@ -269,7 +278,7 @@ class ProcesoController extends cratos.seguridad.Shield {
         def sql = "select cast(tittcdgo as integer) cdgo from titt, prve, tptr " +
                 "where prve.tpid__id = titt.tpid__id and prve__id = ${params.prve} and " +
                 "tptr.tptr__id = titt.tptr__id and tptrcdgo = '${tipo}'"
-        println "sql: $sql"
+//        println "sql: $sql"
 
         def titt = cn.rows(sql.toString())[0]?.cdgo
         println "identif: $titt"
@@ -280,7 +289,7 @@ class ProcesoController extends cratos.seguridad.Shield {
 
         def data = cn.rows(sql.toString())
         cn.close()
-        [data: data, sstr: params.sstr, tpcpSri: params.tpcp]
+        [data: data, sstr: params.sstr, tpcpSri: params.tpcp, estado: params.etdo]
     }
 
     def valorAsiento = {
@@ -804,74 +813,22 @@ class ProcesoController extends cratos.seguridad.Shield {
 
 
     def detalleSri() {
-
+        println "detalleSri: $params"
         def empresa = Empresa.get(session.empresa.id)
         def proceso = Proceso.get(params.id)
         def retencion = Retencion.findByProceso(proceso)
-        def libreta = DocumentoEmpresa.findAllByEmpresaAndFechaInicioLessThanEqualsAndFechaFinGreaterThanEqualsAndTipo(empresa, new Date(), new Date(),'R')
+        def libreta = DocumentoEmpresa.findAllByEmpresaAndFechaInicioLessThanEqualsAndFechaFinGreaterThanEqualsAndTipo(empresa,
+                new Date(), new Date(),'R', [sort: 'fechaAutorizacion'])
 
-        def baseImponible = (proceso?.baseImponibleIva ?: 0) + (proceso?.baseImponibleIva0 ?: 0) + (proceso?.baseImponibleNoIva ?: 0)
+        def baseImponible = (proceso?.baseImponibleIva ?: 0)
+        def crirBienes = ConceptoRetencionImpuestoRenta.findAllByTipo("B")
+        def crirServicios = ConceptoRetencionImpuestoRenta.findAllByTipo("S")
 
-        println("retencion " + retencion)
+        def pcivBien = PorcentajeIva.list([sort: 'valor'])
+        def pcivSrvc = PorcentajeIva.list([sort: 'valor'])
 
-        return [proceso: proceso, libreta: libreta, retencion: retencion, base: baseImponible]
-
-
-
-
-
-        //antiguo
-
-//        def proceso = Proceso.get(params.id)
-//
-//        def retencion = Retencion.findByProceso(proceso)
-//
-//
-//        def detalleRetencion = []
-//        if (retencion) {
-//            detalleRetencion = DetalleRetencion.findAllByRetencion(retencion)
-//        } else {
-//            detalleRetencion = []
-//        }
-//
-//        def hoy = new Date()
-//        def anioFin = hoy.format("yyyy").toInteger()
-//        def anios = []
-//        3.times {
-//            def p = getPeriodosByAnio(anioFin - it)
-//            if (p.size() > 0) {
-//                anios.add(anioFin - it)
-//            }
-//        }
-//        def per = Periodo.withCriteria {
-//            ge("fechaInicio", new Date().parse("dd-MM-yyyy", "01-01-" + hoy.format("yyyy")))
-//            le("fechaFin", utilitarioService.getLastDayOfMonth(hoy))
-//            order("fechaInicio", "asc")
-//        }
-//        def periodos = []
-//        per.each { p ->
-//            def key = p.fechaInicio.format("MM")
-//            def val = fechaConFormato(p.fechaInicio, "MMMM yyyy").toUpperCase()
-//            def m = [:]
-//            m.id = key
-//            m.val = val
-//            periodos.add(m)
-//        }
-//
-//
-//        def sustento = SustentoTributario.list()
-//
-//        def porIce = Impuesto.findAllBySri('ICE')
-//        def porBns = Impuesto.findAllBySri('BNS')
-//        def porSrv = Impuesto.findAllBySri('SRV')
-//
-//        def comprobante = Comprobante.findByProceso(proceso)
-//        def asiento = Asiento.findAllByComprobante(comprobante)
-//
-////        println("-->>>" + asiento)
-//
-//
-//        return [proceso: proceso, periodos: periodos, sustento: sustento, porIce: porIce, porBns: porBns, porSrv: porSrv, anios: anios, detalleRetencion: detalleRetencion, retencion: retencion]
+        return [proceso: proceso, libreta: libreta, retencion: retencion, base: baseImponible, crirBienes: crirBienes,
+                crirServicios: crirServicios, pcivBien: pcivBien, pcivSrvc: pcivSrvc]
     }
 
     def getPeriodosByAnio(anio) {
@@ -892,20 +849,6 @@ class ProcesoController extends cratos.seguridad.Shield {
         return periodos
     }
 
-
-    def getPeriodos() {
-//        println "getPeriodos " + params
-        def periodos = getPeriodosByAnio(params.anio)
-        render g.select(name: "mes", from: periodos, optionKey: "id", optionValue: "val")
-    }
-
-
-    def getPorcentajes() {
-
-        def concepto = ConceptoRetencionImpuestoRenta.get(params.id)
-        render g.textField(name: "porcentajeIR", value: concepto?.porcentaje, style: "width: 50px")
-
-    }
 
     private String fechaConFormato(fecha, formato) {
         def meses = ["", "Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]
@@ -1264,6 +1207,7 @@ class ProcesoController extends cratos.seguridad.Shield {
     }
 
     def proveedor_ajax () {
+        println "proveedor_ajax: $params"
         def proceso = Proceso.get(params.proceso)
         def proveedores
         def tr
@@ -1286,8 +1230,7 @@ class ProcesoController extends cratos.seguridad.Shield {
                 proveedores = Proveedor.findAllByTipoRelacionInList(tr)
                 break
         }
-
-//        println("proveedores " + proveedores)
+        println "proveedores: $proveedores"
         return [proveedores : proveedores, proceso: proceso, tipo: params.tipo, proveedor: prve]
     }
 
@@ -1322,8 +1265,10 @@ class ProcesoController extends cratos.seguridad.Shield {
     }
 
     def numeracion_ajax () {
+        println "numeracion_ajax: $params"
         def documentoEmpresa = DocumentoEmpresa.get(params.libretin)
-        return [libreta : documentoEmpresa]
+        println "${documentoEmpresa.numeroEstablecimiento}_${documentoEmpresa.numeroEmision}"
+        render "${documentoEmpresa.numeroEstablecimiento}_${documentoEmpresa.numeroEmision}"
     }
 
     def buscarPrcs() {
@@ -1374,38 +1319,48 @@ class ProcesoController extends cratos.seguridad.Shield {
     }
 
     def validarSerie_ajax () {
-        def retencion
-        def todas
-        def empresa = Empresa.get(session.empresa.id)
+        println "validarSerie_ajax: $params"
+        def cn = dbConnectionService.getConnection()
+        def fcdt = DocumentoEmpresa.get(params.fcdt)
+        def nmro = params.serie.toInteger()
+        def sql = ""
+        println "nmro:; $nmro"
 
-        if(params.retencion){
-            retencion = Retencion.get(params.retencion)
-            todas = Retencion.findAllByEmpresa(retencion.empresa) - retencion
-            if(todas.numero.contains(params.serie)){
-                render 'no'
-            }else{
-                render 'ok'
+        if(nmro) {
+            if(nmro >= fcdt.numeroDesde && nmro <= fcdt.numeroHasta) {
+                println "esta en el rango"
+                sql = "select count(*) cnta from rtcn where empr__id = ${session.empresa.id} "
+                if(params.id) {
+                    sql += " and rtcn__id <> ${params.id}"
+                }
+                def existe = cn.rows(sql.toString())[0].cnta
+                cn.close()
+
+//                render existe > 0 ? true : false
+                if(existe > 0) {
+                    render true
+                } else {
+                    render false
+                }
+            } else {
+                println "fuera del rango..."
+                render false
             }
-        }else{
-            todas = Retencion.findAllByEmpresa(empresa)
-            if(todas.numero.contains(params.serie)){
-                render 'no'
-            }else{
-                render 'ok'
-            }
+        } else {
+            render true
         }
     }
 
-    def concepto_ajax () {
-        def concepto = ConceptoRetencionImpuestoRenta.get(params.idConcepto)
-        def valorRetenido = (params.base ? params.base.toDouble() : 0) * (concepto.porcentaje.toDouble() / 100)
-        return [concepto: concepto, retenido: valorRetenido]
+    def cargaCrir_ajax () {
+        def concepto = ConceptoRetencionImpuestoRenta.get(params.id)
+        println "porcentaje: ${concepto?.porcentaje}"
+        render concepto?.porcentaje?:0
     }
 
-    def conceptoSV_ajax () {
-        def concepto = ConceptoRetencionImpuestoRenta.get(params.idConcepto)
-        def valorRetenido = (params.base ? params.base.toDouble() : 0) * (concepto.porcentaje.toDouble() / 100)
-        return [concepto: concepto, retenido: valorRetenido]
+    def carga_pciv () {
+        def pciv = PorcentajeIva.get(params.id)
+        println "porcentajeIva: ${pciv?.valor}"
+        render pciv?.valor?:0
     }
 
     def validarBase_ajax () {
@@ -1437,14 +1392,6 @@ class ProcesoController extends cratos.seguridad.Shield {
         return [valor: valor]
     }
 
-    def calcularValorSV_ajax () {
-        println("params " + params)
-       def porcentaje = PorcentajeIva.get(params.porcentaje)
-//       def valor = params.base.toDouble() * (porcentaje.valor / 100)
-        def valor = (params.base ? params.base.toDouble() : 0) * (porcentaje ? (porcentaje?.valor?.toDouble() / 100) : 0) * 0.12
-        return [valor: valor]
-    }
-
     def totalBase_ajax () {
         def total = (params.ice ? params.ice.toDouble() : 0) + (params.bienes ? params.bienes.toDouble() : 0) + (params.servicios ? params.servicios.toDouble() : 0)
         def base = params.base.toDouble()
@@ -1457,89 +1404,61 @@ class ProcesoController extends cratos.seguridad.Shield {
         return [total: total.toDouble(), base: base]
     }
 
-    def comprobarSerie_ajax () {
-        def documentoEmpresa = DocumentoEmpresa.get(params.libretin)
-        def desde = documentoEmpresa.numeroDesde
-        def hasta = documentoEmpresa.numeroHasta
-
-        if((params.serie.toInteger() >= desde.toInteger()) && (params.serie.toInteger() <= hasta.toInteger())){
-            render 'ok'
-        }else{
-            render 'no'
-        }
-    }
-
     def saveRetencion_ajax () {
-//        println("params save " + params)
+        println("params save " + params)
         def proceso = Proceso.get(params.proceso)
         def retencion
-        def conceptoBienes
-        def conceptoServicios
+
         def proveedor = Proveedor.get(proceso.proveedor.id)
-        def libretin
-        def porcentajeIva
-        if(params.retencion){
+        def libretin  = DocumentoEmpresa.get(params.documentoEmpresa)
+
+        if(params.retencion){  /** update **/
             retencion = Retencion.get(params.retencion)
         }else{
             retencion = new Retencion()
             retencion.proceso = proceso
             retencion.proveedor = proveedor
-            retencion.ruc = proveedor.ruc
-            retencion.persona = proveedor.nombre
         }
-        retencion.direccion = params.direccion
-        retencion.telefono = params.telefono
-        retencion.fecha = new Date().parse("dd-MM-yyyy",params.fecha)
-        retencion.fechaEmision = new Date().parse("dd-MM-yyyy",params.fechaEmision)
-        conceptoBienes = ConceptoRetencionImpuestoRenta.get(params.conceptoRIRBienes)
-        retencion.proveedor
-        retencion.conceptoRIRBienes = conceptoBienes
-        retencion.baseRenta = (params.baseRenta ? params.baseRenta.toDouble() : 0)
-        retencion.renta = params.renta.toDouble()
         retencion.empresa = proceso.empresa
-        if(params.conceptoRIRBienes != '23'){
-            conceptoServicios = ConceptoRetencionImpuestoRenta.get(params.conceptoRIRServicios)
-            retencion.conceptoRIRServicios = conceptoServicios
-            retencion.baseRentaServicios = (params.baseRentaServicios ? params.baseRentaServicios.toDouble() : 0)
-            retencion.rentaServicios = params.servicios.toDouble()
-            libretin = DocumentoEmpresa.get(params.documentoEmpresa)
-            retencion.documentoEmpresa = libretin
-            retencion.numero = params.numeroComprobante.toInteger()
-            retencion.numeroComprobante = (libretin.numeroEstablecimiento + "-" + libretin.numeroEmision + "-" + params.numeroComprobante)
-            porcentajeIva = PorcentajeIva.get(params.porcentajeIva)
-            retencion.porcentajeIva = porcentajeIva
-                if(porcentajeIva.codigo.toInteger() != 0){
-                    retencion.baseIva = params.iva.toDouble()
-                    retencion.creditoTributario = params.creditoTributario
-                    retencion.baseIce = (params.baseIce ? params.baseIce.toDouble() : 0)
-                    retencion.porcentajeIce = (params.porcentajeIce ? params.porcentajeIce.toDouble() : 0)
-                    retencion.ice = params.ice.toDouble()
-                    retencion.baseBienes = (params.baseBienes ? params.baseBienes.toDouble() : 0)
-                    retencion.porcentajeBienes = (params.porcentajeBienes ? params.porcentajeBienes.toDouble(): 0)
-                    retencion.bienes = params.bienes.toDouble()
-                    retencion.servicios = params.servicios.toDouble()
-                    retencion.porcentajeServicios = (params.baseServicios ? params.porcentajeServicios.toDouble() : 0)
-                    retencion.baseServicios = (params.baseServicios ? params.baseServicios.toDouble() : 0 )
-                    retencion.pago = params.pago
-                        if(params.pago == '02'){
-                            retencion.pais = Pais.get(params.pais)
-                            retencion.convenio = params.convenio
-                            retencion.normaLegal = params.normaLegal
-                        }
-                }else{
-                    retencion.baseIce = 0
-                    retencion.porcentajeIce = 0
-                    retencion.ice = 0
-                    retencion.baseBienes = 0
-                    retencion.porcentajeBienes = 0
-                    retencion.bienes = 0
-                    retencion.servicios = 0
-                    retencion.porcentajeServicios = 0
-                    retencion.baseServicios = 0
-                }
-        }else{
+        retencion.persona = proveedor.nombre
+        retencion.telefono = proveedor.telefono
+        retencion.ruc = proveedor.ruc
+        retencion.direccion = proveedor.direccion
+        retencion.fecha = new Date()
+        retencion.fechaEmision = new Date().parse("dd-MM-yyyy",params.fechaEmision)
+
+        retencion.conceptoRIRBienes = ConceptoRetencionImpuestoRenta.get(params.conceptoRIRBienes)
+
+        if(params.conceptoRIRBienes != '23') {
+            retencion.numero = params.numero.toInteger()
+            retencion.numeroComprobante = (libretin.numeroEstablecimiento + "-" + libretin.numeroEmision + "-" + params.numero)
+            /*todo: poner el numero en 9 (fcdtdgto) cifras*/
+
+            retencion.baseRenta = params.baseRenta.toDouble()
+            retencion.renta = params.renta.toDouble()
+            retencion.conceptoRIRServicios = ConceptoRetencionImpuestoRenta.get(params.conceptoRIRServicios)
+            retencion.baseRentaServicios = params.baseRentaServicios.toDouble()
+            retencion.rentaServicios = params.rentaServicios.toDouble()
+            retencion.pcntIvaBienes = PorcentajeIva.get(params.pcntIvaBienes)
+            retencion.baseIvaBienes = params.baseIvaBienes.toDouble()
+            retencion.ivaBienes = params.ivaBienes.toDouble()
+            retencion.pcntIvaServicios = PorcentajeIva.get(params.pcntIvaServicios)
+            retencion.baseIvaServicios = params.baseIvaServicios.toDouble()
+            retencion.ivaServicios = params.ivaServicios.toDouble()
+
+            retencion.documentoEmpresa = DocumentoEmpresa.get(params.documentoEmpresa)
+        } else {
+            retencion.numero = 0
+            retencion.numeroComprobante = null
+
+            retencion.baseRenta = 0
+            retencion.renta = 0
             retencion.baseRentaServicios = 0
             retencion.rentaServicios = 0
+            retencion.baseIvaBienes = 0
+            retencion.ivaBienes = 0
+            retencion.baseIvaServicios = 0
+            retencion.ivaServicios = 0
         }
 
         try {
@@ -1550,7 +1469,6 @@ class ProcesoController extends cratos.seguridad.Shield {
             println("errores " + e)
             render "no"
         }
-
     }
 
     def numeracionFactura_ajax () {

@@ -14,3 +14,8 @@ input.help-block, select.help-block, textarea.help-block {
 .dropdown-menu {
     z-index : 1050;
 }
+
+.help-block{
+    color: red;
+    font-weight: normal;
+}
