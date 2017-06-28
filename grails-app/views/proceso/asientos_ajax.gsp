@@ -102,8 +102,8 @@
                             <tr>
                                 <td class="colorAtras">F.Pago</td>
                                 <td class="colorAtras">Proveedor</td>
-                                <td class="colorAtras">Cobrar</td>
-                                <td class="colorAtras">Pagar</td>
+                                <td class="colorAtras">Debe</td>
+                                <td class="colorAtras">Haber</td>
                                 <td class="colorAtras"><i class="fa fa-pencil"></i></td>
                             </tr>
                             <tr class="colorAtras">

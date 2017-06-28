@@ -140,7 +140,7 @@
                         <g:select class="form-control" name="conceptoRenta"
                                   from="${crirBienes}"
                                   optionKey="id" optionValue="${{ it.codigo + ' : ' + it.porcentaje + '% ' + it.descripcion }}"
-                                  value="${retencion?.conceptoRIRBienes?.id}"/>
+                                  value="${retencion?.conceptoRIRBienes?.id?:6}"/>
                     </div>
 
                     <div class="col-xs-2">
@@ -172,14 +172,14 @@
                         <g:select class="form-control" name="conceptoRentaSrvc"
                                   from="${crirServicios}"
                                   optionKey="id" optionValue="${{ it.codigo + ' - ' + it.descripcion }}"
-                                  value="${retencion?.conceptoRIRServicios?.id}"/>
+                                  value="${retencion?.conceptoRIRServicios?.id?:1}"/>
                     </div>
 
                     <div class="col-xs-2">
                         <label>Base Imponible</label>
                         <g:textField class="form-control number baseS"
                                      title="La base imponible del IR." style="text-align: right" name="baseRentaSrvc"
-                                     value="${retencion?.baseRentaServicios ?: 0}"/>
+                                     value="${retencion?.baseRentaServicios}"/>
                     </div>
 
                     <div class="col-xs-1">

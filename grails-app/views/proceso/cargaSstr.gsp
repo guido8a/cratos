@@ -3,7 +3,7 @@
 </div>
 
 <div class="col-md-8 negrilla">
-    <g:select class=" form-control required cmbRequired sustentoSri" name="tipoCmprSustento" id="sustento"
+    <g:select class=" form-control required cmbRequired sustentoSri" name="tipoCmprSustento" id="tipoCmprSustento"
               from="${data}"
               title="Sustento tributario" optionKey="id" optionValue="${{it.codigo  + ' - ' + it.descripcion}}"
               noSelection="${['-1': 'Seleccione...']}" value="${sstr}" readonly="${estado == 'R'? true : false}"/>
@@ -23,8 +23,8 @@
 
 <script type="text/javascript">
 
-    $("#sustento").click(function () {
-        console.log("clic en sustento")
+    $("#tipoCmprSustento").click(function () {
+        console.log("clic en tipoCmprSustento")
         var prve = $("#prve__id").val();
         if(!prve) {
             $("#btn_buscar").click()
@@ -32,20 +32,20 @@
     });
 
     $("#btn_cargarCp").click(function () {
-        console.log("change...", $("#sustento").val());
-        if($("#sustento").val() != '-1') {
-            $("#sustento").change()
+        console.log("change...", $("#tipoCmprSustento").val());
+        if($("#tipoCmprSustento").val() != '-1') {
+            $("#tipoCmprSustento").change()
         }
     });
 
 
 
-    $("#sustento").change(function () {
+    $("#tipoCmprSustento").change(function () {
         var tptr = $(".tipoProcesoSel option:selected").val();
         var sstr = $(".sustentoSri option:selected").val();
         var prve = $("#prve__id").val();
 
-        console.log("cambia sustento")
+        console.log("cambia tipoCmprSustento")
         $.ajax({
             type: 'POST',
             url: "${createLink(controller: 'proceso', action: 'cargaTcsr')}",
@@ -54,10 +54,11 @@
                 prve: prve,
                 sstr: sstr,
                 tpcp: "${tpcpSri}",
-                etdo: ${estado}
+                etdo: "${estado}"
             },
             success: function (msg) {
                 $("#divComprobanteSustento").html(msg)
+                $("#divComprobanteSustento").show()
             }
         });
     });

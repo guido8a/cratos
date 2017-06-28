@@ -183,7 +183,7 @@
     }
 
     $("#btn_buscar").click(function () {
-//        console.log("clickf2222")
+        console.log("btn_buscar")
         $('#modal-proveedor').modal('show')
         $("#resultados").html('')
     });

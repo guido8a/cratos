@@ -257,7 +257,7 @@ class ProcesoController extends cratos.seguridad.Shield {
 //        println "sql2: $sql"
         def data = cn.rows(sql.toString())
         cn.close()
-        [data: data, tpcpSri: params.tpcp, estado: params.etdo]
+        [data: data, tpcpSri: params.tpcp, estado: params.etdo?:'']
     }
 
     def cargaSstr() {
@@ -278,7 +278,7 @@ class ProcesoController extends cratos.seguridad.Shield {
         def sql = "select cast(tittcdgo as integer) cdgo from titt, prve, tptr " +
                 "where prve.tpid__id = titt.tpid__id and prve__id = ${params.prve} and " +
                 "tptr.tptr__id = titt.tptr__id and tptrcdgo = '${tipo}'"
-//        println "sql: $sql"
+        println "sql: $sql"
 
         def titt = cn.rows(sql.toString())[0]?.cdgo
         println "identif: $titt"
@@ -286,10 +286,10 @@ class ProcesoController extends cratos.seguridad.Shield {
         sql = "select sstr__id id, sstrcdgo codigo, sstrdscr descripcion from sstr " +
                 "where sstr__id in (select distinct(unnest(sstr)) " +
                 "from tcst where titt @> '{${titt}}') order by 1;"
-
+        println "sql2: $sql"
         def data = cn.rows(sql.toString())
         cn.close()
-        [data: data, sstr: params.sstr, tpcpSri: params.tpcp, estado: params.etdo]
+        [data: data, sstr: params.sstr, tpcpSri: params.tpcp, estado: params.etdo?:'']
     }
 
     def valorAsiento = {
@@ -607,7 +607,7 @@ class ProcesoController extends cratos.seguridad.Shield {
     }
 
     def buscarProveedor = {
-//         println "buscar proveedor "+params
+        println "buscar proveedor "+params
         def provs = []
         def proceso = Proceso.get(params.proceso)
         def tr = TipoRelacion.list()

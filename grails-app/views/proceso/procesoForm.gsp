@@ -246,6 +246,31 @@
             </div>
 
             <div class="col-xs-5">
+                <g:select name="libretin" from="${libreta}" value="${retencion?.documentoEmpresa}"
+                          class="form-control" optionKey="id" libre="1"
+                          optionValue="${{"Desde: " + it?.numeroDesde + ' - Hasta: ' + it?.numeroHasta + " - Autorización: " +
+                                  it?.fechaAutorizacion?.format("dd-MM-yyyy")}}"/>
+                <g:hiddenField name="libretinName" id="idLibre" value=""/>
+            </div>
+            <div class="col-xs-5">
+                <g:textField name="numEstablecimiento" id="numEstablecimiento" readonly="true"  style="width: 50px"
+                             title="Número de Establecimento"/> -
+                <g:textField name="numeroEmision" id="numEmision" readonly="true" style="width: 50px" title="Numeración Emisión"/>
+
+                <g:textField name="serie" id="serie" value="${retencion?.numero}" maxlength="9" class="form-control required validacionNumero"
+                             style="width: 120px; display: inline"/>
+
+            </div>
+            <p class="help-block ui-helper-hidden"></p>
+        </div>
+
+%{--
+        <div class="row" id="libretinFacturas">
+            <div class="col-xs-2 negrilla">
+                Libretín de Facturas:
+            </div>
+
+            <div class="col-xs-5">
                 <g:select name="comprobanteFactura" from="${libreta}" value="${''}"
                           class="form-control libretinFactura" optionKey="id" libre="1"
                           optionValue="${{
@@ -261,14 +286,16 @@
                 <g:textField name="secuencial" value="${''}" class="form-control validacionNumeroSinPuntos required"
                              style="width: 120px" maxlength="15" placeholder="Secuencial"/>
             </div>
+        </div>
+--}%
 
-
+        <div class="row" id="pagoProceso">
             <div class="col-xs-2 negrilla">
                 <label>Pago Local o Exterior</label>
             </div>
-            <div class="col-xs-2">
+            <div class="col-xs-3">
                 <g:select class="form-control" name="pago"
-                          from="${['01': 'LOCAL', '02': 'EXTERIOR']}" optionKey="key" optionValue="value"
+                          from="${['01': 'PAGO A RESIDENTE', '02': 'PAGO A NO RESIDENTE']}" optionKey="key" optionValue="value"
                           value="${retencion?.pago}"/>
             </div>
 
@@ -287,7 +314,7 @@
                         <div class="col-xs-4">
                             <label>Aplica convenio de doble tributación?</label> <br/>
                             <g:radioGroup class="convenio" labels="['SI', 'NO']" values="['SI', 'NO']" name="convenio_name"
-                                          value="${retencion?.convenio}">
+                                          value="${proceso?.autorizacion?:'NO'}">
                                 ${it?.label} ${it?.radio}
                             </g:radioGroup>
                         </div>
@@ -300,14 +327,7 @@
                     </div>
                 </fieldset>
             </div>  %{--//exterior--}%
-
-
-
         </div>
-
-
-
-
 
     </div>
 
@@ -411,7 +431,7 @@
                     </div>
 
                     <div class="col-xs-1 negrilla" style="width: 140px">
-                        <a href="#" id="buscar" class="btn btn-azul">
+                        <a href="#" id="buscarPrve" class="btn btn-azul">
                             <i class="fa fa-search"></i>
                             Buscar
                         </a>
@@ -496,10 +516,23 @@
         var prve = $("#prve__id").val();
         console.log("prve__id:", prve);
 
-        $("#tipoProceso").change();
+        $("#listaErrores").html('');
+        $("#divErrores").hide();
+
+        $("#sustento").html('');
+        $("#susteno").hide();
+        $("#divFilaComprobante").html('');
+        $("#divFilaComprobante").hide();
+
+        cargarTipo(tipo);
+
         if (prve && (tipo == 'C' || tipo == 'V')) {
-//            cargarProveedor(tipo);
-            cargarTcsr(prve)
+            cargarProveedor(tipo);
+//            cargarTcsr(prve)
+        }
+
+        if("${!proceso?.id}") {
+            cargarProveedor(tipo)
         }
 
         if ("${proceso?.sustentoTributario}") {
@@ -509,7 +542,7 @@
 
         setTimeout(function () {
             if ("${proceso?.tipoCmprSustento}") {
-                $("#sustento").change();
+                $("#tipoCmprSustento").change();
             }
         }, 1000);
     });
@@ -517,25 +550,10 @@
     $("#tipoProceso").change(function () {
         var tipo = $(".tipoProcesoSel option:selected").val();
         console.log('tipo...:', tipo);
-
-        $("#listaErrores").html('');
-        $("#divErrores").hide();
-        if (tipo == 'N' || tipo == 'I' || tipo == 'P' || tipo == 'D') {
-            cargarComPago();
-            $("#divFilaComprobante").show();
-        } else {
-            $("#divFilaComprobante").html('');
-            $("#divFilaComprobante").hide();
-        }
-
-        console.log('pone hide');
         $("#divComprobanteSustento").html('');
         $("#divComprobanteSustento").hide();
         $("#divSustento").html('');
         $("#divSustento").hide();
-
-        cargarTipo(tipo);
-        cargarBotonBuscar(tipo);
 
         if (tipo == 'C' || tipo == 'V' || tipo == 'P' || tipo == 'I' || tipo == 'N' || tipo == 'D') {
             cargarProveedor(tipo);
@@ -544,10 +562,34 @@
             $("#divCargaProveedor").hide();
         }
 
+        cargarTipo(tipo);
+
+        /*
+                if (tipo == 'N' || tipo == 'I' || tipo == 'P' || tipo == 'D') {
+                    cargarComPago();
+                    $("#divFilaComprobante").show();
+                } else {
+                    $("#divFilaComprobante").html('');
+                    $("#divFilaComprobante").hide();
+                }
+
+                console.log('pone hide');
+
+                cargarBotonBuscar(tipo);
+        */
+
         if (tipo != 'V') {
             $("#libretinFacturas").hide()
         } else {
             $("#libretinFacturas").show()
+        }
+
+        if (tipo != 'C') {
+            console.log('No es C');
+            $("#pagoProceso").hide()
+        } else {
+            console.log('Es C...');
+            $("#pagoProceso").show()
         }
     });
 
@@ -575,6 +617,7 @@
                 etdo: "${proceso?.estado}"
             },
             success: function (msg) {
+                console.log('ok....')
                 $("#divSustento").html(msg)
                 $("#divSustento").show()
             }
@@ -715,7 +758,7 @@
     }
 
     $(function () {
-        $(".vertical-container").svtContainer()
+//        $(".vertical-container").svtContainer()
         <g:if test="${proceso && registro}">
         $(".css-vertical-text").click()
         </g:if>
@@ -1009,8 +1052,10 @@
                 $(this).val("0.00")
         });
 
-        $("#buscar").click(function () {
+        $("#buscarPrve").click(function () {
+            console.log('bbbbbb');
             var tipo = $(".tipoProcesoSel option:selected").val();
+            console.log('buscar...', tipo);
             $.ajax({
                 type: "POST",
                 url: "${g.createLink(controller: 'proceso',action: 'buscarProveedor')}",
@@ -1023,7 +1068,7 @@
 
         $("#parametro").keyup(function (ev) {
             if (ev.keyCode == 13) {
-                $("#buscar").click();
+                $("#buscarPrve").click();
             }
         });
 
@@ -1079,6 +1124,57 @@
             $(".convenio").attr("checked", false);
         }
     }
+
+
+    $("#libretin").change(function () {
+        console.log('libretin..')
+        var idLibretin = $("#libretin option:selected").val();
+        $.ajax({
+            type: 'POST',
+            url: '${createLink(controller: 'proceso', action: 'numeracion_ajax')}',
+            data: {
+                libretin: idLibretin
+            },
+            success: function (msg) {
+                var partes = msg.split('_');
+                $("#numEstablecimiento").val(partes[0])
+                $("#numEmision").val(partes[1])
+            }
+        })
+    });
+
+
+    $("#procesoForm").validate({
+        errorClass: "help-block",
+        errorPlacement: function (error, element) {
+            if (element.parent().hasClass("input-group")) {
+                error.insertAfter(element.parent());
+            } else {
+                error.insertAfter(element);
+            }
+            element.parents(".grupo").addClass('has-error');
+        },
+        success: function (label) {
+            label.parents(".grupo").removeClass('has-error');
+        },
+        rules: {
+            serie: {
+                remote: {
+                    type: 'POST',
+                    url: "${createLink(controller: 'proceso', action: 'validarSerie_ajax')}",
+                    data: {
+                        fcdt: $("#libretin option:selected").val(),
+                        id  : "${retencion?.id}"
+                    }
+                }
+            }
+        },
+        messages: {
+            serie : {
+                remote : "Número de comprobante no válido!"
+            }
+        }
+    });
 
 
 

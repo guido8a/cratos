@@ -57,11 +57,11 @@
         <label>Valor:</label>
     </div>
     <div class="col-md-10">
-        <div class="col-md-2">Pagar</div>
+        <div class="col-md-2">Debe</div>
         <div class="col-md-3">
             <g:textField type="number" name="valorAuxiliarP_name" id="valorPagar" readonly="${auxiliar ? true : false}" class="validacionNumero form-control valorP" placeholder="${auxiliar ? auxiliar?.debe : asiento?.debe}" style="width: 90px;" value="${auxiliar ? auxiliar?.debe : asiento?.debe}" />
         </div>
-        <div class="col-md-2">Cobrar</div>
+        <div class="col-md-2">Haber</div>
         <div class="col-md-3">
             <g:textField type="number" name="valorAuxiliarC_name" id="valorCobrar" readonly="${auxiliar ? true : false}" placeholder="${auxiliar ? auxiliar?.haber : asiento?.haber}" class="validacionNumero form-control valorC" style="width: 90px;" value="${auxiliar ? auxiliar?.haber : asiento?.haber}" />
         </div>
