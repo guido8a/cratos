@@ -46,10 +46,10 @@
     <thead>
     <tr>
         <th width="100px">Asiento</th>
-        <th width="580px">Nombre</th>
+        <th width="570px">Nombre</th>
         <th width="100px">DEBE</th>
         <th width="100px">HABER</th>
-        <th width="120px"><i class="fa fa-pencil"></i></th>
+        <th width="130px"><i class="fa fa-pencil"></i></th>
     </tr>
     </thead>
 </table>
@@ -66,12 +66,12 @@
                 <g:set var="sumahber" value="${sumahber + asiento.haber}"/>
                     <tr class="colorAsiento">
                         <td width="100px">${asiento?.cuenta?.numero}</td>
-                        <td width="500px">${asiento?.cuenta?.descripcion}</td>
+                        <td width="570px">${asiento?.cuenta?.descripcion}</td>
                         <td width="100px"
                             class="derecha">${asiento.debe ? g.formatNumber(number: asiento.debe, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2) : 0.00}</td>
                         <td width="100px"
                             class="derecha">${asiento.haber ? g.formatNumber(number: asiento.haber, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2) : 0.00}</td>
-                        <td width="180px" style="text-align: center">
+                        <td width="120px" style="text-align: center">
                             <g:if test="${asiento?.comprobante?.registrado != 'S'}">
                                 <div class="btn-group">
                                     <a href="#" class="btn btn-success btn-sm btnEditarAsiento" idAs="${asiento?.id}"
@@ -135,9 +135,9 @@
             </g:each>
             <tr class="colorAsiento">
                 <td colspan="2" class="total derecha">Totales del asiento</td>
-                <td class="total derecha">${sumadebe}</td>
-                <td class="total derecha">${sumahber}</td>
-                <td class="total derecha">Dif: ${sumadebe - sumahber}</td>
+                <td class="total derecha">${Math.round(sumadebe*100)/100}</td>
+                <td class="total derecha">${Math.round(sumahber*100)/100}</td>
+                <td class="total derecha">Dif: ${Math.round((sumadebe - sumahber)*100)/100}</td>
             </tr>
             </tbody>
         </table>

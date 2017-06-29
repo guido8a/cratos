@@ -12,12 +12,6 @@ class Retencion implements Serializable {
     PorcentajeIva pcntIvaBienes
     PorcentajeIva pcntIvaServicios
 
-//    Pais pais
-//    String convenio
-//    String normaLegal
-//    String creditoTributario
-//    String pago
-
     Empresa empresa
     Proveedor proveedor
     String direccion

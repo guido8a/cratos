@@ -53,7 +53,7 @@ class ProcesoController extends cratos.seguridad.Shield {
     }
 
     def save = {
-        println "save proceso: $params.data"
+        println "save proceso: $params"
         def proceso
         def comprobante
 
@@ -61,7 +61,7 @@ class ProcesoController extends cratos.seguridad.Shield {
         def comprobanteSri = TipoCmprSustento.get(params."tipoComprobanteSri.id")
 
         def proveedor = Proveedor.get(params."proveedor.id")
-        def gestor = Gestor.get(params."gestor.id")
+        def gestor = Gestor.get(params.gestor)
         def fechaRegistro = new Date().parse("dd-MM-yyyy", params.fecha_input)   //fecha del cmpr
         def fechaIngresoSistema = new Date().parse("dd-MM-yyyy",params.fecharegistro_input)   //registro
 
@@ -71,63 +71,63 @@ class ProcesoController extends cratos.seguridad.Shield {
         } else {
             proceso = new Proceso()
             proceso.estado = "N"
-            proceso.gestor = gestor
             proceso.contabilidad = Contabilidad.get(session.contabilidad.id)
             proceso.empresa = Empresa.get(session.empresa.id)
 //            proceso.tipoTransaccion = tipoTran
         }
 
+        proceso.gestor = gestor
+        proceso.valor = params.baseImponibleIva0.toDouble() + params.baseImponibleIva.toDouble() +
+                params.baseImponibleNoIva.toDouble()
+        proceso.impuesto = params.ivaGenerado.toDouble() + params.iceGenerado.toDouble()
+        proceso.baseImponibleIva = params.baseImponibleIva.toDouble()
+        proceso.baseImponibleIva0 = params.baseImponibleIva0.toDouble()
+        proceso.baseImponibleNoIva = params.baseImponibleNoIva.toDouble()
+        proceso.ivaGenerado = params.ivaGenerado.toDouble()
+        proceso.iceGenerado = params.iceGenerado.toDouble()
+        proceso.fechaRegistro = fechaRegistro
+        proceso.fechaIngresoSistema = fechaIngresoSistema
+        proceso.descripcion = params.descripcion
+        proceso.fecha = new Date()
+        proceso.tipoProceso = params.tipoProceso
+
+
         switch (params.tipoProceso) {
             case 'C':
                 proceso.tipoTransaccion = TipoTransaccion.get(1)
-                proceso.valor = params.baseImponibleIva0.toDouble() + params.baseImponibleIva.toDouble() +
-                        params.baseImponibleNoIva.toDouble()
-                proceso.impuesto = params.ivaGenerado.toDouble() + params.iceGenerado.toDouble()
-                proceso.baseImponibleIva = params.baseImponibleIva.toDouble()
-                proceso.baseImponibleIva0 = params.baseImponibleIva0.toDouble()
-                proceso.baseImponibleNoIva = params.baseImponibleNoIva.toDouble()
-                proceso.ivaGenerado = params.ivaGenerado.toDouble()
-                proceso.iceGenerado = params.iceGenerado.toDouble()
-                println "documento: ${proceso.factura}"
                 proceso.procesoSerie01 = params.dcmtEstablecimiento
                 proceso.procesoSerie02 = params.dcmtEmision
                 proceso.secuencial = params.dcmtSecuencial?:0
                 proceso.autorizacion = params.dcmtAutorizacion
                 proceso.documento = params.dcmtEstablecimiento + "-" + params.dcmtEmision + "-" + '0' * (9-params.dcmtSecuencial.size()) + params.dcmtSecuencial
                 proceso.facturaAutorizacion = params.dcmtAutorizacion
-                println "...4 --> ${proceso.documento}"
+                proceso.tipoCmprSustento = comprobanteSri
+                proceso.sustentoTributario = sustento
+                proceso.proveedor = proveedor
 
+                proceso.pago = params.pago
+
+                if (params.pago == '02') {
+                    proceso.normaLegal = params.norma
+                    proceso.convenio = params.convenio
+                    proceso.pais = Pais.get(params.pais)
+                } else {
+                    proceso.normaLegal = ''
+                    proceso.convenio = ''
+                    proceso.pais = ''  // ???
+                }
                 break
             case 'V':
                 proceso.tipoTransaccion = TipoTransaccion.get(2)
-                    proceso.valor = params.baseImponibleIva0.toDouble() + params.baseImponibleIva.toDouble() +
-                            params.baseImponibleNoIva.toDouble()
-                    proceso.impuesto = params.ivaGenerado.toDouble() + params.iceGenerado.toDouble()
-                    proceso.baseImponibleIva = params.baseImponibleIva.toDouble()
-                    proceso.baseImponibleIva0 = params.baseImponibleIva0.toDouble()
-                    proceso.baseImponibleNoIva = params.baseImponibleNoIva.toDouble()
-                    proceso.ivaGenerado = params.ivaGenerado.toDouble()
-                    proceso.iceGenerado = params.iceGenerado.toDouble()
-                    println "documento: ${proceso.factura}"
-                    proceso.facturaEstablecimiento = params.facturaEstablecimiento
-                    proceso.facturaPuntoEmision = params.facturaPuntoEmision
-                    proceso.facturaSecuencial = params.facturaSecuencial?:0
-                    proceso.facturaAutorizacion = params.facturaAutorizacion
-                    println "...4"
+                proceso.facturaEstablecimiento = params.numEstablecimiento
+                proceso.facturaPuntoEmision = params.numeroEmision
+                proceso.facturaSecuencial = params.serie.toInteger()?:0
+                proceso.tipoCmprSustento = comprobanteSri
+                proceso.proveedor = proveedor
 
                 break
         }
 
-        proceso.proveedor = proveedor
-        println "...1"
-        proceso.tipoCmprSustento = comprobanteSri
-        proceso.sustentoTributario = sustento
-
-        proceso.fechaRegistro = fechaRegistro
-        proceso.fechaIngresoSistema = fechaIngresoSistema
-        proceso.descripcion = params.descripcion
-        proceso.fecha = new Date()
-        proceso.tipoProceso = params.tipoProceso
         println "...2"
 
 
@@ -194,7 +194,7 @@ class ProcesoController extends cratos.seguridad.Shield {
                 render("El proceso ya ha sido registrado previamente")
             } else {
                 def lista = procesoService.registrar(proceso)
-                kerberosoldService.generarEntradaAuditoria(params, proceso, "registrado", "R", session.usuario)
+//                kerberosoldService.generarEntradaAuditoria(params, proceso, "registrado", "R", session.usuario)
                 if (lista[0] != false) {
                     render("ok_Proceso registrado exitosamente")
                 } else {
@@ -1329,18 +1329,57 @@ class ProcesoController extends cratos.seguridad.Shield {
         if(nmro) {
             if(nmro >= fcdt.numeroDesde && nmro <= fcdt.numeroHasta) {
                 println "esta en el rango"
-                sql = "select count(*) cnta from rtcn where empr__id = ${session.empresa.id} "
+                sql = "select count(*) cnta from rtcn where empr__id = ${session.empresa.id} and rtcnnmro = ${nmro}"
                 if(params.id) {
                     sql += " and rtcn__id <> ${params.id}"
                 }
+                println "sql: $sql"
                 def existe = cn.rows(sql.toString())[0].cnta
                 cn.close()
 
 //                render existe > 0 ? true : false
+                println "existe: $existe"
                 if(existe > 0) {
-                    render true
-                } else {
                     render false
+                } else {
+                    println "no existe... $existe"
+                    render true
+                }
+            } else {
+                println "fuera del rango..."
+                render false
+            }
+        } else {
+            render true
+        }
+    }
+
+    def valSerieFactura_ajax () {
+        println "valSerieFactura_ajax: $params"
+        def cn = dbConnectionService.getConnection()
+        def fcdt = DocumentoEmpresa.get(params.fcdt)
+        def nmro = params.serie.toInteger()
+        def sql = ""
+        println "nmro:; $nmro"
+
+        if(nmro) {
+            if(nmro >= fcdt.numeroDesde && nmro <= fcdt.numeroHasta) {
+                println "esta en el rango"
+                sql = "select count(*) cnta from prcs where empr__id = ${session.empresa.id} and prcsfcsc = ${nmro}"
+                if(params.id) {
+                    sql += " and prcs__id <> ${params.id}"
+                }
+                println "sql: $sql"
+                def existe = cn.rows(sql.toString())[0].cnta
+                cn.close()
+
+//                render existe > 0 ? true : false
+                println "existe: $existe"
+                if(existe > 0) {
+                    render false
+                } else {
+                    println "no existe... $existe"
+                    render true
                 }
             } else {
                 println "fuera del rango..."

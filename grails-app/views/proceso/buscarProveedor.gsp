@@ -36,8 +36,11 @@
         $("#btnBuscarCom").removeClass('hidden')
 
 //        console.log("carga sustento desde buscarProveedor");
-        if($("#tipoProceso").val() == 'C' || $("#tipoProceso").val() == 'V')
+        if($("#tipoProceso").val() == 'C') {
             cargarSstr($(this).attr("id"))
-
+        } else {
+            if($("#tipoProceso").val() == 'V')
+                cargarTcsr($(this).attr("id"))
+        }
     });
 </script>

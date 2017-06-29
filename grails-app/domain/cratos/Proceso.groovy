@@ -1,5 +1,6 @@
 package cratos
 
+import cratos.sri.Pais
 import cratos.sri.TipoDePagoSri
 
 class Proceso implements Serializable {
@@ -46,6 +47,10 @@ class Proceso implements Serializable {
     String facturaPuntoEmision
     int facturaSecuencial
     String facturaAutorizacion
+    String pago
+    Pais pais
+    String normaLegal
+    String convenio
 
 //    double retencionIvaBienes = 0
 //    double retencionIvaServicios = 0
@@ -109,6 +114,11 @@ class Proceso implements Serializable {
             facturaPuntoEmision column: 'prcsfcpe'
             facturaSecuencial column: 'prcsfcsc'
             facturaAutorizacion column: 'prcsfcat'
+            pago column: 'prcspago'
+            pais column: 'pais__id'
+            convenio column: 'prcscnvn'
+            normaLegal column: 'prcsnmlg'
+
 
 //            retencionIvaBienes column: 'prcsrtbn'
 //            retencionIvaServicios column: 'prcsrtsr'
@@ -171,6 +181,10 @@ class Proceso implements Serializable {
         facturaPuntoEmision(blank: true, nullable: true)
         facturaSecuencial(blank: true, nullable: true)
         facturaAutorizacion(nullable: true,blank: true,size: 1..20)
+        pago(nullable: true,blank: true)
+        pais(nullable: true,blank: true)
+        convenio(nullable: true,blank: true)
+        normaLegal(nullable: true,blank: true)
 
 
 //        retencionIvaBienes(blank: true, nullable: true, attributes: [title: 'retencionIvaBienes'])

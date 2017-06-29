@@ -160,9 +160,9 @@
 
                     <div class="col-xs-2">
                         <label>Valor Retenido</label>
-                            <g:textField class="form-control" title="Valor retenido" name="valorRetenido"
+                            <g:textField class="form-control number required" title="Valor retenido" name="valorRetenido"
                                          value="${g.formatNumber(number: retenido, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2)}"
-                                         readonly="true" style="text-align: right"/>
+                                         style="text-align: right"/>
                     </div>
                 </div>
 
@@ -190,8 +190,9 @@
 
                     <div class="col-xs-2">
                         <label>Valor Servicios</label>
-                        <g:textField class="form-control" title="Valor retenido" name="valorRetenidoSrvc"
-                                     value="${g.formatNumber(number: retenido, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2)}" readonly="true" style="text-align: right"/>
+                        <g:textField class="form-control number required" title="Valor retenido" name="valorRetenidoSrvc"
+                                     value="${g.formatNumber(number: retenido, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2)}"
+                                     style="text-align: right"/>
                     </div>
                     <div class="col-xs-2">
                     </div>
@@ -259,7 +260,7 @@
                 Valor
             </div>
             <div class="col-xs-2">
-                <g:textField class=" form-control number" readonly="true"
+                <g:textField class=" form-control number required"
                              title="Valor retenido IVA bienes" name="ivaBienes"
                              value="${retencion?.ivaBienes ?: 0}" style="text-align: right"/>
             </div>
@@ -297,7 +298,7 @@
                 Valor
             </div>
             <div class="col-xs-2">
-                <g:textField class=" form-control number" readonly="true"
+                <g:textField class=" form-control number required"
                              title="Valor IVA retenido servicios" name="ivaServicios"
                              value="${retencion?.ivaServicios ?: 0}" style="text-align: right"/>
             </div>
@@ -342,12 +343,9 @@
             $("#divIVA").addClass('esconder');
             $("#serie").val(0);
             $("#serie").attr('readonly', true);
-
-//            $("#divComprobanteR").addClass('esconder')
         } else {
             $("#conceptoRIRServicios").removeClass('esconder')
             $("#divIVA").removeClass('esconder')
-//            $("#divComprobanteR").removeClass('esconder')
         }
         cargarRetencionRIR(concepto, 'B');
     });
@@ -451,9 +449,8 @@
     }
 
 
-
     $("#btnGuardarRetencion").click(function () {
-        console.log('clic ..guardar...')
+//        console.log('clic ..guardar...')
         var error = '';
         var concepto = $("#conceptoReta option:selected").val();
 
@@ -476,12 +473,10 @@
                 }
             }
         }
-        console.log('procesando...')
+//        console.log('procesando...')
         if (error == '') {
             $("#divErroresDetalle").hide();
             openLoader("Guardando..");
-            console.log('hace submit...')
-//            $("#sriForm").submit();
 
             $.ajax({
                 type: 'POST',
@@ -529,41 +524,6 @@
         }
     });
 
-/*
-    function revisarSerie() {
-        var regresa = $.ajax({
-            type: 'POST',
-            async: false,
-            url: '${createLink(controller: 'proceso', action: 'comprobarSerie_ajax')}',
-            data: {
-                libretin: $("#libretin option:selected").val(),
-                serie: $("#serie").val()
-            },
-            success: function (msg) {
-            }
-        });
-        return regresa.responseText
-    }
-*/
-
-/*
-    function validarSerie() {
-        var regresaV = $.ajax({
-            type: 'POST',
-            async: false,
-            url: '${createLink(controller: 'proceso', action: 'validarSerie_ajax')}',
-            data: {
-                retencion: '${retencion?.id}',
-                serie: $("#serie").val()
-            },
-            success: function (msg) {
-            }
-        });
-        return regresaV.responseText
-    }
-*/
-
-
 
     function validarNumSinPuntos(ev) {
         /*
@@ -606,7 +566,6 @@
     }
 
     $(".validacionNumero").keydown(function (ev) {
-//        return validarNum(ev);
         return validarNumSinPuntos(ev);
     }).keyup(function () {
 
@@ -760,37 +719,7 @@
                     }
                 });
             }
-            else {
-
-
-            }
         });
-
-
-        function getNorma() {
-            var result;
-            var radioButtons = $(".norma");
-            for (var i = 0; i < radioButtons.length; i++) {
-                if (radioButtons[i].checked) {
-                    result = radioButtons[i].value;
-                }
-            }
-
-            return result
-        }
-
-        function getConvenio() {
-            var result;
-            var radioButtons = $(".convenio");
-            for (var i = 0; i < radioButtons.length; i++) {
-                if (radioButtons[i].checked) {
-                    result = radioButtons[i].value;
-                }
-            }
-
-            return result
-        }
-
     });
 
     $(document).ready(function () {
@@ -803,7 +732,6 @@
         $("#libretin").change();
         $("#pcivBienes").change();
         $("#pcivSrvc").change();
-
     });
 
 </script>

@@ -22,6 +22,7 @@
         font-size: 10px;
     }
 
+/*
     .span-rol {
         padding-right: 10px;
         padding-left: 10px;
@@ -32,6 +33,7 @@
         font-weight: bold;
         font-size: 12px;
     }
+*/
 
     .span-eliminar {
         padding-right: 10px;
@@ -112,11 +114,11 @@
             </g:else>
 
 
-            %{--<g:if test="${proceso?.estado != 'R'}">--}%
+            <g:if test="${proceso?.tipoProceso == 'C'}">
                 <g:link class="btn btn-primary" action="detalleSri" id="${proceso?.id}" style="margin-bottom: 10px;">
                     <i class="fa fa-money"></i> Retenciones
                 </g:link>
-            %{--</g:if>--}%
+            </g:if>
 
             <g:if test="${cratos.Retencion.findByProceso(proceso)}">
                 <g:link controller="reportes3" action="imprimirRetencion" class="btn btn-default btnRetencion"
@@ -207,11 +209,10 @@
             <div class="col-xs-2 negrilla">
                 Gestor a utilizar:
             </div>
-
             <div class="col-xs-10 negrilla">
-                <g:select class="form-control required" name="gestor.id"
+                <g:select class="form-control required" name="gestor"
                           from="${cratos.Gestor.findAllByEstadoAndEmpresa('R', session.empresa, [sort: 'nombre'])}"
-                          label="Proceso tipo: " value="${proceso?.gestor?.id}" optionKey="id" optionValue="nombre"
+                          value="${proceso?.gestor?.id}" optionKey="id" optionValue="nombre"
                           title="Proceso tipo" disabled="${registro ? true : false}"/>
             </div>
         </div>
@@ -254,40 +255,17 @@
             </div>
             <div class="col-xs-5">
                 <g:textField name="numEstablecimiento" id="numEstablecimiento" readonly="true"  style="width: 50px"
-                             title="Número de Establecimento"/> -
-                <g:textField name="numeroEmision" id="numEmision" readonly="true" style="width: 50px" title="Numeración Emisión"/>
+                             title="Número de Establecimento" value="${proceso?.facturaEstablecimiento}"/> -
+                <g:textField name="numeroEmision" id="numEmision" readonly="true" style="width: 50px"
+                             title="Numeración Emisión" value="${proceso?.facturaPuntoEmision}"/>
 
-                <g:textField name="serie" id="serie" value="${retencion?.numero}" maxlength="9" class="form-control required validacionNumero"
+                <g:textField name="serie" id="serie" value="${proceso?.facturaSecuencial}" maxlength="9"
+                             class="form-control required validacionNumero"
                              style="width: 120px; display: inline"/>
 
             </div>
             <p class="help-block ui-helper-hidden"></p>
         </div>
-
-%{--
-        <div class="row" id="libretinFacturas">
-            <div class="col-xs-2 negrilla">
-                Libretín de Facturas:
-            </div>
-
-            <div class="col-xs-5">
-                <g:select name="comprobanteFactura" from="${libreta}" value="${''}"
-                          class="form-control libretinFactura" optionKey="id" libre="1"
-                          optionValue="${{
-                              "Desde: " + it?.numeroDesde + ' - Hasta: ' + it?.numeroHasta +
-                                      " - Autorización: " + it?.fechaAutorizacion?.format("dd-MM-yyyy")
-                          }}"
-                          noSelection="${['-1': 'Seleccione...']}"/>
-            </div>
-
-            <div class="col-xs-2" id="divNumeracionFactura" style="text-align: right">
-            </div>
-            <div class="col-xs-3 grupo" style="margin-left: 0px; display: inline">
-                <g:textField name="secuencial" value="${''}" class="form-control validacionNumeroSinPuntos required"
-                             style="width: 120px" maxlength="15" placeholder="Secuencial"/>
-            </div>
-        </div>
---}%
 
         <div class="row" id="pagoProceso">
             <div class="col-xs-2 negrilla">
@@ -295,34 +273,35 @@
             </div>
             <div class="col-xs-3">
                 <g:select class="form-control" name="pago"
-                          from="${['01': 'PAGO A RESIDENTE', '02': 'PAGO A NO RESIDENTE']}" optionKey="key" optionValue="value"
-                          value="${retencion?.pago}"/>
+                          from="${['01': '01 - PAGO A RESIDENTE', '02': '02 - PAGO A NO RESIDENTE']}" optionKey="key" optionValue="value"
+                          value="${proceso?.pago}"/>
             </div>
 
-            <div class="exterior col-xs-12" hidden="hidden">
+            <div class="exterior col-xs-12" hidden="hidden" style="margin-top: 20px">
                 <fieldset>
                     <div class="col-xs-12">
-                        <div class="col-xs-1">
+                        <div class="col-xs-1" style="margin-left: -20px">
                             <label>País:</label>
                         </div>
                         <div class="col-xs-2">
-                            <g:select class="form-control" style="margin-left: -20px;"
+                            <g:select class="form-control" style="margin-left: -30px; width: 230px"
                                       name="pais" from="${cratos.sri.Pais.list([sort: 'nombre'])}"
-                                      optionKey="id" optionValue="nombre" value="${retencion?.pais?.id}"/>
+                                      optionKey="id" optionValue="nombre" value="${proceso?.pais?.id}"/>
                         </div>
-
                         <div class="col-xs-4">
-                            <label>Aplica convenio de doble tributación?</label> <br/>
-                            <g:radioGroup class="convenio" labels="['SI', 'NO']" values="['SI', 'NO']" name="convenio_name"
-                                          value="${proceso?.autorizacion?:'NO'}">
+                            <label style="margin-left: 50px">Aplica convenio de doble tributación?</label> <br/>
+                            <div style="margin-left: 50px">
+                            <g:radioGroup class="convenio" labels="['SI', 'NO']" values="['SI', 'NO']" name="convenio"
+                                          value="${proceso?.convenio?:'NO'}">
                                 ${it?.label} ${it?.radio}
                             </g:radioGroup>
+                            </div>
                         </div>
 
                         <div class="col-xs-5">
                             <label>Pago sujeto a retención en aplicación de la norma legal</label><br/>
-                            <g:radioGroup class="norma" labels="['SI', 'NO']" values="['SI', 'NO']" name="norma_name"
-                                          value="${retencion?.normaLegal}">${it?.label} ${it?.radio}</g:radioGroup>
+                            <g:radioGroup class="norma" labels="['SI', 'NO']" values="['SI', 'NO']" name="norma"
+                                          value="${proceso?.normaLegal?:'NO'}">${it?.label} ${it?.radio}</g:radioGroup>
                         </div>
                     </div>
                 </fieldset>
@@ -523,28 +502,37 @@
         $("#susteno").hide();
         $("#divFilaComprobante").html('');
         $("#divFilaComprobante").hide();
+        $("#libretinFacturas").hide()
 
         cargarTipo(tipo);
-
-        if (prve && (tipo == 'C' || tipo == 'V')) {
-            cargarProveedor(tipo);
-//            cargarTcsr(prve)
-        }
-
         if("${!proceso?.id}") {
             cargarProveedor(tipo)
         }
 
-        if ("${proceso?.sustentoTributario}") {
-            console.log("proceso:", "${proceso?.tipoCmprSustento?.id}");
-            cargarSstr("${proceso?.proveedor?.id}")
+        if (prve && (tipo == 'C')) {
+            $("#libretinFacturas").hide()
+            $("#pagoProceso").show()
+            cargarProveedor(tipo);
+            if ("${proceso?.sustentoTributario}") {
+                console.log("proceso:", "${proceso?.tipoCmprSustento?.id}");
+                cargarSstr("${proceso?.proveedor?.id}")
+            }
+
+            setTimeout(function () {
+                if ("${proceso?.tipoCmprSustento}") {
+                    $("#tipoCmprSustento").change();
+                }
+            }, 1000);
         }
 
-        setTimeout(function () {
-            if ("${proceso?.tipoCmprSustento}") {
-                $("#tipoCmprSustento").change();
-            }
-        }, 1000);
+        if (prve && (tipo == 'V')) {
+            $("#libretinFacturas").show()
+            $("#pagoProceso").hide()
+            cargarProveedor(tipo);
+            cargarTcsr(prve)
+        }
+
+
     });
 
     $("#tipoProceso").change(function () {
@@ -563,6 +551,10 @@
         }
 
         cargarTipo(tipo);
+
+        if (tipo == 'V') {
+            $("#libretin").change();
+        }
 
         /*
                 if (tipo == 'N' || tipo == 'I' || tipo == 'P' || tipo == 'D') {
@@ -825,166 +817,93 @@
             var info = ""
             var tipoP = $(".tipoProcesoSel option:selected").val();
 
-            if (tipoP != 'A') {   /* no es ajuste */
+            $("#listaErrores").html('');
+            $("#divErrores").hide();
 
-                $("#listaErrores").html('');
-                $("#divErrores").hide();
-
+            if (tipoP == 'C') {   /* compras */
                 if ($("#fecha_input").val().length < 10) {
                     error += "<li>Seleccione la fecha de emisión</li>"
                 }
                 if ($("#fecharegistro_input").val().length < 10) {
                     error += "<li>Seleccione la fecha de registro</li>"
                 }
+                if ($("#prve").val() == "" || $("#prve").val() == null) {
+                    error += "<li>Seleccione el proveedor</li>"
+                }
                 if ($("#descripcion").val().length < 1) {
                     error += "<li>Llene el campo Descripción</li>"
                 }
 
-                if ($("#prve").val() == "" || $("#prve").val() == null) {
-                    error += "<li>Seleccione el proveedor</li>"
+                if ($("#tipoCmprSustento").val() == '-1' || $("#tipoCmprSustento").val() == null) {
+                    error += "<li>Seleccione el sustento tributario</li>"
                 }
 
-                if ($("#tipoComprobante").val() == '' || $("#tipoComprobante").val() == null) {
-                    error += "<li>Seleccione un comprobante</li>"
+                if ($("#tipoComprobante").val() == '-1' || $("#tipoComprobante").val() == null) {
+                    error += "<li>Seleccione el comprobante</li>"
                 }
 
                 if ($("#iva12").val() == 0 && $("#iva0").val() == 0 && $("#noIva").val() == 0) {
                     error += "<li>Ingrese valores en la base imponible</li>"
                 }
 
-                if (tipoP == 'V') {
-                    if ($("#secuencial").val() == '' && tipoP == 'V') {
-                        error += "<li>Ingrese el número secuencial de la factura</li>"
-                    } else {
-                        if (revisarSerieFactura() == 'no') {
-                            error += "<li>El numero de serie ingresado no se encuentra en el rango del libretin seleccionado</li>"
-                        }
-                        if (validarSerieFactura() == 'no') {
-                            error += "<li>El numero de serie ingresado ya se encuentra asignado</li>"
-                        }
-                    }
+                if (!$("#dcmtEstablecimiento").val()) {
+                    error += "<li>Ingrese el número de establecimiento del Documento</li>"
+                }
+                if (!$("#dcmtEmision").val()) {
+                    error += "<li>Ingrese punto de emisión del Documento</li>"
+                }
+                if (!$("#dcmtSecuencial").val()) {
+                    error += "<li>Ingrese el número del Documento</li>"
+                }
+                if (!$("#dcmtAutorizacion").val()) {
+                    error += "<li>Ingrese el número de autorización del Documento</li>"
                 }
 
-                if (tipoP == 'C' || tipoP == 'N' || tipoP == 'D') {
-                    if ($("#dcmtEstablecimiento").val() == '') {
-                        error += "<li>Ingrese el número de establecimiento del Documento</li>"
-                    }
-                    if ($("#dcmtEmision").val() == '') {
-                        error += "<li>Ingrese punto de emisión del Documento</li>"
-                    }
-                    if (parseInt($("#dcmtSecuencial").val()) < 1) {
-                        error += "<li>Ingrese el número del Documento</li>"
-                    }
-                    if ($("#dcmtAutorizacion").val() == '') {
-                        error += "<li>Ingrese el número de autorización del Documento</li>"
-                    }
+                if($(".filaFP").size() <1){
+                    info+="No ha asignado formas de pago para la transacción contable"
+                    bandData=false
                 }
 
-
-                if (tipoP == 'P') {
-
-//                        console.log("pago " + parseFloat($("#valorPago").val()))
-//                        console.log("saldo " + parseFloat($("#comprobanteSaldo1").val()))
-
-                    if (parseFloat($("#valorPago").val()) > parseFloat($("#comprobanteSaldo").val())) {
-                        error += "<li>El valor ingresado es mayor al saldo del comprobante a pagar!</li>";
-
-                        $("#valorPago").removeClass('required');
-                        $("#valorPago").addClass('colorRojo');
-                    }
+                if (bandData) {
+                    var data = ""
+                    $(".filaFP").each(function () {
+                        data += $(this).attr("fp") + ";"
+                    })
+                    $("#data").val(data)
                 }
-            } else {
-                $("#listaErrores").html("")
-                if ($("#fecha").val().length < 10) {
+            }
+
+            if (tipoP == 'V') {   /* compras */
+                if ($("#fecha_input").val().length < 10) {
                     error += "<li>Seleccione la fecha de emisión</li>"
+                }
+                if ($("#fecharegistro_input").val().length < 10) {
+                    error += "<li>Seleccione la fecha de registro</li>"
+                }
+                if ($("#prve").val() == "" || $("#prve").val() == null) {
+                    error += "<li>Seleccione el proveedor</li>"
                 }
                 if ($("#descripcion").val().length < 1) {
                     error += "<li>Llene el campo Descripción</li>"
                 }
-                if ($("#tipoProceso").val() == "-1") {
-                    error += "<li>Seleccione el tipo de la transacción</li>"
-                } else {
-                    if ($("#tipoProceso").val() == "C" || $("#tipoProceso").val() == "V") {
 
-                        if ($("#sustento").val() == "-1") {
-                            error += "<li>Seleccione un sustento tributario (Necesario si el tipo de transacción es Compras o Ventas)</li>"
-                        }
-                        if ($("#tipoComprobante").val() == "-1") {
-                            error += "<li>Seleccione el tipo de comprobante a registrar (Necesario si el tipo de transacción es Compras o Ventas)</li>"
-                        } else {
-                            if ($("#establecimiento").val().length < 3) {
-                                error += "<li>Ingrese el número de establecimiento del documento (Primera parte del campo documento) </li>"
-                            }
-                            if ($("#emision").val().length < 3) {
-                                error += "<li>Ingrese el número de emisión del documento (Segunda parte del campo documento)</li>"
-                            }
-                            if ($("#secuencial").val().length < 1) {
-                                error += "<li>Ingrese el número de secuencia del documento (Tercera parte del campo documento)</li>"
-                            }
-                        }
-                    }
+                if ($("#tipoComprobante").val() == '-1' || $("#tipoComprobante").val() == null) {
+                    error += "<li>Seleccione el comprobante</li>"
                 }
-                var iva0 = $("#iva0").val()
-                var iva12 = $("#iva12").val()
-                var noIva = $("#noIva").val()
-                if (isNaN(iva12)) {
-                    iva12 = -1
-                }
-                if (isNaN(noIva)) {
-                    noIva = -1
-                }
-                if (isNaN(iva0)) {
-                    iva0 = -1
-                }
-                if (iva12 * 1 < 0) {
-                    error += "<li>La base imponible iva ${iva}% debe ser un número positivo</li>"
-                }
-                if (iva0 * 1 < 0) {
-                    error += "<li>La base imponible iva 0% debe ser un número positivo</li>"
-                }
-                if (noIva * 1 < 0) {
-                    error += "<li>La base imponible no aplica iva debe ser un número positivo</li>"
-                }
-                var base = iva0 * 1 + iva12 * 1 + noIva * 1
-                if (base <= 0) {
-                    error += "<li>La suma de las bases imponibles no puede ser cero</li>"
-                } else {
-                    var impIva = $("#ivaGenerado").val()
-                    var impIce = $("#iceGenerado").val()
-                    if (isNaN(impIva)) {
-                        impIva = -1
-                    }
-                    if (isNaN(impIce)) {
-                        impIce = -1
-                    }
-                    if (impIva * 1 > 0 && iva12 * 1 <= 0) {
-                        error += "<li>No se puede generar IVA si la base imponible iva ${iva}% es cero</li>"
-                    }
-                    if (impIce * 1 * impIva * 1 < 0) {
-                        error += "<li>Los impuestos generados no pueden ser negativos</li>"
-                    } else {
-                        if ((impIce * 1 + impIva * 1) > base) {
-                            error += "<li>Los impuestos generados no pueden ser superiores a la suma de las bases imponibles</li>"
-                        }
-                    }
-                }
-            }
 
-            if($(".filaFP").size() <1){
-                info+="No ha asignado formas de pago para la transacción contable"
-                bandData=false
-            }
+                if ($("#iva12").val() == 0 && $("#iva0").val() == 0 && $("#noIva").val() == 0) {
+                    error += "<li>Ingrese valores en la base imponible</li>"
+                }
 
-            if (bandData) {
-                var data = ""
-                $(".filaFP").each(function () {
-                    data += $(this).attr("fp") + ";"
-                })
-                $("#data").val(data)
+                if (!$("#numEstablecimiento").val()) {
+                    error += "<li>Seleccione un libretín de facturas/li>"
+                }
+                if (!$("#serie").val()) {
+                    error += "<li>Ingrese secuencial de la factura a emitir</li>"
+                }
             }
 
             if (error != "") {
-
                 $("#listaErrores").append(error)
                 $("#listaErrores").show()
                 $("#divErrores").show()
@@ -992,9 +911,7 @@
                 if (info != "") {
                     info += " Esta seguro de continuar?"
                     bootbox.confirm(info, function (result) {
-
                         if (result) {
-
                             $(".frmProceso").submit();
                         }
                     })
@@ -1005,7 +922,6 @@
                 }
             }
             closeLoader()
-
         });
 
         calculaIva();
@@ -1120,8 +1036,6 @@
             $(".exterior").show();
         } else {
             $(".exterior").hide();
-            $(".norma").attr("checked", false);
-            $(".convenio").attr("checked", false);
         }
     }
 
@@ -1161,10 +1075,10 @@
             serie: {
                 remote: {
                     type: 'POST',
-                    url: "${createLink(controller: 'proceso', action: 'validarSerie_ajax')}",
+                    url: "${createLink(controller: 'proceso', action: 'valSerieFactura_ajax')}",
                     data: {
                         fcdt: $("#libretin option:selected").val(),
-                        id  : "${retencion?.id}"
+                        id  : "${proceso?.id}"
                     }
                 }
             }

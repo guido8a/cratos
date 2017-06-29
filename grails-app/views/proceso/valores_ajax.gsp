@@ -41,17 +41,24 @@
         <div class="col-xs-3 negrilla">
             Documento registrado:
         </div>
-        <div class="col-xs-3 negrilla" style="margin-left: -95px">
-            <input type="text" name="dcmtEstablecimiento" id="dcmtEstablecimiento" size="3" maxlength="3"
-                   value="${proceso?.procesoSerie01}" class=" digits form-control label-shared validacionNumero"
-                   validate=" number" placeholder="Establ."
-                   title="El número de establecimiento del documento " ${proceso?.estado == 'R' ? 'disabled':''} />
-            <input type="text" name="dcmtEmision" id="dcmtEmision" size="3" maxlength="3" value="${proceso?.procesoSerie02}"
-                   class=" digits form-control label-shared validacionNumero " validate=" number" placeholder="Emisión"
+        <div class="col-xs-4 negrilla" style="margin-left: -95px">
+            <div class="col-xs-3">
+            <input type="text" name="dcmtEstablecimiento" id="dcmtEstablecimiento" size="3" maxlength="3" style="width: 60px;"
+                   value="${proceso?.procesoSerie01}" class="form-control validacionNumero"
+                   validate=" number" placeholder="Establ." ${proceso?.estado == 'R' ? 'disabled':''} />
+            </div>
+            <div class="col-xs-3">
+            <input type="text" name="dcmtEmision" id="dcmtEmision" size="3" maxlength="3" style="width: 60px;"
+                   value="${proceso?.procesoSerie02}"
+                   class="form-control validacionNumero " validate=" number" placeholder="Emisión"
                    title="El número de punto de emisión del documento" ${proceso?.estado == 'R' ?'disabled':''} />
-            <input type="text" name="dcmtSecuencial" id="dcmtSecuencial" size="10" maxlength="9" value="${proceso?.secuencial}"
-                   class=" digits form-control label-shared validacionNumero " validate=" number"
+            </div>
+            <div class="col-xs-6">
+            <input type="text" name="dcmtSecuencial" id="dcmtSecuencial" size="10" maxlength="9" style="width: 110px;"
+                   value="${proceso?.secuencial}"
+                   class="form-control label-shared validacionNumero " validate=" number"
                    title="El número de secuencia del documento"  ${proceso?.estado == 'R' ?'disabled':''} placeholder="Secuencial" />
+            </div>
         </div>
         <div class="col-xs-2 negrilla" style="width: 120px;margin-left: -30px; text-align: right">
             Autorización:
