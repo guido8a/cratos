@@ -180,7 +180,9 @@
             label: " Imprimir Comprobante",
             icon: "fa fa-file",
             action: function () {
-                location.href = '${createLink(controller: "proceso", action: "detalleSri")}?id=' + id;
+                %{--location.href = '${createLink(controller: "proceso", action: "detalleSri")}?id=' + id;--}%
+                var url = "${g.createLink(controller: 'reportes3', action: 'imprimirCompDiario')}?id=" + id + "Wempresa=${session.empresa.id}";
+                location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=comprobante.pdf";
             }
         };
 

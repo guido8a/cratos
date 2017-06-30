@@ -8,20 +8,21 @@
     <g:form class="form-horizontal" name="frmDepartamento" role="form" action="save_ajax" method="POST">
         <g:hiddenField name="id" value="${departamentoInstance?.id}"/>
 
-        %{--<div class="form-group ${hasErrors(bean: departamentoInstance, field: 'empresa', 'error')} ">--}%
-            %{--<span class="grupo">--}%
-                %{--<label for="empresa" class="col-md-2 control-label text-info">--}%
-                    %{--Empresa--}%
-                %{--</label>--}%
+        <div class="form-group ${hasErrors(bean: departamentoInstance, field: 'empresa', 'error')} ">
+            <span class="grupo">
+                <label for="empresa" class="col-md-2 control-label text-info">
+                    Empresa
+                </label>
 
-                %{--<div class="col-md-6">--}%
+                <div class="col-md-8">
                     %{--<g:select id="empresa" name="empresa.id" from="${cratos.Empresa.list()}" optionKey="id"--}%
                               %{--value="${departamentoInstance?.empresa?.id}" class="many-to-one form-control"--}%
                               %{--noSelection="['null': '']"/>--}%
-                %{--</div>--}%
+                    <g:textField name="empresa" value="${session.empresa}" class="form-control" readonly="true"/>
+                </div>
 
-            %{--</span>--}%
-        %{--</div>--}%
+            </span>
+        </div>
 
         <div class="form-group ${hasErrors(bean: departamentoInstance, field: 'descripcion', 'error')} ">
             <span class="grupo">

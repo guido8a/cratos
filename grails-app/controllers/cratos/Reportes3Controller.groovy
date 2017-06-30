@@ -29,7 +29,7 @@ class Reportes3Controller {
 
         if (comp) {
             if (comp.size() == 1) {
-                render comp[0].procesoId
+                render comp[0].id
             } else {
                 render "NO_Se encontró más de un comprobante"
             }
@@ -541,5 +541,24 @@ class Reportes3Controller {
         wb.write(output)
 
     }
+
+    def imprimirCompraGasto () {
+//        println("params comprobante " + params)
+        def comprobante = Comprobante.get(params.id)
+        def proceso = comprobante.proceso
+        return [empresa: params.empresa,proceso: proceso, comprobante: comprobante]
+    }
+
+    def imprimirCompDiario () {
+//        def comprobante = Comprobante.get(params.id)
+//        def proceso = comprobante.proceso
+
+        def proceso = Proceso.get(params.id)
+        def comprobante = Comprobante.findByProceso(proceso)
+
+        def asientos = Asiento.findAllByComprobante(comprobante).sort{it.numero}
+        return [empresa: params.empresa,proceso: proceso, comprobante: comprobante, asientos: asientos]
+    }
+
 
 }

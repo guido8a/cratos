@@ -160,11 +160,7 @@ class ReportesController {
 
 
     def planDeCuentas() {
-
-        println("params" + params)
-
-        [cuentas: cuentasService.getCuentas(params.cont, params.empresa)]
-//        [cuentas:Cuenta.findAllByNumeroLike('5%')]
+        [cuentas: cuentasService.getCuentas(params.cont, params.empresa), empresa: params.empresa]
     }
 
     def balanceComprobacion() {
@@ -238,7 +234,7 @@ class ReportesController {
             res[nombre].items.add(m)
         }
 
-        [gestor: gestor, genera: genera, cuentas: cuentas, res: res]
+        [gestor: gestor, genera: genera, cuentas: cuentas, res: res, empresa: params.empresa]
 
     }
 
@@ -297,8 +293,6 @@ class ReportesController {
             def cont =
 
                     comp[numero].items.add(c)
-
-
         }
 
         comp[numero].items.sort { it.cuenta }

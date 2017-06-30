@@ -36,54 +36,61 @@
     <table class="table table-condensed table-bordered table-striped table-hover">
         <thead>
         <tr>
-
             <g:sortableColumn property="ruc" title="Ruc"/>
-
             <g:sortableColumn property="nombre" title="Nombre"/>
-
             <g:sortableColumn property="tipoProveedor" title="Tipo"/>
-
-            %{--<g:sortableColumn property="tipoPersonas" title="Tipo Persona"/>--}%
-
             <g:sortableColumn property="tipoIdentificacion" title="Identificación"/>
-
             <g:sortableColumn property="direccion" title="Dirección"/>
-
-            %{--<g:sortableColumn title="Contacto" property="apellidoContacto"/>--}%
-
             <th width="110">Acciones</th>
         </tr>
         </thead>
         <tbody>
-        <g:each in="${proveedorInstanceList}" status="i" var="proveedorInstance">
-            <tr data-id="${proveedorInstance.id}">
-
-                <td>${fieldValue(bean: proveedorInstance, field: 'ruc')}</td>
-
-                <td>${fieldValue(bean: proveedorInstance, field: 'nombre')}</td>
-
-                <td>${proveedorInstance?.tipoProveedor?.descripcion}</td>
-
-                <td>${proveedorInstance?.tipoIdentificacion?.descripcion}</td>
-
-                <td>${fieldValue(bean: proveedorInstance, field: "direccion")}</td>
-
-                %{--<td>${proveedorInstance?.nombreContacto + " " + proveedorInstance?.apellidoContacto }</td>--}%
-
-
-                <td>
-                    <a href="#" data-id="${proveedorInstance.id}" class="btn btn-info btn-sm btn-show btn-ajax" title="Ver">
-                        <i class="fa fa-laptop"></i>
-                    </a>
-                    <a href="#" data-id="${proveedorInstance.id}" class="btn btn-success btn-sm btn-edit btn-ajax" title="Editar">
-                        <i class="fa fa-pencil"></i>
-                    </a>
-                    <a href="#" data-id="${proveedorInstance.id}" class="btn btn-danger btn-sm btn-delete btn-ajax" title="Eliminar">
-                        <i class="fa fa-trash-o"></i>
-                    </a>
-                </td>
-            </tr>
-        </g:each>
+        <g:if test="${session.perfil.nombre == 'Administrador'}">
+            <g:each in="${proveedorInstanceList}" status="i" var="proveedorInstance">
+                <g:if test="${proveedorInstance.empresa.id == session.empresa.id}">
+                    <tr data-id="${proveedorInstance.id}">
+                        <td>${fieldValue(bean: proveedorInstance, field: 'ruc')}</td>
+                        <td>${fieldValue(bean: proveedorInstance, field: 'nombre')}</td>
+                        <td>${proveedorInstance?.tipoProveedor?.descripcion}</td>
+                        <td>${proveedorInstance?.tipoIdentificacion?.descripcion}</td>
+                        <td>${fieldValue(bean: proveedorInstance, field: "direccion")}</td>
+                        <td>
+                            <a href="#" data-id="${proveedorInstance.id}" class="btn btn-info btn-sm btn-show btn-ajax" title="Ver">
+                                <i class="fa fa-laptop"></i>
+                            </a>
+                            <a href="#" data-id="${proveedorInstance.id}" class="btn btn-success btn-sm btn-edit btn-ajax" title="Editar">
+                                <i class="fa fa-pencil"></i>
+                            </a>
+                            <a href="#" data-id="${proveedorInstance.id}" class="btn btn-danger btn-sm btn-delete btn-ajax" title="Eliminar">
+                                <i class="fa fa-trash-o"></i>
+                            </a>
+                        </td>
+                    </tr>
+                </g:if>
+            </g:each>
+        </g:if>
+        <g:else>
+            <g:each in="${proveedorInstanceList}" status="i" var="proveedorInstance">
+                <tr data-id="${proveedorInstance.id}">
+                    <td>${fieldValue(bean: proveedorInstance, field: 'ruc')}</td>
+                    <td>${fieldValue(bean: proveedorInstance, field: 'nombre')}</td>
+                    <td>${proveedorInstance?.tipoProveedor?.descripcion}</td>
+                    <td>${proveedorInstance?.tipoIdentificacion?.descripcion}</td>
+                    <td>${fieldValue(bean: proveedorInstance, field: "direccion")}</td>
+                    <td>
+                        <a href="#" data-id="${proveedorInstance.id}" class="btn btn-info btn-sm btn-show btn-ajax" title="Ver">
+                            <i class="fa fa-laptop"></i>
+                        </a>
+                        <a href="#" data-id="${proveedorInstance.id}" class="btn btn-success btn-sm btn-edit btn-ajax" title="Editar">
+                            <i class="fa fa-pencil"></i>
+                        </a>
+                        <a href="#" data-id="${proveedorInstance.id}" class="btn btn-danger btn-sm btn-delete btn-ajax" title="Eliminar">
+                            <i class="fa fa-trash-o"></i>
+                        </a>
+                    </td>
+                </tr>
+            </g:each>
+        </g:else>
         </tbody>
     </table>
 </div>

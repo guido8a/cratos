@@ -32,43 +32,43 @@
         <table class="table table-condensed table-bordered table-striped">
             <thead>
                 <tr>
-                    
                     <th>Empresa</th>
-                    
-                    <g:sortableColumn property="fechaIngreso" title="Fecha Ingreso" />
-                    
+                    %{--<g:sortableColumn property="fechaIngreso" title="Fecha Ingreso" />--}%
                     <g:sortableColumn property="autorizacion" title="Autorizacion" />
-                    
                     <g:sortableColumn property="numeroDesde" title="Numero Desde" />
-                    
                     <g:sortableColumn property="numeroHasta" title="Numero Hasta" />
-                    
                     <g:sortableColumn property="fechaAutorizacion" title="Fecha Autorizacion" />
-                    
                 </tr>
             </thead>
             <tbody>
+            <g:if test="${session.perfil.nombre == 'Administrador'}">
+                <g:each in="${documentoEmpresaInstanceList}" status="i" var="documentoEmpresaInstance">
+                    <g:if test="${documentoEmpresaInstance.empresa.id == session.empresa.id}">
+                        <tr data-id="${documentoEmpresaInstance.id}">
+                            <td>${fieldValue(bean: documentoEmpresaInstance, field: "empresa")}</td>
+                            <td>${fieldValue(bean: documentoEmpresaInstance, field: "autorizacion")}</td>
+                            <td>${fieldValue(bean: documentoEmpresaInstance, field: "numeroDesde")}</td>
+                            <td>${fieldValue(bean: documentoEmpresaInstance, field: "numeroHasta")}</td>
+                            <td><g:formatDate date="${documentoEmpresaInstance.fechaAutorizacion}" format="dd-MM-yyyy" /></td>
+                        </tr>
+                    </g:if>
+                </g:each>
+            </g:if>
+            <g:else>
                 <g:each in="${documentoEmpresaInstanceList}" status="i" var="documentoEmpresaInstance">
                     <tr data-id="${documentoEmpresaInstance.id}">
-                        
                         <td>${fieldValue(bean: documentoEmpresaInstance, field: "empresa")}</td>
-                        
-                        <td><g:formatDate date="${documentoEmpresaInstance.fechaIngreso}" format="dd-MM-yyyy" /></td>
-                        
                         <td>${fieldValue(bean: documentoEmpresaInstance, field: "autorizacion")}</td>
-                        
                         <td>${fieldValue(bean: documentoEmpresaInstance, field: "numeroDesde")}</td>
-                        
                         <td>${fieldValue(bean: documentoEmpresaInstance, field: "numeroHasta")}</td>
-                        
                         <td><g:formatDate date="${documentoEmpresaInstance.fechaAutorizacion}" format="dd-MM-yyyy" /></td>
-                        
                     </tr>
                 </g:each>
+            </g:else>
             </tbody>
         </table>
 
-        <elm:pagination total="${documentoEmpresaInstanceCount}" params="${params}"/>
+        %{--<elm:pagination total="${documentoEmpresaInstanceCount}" params="${params}"/>--}%
 
         <script type="text/javascript">
             var id = null;

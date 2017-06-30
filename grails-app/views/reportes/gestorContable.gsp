@@ -9,17 +9,19 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
-    <title>Gestor Contable</title>
-    <style type="text/css">
-    @page {
-        size: 21cm 29.7cm ; /* width height */
-        margin: 2cm;
-    }
+    <title>Gestores Contables</title>
+    <rep:estilos orientacion="p" pagTitle="${"Gestores Contables"}"/>
 
-    .hoja {
-        width: 25.7cm;
-        /*background: #d8f0fa;*/
-    }
+    <style type="text/css">
+    /*@page {*/
+        /*size: 21cm 29.7cm ; !* width height *!*/
+        /*margin: 2cm;*/
+    /*}*/
+
+    /*.hoja {*/
+        /*width: 25.7cm;*/
+        /*!*background: #d8f0fa;*!*/
+    /*}*/
 
     .even {
         background: #B7C4F7;
@@ -63,13 +65,39 @@
         border: 1px solid black;
     }
 
+    .table th {
+        /*background     : #326090;*/
+        background     : #5d6263;
+        /*color          : #fff;*/
+        text-align     : center;
+        text-transform : uppercase;
+    }
+
+    .table {
+        margin-top      : 0.5cm;
+        width           : 100%;
+        border-collapse : collapse;
+    }
+
+    .table, .table td, .table th {
+        border : solid 1px #444;
+    }
+
+    .table td, .table th {
+        padding : 3px;
+    }
+
     </style>
 
 </head>
 
 <body>
+
+<rep:headerFooter title="${'Gestores Contables'}" subtitulo="${'Datos'}" empresa="${empresa}"/>
+
+
 <div class="hoja">
-    <div style="width: 500px" align="center"><strong>GESTOR CONTABLE</strong></div>
+    %{--<div style="width: 500px" align="center"><strong>GESTOR CONTABLE</strong></div>--}%
 
     <g:each in="${res}" var="item">
         <g:set var="val" value="${item.value}"/>
@@ -94,7 +122,7 @@
                 </div>
             </div>
 
-        <table width="600px" >
+        <table width="600px" class="table table-bordered table-hover table-condensed table-bordered">
 
             <tr>
                 <th style="width: 70px" align="center">

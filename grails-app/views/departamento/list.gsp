@@ -36,22 +36,38 @@
             <table class="table table-condensed table-bordered table-striped table-hover">
                 <thead>
                     <tr>
-                        
-                        %{--<th>Empresa</th>--}%
-                        
+                        <th>Empresa</th>
                         <g:sortableColumn property="descripcion" title="Descripción" />
-                        
                         <th width="110">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
+                <g:if test="${session.perfil.nombre == 'Administrador'}">
+                    <g:each in="${departamentoInstanceList}" status="i" var="departamentoInstance">
+                        <g:if test="${departamentoInstance.empresa.id == session.empresa.id}">
+                        <tr data-id="${departamentoInstance.id}">
+                            <td>${fieldValue(bean: departamentoInstance, field: "empresa")}</td>
+                            <td>${fieldValue(bean: departamentoInstance, field: "descripcion")}</td>
+                            <td>
+                                <a href="#" data-id="${departamentoInstance.id}" class="btn btn-info btn-sm btn-show btn-ajax" title="Ver">
+                                    <i class="fa fa-laptop"></i>
+                                </a>
+                                <a href="#" data-id="${departamentoInstance.id}" class="btn btn-success btn-sm btn-edit btn-ajax" title="Editar">
+                                    <i class="fa fa-pencil"></i>
+                                </a>
+                                <a href="#" data-id="${departamentoInstance.id}" class="btn btn-danger btn-sm btn-delete btn-ajax" title="Eliminar">
+                                    <i class="fa fa-trash-o"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        </g:if>
+                    </g:each>
+                </g:if>
+                <g:else>
                     <g:each in="${departamentoInstanceList}" status="i" var="departamentoInstance">
                         <tr data-id="${departamentoInstance.id}">
-                            
-                            %{--<td>${fieldValue(bean: departamentoInstance, field: "empresa")}</td>--}%
-                            
+                            <td>${fieldValue(bean: departamentoInstance, field: "empresa")}</td>
                             <td>${fieldValue(bean: departamentoInstance, field: "descripcion")}</td>
-                            
                             <td>
                                 <a href="#" data-id="${departamentoInstance.id}" class="btn btn-info btn-sm btn-show btn-ajax" title="Ver">
                                     <i class="fa fa-laptop"></i>
@@ -65,6 +81,7 @@
                             </td>
                         </tr>
                     </g:each>
+                </g:else>
                 </tbody>
             </table>
         </div>

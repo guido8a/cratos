@@ -141,33 +141,33 @@
                         <p>Se reprotan todos los gestores contables que se hallen activos en el sistema.</p>
                     </div>
                 </li>
-                <li>
-                    <span id="imprimirComprobante">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <a href="#" class="link btn btn-info btn-ajax" data-toggle="modal" data-target="#comprobante">
-                                    Comprobante
-                                </a>
-                            </div>
-                            <div class="col-md-8">
-                                Permite imprimir un comprobante
-                            </div>
-                        </div>
-                    </span>
+                %{--<li>--}%
+                    %{--<span id="imprimirComprobante">--}%
+                        %{--<div class="row">--}%
+                            %{--<div class="col-md-4">--}%
+                                %{--<a href="#" class="link btn btn-info btn-ajax" data-toggle="modal" data-target="#comprobante">--}%
+                                    %{--Comprobante--}%
+                                %{--</a>--}%
+                            %{--</div>--}%
+                            %{--<div class="col-md-8">--}%
+                                %{--Permite imprimir un comprobante--}%
+                            %{--</div>--}%
+                        %{--</div>--}%
+                    %{--</span>--}%
 
-                    <div class="descripcion hide">
-                        <h4>Comprobante</h4>
+                    %{--<div class="descripcion hide">--}%
+                        %{--<h4>Comprobante</h4>--}%
 
-                        <p>Reporta los comprobantes registrados en el sistema.</p>
+                        %{--<p>Reporta los comprobantes registrados en el sistema.</p>--}%
 
-                        <p>Se requiere del número de comprobante o de la descripción. El reporteador cuenta con un buscador para ayudarle
-                        a localizar el comprobante a imprimir</p>
+                        %{--<p>Se requiere del número de comprobante o de la descripción. El reporteador cuenta con un buscador para ayudarle--}%
+                        %{--a localizar el comprobante a imprimir</p>--}%
 
-                        <p>Use el botón "Buscar" para acceder al buscador. Se puede ingreasar parte del concepto del comprobante o el número.</p>
+                        %{--<p>Use el botón "Buscar" para acceder al buscador. Se puede ingreasar parte del concepto del comprobante o el número.</p>--}%
 
-                        <p>Desde la lista de comprobantes, use el botón marcado con un visto para seleccionarlo.</p>
-                    </div>
-                </li>
+                        %{--<p>Desde la lista de comprobantes, use el botón marcado con un visto para seleccionarlo.</p>--}%
+                    %{--</div>--}%
+                %{--</li>--}%
                 <li>
                     <span id="balanceComprobacion">
                         <div class="row">
@@ -962,9 +962,36 @@
             closeLoader()
         });
 
+        %{--$(".btnAceptarComprobante").click(function () {--}%
+            %{--var cont = $("#contComp").val();--}%
+            %{--var tipo = $("#compTipo").val();--}%
+            %{--var num = $("#compNum").val();--}%
+            %{--$.ajax({--}%
+                %{--type    : "POST",--}%
+                %{--url     : "${createLink(controller: 'reportes3', action: 'reporteComprobante')}",--}%
+                %{--data    : {--}%
+                    %{--cont : cont,--}%
+                    %{--tipo : tipo,--}%
+                    %{--num  : num--}%
+                %{--},--}%
+                %{--success : function (msg) {--}%
+                    %{--var parts = msg.split("_");--}%
+                    %{--if (parts[0] != "NO") {--}%
+                        %{--var url = "${g.createLink(controller: 'reportes3', action: 'imprimirCompraGasto')}?id=" + msg + "Wempresa=${session.empresa.id}";--}%
+                         %{--location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=comprobante.pdf"--}%
+                    %{--} else {--}%
+                        %{--bootbox.alert(parts[1])--}%
+                    %{--}--}%
+                %{--}--}%
+            %{--});--}%
+        %{--});--}%
+
+
         $(".btnAceptarComprobante").click(function () {
             var cont = $("#contComp").val();
             var tipo = $("#compTipo").val();
+            var url
+            console.log("tipo " + tipo)
             var num = $("#compNum").val();
             $.ajax({
                 type    : "POST",
@@ -977,8 +1004,20 @@
                 success : function (msg) {
                     var parts = msg.split("_");
                     if (parts[0] != "NO") {
-                        var url = "${createLink(controller: 'reportesNew', action: 'imprimirComprobante')}" + "?id=" + msg + "&filename=comprobante";
-                        location.href = url
+                        switch (tipo) {
+                            case '1':
+                                url = "${g.createLink(controller: 'reportes3', action: 'imprimirCompDiario')}?id=" + msg + "Wempresa=${session.empresa.id}";
+                                location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=comprobanteIngreso.pdf";
+                            break;
+                            case '2':
+                                url = "${g.createLink(controller: 'reportes3', action: 'imprimirCompDiario')}?id=" + msg + "Wempresa=${session.empresa.id}";
+                                location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=comprobanteEgreso.pdf";
+                            break;
+                            case '3':
+                                url = "${g.createLink(controller: 'reportes3', action: 'imprimirCompDiario')}?id=" + msg + "Wempresa=${session.empresa.id}";
+                                location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=comprobanteDiario.pdf";
+                            break;
+                            }
                     } else {
                         bootbox.alert(parts[1])
                     }

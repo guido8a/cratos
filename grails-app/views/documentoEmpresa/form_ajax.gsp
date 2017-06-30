@@ -10,31 +10,25 @@
         
         <div class="form-group ${hasErrors(bean: documentoEmpresaInstance, field: 'empresa', 'error')} ">
             <span class="grupo">
-                <label for="empresa" class="col-md-2 control-label text-info">
+                <label for="empresa" class="col-md-3 control-label text-info">
                     Empresa
                 </label>
                 <div class="col-md-6">
-                    <g:select id="empresa" name="empresa.id" from="${cratos.Empresa.list()}" optionKey="id" required="" value="${documentoEmpresaInstance?.empresa?.id}" class="many-to-one form-control"/>
+                    %{--<g:select id="empresa" name="empresa.id" from="${cratos.Empresa.list()}" optionKey="id"--}%
+                              %{--required="" value="${documentoEmpresaInstance?.empresa?.id}" class="many-to-one form-control"/>--}%
+
+                    <g:textField name="empresa.id" id="empresa" value="${session.empresa}" class="form-control" readonly="true"/>
+
                 </div>
                 
             </span>
         </div>
         
-        <div class="form-group ${hasErrors(bean: documentoEmpresaInstance, field: 'fechaIngreso', 'error')} ">
-            <span class="grupo">
-                <label for="fechaIngreso" class="col-md-2 control-label text-info">
-                    Fecha Ingreso
-                </label>
-                <div class="col-md-6">
-                    <elm:datepicker name="fechaIngreso"  class="datepicker form-control required" value="${documentoEmpresaInstance?.fechaIngreso}"  />
-                </div>
-                
-            </span>
-        </div>
+
         
         <div class="form-group ${hasErrors(bean: documentoEmpresaInstance, field: 'autorizacion', 'error')} ">
             <span class="grupo">
-                <label for="autorizacion" class="col-md-2 control-label text-info">
+                <label for="autorizacion" class="col-md-3 control-label text-info">
                     Autorizacion
                 </label>
                 <div class="col-md-6">
@@ -46,7 +40,7 @@
         
         <div class="form-group ${hasErrors(bean: documentoEmpresaInstance, field: 'numeroDesde', 'error')} ">
             <span class="grupo">
-                <label for="numeroDesde" class="col-md-2 control-label text-info">
+                <label for="numeroDesde" class="col-md-3 control-label text-info">
                     Numero Desde
                 </label>
                 <div class="col-md-6">
@@ -58,7 +52,7 @@
         
         <div class="form-group ${hasErrors(bean: documentoEmpresaInstance, field: 'numeroHasta', 'error')} ">
             <span class="grupo">
-                <label for="numeroHasta" class="col-md-2 control-label text-info">
+                <label for="numeroHasta" class="col-md-3 control-label text-info">
                     Numero Hasta
                 </label>
                 <div class="col-md-6">
@@ -68,21 +62,10 @@
             </span>
         </div>
         
-        <div class="form-group ${hasErrors(bean: documentoEmpresaInstance, field: 'fechaAutorizacion', 'error')} ">
-            <span class="grupo">
-                <label for="fechaAutorizacion" class="col-md-2 control-label text-info">
-                    Fecha Autorizacion
-                </label>
-                <div class="col-md-6">
-                    <elm:datepicker name="fechaAutorizacion"  class="datepicker form-control required" value="${documentoEmpresaInstance?.fechaAutorizacion}"  />
-                </div>
-                
-            </span>
-        </div>
-        
+
         <div class="form-group ${hasErrors(bean: documentoEmpresaInstance, field: 'tipo', 'error')} ">
             <span class="grupo">
-                <label for="tipo" class="col-md-2 control-label text-info">
+                <label for="tipo" class="col-md-3 control-label text-info">
                     Tipo
                 </label>
                 <div class="col-md-6">
@@ -94,7 +77,7 @@
         
         <div class="form-group ${hasErrors(bean: documentoEmpresaInstance, field: 'numeroEstablecimiento', 'error')} ">
             <span class="grupo">
-                <label for="numeroEstablecimiento" class="col-md-2 control-label text-info">
+                <label for="numeroEstablecimiento" class="col-md-3 control-label text-info">
                     Numero Establecimiento
                 </label>
                 <div class="col-md-6">
@@ -106,7 +89,7 @@
         
         <div class="form-group ${hasErrors(bean: documentoEmpresaInstance, field: 'numeroEmision', 'error')} ">
             <span class="grupo">
-                <label for="numeroEmision" class="col-md-2 control-label text-info">
+                <label for="numeroEmision" class="col-md-3 control-label text-info">
                     Numero Emision
                 </label>
                 <div class="col-md-6">
@@ -118,7 +101,7 @@
         
         <div class="form-group ${hasErrors(bean: documentoEmpresaInstance, field: 'digitosEnSecuencial', 'error')} ">
             <span class="grupo">
-                <label for="digitosEnSecuencial" class="col-md-2 control-label text-info">
+                <label for="digitosEnSecuencial" class="col-md-3 control-label text-info">
                     Digitos En Secuencial
                 </label>
                 <div class="col-md-6">
@@ -127,13 +110,37 @@
                 
             </span>
         </div>
+
+        <div class="form-group ${hasErrors(bean: documentoEmpresaInstance, field: 'fechaAutorizacion', 'error')} ">
+            <span class="grupo">
+                <label for="fechaAutorizacion" class="col-md-3 control-label text-info">
+                    Fecha Autorizacion
+                </label>
+                <div class="col-md-4">
+                    <elm:datepicker name="fechaAutorizacion"  class="datepicker form-control required" value="${documentoEmpresaInstance?.fechaAutorizacion}"  />
+                </div>
+
+            </span>
+        </div>
+
+        <div class="form-group ${hasErrors(bean: documentoEmpresaInstance, field: 'fechaIngreso', 'error')} ">
+            <span class="grupo">
+                <label for="fechaIngreso" class="col-md-3 control-label text-info">
+                    Fecha Ingreso
+                </label>
+                <div class="col-md-4">
+                    <elm:datepicker name="fechaIngreso"  class="datepicker form-control required" value="${documentoEmpresaInstance?.fechaIngreso}"  />
+                </div>
+
+            </span>
+        </div>
         
         <div class="form-group ${hasErrors(bean: documentoEmpresaInstance, field: 'fechaInicio', 'error')} ">
             <span class="grupo">
-                <label for="fechaInicio" class="col-md-2 control-label text-info">
+                <label for="fechaInicio" class="col-md-3 control-label text-info">
                     Fecha Inicio
                 </label>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <elm:datepicker name="fechaInicio"  class="datepicker form-control required" value="${documentoEmpresaInstance?.fechaInicio}"  />
                 </div>
                 
@@ -142,10 +149,10 @@
         
         <div class="form-group ${hasErrors(bean: documentoEmpresaInstance, field: 'fechaFin', 'error')} ">
             <span class="grupo">
-                <label for="fechaFin" class="col-md-2 control-label text-info">
+                <label for="fechaFin" class="col-md-3 control-label text-info">
                     Fecha Fin
                 </label>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <elm:datepicker name="fechaFin"  class="datepicker form-control required" value="${documentoEmpresaInstance?.fechaFin}"  />
                 </div>
                 

@@ -11,6 +11,7 @@ class DocumentoEmpresaController extends cratos.seguridad.Shield {
     } //index
 
     def list() {
+
         [documentoEmpresaInstanceList: DocumentoEmpresa.list(params), params: params]
     } //list
 

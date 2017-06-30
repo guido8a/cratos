@@ -2,17 +2,20 @@
 <html>
 <head>
     <title>Comprobante</title>
-    %{--<link rel="stylesheet" href="${resource(dir: 'js/jquery/css/bnw', file: 'jquery-ui-1.8.17.custom.css')}" type="text/css"/>--}%
-    <style type="text/css">
-    @page {
-        size: 21cm 29.7cm ; /* width height */
-        margin: 2cm;
-    }
 
-    .hoja {
-        width: 25.7cm;
-        /*background: #d8f0fa;*/
-    }
+    <rep:estilos orientacion="p" pagTitle="${"Comprobante"}"/>
+
+
+    <style type="text/css">
+    /*@page {*/
+        /*size: 21cm 29.7cm ; !* width height *!*/
+        /*margin: 2cm;*/
+    /*}*/
+
+    /*.hoja {*/
+        /*width: 25.7cm;*/
+        /*!*background: #d8f0fa;*!*/
+    /*}*/
 
     .even {
         background: #B7C4F7;
@@ -29,21 +32,45 @@
     .item {
         /*background: #e6e6fa;*/
         border-bottom: solid 2px #555;
-
     }
-        /*.odd{*/
-        /*background: #ffecd2;*/
-        /*}*/
-        /*.even{*/
-        /*background: #e7e6ea;*/
-        /*}*/
+
+
+    .table th {
+        background     : #5d6263;
+        text-align     : center;
+        text-transform : uppercase;
+    }
+    .table {
+        margin-top      : 0.5cm;
+        width           : 100%;
+        border-collapse : collapse;
+    }
+
+    .table, .table td, .table th {
+        border : solid 1px #444;
+    }
+
+    .table td, .table th {
+        padding : 3px;
+    }
+
+       .odd{
+        background: #ffecd2;
+        }
+        .even{
+        background: #e7e6ea;
+        }
     </style>
 
 </head>
 
 <body>
+
+<rep:headerFooter title="${'Plan de Cuentas'}" subtitulo="${'Datos'}" empresa="${empresa}"/>
+
+
 <div class="hoja">
-    <div style="width: 600px" align="center">Comprobante</div>
+    %{--<div style="width: 600px" align="center">Comprobante</div>--}%
 
 
     <g:each in="${comp}" var="item">
