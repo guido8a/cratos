@@ -193,19 +193,22 @@
     });
 
     $("#btn_cargar").click(function(){
-        console.log("btn_cargar");
+        var tipo = $("#tipoProceso").val()
+        console.log("btn_cargar, tipo:", tipo);
         console.log("ruc: ", $("#prve").val());
-//        if($("#prve").val() != '' && ($("#tipoProceso").val() == 'C' || $("#tipoProceso").val() == 'V'))
-        if($("#prve").val() != '' && ($("#tipoProceso").val() == 'C'))
+        if($("#prve").val() != '' && (tipo == 'C'))
             cargarSstr($("#prve__id").val())
+        if($("#prve").val() != '' && (tipo == 'P' || tipo == 'N' || tipo == 'D'))
+            console.log('remueve hide...')
+            $("#btnBuscarComp").removeClass('hidden')
     });
 
     $("#btn_cargarCl").click(function(){
         var tipo = $("#tipoProceso").val()
         var prve = $("#prve__id").val()
         console.log("ttpp: ", $("#tipoProceso").val());
-        if($("#prve").val() != '' && (tipo == 'N' || tipo == 'D'))
-            $("#btnBuscarCom").removeClass('hidden')
+        if($("#prve").val() != '' && (tipo == 'N' || tipo == 'D'  || tipo == 'I'))
+            $("#btnBuscarComp").removeClass('hidden')
         if($("#prve").val() != '' && (tipo == 'V'))
             cargarTcsr(prve)
     });

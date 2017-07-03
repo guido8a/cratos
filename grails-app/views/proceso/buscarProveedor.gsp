@@ -33,7 +33,7 @@
         $("#prve__id").val($(this).attr("id"))
 
         $('#modal-proveedor').modal('hide')
-        $("#btnBuscarCom").removeClass('hidden')
+        $("#btnBuscarComp").removeClass('hidden')
 
 //        console.log("carga sustento desde buscarProveedor");
         if($("#tipoProceso").val() == 'C') {

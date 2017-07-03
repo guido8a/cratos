@@ -22,19 +22,6 @@
         font-size: 10px;
     }
 
-/*
-    .span-rol {
-        padding-right: 10px;
-        padding-left: 10px;
-        height: 16px;
-        line-height: 16px;
-        background: #FFBD4C;
-        margin-right: 5px;
-        font-weight: bold;
-        font-size: 12px;
-    }
-*/
-
     .span-eliminar {
         padding-right: 10px;
         padding-left: 10px;
@@ -85,7 +72,6 @@
             </a>
         </g:if>
         <g:if test="${params.id}">
-            %{--<g:if test="${proceso.adquisicion == null && proceso.factura == null && proceso.transferencia == null && !registro && cratos.Retencion.findByProceso(proceso)}">--}%
             <g:if test="${proceso.adquisicion == null && proceso.factura == null && proceso.transferencia == null && !registro}">
                 <a href="#" class="btn btn-info" id="registrarProceso">
                     <i class="fa fa-check"></i>
@@ -160,12 +146,6 @@
             </div>
 
             <div class="col-xs-4 negrilla">
-                %{--
-                                <g:select class="form-control required cmbRequired tipoProcesoSel" name="tipoProceso" id="tipoProceso"
-                                          from="${tiposProceso}" label="Proceso tipo: " value="${proceso?.tipoProceso}" optionKey="key"
-                                          optionValue="value" title="Tipo de la transacción"
-                                          disabled="${proceso?.id ? 'true' : 'false'}"/>
-                --}%
                 <g:select class="form-control required cmbRequired tipoProcesoSel" name="tipoProceso" id="tipoProceso"
                           from="${tiposProceso}" label="Proceso tipo: " value="${proceso?.tipoProceso}" optionKey="key"
                           optionValue="value" title="Tipo de la transacción" disabled="${registro ? true : false}"/>
@@ -235,9 +215,13 @@
             </div>
 
             <div class="col-xs-10 negrilla">
+                <g:textField name="descripcion" id="descripcion" value="${proceso?.descripcion}" maxlength="255"
+                             class="form-control required" readonly="${registro ? true : false}" />
+%{--
                 <textArea style="height:55px;resize: none" maxlength="255" name="descripcion"
                           id="descripcion" title="La descripción de la transacción contable"
                           class="form-control" ${registro ? 'readonly' : ''}>${proceso?.descripcion}</textArea>
+--}%
             </div>
         </div>
 
@@ -480,13 +464,6 @@
         cargarNumeracionFactura(idLibretin);
     });
 
-
-//    cargarTipo($(".tipoProcesoSel option:selected").val());
-    //    cargarBotonGuardar($(".tipoProcesoSel option:selected").val());
-    cargarBotonBuscar($(".tipoProcesoSel option:selected").val());
-    <g:if test="${proceso?.id && (proceso?.tipoProceso == 'P' || proceso?.tipoProceso == 'N' || proceso?.tipoProceso == 'D')}">
-    cargarComPago();
-    </g:if>
     //    cargarProveedor($(".tipoProcesoSel option:selected").val());
     cargarComprobante('${proceso?.id}');
 
@@ -532,6 +509,23 @@
             cargarTcsr(prve)
         }
 
+        if (tipo == 'A') {
+            $("#libretinFacturas").hide()
+            $("#pagoProceso").hide()
+        }
+
+        if (tipo == 'P' || tipo == 'I' || tipo == 'N' || tipo == 'D') {
+            $("#libretinFacturas").hide()
+            $("#pagoProceso").hide()
+            $("#divFilaComprobante").show()
+        }
+
+        cargarBotonBuscar($(".tipoProcesoSel option:selected").val());
+        %{--<g:if test="${proceso?.id && (proceso?.tipoProceso in ['P', 'N', 'D'])}">--}%
+        if (tipo =='P' || tipo == 'N' || tipo == 'D' || tipo == 'I') {
+            console.log('carga ComPago')
+            cargarCompPago();
+        }
 
     });
 
@@ -554,26 +548,9 @@
 
         if (tipo == 'V') {
             $("#libretin").change();
-        }
-
-        /*
-                if (tipo == 'N' || tipo == 'I' || tipo == 'P' || tipo == 'D') {
-                    cargarComPago();
-                    $("#divFilaComprobante").show();
-                } else {
-                    $("#divFilaComprobante").html('');
-                    $("#divFilaComprobante").hide();
-                }
-
-                console.log('pone hide');
-
-                cargarBotonBuscar(tipo);
-        */
-
-        if (tipo != 'V') {
-            $("#libretinFacturas").hide()
-        } else {
             $("#libretinFacturas").show()
+        } else {
+            $("#libretinFacturas").hide()
         }
 
         if (tipo != 'C') {
@@ -583,17 +560,16 @@
             console.log('Es C...');
             $("#pagoProceso").show()
         }
+
+        if (tipo == 'P' || tipo == 'I' || tipo == 'N' || tipo == 'D') {
+            cargarCompPago()
+        } else {
+            $("#divFilaComprobante").hide()
+        }
+
+
     });
 
-    /*
-     $("#sustento").click(function () {
-     console.log("clic en sustento")
-     var prve = $("#prve__id").val();
-     if(!prve) {
-     $("#btn_buscar").click()
-     }
-     });
-     */
 
     function cargarSstr(prve) {
         var tptr = $(".tipoProcesoSel option:selected").val();
@@ -657,7 +633,7 @@
         }
     }
 
-    function cargarComPago() {
+    function cargarCompPago() {
 //        var idComprobante = $("#comprobanteSel").val();
         var idProveedor = $("#prve_id").val();
         console.log('buca prve...');
@@ -671,6 +647,7 @@
             },
             success: function (msg) {
                 $("#divFilaComprobante").html(msg)
+                $("#divFilaComprobante").show()
             }
         });
     }
@@ -705,42 +682,6 @@
             }
         });
     }
-
-/*
-    jQuery.fn.svtContainer = function () {
-        var title = this.find(".css-vertical-text")
-        title.css({"cursor": "pointer"})
-        title.attr("title", "Minimizar")
-        var fa = $("<i class='fa fa-arrow-left fa-fw' style='font-size: 20px !important; margin-left: -30px; color: #0088CC'></i>")
-        var texto = $("<span class='texto' style='display: none; margin-left: 10px; color:#0088CC; font-size: 20px ' > (Clic aquí para expandir)</span>")
-        title.addClass("open")
-        title.prepend(fa)
-        title.append(texto)
-        title.bind("click", function () {
-            if ($(this).parent().attr("skip") != "1") {
-                if ($(this).hasClass("open")) {
-                    $(this).parent().find(".row").hide("blind")
-                    $(this).parent().find(".linea").hide("blind")
-                    $(this).removeClass("open");
-                    $(this).addClass("closed")
-                    $(this).removeClass("css-vertical-text")
-                    $(this).find(".texto").show()
-                    setTimeout('$(this).parent().css({"height":"30px"});', 30)
-                } else {
-                    $(this).parent().css({"height": "auto"});
-                    $(this).parent().find(".row").show("slide")
-                    $(this).parent().find(".linea").show("slide")
-                    $(this).removeClass("closed");
-                    $(this).addClass("open")
-                    $(this).addClass("css-vertical-text")
-                    $(this).attr("title", "Maximizar")
-                    $(this).find(".texto").hide()
-                }
-            }
-        });
-        return this;
-    }
-*/
 
     function calculaIva() {
         var iva = ${iva ?: 0};
@@ -903,6 +844,22 @@
                 }
             }
 
+            if (tipoP == 'A') {   /* compras */
+                if ($("#fecha_input").val().length < 10) {
+                    error += "<li>Seleccione la fecha de emisión</li>"
+                }
+                if ($("#fecharegistro_input").val().length < 10) {
+                    $("#fecharegistro_input").val($("#fecha_input").val())
+                }
+                if ($("#descripcion").val().length < 1) {
+                    error += "<li>Llene el campo Descripción</li>"
+                }
+
+                if ($("#valorPago").val() == 0) {
+                    error += "<li>Ingrese el valor del ajuste</li>"
+                }
+            }
+
             if (error != "") {
                 $("#listaErrores").append(error)
                 $("#listaErrores").show()
@@ -927,6 +884,7 @@
         calculaIva();
 
 
+/*
         function revisarSerieFactura() {
             var regresa = $.ajax({
                 type: 'POST',
@@ -956,6 +914,7 @@
             });
             return regresaV.responseText
         }
+*/
 
         $("#iva12").keyup(function () {
             calculaIva();

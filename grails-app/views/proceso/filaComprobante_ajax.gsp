@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: gato
-  Date: 19/05/17
-  Time: 14:44
---%>
-
 <div class="col-md-2 negrilla">
     Comprobante
 </div>
@@ -21,7 +14,8 @@
 </div>
 <div class="col-xs-2" style="margin-left: 20px">
     <g:if test="${proceso?.estado == 'N' || !proceso?.id}">
-        <a href="#" id="btnBuscarCom" class="btn btn-info ${proceso?.id ? '' : 'hidden'}">
+        <a href="#" id="btnBuscarComp" class="btn btn-info ${proceso?.id ? '' : 'hidden'}">
+        %{--<a href="#" id="btnBuscarComp" class="btn btn-info" >--}%
             <i class="fa fa-search"></i>
             Buscar
         </a>
@@ -32,16 +26,17 @@
 
 <script type="text/javascript">
 
-    $("#btnBuscarCom").click(function(){
+    $("#btnBuscarComp").click(function(){
+        console.log('buscarComp')
         var tipo = $("#tipoProceso").val();
-        var idProveedor = $("#prov_id").val();
+        var idProveedor = $("#prve__id").val();
         var titulo = "Pagos pendientes al Proveedor";
         if(tipo == 'N') {
             titulo = "Ventas realizadas al Cliente";
         }
         $.ajax({
             type    : "POST",
-            url     : "${g.createLink(controller: 'proceso',action: 'tablaBuscarComprobante_ajax')}",
+            url     : "${g.createLink(controller: 'proceso',action: 'tablaBuscarComp_ajax')}",
             data    : {
                 proveedor: idProveedor,
                 tipo:      tipo

@@ -34,8 +34,6 @@ class Retencion implements Serializable {
     double rentaServicios = 0
 
 
-
-
     static mapping = {
         table 'rtcn'
         cache usage: 'read-write', include: 'non-lazy'
@@ -48,7 +46,6 @@ class Retencion implements Serializable {
             conceptoRIRBienes column: 'crir__id'
             conceptoRIRServicios column: 'crirsrvc'
             documentoEmpresa column: 'fcdt__id'
-//            pais column: 'pais__id'
             empresa column: 'empr__id'
             proveedor column: 'prve__id'
 
@@ -61,29 +58,20 @@ class Retencion implements Serializable {
             ruc column: 'rtcn_ruc'
             fechaEmision column: 'rtcnfcem'
 
-//            convenio column: 'rtcncnvn'
-//            normaLegal column: 'rtcnnmlg'
             pcntIvaBienes column: 'pciv__id'
             baseIvaBienes column: 'rtcnbsiv'
             ivaBienes column: 'rtcn_iva'
-//            baseBienes column: 'rtcnbsbn'
             pcntIvaServicios column: 'pcivsrvc'
             baseIvaServicios column: 'rtcnbisr'
             ivaServicios column: 'rtcnivsr'
-//            porcentajeBienes column: 'rtcnpcbn'
 
             baseRenta column: 'rtcnbsrt'
             renta column: 'rtcnrnta'
             baseRentaServicios column: 'rtcnbrsr'
             rentaServicios column: 'rtcnrnsr'
-//            baseServicios column: 'rtcnbssr'
-//            porcentajeServicios column: 'rtcnpcsr'
-//            servicios column: 'rtcnsrvc'
-//            creditoTributario column: 'rtcncrtr'
-//            pago column: 'rtcnpago'
-
         }
     }
+
     static constraints = {
         conceptoRIRBienes(blank: true, nullable: true)
         conceptoRIRServicios(blank: true, nullable: true)
@@ -109,9 +97,6 @@ class Retencion implements Serializable {
         renta(blank: true, nullable: true)
         baseRentaServicios(blank: true, nullable: true)
         rentaServicios(blank: true, nullable: true)
-//        convenio (blank: true, nullable: true)
-//        normaLegal(blank: true, nullable: true)
-//        pais(blank: true, nullable: true)
 
     }
 }

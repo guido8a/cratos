@@ -18,7 +18,7 @@ th, td {
     <table class="table-bordered table-condensed table-hover" width="1060px">
         <g:each in="${data}" var="dato" status="z">
 
-            <tr id="${dato.id}" data-id="${dato.id}" data-ed="${dato.prcsetdo}" class="${clase}">
+            <tr id="${dato.prcs__id}" data-id="${dato.prcs__id}" data-ed="${dato.prcsetdo}" class="${clase}">
                 <td width="70px">
                     ${dato?.prcsfcha.format("dd-MM-yyyy")}
                 </td>
@@ -40,7 +40,7 @@ th, td {
                 </td>
 
                 <td width="180px" class="text-info">
-                    ${dato.prvenmbr}
+                    ${dato.prve}
                 </td>
             </tr>
         </g:each>

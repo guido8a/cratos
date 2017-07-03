@@ -195,11 +195,11 @@
                 </tr>
                 <tr>
                     <th style="width: 280px;" class="letraP">Código (Cuenta)</th>
-                    <th style="width: 100px" class="letraP">% B. Imponible</th>
+                    <th style="width: 100px" class="letraP">% B. Imponible Valor</th>
                     <th style="width: 100px" class="letraP">% B.I. Sin IVA</th>
                     <th style="width: 80px" class="letraP">Impuestos</th>
                     <th style="width: 80px" class="letraP">ICE</th>
-                    <th style="width: 100px" class="letraP">% B. Imponible</th>
+                    <th style="width: 100px" class="letraP">% B. Imponible Valor</th>
                     <th style="width: 100px" class="letraP">% B.I. Sin IVA</th>
                     <th style="width: 80px" class="letraP">Impuestos</th>
                     <th style="width: 80px" class="letraP">ICE</th>
@@ -209,7 +209,7 @@
             </table>
 
 
-            <div class="row-fluid" style="width: 99.7%;height: 320px;overflow-y: auto;float: right;">
+            <div class="row-fluid" style="width: 99.7%;height: 320px;overflow-y: auto;float: right; margin-top: -10px">
                 <div class="span12">
                     <div id="cuentaAgregada" style="width: 1070px; height: 280px;"></div>
                 </div>

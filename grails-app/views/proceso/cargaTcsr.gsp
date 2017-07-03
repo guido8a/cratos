@@ -8,9 +8,3 @@
               optionKey="id" title="Tipo de comprobante" optionValue="${{it.codigo  + ' - ' + it.descripcion}}"
               noSelection="${['-1': 'Seleccione...']}" value="${tpcpSri?:12}" readonly="${estado == 'R' ? true : false}"/>
 </div>
-
-%{--
-<div class="col-md-2 " style="font-size: 10px">
-    Necesario para el ATS
-</div>
---}%

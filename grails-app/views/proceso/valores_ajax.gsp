@@ -10,8 +10,8 @@
             Valor:
         </div>
         <div class="col-xs-2 negrilla">
-            <g:textField name="valorPago_name" id="valorPago" class="form-control required number validacionNumero"
-                         value="${proceso?.valor}"/>
+            <g:textField name="valorPago" id="valorPago" class="form-control required number validacionNumero"
+                         value="${proceso?.baseImponibleIva?:0}"/>
         </div>
     </div>
 </g:if>
@@ -21,7 +21,7 @@
             Valor:
         </div>
         <div class="col-xs-2 negrilla">
-            <g:textField name="valorPagoNC_name" id="valorPagoNC" class="form-control required number validacionNumero" value="${proceso?.valor}"/>
+            <g:textField name="valorPagoNC" id="valorPagoNC" class="form-control required number validacionNumero" value="${proceso?.valor}"/>
         </div>
     </div>
     <div class="row" style="font-size: 12px">
@@ -29,7 +29,7 @@
             IVA generado:
         </div>
         <div class="col-xs-2 negrilla">
-            <input type="text" name="ivaGenerado" id="ivaGenerado"  value="${proceso?.ivaGenerado}" class="required number form-control validacionNumero" validate="required number" ${proceso?.estado == 'R' ?'disabled':''} />
+            <input type="text" name="ivaGeneradoNC" id="ivaGeneradoNC"  value="${proceso?.ivaGenerado}" class="required number form-control validacionNumero" validate="required number" ${proceso?.estado == 'R' ?'disabled':''} />
         </div>
     </div>
 </g:elseif>

@@ -108,7 +108,8 @@
                             </tr>
                             <tr class="colorAtras">
                                 <td class="dato">${auxiliar?.fechaPago?.format("dd-MM-yyyy")}</td>
-                                <td class="dato">${auxiliar?.proveedor?.nombre}</td>
+                                %{--<td class="dato">${auxiliar?.proveedor?.nombre - auxiliar?.comprobante?.numero}</td>--}%
+                                <td class="dato">${auxiliar?.proveedor?.nombre} - ${auxiliar?.comprobante?.prefijo} - ${auxiliar?.comprobante?.numero}</td>
                                 <td class="dato derecha">${auxiliar?.debe ? g.formatNumber(number: auxiliar.debe, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2) : 0.00}</td>
                                 <td class="dato derecha">${auxiliar.haber ? g.formatNumber(number: auxiliar.haber, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2) : 0.00}</td>
 

@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: gato
-  Date: 18/05/17
-  Time: 14:50
---%>
-
 <table class="table table-bordered table-hover table-condensed">
     <thead>
     <tr>
@@ -31,7 +24,9 @@
                     <td style="width: 70px; text-align: right">${comprobante.sldo}</td>
                     <td style="width: 50px; text-align: center">
                         <div class="btn-group">
-                            <a href="#" class="btn btn-success btn-sm btnSeleccionarComp" idAs="${comprobante.cmpr__id}" des="${comprobante.dscr}" sld="${comprobante.sldo}" title="Seleccionar">
+                            <a href="#" class="btn btn-success btn-sm btnSeleccionarComp"
+                               id_cp="${comprobante.cmpr__id}" dscr="${comprobante.dscr}"
+                               sldo="${comprobante.sldo}" title="Seleccionar">
                                 <i class="fa fa-check"></i>
                             </a>
                         </div>
@@ -46,12 +41,15 @@
 <script type="application/javascript">
 
     $(".btnSeleccionarComp").click(function () {
-        var descripcion = $(this).attr('des');
-        var saldo = $(this).attr('sld');
-        var idCom = $(this).attr('idAs');
+        var descripcion = $(this).attr('dscr');
+        var saldo = $(this).attr('sldo');
+        var id = $(this).attr('id_cp');
         $("#comprobanteDesc").val(descripcion);
         $("#comprobanteSaldo").val(saldo);
-        $("#comprobanteSel").val(idCom);
+        $("#comprobanteSel").val(id);
+        if($("#valorPago").val() == '0') {
+            $("#valorPago").val(saldo)
+        }
         bootbox.hideAll();
     });
 
