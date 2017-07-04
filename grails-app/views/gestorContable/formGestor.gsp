@@ -13,7 +13,7 @@
 
     <style type="text/css">
     .fila {
-        width: 800px;
+        width: 100%;
         min-height: 40px;
     }
 
@@ -109,41 +109,50 @@
         %{--<input type="hidden" name="id" value="${gestorInstance?.id}"/>--}%
 
         <div class="fila">
-            <div class="label">
+            <div class="col-xs-2 negrilla">
                 Nombre:
             </div>
 
-            <div class="campo">
-                %{--<span class="grupo">--}%
+            <div class="col-xs-10 negrilla">
                 <input name="nombre_name" id="nombre" type="text" value="${gestorInstance?.nombre}" maxlength="127"
-                       class="form-control required" style="width: 800px"/>
-                %{--</span>--}%
+                       class="form-control required"/>
             </div>
         </div>
 
         <div class="fila">
-            <div class="label">
+            <div class="col-xs-2 negrilla">
                 Observaciones:
             </div>
 
-            <div class="campo">
-                <input name="observaciones_name" id="observaciones" type="textArea"
+            <div class="col-xs-10 negrilla">
+                <input name="observaciones_name" id="observaciones" type="textArea" class="form-control"
                        value="${gestorInstance?.observaciones}"
-                       maxlength="125" class="form-control col-md-8" style="width: 800px;"/>
+                       maxlength="125"/>
             </div>
         </div>
 
         <div class="fila">
-            <div class="label">
-                Fuente:
-            </div>
+        <div class="col-xs-2 negrilla">
+            Fuente:
+        </div>
 
-            <div class="campo">
+            <div class="col-xs-3 negrilla" style="margin-left: 0">
                 <g:select name="fuente.id" type="select" campo="fuente"
                           from="${cratos.Fuente.list([sort: 'descripcion'])}"
                           label="Fuente: " value="${gestorInstance?.fuente?.id}" optionKey="id"
                           optionValue="descripcion"
-                          class="form-control required col-md-3" id="fuenteGestor" style="width: 300px;"/>
+                          class="form-control required col-md-3" id="fuenteGestor" />
+            </div>
+            <div class="col-xs-1 negrilla">
+            </div>
+            <div class="col-xs-2 negrilla">
+                Tipo de proceso:
+            </div>
+
+            <div class="col-xs-4 negrilla">
+                <g:select class="form-control required cmbRequired tipoProcesoSel" name="tipoProceso" id="tipoProceso"
+                          from="${tpps}" label="Proceso tipo: " value="${gestorInstance?.tipoProceso}" optionKey="key"
+                          optionValue="value" title="Tipo de proceso o transacción" disabled="${registro ? true : false}"/>
             </div>
 
         </div>
@@ -358,7 +367,8 @@
                 nombre: nombreGestor,
                 descripcion: descripcion,
                 observacion: observacion,
-                fuente: fuente
+                fuente: fuente,
+                tipoProceso:  $(".tipoProcesoSel option:selected").val()
             },
             success: function (msg) {
                 var parts = msg.split("_");

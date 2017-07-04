@@ -38,10 +38,10 @@
 
     <g:if test="${tipo == 'C'}">
     <div class="row" style="font-size: 12px">
-        <div class="col-xs-3 negrilla">
+        <div class="col-xs-2 negrilla">
             Documento registrado:
         </div>
-        <div class="col-xs-4 negrilla" style="margin-left: -95px">
+        <div class="col-xs-4 negrilla" >
             <div class="col-xs-3">
             <input type="text" name="dcmtEstablecimiento" id="dcmtEstablecimiento" size="3" maxlength="3" style="width: 60px;"
                    value="${proceso?.procesoSerie01}" class="form-control validacionNumero"
@@ -70,6 +70,59 @@
                    title="El número autorización de la factura a registrar " ${registro?'disabled':''} />
         </div>
     </div>
+
+        %{--TODO: si se trata de NC o ND se presenta esta sección --}%
+        <div class="row" style="font-size: 12px">
+            <div class="col-md-2 negrilla">
+                Documento modificado:
+            </div>
+
+            <div class="col-md-7 negrilla">
+                <g:select class="form-control cmbRequired" name="tipoComprobanteSri.id" id="tipoComprobante"
+                          from="${data}"
+                          optionKey="id" title="Tipo de comprobante" optionValue="${{it.codigo  + ' - ' + it.descripcion}}"
+                          noSelection="${['-1': 'Seleccione...']}" value="${tpcpSri?:12}" readonly="${estado == 'R' ? true : false}"/>
+            </div>
+            <div class="col-xs-3">
+
+            </div>
+        </div>
+
+        <div class="row" style="font-size: 12px">
+            <div class="col-xs-2 negrilla">
+                Número del documento modificado:
+            </div>
+            <div class="col-xs-4 negrilla" >
+                <div class="col-xs-3">
+                    <input type="text" name="dcmtEstablecimiento" id="dcmtEstablecimiento" size="3" maxlength="3" style="width: 60px;"
+                           value="${proceso?.procesoSerie01}" class="form-control validacionNumero"
+                           validate=" number" placeholder="Establ." ${proceso?.estado == 'R' ? 'disabled':''} />
+                </div>
+                <div class="col-xs-3">
+                    <input type="text" name="dcmtEmision" id="dcmtEmision" size="3" maxlength="3" style="width: 60px;"
+                           value="${proceso?.procesoSerie02}"
+                           class="form-control validacionNumero " validate=" number" placeholder="Emisión"
+                           title="El número de punto de emisión del documento" ${proceso?.estado == 'R' ?'disabled':''} />
+                </div>
+                <div class="col-xs-6">
+                    <input type="text" name="dcmtSecuencial" id="dcmtSecuencial" size="10" maxlength="9" style="width: 110px;"
+                           value="${proceso?.secuencial}"
+                           class="form-control label-shared validacionNumero " validate=" number"
+                           title="El número de secuencia del documento"  ${proceso?.estado == 'R' ?'disabled':''} placeholder="Secuencial" />
+                </div>
+            </div>
+            <div class="col-xs-2 negrilla" style="width: 120px;margin-left: -30px; text-align: right">
+                Autorización:
+            </div>
+            <div class="col-xs-2 negrilla">
+                <input type="text" name="dcmtAutorizacion" id="dcmtAutorizacion" size="10" maxlength="15"
+                       value="${proceso?.autorizacion}" class=" digits form-control label-shared validacionNumero"
+                       validate=" number" placeholder="Autorización"
+                       title="El número autorización de la factura a registrar " ${registro?'disabled':''} />
+            </div>
+        </div>
+
+
     </g:if>
 
     <div class="row" style="font-size: 12px">

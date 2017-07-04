@@ -9,6 +9,13 @@ class GestorContableController extends cratos.seguridad.Shield {
     }
 
     def buscarGestor() {
+        def tiposProceso = ["C": "C-Compras (Compras Inventario, Compras Gasto)",
+                            "V": "V-Ventas (Ventas, Reposición de Gasto)",
+                            "A": "A-Ajustes (Diarios y Otros)",
+                            "P": "P-Pagos a proveedores",
+                            "I": "I-Ingresos",
+                            "N": "N-Nota de Crédito",
+                            "D": "D-Nota de Débito"]
         session.movimientos=[]
 //        println "params " + params
         def lista = buscadorService.buscar(Gestor, "Gestor", "incluyente", [campos: ["nombre", "descripcion"],
@@ -16,7 +23,7 @@ class GestorContableController extends cratos.seguridad.Shield {
              true," and empresa=${session.empresa.id}")
         def numRegistros = lista.get(lista.size() - 1)
         lista.pop()
-        return [lista: lista]
+        return [lista: lista, tpps: tiposProceso]
     }
 
     def nuevoGestor() {
@@ -274,12 +281,19 @@ class GestorContableController extends cratos.seguridad.Shield {
 
     def formGestor () {
         def titulo = "Nuevo Gestor"
+        def tiposProceso = ["C": "C-Compras (Compras Inventario, Compras Gasto)",
+                            "V": "V-Ventas (Ventas, Reposición de Gasto)",
+                            "A": "A-Ajustes (Diarios y Otros)",
+                            "P": "P-Pagos a proveedores",
+                            "I": "I-Ingresos",
+                            "N": "N-Nota de Crédito",
+                            "D": "D-Nota de Débito"]
         if(params.id){
             titulo = params.ver? "Ver Gestor" : "Editar Gestor"
             def gestorInstance = Gestor.get(params.id)
-            return [gestorInstance: gestorInstance, verGestor: params.ver, titulo: titulo]
+            return [gestorInstance: gestorInstance, verGestor: params.ver, titulo: titulo, tpps: tiposProceso]
         } else
-            return [verGestor: params.ver, titulo: titulo]
+            return [verGestor: params.ver, titulo: titulo, tpps: tiposProceso]
     }
 
     def tablaGestor_ajax () {
@@ -384,20 +398,20 @@ class GestorContableController extends cratos.seguridad.Shield {
     }
 
     def guardarGestor () {
-//        println("params guardar " + params)
+        println "params guardar $params"
         def gestor
         def fuente = Fuente.get(params.fuente)
         def empresa = session.empresa
         if(params.gestor){
             gestor = Gestor.get(params.gestor)
             gestor.nombre = params.nombre
-//            gestor.descripcion = params.descripcion
+            gestor.tipoProceso = params.tipoProceso
             gestor.observaciones = params.observacion
             gestor.fuente = fuente
         }else{
             gestor = new Gestor()
             gestor.nombre = params.nombre
-//            gestor.descripcion = params.descripcion
+            gestor.tipoProceso = params.tipoProceso
             gestor.observaciones = params.observacion
             gestor.fuente = fuente
             gestor.empresa = empresa

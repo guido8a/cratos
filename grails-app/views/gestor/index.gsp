@@ -33,7 +33,6 @@
             </div>
             <div class="span-4">
                 <a href="#" id="buscarGestor" class="btn">
-
                     Buscar
                 </a>
             </div>
