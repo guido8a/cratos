@@ -301,10 +301,9 @@ class GestorContableController extends cratos.seguridad.Shield {
         def gestor = Gestor.get(params.id)
         def tipoComprobante = TipoComprobante.get(params.tipo)
 
-        def movimientos = Genera.findAllByGestorAndTipoComprobante(gestor, tipoComprobante).sort{it.debeHaber}
+        def movimientos = Genera.findAllByGestorAndTipoComprobante(gestor, tipoComprobante).sort{it.cuenta.numero}.sort{it.debeHaber}
 
 //        println("movimientos " + movimientos )
-
         return [movimientos: movimientos, gestor: gestor, tipo: tipoComprobante]
     }
 
@@ -324,7 +323,7 @@ class GestorContableController extends cratos.seguridad.Shield {
         def res
 
         if(params.nombre == "" && params.codigo == ""){
-        res = Cuenta.findAllByEmpresa(empresa).sort{it.numero}
+        res = Cuenta.findAllByEmpresaAndMovimiento(empresa,'1').sort{it.numero}
         }else{
             res = Cuenta.withCriteria {
                 eq("empresa", empresa)
@@ -332,8 +331,8 @@ class GestorContableController extends cratos.seguridad.Shield {
                 and{
                     ilike("descripcion", '%' + params.nombre + '%')
                     ilike("numero", '%' + params.codigo + '%')
+                    eq("movimiento", '1')
                 }
-
                 order ("numero","asc")
             }
         }

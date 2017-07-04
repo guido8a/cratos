@@ -469,7 +469,7 @@ class Reportes3Controller {
 
     def reporteExcel() {
 
-        def comprobantes = cuentasService.getComprobante(563)
+        def comprobantes = cuentasService.getComprobante(582)
         def tipoComprobante = []
         comprobantes.each { i ->
             tipoComprobante += i.tipo.codigo
@@ -502,7 +502,8 @@ class Reportes3Controller {
             c.descripcion = asientos.cuenta.descripcion
             def cont = comp[numero].items.add(c)
         }
-        comp[numero].items.sort { it.cuenta }
+
+        comp[numero]?.items?.sort { it?.cuenta }
 
 
         XSSFWorkbook wb = new XSSFWorkbook()
@@ -558,6 +559,27 @@ class Reportes3Controller {
 
         def asientos = Asiento.findAllByComprobante(comprobante).sort{it.numero}
         return [empresa: params.empresa,proceso: proceso, comprobante: comprobante, asientos: asientos]
+    }
+
+    def imprimirLibroDiario () {
+        def contabilidad = Contabilidad.get(params.cont)
+        def periodo = Periodo.get(params.periodo)
+        def empresa = Empresa.get(params.empresa)
+
+        def comprobantes = Comprobante.withCriteria {
+
+            proceso{
+                eq("empresa",empresa)
+            }
+
+            and{
+                le("fecha", periodo.fechaFin)
+                ge("fecha", periodo.fechaInicio)
+            }
+
+        }
+        return[comprobantes: comprobantes, empresa: params.empresa]
+
     }
 
 

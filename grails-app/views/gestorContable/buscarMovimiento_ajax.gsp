@@ -16,7 +16,7 @@
     </div>
     <div class="col-xs-2 negrilla">
         <input type="hidden" name="movimientos" value="1"/>
-        <a href="#" class="btn btn-azul"  id="buscarM">
+        <a href="#" class="btn btn-azul btnBuscar"  id="buscarM">
             <i class="fa fa-search"></i>
             Buscar
         </a>
@@ -43,12 +43,15 @@
 
 <script type="text/javascript">
 
-
-
     $("#buscarM").click(function (){
         var cod = $("#codigoBus").val();
         var nom = $("#nombreBus").val();
-        openLoader("Buscando")
+        buscarCuenta(cod, nom);
+
+    });
+
+    function buscarCuenta (cod, nom) {
+        openLoader("Buscando");
         $.ajax({
             type: 'POST',
             url: "${createLink(controller: 'gestorContable', action: 'tablaBuscar_ajax')}",
@@ -64,7 +67,16 @@
                 $("#divTablaMovimientos").html(msg)
             }
         });
-    });
+    }
 
+    $("input").keydown(function (ev) {
+        if (ev.keyCode == 13) {
+            var cod = $("#codigoBus").val();
+            var nom = $("#nombreBus").val();
+            buscarCuenta(cod, nom);
+            return false;
+        }
+        return true;
+    });
 
 </script>

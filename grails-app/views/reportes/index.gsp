@@ -141,6 +141,28 @@
                         <p>Se reprotan todos los gestores contables que se hallen activos en el sistema.</p>
                     </div>
                 </li>
+
+                <li><span id="libroD">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <a href="#" class="link btn btn-info btn-ajax" data-toggle="modal" data-target="#libroDiario">
+                                    Libro Diario
+                                </a>
+                            </div>
+                            <div class="col-md-8">
+                                Libro Diario
+                            </div>
+                        </div>
+                    </span>
+
+                    <div class="descripcion hide">
+                        <h4>Libro Diario</h4>
+                        <p>Libro Diario.</p>
+                    </div>
+                </li>
+
+
+
                 %{--<li>--}%
                     %{--<span id="imprimirComprobante">--}%
                         %{--<div class="row">--}%
@@ -440,6 +462,40 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Cancelar
                 </button>
                 <button type="button" class="btn btnAceptarComprobante btn-success"><i class="fa fa-print"></i> Aceptar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+%{--dialog libro diario--}%
+<div class="modal fade" id="libroDiario" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="modalLibroDiario">Libro Diario</h4>
+            </div>
+
+            <div class="modal-body" id="bodyLibro">
+                <div class="fila" style="margin-bottom: 15px">
+                    <label class="uno">Contabilidad:</label>
+                    <g:select name="contP11" id="contP11"
+                              from="${cratos.Contabilidad.findAllByInstitucion(session.empresa, [sort: 'fechaInicio'])}"
+                              optionKey="id" optionValue="descripcion" noSelection="['-1': 'Seleccione la contabilidad']"
+                              class="form-control dos"/>
+                </div>
+
+                <div id="divPeriodo11" class="fila">
+                    <label class="uno">Período:</label>
+
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Cancelar
+                </button>
+                <button type="button" class="btn btnAceptarLibro btn-success"><i class="fa fa-print"></i> Aceptar
                 </button>
             </div>
         </div>
@@ -946,6 +1002,9 @@
         $("#contP4").change(function () {
             updatePeriodo("4");
         });
+        $("#contP11").change(function () {
+            updatePeriodoSinTodo("11");
+        });
 
         $(".btnAceptarPlan").click(function () {
             var cont = $("#contCuentas").val()
@@ -1103,12 +1162,9 @@
             if (cont == '-1') {
                 bootbox.alert("Debe elegir una contabilidad!")
             } else {
-
                 url = "${g.createLink(controller:'reportes4' , action: 'balanceGeneralAux')}?cont=" + cont + "&emp=${session.empresa.id}" + "&per=" + per + "&filename=balancexAuxiliar";
                 location.href = url
             }
-
-            %{--location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=balancexAuxiliar.pdf"--}%
         });
 
         $(".btnAceptarGeneral").click(function () {
@@ -1163,6 +1219,13 @@
             $("#hidVal").val("-1");
             $("#txtValor").val("Todos");
             return false;
+        });
+
+        $(".btnAceptarLibro").click(function () {
+            var cont = $("#contP11").val();
+            var per = $("#periodo11").val();
+           var url = "${g.createLink(controller: 'reportes3', action: 'imprimirLibroDiario')}?cont=" + cont + "Wperiodo=" + per + "Wempresa=${session.empresa.id}";
+            location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=comprobanteIngreso.pdf";
         });
 
     });
