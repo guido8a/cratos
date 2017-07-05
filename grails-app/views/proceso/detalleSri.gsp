@@ -179,7 +179,7 @@
                         <label>Base Imponible</label>
                         <g:textField class="form-control number baseS"
                                      title="La base imponible del IR." style="text-align: right" name="baseRentaSrvc"
-                                     value="${retencion?.baseRentaServicios}"/>
+                                     value="${retencion?.baseRentaServicios ?: 0}"/>
                     </div>
 
                     <div class="col-xs-1">
@@ -190,7 +190,7 @@
 
                     <div class="col-xs-2">
                         <label>Valor Servicios</label>
-                        <g:textField class="form-control number required" title="Valor retenido" name="valorRetenidoSrvc"
+                        <g:textField class="form-control number required valorSer" title="Valor retenido" name="valorRetenidoSrvc"
                                      value="${g.formatNumber(number: retenido, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2)}"
                                      style="text-align: right"/>
                     </div>
@@ -207,14 +207,14 @@
             </div>
 
             <div class="col-xs-2">
-                <g:textField class=" form-control number" title="Total imponible renta" name="sumaRenta"
+                <g:textField class=" form-control" title="Total imponible renta" name="sumaRenta"
                              readonly="true" style="text-align: right"/>
             </div>
 
             <div class="col-xs-1">
             </div>
             <div class="col-xs-2">
-                <g:textField class=" form-control number" title="Total imponible renta" name="sumaRtcnRenta"
+                <g:textField class=" form-control" title="Total imponible renta" name="sumaRtcnRenta"
                              readonly="true" style="text-align: right"/>
             </div>
 
@@ -383,6 +383,31 @@
         actualizaRenta()
     });
 
+    $("#valorRetenido").change(function () {
+        totalesRenta()
+    });
+
+    $("#valorRetenidoSrvc").change(function () {
+       totalesRenta()
+    });
+
+    $(".baseS").keydown(function (ev) {
+
+    }).keyup(function () {
+        if( $("#baseRentaSrvc").val() == 0){
+            $("#baseRentaSrvc").val(0)
+        }
+    });
+
+
+    $(".valorSer").keydown(function (ev) {
+
+    }).keyup(function () {
+        if( $("#valorRetenidoSrvc").val() == 0){
+            $("#valorRetenidoSrvc").val(0)
+        }
+    });
+
     function actualizaRenta() {
         var pcnt = parseFloat($("#porcentaje").val())
         var pcntSrvc = parseFloat($("#porcentajeSrvc").val())
@@ -396,6 +421,16 @@
         $("#sumaRenta").val(parseFloat(Math.round((base + baseSrvc)*100)/100).toFixed(2));
         $("#sumaRtcnRenta").val(parseFloat(Math.round((rtcn + rtcnSrvc)*100)/100).toFixed(2));
     }
+
+
+    function totalesRenta() {
+
+        var vr = parseFloat($("#valorRetenido").val());
+        var vrs = parseFloat($("#valorRetenidoSrvc").val());
+        $("#sumaRtcnRenta").val(parseFloat((vr + vrs).toFixed(2)));
+
+    }
+
 
     $("#pcivBienes").change(function () {
         var id = $("#pcivBienes option:selected").val()
