@@ -185,7 +185,8 @@
 
         </div>
 
-        <div class="row">
+        <div class="row" id="gestorDiv">
+%{--
             <div class="col-xs-2 negrilla">
                 Gestor a utilizar:
             </div>
@@ -195,6 +196,7 @@
                           value="${proceso?.gestor?.id}" optionKey="id" optionValue="nombre"
                           title="Proceso tipo" disabled="${registro ? true : false}"/>
             </div>
+--}%
         </div>
 
         <div class="row" id="divCargaProveedor">
@@ -481,7 +483,7 @@
         $("#divFilaComprobante").hide();
         $("#libretinFacturas").hide()
 
-        cargarTipo(tipo);
+        cargaGestor(tipo)
         if("${!proceso?.id}") {
             cargarProveedor(tipo)
         }
@@ -498,6 +500,7 @@
             setTimeout(function () {
                 if ("${proceso?.tipoCmprSustento}") {
                     $("#tipoCmprSustento").change();
+                    cargarTipo(tipo, "${proceso?.tipoCmprSustento.id}", "${proceso?.proveedor?.id}", "${proceso?.tipoProceso}");
                 }
             }, 1000);
         }
@@ -527,6 +530,7 @@
             cargarCompPago();
         }
 
+//        cargarTipo(tipo);
     });
 
     $("#tipoProceso").change(function () {
@@ -544,7 +548,7 @@
             $("#divCargaProveedor").hide();
         }
 
-        cargarTipo(tipo);
+//        cargarTipo(tipo);
 
         if (tipo == 'V') {
             $("#libretin").change();
@@ -567,9 +571,30 @@
             $("#divFilaComprobante").hide()
         }
 
-
+        cargaGestor(tipo);
     });
 
+    $("#tipoComprobante").change(function () {
+        console.log("cambia tpcp")
+//        console.log("cambia tpcp", $("#tipoComprobante").val())
+//        cargarTipo( $(".tipoProcesoSel option:selected").val(), $("#tipoComprobante").val() );
+    });
+
+
+    function cargaGestor(tipo) {
+        $.ajax({
+            type: 'POST',
+            url: "${createLink(controller: 'proceso', action: 'cargaGestor')}",
+            data: {
+                tipo: tipo
+            },
+            success: function (msg) {
+                console.log('ok....')
+                $("#gestorDiv").html(msg)
+                $("#gestorDiv").show()
+            }
+        });
+    };
 
     function cargarSstr(prve) {
         var tptr = $(".tipoProcesoSel option:selected").val();
@@ -661,14 +686,16 @@
         }
     }
 
-    function cargarTipo(tipo) {
-//        var flecha = "<i class='fa fa-arrow-left fa-fw' style='font-size: 20px !important; margin-left: -30px'></i>"
+    function cargarTipo(tipo, tpcp, prve, tpps) {
         $.ajax({
             type: 'POST',
             url: "${createLink(controller: 'proceso', action: 'valores_ajax')}",
             data: {
                 proceso: '${proceso?.id}',
-                tipo: tipo
+                tipo: tipo,
+                tpcp: tpcp,
+                prve: prve,
+                tpps: tpps
             },
             success: function (msg) {
                 $("#divValores").html(msg)
@@ -883,38 +910,6 @@
 
         calculaIva();
 
-
-/*
-        function revisarSerieFactura() {
-            var regresa = $.ajax({
-                type: 'POST',
-                async: false,
-                url: '${createLink(controller: 'proceso', action: 'comprobarSerieFactura_ajax')}',
-                data: {
-                    libretin: $("#comprobanteFactura option:selected").val(),
-                    serie: $("#serieFactura").val()
-                },
-                success: function (msg) {
-                }
-            });
-            return regresa.responseText
-        }
-
-        function validarSerieFactura() {
-            var regresaV = $.ajax({
-                type: 'POST',
-                async: false,
-                url: '${createLink(controller: 'proceso', action: 'validarSerieFactura_ajax')}',
-                data: {
-                    proceso: '${proceso?.id}',
-                    serie: $("#serieFactura").val()
-                },
-                success: function (msg) {
-                }
-            });
-            return regresaV.responseText
-        }
-*/
 
         $("#iva12").keyup(function () {
             calculaIva();

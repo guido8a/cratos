@@ -19,6 +19,7 @@ class Proceso implements Serializable {
     cratos.sri.TipoTransaccion tipoTransaccion //incluir en controller
     cratos.sri.SustentoTributario sustentoTributario
     cratos.sri.TipoCmprSustento tipoCmprSustento
+    cratos.sri.TipoCmprSustento modificaCmpr
 //    TipoPago tipoPago
 
     Date fecha
@@ -52,14 +53,10 @@ class Proceso implements Serializable {
     String normaLegal
     String convenio
 
-//    double retencionIvaBienes = 0
-//    double retencionIvaServicios = 0
-//    double retencionIva = 0
-//    String tipoRetencion
-//    String retencionSerie1
-//    String retencionSerie2
-//    String retencionSecuencial
-//    String retencionAutorizacion
+    String modificaSerie01
+    String modificaSerie02
+    String modificaScnc = 0
+    String modificaAutorizacion
 
 
     static auditable = true
@@ -119,21 +116,11 @@ class Proceso implements Serializable {
             convenio column: 'prcscnvn'
             normaLegal column: 'prcsnmlg'
 
-
-//            retencionIvaBienes column: 'prcsrtbn'
-//            retencionIvaServicios column: 'prcsrtsr'
-//            retencionIva column: 'prcsrtiv'
-//            tipoRetencion column: 'prcstprt'
-//            retencionSerie1 column: 'prcsrts1'
-//            retencionSerie2 column: 'prcsrts2'
-//            retencionSecuencial column: 'prcsrtsc'
-//            retencionAutorizacion column: 'prcsrtat'
-//            ordenCompra column: 'odcp__id'
-//            tipoComprobanteId column: 'tcti__id'
-//            tipoSoporte column: 'tpst__id'
-//            pagoAux column: 'pgax__id'
-//            sustentoTributario column: 'sstr__id'
-//            tipoComprobanteSri column: 'tpcp__id'
+            modificaSerie01 column: 'prcsmds1'
+            modificaSerie02 column: 'prcsmds2'
+            modificaScnc column: 'prcsmdsc'
+            modificaAutorizacion column: 'prcsmdat'
+            modificaCmpr column: 'tcstmdfc'
 
         }
     }
@@ -186,22 +173,11 @@ class Proceso implements Serializable {
         convenio(nullable: true,blank: true)
         normaLegal(nullable: true,blank: true)
 
-
-//        retencionIvaBienes(blank: true, nullable: true, attributes: [title: 'retencionIvaBienes'])
-//        retencionIvaServicios(blank: true, nullable: true, attributes: [title: 'retencionIvaServicios'])
-//        retencionIva(blank: true, nullable: true, attributes: [title: 'retencionIva'])
-//        tipoRetencion(blank: true, nullable: true, attributes: [title: 'tipo de rentencion: bienes o servicios'])
-//        retencionSerie1(blank: true, nullable: true)
-//        retencionSerie2(blank: true, nullable: true)
-//        retencionSecuencial(blank: true, nullable: true)
-//        retencionAutorizacion(blank: true, nullable: true)
-//        ordenCompra(blank: true, nullable: true, attributes: [title: 'ordenCompra'])
-//        tipoComprobanteId(blank: true, nullable: true, attributes: [title: 'tipoComprobanteId'])
-//        tipoSoporte(blank: true, nullable: true, attributes: [title: 'tipoSoporte'])
-//        pagoAux(blank: true, nullable: true)
-//        sustentoTributario(blank: true, nullable: true)
-//        tipoComprobanteSri(blank: true, nullable: true)
-
+        modificaSerie01(nullable: true,blank: true)
+        modificaSerie02(nullable: true,blank: true)
+        modificaScnc(nullable: true,blank: true)
+        modificaAutorizacion(nullable: true,blank: true)
+        modificaCmpr(nullable: true,blank: true)
 
     }
 }

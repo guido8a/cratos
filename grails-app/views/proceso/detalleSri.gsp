@@ -121,7 +121,7 @@
                                  title="Número de Establecimento"/> -
                 <g:textField name="numeroEmision" id="numEmision" readonly="true" style="width: 50px" title="Numeración Emisión"/>
 
-                <g:textField name="serie" id="serie" value="${retencion?.numero}" maxlength="9" class="form-control required validacionNumero"
+                <g:textField name="serie" id="serie" value="${retencion?.numero}" maxlength="10" class="form-control required validacionNumero"
                              style="width: 120px; display: inline"/>
 
             </div>

@@ -112,9 +112,9 @@ class ProcesoController extends cratos.seguridad.Shield {
                     proceso.convenio = params.convenio
                     proceso.pais = Pais.get(params.pais)
                 } else {
-                    proceso.normaLegal = ''
-                    proceso.convenio = ''
-                    proceso.pais = ''  // ???
+                    proceso.normaLegal = null
+                    proceso.convenio = null
+                    proceso.pais = null
                 }
                 break
             case 'V':
@@ -225,6 +225,12 @@ class ProcesoController extends cratos.seguridad.Shield {
         } else {
             redirect(controller: "shield", action: "ataques")
         }
+    }
+
+    def cargaGestor = {
+        println "cargar gestor $params "
+        def gstr = Gestor.findAllByEmpresaAndTipoProceso(session.empresa, params.tipo, [sort: 'nombre'])
+        [gstr: gstr]
     }
 
     def cargaComprobantes = {
@@ -1211,7 +1217,27 @@ class ProcesoController extends cratos.seguridad.Shield {
     def valores_ajax () {
         println "valores_ajax $params"
         def proceso = Proceso.get(params.proceso)
-        return[proceso: proceso, tipo: params.tipo]
+        def data = []
+
+        def cn = dbConnectionService.getConnection()
+        def tipo = 0
+        def tpcp = params?.tpcp?.toInteger()
+        if(tpcp in [4, 5] && params.tpps == 'C') {
+            def sql = "select cast(tittcdgo as integer) cdgo from titt, prve, tptr " +
+                    "where prve.tpid__id = titt.tpid__id and prve__id = ${params.prve} and " +
+                    "tptr.tptr__id = titt.tptr__id and tptrcdgo = '1'"
+        println "sql1: $sql"
+            def titt = cn.rows(sql.toString())[0]?.cdgo
+            println "identif: $titt"
+            sql = "select tcst__id id, tcsrcdgo codigo, tcsrdscr descripcion from tcst, tcsr " +
+                  "where tcsr.tcsr__id = tcst.tcsr__id and titt @> '{${titt}}' " +
+                  "order by tcsrcdgo"
+        println "sql2: $sql"
+            data = cn.rows(sql.toString())
+            cn.close()
+        }
+
+        [proceso: proceso, tipo: params.tipo, data: data]
     }
 
     def proveedor_ajax () {
