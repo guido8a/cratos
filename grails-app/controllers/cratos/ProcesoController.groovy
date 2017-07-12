@@ -30,14 +30,6 @@ class ProcesoController extends cratos.seguridad.Shield {
 
     def nuevoProceso = {
 //        println "nuevo proceso "+params
-        def tiposProceso = ["C": "C-Compras (Compras Inventario, Compras Gasto)",
-                            "V": "V-Ventas (Ventas, Reposición de Gasto)",
-                            "A": "A-Ajustes (Diarios y Otros)",
-                            "P": "P-Pagos a proveedores",
-                            "I": "I-Ingresos",
-                            "N": "N-Nota de Crédito",
-                            "D": "D-Nota de Débito"]
-
         def empresa = Empresa.get(session.empresa.id)
         def libreta = DocumentoEmpresa.findAllByEmpresaAndFechaInicioLessThanEqualsAndFechaFinGreaterThanEqualsAndTipo(empresa,
                 new Date(), new Date(),'F', [sort: 'fechaAutorizacion'])
@@ -47,9 +39,9 @@ class ProcesoController extends cratos.seguridad.Shield {
             def registro = (Comprobante.findAllByProceso(proceso)?.size() == 0) ? false : true
             def fps = ProcesoFormaDePago.findAllByProceso(proceso)
 
-            render(view: "procesoForm", model: [proceso: proceso, registro: registro, tiposProceso: tiposProceso, fps: fps, libreta: libreta])
+            render(view: "procesoForm", model: [proceso: proceso, registro: registro, fps: fps, libreta: libreta])
         } else
-            render(view: "procesoForm", model: [registro: false, tiposProceso: tiposProceso, libreta: libreta])
+            render(view: "procesoForm", model: [registro: false, libreta: libreta])
     }
 
     def save = {
@@ -67,7 +59,6 @@ class ProcesoController extends cratos.seguridad.Shield {
 
         if(params.id){
             proceso = Proceso.get(params.id)
-            params.tipoProceso = proceso.tipoProceso
         } else {
             proceso = new Proceso()
             proceso.estado = "N"
@@ -89,11 +80,15 @@ class ProcesoController extends cratos.seguridad.Shield {
         proceso.fechaIngresoSistema = fechaIngresoSistema
         proceso.descripcion = params.descripcion
         proceso.fecha = new Date()
-        proceso.tipoProceso = params.tipoProceso
+
+        println "proceso: ${proceso.id}, tipoProceso: ${params.tipoProceso}, get: ${TipoProceso.get(params.tipoProceso)}"
+
+        proceso.tipoProceso = TipoProceso.get(params.tipoProceso)
+        proceso.usuario = session.usuario
 
 
         switch (params.tipoProceso) {
-            case 'C':
+            case '1': //Compras
                 proceso.tipoTransaccion = TipoTransaccion.get(1)
                 proceso.procesoSerie01 = params.dcmtEstablecimiento
                 proceso.procesoSerie02 = params.dcmtEmision
@@ -116,9 +111,24 @@ class ProcesoController extends cratos.seguridad.Shield {
                     proceso.convenio = null
                     proceso.pais = null
                 }
+                if (params?."mdfcComprobante.id"?.toInteger() > 0) {
+                    println "---- ${TipoCmprSustento.get(params."mdfcComprobante.id".toInteger())}"
+                    proceso.modificaCmpr = TipoCmprSustento.get(params."mdfcComprobante.id".toInteger())
+                    proceso.modificaSerie01 = params.mdfcEstablecimiento
+                    proceso.modificaSerie02 = params.mdfcEmision
+                    proceso.modificaScnc = params.mdfcSecuencial
+                    proceso.modificaAutorizacion = params.mdfcAutorizacion
+                } else {
+                    proceso.modificaCmpr = null
+                    proceso.modificaSerie01 = null
+                    proceso.modificaSerie02 = null
+                    proceso.modificaScnc = null
+                    proceso.modificaAutorizacion = null
+                }
                 break
-            case 'V':
+            case '2':  //ventas
                 proceso.tipoTransaccion = TipoTransaccion.get(2)
+                proceso.documento = params.numEstablecimiento + "-" + params.numeroEmision + "-" + '0' * (9-params.serie.size()) + params.serie
                 proceso.facturaEstablecimiento = params.numEstablecimiento
                 proceso.facturaPuntoEmision = params.numeroEmision
                 proceso.facturaSecuencial = params.serie.toInteger()?:0
@@ -127,7 +137,7 @@ class ProcesoController extends cratos.seguridad.Shield {
 
                 break
 
-            case 'A':
+            case '3':  //Ajustes
                 proceso.tipoTransaccion = null
                 proceso.facturaEstablecimiento = null
                 proceso.facturaPuntoEmision = null
@@ -137,7 +147,18 @@ class ProcesoController extends cratos.seguridad.Shield {
                 proceso.baseImponibleIva = params.valorPago.toDouble()
                 break
 
-            case 'P':
+            case '4':  //Pagos
+                proceso.tipoTransaccion = null
+                proceso.facturaEstablecimiento = null
+                proceso.facturaPuntoEmision = null
+                proceso.facturaSecuencial = 0
+                proceso.tipoCmprSustento = null
+                proceso.proveedor = proveedor
+                proceso.comprobante = Comprobante.get(params.comprobanteSel_name)
+                proceso.baseImponibleIva = params.valorPago.toDouble()
+                break
+
+            case '5':  //Ingresos
                 proceso.tipoTransaccion = null
                 proceso.facturaEstablecimiento = null
                 proceso.facturaPuntoEmision = null
@@ -158,10 +179,11 @@ class ProcesoController extends cratos.seguridad.Shield {
 //        println "tpps: ${proceso.tipoProceso}, fcha: ${proceso.fecha}, fcig: ${proceso.fechaIngresoSistema}"
 //        println "fcrg: ${proceso.fechaRegistro}, fcem: ${proceso.fechaEmision}"
         try {
-            println "...5: $proceso"
+            println "...5: ${proceso.modificaCmpr}"
             proceso.save(flush: true)
             println "...6"
             proceso.refresh()
+            println "...7: ${proceso.modificaCmpr}"
             if (proceso.errors.getErrorCount() == 0) {
                 if (params.data != "") {
                     def data = params.data.split(";")
@@ -195,6 +217,8 @@ class ProcesoController extends cratos.seguridad.Shield {
                         it.delete(flush: true)
                     }
                 }
+            } else {
+                println "errores: ${proceso.errors}"
             }
 
             redirect(action: 'nuevoProceso', id: proceso.id)
@@ -229,7 +253,7 @@ class ProcesoController extends cratos.seguridad.Shield {
 
     def cargaGestor = {
         println "cargar gestor $params "
-        def gstr = Gestor.findAllByEmpresaAndTipoProceso(session.empresa, params.tipo, [sort: 'nombre'])
+        def gstr = Gestor.findAllByEmpresaAndTipoProceso(session.empresa, TipoProceso.get(params.tipo), [sort: 'nombre'])
         [gstr: gstr]
     }
 
@@ -257,10 +281,10 @@ class ProcesoController extends cratos.seguridad.Shield {
         def cn = dbConnectionService.getConnection()
         def tipo = 0
         switch (params.tptr) {
-            case 'C':
+            case '1':
                 tipo = 1
                 break
-            case 'V':
+            case '2':
                 tipo = 2
                 break
             default:
@@ -292,10 +316,10 @@ class ProcesoController extends cratos.seguridad.Shield {
         def cn = dbConnectionService.getConnection()
         def tipo = 0
         switch (params.tptr) {
-            case 'C':
+            case '1':
                 tipo = 1
                 break
-            case 'V':
+            case '2':
                 tipo = 2
                 break
             default:
@@ -1183,9 +1207,9 @@ class ProcesoController extends cratos.seguridad.Shield {
         def cn = dbConnectionService.getConnection()
         def proveedor = Proveedor.get(params.proveedor)
         def sql
-        if(params.tipo == 'P') {
+        if(params.tipo == '4') {
             sql = "select * from porpagar(${proveedor?.id}) where sldo <> 0;"
-        } else if(params.tipo in ['N', 'D', 'I']) {
+        } else if(params.tipo in ['6', '7', '5']) {
             sql = "select cmpr__id, clntnmbr prvenmbr, dscr, debe hber, ntcr pgdo, sldo from ventas(${proveedor?.id}) " +
                     "where sldo <> 0"
         }
@@ -1222,7 +1246,7 @@ class ProcesoController extends cratos.seguridad.Shield {
         def cn = dbConnectionService.getConnection()
         def tipo = 0
         def tpcp = params?.tpcp?.toInteger()
-        if(tpcp in [4, 5] && params.tpps == 'C') {
+        if(tpcp in [4, 5] && params.tpps == '1') {
             def sql = "select cast(tittcdgo as integer) cdgo from titt, prve, tptr " +
                     "where prve.tpid__id = titt.tpid__id and prve__id = ${params.prve} and " +
                     "tptr.tptr__id = titt.tptr__id and tptrcdgo = '1'"
@@ -1251,15 +1275,11 @@ class ProcesoController extends cratos.seguridad.Shield {
         }
 
         switch (params.tipo) {
-            case "P":
+            case ["1", "4"]:  //Pagos
                 tr = TipoRelacion.findAllByCodigoInList(['C','P'])
                 proveedores = Proveedor.findAllByTipoRelacionInList(tr)
                 break
-            case "NC" :
-                tr = TipoRelacion.findAllByCodigoInList(['C','E'])
-                proveedores = Proveedor.findAllByTipoRelacionInList(tr)
-                break
-            case "V"  :
+            case ["2", "6", "7"]:  //ventas, NC y ND
                 tr = TipoRelacion.findAllByCodigoInList(['C','E'])
                 proveedores = Proveedor.findAllByTipoRelacionInList(tr)
                 break
@@ -1298,11 +1318,30 @@ class ProcesoController extends cratos.seguridad.Shield {
         render res
     }
 
+
     def numeracion_ajax () {
         println "numeracion_ajax: $params"
-        def documentoEmpresa = DocumentoEmpresa.get(params.libretin)
-        println "${documentoEmpresa.numeroEstablecimiento}_${documentoEmpresa.numeroEmision}"
-        render "${documentoEmpresa.numeroEstablecimiento}_${documentoEmpresa.numeroEmision}"
+        def cn = dbConnectionService.getConnection()
+        def tpdc = ""
+        switch (params.tpps){
+            case '2':
+                tpdc = 'F'
+                break
+            case '6':
+                tpdc = 'NC'
+                break
+            case '7':
+                tpdc = 'ND'
+                break
+        }
+
+        def sql = "select coalesce(max(prcsfcsc), 0) mxmo from prcs " +
+                "where tpps__id = ${params.tpps}"
+        def nmro = cn.rows(sql.toString())[0]?.mxmo + 1
+        def libretin = DocumentoEmpresa.findAllByTipo(tpdc)
+//        def libretin = cn.rows("select * from fcdt where  fcdttipo = '${tpdc}'".toString())
+//        render "${fcdt.numeroEstablecimiento}_${fcdt.numeroEmision}_${nmro}"
+        [libretin: libretin, estb: libretin[0].numeroEstablecimiento, emsn: libretin[0].numeroEmision, nmro: nmro]
     }
 
     def buscarPrcs() {
@@ -1322,8 +1361,6 @@ class ProcesoController extends cratos.seguridad.Shield {
 
         data = cn.rows(sql.toString())
 
-        def tpps = ["P": "Pago", "C": "Compra", "V": "Venta", "A": "Ajuste", "O": "Otro"]
-
         def msg = ""
         if(data?.size() > 20){
             data.pop()   //descarta el último puesto que son 21
@@ -1333,7 +1370,7 @@ class ProcesoController extends cratos.seguridad.Shield {
         }
         cn.close()
 
-        return [data: data, msg: msg, tpps: tpps]
+        return [data: data, msg: msg]
     }
 
     def validarSerie_ajax () {
@@ -1465,6 +1502,7 @@ class ProcesoController extends cratos.seguridad.Shield {
         println("params save " + params)
         def proceso = Proceso.get(params.proceso)
         def retencion
+        def mnsj
 
         def proveedor = Proveedor.get(proceso.proveedor.id)
         def libretin  = DocumentoEmpresa.get(params.documentoEmpresa)
@@ -1483,6 +1521,13 @@ class ProcesoController extends cratos.seguridad.Shield {
         retencion.direccion = proveedor.direccion
         retencion.fecha = new Date()
         retencion.fechaEmision = new Date().parse("dd-MM-yyyy",params.fechaEmision)
+
+        println "${retencion.fechaEmision} >=  ${proceso.fechaRegistro}"
+        if(retencion.fechaEmision < proceso.fechaRegistro) {
+            mnsj = "La fecha de la retención es anterior a la emisión del comprobante: ${proceso.fechaRegistro.format('dd-MM-yyyy')}"
+            render mnsj
+            return
+        }
 
         retencion.conceptoRIRBienes = ConceptoRetencionImpuestoRenta.get(params.conceptoRIRBienes)
 

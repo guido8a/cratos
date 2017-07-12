@@ -1,5 +1,6 @@
 package cratos
 
+import cratos.inventario.DetalleFactura
 import org.springframework.dao.DataIntegrityViolationException
 
 class DetalleFacturaController extends cratos.seguridad.Shield  {

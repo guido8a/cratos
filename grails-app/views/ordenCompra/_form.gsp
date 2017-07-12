@@ -5,7 +5,7 @@
         <g:message code="ordenCompra.centroCosto.label" default="Centro Costo"/>
         <span class="required-indicator">*</span>
     </label>
-    <g:select id="centroCosto" name="centroCosto.id" from="${cratos.CentroCosto.list()}" optionKey="id" class="many-to-one field ui-widget-content ui-corner-all required" value="${ordenCompraInstance?.centroCosto?.id}"/>
+    <g:select id="centroCosto" name="centroCosto.id" from="${cratos.inventario.CentroCosto.list()}" optionKey="id" class="many-to-one field ui-widget-content ui-corner-all required" value="${ordenCompraInstance?.centroCosto?.id}"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: ordenCompraInstance, field: 'descripcion', 'error')} required">

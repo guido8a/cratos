@@ -4,7 +4,7 @@
 }
 </style>
 
-<g:if test="${tipo == 'P' || tipo == 'A' || tipo == 'I'}">
+<g:if test="${tipo == '4' || tipo == '3' || tipo == '5'}">
     <div class="row" style="font-size: 12px">
         <div class="col-xs-2 negrilla" style="width: 120px">
             Valor:
@@ -16,7 +16,7 @@
         </div>
     </div>
 </g:if>
-<g:elseif test="${tipo == 'N' || tipo == 'D'}">
+<g:elseif test="${tipo == '6' || tipo == '7'}">
     <div class="row" style="font-size: 12px">
         <div class="col-xs-2 negrilla" style="width: 120px">
             Valor:
@@ -40,10 +40,10 @@
         </div>
     </div>
 </g:elseif>
-<g:elseif test="${tipo == 'C' || tipo == 'V'}">
+<g:elseif test="${tipo == '1' || tipo == '2'}">
     <g:set var="iva" value="${cratos.ParametrosAuxiliares.list().first().iva}"/>
 
-    <g:if test="${tipo == 'C'}">
+    <g:if test="${tipo == '1'}">
         <div class="row" style="font-size: 12px">
             <div class="col-xs-3 negrilla">
                 Documento registrado:
@@ -92,16 +92,14 @@
             <div class="col-xs-2 negrilla">
                 Documento afectado:
             </div>
-
-            <div class="col-xs-10 negrilla">
-                <g:select class="form-control cmbRequired" name="mdfcComprobante.id" id="mdfcComprobante"
+            <div class="col-xs-10 negrilla text-info">
+                <g:select class="text-info form-control cmbRequired " name="mdfcComprobante.id" id="mdfcComprobante"
                           from="${data}"
                           optionKey="id" title="Tipo de comprobante"
                           optionValue="${{ it.codigo + ' - ' + it.descripcion }}"
-                          noSelection="${['-1': 'Seleccione...']}" value="${tpcpSri ?: 12}"
+                          noSelection="${['-1': 'Seleccione...']}" value="${proceso?.modificaCmpr?.id ?: 1}"
                           readonly="${estado == 'R' ? true : false}"/>
             </div>
-
         </div>
 
         <div class="row text-info" style="font-size: 12px; margin-bottom: 20px">
@@ -109,24 +107,24 @@
                 Documento modificado:
             </div>
             <div class="col-xs-4 negrilla" style="margin-left: -60px">
-                <div class="col-xs-3">
+                <div class="col-xs-3 text-info">
                     <input type="text" name="mdfcEstablecimiento" id="mdfcEstablecimiento" size="3" maxlength="3"
-                           style="width: 60px;"
-                           value="${proceso?.procesoSerie01}" class="form-control validacionNumero"
+                           style="width: 60px; color:   !important;"
+                           value="${proceso?.modificaSerie01}" class="form-control validacionNumero"
                            validate=" number" placeholder="Establ." ${proceso?.estado == 'R' ? 'disabled' : ''}/>
                 </div>
 
-                <div class="col-xs-3">
+                <div class="col-xs-3 text-info">
                     <input type="text" name="mdfcEmision" id="mdfcEmision" size="3" maxlength="3" style="width: 60px;"
-                           value="${proceso?.procesoSerie02}"
+                           value="${proceso?.modificaSerie02}"
                            class="form-control validacionNumero " validate=" number" placeholder="Emisión"
                            title="El número de punto de emisión del documento" ${proceso?.estado == 'R' ? 'disabled' : ''}/>
                 </div>
 
-                <div class="col-xs-6">
+                <div class="col-xs-6 text-info">
                     <input type="text" name="mdfcSecuencial" id="mdfcSecuencial" size="10" maxlength="9"
                            style="width: 110px;"
-                           value="${proceso?.secuencial}"
+                           value="${proceso?.modificaScnc}"
                            class="form-control label-shared validacionNumero " validate=" number"
                            title="El número de secuencia del documento" ${proceso?.estado == 'R' ? 'disabled' : ''}
                            placeholder="Secuencial"/>
@@ -139,7 +137,7 @@
 
             <div class="col-xs-2 negrilla">
                 <input type="text" name="mdfcAutorizacion" id="mdfcAutorizacion" size="10" maxlength="15"
-                       value="${proceso?.autorizacion}" class=" digits form-control label-shared validacionNumero"
+                       value="${proceso?.modificaAutorizacion}" class=" digits form-control label-shared validacionNumero"
                        validate=" number" placeholder="Autorización"
                        title="El número autorización de la factura a registrar " ${registro ? 'disabled' : ''}/>
             </div>
@@ -196,6 +194,16 @@
 
         <div class="col-xs-2 negrilla">
             <input type="text" name="iceGenerado" id="iceGenerado" value="${proceso?.iceGenerado ?: 0.00}"
+                   class="required number form-control validacionNumero"
+                   validate="required number" ${proceso?.estado == 'R' ? 'disabled' : ''}/>
+        </div>
+
+        <div class="col-xs-2 negrilla" style="width: 120px">
+            Flete:
+        </div>
+
+        <div class="col-xs-2 negrilla">
+            <input type="text" name="flete" id="flete" value="${proceso?.iceGenerado ?: 0.00}"
                    class="required number form-control validacionNumero"
                    validate="required number" ${proceso?.estado == 'R' ? 'disabled' : ''}/>
         </div>

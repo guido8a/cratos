@@ -1,5 +1,7 @@
 package cratos
 
+import cratos.inventario.Bodega
+import cratos.inventario.DetalleFactura
 import cratos.sri.TipoIdentificacion
 import org.springframework.dao.DataIntegrityViolationException
 

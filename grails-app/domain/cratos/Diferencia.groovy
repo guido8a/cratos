@@ -1,9 +1,11 @@
 package cratos
 
+import cratos.inventario.Item
+
 class Diferencia implements Serializable {
     Date fecha
     Empresa empresa
-    Item2 item
+    Item item
     double cntd
     static mapping = {
         table 'diff'

@@ -1,5 +1,6 @@
 package cratos
 
+import cratos.inventario.CentroCosto
 import org.krysalis.barcode4j.impl.code128.EAN128Bean
 import org.springframework.dao.DataIntegrityViolationException
 

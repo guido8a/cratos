@@ -1,11 +1,13 @@
 package cratos
 
+import cratos.inventario.Item
+
 class Consumo implements Serializable {
 
     double precioUnitario
     double descuento
     double cantidad
-    Item2 item
+    Item item
     Factura factura
     String observaciones
     static auditable = true

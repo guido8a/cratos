@@ -1,13 +1,13 @@
 package cratos
 
 class Gestor implements Serializable {
+    TipoProceso tipoProceso
     String estado
     Date fecha
     String nombre
     Empresa empresa
     Fuente fuente
     String observaciones
-    String tipoProceso
     String esDepreciacion // S si, N no
     static auditable = true
     static hasMany = [movimientos: Genera]
@@ -17,14 +17,14 @@ class Gestor implements Serializable {
         id column: 'gstr__id'
         id generator: 'identity'
         version false
+
         columns {
             estado column: 'gstretdo'
             fecha column: 'gstrfcha'
-//            descripcion column: 'gstrdscr'
             nombre column: 'gstrnmbr'
             empresa column: 'empr__id'
             fuente column: 'fnte__id'
-            tipoProceso column: 'gstrtpps'
+            tipoProceso column: 'tpps__id'
             observaciones column: 'gstrobsr'
             esDepreciacion column: 'gstrdprc'
         }

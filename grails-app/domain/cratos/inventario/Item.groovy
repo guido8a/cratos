@@ -19,6 +19,8 @@ class Item implements Serializable {
     Marca marca
     TipoIVA tipoIVA
 
+    double ice = 0 //porcentaje de ice q paga el item en decimal: 0.35 para 35%
+
     String observaciones
     String foto
 
@@ -49,6 +51,7 @@ class Item implements Serializable {
             precioCosto column: 'itempccs'
             marca column: 'mrca__id'
             tipoIVA column: 'tpiv__id'
+            ice column: 'item_ice'
 
             observaciones column: 'itemobsr'
             foto column: 'itemfoto'
@@ -65,6 +68,8 @@ class Item implements Serializable {
         fecha(blank: true, nullable: true, attributes: [title: 'fecha'])
         fechaRegistro(blank: true, nullable: true, attributes: [title: 'fecha de registro'])
         fechaModificacion(blank: true, nullable: true, attributes: [title: 'fecha de ultima modificacion'])
+
+        ice(blank: false, nullable: false, attributes: [title: '% de ice'])
 
         stockMaximo(blank: true, nullable: true, attributes: [title: 'stock máximo'])
         stockMinimo(blank: true, nullable: true, attributes: [title: 'stock mínimo'])

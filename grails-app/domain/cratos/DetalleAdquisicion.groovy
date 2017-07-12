@@ -1,5 +1,8 @@
 package cratos
 
+import cratos.inventario.Bodega
+import cratos.inventario.Item
+
 class DetalleAdquisicion implements Serializable {
     double subtotal
     double iva
@@ -7,7 +10,7 @@ class DetalleAdquisicion implements Serializable {
     double precioUnitario
     double cantidad
     Adquisiciones adquisiciones
-    Item2 item
+    Item item
     String estado //0: default: no recibido, 1: recibido
     Bodega bodega
     static auditable = true

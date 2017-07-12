@@ -1,5 +1,7 @@
 package cratos
 
+import cratos.inventario.CentroCosto
+
 class OrdenCompra implements Serializable {
 
     CentroCosto centroCosto

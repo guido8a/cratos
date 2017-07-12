@@ -1,5 +1,7 @@
 package cratos
 
+import cratos.inventario.Item
+
 class ReportesController {
 
     def cuentasService
@@ -311,7 +313,7 @@ class ReportesController {
             if (!item) {
                 println "no item " + parts[0]
                 println "parts " + parts
-                def i = new Item2()
+                def i = new Item()
                 i.nombre = parts[0]
                 i.precioUnitario = parts[1].toDouble() * 1.11
                 i.codigo = "md-$cont"

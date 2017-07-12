@@ -1,10 +1,13 @@
 package cratos
 
+import cratos.inventario.Bodega
+import cratos.inventario.Item
+
 class Existencias implements Serializable {
     Date fecha
     double cantidad
     Empresa empresa
-    Item2 item
+    Item item
     double existenciaInicial
 
     Bodega bodega

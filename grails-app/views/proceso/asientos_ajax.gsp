@@ -15,6 +15,10 @@
         text-align: right;
     }
 
+    .izquierda {
+        text-align: left;
+    }
+
     .dato {
         font-weight: normal;
         background-color:  #fffddc;
@@ -107,9 +111,10 @@
                                 <td class="colorAtras"><i class="fa fa-pencil"></i></td>
                             </tr>
                             <tr class="colorAtras">
+                                <g:set var="dcmt" value="${auxiliar?.comprobante?.proceso?.documento? ' - Doc: ' + auxiliar?.comprobante?.proceso?.documento : ''}"/>
                                 <td class="dato">${auxiliar?.fechaPago?.format("dd-MM-yyyy")}</td>
-                                %{--<td class="dato">${auxiliar?.proveedor?.nombre - auxiliar?.comprobante?.numero}</td>--}%
-                                <td class="dato">${auxiliar?.proveedor?.nombre} - ${auxiliar?.comprobante?.prefijo} - ${auxiliar?.comprobante?.numero}</td>
+                                %{--<td class="dato">${auxiliar?.proveedor?.nombre} - ${auxiliar?.comprobante?.prefijo} - ${auxiliar?.comprobante?.numero}</td>--}%
+                                <td class="dato izquierda">${auxiliar?.proveedor?.nombre} ${dcmt}</td>
                                 <td class="dato derecha">${auxiliar?.debe ? g.formatNumber(number: auxiliar.debe, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2) : 0.00}</td>
                                 <td class="dato derecha">${auxiliar.haber ? g.formatNumber(number: auxiliar.haber, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2) : 0.00}</td>
 

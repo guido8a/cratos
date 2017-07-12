@@ -1,4 +1,6 @@
-package cratos
+package cratos.inventario
+
+import cratos.Empresa
 
 class CentroCosto implements Serializable {
 

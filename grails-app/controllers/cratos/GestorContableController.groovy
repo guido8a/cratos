@@ -5,17 +5,9 @@ class GestorContableController extends cratos.seguridad.Shield {
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
     def buscadorService
     def index = {
-        session.movimientos=[]
     }
 
     def buscarGestor() {
-        def tiposProceso = ["C": "C-Compras (Compras Inventario, Compras Gasto)",
-                            "V": "V-Ventas (Ventas, Reposición de Gasto)",
-                            "A": "A-Ajustes (Diarios y Otros)",
-                            "P": "P-Pagos a proveedores",
-                            "I": "I-Ingresos",
-                            "N": "N-Nota de Crédito",
-                            "D": "D-Nota de Débito"]
         session.movimientos=[]
 //        println "params " + params
         def lista = buscadorService.buscar(Gestor, "Gestor", "incluyente", [campos: ["nombre", "descripcion"],
@@ -23,12 +15,11 @@ class GestorContableController extends cratos.seguridad.Shield {
              true," and empresa=${session.empresa.id}")
         def numRegistros = lista.get(lista.size() - 1)
         lista.pop()
-        return [lista: lista, tpps: tiposProceso]
+        return [lista: lista]
     }
 
     def nuevoGestor() {
         //println "nuevo gestor " + params
-        session.movimientos=[]
         def gestorInstance
         def nuevo = true
         def tipoCom
@@ -196,20 +187,6 @@ class GestorContableController extends cratos.seguridad.Shield {
     }
 
     def verGestor() {
-/*
-        def gestor = Gestor.get(params.id)
-        def c = Genera.findAllByGestor(gestor)
-        println "ver gestor "
-        session.movimientos = Genera.findAll("from Genera where gestor=${gestor.id} order by debeHaber,cuenta")
-        if(session.movimientos.size()>0)
-            session.tipoComp=session.movimientos[0].tipoComprobante
-        if (!gestor) {
-            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'Gestor.label', default: 'Gestor'), params.id])}"
-            redirect(action: "index")
-        } else {
-            [gestor: gestor, cuentas: session.movimientos]
-        }
-*/
         params.ver = 1
         redirect(action: 'formGestor', params: params)
     }
@@ -281,19 +258,12 @@ class GestorContableController extends cratos.seguridad.Shield {
 
     def formGestor () {
         def titulo = "Nuevo Gestor"
-        def tiposProceso = ["C": "C-Compras (Compras Inventario, Compras Gasto)",
-                            "V": "V-Ventas (Ventas, Reposición de Gasto)",
-                            "A": "A-Ajustes (Diarios y Otros)",
-                            "P": "P-Pagos a proveedores",
-                            "I": "I-Ingresos",
-                            "N": "N-Nota de Crédito",
-                            "D": "D-Nota de Débito"]
         if(params.id){
             titulo = params.ver? "Ver Gestor" : "Editar Gestor"
             def gestorInstance = Gestor.get(params.id)
-            return [gestorInstance: gestorInstance, verGestor: params.ver, titulo: titulo, tpps: tiposProceso]
+            return [gestorInstance: gestorInstance, verGestor: params.ver, titulo: titulo]
         } else
-            return [verGestor: params.ver, titulo: titulo, tpps: tiposProceso]
+            return [verGestor: params.ver, titulo: titulo]
     }
 
     def tablaGestor_ajax () {
@@ -404,13 +374,13 @@ class GestorContableController extends cratos.seguridad.Shield {
         if(params.gestor){
             gestor = Gestor.get(params.gestor)
             gestor.nombre = params.nombre
-            gestor.tipoProceso = params.tipoProceso
+            gestor.tipoProceso = TipoProceso.get(params.tipoProceso)
             gestor.observaciones = params.observacion
             gestor.fuente = fuente
         }else{
             gestor = new Gestor()
             gestor.nombre = params.nombre
-            gestor.tipoProceso = params.tipoProceso
+            gestor.tipoProceso = TipoProceso.get(params.tipoProceso)
             gestor.observaciones = params.observacion
             gestor.fuente = fuente
             gestor.empresa = empresa

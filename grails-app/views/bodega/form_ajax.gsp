@@ -1,4 +1,4 @@
-<%@ page import="cratos.Bodega" %>
+<%@ page import="cratos.inventario.Bodega" %>
 
 <script type="text/javascript" src="${resource(dir: 'js', file: 'ui.js')}"></script>
 <g:if test="${!bodegaInstance}">
@@ -44,7 +44,7 @@
                 </label>
 
                 <div class="col-md-6">
-                    <g:select id="centroCosto" name="centroCosto.id" from="${cratos.CentroCosto.list()}" optionKey="id" optionValue="nombre"
+                    <g:select id="centroCosto" name="centroCosto.id" from="${cratos.inventario.CentroCosto.list()}" optionKey="id" optionValue="nombre"
                               value="${bodegaInstance?.centroCosto?.id}" class="many-to-one form-control"
                               noSelection="['null': 'Seleccione...']"/>
                 </div>

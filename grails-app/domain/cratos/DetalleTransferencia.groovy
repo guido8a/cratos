@@ -1,8 +1,10 @@
 package cratos
 
+import cratos.inventario.Item
+
 class DetalleTransferencia implements Serializable {
     double cantidad
-    Item2 item
+    Item item
     Transferencia transferencia
     double precioUnitario
     static mapping = {

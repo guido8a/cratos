@@ -1,5 +1,7 @@
 package cratos
 
+import cratos.inventario.Bodega
+import cratos.inventario.CentroCosto
 import org.springframework.dao.DataIntegrityViolationException
 
 class TransferenciaController {

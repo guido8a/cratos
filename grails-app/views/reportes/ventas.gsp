@@ -35,7 +35,7 @@
         <g:set var="totCant" value="${0}"></g:set>
         <g:each in="${ventas}" var="v">
 
-            <g:each in="${cratos.DetalleFactura.findAllByFactura(v)}" var="dt">
+            <g:each in="${cratos.inventario.DetalleFactura.findAllByFactura(v)}" var="dt">
                 <tr>
                     <td>${v.facturaSerie01+" "+v.facturaSerie02+" "+v.secuencial}</td>
                     <td>${v.fecha.format("dd/MM/yyyy hh:mm")}</td>

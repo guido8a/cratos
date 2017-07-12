@@ -1,4 +1,4 @@
-<%@ page import="cratos.CentroCosto" %>
+<%@ page import="cratos.inventario.CentroCosto" %>
 
 
 <div class="fieldcontain ${hasErrors(bean: centroCostoInstance, field: 'nombre', 'error')} required">

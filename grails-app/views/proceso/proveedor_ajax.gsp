@@ -4,7 +4,7 @@
   Date: 23/05/17
   Time: 13:20
 --%>
-<g:if test="${(tipo == 'C' || tipo == 'P')}">
+<g:if test="${(tipo == '1' || tipo == '4')}">
     <div class="col-xs-2 negrilla">
         Proveedor:
     </div>
@@ -54,7 +54,7 @@
         <input type="hidden" name="proveedor.id" id="prve_id" value="${proceso?.proveedor?.id}">
     </div>
 </g:if>
-<g:elseif test="${tipo == 'V' || tipo == 'I' || tipo == 'N' || tipo == 'D'}">
+<g:elseif test="${tipo == '2' || tipo == '5' || tipo == '6' || tipo == '7'}">
     <div class="col-xs-2 negrilla">
         Cliente:
     </div>
@@ -196,9 +196,9 @@
         var tipo = $("#tipoProceso").val()
         console.log("btn_cargar, tipo:", tipo);
         console.log("ruc: ", $("#prve").val());
-        if($("#prve").val() != '' && (tipo == 'C'))
+        if($("#prve").val() != '' && (tipo == '1'))
             cargarSstr($("#prve__id").val())
-        if($("#prve").val() != '' && (tipo == 'P' || tipo == 'N' || tipo == 'D'))
+        if($("#prve").val() != '' && (tipo == '4' || tipo == '6' || tipo == '7'))
             console.log('remueve hide...')
             $("#btnBuscarComp").removeClass('hidden')
     });
@@ -207,9 +207,9 @@
         var tipo = $("#tipoProceso").val()
         var prve = $("#prve__id").val()
         console.log("ttpp: ", $("#tipoProceso").val());
-        if($("#prve").val() != '' && (tipo == 'N' || tipo == 'D'  || tipo == 'I'))
+        if($("#prve").val() != '' && (tipo == '6' || tipo == '7'  || tipo == '5'))
             $("#btnBuscarComp").removeClass('hidden')
-        if($("#prve").val() != '' && (tipo == 'V'))
+        if($("#prve").val() != '' && (tipo == '2'))
             cargarTcsr(prve)
     });
 </script>

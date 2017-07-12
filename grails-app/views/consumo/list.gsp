@@ -55,7 +55,7 @@
                                 </td>
                                 <td>${cratos.Consumo.findAllByFactura(factura).size()}</td>
                                 <td>
-                                    <g:set var="detallesFactura" value="${cratos.DetalleFactura.findAllByFactura(factura).size()}"/>
+                                    <g:set var="detallesFactura" value="${cratos.inventario.DetalleFactura.findAllByFactura(factura).size()}"/>
                                     ${detallesFactura > 0 ? "SI" : "NO"}
                                 </td>
                             </tr>

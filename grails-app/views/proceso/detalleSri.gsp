@@ -36,7 +36,7 @@
 
     <g:if test="${proceso?.estado != 'R'}">
         <div class="btn-group">
-            <a href="#" class="btn btn-success" id="btnGuardarRetencion"><i class="fa fa-floppy-o"></i> Guardar</a>
+            <a href="#" class="btn btn-success" id="btnGuardar"><i class="fa fa-floppy-o"></i> Guardar</a>
         </div>
     </g:if>
     <div class="text-info negrilla" style="margin-left: 10px; text-align: right; width: 400px; display: inline-block">Transacción: ${proceso.descripcion}</div>
@@ -99,7 +99,7 @@
 
             <div class="col-xs-2">
                 <elm:datepicker name="fechaEmision_name" class="datepicker required form-control fechaEmision"
-                                value="${retencion?.fechaEmision ?: proceso.fechaRegistro}"/>
+                                value="${retencion?.fechaEmision ?: proceso.fechaRegistro}" minDate="${proceso.fechaRegistro}"/>
             </div>
         </div>
 
@@ -484,7 +484,7 @@
     }
 
 
-    $("#btnGuardarRetencion").click(function () {
+    $("#btnGuardar").click(function () {
 //        console.log('clic ..guardar...')
         var error = '';
         var concepto = $("#conceptoReta option:selected").val();
@@ -546,7 +546,7 @@
                             ${proceso?.id}
                         }, 800);
                     } else {
-                        log("Error al guardar la información de la retención", "error")
+                        log(msg, "error")
                     }
                     closeLoader()
                 }

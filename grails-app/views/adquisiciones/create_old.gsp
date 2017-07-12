@@ -617,7 +617,7 @@
                                 %{--</div>--}%
 
                                 %{--<div class="span-6">--}%
-                                %{--<g:select name="centro" from="${cratos.CentroCosto.findAllByEmpresa(session.empresa)}"--}%
+                                %{--<g:select name="centro" from="${cratos.inventario.CentroCosto.findAllByEmpresa(session.empresa)}"--}%
                                 %{--optionKey="id" optionValue="nombre" id="centro"></g:select>--}%
 
                                 %{--</div>--}%

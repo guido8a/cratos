@@ -1,5 +1,6 @@
 package cratos
 
+import cratos.inventario.Bodega
 import org.springframework.dao.DataIntegrityViolationException
 
 class BodegaController extends cratos.seguridad.Shield {

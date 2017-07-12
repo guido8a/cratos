@@ -36,7 +36,7 @@ th, td {
                 </td>
 
                 <td width="80px" class="text-info">
-                    ${tpps[dato.prcstpps]}
+                    ${dato.tpps}
                 </td>
 
                 <td width="180px" class="text-info">

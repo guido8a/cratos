@@ -68,7 +68,7 @@
 
     <body>
 
-        <g:set var="detalles" value="${cratos.DetalleFactura.findAllByFactura(facturaInstance)}"/>
+        <g:set var="detalles" value="${cratos.inventario.DetalleFactura.findAllByFactura(facturaInstance)}"/>
         <g:set var="tipo" value="factura"/>
         <g:if test="${detalles.size() == 0}">
             <g:set var="detalles" value="${cratos.Consumo.findAllByFactura(facturaInstance)}"/>

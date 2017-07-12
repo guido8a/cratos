@@ -1,4 +1,4 @@
-<%@ page import="cratos.Bodega" %>
+<%@ page import="cratos.inventario.Bodega" %>
 <h1>Item: ${detalle.item.codigo}  ${detalle.item.nombre}</h1>
 Cantidad Total: <g:formatNumber number="${detalle.cantidad}" minFractionDigits="2" maxFractionDigits="2"/><br>
 Cantidad Restante por Asignar: <g:formatNumber number="${detalle.cantidad - cant}" minFractionDigits="2"

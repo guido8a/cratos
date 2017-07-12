@@ -1,7 +1,7 @@
 package cratos
 
+import cratos.inventario.Bodega
 import cratos.sri.Pais
-import cratos.sri.TipoDePagoSri
 
 class Proceso implements Serializable {
     Gestor gestor
@@ -10,11 +10,9 @@ class Proceso implements Serializable {
     Proveedor proveedor
     Comprobante comprobante  /* relacionado para NC */
     cratos.seguridad.Persona usuario
+    TipoProceso tipoProceso
 
     RolPagos rolPagos
-    Adquisiciones adquisicion
-    Factura factura
-    Transferencia transferencia
 
     cratos.sri.TipoTransaccion tipoTransaccion //incluir en controller
     cratos.sri.SustentoTributario sustentoTributario
@@ -27,7 +25,7 @@ class Proceso implements Serializable {
     Date fechaEmision
     Date fechaIngresoSistema
     String descripcion
-    String tipoProceso /*para saber si es compra, venta etc etc........... C--> compra, V---> venta, A--> Ajuste, O--> otros, R->Depreciacion*/
+//    String tipoProceso /*para saber si es compra, venta etc etc........... C--> compra, V---> venta, A--> Ajuste, O--> otros, R->Depreciacion*/
     String estado
 
     double baseImponibleIva = 0
@@ -58,6 +56,8 @@ class Proceso implements Serializable {
     String modificaScnc = 0
     String modificaAutorizacion
 
+    Bodega bodega
+    Bodega bodegaRecibe
 
     static auditable = true
 
@@ -75,11 +75,8 @@ class Proceso implements Serializable {
             comprobante column: 'cmpr__id'
             usuario column: 'prsn__id'
 
+            tipoProceso column: 'tpps__id'
             rolPagos column: 'rlpg__id'
-            adquisicion column: 'adqc__id'
-            factura column: 'fctr__id'
-            transferencia column: 'trnf__id'
-
             tipoTransaccion column: 'tptr__id'
             sustentoTributario column: 'sstr__id'
             tipoCmprSustento column: 'tcst__id'
@@ -90,7 +87,6 @@ class Proceso implements Serializable {
             fechaEmision column: 'prcsfcem'
             fechaIngresoSistema column: 'prcsfcis'
             descripcion column: 'prcsdscr'
-            tipoProceso column: 'prcstpps'
             estado column: 'prcsetdo'
 
             baseImponibleIva column: 'prcsbsnz'
@@ -122,6 +118,8 @@ class Proceso implements Serializable {
             modificaAutorizacion column: 'prcsmdat'
             modificaCmpr column: 'tcstmdfc'
 
+            bodega column: 'bdga__id'
+            bodegaRecibe column: 'bdgarcbe'
         }
     }
     static constraints = {
@@ -131,11 +129,9 @@ class Proceso implements Serializable {
         proveedor(blank: true, nullable: true, attributes: [title: 'proveedor'])
         comprobante(nullable: true, blank: true)
         usuario(blank: true, nullable: true, attributes: [title: 'usuario'])
+        tipoProceso(nullable: false,blank: false)
 
         rolPagos(blank: true, nullable: true, attributes: [title: 'rolPagos'])
-        adquisicion(blank: true, nullable: true, attributes: [title: 'adquisicion'])
-        factura(blank: true, nullable: true, attributes: [title: 'factura'])
-        transferencia(blank: true, nullable: true, attributes: [title: 'transferencia'])
 
         tipoTransaccion(nullable: true, blank: true)
         sustentoTributario(nullable: true, blank: true)
@@ -147,7 +143,6 @@ class Proceso implements Serializable {
         fechaEmision(blank: true, nullable: true, attributes: [title: 'fechaEmision'])
         fechaIngresoSistema(blank: true, nullable: true)
         descripcion(size: 1..255, blank: true, nullable: true, attributes: [title: 'descripcion'])
-        tipoProceso(nullable: true,blank: true,size: 1..1)
         estado(blank: true, maxSize: 1, attributes: [title: 'estado'])
 
         baseImponibleIva(blank: true, nullable: true, attributes: [title: 'baseImponibleIva'])
@@ -179,5 +174,7 @@ class Proceso implements Serializable {
         modificaAutorizacion(nullable: true,blank: true)
         modificaCmpr(nullable: true,blank: true)
 
+        bodega(nullable: true,blank: true)
+        bodegaRecibe(nullable: true,blank: true)
     }
 }

@@ -115,7 +115,7 @@
                     Centro de Costo:
                 </div>
                 <div class="col-xs-3">
-                    <g:select from="${cratos.CentroCosto.findAllByEmpresa(session.empresa, [sort: 'nombre'])}"
+                    <g:select from="${cratos.inventario.CentroCosto.findAllByEmpresa(session.empresa, [sort: 'nombre'])}"
                               name="centroCosto" class="form-control required"
                               value="${ordenCompraInstance.centroCostoId}" style="width: 300px" optionKey="id"
                               optionValue="nombre"/>

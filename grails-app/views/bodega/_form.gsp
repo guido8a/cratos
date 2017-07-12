@@ -1,4 +1,4 @@
-<%@ page import="cratos.Bodega" %>
+<%@ page import="cratos.inventario.Bodega" %>
 
 
 
@@ -7,7 +7,7 @@
 		<g:message code="bodega.centroCosto.label" default="Centro de Costo" />
 		
 	</label>
-	<g:select id="centroCosto" name="centroCosto.id" from="${cratos.CentroCosto.list()}" optionKey="id"
+	<g:select id="centroCosto" name="centroCosto.id" from="${cratos.inventario.CentroCosto.list()}" optionKey="id"
               class="many-to-one ui-widget-content ui-corner-all" value="${bodegaInstance?.centroCosto?.id}"
               noSelection="['null': '']" style="width: 400px;"/>
 </div>

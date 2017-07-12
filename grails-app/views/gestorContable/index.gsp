@@ -60,14 +60,14 @@
     <table class="table table-bordered table-hover table-condensed" width="800px">
         <thead>
         <tr>
-            <th style="width: 460px">
+            <th style="width: 80px">
+                Proceso
+            </th>
+            <th style="width: 600px">
                 Nombre
             </th>
             <th style="width: 60px">
                 Estado
-            </th>
-            <th style="width: 220px">
-                Observaciones
             </th>
             <th style="width: 60px">Acciones</th>
         </tr>

@@ -72,7 +72,7 @@
             </a>
         </g:if>
         <g:if test="${params.id}">
-            <g:if test="${proceso.adquisicion == null && proceso.factura == null && proceso.transferencia == null && !registro}">
+            <g:if test="${!registro}">
                 <a href="#" class="btn btn-info" id="registrarProceso">
                     <i class="fa fa-check"></i>
                     Registrar
@@ -82,7 +82,7 @@
 
         <g:if test="${proceso}">
             <g:if test="${!aux}">
-                <g:if test="${proceso?.tipoProceso != 'P'}">
+                <g:if test="${proceso?.tipoProceso?.id != 4}">
                     <g:form action="borrarProceso" class="br_prcs" style="margin:0px;display: inline">
                         <input type="hidden" name="id" value="${proceso?.id}">
                         <a class="btn btn-danger" id="btn-br-prcs" action="borrarProceso">
@@ -100,7 +100,7 @@
             </g:else>
 
 
-            <g:if test="${proceso?.tipoProceso == 'C'}">
+            <g:if test="${proceso?.tipoProceso?.id == 1}">
                 <g:link class="btn btn-primary" action="detalleSri" id="${proceso?.id}" style="margin-bottom: 10px;">
                     <i class="fa fa-money"></i> Retenciones
                 </g:link>
@@ -147,8 +147,9 @@
 
             <div class="col-xs-4 negrilla">
                 <g:select class="form-control required cmbRequired tipoProcesoSel" name="tipoProceso" id="tipoProceso"
-                          from="${tiposProceso}" label="Proceso tipo: " value="${proceso?.tipoProceso}" optionKey="key"
-                          optionValue="value" title="Tipo de la transacción" disabled="${registro ? true : false}"/>
+                          from="${cratos.TipoProceso.list(sort: 'codigo')}" label="Proceso tipo: "
+                          value="${proceso?.tipoProceso?.id}" optionKey="id"
+                          optionValue="descripcion" title="Tipo de la transacción" disabled="${registro ? true : false}"/>
             </div>
 
             <div class="col-xs-1 negrilla">
@@ -162,7 +163,7 @@
                 <g:else>
                     <elm:datepicker name="fecha" title="Fecha de emisión del comprobante"
                                     class="datepicker form-control required col-xs-3"
-                                    value="${proceso?.fecha}" maxDate="new Date()"
+                                    value="${proceso?.fechaRegistro}" maxDate="new Date()"
                                     style="width: 80px; margin-left: 5px"/>
                 </g:else>
             </div>
@@ -178,7 +179,7 @@
                 <g:else>
                     <elm:datepicker name="fecharegistro" title="Fecha de registro en el sistema"
                                     class="datepicker form-control required col-xs-3"
-                                    value="${proceso?.fecha}" maxDate="new Date()"
+                                    value="${proceso?.fechaIngresoSistema}" maxDate="new Date()"
                                     style="width: 80px; margin-left: 5px"/>
                 </g:else>
             </div>
@@ -228,6 +229,7 @@
         </div>
 
         <div class="row" id="libretinFacturas">
+%{--
             <div class="col-xs-2 negrilla">
                 Libretín de Facturas:
             </div>
@@ -251,6 +253,7 @@
 
             </div>
             <p class="help-block ui-helper-hidden"></p>
+--}%
         </div>
 
         <div class="row" id="pagoProceso">
@@ -488,7 +491,7 @@
             cargarProveedor(tipo)
         }
 
-        if (prve && (tipo == 'C')) {
+        if (prve && (tipo == '1')) {
             $("#libretinFacturas").hide()
             $("#pagoProceso").show()
             cargarProveedor(tipo);
@@ -500,48 +503,56 @@
             setTimeout(function () {
                 if ("${proceso?.tipoCmprSustento}") {
                     $("#tipoCmprSustento").change();
-                    cargarTipo(tipo, "${proceso?.tipoCmprSustento.id}", "${proceso?.proveedor?.id}", "${proceso?.tipoProceso}");
+                    cargarTipo(tipo, "${proceso?.tipoCmprSustento?.id}", "${proceso?.proveedor?.id}", "${proceso?.tipoProceso?.id}");
                 }
             }, 1000);
         }
 
-        if (prve && (tipo == 'V')) {
+        if (prve && (tipo == '2')) {
             $("#libretinFacturas").show()
             $("#pagoProceso").hide()
             cargarProveedor(tipo);
             cargarTcsr(prve)
+//            cargarTipo(tipo);
+        }
+        if(tipo == '2') {
+            $("#libretinFacturas").show()
+            $("#pagoProceso").hide()
+//            $("#libretin").change();
+            cargarLibretin();
         }
 
-        if (tipo == 'A') {
+        if (tipo == '3') {
             $("#libretinFacturas").hide()
             $("#pagoProceso").hide()
+//            cargarTipo(tipo);
         }
 
-        if (tipo == 'P' || tipo == 'I' || tipo == 'N' || tipo == 'D') {
+        if (tipo == '4' || tipo == '5' || tipo == '6' || tipo == '7') {
             $("#libretinFacturas").hide()
             $("#pagoProceso").hide()
             $("#divFilaComprobante").show()
+//            cargarTipo(tipo);
         }
 
         cargarBotonBuscar($(".tipoProcesoSel option:selected").val());
-        %{--<g:if test="${proceso?.id && (proceso?.tipoProceso in ['P', 'N', 'D'])}">--}%
-        if (tipo =='P' || tipo == 'N' || tipo == 'D' || tipo == 'I') {
+        if (tipo =='4' || tipo == '6' || tipo == '7' || tipo == '5') {
             console.log('carga ComPago')
             cargarCompPago();
         }
 
-//        cargarTipo(tipo);
+        if(tipo != '1') cargarTipo(tipo);
     });
 
     $("#tipoProceso").change(function () {
         var tipo = $(".tipoProcesoSel option:selected").val();
-        console.log('tipo...:', tipo);
+
         $("#divComprobanteSustento").html('');
         $("#divComprobanteSustento").hide();
         $("#divSustento").html('');
         $("#divSustento").hide();
 
-        if (tipo == 'C' || tipo == 'V' || tipo == 'P' || tipo == 'I' || tipo == 'N' || tipo == 'D') {
+        if (tipo == '1' || tipo == '2' || tipo == '4' || tipo == '5' || tipo == '6' || tipo == '7') {
             cargarProveedor(tipo);
         } else {
             $("#divCargaProveedor").html('');
@@ -550,14 +561,16 @@
 
 //        cargarTipo(tipo);
 
-        if (tipo == 'V') {
-            $("#libretin").change();
+        if (tipo == '2') {
+            console.log('libretin con tpps:', tipo);
+//            $("#libretin").change();
+            cargarLibretin();
             $("#libretinFacturas").show()
         } else {
             $("#libretinFacturas").hide()
         }
 
-        if (tipo != 'C') {
+        if (tipo != '1') {
             console.log('No es C');
             $("#pagoProceso").hide()
         } else {
@@ -565,7 +578,7 @@
             $("#pagoProceso").show()
         }
 
-        if (tipo == 'P' || tipo == 'I' || tipo == 'N' || tipo == 'D') {
+        if (tipo == '4' || tipo == '5' || tipo == '6' || tipo == '7') {
             cargarCompPago()
         } else {
             $("#divFilaComprobante").hide()
@@ -699,7 +712,7 @@
             },
             success: function (msg) {
                 $("#divValores").html(msg)
-                if(tipo == 'C' || tipo == 'V' || tipo == 'N' || tipo == 'D') {
+                if(tipo == '1' || tipo == '2' || tipo == '6' || tipo == '7') {
 //                    $("#lblValores").html(flecha + "Valores")
                     $("#lblValores").html("Valores")
                 } else {
@@ -788,7 +801,7 @@
             $("#listaErrores").html('');
             $("#divErrores").hide();
 
-            if (tipoP == 'C') {   /* compras */
+            if (tipoP == '1') {   /* compras */
                 if ($("#fecha_input").val().length < 10) {
                     error += "<li>Seleccione la fecha de emisión</li>"
                 }
@@ -841,7 +854,7 @@
                 }
             }
 
-            if (tipoP == 'V') {   /* compras */
+            if (tipoP == '2') {   /* compras */
                 if ($("#fecha_input").val().length < 10) {
                     error += "<li>Seleccione la fecha de emisión</li>"
                 }
@@ -871,7 +884,7 @@
                 }
             }
 
-            if (tipoP == 'A') {   /* compras */
+            if (tipoP == '3') {   /* compras */
                 if ($("#fecha_input").val().length < 10) {
                     error += "<li>Seleccione la fecha de emisión</li>"
                 }
@@ -985,6 +998,12 @@
         cargarExterior($(this).val())
     });
 
+    $("#fecha_input").change(function () {
+        if ($("#fecharegistro_input").val().length < 10) {
+            $("#fecharegistro_input").val($("#fecha_input").val())
+        }
+    });
+
     function cargarExterior(pago) {
         if (pago == '02') {
             $(".exterior").show();
@@ -1001,15 +1020,35 @@
             type: 'POST',
             url: '${createLink(controller: 'proceso', action: 'numeracion_ajax')}',
             data: {
-                libretin: idLibretin
+                libretin: idLibretin,
+                tpps: $(".tipoProcesoSel option:selected").val()
             },
             success: function (msg) {
                 var partes = msg.split('_');
                 $("#numEstablecimiento").val(partes[0])
                 $("#numEmision").val(partes[1])
+                $("#serie").val(partes[2])
             }
         })
     });
+
+    function cargarLibretin() {
+        var tpps = $(".tipoProcesoSel option:selected").val();
+        $.ajax({
+            type: 'POST',
+            async: 'true',
+            url: "${createLink(controller: 'proceso', action: 'numeracion_ajax')}",
+            data: {
+                proceso: '${proceso?.id}',
+                tpps: tpps
+            },
+            success: function (msg) {
+                $("#libretinFacturas").html(msg)
+                $("#libretinFacturas").show()
+            }
+        });
+    }
+
 
 
     $("#procesoForm").validate({

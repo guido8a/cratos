@@ -1,5 +1,5 @@
 
-<%@ page import="cratos.CentroCosto" %>
+<%@ page import="cratos.inventario.CentroCosto" %>
 <!DOCTYPE html>
 <html>
 <head>

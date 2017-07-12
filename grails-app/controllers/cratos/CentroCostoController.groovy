@@ -1,5 +1,6 @@
 package cratos
 
+import cratos.inventario.CentroCosto
 import org.springframework.dao.DataIntegrityViolationException
 
 class CentroCostoController extends cratos.seguridad.Shield {

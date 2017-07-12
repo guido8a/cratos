@@ -1,4 +1,4 @@
-<%@ page import="cratos.Factura" %>
+<%@ page import="cratos.inventario.DetalleFactura; cratos.Factura" %>
 <!doctype html>
 <html>
     <head>
@@ -54,7 +54,7 @@
                                 <td>
                                     <g:formatDate date="${facturaInstance?.fecha}" format="dd-MM-yyyy hh:mm"/>
                                 </td>
-                                <td>${cratos.DetalleFactura.findAllByFactura(facturaInstance).size()}</td>
+                                <td>${cratos.inventario.DetalleFactura.findAllByFactura(facturaInstance).size()}</td>
                                 <td>${cratos.Consumo.findAllByFactura(facturaInstance).size()}</td>
                             </tr>
                         </g:each>

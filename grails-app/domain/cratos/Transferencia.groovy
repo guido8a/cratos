@@ -1,5 +1,7 @@
 package cratos
 
+import cratos.inventario.Bodega
+
 class Transferencia implements Serializable {
     String registro
     String estado

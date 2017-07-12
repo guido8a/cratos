@@ -5,9 +5,9 @@
     <g:if test="${lista.size()>0}">
         <g:each var="gestor" in="${lista}">
             <tr>
-                <td style="width: 460px">${gestor.nombre}</td>
+                <td style="width: 80px">${gestor?.tipoProceso?.descripcion}</td>
+                <td style="width: 600px">${gestor.nombre}</td>
                 <td style="width: 60px; text-align: center">${gestor.estado}</td>
-                <td style="width: 220px">${tpps[gestor.tipoProceso]}</td>
                 <td style="width: 60px">
                     <a href="${g.createLink(action: 'verGestor',id:gestor.id)}" class="btn btn-small btn-info" title="Ver">
                         <i class="fa fa-laptop" title="Ver"></i>

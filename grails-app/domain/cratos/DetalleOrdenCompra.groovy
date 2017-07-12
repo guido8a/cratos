@@ -1,8 +1,10 @@
 package cratos
 
+import cratos.inventario.Item
+
 class DetalleOrdenCompra implements Serializable {
     OrdenCompra ordenCompra
-    Item2 item
+    Item item
     double cantidad
     double precioUnitario
 

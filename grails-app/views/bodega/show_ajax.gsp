@@ -1,4 +1,4 @@
-<%@ page import="cratos.Bodega" %>
+<%@ page import="cratos.inventario.Bodega" %>
 
 <g:if test="${!bodegaInstance}">
     <elm:notFound elem="Bodega" genero="o"/>

@@ -1,4 +1,4 @@
-<%@ page import="cratos.CentroCosto" %>
+<%@ page import="cratos.inventario.CentroCosto" %>
 
 <script type="text/javascript" src="${resource(dir: 'js', file: 'ui.js')}"></script>
 <g:if test="${!centroCostoInstance}">

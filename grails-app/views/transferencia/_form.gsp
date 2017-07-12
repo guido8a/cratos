@@ -45,10 +45,10 @@
                 </div>
 
                 <div class="span-6">
-                    <g:select name="centroCostosSale" from="${cratos.CentroCosto.findAllByEmpresa(session.empresa, [sort: 'nombre'])}"
+                    <g:select name="centroCostosSale" from="${cratos.inventario.CentroCosto.findAllByEmpresa(session.empresa, [sort: 'nombre'])}"
                               class="centroCostos field ui-corner-all required" value="${transferenciaInstance?.bodegaSale?.centroCostoId}"
                               optionKey="id" optionValue="nombre" data-tipo="Sale"/>
-                    %{--<g:select id="bodegaRecibe" name="bodegaRecibe" from="${cratos.Bodega.findAllByEmpresa(session.empresa)}" optionKey="id" optionValue="descripcion" value="${transferenciaInstance?.bodegaRecibe?.id}"--}%
+                    %{--<g:select id="bodegaRecibe" name="bodegaRecibe" from="${cratos.inventario.Bodega.findAllByEmpresa(session.empresa)}" optionKey="id" optionValue="descripcion" value="${transferenciaInstance?.bodegaRecibe?.id}"--}%
                     %{--class="field  many-to-one ui-corner-all required" title="${Transferencia.constraints.bodegaRecibe.attributes.title}" noSelection="['': '']"/>--}%
 
                 </div>
@@ -62,10 +62,10 @@
                 </div>
 
                 <div class="span-6">
-                    <g:select name="centroCostosRecibe" from="${cratos.CentroCosto.findAllByEmpresa(session.empresa, [sort: 'nombre'])}"
+                    <g:select name="centroCostosRecibe" from="${cratos.inventario.CentroCosto.findAllByEmpresa(session.empresa, [sort: 'nombre'])}"
                               class="centroCostos field ui-corner-all required" value="${transferenciaInstance?.bodegaRecibe?.centroCostoId}"
                               optionKey="id" optionValue="nombre" data-tipo="Recibe"/>
-                    %{--<g:select id="bodegaSale" name="bodegaSale" from="${cratos.Bodega.findAllByEmpresa(session.empresa)}" optionKey="id" optionValue="descripcion"--}%
+                    %{--<g:select id="bodegaSale" name="bodegaSale" from="${cratos.inventario.Bodega.findAllByEmpresa(session.empresa)}" optionKey="id" optionValue="descripcion"--}%
                     %{--value="${transferenciaInstance?.bodegaSale?.id}" class="field  many-to-one ui-corner-all required" title="${Transferencia.constraints.bodegaSale.attributes.title}" noSelection="['': '']"/>--}%
 
                 </div>
@@ -81,7 +81,7 @@
                 </div>
 
                 <div class="span-6" id="spBodegaSale">
-                    %{--<g:select id="bodegaRecibe" name="bodegaRecibe" from="${cratos.Bodega.findAllByEmpresa(session.empresa)}" optionKey="id" optionValue="descripcion" value="${transferenciaInstance?.bodegaRecibe?.id}"--}%
+                    %{--<g:select id="bodegaRecibe" name="bodegaRecibe" from="${cratos.inventario.Bodega.findAllByEmpresa(session.empresa)}" optionKey="id" optionValue="descripcion" value="${transferenciaInstance?.bodegaRecibe?.id}"--}%
                     %{--class="field  many-to-one ui-corner-all required" title="${Transferencia.constraints.bodegaRecibe.attributes.title}" noSelection="['': '']"/>--}%
 
                 </div>
@@ -95,7 +95,7 @@
                 </div>
 
                 <div class="span-6" id="spBodegaRecibe">
-                    %{--<g:select id="bodegaSale" name="bodegaSale" from="${cratos.Bodega.findAllByEmpresa(session.empresa)}" optionKey="id" optionValue="descripcion"--}%
+                    %{--<g:select id="bodegaSale" name="bodegaSale" from="${cratos.inventario.Bodega.findAllByEmpresa(session.empresa)}" optionKey="id" optionValue="descripcion"--}%
                     %{--value="${transferenciaInstance?.bodegaSale?.id}" class="field  many-to-one ui-corner-all required" title="${Transferencia.constraints.bodegaSale.attributes.title}" noSelection="['': '']"/>--}%
 
                 </div>

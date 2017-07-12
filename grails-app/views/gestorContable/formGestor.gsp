@@ -1,11 +1,4 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: gato
-  Date: 02/05/17
-  Time: 14:46
---%>
-
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page import="cratos.TipoProceso" contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <meta name="layout" content="main"/>
@@ -104,9 +97,7 @@
     <p class="css-vertical-text">Gestor</p>
 
     <div class="linea"></div>
-    %{--<g:form action="save" class="frmGestor" controller="gestorContable">--}%
     <div id="contenido">
-        %{--<input type="hidden" name="id" value="${gestorInstance?.id}"/>--}%
 
         <div class="fila">
             <div class="col-xs-2 negrilla">
@@ -151,8 +142,9 @@
 
             <div class="col-xs-4 negrilla">
                 <g:select class="form-control required cmbRequired tipoProcesoSel" name="tipoProceso" id="tipoProceso"
-                          from="${tpps}" label="Proceso tipo: " value="${gestorInstance?.tipoProceso}" optionKey="key"
-                          optionValue="value" title="Tipo de proceso o transacción" disabled="${registro ? true : false}"/>
+                          from="${cratos.TipoProceso.list(sort: 'codigo')}" label="Proceso tipo: "
+                          value="${gestorInstance?.tipoProceso?.id}" optionKey="id"
+                          optionValue="descripcion" title="Tipo de proceso o transacción" disabled="${registro ? true : false}"/>
             </div>
 
         </div>
