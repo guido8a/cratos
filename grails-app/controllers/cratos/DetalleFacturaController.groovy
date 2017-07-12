@@ -1,6 +1,9 @@
 package cratos
 
+import cratos.inventario.Bodega
+import cratos.inventario.CentroCosto
 import cratos.inventario.DetalleFactura
+import cratos.inventario.Item
 import org.springframework.dao.DataIntegrityViolationException
 
 class DetalleFacturaController extends cratos.seguridad.Shield  {
@@ -99,4 +102,27 @@ class DetalleFacturaController extends cratos.seguridad.Shield  {
             redirect(action: "show", id: params.id)
         }
     }
+
+
+    def  detalleGeneral (){
+        println("params " + params)
+        def proceso = Proceso.get(params.id)
+        def empresa = Empresa.get(session.empresa.id)
+        def bodegas = Bodega.findAllByEmpresa(empresa).sort{it.descripcion}
+        def centros = CentroCosto.findAllByEmpresa(empresa).sort{it.nombre}
+        return [proceso: proceso, bodegas: bodegas, centros: centros]
+    }
+
+    def buscarItems_ajax () {
+
+    }
+
+    def tablaItems_ajax () {
+        def empresa = Empresa.get(session.empresa.id)
+        println("empresa " + empresa)
+        def items = Item.list()
+
+        return[ items: items]
+    }
+
 }

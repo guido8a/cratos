@@ -99,19 +99,23 @@
                 </a>
             </g:else>
 
-
             <g:if test="${proceso?.tipoProceso?.id == 1}">
                 <g:link class="btn btn-primary" action="detalleSri" id="${proceso?.id}" style="margin-bottom: 10px;">
                     <i class="fa fa-money"></i> Retenciones
                 </g:link>
             </g:if>
-
             <g:if test="${cratos.Retencion.findByProceso(proceso)}">
                 <g:link controller="reportes3" action="imprimirRetencion" class="btn btn-default btnRetencion"
                         id="${proceso?.id}" params="[empresa: session.empresa.id]" style="margin-bottom: 10px;">
                     <i class="fa fa-print"></i>
                     Imprimir retención
                 </g:link>
+            </g:if>
+            <g:if test="${proceso?.tipoProceso?.id == 1 || proceso?.tipoProceso?.id == 2 || proceso?.tipoProceso?.id == 8}">
+                <a href="#" class="btn btn-warning" id="btnDetalle">
+                    <i class="fa fa-list"></i>
+                    Detalle
+                </a>
             </g:if>
         </g:if>
 
@@ -423,6 +427,11 @@
 
 
 <script type="text/javascript">
+
+
+    $("#btnDetalle").click(function () {
+        location.href='${createLink(controller: 'detalleFactura', action: 'detalleGeneral')}/?id=' + '${proceso?.id}' + '&tipo=' + '${proceso?.tipoProceso?.codigo}'
+    });
 
 
     function validarNumSinPuntos(ev) {

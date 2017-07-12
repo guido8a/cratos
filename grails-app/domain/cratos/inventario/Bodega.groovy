@@ -16,7 +16,7 @@ class Bodega implements Serializable {
 
         columns {
             empresa column: 'empr__id'
-            codigo column: 'cncscdgo'
+            codigo column: 'bdgacdgo'
             descripcion column: 'bdgadscr'
         }
     }
