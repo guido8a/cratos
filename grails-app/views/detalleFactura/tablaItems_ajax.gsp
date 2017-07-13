@@ -9,11 +9,30 @@
     <tbody>
     <g:each in="${items}" var="item">
         <tr>
-            <td style="width: 150px">${item?.codigo}</td>
-            <td style="width: 250px">${item?.nombre}</td>
-            <td style="width: 70px">${item?.precioVenta}</td>
-            <td style="width: 50px">  <a href="#" class="btn btn-success" id="btnAgregarItem"><i class="fa fa-check"></i></a> </td>
+            <td style="width: 80px">${item?.codigo}</td>
+            <td style="width: 270px">${item?.nombre}</td>
+            <td style="width: 90px">${item?.precioVenta}</td>
+            <td style="width: 50px; text-align: center"><a href="#" class="btn btn-success btnAgregarItem" title="Agregar Item" idData="${item?.codigo}"><i class="fa fa-check"></i></a> </td>
         </tr>
     </g:each>
     </tbody>
 </table>
+
+<script type="text/javascript">
+
+    $(".btnAgregarItem").click(function () {
+        var idItem = $(this).attr('idData');
+        $("#codigoItem").val()
+        %{--$.ajax({--}%
+            %{--type: 'POST',--}%
+            %{--url: '${createLink(controller: 'detalleFactura', action: 'guardarDetalle_ajax')}',--}%
+            %{--data:{--}%
+                %{--item: idItem,--}%
+            %{--},--}%
+            %{--success: fn--}%
+        %{--})--}%
+     });
+
+
+
+</script>

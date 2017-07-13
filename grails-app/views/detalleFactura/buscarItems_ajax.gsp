@@ -26,10 +26,10 @@
 <table class="table table-bordered table-hover table-condensed">
     <thead>
     <tr>
-        <th style="width: 150px">Código</th>
-        <th style="width: 250px">Nombre</th>
-        <th style="width: 70px">Precio</th>
-        <th style="width: 50px"><i class="fa fa-plus"></i> </th>
+        <th style="width: 80px">Código</th>
+        <th style="width: 240px">Nombre</th>
+        <th style="width: 80px">Precio</th>
+        <th style="width: 55px"><i class="fa fa-plus"></i> </th>
     </tr>
     </thead>
 </table>
@@ -47,11 +47,15 @@
     });
 
     function cargarTablaItems () {
+        var codigo = $("#codigoBuscar").val();
+        var nombre = $("#nombreBuscar").val();
         $.ajax({
             type: 'POST',
-            url:'${createLink(controller: 'detalle', action: 'tablaItems_ajax')}',
+            url:'${createLink(controller: 'detalleFactura', action: 'tablaItems_ajax')}',
             data:{
-
+                proceso: '${proceso?.id}',
+                codigo: codigo,
+                nombre: nombre
             },
             success: function (msg) {
                 $("#divTablaItems").html(msg)

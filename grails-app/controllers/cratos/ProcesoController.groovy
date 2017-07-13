@@ -337,7 +337,7 @@ class ProcesoController extends cratos.seguridad.Shield {
         sql = "select sstr__id id, sstrcdgo codigo, sstrdscr descripcion from sstr " +
                 "where sstr__id in (select distinct(unnest(sstr)) " +
                 "from tcst where titt @> '{${titt}}') order by 1;"
-        println "sql2: $sql"
+//        println "sql2: $sql"
         def data = cn.rows(sql.toString())
         cn.close()
         [data: data, sstr: params.sstr, tpcpSri: params.tpcp, estado: params.etdo?:'']
@@ -1203,7 +1203,7 @@ class ProcesoController extends cratos.seguridad.Shield {
     }
 
     def tablaBuscarComp_ajax () {
-        println "tablaBuscarComp_ajax: $params"
+//        println "tablaBuscarComp_ajax: $params"
         def cn = dbConnectionService.getConnection()
         def proveedor = Proveedor.get(params.proveedor)
         def sql
@@ -1213,13 +1213,13 @@ class ProcesoController extends cratos.seguridad.Shield {
             sql = "select cmpr__id, clntnmbr prvenmbr, dscr, debe hber, ntcr pgdo, sldo from ventas(${proveedor?.id}) " +
                     "where sldo <> 0"
         }
-        println "sql: $sql"
+//        println "sql: $sql"
         def res = cn.rows(sql.toString())
         return [res: res]
     }
 
     def filaComprobante_ajax () {
-        println "filaComprobante_ajax: $params"
+//        println "filaComprobante_ajax: $params"
         def proceso = Proceso.get(params.proceso)
 //        def comprobante = Comprobante.get(params.comprobante)
 //        def proveedor =
@@ -1239,7 +1239,7 @@ class ProcesoController extends cratos.seguridad.Shield {
     }
 
     def valores_ajax () {
-        println "valores_ajax $params"
+//        println "valores_ajax $params"
         def proceso = Proceso.get(params.proceso)
         def data = []
 
@@ -1250,13 +1250,13 @@ class ProcesoController extends cratos.seguridad.Shield {
             def sql = "select cast(tittcdgo as integer) cdgo from titt, prve, tptr " +
                     "where prve.tpid__id = titt.tpid__id and prve__id = ${params.prve} and " +
                     "tptr.tptr__id = titt.tptr__id and tptrcdgo = '1'"
-        println "sql1: $sql"
+//        println "sql1: $sql"
             def titt = cn.rows(sql.toString())[0]?.cdgo
-            println "identif: $titt"
+//            println "identif: $titt"
             sql = "select tcst__id id, tcsrcdgo codigo, tcsrdscr descripcion from tcst, tcsr " +
                   "where tcsr.tcsr__id = tcst.tcsr__id and titt @> '{${titt}}' " +
                   "order by tcsrcdgo"
-        println "sql2: $sql"
+//        println "sql2: $sql"
             data = cn.rows(sql.toString())
             cn.close()
         }
@@ -1265,7 +1265,7 @@ class ProcesoController extends cratos.seguridad.Shield {
     }
 
     def proveedor_ajax () {
-        println "proveedor_ajax: $params"
+//        println "proveedor_ajax: $params"
         def proceso = Proceso.get(params.proceso)
         def proveedores
         def tr
@@ -1284,7 +1284,7 @@ class ProcesoController extends cratos.seguridad.Shield {
                 proveedores = Proveedor.findAllByTipoRelacionInList(tr)
                 break
         }
-        println "proveedores: $proveedores"
+//        println "proveedores: $proveedores"
         return [proveedores : proveedores, proceso: proceso, tipo: params.tipo, proveedor: prve]
     }
 
@@ -1624,7 +1624,7 @@ class ProcesoController extends cratos.seguridad.Shield {
     }
 
     def totaValor_ajax() {
-        println("params--> " + params)
+//        println("params--> " + params)
         def total = (params.bienes ? params.bienes.toDouble() : 0) + (params.servicios ? params.servicios.toDouble() : 0)
         def porcentajeIva = PorcentajeIva.get(params.porcentaje)
         def base = params.base.toDouble() * porcentajeIva.codigo.toDouble() * 0.12
