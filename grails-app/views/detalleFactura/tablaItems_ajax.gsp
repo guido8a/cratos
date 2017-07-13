@@ -12,7 +12,9 @@
             <td style="width: 80px">${item?.codigo}</td>
             <td style="width: 270px">${item?.nombre}</td>
             <td style="width: 90px">${item?.precioVenta}</td>
-            <td style="width: 50px; text-align: center"><a href="#" class="btn btn-success btnAgregarItem" title="Agregar Item" idData="${item?.codigo}"><i class="fa fa-check"></i></a> </td>
+            <td style="width: 50px; text-align: center">
+                <a href="#" class="btn btn-success btnAgregarItem"
+                   title="Agregar Item" codigo="${item?.codigo}" nombre="${item?.nombre}" precio="${item?.precioVenta}" idI="${item?.id}"><i class="fa fa-check"></i></a> </td>
         </tr>
     </g:each>
     </tbody>
@@ -21,18 +23,15 @@
 <script type="text/javascript">
 
     $(".btnAgregarItem").click(function () {
-        var idItem = $(this).attr('idData');
-        $("#codigoItem").val()
-        %{--$.ajax({--}%
-            %{--type: 'POST',--}%
-            %{--url: '${createLink(controller: 'detalleFactura', action: 'guardarDetalle_ajax')}',--}%
-            %{--data:{--}%
-                %{--item: idItem,--}%
-            %{--},--}%
-            %{--success: fn--}%
-        %{--})--}%
+        var codigo = $(this).attr('codigo');
+        var nombre = $(this).attr('nombre');
+        var precio = $(this).attr('precio');
+        var idI = $(this).attr('idI');
+        $("#codigoItem").val(codigo);
+        $("#nombreItem").val(nombre);
+        $("#precioItem").val(precio);
+        $("#idItem").val(idI);
+        bootbox.hideAll();
      });
-
-
 
 </script>
