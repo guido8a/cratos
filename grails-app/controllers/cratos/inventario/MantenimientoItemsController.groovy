@@ -645,6 +645,7 @@ class MantenimientoItemsController extends Shield {
                 def items = Item.findAllByNombre(params.nombre)
                 if (items.size() == 0) {
                     render true
+//                    return
                 } else {
                     render false
                 }

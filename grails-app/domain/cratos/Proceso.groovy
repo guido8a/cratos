@@ -11,6 +11,7 @@ class Proceso implements Serializable {
     Comprobante comprobante  /* relacionado para NC */
     cratos.seguridad.Persona usuario
     TipoProceso tipoProceso
+    DocumentoEmpresa documentoEmpresa
 
     RolPagos rolPagos
 
@@ -76,6 +77,7 @@ class Proceso implements Serializable {
             usuario column: 'prsn__id'
 
             tipoProceso column: 'tpps__id'
+            documentoEmpresa column: 'fcdt__id'
             rolPagos column: 'rlpg__id'
             tipoTransaccion column: 'tptr__id'
             sustentoTributario column: 'sstr__id'
@@ -130,6 +132,7 @@ class Proceso implements Serializable {
         comprobante(nullable: true, blank: true)
         usuario(blank: true, nullable: true, attributes: [title: 'usuario'])
         tipoProceso(nullable: false,blank: false)
+        documentoEmpresa(nullable: true,blank: true)
 
         rolPagos(blank: true, nullable: true, attributes: [title: 'rolPagos'])
 

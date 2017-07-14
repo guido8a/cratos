@@ -17,7 +17,7 @@
                  disabled="true" title="Saldo del Comprobante" style="width:165px;" placeholder="Saldo"
                  value="${saldo}" />
 </div>
-<div class="col-xs-2" style="margin-left: 20px">
+<div class="col-xs-1" style="margin-left: -10px">
     <g:if test="${proceso?.estado == 'N' || !proceso?.id}">
         <a href="#" id="btnBuscarComp" class="btn btn-info ${proceso?.id ? '' : 'hidden'}">
         %{--<a href="#" id="btnBuscarComp" class="btn btn-info" >--}%
@@ -26,11 +26,11 @@
         </a>
     </g:if>
 </div>
-<div class="col-xs-2" style="margin-left: 20px">
+<div class="col-xs-2" style="margin-left: 0px">
         <a href="#" id="btnBuscarSaldos" class="btn btn-info ${proceso?.id ? '' : 'hidden'}">
         %{--<a href="#" id="btnBuscarComp" class="btn btn-info" >--}%
             <i class="fa fa-search"></i>
-            Saldos de CxC y CxP
+            Saldos CxC y CxP
         </a>
 </div>
 <g:hiddenField name="comprobanteSel_name" id="comprobanteSel" value="${proceso?.comprobante?.id}"/>

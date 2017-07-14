@@ -30,18 +30,17 @@ class ProcesoController extends cratos.seguridad.Shield {
 
     def nuevoProceso = {
 //        println "nuevo proceso "+params
-        def empresa = Empresa.get(session.empresa.id)
-        def libreta = DocumentoEmpresa.findAllByEmpresaAndFechaInicioLessThanEqualsAndFechaFinGreaterThanEqualsAndTipo(empresa,
-                new Date(), new Date(),'F', [sort: 'fechaAutorizacion'])
+//        def libreta = DocumentoEmpresa.findAllByEmpresaAndFechaInicioLessThanEqualsAndFechaFinGreaterThanEqualsAndTipo(empresa,
+//                new Date(), new Date(),'F', [sort: 'fechaAutorizacion'])
 
         if (params.id) {
             def proceso = Proceso.get(params.id).refresh()
-            def registro = (Comprobante.findAllByProceso(proceso)?.size() == 0) ? false : true
+//            def registro = (Comprobante.findAllByProceso(proceso)?.size() == 0) ? false : true
             def fps = ProcesoFormaDePago.findAllByProceso(proceso)
 
-            render(view: "procesoForm", model: [proceso: proceso, registro: registro, fps: fps, libreta: libreta])
+            render(view: "procesoForm", model: [proceso: proceso, fps: fps])
         } else
-            render(view: "procesoForm", model: [registro: false, libreta: libreta])
+            render(view: "procesoForm", model: [proceso: null])
     }
 
     def save = {
@@ -254,7 +253,7 @@ class ProcesoController extends cratos.seguridad.Shield {
     def cargaGestor = {
         println "cargar gestor $params "
         def gstr = Gestor.findAllByEmpresaAndTipoProceso(session.empresa, TipoProceso.get(params.tipo), [sort: 'nombre'])
-        [gstr: gstr]
+        [gstr: gstr, gstr_id: params.gstr_id, rgst: params.rgst]
     }
 
     def cargaComprobantes = {
@@ -1210,7 +1209,7 @@ class ProcesoController extends cratos.seguridad.Shield {
         if(params.tipo == '4') {
             sql = "select * from porpagar(${proveedor?.id}) where sldo <> 0;"
         } else if(params.tipo in ['6', '7', '5']) {
-            sql = "select cmpr__id, clntnmbr prvenmbr, dscr, debe hber, ntcr pgdo, sldo from ventas(${proveedor?.id}) " +
+            sql = "select cmpr__id, clntnmbr prvenmbr, dscr, dcmt, debe hber, ntcr pgdo, sldo from ventas(${proveedor?.id}) " +
                     "where sldo <> 0"
         }
 //        println "sql: $sql"
@@ -1322,26 +1321,57 @@ class ProcesoController extends cratos.seguridad.Shield {
     def numeracion_ajax () {
         println "numeracion_ajax: $params"
         def cn = dbConnectionService.getConnection()
+        def proceso
+        if(params.proceso) {
+            proceso = Proceso.get(params.proceso)
+        }
+
         def tpdc = ""
+        def tipo = "Facturas"
+        def fcdt
+        def sql
+        def nmro = 0
         switch (params.tpps){
             case '2':
                 tpdc = 'F'
+                tipo = 'Facturas'
                 break
             case '6':
                 tpdc = 'NC'
+                tipo = 'Notas de Crédito'
                 break
             case '7':
                 tpdc = 'ND'
+                tipo = 'Notas de Débito'
                 break
         }
 
-        def sql = "select coalesce(max(prcsfcsc), 0) mxmo from prcs " +
-                "where tpps__id = ${params.tpps}"
-        def nmro = cn.rows(sql.toString())[0]?.mxmo + 1
-        def libretin = DocumentoEmpresa.findAllByTipo(tpdc)
-//        def libretin = cn.rows("select * from fcdt where  fcdttipo = '${tpdc}'".toString())
-//        render "${fcdt.numeroEstablecimiento}_${fcdt.numeroEmision}_${nmro}"
-        [libretin: libretin, estb: libretin[0].numeroEstablecimiento, emsn: libretin[0].numeroEmision, nmro: nmro]
+        if(params.libretin){
+            fcdt = DocumentoEmpresa.get(params.libretin)
+            sql = "select coalesce(max(prcsfcsc), 0) mxmo from prcs, fcdt " +
+                    "where tpps__id = ${params.tpps} and fcdt.fcdt__id = prcs.fcdt__id and " +
+                    "prcs.fcdt__id = ${params.libretin} and prcsfcsc between fcdtdsde and fcdthsta"
+            nmro = cn.rows(sql.toString())[0]?.mxmo + 1
+            render "${fcdt.numeroEstablecimiento}_${fcdt.numeroEmision}_${nmro}"
+        } else {
+            sql = "select fcdt__id id, fcdtdsde numeroDesde, fcdthsta numeroHasta, fcdtfcat fechaAutorizacion, " +
+                    "fcdtnmes numeroEstablecimiento, fcdtnmpe numeroEmision " +
+                    "from fcdt where cast(now() as date) - 365 < fcdtfcfn and fcdttipo = '${tpdc}'order by fcdtfcin"
+            println "sql: $sql"
+            def libretin = cn.rows(sql.toString())
+            sql = "select coalesce(max(prcsfcsc), 0) mxmo from prcs, fcdt " +
+                    "where tpps__id = ${params.tpps} and fcdt.fcdt__id = prcs.fcdt__id and " +
+                    "prcs.fcdt__id = ${libretin[0]?.id} and prcsfcsc between fcdtdsde and fcdthsta "
+            nmro = cn.rows(sql.toString())[0]?.mxmo + 1
+
+            if(libretin?.size() > 0) {
+                [libretin: libretin, estb: libretin[0].numeroEstablecimiento, emsn: libretin[0].numeroEmision, nmro: nmro,
+                tipo: tipo, proceso: proceso]
+            } else {
+                [libretin: libretin, estb: 0, emsn: 0, nmro: 0, tipo: tipo, proceso: proceso]
+            }
+
+        }
     }
 
     def buscarPrcs() {
@@ -1409,15 +1439,15 @@ class ProcesoController extends cratos.seguridad.Shield {
         }
     }
 
-    def valSerieFactura_ajax () {
-        println "valSerieFactura_ajax: $params"
+    def validaSerie_ajax () {
+        println "validaSerie_ajax: $params"
         def cn = dbConnectionService.getConnection()
         def fcdt = DocumentoEmpresa.get(params.fcdt)
         def nmro = params.serie.toInteger()
         def sql = ""
         println "nmro:; $nmro"
 
-        if(nmro) {
+        if(nmro != 0) {
             if(nmro >= fcdt.numeroDesde && nmro <= fcdt.numeroHasta) {
                 println "esta en el rango"
                 sql = "select count(*) cnta from prcs where empr__id = ${session.empresa.id} and prcsfcsc = ${nmro}"
@@ -1428,20 +1458,20 @@ class ProcesoController extends cratos.seguridad.Shield {
                 def existe = cn.rows(sql.toString())[0].cnta
                 cn.close()
 
-//                render existe > 0 ? true : false
                 println "existe: $existe"
                 if(existe > 0) {
-                    render false
+                    render "no_"
                 } else {
                     println "no existe... $existe"
-                    render true
+                    render "ok"
                 }
             } else {
                 println "fuera del rango..."
-                render false
+                render "no_Fuera del rango de valores"
             }
         } else {
-            render true
+            println "no hay valor..."
+            render "no_No hay valor"
         }
     }
 
@@ -1574,6 +1604,7 @@ class ProcesoController extends cratos.seguridad.Shield {
     }
 
     def numeracionFactura_ajax () {
+        println "numeracionFactura_ajax: $params"
         def documentoEmpresa = DocumentoEmpresa.get(params.libretin)
         return [libreta : documentoEmpresa]
     }

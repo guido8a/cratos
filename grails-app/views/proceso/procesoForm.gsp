@@ -34,6 +34,11 @@
         cursor: pointer;
         float: right;
     }
+
+    .error{
+        color: red;
+        font-weight: normal;
+    }
     </style>
 </head>
 
@@ -72,7 +77,7 @@
             </a>
         </g:if>
         <g:if test="${params.id}">
-            <g:if test="${!registro}">
+            <g:if test="${!(proceso?.estado == 'R')}">
                 <a href="#" class="btn btn-info" id="registrarProceso">
                     <i class="fa fa-check"></i>
                     Registrar
@@ -134,6 +139,7 @@
 </div>
 <g:form name="procesoForm" action="save" method="post" class="frmProceso">
     <input type="hidden" name="proveedor.id" id="prve__id" value="${proceso?.proveedor?.id}">
+    <input type="hidden" id="libretin_id" value="${proceso?.proveedor?.id}">
 
     <div class="vertical-container" style="margin-top: 25px;color: black;padding-bottom: 10px">
         <p class="css-vertical-text">Descripción</p>
@@ -153,7 +159,7 @@
                 <g:select class="form-control required cmbRequired tipoProcesoSel" name="tipoProceso" id="tipoProceso"
                           from="${cratos.TipoProceso.list(sort: 'codigo')}" label="Proceso tipo: "
                           value="${proceso?.tipoProceso?.id}" optionKey="id"
-                          optionValue="descripcion" title="Tipo de la transacción" disabled="${registro ? true : false}"/>
+                          optionValue="descripcion" title="Tipo de la transacción" disabled="${(proceso?.estado == 'R') ? true : false}"/>
             </div>
 
             <div class="col-xs-1 negrilla">
@@ -161,7 +167,7 @@
             </div>
 
             <div class="col-xs-2">
-                <g:if test="${registro}">
+                <g:if test="${(proceso?.estado == 'R')}">
                     ${proceso?.fecha.format("dd-MM-yyyy")}
                 </g:if>
                 <g:else>
@@ -177,7 +183,7 @@
             </div>
 
             <div class="col-xs-2">
-                <g:if test="${registro}">
+                <g:if test="${(proceso?.estado == 'R')}">
                     ${proceso?.fecha.format("dd-MM-yyyy")}
                 </g:if>
                 <g:else>
@@ -223,7 +229,7 @@
 
             <div class="col-xs-10 negrilla">
                 <g:textField name="descripcion" id="descripcion" value="${proceso?.descripcion}" maxlength="255"
-                             class="form-control required" readonly="${registro ? true : false}" />
+                             class="form-control required" readonly="${(proceso?.estado == 'R') ? true : false}" />
 %{--
                 <textArea style="height:55px;resize: none" maxlength="255" name="descripcion"
                           id="descripcion" title="La descripción de la transacción contable"
@@ -266,8 +272,8 @@
             </div>
             <div class="col-xs-3">
                 <g:select class="form-control" name="pago"
-                          from="${['01': '01 - PAGO A RESIDENTE', '02': '02 - PAGO A NO RESIDENTE']}" optionKey="key" optionValue="value"
-                          value="${proceso?.pago}"/>
+                          from="${['01': '01 - PAGO A RESIDENTE', '02': '02 - PAGO A NO RESIDENTE']}" optionKey="key"
+                          optionValue="value" value="${proceso?.pago}" disabled="${(proceso?.estado == 'R') ? true : false}"/>
             </div>
 
             <div class="exterior col-xs-12" hidden="hidden" style="margin-top: 20px">
@@ -279,7 +285,8 @@
                         <div class="col-xs-2">
                             <g:select class="form-control" style="margin-left: -30px; width: 230px"
                                       name="pais" from="${cratos.sri.Pais.list([sort: 'nombre'])}"
-                                      optionKey="id" optionValue="nombre" value="${proceso?.pais?.id}"/>
+                                      optionKey="id" optionValue="nombre" value="${proceso?.pais?.id}"
+                                      disabled="${(proceso?.estado == 'R') ? true : false}"/>
                         </div>
                         <div class="col-xs-4">
                             <label style="margin-left: 50px">Aplica convenio de doble tributación?</label> <br/>
@@ -347,7 +354,7 @@
                     </div>
 
                     <div class="col-xs-2 negrilla">
-                        <g:if test="${!registro}">
+                        <g:if test="${!(proceso?.estado == 'R')}">
                             <a href="#" id="agregarFP" class="btn btn-azul">
                                 <i class="fa fa-plus"></i>
                                 Agregar
@@ -361,7 +368,7 @@
                      id="detalle-fp">
                     <g:each in="${fps}" var="f">
                         <div class="filaFP ui-corner-all fp-${f.tipoPago.id}" fp="${f.tipoPago.id}">
-                            <g:if test="${!registro}">
+                            <g:if test="${!(proceso?.estado == 'R')}">
                                 <span class='span-eliminar ui-corner-all' title='Click para eliminar'>Eliminar</span>
                             </g:if>
                             ${f.tipoPago.descripcion}
@@ -568,9 +575,11 @@
             $("#divCargaProveedor").hide();
         }
 
-//        cargarTipo(tipo);
+        if(tipo != 'C') {
+            cargarTipo(tipo);  //carga valores
+        }
 
-        if (tipo == '2') {
+        if (tipo == '2' || tipo == '6' || tipo == '7') {
             console.log('libretin con tpps:', tipo);
 //            $("#libretin").change();
             cargarLibretin();
@@ -608,7 +617,9 @@
             type: 'POST',
             url: "${createLink(controller: 'proceso', action: 'cargaGestor')}",
             data: {
-                tipo: tipo
+                tipo: tipo,
+                gstr_id: "${proceso?.gestor?.id}",
+                rgst: "${proceso?.estado}"
             },
             success: function (msg) {
                 console.log('ok....')
@@ -740,11 +751,6 @@
     }
 
     $(function () {
-//        $(".vertical-container").svtContainer()
-        <g:if test="${proceso && registro}">
-        $(".css-vertical-text").click()
-        </g:if>
-
         $("#btn-br-prcs").click(function () {
             bootbox.confirm("Está seguro? si esta transacción tiene un comprobante, este será anulado. " +
                     "Esta acción es irreversible", function (result) {
@@ -909,6 +915,21 @@
                 }
             }
 
+            if (tipoP == '6') {   /* compras */
+                if (isNaN(parseFloat($("#comprobanteSaldo").val()))) {
+                    error += "<li>No hay comprobante, seleccione uno</li>"
+                }
+
+                if ((parseFloat($("#valorPagoNC").val()) + parseFloat($("#ivaGeneradoNC").val())) > parseFloat($("#comprobanteSaldo").val()) ||
+                        (parseFloat($("#valorPagoNC").val()) + parseFloat($("#ivaGeneradoNC").val())) <= 0 ) {
+                    error += "<li>Revise el valor de la Nota de Crédito y el IVA</li>"
+                }
+
+                if ($("#serie").hasClass('error')){
+                    error += "<li>Revise el número de de la Nota de Crédito</li>"
+                }
+            }
+
             if (error != "") {
                 $("#listaErrores").append(error)
                 $("#listaErrores").show()
@@ -1060,6 +1081,7 @@
 
 
 
+/*
     $("#procesoForm").validate({
         errorClass: "help-block",
         errorPlacement: function (error, element) {
@@ -1079,7 +1101,7 @@
                     type: 'POST',
                     url: "${createLink(controller: 'proceso', action: 'valSerieFactura_ajax')}",
                     data: {
-                        fcdt: $("#libretin option:selected").val(),
+                        fcdt: $("#libretin").val(),
                         id  : "${proceso?.id}"
                     }
                 }
@@ -1091,6 +1113,7 @@
             }
         }
     });
+*/
 
 
 

@@ -4,6 +4,6 @@
 <div class="col-xs-10 negrilla">
     <g:select class="form-control required" name="gestor"
               from="${gstr}"
-              value="${proceso?.gestor?.id}" optionKey="id" optionValue="nombre"
-              title="Proceso tipo" disabled="${registro ? true : false}"/>
+              value="${gstr_id}" optionKey="id" optionValue="nombre"
+              title="Proceso tipo" disabled="${rgst == 'R' ? true : false}" />
 </div>

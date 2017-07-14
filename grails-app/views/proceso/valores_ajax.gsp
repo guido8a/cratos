@@ -82,7 +82,7 @@
                 <input type="text" name="dcmtAutorizacion" id="dcmtAutorizacion" size="10" maxlength="15"
                        value="${proceso?.autorizacion}" class=" digits form-control label-shared validacionNumero"
                        validate=" number" placeholder="Autorización"
-                       title="El número autorización de la factura a registrar " ${registro ? 'disabled' : ''}/>
+                       title="El número autorización de la factura a registrar " ${proceso?.estado == 'R' ? 'disabled' : ''}/>
             </div>
         </div>
 
@@ -98,7 +98,7 @@
                           optionKey="id" title="Tipo de comprobante"
                           optionValue="${{ it.codigo + ' - ' + it.descripcion }}"
                           noSelection="${['-1': 'Seleccione...']}" value="${proceso?.modificaCmpr?.id ?: 1}"
-                          readonly="${estado == 'R' ? true : false}"/>
+                          disabled="${proceso?.estado == 'R' ? true : false}"/>
             </div>
         </div>
 
@@ -139,7 +139,7 @@
                 <input type="text" name="mdfcAutorizacion" id="mdfcAutorizacion" size="10" maxlength="15"
                        value="${proceso?.modificaAutorizacion}" class=" digits form-control label-shared validacionNumero"
                        validate=" number" placeholder="Autorización"
-                       title="El número autorización de la factura a registrar " ${registro ? 'disabled' : ''}/>
+                       title="El número autorización de la factura a registrar " ${proceso?.estado == 'R' ? 'disabled' : ''}/>
             </div>
         </div>
         </g:if>
