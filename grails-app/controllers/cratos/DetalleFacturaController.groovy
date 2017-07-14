@@ -182,10 +182,10 @@ class DetalleFacturaController extends cratos.seguridad.Shield  {
                         detalle.cantidad = params.cantidad.toDouble()
                     }
                 }
-            break
+                break
 
             case 'V':
-            break
+                break
 
         }
 
@@ -204,5 +204,24 @@ class DetalleFacturaController extends cratos.seguridad.Shield  {
         def detalles = DetalleFactura.findAllByProceso(proceso).sort{it?.item?.codigo}
 
         return[detalles: detalles]
+    }
+
+    def cargarEdicion_ajax () {
+        def detalle = DetalleFactura.get(params.detalle)
+
+        render detalle.id + "_" + detalle.item.codigo + "_" + detalle.item.nombre + "_" + detalle.precioUnitario + "_" + detalle.cantidad + "_" + detalle.descuento + "_" + detalle.bodega.id + "_" + detalle.centroCosto.id + "_" + detalle.item.id
+    }
+
+    def borrarItemDetalle_ajax () {
+        def detalle = DetalleFactura.get(params.detalle)
+
+        try{
+           detalle.delete(flush: true)
+            render "ok"
+        }catch (e){
+           println("error al borrar el detalle " + e)
+            render "no"
+        }
+
     }
 }

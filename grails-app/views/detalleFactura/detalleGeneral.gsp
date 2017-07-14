@@ -47,11 +47,12 @@
 
         <div class="col-md-5" style="text-align: center">
             <b>Centro de Costos</b>
-            <g:select from="${centros}" name="centroName" id="centros" d class="form-control" optionValue="nombre" optionKey="id"/>
+            <g:select from="${centros}" name="centroName" id="centros" class="form-control" optionValue="nombre" optionKey="id"/>
         </div>
 
     </div>
     <g:hiddenField name="idItem_name" id="idItem" value=""/>
+    <g:hiddenField name="idDetalle_name" id="idDetalle" value=""/>
 
     <div class="col-md-2" style="text-align: center">
         <b>Código</b>
@@ -61,18 +62,18 @@
         <b>Nombre</b>
         <g:textField name="nombre_name" id="nombreItem" class="form-control" value="" readonly="true"/>
     </div>
-    <div class="col-md-2 camposTexto" >
+    <div class="col-md-2 camposTexto">
         <b>Precio</b>
         <g:textField name="precio_name" id="precioItem" class="form-control number" value="" style="text-align: right"/>
     </div>
     <div class="col-md-1 camposTexto">
         <b>Cantidad</b>
-        <g:textField name="cantidad_name" id="cantidadItem" class="form-control number" value="" style="text-align: center"/>
+        <g:textField name="cantidad_name" id="cantidadItem" class="form-control number canti" value="" style="text-align: center"/>
     </div>
     <g:if test="${proceso?.tipoProceso?.id != 8}" >
         <div class="col-md-2 camposTexto">
             <b>Descuento</b>
-            <g:textField name="descuento_name" id="descuentoItem" class="form-control number" value="" style="text-align: right"/>
+            <g:textField name="descuento_name" id="descuentoItem" class="form-control number desc" value="" style="text-align: right"/>
         </div>
     </g:if>
 
@@ -83,6 +84,14 @@
         </a>
         <a href="#" id="btnAgregar" class="btn btn-success" title="Agregar Item al detalle">
             <i class="fa fa-plus"></i>
+        </a>
+
+        <a href="#" id="btnGuardar" class="btn btn-success hidden" title="Guardar Item">
+            <i class="fa fa-save"></i>
+        </a>
+
+        <a href="#" id="btnCancelar" class="btn btn-warning hidden" title="Cancelar Edición">
+            <i class="fa fa-times-circle"></i>
         </a>
     </div>
 </div>
@@ -95,14 +104,16 @@
         <tr>
             <th style="width: 70px">Código</th>
             <th style="width: 250px">Descripción</th>
-            <th style="width: 40px">Unidad</th>
-            <th style="width: 70px">Cantidad</th>
+            <th style="width: 50px">Bodega</th>
+            <th style="width: 50px">C. Cost.</th>
+            <th style="width: 40px">Uni</th>
+            <th style="width: 70px">Canti</th>
             <th style="width: 70px">P.U.</th>
             <g:if test="${proceso?.tipoProceso?.id != 8}">
-                <th style="width: 70px">% Descuento</th>
+                <th style="width: 50px">% Desc</th>
             </g:if>
             <th style="width: 70px">Total</th>
-            <th style="width: 40px"><i class="fa fa-trash-o"></i> </th>
+            <th style="width: 40px"><i class="fa fa-pencil"></i> </th>
         </tr>
         </thead>
     </table>
@@ -146,6 +157,16 @@
 
 
     $("#btnAgregar").click(function () {
+       guardarDetalle()
+    });
+
+    $("#btnGuardar").click(function () {
+        var idDet = $("#idDetalle").val();
+       guardarDetalle(idDet)
+    });
+
+
+    function guardarDetalle (id) {
         var item = $("#idItem").val();
         var precio = $("#precioItem").val();
         var cantidad = $("#cantidadItem").val();
@@ -162,7 +183,8 @@
                 descuento: descuento,
                 bodega: bodega,
                 centro: centro,
-                proceso: '${proceso?.id}'
+                proceso: '${proceso?.id}',
+                id: id
 
             },
             success: function (msg){
@@ -174,7 +196,7 @@
                 }
             }
         });
-    });
+    }
 
 
     cargarTablaDetalle();
@@ -192,6 +214,35 @@
 
         });
     }
+
+    $(".canti").blur(function () {
+        if (isNaN($(this).val()))
+            $(this).val("1")
+        if ($(this).val() == "")
+            $(this).val("1")
+    });
+
+    $(".desc").blur(function () {
+        if (isNaN($(this).val()))
+            $(this).val("0")
+        if ($(this).val() == "")
+            $(this).val("0")
+    });
+
+
+    $("#btnCancelar").click(function () {
+        $("#idDetalle").val('');
+        $("#codigoItem").val('');
+        $("#nombreItem").val('');
+        $("#precioItem").val('');
+        $("#cantidadItem").val('');
+        $("#descuentoItem").val('');
+        $("#idItem").val('');
+        $("#btnBuscar").removeClass('hidden');
+        $("#btnAgregar").removeClass('hidden');
+        $("#btnGuardar").addClass('hidden');
+        $("#btnCancelar").addClass('hidden');
+    });
 
 
 

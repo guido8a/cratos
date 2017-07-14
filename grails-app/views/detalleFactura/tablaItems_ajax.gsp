@@ -31,6 +31,8 @@
         $("#nombreItem").val(nombre);
         $("#precioItem").val(precio);
         $("#idItem").val(idI);
+        $("#cantidadItem").val(1);
+        $("#descuentoItem").val(0);
         bootbox.hideAll();
      });
 
