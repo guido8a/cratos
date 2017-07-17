@@ -78,7 +78,7 @@
 
         <div class="col-md-2">
             <b>Total</b>
-            <g:textField name="total_name" id="totalItem" class="form-control number tot" value="" style="text-align: right; width: 150px"/>
+            <g:textField name="total_name" id="totalItem" class="form-control number tot" value="" style="text-align: right; width: 150px" readonly="${proceso?.tipoProceso?.codigo?.trim() == 'V'}"/>
         </div>
     </g:if>
 
@@ -162,12 +162,12 @@
 
 
     $("#btnAgregar").click(function () {
-       guardarDetalle()
+        guardarDetalle()
     });
 
     $("#btnGuardar").click(function () {
         var idDet = $("#idDetalle").val();
-       guardarDetalle(idDet)
+        guardarDetalle(idDet)
     });
 
 
@@ -250,7 +250,7 @@
     });
 
     $(".tot").keyup(function () {
-        var pr = 0
+        var pr = 0;
 
         if(!$(".pre").val()){
             $(".pre").val(1)
@@ -278,19 +278,19 @@
     });
 
     $(".pre").keyup(function () {
-        if(!$(".pre").val()){
-            $(".pre").val(1)
-        }
-
-        if(!$(".canti").val()){
-            $(".canti").val(1)
-        }
-
-        var to = ($(".pre").val() ) * $(".canti").val();
-        $(".tot").val(to.toFixed(2))
-    })
+        calcularTotal();
+    });
 
     $(".canti").keyup(function () {
+        calcularTotal();
+    });
+
+    $(".desc").keyup(function () {
+        calcularTotal();
+    });
+
+
+    function calcularTotal () {
         if(!$(".pre").val()){
             $(".pre").val(1)
         }
@@ -298,9 +298,19 @@
         if(!$(".canti").val()){
             $(".canti").val(1)
         }
-        var to = $(".pre").val() * $(".canti").val();
+
+        var to = 0
+        if(${proceso?.tipoProceso?.codigo?.trim() == 'V'}){
+            if(!$(".desc").val()){
+                $(".desc").val(0)
+            }
+            to = ($(".pre").val() ) * (1 -  ($(".desc").val()/100)) * $(".canti").val();
+        }else{
+            to = ($(".pre").val() ) * $(".canti").val();
+        }
+
         $(".tot").val(to.toFixed(2))
-    })
+    }
 
 
     $("#btnCancelar").click(function () {

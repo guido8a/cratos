@@ -16,7 +16,7 @@
             <td style="width: 20px">${detalle?.item?.unidad}</td>
             <td style="width: 40px">${detalle?.cantidad?.toInteger()}</td>
             <td style="width: 90px"><g:formatNumber number="${detalle?.precioUnitario}" maxFractionDigits="4" minFractionDigits="4"/></td>
-            <g:if test="${detalle?.proceso?.tipoProceso?.id == 1}">
+            <g:if test="${detalle?.proceso?.tipoProceso?.codigo?.trim() != 'T'}">
                 <td style="width: 50px">${detalle?.descuento}</td>
             </g:if>
             <td style="width: 80px"><g:formatNumber number="${detalle?.cantidad * detalle?.precioUnitario}" maxFractionDigits="2" minFractionDigits="2"/></td>
