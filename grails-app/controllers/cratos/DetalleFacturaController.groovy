@@ -209,7 +209,7 @@ class DetalleFacturaController extends cratos.seguridad.Shield  {
     def cargarEdicion_ajax () {
         def detalle = DetalleFactura.get(params.detalle)
 
-        render detalle.id + "_" + detalle.item.codigo + "_" + detalle.item.nombre + "_" + detalle.precioUnitario + "_" + detalle.cantidad + "_" + detalle.descuento + "_" + detalle.bodega.id + "_" + detalle.centroCosto.id + "_" + detalle.item.id
+        render detalle.id + "_" + detalle.item.codigo + "_" + detalle.item.nombre + "_" + detalle.precioUnitario + "_" + detalle.cantidad.toInteger() + "_" + detalle.descuento + "_" + detalle.bodega.id + "_" + detalle.centroCosto.id + "_" + detalle.item.id
     }
 
     def borrarItemDetalle_ajax () {

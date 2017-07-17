@@ -19,7 +19,7 @@
             <g:if test="${detalle?.proceso?.tipoProceso?.id == 1}">
                 <td style="width: 50px">${detalle?.descuento}</td>
             </g:if>
-            <td style="width: 80px">${detalle?.cantidad * detalle?.precioUnitario}</td>
+            <td style="width: 80px"><g:formatNumber number="${detalle?.cantidad * detalle?.precioUnitario}" maxFractionDigits="2" minFractionDigits="2"/></td>
             <td style="width: 60px; text-align: center">
                 <a href="#" class="btn btn-danger btn-sm btnBorrarItemDetalle"
                    title="Borrar Item" idI="${detalle?.id}"><i class="fa fa-trash-o"></i></a>

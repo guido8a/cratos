@@ -58,39 +58,44 @@
         <b>Código</b>
         <g:textField name="codigo_name" id="codigoItem" class="form-control" value="" readonly="true"/>
     </div>
-    <div class="col-md-4 camposTexto">
+    <div class="col-md-3 camposTexto">
         <b>Nombre</b>
-        <g:textField name="nombre_name" id="nombreItem" class="form-control" value="" readonly="true"/>
+        <g:textField name="nombre_name" id="nombreItem" class="form-control" value="" readonly="true" style="width: 255px"/>
     </div>
-    <div class="col-md-2 camposTexto">
+    <div class="col-md-2">
         <b>Precio</b>
-        <g:textField name="precio_name" id="precioItem" class="form-control number" value="" style="text-align: right"/>
+        <g:textField name="precio_name" id="precioItem" class="form-control number pre" value="" style="text-align: right"/>
     </div>
     <div class="col-md-1 camposTexto">
-        <b>Cantidad</b>
-        <g:textField name="cantidad_name" id="cantidadItem" class="form-control number canti" value="" style="text-align: center"/>
+        <b>Canti.</b>
+        <g:textField name="cantidad_name" id="cantidadItem" class="form-control number canti" value="" style="text-align: center; width: 80px"/>
     </div>
-    <g:if test="${proceso?.tipoProceso?.id != 8}" >
-        <div class="col-md-2 camposTexto">
-            <b>Descuento</b>
-            <g:textField name="descuento_name" id="descuentoItem" class="form-control number desc" value="" style="text-align: right"/>
+    <g:if test="${proceso?.tipoProceso?.codigo?.trim() != 'T'}" >
+        <div class="col-md-1">
+            <b>Desc.</b>
+            <g:textField name="descuento_name" id="descuentoItem" class="form-control number desc" value="" style="text-align: right; width: 80px" />
+        </div>
+
+        <div class="col-md-2">
+            <b>Total</b>
+            <g:textField name="total_name" id="totalItem" class="form-control number tot" value="" style="text-align: right; width: 150px"/>
         </div>
     </g:if>
 
-    <div class="col-md-2" style="margin-top: 20px; margin-bottom: 20px">
-        <b></b>
-        <a href="#" id="btnBuscar" class="btn btn-info" title="Buscar Item">
+
+    <div class="col-md-1" style="margin-top: 20px; margin-bottom: 20px; margin-left: -10px; width: 100px">
+        <a href="#" id="btnBuscar" class="btn btn-info btn-sm" title="Buscar Item">
             <i class="fa fa-search"></i>
         </a>
-        <a href="#" id="btnAgregar" class="btn btn-success" title="Agregar Item al detalle">
+        <a href="#" id="btnAgregar" class="btn btn-success btn-sm" title="Agregar Item al detalle">
             <i class="fa fa-plus"></i>
         </a>
 
-        <a href="#" id="btnGuardar" class="btn btn-success hidden" title="Guardar Item">
+        <a href="#" id="btnGuardar" class="btn btn-success btn-sm hidden" title="Guardar Item">
             <i class="fa fa-save"></i>
         </a>
 
-        <a href="#" id="btnCancelar" class="btn btn-warning hidden" title="Cancelar Edición">
+        <a href="#" id="btnCancelar" class="btn btn-warning btn-sm hidden" title="Cancelar Edición">
             <i class="fa fa-times-circle"></i>
         </a>
     </div>
@@ -173,29 +178,37 @@
         var descuento = $("#descuentoItem").val();
         var bodega = $("#bodegas").val();
         var centro = $("#centros").val();
-        $.ajax({
-            type: 'POST',
-            url: '${createLink(controller: 'detalleFactura', action: 'guardarDetalle_ajax')}',
-            data:{
-                item: item,
-                precio: precio,
-                cantidad: cantidad,
-                descuento: descuento,
-                bodega: bodega,
-                centro: centro,
-                proceso: '${proceso?.id}',
-                id: id
+        if(!item){
+            log("Debe seleccionar un item!", 'error')
+        }else{
+            $.ajax({
+                type: 'POST',
+                url: '${createLink(controller: 'detalleFactura', action: 'guardarDetalle_ajax')}',
+                data:{
+                    item: item,
+                    precio: precio,
+                    cantidad: cantidad,
+                    descuento: descuento,
+                    bodega: bodega,
+                    centro: centro,
+                    proceso: '${proceso?.id}',
+                    id: id
 
-            },
-            success: function (msg){
-                if(msg == 'ok'){
-                    log("Item agregado correctamente!", "success");
-                    cargarTablaDetalle();
-                }else{
-                    log("Error al agregar el item al detalle","error");
+                },
+                success: function (msg){
+                    if(msg == 'ok'){
+                        log("Item guardado correctamente!", "success");
+                        cargarTablaDetalle();
+                    }else{
+                        log("Error al agregar el item al detalle","error");
+                    }
                 }
-            }
-        });
+            });
+        }
+
+
+
+
     }
 
 
@@ -228,6 +241,66 @@
         if ($(this).val() == "")
             $(this).val("0")
     });
+
+    $(".pre").blur(function () {
+        if (isNaN($(this).val()))
+            $(this).val("1")
+        if ($(this).val() == "")
+            $(this).val("1")
+    });
+
+    $(".tot").keyup(function () {
+        var pr = 0
+
+        if(!$(".pre").val()){
+            $(".pre").val(1)
+        }
+
+        if(!$(".canti").val()){
+            $(".canti").val(1)
+        }
+
+        if (isNaN($(this).val())){
+            var to = $(".pre").val() * $(".canti").val();
+            $(this).val(to.toFixed(2))
+        }else{
+            pr = $(".tot").val() / $(".canti").val();
+            $(".pre").val(pr.toFixed(4))
+        }
+        if ($(this).val() == ""){
+            var to1 = $(".pre").val() * $(".canti").val();
+            $(this).val(to1.toFixed(2))
+        }else{
+            pr = $(".tot").val() / $(".canti").val();
+            $(".pre").val(pr.toFixed(4))
+        }
+
+    });
+
+    $(".pre").keyup(function () {
+        if(!$(".pre").val()){
+            $(".pre").val(1)
+        }
+
+        if(!$(".canti").val()){
+            $(".canti").val(1)
+        }
+
+        var to = ($(".pre").val() ) * $(".canti").val();
+        $(".tot").val(to.toFixed(2))
+    })
+
+    $(".canti").keyup(function () {
+        if(!$(".pre").val()){
+            $(".pre").val(1)
+        }
+
+        if(!$(".canti").val()){
+            $(".canti").val(1)
+        }
+        var to = $(".pre").val() * $(".canti").val();
+        $(".tot").val(to.toFixed(2))
+    })
 
 
     $("#btnCancelar").click(function () {
