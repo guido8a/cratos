@@ -4,7 +4,7 @@
 <html>
     <head>
         <meta name="layout" content="main">
-        <title>Lista de DocumentoEmpresa</title>
+        <title>Lista de Libretines de Facturas</title>
     </head>
     <body>
 
@@ -13,8 +13,8 @@
     <!-- botones -->
         <div class="btn-toolbar toolbar">
             <div class="btn-group">
-                <g:link action="form" class="btn btn-default btnCrear">
-                    <i class="fa fa-file-o"></i> Crear
+                <g:link action="form" class="btn btn-info btnCrear">
+                    <i class="fa fa-file-o"></i> Nuevo
                 </g:link>
             </div>
             <div class="btn-group pull-right col-md-3">
@@ -32,7 +32,7 @@
         <table class="table table-condensed table-bordered table-striped">
             <thead>
                 <tr>
-                    <th>Empresa</th>
+                    <th>Tipo</th>
                     %{--<g:sortableColumn property="fechaIngreso" title="Fecha Ingreso" />--}%
                     <g:sortableColumn property="autorizacion" title="Autorizacion" />
                     <g:sortableColumn property="numeroDesde" title="Numero Desde" />
@@ -45,7 +45,7 @@
                 <g:each in="${documentoEmpresaInstanceList}" status="i" var="documentoEmpresaInstance">
                     <g:if test="${documentoEmpresaInstance.empresa.id == session.empresa.id}">
                         <tr data-id="${documentoEmpresaInstance.id}">
-                            <td>${fieldValue(bean: documentoEmpresaInstance, field: "empresa")}</td>
+                            <td></td>
                             <td>${fieldValue(bean: documentoEmpresaInstance, field: "autorizacion")}</td>
                             <td>${fieldValue(bean: documentoEmpresaInstance, field: "numeroDesde")}</td>
                             <td>${fieldValue(bean: documentoEmpresaInstance, field: "numeroHasta")}</td>

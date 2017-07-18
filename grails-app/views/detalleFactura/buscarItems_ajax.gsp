@@ -63,4 +63,17 @@
         })
     }
 
+    $("#codigoBuscar").keyup(function (ev) {
+        if (ev.keyCode == 13) {
+            cargarTablaItems();
+        }
+    });
+
+    $("#nombreBuscar").keyup(function (ev) {
+        if (ev.keyCode == 13) {
+            cargarTablaItems();
+        }
+    });
+
+
 </script>

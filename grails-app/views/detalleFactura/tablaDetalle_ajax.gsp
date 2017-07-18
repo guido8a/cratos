@@ -5,21 +5,28 @@
   Time: 15:00
 --%>
 
+<style type="text/css">
+.colorAsiento {
+    color: #0b0b0b;
+    background-color: #5aa6ff;
+}
+</style>
+
 <table class="table table-bordered table-hover table-condensed">
     <tbody>
     <g:each in="${detalles}" var="detalle">
         <tr>
-            <td style="width: 70px">${detalle?.item?.codigo}</td>
-            <td style="width: 190px">${detalle?.item?.nombre}</td>
+            <td style="width: 40px">${detalle?.item?.codigo}</td>
+            <td style="width: 200px">${detalle?.item?.nombre}</td>
             <td style="width: 50px" title="${detalle?.bodega?.descripcion}">${detalle?.bodega?.descripcion}</td>
             <td style="width: 50px" title="${detalle?.centroCosto?.nombre}">${detalle?.centroCosto?.nombre?.substring(10)}</td>
-            <td style="width: 20px">${detalle?.item?.unidad}</td>
-            <td style="width: 40px">${detalle?.cantidad?.toInteger()}</td>
-            <td style="width: 90px"><g:formatNumber number="${detalle?.precioUnitario}" maxFractionDigits="4" minFractionDigits="4"/></td>
+            <td style="width: 30px">${detalle?.item?.unidad}</td>
+            <td style="width: 45px">${detalle?.cantidad?.toInteger()}</td>
+            <td style="width: 100px"><g:formatNumber number="${detalle?.precioUnitario}" maxFractionDigits="4" minFractionDigits="4"/></td>
             <g:if test="${detalle?.proceso?.tipoProceso?.codigo?.trim() != 'T'}">
                 <td style="width: 50px">${detalle?.descuento}</td>
             </g:if>
-            <td style="width: 80px"><g:formatNumber number="${detalle?.cantidad * detalle?.precioUnitario}" maxFractionDigits="2" minFractionDigits="2"/></td>
+            <td style="width: 90px"><g:formatNumber number="${detalle?.cantidad * detalle?.precioUnitario}" maxFractionDigits="2" minFractionDigits="2"/></td>
             <td style="width: 60px; text-align: center">
                 <a href="#" class="btn btn-danger btn-sm btnBorrarItemDetalle"
                    title="Borrar Item" idI="${detalle?.id}"><i class="fa fa-trash-o"></i></a>
@@ -31,6 +38,23 @@
     </g:each>
     </tbody>
 </table>
+
+<table class="table table-bordered table-hover table-condensed">
+    <tbody>
+    <tr class="colorAsiento">
+        <td style="width: 100px">Tarifa 0%</td>
+        <td style="width: 100px"></td>
+        <td style="width: 100px">Tarifa 12%</td>
+        <td style="width: 100px"></td>
+        <td style="width: 100px">Desc</td>
+        <td style="width: 100px"></td>
+        <td style="width: 100px">Iva</td>
+        <td style="width: 100px"></td>
+    </tr>
+    </tbody>
+</table>
+
+
 
 <script type="text/javascript">
 
@@ -53,6 +77,7 @@
                 $("#bodegas").val(parts[6]);
                 $("#centros").val(parts[7]);
                 $("#idItem").val(parts[8]);
+                $("#totalItem").val((parts[3] * parts[4]).toFixed(2));
                 $("#btnBuscar").addClass('hidden');
                 $("#btnAgregar").addClass('hidden');
                 $("#btnGuardar").removeClass('hidden');
@@ -63,28 +88,28 @@
     });
 
 
-        $(".btnBorrarItemDetalle").click(function () {
-            var det = $(this).attr('idI');
-            bootbox.confirm("Está seguro que desea borrar el item del detalle de la factura?", function (result) {
-                if (result) {
-                    $.ajax({
-                        type:'POST',
-                        url:'${createLink(controller: 'detalleFactura', action: 'borrarItemDetalle_ajax')}',
-                        data:{
-                            detalle: det
-                        },
-                        success: function (msg){
-                            if(msg == 'ok'){
-                                log("Item borrado correctamente", "success");
-                                cargarTablaDetalle();
-                            }else{
-                                log("Error al borrar el item al detalle","error");
-                            }
+    $(".btnBorrarItemDetalle").click(function () {
+        var det = $(this).attr('idI');
+        bootbox.confirm("Está seguro que desea borrar el item del detalle de la factura?", function (result) {
+            if (result) {
+                $.ajax({
+                    type:'POST',
+                    url:'${createLink(controller: 'detalleFactura', action: 'borrarItemDetalle_ajax')}',
+                    data:{
+                        detalle: det
+                    },
+                    success: function (msg){
+                        if(msg == 'ok'){
+                            log("Item borrado correctamente", "success");
+                            cargarTablaDetalle();
+                        }else{
+                            log("Error al borrar el item al detalle","error");
                         }
-                    });
-                }
-            });
+                    }
+                });
+            }
         });
+    });
 
 
 

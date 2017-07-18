@@ -108,17 +108,17 @@
         <thead>
         <tr>
             <th style="width: 70px">Código</th>
-            <th style="width: 250px">Descripción</th>
+            <th style="width: 200px">Descripción</th>
             <th style="width: 50px">Bodega</th>
             <th style="width: 50px">C. Cost.</th>
-            <th style="width: 40px">Uni</th>
-            <th style="width: 70px">Canti</th>
-            <th style="width: 70px">P.U.</th>
+            <th style="width: 30px">Uni</th>
+            <th style="width: 40px">Canti</th>
+            <th style="width: 90px">P.U.</th>
             <g:if test="${proceso?.tipoProceso?.id != 8}">
                 <th style="width: 50px">% Desc</th>
             </g:if>
-            <th style="width: 70px">Total</th>
-            <th style="width: 40px"><i class="fa fa-pencil"></i> </th>
+            <th style="width: 80px">Total</th>
+            <th style="width: 60px"><i class="fa fa-pencil"></i> </th>
         </tr>
         </thead>
     </table>
@@ -199,6 +199,7 @@
                     if(msg == 'ok'){
                         log("Item guardado correctamente!", "success");
                         cargarTablaDetalle();
+                        cancelar();
                     }else{
                         log("Error al agregar el item al detalle","error");
                     }
@@ -314,6 +315,14 @@
 
 
     $("#btnCancelar").click(function () {
+        cancelar();
+        $("#btnBuscar").removeClass('hidden');
+        $("#btnAgregar").removeClass('hidden');
+        $("#btnGuardar").addClass('hidden');
+        $("#btnCancelar").addClass('hidden');
+    });
+
+    function cancelar () {
         $("#idDetalle").val('');
         $("#codigoItem").val('');
         $("#nombreItem").val('');
@@ -321,11 +330,8 @@
         $("#cantidadItem").val('');
         $("#descuentoItem").val('');
         $("#idItem").val('');
-        $("#btnBuscar").removeClass('hidden');
-        $("#btnAgregar").removeClass('hidden');
-        $("#btnGuardar").addClass('hidden');
-        $("#btnCancelar").addClass('hidden');
-    });
+        $("#totalItem").val('');
+    }
 
 
 
