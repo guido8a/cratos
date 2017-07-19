@@ -64,6 +64,7 @@ class Proveedor {
             relacionado column: 'prverlcn'
         }
     }
+
     static constraints = {
         tipoProveedor(blank: true, nullable: true, attributes: [title: 'tipo de proveedor'])
         tipoPersona(attributes: [title: 'tipo de persona'])
