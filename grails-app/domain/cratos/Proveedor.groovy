@@ -24,7 +24,7 @@ class Proveedor {
     String pais
     String nombreCheque
     String autorizacionSri
-    Date fechaCaducidad
+//    Date fechaCaducidad
     String relacionado = 'NO'
 
     static auditable = [ignore: ['lugar', 'tipoProveedor']]
@@ -95,7 +95,7 @@ class Proveedor {
         pais(blank: true, nullable: true, attributes: [title: 'pais'])
         nombreCheque(blank: true, nullable: true, attributes: [title: 'nombreCheque'])
         autorizacionSri(blank: true,nullable: true, size: 1..40)
-        fechaCaducidad(blank:true,nullable: true)
+//        fechaCaducidad(blank:true,nullable: true)
         relacionado(blank:false, nullable: false, size: 2..2)
     }
 
