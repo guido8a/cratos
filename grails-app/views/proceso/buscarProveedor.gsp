@@ -9,10 +9,11 @@
     </tr>
     </thead>
     <tbody>
-    <g:each in="${provs}" var="p">
+    <g:each in="${prve}" var="p">
         <tr>
             <td style="width: 20px">
-                <a href="#" class="btn_bsc btn btn-success" id="${p.id}" ruc="${p.ruc}" nombre="${p?.nombre}" title="Seleccionar">
+                <a href="#" class="btn_bsc btn btn-success" id="${p.id}" ruc="${p.ruc}" nombre="${p?.nombre}"
+                    title="Seleccionar">
                     <i class="fa fa-check"></i>
                 </a>
             </td>

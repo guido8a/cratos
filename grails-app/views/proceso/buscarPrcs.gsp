@@ -37,14 +37,19 @@
     <div class="linea45"></div>
 
     <div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <g:link class="btn btn-primary" action="nuevoProceso">
                 <i class="fa fa-file-o"></i> Nueva Transacción
             </g:link>
         </div>
+        <div class="col-md-1">
+            <g:link class="btn btn-primary" action="procesosAnulados">
+                <i class="fa fa-file-o"></i> Anulados
+            </g:link>
+        </div>
 
-        <div class="col-md-6">
-            Buscar procesos por:
+        <div class="col-md-6" style="margin-left: 20px;">
+            Buscar por:
             <div class="btn-group">
                 <input id="buscar" type="search" class="form-control" value="${session.buscar}">
                 <span id="limpiaBuscar" class="glyphicon glyphicon-remove-circle"
@@ -87,7 +92,7 @@
 </div>
 
 <div><strong>Nota</strong>: Si existen muchos registros que coinciden con el criterio de búsqueda, se retorna
-  como máximo 20 <span style="margin-left: 40px; color: #0b2c89">Se ordena por fecha de proceso</span>
+  como máximo 20 <span style="margin-left: 40px; color: #0b2c89">Se ordena por fecha de proceso desde el más reciente</span>
 </div>
 
 <div class="modal fade " id="dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

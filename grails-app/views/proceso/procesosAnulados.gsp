@@ -18,10 +18,23 @@
 <body>
 <div class="container entero ui-corner-all">
     <fieldset style="margin-left: 25px;width: 1080px;float: left" class="ui-corner-all">
-        <legend>Transacciones anuladas</legend>
-        <b>Contabilidad:</b>
-        <g:select name="contabilidad"  class="form-control label-shared" id="contabilidad" style="width:450px" from="${cratos.Contabilidad.findAllByInstitucion(session.empresa,[sort:'id',order:'desc'])}" value="${contabilidad.id}" optionKey="id"/>
-        <table  style="margin-top: 10px;border: 1px solid black;padding:5px;" class="table table-bordered table-hover table-condensed">
+
+        <div class="row">
+            <div class="col-md-4">
+                <g:link class="btn btn-info" action="buscarPrcs">
+                    <i class="fa fa-chevron-left"></i>
+                    Lista de Procesos
+                </g:link>
+            </div>
+            <div class="col-md-8">
+                <b>Contabilidad:</b>
+                <g:select name="contabilidad"  class="form-control label-shared" id="contabilidad" style="width:450px"
+                          from="${cratos.Contabilidad.findAllByInstitucion(session.empresa,[sort:'id',order:'desc'])}"
+                          value="${contabilidad.id}" optionKey="id"/>
+            </div>
+        </div>
+        <table  style="margin-top: 10px;border: 1px solid black;padding:5px;"
+                class="table table-bordered table-hover table-condensed">
             <thead>
             <tr>
                 <th>Descripción</th>

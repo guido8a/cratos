@@ -54,7 +54,7 @@ class ProcesoController extends cratos.seguridad.Shield {
         def proveedor = Proveedor.get(params."proveedor.id")
         def gestor = Gestor.get(params.gestor)
         def fechaRegistro = new Date().parse("dd-MM-yyyy", params.fecha_input)   //fecha del cmpr
-        def fechaIngresoSistema = new Date().parse("dd-MM-yyyy",params.fecharegistro_input)   //registro
+        def fechaIngresoSistema = new Date().parse("dd-MM-yyyy",params.fechaingreso_input)   //registro
 
         if(params.id){
             proceso = Proceso.get(params.id)
@@ -75,7 +75,8 @@ class ProcesoController extends cratos.seguridad.Shield {
         proceso.baseImponibleNoIva = (params.baseImponibleNoIva?:0).toDouble()
         proceso.ivaGenerado = (params.ivaGenerado?:0).toDouble()
         proceso.iceGenerado = (params.iceGenerado?:0).toDouble()
-        proceso.fechaRegistro = fechaRegistro
+        proceso.flete = (params.flete?:0).toDouble()
+        proceso.fechaEmision= fechaRegistro
         proceso.fechaIngresoSistema = fechaIngresoSistema
         proceso.descripcion = params.descripcion
         proceso.fecha = new Date()
@@ -94,7 +95,7 @@ class ProcesoController extends cratos.seguridad.Shield {
                 proceso.secuencial = params.dcmtSecuencial?:0
                 proceso.autorizacion = params.dcmtAutorizacion
                 proceso.documento = params.dcmtEstablecimiento + "-" + params.dcmtEmision + "-" + '0' * (9-params.dcmtSecuencial.size()) + params.dcmtSecuencial
-                proceso.facturaAutorizacion = params.dcmtAutorizacion
+//                proceso.facturaAutorizacion = params.dcmtAutorizacion
                 proceso.tipoCmprSustento = comprobanteSri
                 proceso.sustentoTributario = sustento
                 proceso.proveedor = proveedor
@@ -118,11 +119,7 @@ class ProcesoController extends cratos.seguridad.Shield {
                     proceso.modificaScnc = params.mdfcSecuencial
                     proceso.modificaAutorizacion = params.mdfcAutorizacion
                 } else {
-                    proceso.modificaCmpr = null
-                    proceso.modificaSerie01 = null
-                    proceso.modificaSerie02 = null
-                    proceso.modificaScnc = null
-                    proceso.modificaAutorizacion = null
+                    poneNulos(proceso)
                 }
                 break
             case '2':  //ventas
@@ -133,36 +130,34 @@ class ProcesoController extends cratos.seguridad.Shield {
                 proceso.facturaSecuencial = params.serie.toInteger()?:0
                 proceso.tipoCmprSustento = comprobanteSri
                 proceso.proveedor = proveedor
+                break
 
+            case '6':  //ventas
+                proceso.tipoTransaccion = null
+                proceso.documento = params.numEstablecimiento + "-" + params.numeroEmision + "-" + '0' * (9-params.serie.size()) + params.serie
+                proceso.facturaEstablecimiento = params.numEstablecimiento
+                proceso.facturaPuntoEmision = params.numeroEmision
+                proceso.facturaSecuencial = params.serie.toInteger()?:0
+                proceso.comprobante = Comprobante.get(params.comprobanteSel_name)
+//                proceso.tipoCmprSustento = comprobanteSri
+                proceso.proveedor = proveedor
                 break
 
             case '3':  //Ajustes
-                proceso.tipoTransaccion = null
-                proceso.facturaEstablecimiento = null
-                proceso.facturaPuntoEmision = null
-                proceso.facturaSecuencial = 0
-                proceso.tipoCmprSustento = null
+                poneNulos(proceso)
                 proceso.proveedor = null
                 proceso.baseImponibleIva = params.valorPago.toDouble()
                 break
 
             case '4':  //Pagos
-                proceso.tipoTransaccion = null
-                proceso.facturaEstablecimiento = null
-                proceso.facturaPuntoEmision = null
-                proceso.facturaSecuencial = 0
-                proceso.tipoCmprSustento = null
+                poneNulos(proceso)
                 proceso.proveedor = proveedor
                 proceso.comprobante = Comprobante.get(params.comprobanteSel_name)
                 proceso.baseImponibleIva = params.valorPago.toDouble()
                 break
 
             case '5':  //Ingresos
-                proceso.tipoTransaccion = null
-                proceso.facturaEstablecimiento = null
-                proceso.facturaPuntoEmision = null
-                proceso.facturaSecuencial = 0
-                proceso.tipoCmprSustento = null
+                poneNulos(proceso)
                 proceso.proveedor = proveedor
                 proceso.comprobante = Comprobante.get(params.comprobanteSel_name)
                 proceso.baseImponibleIva = params.valorPago.toDouble()
@@ -229,6 +224,19 @@ class ProcesoController extends cratos.seguridad.Shield {
 
     }
 
+    def poneNulos(proceso) {
+        proceso.tipoTransaccion = null
+        proceso.facturaEstablecimiento = null
+        proceso.facturaPuntoEmision = null
+        proceso.facturaSecuencial = 0
+        proceso.tipoCmprSustento = null
+
+        proceso.modificaCmpr = null
+        proceso.modificaSerie01 = null
+        proceso.modificaSerie02 = null
+        proceso.modificaScnc = null
+        proceso.modificaAutorizacion = null
+    }
 
     def registrar = {
         if (request.method == 'POST') {
@@ -645,7 +653,7 @@ class ProcesoController extends cratos.seguridad.Shield {
 
     def buscarProveedor = {
         println "buscar proveedor "+params
-        def provs = []
+        def prve = []
         def proceso = Proceso.get(params.proceso)
         def tr = TipoRelacion.list()
         def tipo =   " 1,2,3 "
@@ -668,21 +676,21 @@ class ProcesoController extends cratos.seguridad.Shield {
         def sql
 
         if(params?.par?.trim() == ""){
-            sql = "select prve__id id, prve_ruc ruc, prvenmbr nombre, tppvdscr tipoProveedor from prve, tppv " +
+            sql = "select prve__id id, prve_ruc ruc, prvenmbr nombre, tppvdscr tipoProveedor, prveatrz from prve, tppv " +
                     "where tppv.tppv__id = prve.tppv__id and tprl__id in (${tipo}) and empr__id = ${session?.empresa?.id} order by prve_ruc;"
         }else{
             if(params.tipo == "1"){
-                sql = "select prve__id id, prve_ruc ruc, prvenmbr nombre, tppvdscr tipoProveedor from prve, tppv " +
+                sql = "select prve__id id, prve_ruc ruc, prvenmbr nombre, tppvdscr tipoProveedor, prveatrz from prve, tppv " +
                         "where tppv.tppv__id = prve.tppv__id and tprl__id in (${tipo}) and empr__id = ${session?.empresa?.id} and prve_ruc like '%${params.par}%' order by prve_ruc;"
             }else{
-                sql = "select prve__id id, prve_ruc ruc, prvenmbr nombre, tppvdscr tipoProveedor from prve, tppv " +
+                sql = "select prve__id id, prve_ruc ruc, prvenmbr nombre, tppvdscr tipoProveedor, prveatrz from prve, tppv " +
                         "where tppv.tppv__id = prve.tppv__id and tprl__id in (${tipo}) and empr__id = ${session?.empresa?.id} and prvenmbr ilike '%${params.par}%' order by prve_ruc;"
             }
         }
 
-        provs = cn.rows(sql.toString())
+        prve = cn.rows(sql.toString())
 
-        [provs: provs]
+        [prve: prve]
     }
 
     def detallePagos = {
@@ -1212,43 +1220,49 @@ class ProcesoController extends cratos.seguridad.Shield {
             sql = "select cmpr__id, clntnmbr prvenmbr, dscr, dcmt, debe hber, ntcr pgdo, sldo from ventas(${proveedor?.id}) " +
                     "where sldo <> 0"
         }
-//        println "sql: $sql"
+        println "sql<<<<<: $sql"
         def res = cn.rows(sql.toString())
         return [res: res]
     }
 
     def filaComprobante_ajax () {
-//        println "filaComprobante_ajax: $params"
+        println "filaComprobante_ajax: $params"
         def proceso = Proceso.get(params.proceso)
-//        def comprobante = Comprobante.get(params.comprobante)
-//        def proveedor =
-        def res
+        def data
+        def cn = dbConnectionService.getConnection()
+        def sql
         if(params.proceso){
-            def cn = dbConnectionService.getConnection()
-            def sql
-            sql = "select sldo from porpagar(${proceso?.proveedor?.id}) where cmpr__id = ${proceso?.comprobante?.id} ;"
-            res = cn.firstRow(sql.toString())
-        }else{
-//            def cn = dbConnectionService.getConnection()
-//            def sql
-//            sql = "select sldo from porpagar(${proceso?.proveedor?.id}) where cmpr__id = ${comprobante?.id} ;"
-//            res = cn.firstRow(sql.toString())
+            println "tipo de proceso: ${proceso.tipoProceso.id}"
+            if(proceso.tipoProceso.id == 4) {
+                println "1---------"
+                sql = "select sldo from porpagar(${proceso?.proveedor?.id}) where cmpr__id = ${proceso?.comprobante?.id}"
+            } else
+                println "2--------- ${proceso.tipoProceso.id}"
+                if(proceso.tipoProceso.id.toInteger() in [5, 6, 7]) {
+                    println "si se contiene-----"
+                    sql = "select sldo from ventas(${proceso?.proveedor?.id}) where cmpr__id = ${proceso?.comprobante?.id}"
+                }
+            println "sql: $sql"
+            data = cn.firstRow(sql.toString())
         }
-        return[proceso: proceso, saldo: res?.sldo]
+
+        return[proceso: proceso, saldo: data?.sldo]
     }
 
     def valores_ajax () {
 //        println "valores_ajax $params"
         def proceso = Proceso.get(params.proceso)
         def data = []
+        def atrz
+        def sql
 
         def cn = dbConnectionService.getConnection()
         def tipo = 0
         def tpcp = params?.tpcp?.toInteger()
         if(tpcp in [4, 5] && params.tpps == '1') {
-            def sql = "select cast(tittcdgo as integer) cdgo from titt, prve, tptr " +
-                    "where prve.tpid__id = titt.tpid__id and prve__id = ${params.prve} and " +
-                    "tptr.tptr__id = titt.tptr__id and tptrcdgo = '1'"
+            sql = "select cast(tittcdgo as integer) cdgo from titt, prve, tptr " +
+                  "where prve.tpid__id = titt.tpid__id and prve__id = ${params.prve} and " +
+                  "tptr.tptr__id = titt.tptr__id and tptrcdgo = '1'"
 //        println "sql1: $sql"
             def titt = cn.rows(sql.toString())[0]?.cdgo
 //            println "identif: $titt"
@@ -1259,8 +1273,12 @@ class ProcesoController extends cratos.seguridad.Shield {
             data = cn.rows(sql.toString())
             cn.close()
         }
+        sql = "select prveatrz from prve where prve__id = ${params.prve}"
+        println "sql1: $sql"
+        atrz = cn.rows(sql.toString())[0]?.prveatrz
+        println "autorizacion: $atrz"
 
-        [proceso: proceso, tipo: params.tipo, data: data]
+        [proceso: proceso, tipo: params.tipo, data: data, atrz: atrz]
     }
 
     def proveedor_ajax () {
@@ -1319,7 +1337,7 @@ class ProcesoController extends cratos.seguridad.Shield {
 
 
     def numeracion_ajax () {
-        println "numeracion_ajax: $params"
+//        println "numeracion_ajax: $params"
         def cn = dbConnectionService.getConnection()
         def proceso
         if(params.proceso) {
@@ -1357,12 +1375,15 @@ class ProcesoController extends cratos.seguridad.Shield {
             sql = "select fcdt__id id, fcdtdsde numeroDesde, fcdthsta numeroHasta, fcdtfcat fechaAutorizacion, " +
                     "fcdtnmes numeroEstablecimiento, fcdtnmpe numeroEmision " +
                     "from fcdt where cast(now() as date) - 365 < fcdtfcfn and fcdttipo = '${tpdc}'order by fcdtfcin"
-            println "sql: $sql"
+//            println "sql: $sql"
             def libretin = cn.rows(sql.toString())
             sql = "select coalesce(max(prcsfcsc), 0) mxmo from prcs, fcdt " +
                     "where tpps__id = ${params.tpps} and fcdt.fcdt__id = prcs.fcdt__id and " +
                     "prcs.fcdt__id = ${libretin[0]?.id} and prcsfcsc between fcdtdsde and fcdthsta "
-            nmro = cn.rows(sql.toString())[0]?.mxmo + 1
+//            println "sql nmro: $sql"
+            nmro = cn.rows(sql.toString())[0]?.mxmo
+            nmro = nmro == 0 ? libretin[0]?.numeroDesde : nmro + 1
+//            println "valor de nmro: $nmro, ${libretin[0]?.numeroDesde}"
 
             if(libretin?.size() > 0) {
                 [libretin: libretin, estb: libretin[0].numeroEstablecimiento, emsn: libretin[0].numeroEmision, nmro: nmro,
@@ -1497,11 +1518,6 @@ class ProcesoController extends cratos.seguridad.Shield {
         }
     }
 
-    def porcentaje_ajax () {
-        def porcentaje = PorcentajeIva.get(params.porcentaje)
-        return [porcentaje: porcentaje.valor]
-    }
-
     def calcularValorICE_ajax () {
 //        def porcentaje = PorcentajeIva.get(params.porcentaje)
 //        def valor = params.base.toDouble() * (porcentaje.valor / 100)
@@ -1514,12 +1530,6 @@ class ProcesoController extends cratos.seguridad.Shield {
 //       def valor = params.base.toDouble() * (porcentaje.valor / 100)
         def valor = (params.base ? params.base.toDouble() : 0) * (porcentaje ? (porcentaje?.valor?.toDouble()  / 100) : 0) * 0.12
         return [valor: valor]
-    }
-
-    def totalBase_ajax () {
-        def total = (params.ice ? params.ice.toDouble() : 0) + (params.bienes ? params.bienes.toDouble() : 0) + (params.servicios ? params.servicios.toDouble() : 0)
-        def base = params.base.toDouble()
-        return [total: total.toDouble(), base: base]
     }
 
     def totalesRenta_ajax () {
@@ -1652,14 +1662,6 @@ class ProcesoController extends cratos.seguridad.Shield {
     def valoresServicio_ajax () {
         def porcentajeIva = PorcentajeIva.get(params.porcentaje)
         return [porcentajeIva: porcentajeIva]
-    }
-
-    def totaValor_ajax() {
-//        println("params--> " + params)
-        def total = (params.bienes ? params.bienes.toDouble() : 0) + (params.servicios ? params.servicios.toDouble() : 0)
-        def porcentajeIva = PorcentajeIva.get(params.porcentaje)
-        def base = params.base.toDouble() * porcentajeIva.codigo.toDouble() * 0.12
-        return [total: total.toDouble(), base: base]
     }
 
 }

@@ -17,4 +17,11 @@
     $("#ing_perfil").click(function(){
       $(".frm-login").submit();
     })
+
+    $("#perfil").bind('keyup',function(e) {
+        if(e.which === 13) {
+            $(".frm-login").submit();
+        }
+    });
+
 </script>

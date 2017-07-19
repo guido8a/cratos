@@ -36,6 +36,7 @@ class Proceso implements Serializable {
     double iceGenerado = 0
     double impuesto
     double valor
+    double flete
 
     String procesoSerie01
     String procesoSerie02
@@ -98,6 +99,7 @@ class Proceso implements Serializable {
             iceGenerado column: 'prcs_ice'
             impuesto column: 'prcsimpt'
             valor column: 'prcsvlor'
+            flete column: 'prcsflte'
 
             procesoSerie01 column: 'prcssr01'
             procesoSerie02 column: 'prcssr02'
@@ -155,6 +157,7 @@ class Proceso implements Serializable {
         iceGenerado(blank: true, nullable: true, attributes: [title: 'iceGenerado'])
         impuesto(blank: true, nullable: true, attributes: [title: 'impuesto'])
         valor(blank: true, nullable: true, attributes: [title: 'valor'])
+        valor(blank: true, nullable: true, attributes: [title: 'flete'])
 
         procesoSerie01(blank: true, nullable: true, maxSize: 3, attributes: [title: 'establecimeinto documento'])
         procesoSerie02(blank: true, nullable: true, maxSize: 3, attributes: [title: 'punto de emisión documento'])

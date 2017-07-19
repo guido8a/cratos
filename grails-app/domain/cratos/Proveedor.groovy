@@ -59,7 +59,7 @@ class Proveedor {
             email column: 'prvemail'
             pais column: 'prvepais'
             nombreCheque column: 'prvenmch'
-            autorizacionSri column: 'autr_sri'
+            autorizacionSri column: 'prveatrz'
             fechaCaducidad column: 'fchacdcd'
             relacionado column: 'prverlcn'
         }

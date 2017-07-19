@@ -168,12 +168,12 @@
 
             <div class="col-xs-2">
                 <g:if test="${(proceso?.estado == 'R')}">
-                    ${proceso?.fecha.format("dd-MM-yyyy")}
+                    ${proceso?.fechaEmision.format("dd-MM-yyyy")}
                 </g:if>
                 <g:else>
                     <elm:datepicker name="fecha" title="Fecha de emisión del comprobante"
                                     class="datepicker form-control required col-xs-3"
-                                    value="${proceso?.fechaRegistro}" maxDate="new Date()"
+                                    value="${proceso?.fechaEmision}" maxDate="new Date()"
                                     style="width: 80px; margin-left: 5px"/>
                 </g:else>
             </div>
@@ -184,10 +184,10 @@
 
             <div class="col-xs-2">
                 <g:if test="${(proceso?.estado == 'R')}">
-                    ${proceso?.fecha.format("dd-MM-yyyy")}
+                    ${proceso?.fechaIngresoSistema.format("dd-MM-yyyy")}
                 </g:if>
                 <g:else>
-                    <elm:datepicker name="fecharegistro" title="Fecha de registro en el sistema"
+                    <elm:datepicker name="fechaingreso" title="Fecha de registro en el sistema"
                                     class="datepicker form-control required col-xs-3"
                                     value="${proceso?.fechaIngresoSistema}" maxDate="new Date()"
                                     style="width: 80px; margin-left: 5px"/>
@@ -531,12 +531,15 @@
             cargarTcsr(prve)
 //            cargarTipo(tipo);
         }
-        if(tipo == '2') {
+
+        if (tipo == '2' || tipo == '6' || tipo == '7') {
+            cargarLibretin();
             $("#libretinFacturas").show()
             $("#pagoProceso").hide()
-//            $("#libretin").change();
-            cargarLibretin();
+        } else {
+            $("#libretinFacturas").hide()
         }
+
 
         if (tipo == '3') {
             $("#libretinFacturas").hide()
@@ -820,7 +823,7 @@
                 if ($("#fecha_input").val().length < 10) {
                     error += "<li>Seleccione la fecha de emisión</li>"
                 }
-                if ($("#fecharegistro_input").val().length < 10) {
+                if ($("#fechaingreso_input").val().length < 10) {
                     error += "<li>Seleccione la fecha de registro</li>"
                 }
                 if ($("#prve").val() == "" || $("#prve").val() == null) {
@@ -873,7 +876,7 @@
                 if ($("#fecha_input").val().length < 10) {
                     error += "<li>Seleccione la fecha de emisión</li>"
                 }
-                if ($("#fecharegistro_input").val().length < 10) {
+                if ($("#fechaingreso_input").val().length < 10) {
                     error += "<li>Seleccione la fecha de registro</li>"
                 }
                 if ($("#prve").val() == "" || $("#prve").val() == null) {
@@ -903,8 +906,8 @@
                 if ($("#fecha_input").val().length < 10) {
                     error += "<li>Seleccione la fecha de emisión</li>"
                 }
-                if ($("#fecharegistro_input").val().length < 10) {
-                    $("#fecharegistro_input").val($("#fecha_input").val())
+                if ($("#fechaingreso_input").val().length < 10) {
+                    $("#fechaingreso_input").val($("#fecha_input").val())
                 }
                 if ($("#descripcion").val().length < 1) {
                     error += "<li>Llene el campo Descripción</li>"
@@ -1029,8 +1032,8 @@
     });
 
     $("#fecha_input").change(function () {
-        if ($("#fecharegistro_input").val().length < 10) {
-            $("#fecharegistro_input").val($("#fecha_input").val())
+        if ($("#fechaingreso_input").val().length < 10) {
+            $("#fechaingreso_input").val($("#fecha_input").val())
         }
     });
 

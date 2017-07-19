@@ -4,7 +4,7 @@
 }
 </style>
 
-<g:if test="${tipo == '4' || tipo == '3' || tipo == '5'}">
+<g:if test="${tipo == '4' || tipo == '5'}">
     <div class="row" style="font-size: 12px">
         <div class="col-xs-2 negrilla" style="width: 120px">
             Valor:
@@ -16,6 +16,7 @@
         </div>
     </div>
 </g:if>
+%{--
 <g:elseif test="${tipo == '6' || tipo == '7'}">
     <div class="row" style="font-size: 12px">
         <div class="col-xs-2 negrilla" style="width: 120px">
@@ -40,7 +41,9 @@
         </div>
     </div>
 </g:elseif>
-<g:elseif test="${tipo == '1' || tipo == '2'}">
+--}%
+
+<g:elseif test="${tipo == '1' || tipo == '2' || tipo == '3' || tipo == '6' || tipo == '7'}">
     <g:set var="iva" value="${cratos.ParametrosAuxiliares.list().first().iva}"/>
 
     <g:if test="${tipo == '1'}">
@@ -80,7 +83,7 @@
 
             <div class="col-xs-2 negrilla">
                 <input type="text" name="dcmtAutorizacion" id="dcmtAutorizacion" size="10" maxlength="15"
-                       value="${proceso?.autorizacion}" class=" digits form-control label-shared validacionNumero"
+                       value="${proceso?.autorizacion?: atrz}" class=" digits form-control label-shared validacionNumero"
                        validate=" number" placeholder="Autorización"
                        title="El número autorización de la factura a registrar " ${proceso?.estado == 'R' ? 'disabled' : ''}/>
             </div>
@@ -203,7 +206,7 @@
         </div>
 
         <div class="col-xs-2 negrilla">
-            <input type="text" name="flete" id="flete" value="${proceso?.iceGenerado ?: 0.00}"
+            <input type="text" name="flete" id="flete" value="${proceso?.flete ?: 0.00}"
                    class="required number form-control validacionNumero"
                    validate="required number" ${proceso?.estado == 'R' ? 'disabled' : ''}/>
         </div>

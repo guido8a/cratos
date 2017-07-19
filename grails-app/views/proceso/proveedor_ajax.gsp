@@ -1,9 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: gato
-  Date: 23/05/17
-  Time: 13:20
---%>
 <g:if test="${(tipo == '1' || tipo == '4')}">
     <div class="col-xs-2 negrilla">
         Proveedor:
