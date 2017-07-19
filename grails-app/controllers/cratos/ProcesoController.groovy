@@ -95,12 +95,14 @@ class ProcesoController extends cratos.seguridad.Shield {
                 proceso.secuencial = params.dcmtSecuencial?:0
                 proceso.autorizacion = params.dcmtAutorizacion
                 proceso.documento = params.dcmtEstablecimiento + "-" + params.dcmtEmision + "-" + '0' * (9-params.dcmtSecuencial.size()) + params.dcmtSecuencial
-//                proceso.facturaAutorizacion = params.dcmtAutorizacion
-                proceso.tipoCmprSustento = comprobanteSri
                 proceso.sustentoTributario = sustento
+                proceso.tipoCmprSustento = comprobanteSri
                 proceso.proveedor = proveedor
+                println "compras.... tipoCmprSustento: ${comprobanteSri}"
 
                 proceso.pago = params.pago
+
+                proveedor.autorizacionSri = params.dcmtAutorizacion
 
                 if (params.pago == '02') {
                     proceso.normaLegal = params.norma
@@ -123,6 +125,7 @@ class ProcesoController extends cratos.seguridad.Shield {
                 }
                 break
             case '2':  //ventas
+                println "------ ventas------"
                 proceso.tipoTransaccion = TipoTransaccion.get(2)
                 proceso.documento = params.numEstablecimiento + "-" + params.numeroEmision + "-" + '0' * (9-params.serie.size()) + params.serie
                 proceso.facturaEstablecimiento = params.numEstablecimiento
@@ -132,7 +135,8 @@ class ProcesoController extends cratos.seguridad.Shield {
                 proceso.proveedor = proveedor
                 break
 
-            case '6':  //ventas
+            case ['6','7']:  //NC
+                println "------ Nota de crédito y Débito------"
                 proceso.tipoTransaccion = null
                 proceso.documento = params.numEstablecimiento + "-" + params.numeroEmision + "-" + '0' * (9-params.serie.size()) + params.serie
                 proceso.facturaEstablecimiento = params.numEstablecimiento
@@ -144,12 +148,14 @@ class ProcesoController extends cratos.seguridad.Shield {
                 break
 
             case '3':  //Ajustes
+                println "------ Ajustes------"
                 poneNulos(proceso)
                 proceso.proveedor = null
                 proceso.baseImponibleIva = params.valorPago.toDouble()
                 break
 
             case '4':  //Pagos
+                println "------ pagos------"
                 poneNulos(proceso)
                 proceso.proveedor = proveedor
                 proceso.comprobante = Comprobante.get(params.comprobanteSel_name)
@@ -157,6 +163,7 @@ class ProcesoController extends cratos.seguridad.Shield {
                 break
 
             case '5':  //Ingresos
+                println "------ ingresos------"
                 poneNulos(proceso)
                 proceso.proveedor = proveedor
                 proceso.comprobante = Comprobante.get(params.comprobanteSel_name)
@@ -173,11 +180,12 @@ class ProcesoController extends cratos.seguridad.Shield {
 //        println "tpps: ${proceso.tipoProceso}, fcha: ${proceso.fecha}, fcig: ${proceso.fechaIngresoSistema}"
 //        println "fcrg: ${proceso.fechaRegistro}, fcem: ${proceso.fechaEmision}"
         try {
-            println "...5: ${proceso.modificaCmpr}"
+//            println "...5: ${proceso.tipoCmprSustento?.id}"
             proceso.save(flush: true)
+            proveedor.save(flush: true)
             println "...6"
             proceso.refresh()
-            println "...7: ${proceso.modificaCmpr}"
+            println "...7: ${proceso.tipoCmprSustento?.id}"
             if (proceso.errors.getErrorCount() == 0) {
                 if (params.data != "") {
                     def data = params.data.split(";")
@@ -225,12 +233,6 @@ class ProcesoController extends cratos.seguridad.Shield {
     }
 
     def poneNulos(proceso) {
-        proceso.tipoTransaccion = null
-        proceso.facturaEstablecimiento = null
-        proceso.facturaPuntoEmision = null
-        proceso.facturaSecuencial = 0
-        proceso.tipoCmprSustento = null
-
         proceso.modificaCmpr = null
         proceso.modificaSerie01 = null
         proceso.modificaSerie02 = null

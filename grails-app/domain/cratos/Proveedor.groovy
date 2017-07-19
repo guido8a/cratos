@@ -36,11 +36,11 @@ class Proveedor {
         id generator: 'identity'
         version false
         columns {
-            tipoProveedor column: 'tppv__id'
-            tipoPersona column: 'tppr__id'
-            empresa column: 'empr__id'
+            tipoProveedor column:      'tppv__id'
+            tipoPersona column:        'tppr__id'
+            empresa column:            'empr__id'
             tipoIdentificacion column: 'tpid__id'
-            canton column: 'cntn__id'
+            canton column:             'cntn__id'
 
             ruc column: 'prve_ruc'
             nombre column: 'prvenmbr'
@@ -52,15 +52,15 @@ class Proveedor {
             descuento column: 'prvedsct'
             estado column: 'prveetdo'
             observaciones column: 'prveobsr'
-            telefono column: 'prvetlfn'
 
             tipoRelacion column: 'tprl__id'
+
             actividad column: 'prveactv'
             email column: 'prvemail'
             pais column: 'prvepais'
-            nombreCheque column: 'prvenmch'
+            nombreCheque column: 'prvenbch'
+            telefono column: 'prvetlfn'
             autorizacionSri column: 'prveatrz'
-            fechaCaducidad column: 'fchacdcd'
             relacionado column: 'prverlcn'
         }
     }
