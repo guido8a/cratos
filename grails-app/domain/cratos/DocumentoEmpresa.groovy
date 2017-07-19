@@ -42,7 +42,7 @@ class DocumentoEmpresa implements Serializable {
         numeroDesde(blank: false, nullable: false)
         numeroHasta(blank: false, nullable: false)
         fechaAutorizacion(blank: false, nullable: false)
-        tipo(blank: false, nullable: false)
+        tipo(inList: ['F' , 'R', 'NC', 'ND'], blank: false, nullable: false)
         numeroEstablecimiento(blank: false, nullable: false)
         numeroEmision(blank: false, nullable: false)
         digitosEnSecuencial(blank: false, nullable: false)

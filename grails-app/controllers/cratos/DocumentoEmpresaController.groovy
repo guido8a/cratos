@@ -12,7 +12,11 @@ class DocumentoEmpresaController extends cratos.seguridad.Shield {
 
     def list() {
 
-        [documentoEmpresaInstanceList: DocumentoEmpresa.list(params), params: params]
+        def empresa = Empresa.get(session.empresa.id)
+        def lista = DocumentoEmpresa.findAllByEmpresa(empresa)
+
+//        [documentoEmpresaInstanceList: DocumentoEmpresa.list(params), params: params]
+        [documentoEmpresaInstanceList: lista]
     } //list
 
     def form_ajax() {
@@ -26,10 +30,14 @@ class DocumentoEmpresaController extends cratos.seguridad.Shield {
                 return
             } //no existe el objeto
         } //es edit
-        return [documentoEmpresaInstance: documentoEmpresaInstance]
+
+        def lista = ['F':'Factura', "R": 'Retención', "ND": 'Nota de Débito', "NC": 'Nota de Crédito']
+
+        return [documentoEmpresaInstance: documentoEmpresaInstance, lista: lista]
     } //form_ajax
 
     def save() {
+        println("params " + params)
         def documentoEmpresaInstance
         if(params.id) {
             documentoEmpresaInstance = DocumentoEmpresa.get(params.id)
@@ -40,6 +48,7 @@ class DocumentoEmpresaController extends cratos.seguridad.Shield {
                 return
             }//no existe el objeto
             documentoEmpresaInstance.properties = params
+            documentoEmpresaInstance.fechaIngreso = new Date()
         }//es edit
         else {
             documentoEmpresaInstance = new DocumentoEmpresa(params)
@@ -105,4 +114,76 @@ class DocumentoEmpresaController extends cratos.seguridad.Shield {
             redirect(action: "list")
         }
     } //delete
+
+    def save_ajax() {
+
+//        println("params " + params)
+
+        def documentoEmpresa
+        def empresa = Empresa.get(session.empresa.id)
+
+        def libretines = DocumentoEmpresa.findAllByEmpresa(empresa)
+
+
+        if(params.numeroDesde.toInteger() >= params.numeroHasta.toInteger()){
+            render "no_2_Los números ingresados en el rango de facturas son incorrectos!"
+        }else{
+
+            if(libretines.numeroHasta.contains(params.numeroHasta.toInteger()) || libretines.numeroHasta.contains(params.numeroDesde.toInteger())
+                    || libretines.numeroDesde.contains(params.numeroDesde.toInteger()) || libretines.numeroDesde.contains(params.numeroHasta.toInteger())){
+                render "no_2_El número ingresado ya se encuentra en otro libretín de facturas"
+            }else{
+                def st = ''
+
+                if(params.id){
+                    documentoEmpresa = DocumentoEmpresa.get(params.id)
+                    st = 'Información del libretín actualizada correctamente'
+                }else{
+                    documentoEmpresa = new DocumentoEmpresa()
+                    documentoEmpresa.fechaIngreso = new Date()
+                    documentoEmpresa.empresa = empresa
+                    st = 'Libretín creado correctamente'
+                }
+
+                documentoEmpresa.autorizacion = params.autorizacion
+                documentoEmpresa.numeroDesde = params.numeroDesde.toInteger()
+                documentoEmpresa.numeroHasta = params.numeroHasta.toInteger()
+                documentoEmpresa.numeroEmision = params.numeroEmision
+                documentoEmpresa.numeroEstablecimiento = params.numeroEstablecimiento
+                documentoEmpresa.digitosEnSecuencial = params.digitosEnSecuencial.toInteger()
+                documentoEmpresa.fechaAutorizacion = new Date().parse("dd-MM-yyyy",params."fechaAutorizacion_input")
+                documentoEmpresa.fechaInicio = new Date().parse("dd-MM-yyyy",params."fechaInicio_input")
+                documentoEmpresa.fechaFin = new Date().parse("dd-MM-yyyy",params."fechaFin_input")
+                documentoEmpresa.tipo = params.tipo
+
+                try {
+                    documentoEmpresa.save(flush: true)
+                    render "OK_" + st
+                }catch (e){
+                    println("error libretin " + e + documentoEmpresa.errors)
+                    render "no_Error al guardar la información del libretín"
+                }
+            }
+        }
+
+
+
+
+
+    }
+
+    def verificar_ajax () {
+        def documentoEmpresa = DocumentoEmpresa.get(params.id)
+        def v = Proceso.findAllByDocumentoEmpresa(documentoEmpresa)
+        def r
+        if (v.size() > 0) {
+            r = true
+        } else {
+            r = false
+        }
+
+//        render (v.size() > 0) ? true : false
+        render r
+    }
+
 } //fin controller

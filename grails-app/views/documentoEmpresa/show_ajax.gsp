@@ -1,6 +1,6 @@
 
 <%@ page import="cratos.DocumentoEmpresa" %>
-
+<div class="col2">
 <g:if test="${!documentoEmpresaInstance}">
     <elm:notFound elem="DocumentoEmpresa" genero="o" />
 </g:if>
@@ -8,7 +8,7 @@
 
     <g:if test="${documentoEmpresaInstance?.empresa}">
         <div class="row">
-            <div class="col-md-2 text-info">
+            <div class="col-md-5 text-info">
                 Empresa
             </div>
             
@@ -19,22 +19,10 @@
         </div>
     </g:if>
     
-    <g:if test="${documentoEmpresaInstance?.fechaIngreso}">
-        <div class="row">
-            <div class="col-md-2 text-info">
-                Fecha Ingreso
-            </div>
-            
-            <div class="col-md-3">
-                <g:formatDate date="${documentoEmpresaInstance?.fechaIngreso}" format="dd-MM-yyyy" />
-            </div>
-            
-        </div>
-    </g:if>
-    
+
     <g:if test="${documentoEmpresaInstance?.autorizacion}">
         <div class="row">
-            <div class="col-md-2 text-info">
+            <div class="col-md-5 text-info">
                 Autorizacion
             </div>
             
@@ -47,8 +35,8 @@
     
     <g:if test="${documentoEmpresaInstance?.numeroDesde}">
         <div class="row">
-            <div class="col-md-2 text-info">
-                Numero Desde
+            <div class="col-md-5 text-info">
+                Número Desde
             </div>
             
             <div class="col-md-3">
@@ -60,8 +48,8 @@
     
     <g:if test="${documentoEmpresaInstance?.numeroHasta}">
         <div class="row">
-            <div class="col-md-2 text-info">
-                Numero Hasta
+            <div class="col-md-5 text-info">
+                Número Hasta
             </div>
             
             <div class="col-md-3">
@@ -73,8 +61,8 @@
     
     <g:if test="${documentoEmpresaInstance?.fechaAutorizacion}">
         <div class="row">
-            <div class="col-md-2 text-info">
-                Fecha Autorizacion
+            <div class="col-md-5 text-info">
+                Fecha Autorización
             </div>
             
             <div class="col-md-3">
@@ -86,7 +74,7 @@
     
     <g:if test="${documentoEmpresaInstance?.tipo}">
         <div class="row">
-            <div class="col-md-2 text-info">
+            <div class="col-md-5 text-info">
                 Tipo
             </div>
             
@@ -99,8 +87,8 @@
     
     <g:if test="${documentoEmpresaInstance?.numeroEstablecimiento}">
         <div class="row">
-            <div class="col-md-2 text-info">
-                Numero Establecimiento
+            <div class="col-md-5 text-info">
+                Número Establecimiento
             </div>
             
             <div class="col-md-3">
@@ -112,8 +100,8 @@
     
     <g:if test="${documentoEmpresaInstance?.numeroEmision}">
         <div class="row">
-            <div class="col-md-2 text-info">
-                Numero Emision
+            <div class="col-md-5 text-info">
+                Número Emision
             </div>
             
             <div class="col-md-3">
@@ -125,8 +113,8 @@
     
     <g:if test="${documentoEmpresaInstance?.digitosEnSecuencial}">
         <div class="row">
-            <div class="col-md-2 text-info">
-                Digitos En Secuencial
+            <div class="col-md-5 text-info">
+                Dígitos En Secuencial
             </div>
             
             <div class="col-md-3">
@@ -135,10 +123,23 @@
             
         </div>
     </g:if>
+
+    <g:if test="${documentoEmpresaInstance?.fechaIngreso}">
+        <div class="row">
+            <div class="col-md-5 text-info">
+                Fecha Ingreso
+            </div>
+
+            <div class="col-md-3">
+                <g:formatDate date="${documentoEmpresaInstance?.fechaIngreso}" format="dd-MM-yyyy" />
+            </div>
+
+        </div>
+    </g:if>
     
     <g:if test="${documentoEmpresaInstance?.fechaInicio}">
         <div class="row">
-            <div class="col-md-2 text-info">
+            <div class="col-md-5 text-info">
                 Fecha Inicio
             </div>
             
@@ -151,7 +152,7 @@
     
     <g:if test="${documentoEmpresaInstance?.fechaFin}">
         <div class="row">
-            <div class="col-md-2 text-info">
+            <div class="col-md-5 text-info">
                 Fecha Fin
             </div>
             
@@ -161,5 +162,8 @@
             
         </div>
     </g:if>
+
+
     
 </g:else>
+</div>

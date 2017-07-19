@@ -5,6 +5,14 @@
     <head>
         <meta name="layout" content="main">
         <title>Lista de Libretines de Facturas</title>
+        <style type="text/css">
+            .centrado{
+                text-align: center;
+            }
+            .derecha{
+                text-align: right;
+            }
+        </style>
     </head>
     <body>
 
@@ -17,27 +25,28 @@
                     <i class="fa fa-file-o"></i> Nuevo
                 </g:link>
             </div>
-            <div class="btn-group pull-right col-md-3">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Buscar" value="${params.search}">
-                    <span class="input-group-btn">
-                        <g:link action="list" class="btn btn-default btn-search" type="button">
-                            <i class="fa fa-search"></i>&nbsp;
-                        </g:link>
-                    </span>
-                </div><!-- /input-group -->
-            </div>
+            %{--<div class="btn-group pull-right col-md-3">--}%
+                %{--<div class="input-group">--}%
+                    %{--<input type="text" class="form-control" placeholder="Buscar" value="${params.search}">--}%
+                    %{--<span class="input-group-btn">--}%
+                        %{--<g:link action="list" class="btn btn-default btn-search" type="button">--}%
+                            %{--<i class="fa fa-search"></i>&nbsp;--}%
+                        %{--</g:link>--}%
+                    %{--</span>--}%
+                %{--</div><!-- /input-group -->--}%
+            %{--</div>--}%
         </div>
 
         <table class="table table-condensed table-bordered table-striped">
             <thead>
                 <tr>
                     <th>Tipo</th>
-                    %{--<g:sortableColumn property="fechaIngreso" title="Fecha Ingreso" />--}%
-                    <g:sortableColumn property="autorizacion" title="Autorizacion" />
-                    <g:sortableColumn property="numeroDesde" title="Numero Desde" />
-                    <g:sortableColumn property="numeroHasta" title="Numero Hasta" />
-                    <g:sortableColumn property="fechaAutorizacion" title="Fecha Autorizacion" />
+                    <th>Autorización</th>
+                    <th>Número Desde</th>
+                    <th>Número Hasta</th>
+                    <th>Fecha Autorización</th>
+                    <th>Válido Desde</th>
+                    <th>Válido Hasta</th>
                 </tr>
             </thead>
             <tbody>
@@ -45,11 +54,13 @@
                 <g:each in="${documentoEmpresaInstanceList}" status="i" var="documentoEmpresaInstance">
                     <g:if test="${documentoEmpresaInstance.empresa.id == session.empresa.id}">
                         <tr data-id="${documentoEmpresaInstance.id}">
-                            <td></td>
+                            <td>${documentoEmpresaInstance?.tipo == 'F'? 'Factura' : (documentoEmpresaInstance?.tipo == 'R'? 'Retención' : (documentoEmpresaInstance?.tipo == 'ND'? 'Nota de Débito' : 'Nota de Cŕedito'))}</td>
                             <td>${fieldValue(bean: documentoEmpresaInstance, field: "autorizacion")}</td>
-                            <td>${fieldValue(bean: documentoEmpresaInstance, field: "numeroDesde")}</td>
-                            <td>${fieldValue(bean: documentoEmpresaInstance, field: "numeroHasta")}</td>
-                            <td><g:formatDate date="${documentoEmpresaInstance.fechaAutorizacion}" format="dd-MM-yyyy" /></td>
+                            <td class="derecha">${fieldValue(bean: documentoEmpresaInstance, field: "numeroDesde")}</td>
+                            <td class="derecha">${fieldValue(bean: documentoEmpresaInstance, field: "numeroHasta")}</td>
+                            <td class="centrado"><g:formatDate date="${documentoEmpresaInstance.fechaAutorizacion}" format="dd-MM-yyyy" /></td>
+                            <td class="centrado"><g:formatDate date="${documentoEmpresaInstance.fechaInicio}" format="dd-MM-yyyy" /></td>
+                            <td class="centrado"><g:formatDate date="${documentoEmpresaInstance.fechaFin}" format="dd-MM-yyyy" /></td>
                         </tr>
                     </g:if>
                 </g:each>
@@ -57,11 +68,13 @@
             <g:else>
                 <g:each in="${documentoEmpresaInstanceList}" status="i" var="documentoEmpresaInstance">
                     <tr data-id="${documentoEmpresaInstance.id}">
-                        <td>${fieldValue(bean: documentoEmpresaInstance, field: "empresa")}</td>
+                        <td>${documentoEmpresaInstance?.tipo == 'F'? 'Factura' : (documentoEmpresaInstance?.tipo == 'R'? 'Retención' : (documentoEmpresaInstance?.tipo == 'ND'? 'Nota de Débito' : 'Nota de Cŕedito'))}</td>
                         <td>${fieldValue(bean: documentoEmpresaInstance, field: "autorizacion")}</td>
-                        <td>${fieldValue(bean: documentoEmpresaInstance, field: "numeroDesde")}</td>
-                        <td>${fieldValue(bean: documentoEmpresaInstance, field: "numeroHasta")}</td>
-                        <td><g:formatDate date="${documentoEmpresaInstance.fechaAutorizacion}" format="dd-MM-yyyy" /></td>
+                        <td class="derecha">${fieldValue(bean: documentoEmpresaInstance, field: "numeroDesde")}</td>
+                        <td class="derecha">${fieldValue(bean: documentoEmpresaInstance, field: "numeroHasta")}</td>
+                        <td class="centrado"><g:formatDate date="${documentoEmpresaInstance.fechaAutorizacion}" format="dd-MM-yyyy" /></td>
+                        <td class="centrado"><g:formatDate date="${documentoEmpresaInstance.fechaInicio}" format="dd-MM-yyyy" /></td>
+                        <td class="centrado"><g:formatDate date="${documentoEmpresaInstance.fechaFin}" format="dd-MM-yyyy" /></td>
                     </tr>
                 </g:each>
             </g:else>
@@ -81,13 +94,20 @@
                         type    : "POST",
                         url     : '${createLink(action:'save_ajax')}',
                         data    : $form.serialize(),
-                            success : function (msg) {
+                         success : function (msg) {
                         var parts = msg.split("_");
-                        log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
                         if (parts[0] == "OK") {
-                            location.reload(true);
+                            log(parts[1], 'success');
+                            setTimeout(function () {
+                                location.reload(true);
+                            }, 1500);
+
                         } else {
-                            spinner.replaceWith($btn);
+                            if(parts[1] == '2'){
+                                bootbox.alert(parts[2]);
+                            }else{
+                                log(parts[2],'error');
+                            }
                             return false;
                         }
                     }
@@ -99,7 +119,7 @@
             function deleteRow(itemId) {
                 bootbox.dialog({
                     title   : "Alerta",
-                    message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea eliminar el DocumentoEmpresa seleccionado? Esta acción no se puede deshacer.</p>",
+                    message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea eliminar el libretín seleccionado? Esta acción no se puede deshacer.</p>",
                     buttons : {
                         cancelar : {
                             label     : "Cancelar",
@@ -140,7 +160,8 @@
                     success : function (msg) {
                         var b = bootbox.dialog({
                             id      : "dlgCreateEdit",
-                            title   : title + " DocumentoEmpresa",
+                            title   : title + " Libretín de Facturas",
+                            class: 'long',
                             message : msg,
                             buttons : {
                                 cancelar : {
@@ -166,6 +187,22 @@
                 }); //ajax
             } //createEdit
 
+            function verificar (id){
+             var jqXHR =   $.ajax({
+                   type: 'POST',
+                    async: false,
+                    url: '${createLink(controller: 'documentoEmpresa', action: 'verificar_ajax')}',
+                    data:{
+                        id: id
+                    },
+                    success: function (msg) {
+                        return msg
+                    }
+                });
+
+             return jqXHR.responseText
+            }
+
             $(function () {
 
                 $(".btnCrear").click(function() {
@@ -173,24 +210,32 @@
                     return false;
                 });
 
-                context.settings({
-                    onShow : function (e) {
-                        $("tr.success").removeClass("success");
-                        var $tr = $(e.target).parent();
-                        $tr.addClass("success");
-                        id = $tr.data("id");
+                $("tr").contextMenu({
+                    items  : createContextMenu,
+                    onShow : function ($element) {
+                        $element.addClass("trHighlight");
+                    },
+                    onHide : function ($element) {
+                        $(".trHighlight").removeClass("trHighlight");
                     }
                 });
-                context.attach('tbody>tr', [
-                    {
-                        header : 'Acciones'
-                    },
-                    {
-                        text   : 'Ver',
-                        icon   : "<i class='fa fa-search'></i>",
-                        action : function (e) {
-                            $("tr.success").removeClass("success");
-                            e.preventDefault();
+
+
+                function createContextMenu(node) {
+                    var $tr = $(node);
+                    var id = $tr.data("id");
+
+                    var items = {
+                        header : {
+                            label  : "Acciones",
+                            header : true
+                        }
+                    };
+
+                    var ver = {
+                        label   : 'Ver',
+                        icon   : "fa fa-search",
+                        action : function () {
                             $.ajax({
                                 type    : "POST",
                                 url     : "${createLink(action:'show_ajax')}",
@@ -199,7 +244,7 @@
                                 },
                                 success : function (msg) {
                                     bootbox.dialog({
-                                        title   : "Ver DocumentoEmpresa",
+                                        title   : "Ver Libretín de Facturas",
                                         message : msg,
                                         buttons : {
                                             ok : {
@@ -213,27 +258,36 @@
                                 }
                             });
                         }
-                    },
-                    {
-                        text   : 'Editar',
-                        icon   : "<i class='fa fa-pencil'></i>",
-                        action : function (e) {
-                            $("tr.success").removeClass("success");
-                            e.preventDefault();
+                    };
+
+                    var editar = {
+                        label   : 'Editar',
+                        icon   : "fa fa-pencil",
+                        action : function () {
                             createEditRow(id);
                         }
-                    },
-                    {divider : true},
-                    {
-                        text   : 'Eliminar',
-                        icon   : "<i class='fa fa-trash-o'></i>",
-                        action : function (e) {
-                            $("tr.success").removeClass("success");
-                            e.preventDefault();
+                    };
+
+                    var eliminar = {
+                        label  : 'Eliminar',
+                        icon   : "fa fa-trash-o",
+                        action: function () {
                             deleteRow(id);
                         }
+                    };
+
+                    items.ver = ver;
+
+                    if(verificar(id) == 'false'){
+                        items.editar = editar;
+                        items.eliminar = eliminar;
                     }
-                ]);
+
+                return items
+
+                }
+
+
             });
         </script>
 
