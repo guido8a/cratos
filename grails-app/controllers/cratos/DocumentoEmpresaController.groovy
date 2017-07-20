@@ -94,24 +94,14 @@ class DocumentoEmpresaController extends cratos.seguridad.Shield {
     } //show
 
     def delete() {
-        def documentoEmpresaInstance = DocumentoEmpresa.get(params.id)
-        if (!documentoEmpresaInstance) {
-            flash.clase = "alert-error"
-            flash.message =  "No se encontró Documento Empresa con id " + params.id
-            redirect(action: "list")
-            return
-        }
+        def documentoEmpresa = DocumentoEmpresa.get(params.id)
 
-        try {
-            documentoEmpresaInstance.delete(flush: true)
-            flash.clase = "alert-success"
-            flash.message =  "Se ha eliminado correctamente Documento Empresa " + documentoEmpresaInstance.id
-            redirect(action: "list")
-        }
-        catch (DataIntegrityViolationException e) {
-            flash.clase = "alert-error"
-            flash.message =  "No se pudo eliminar Documento Empresa " + (documentoEmpresaInstance.id ? documentoEmpresaInstance.id : "")
-            redirect(action: "list")
+        try{
+            documentoEmpresa.delete(flush: true)
+            render "OK_Libretín borrado correctamente!"
+        }catch (e){
+            println("error al borrar libretín " + e)
+            render "NO_Error al borrar el libretín"
         }
     } //delete
 
@@ -121,9 +111,11 @@ class DocumentoEmpresaController extends cratos.seguridad.Shield {
 
         def documentoEmpresa
         def empresa = Empresa.get(session.empresa.id)
-
+        def fechaInicio = new Date().parse("dd-MM-yyyy",params."fechaInicio_input")
+        def fechaFin = new Date().parse("dd-MM-yyyy",params."fechaFin_input")
+        def fechaAutorizacion = new Date().parse("dd-MM-yyyy",params."fechaAutorizacion_input")
+        def st = ''
         def libretines = DocumentoEmpresa.findAllByEmpresa(empresa)
-
 
         if(params.numeroDesde.toInteger() >= params.numeroHasta.toInteger()){
             render "no_2_Los números ingresados en el rango de facturas son incorrectos!"
@@ -133,35 +125,38 @@ class DocumentoEmpresaController extends cratos.seguridad.Shield {
                     || libretines.numeroDesde.contains(params.numeroDesde.toInteger()) || libretines.numeroDesde.contains(params.numeroHasta.toInteger())){
                 render "no_2_El número ingresado ya se encuentra en otro libretín de facturas"
             }else{
-                def st = ''
 
-                if(params.id){
-                    documentoEmpresa = DocumentoEmpresa.get(params.id)
-                    st = 'Información del libretín actualizada correctamente'
+                if(fechaInicio >= fechaFin){
+                    render "no_2_La fecha de inicio es mayor a la fecha de finalización"
                 }else{
-                    documentoEmpresa = new DocumentoEmpresa()
-                    documentoEmpresa.fechaIngreso = new Date()
-                    documentoEmpresa.empresa = empresa
-                    st = 'Libretín creado correctamente'
-                }
+                    if(params.id){
+                        documentoEmpresa = DocumentoEmpresa.get(params.id)
+                        st = 'Información del libretín actualizada correctamente'
+                    }else{
+                        documentoEmpresa = new DocumentoEmpresa()
+                        documentoEmpresa.fechaIngreso = new Date()
+                        documentoEmpresa.empresa = empresa
+                        st = 'Libretín creado correctamente'
+                    }
 
-                documentoEmpresa.autorizacion = params.autorizacion
-                documentoEmpresa.numeroDesde = params.numeroDesde.toInteger()
-                documentoEmpresa.numeroHasta = params.numeroHasta.toInteger()
-                documentoEmpresa.numeroEmision = params.numeroEmision
-                documentoEmpresa.numeroEstablecimiento = params.numeroEstablecimiento
-                documentoEmpresa.digitosEnSecuencial = params.digitosEnSecuencial.toInteger()
-                documentoEmpresa.fechaAutorizacion = new Date().parse("dd-MM-yyyy",params."fechaAutorizacion_input")
-                documentoEmpresa.fechaInicio = new Date().parse("dd-MM-yyyy",params."fechaInicio_input")
-                documentoEmpresa.fechaFin = new Date().parse("dd-MM-yyyy",params."fechaFin_input")
-                documentoEmpresa.tipo = params.tipo
+                    documentoEmpresa.autorizacion = params.autorizacion
+                    documentoEmpresa.numeroDesde = params.numeroDesde.toInteger()
+                    documentoEmpresa.numeroHasta = params.numeroHasta.toInteger()
+                    documentoEmpresa.numeroEmision = params.numeroEmision
+                    documentoEmpresa.numeroEstablecimiento = params.numeroEstablecimiento
+                    documentoEmpresa.digitosEnSecuencial = params.digitosEnSecuencial.toInteger()
+                    documentoEmpresa.fechaAutorizacion = fechaAutorizacion
+                    documentoEmpresa.fechaInicio = fechaInicio
+                    documentoEmpresa.fechaFin = fechaFin
+                    documentoEmpresa.tipo = params.tipo
 
-                try {
-                    documentoEmpresa.save(flush: true)
-                    render "OK_" + st
-                }catch (e){
-                    println("error libretin " + e + documentoEmpresa.errors)
-                    render "no_Error al guardar la información del libretín"
+                    try {
+                        documentoEmpresa.save(flush: true)
+                        render "OK_" + st
+                    }catch (e){
+                        println("error libretin " + e + documentoEmpresa.errors)
+                        render "no_Error al guardar la información del libretín"
+                    }
                 }
             }
         }

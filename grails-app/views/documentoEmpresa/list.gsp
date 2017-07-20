@@ -12,6 +12,7 @@
             .derecha{
                 text-align: right;
             }
+
         </style>
     </head>
     <body>
@@ -133,15 +134,20 @@
                             callback  : function () {
                                 $.ajax({
                                     type    : "POST",
-                                    url     : '${createLink(action:'delete_ajax')}',
+                                    url     : '${createLink(action:'delete')}',
                                     data    : {
                                         id : itemId
                                     },
                                     success : function (msg) {
                                         var parts = msg.split("_");
-                                        log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
                                         if (parts[0] == "OK") {
-                                            location.reload(true);
+                                            log(parts[1], 'success');
+                                            setTimeout(function () {
+                                                location.reload(true);
+                                            }, 1500);
+
+                                        } else {
+                                            log(parts[1],'error')
                                         }
                                     }
                                 });

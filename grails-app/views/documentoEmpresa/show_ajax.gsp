@@ -12,7 +12,7 @@
                 Empresa
             </div>
             
-            <div class="col-md-3">
+            <div class="col-md-5">
                 ${documentoEmpresaInstance?.empresa?.encodeAsHTML()}
             </div>
             
@@ -78,8 +78,8 @@
                 Tipo
             </div>
             
-            <div class="col-md-3">
-                <g:fieldValue bean="${documentoEmpresaInstance}" field="tipo"/>
+            <div class="col-md-5">
+                ${documentoEmpresaInstance?.tipo == 'F' ? 'Factura' : (documentoEmpresaInstance?.tipo == 'R' ? 'Retención' : (documentoEmpresaInstance?.tipo == 'ND' ? 'Nota de Débito' : 'Nota de Crédito'))}
             </div>
             
         </div>
