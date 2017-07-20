@@ -183,10 +183,11 @@ class PrflController extends cratos.seguridad.Shield {
     * **/
 
     def grabar = {
-//      println "parametros grabar: ${params}"
+      println "parametros grabar: ${params}"
         def ids = params.ids
         def modulo = params.menu
         def prfl = params.prfl
+        def tpac = params.tpac
         def tx1 = ""
         def exst = []
         def actl = []
@@ -194,25 +195,31 @@ class PrflController extends cratos.seguridad.Shield {
         if (ids.size() < 1) ids = '1000000' // este valor no existe como accn__id, y sirve para el IN del SQL
         // eliminar los permisos que no estén chequeados
         def cn = dbConnectionService.getConnection()
-        def cn1 = dbConnectionService.getConnection()
         def tx = ""
         tx = "select prms__id from prms, accn where accn.accn__id = prms.accn__id and " +
                 "mdlo__id = ${modulo} and " +
                 "prms.accn__id not in (select accn__id " +
                 "from accn where mdlo__id = " + modulo + " and  " +
-                "accn__id in (${ids})) and prfl__id = ${prfl}"
+                "accn__id in (${ids})) and prfl__id = ${prfl} and tpac__id = ${tpac}"
 //
-//      println "grabar SQL: ${tx}"
-        cn.eachRow(tx) { d ->
-            Prms.get(d.prms__id).delete()
+      println "grabar SQL: ${tx}"
+        cn.eachRow(tx.toString()) { d ->
+
+            try {
+                Prms.get(d.prms__id).delete(flush: true)
+                println "borra: ${d.prms__id}"
+            } catch (e) {
+                println "error: $e"
+            }
         }
         //println "-------------borrado de permisos----------"
         // se debe barrer tosos los menús señalados y si está chequeado añadir a prms.
         tx = "select prms.accn__id from prms, accn where accn.accn__id = prms.accn__id and " +
                 "mdlo__id = ${modulo} and " +
                 "prms.accn__id in (select accn__id " +
-                "from accn where mdlo__id = " + modulo + " and accn__id in (${ids})) and prfl__id = ${prfl}"
-        //println "grabar IN SQL: ${tx}"
+                "from accn where mdlo__id = " + modulo + " and accn__id in (${ids})) and prfl__id = ${prfl} and " +
+                "tpac__id = ${tpac}"
+        println "grabar IN SQL: ${tx}"
         exst = []
         cn.eachRow(tx) { d ->
             exst.add(d.accn__id)
@@ -224,12 +231,12 @@ class PrflController extends cratos.seguridad.Shield {
         cn.eachRow(tx) { d ->
             actl.add(d.accn__id)
         }
-        //println "insercion  Actual: ${actl} \n Exst: ${exst}}"
+//        println "insercion  Actual: ${actl} \n Exst: ${exst}}"
         (actl - exst).each {
             tx1 = "insert into prms(prfl__id, accn__id) values (${prfl.toInteger()}, ${it})"
             try {
                 cn.execute(tx1)
-                insertaKerveros(prfl.toInteger(), session.usuario, session.perfil)
+//                insertaKerveros(prfl.toInteger(), session.usuario, session.perfil)
 //          println "insertando.... ${tx1}"
             }
             catch (Exception ex) {
@@ -238,7 +245,6 @@ class PrflController extends cratos.seguridad.Shield {
             //resp += "<br>" + tx1
         }
         cn.close()
-        cn1.close()
         //println "recibido:" + params
         //render(resp + "<br>Existe:" + exst + "<br>Actual:" + actl + "<br>a insertar: ${actl-exst}")
         redirect(action: 'ajaxPermisos', params: params)

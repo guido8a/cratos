@@ -190,20 +190,22 @@
                 <thead>
                 <tr class="letraP">
                     <th></th>
-                    <th colspan="4">DEBE</th>
-                    <th colspan="4">HABER</th>
+                    <th colspan="5">DEBE</th>
+                    <th colspan="5">HABER</th>
                     <th></th>
                 </tr>
                 <tr>
-                    <th style="width: 280px;" class="letraP">Código (Cuenta)</th>
-                    <th style="width: 100px" class="letraP">% B. Imponible Valor</th>
-                    <th style="width: 100px" class="letraP">% B.I. Sin IVA</th>
+                    <th style="width: 220px;" class="letraP">Código (Cuenta)</th>
+                    <th style="width: 80px" class="letraP">% B. Imponible</th>
+                    <th style="width: 80px" class="letraP">% B.I. Sin IVA</th>
                     <th style="width: 80px" class="letraP">Impuestos</th>
                     <th style="width: 80px" class="letraP">ICE</th>
-                    <th style="width: 100px" class="letraP">% B. Imponible Valor</th>
-                    <th style="width: 100px" class="letraP">% B.I. Sin IVA</th>
+                    <th style="width: 80px" class="letraP">Flete</th>
+                    <th style="width: 80px" class="letraP">% B. Imponible</th>
+                    <th style="width: 80px" class="letraP">% B.I. Sin IVA</th>
                     <th style="width: 80px" class="letraP">Impuestos</th>
                     <th style="width: 80px" class="letraP">ICE</th>
+                    <th style="width: 80px" class="letraP">Flete</th>
                     <th style="width: 70px" class="letraP"><i class="fa fa-pencil"></i></th>
                 </tr>
                 </thead>

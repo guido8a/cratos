@@ -10,6 +10,7 @@ import org.springframework.dao.DataIntegrityViolationException
 
 class DetalleFacturaController extends cratos.seguridad.Shield  {
 
+    def dbConnectionService
     static allowedMethods = [save: "POST", update: "POST", delete: "POST", delete: "GET"]
 
     def index() {
@@ -200,10 +201,12 @@ class DetalleFacturaController extends cratos.seguridad.Shield  {
     }
 
     def tablaDetalle_ajax() {
+        def cn = dbConnectionService.getConnection()
         def proceso = Proceso.get(params.proceso)
         def detalles = DetalleFactura.findAllByProceso(proceso).sort{it?.item?.codigo}
+        def totl = cn.rows("select * from total_detalle(${params.proceso},0,0)".toString())[0]
 
-        return[detalles: detalles]
+        return[detalles: detalles, totl: totl]
     }
 
     def cargarEdicion_ajax () {

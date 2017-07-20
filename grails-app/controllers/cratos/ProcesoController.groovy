@@ -135,7 +135,7 @@ class ProcesoController extends cratos.seguridad.Shield {
                 proceso.proveedor = proveedor
                 break
 
-            case ['6','7']:  //NC
+            case ['6','7']:  //NC y ND
                 println "------ Nota de crédito y Débito------"
                 proceso.tipoTransaccion = null
                 proceso.documento = params.numEstablecimiento + "-" + params.numeroEmision + "-" + '0' * (9-params.serie.size()) + params.serie
@@ -173,19 +173,13 @@ class ProcesoController extends cratos.seguridad.Shield {
 
         println "...2"
 
-
-//        println "<<<<< gestor: ${proceso.gestor?.id}, cont: ${proceso.contabilidad?.id}, empr: ${proceso.empresa?.id}, " +
-//                "proveedor: ${proceso.proveedor?.id}, cmpr: ${proceso.comprobante?.id}, usro: ${proceso.usuario}"
-//        println "tptr: ${proceso.tipoTransaccion}, tpss: ${proceso.tipoCmprSustento}, tpcp: ${proceso.sustentoTributario}"
-//        println "tpps: ${proceso.tipoProceso}, fcha: ${proceso.fecha}, fcig: ${proceso.fechaIngresoSistema}"
-//        println "fcrg: ${proceso.fechaRegistro}, fcem: ${proceso.fechaEmision}"
         try {
-//            println "...5: ${proceso.tipoCmprSustento?.id}"
             proceso.save(flush: true)
             proveedor.save(flush: true)
             println "...6"
             proceso.refresh()
             println "...7: ${proceso.tipoCmprSustento?.id}"
+
             if (proceso.errors.getErrorCount() == 0) {
                 if (params.data != "") {
                     def data = params.data.split(";")
@@ -229,7 +223,6 @@ class ProcesoController extends cratos.seguridad.Shield {
             println "...8"
             println "error al grabar el proceso $e"
         }
-
     }
 
     def poneNulos(proceso) {
@@ -1339,7 +1332,7 @@ class ProcesoController extends cratos.seguridad.Shield {
 
 
     def numeracion_ajax () {
-//        println "numeracion_ajax: $params"
+        println "numeracion_ajax: $params"
         def cn = dbConnectionService.getConnection()
         def proceso
         if(params.proceso) {
@@ -1376,8 +1369,8 @@ class ProcesoController extends cratos.seguridad.Shield {
         } else {
             sql = "select fcdt__id id, fcdtdsde numeroDesde, fcdthsta numeroHasta, fcdtfcat fechaAutorizacion, " +
                     "fcdtnmes numeroEstablecimiento, fcdtnmpe numeroEmision " +
-                    "from fcdt where cast(now() as date) - 365 < fcdtfcfn and fcdttipo = '${tpdc}'order by fcdtfcin"
-//            println "sql: $sql"
+                    "from fcdt where to_date('${params.fcha}', 'DD-MM-YYYY') between fcdtfcin and fcdtfcfn and fcdttipo = '${tpdc}'order by fcdtfcin"
+            println "sql: $sql"
             def libretin = cn.rows(sql.toString())
             sql = "select coalesce(max(prcsfcsc), 0) mxmo from prcs, fcdt " +
                     "where tpps__id = ${params.tpps} and fcdt.fcdt__id = prcs.fcdt__id and " +
@@ -1532,12 +1525,6 @@ class ProcesoController extends cratos.seguridad.Shield {
 //       def valor = params.base.toDouble() * (porcentaje.valor / 100)
         def valor = (params.base ? params.base.toDouble() : 0) * (porcentaje ? (porcentaje?.valor?.toDouble()  / 100) : 0) * 0.12
         return [valor: valor]
-    }
-
-    def totalesRenta_ajax () {
-        def total = (params.bienes ? params.bienes.toDouble() : 0) + (params.servicios ? params.servicios.toDouble() : 0)
-        def base = params.base.toDouble()
-        return [total: total.toDouble(), base: base]
     }
 
     def saveRetencion_ajax () {

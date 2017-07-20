@@ -5,7 +5,7 @@
 <div class="col-xs-5">
 
     <g:select name="libretin" from="${libretin}" value="${proceso?.documentoEmpresa?.id}"
-              class="form-control" optionKey="id" libre="1" disabled="${proceso.estado == 'R' ? true : false}"
+              class="form-control" optionKey="id" libre="1" disabled="${proceso?.estado == 'R' ? true : false}"
               optionValue="${{"Desde: " + it?.numeroDesde + ' - Hasta: ' + it?.numeroHasta + " - Autorización: " +
                       it?.fechaAutorizacion?.format("dd-MM-yyyy")}}"/>
     <g:hiddenField name="libretinName" id="idLibre" value=""/>
@@ -17,7 +17,7 @@
                  title="Numeración Emisión" value="${proceso?.facturaPuntoEmision?:emsn}"/>
 
     <g:textField name="serie" id="serie" value="${proceso?.facturaSecuencial?:nmro}" maxlength="9"
-                 class="form-control required validacionNumero" readonly="${proceso.estado == 'R' ? true : false}"
+                 class="form-control required validacionNumero" readonly="${proceso?.estado == 'R' ? true : false}"
                  style="width: 120px; display: inline"/>
     <p class="help-block ui-helper-hidden" id="error_serie"></p>
 </div>

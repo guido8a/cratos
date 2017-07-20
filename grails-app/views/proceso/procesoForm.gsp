@@ -152,17 +152,6 @@
             <input type="hidden" name="data" id="data"/>
         <div class="row">
             <div class="col-xs-2 negrilla">
-                Tipo de transacción:
-            </div>
-
-            <div class="col-xs-4 negrilla">
-                <g:select class="form-control required cmbRequired tipoProcesoSel" name="tipoProceso" id="tipoProceso"
-                          from="${cratos.TipoProceso.list(sort: 'codigo')}" label="Proceso tipo: "
-                          value="${proceso?.tipoProceso?.id}" optionKey="id"
-                          optionValue="descripcion" title="Tipo de la transacción" disabled="${(proceso?.estado == 'R') ? true : false}"/>
-            </div>
-
-            <div class="col-xs-1 negrilla">
                 Fecha de Emisión:
             </div>
 
@@ -193,6 +182,19 @@
                                     style="width: 80px; margin-left: 5px"/>
                 </g:else>
             </div>
+
+
+            <div class="col-xs-2 negrilla">
+                Tipo de transacción:
+            </div>
+
+            <div class="col-xs-3 negrilla">
+                <g:select class="form-control required cmbRequired tipoProcesoSel" name="tipoProceso" id="tipoProceso"
+                          from="${cratos.TipoProceso.list(sort: 'codigo')}" label="Proceso tipo: "
+                          value="${proceso?.tipoProceso?.id}" optionKey="id"
+                          optionValue="descripcion" title="Tipo de la transacción" disabled="${(proceso?.estado == 'R') ? true : false}"/>
+            </div>
+
 
         </div>
 
@@ -902,7 +904,7 @@
                 }
             }
 
-            if (tipoP == '3') {   /* compras */
+            if (tipoP == '3') {   /* Ajustes */
                 if ($("#fecha_input").val().length < 10) {
                     error += "<li>Seleccione la fecha de emisión</li>"
                 }
@@ -918,7 +920,26 @@
                 }
             }
 
-            if (tipoP == '6') {   /* compras */
+            if (tipoP == '6' || tipoP == '7') {   /* Nota de crédito y débito */
+                if (isNaN(parseFloat($("#comprobanteSaldo").val()))) {
+                    error += "<li>No hay comprobante, seleccione uno</li>"
+                }
+
+                if ($("#iva12").val() == 0 && $("#iva0").val() == 0 && $("#noIva").val() == 0) {
+                    error += "<li>Ingrese valores en la base imponible</li>"
+                }
+                if ((parseFloat($("#iva12").val()) + parseFloat($("#iva0").val()) + parseFloat($("#noIva").val()) +
+                        parseFloat($("#ivaGenerado").val()) + parseFloat($("#iceGenerado").val()) +
+                        parseFloat($("#flete").val())) > parseFloat($("#comprobanteSaldo").val()) ) {
+                    error += "<li>Revise el valores de base imponible e impuestos generados</li>"
+                }
+
+                if ($("#serie").hasClass('error')){
+                    error += "<li>Revise el número de de la Nota de Crédito</li>"
+                }
+            }
+
+            if (tipoP == '7') {   /* Nota de débito */
                 if (isNaN(parseFloat($("#comprobanteSaldo").val()))) {
                     error += "<li>No hay comprobante, seleccione uno</li>"
                 }
@@ -1054,7 +1075,8 @@
             url: '${createLink(controller: 'proceso', action: 'numeracion_ajax')}',
             data: {
                 libretin: idLibretin,
-                tpps: $(".tipoProcesoSel option:selected").val()
+                tpps: $(".tipoProcesoSel option:selected").val(),
+                fcha: $("#fecha_input").val()
             },
             success: function (msg) {
                 var partes = msg.split('_');
@@ -1066,20 +1088,30 @@
     });
 
     function cargarLibretin() {
-        var tpps = $(".tipoProcesoSel option:selected").val();
-        $.ajax({
-            type: 'POST',
-            async: 'true',
-            url: "${createLink(controller: 'proceso', action: 'numeracion_ajax')}",
-            data: {
-                proceso: '${proceso?.id}',
-                tpps: tpps
-            },
-            success: function (msg) {
-                $("#libretinFacturas").html(msg)
-                $("#libretinFacturas").show()
-            }
-        });
+        var fcha =  $("#fecha_input").val()
+        if(fcha.length < 10) {
+//            $("#listaErrores").append("No se ha ingresado la fecha de Emisión")
+//            $("#listaErrores").show()
+//            $("#divErrores").show()
+            $(".tipoProcesoSel").val(0);
+            $("#fecha_input").focus();
+        } else {
+            var tpps = $(".tipoProcesoSel option:selected").val();
+            $.ajax({
+                type: 'POST',
+                async: 'true',
+                url: "${createLink(controller: 'proceso', action: 'numeracion_ajax')}",
+                data: {
+                    proceso: '${proceso?.id}',
+                    tpps: tpps,
+                    fcha: $("#fecha_input").val()
+                },
+                success: function (msg) {
+                    $("#libretinFacturas").html(msg)
+                    $("#libretinFacturas").show()
+                }
+            });
+        }
     }
 
 

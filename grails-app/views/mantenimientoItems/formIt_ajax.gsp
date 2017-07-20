@@ -167,7 +167,7 @@
             <div class="col-md-4">
                 <g:select id="tipoIVA" name="tipoIVA.id" from="${cratos.inventario.TipoIVA.list([sort: 'descripcion'])}"
                           optionKey="id" optionValue="descripcion"
-                          class="many-to-one " value="${itemInstance?.marca?.id}" noSelection="['': '']"/>
+                          class="many-to-one " value="${itemInstance?.tipoIVA?.id}" noSelection="['': '']"/>
                 <p class="help-block ui-helper-hidden"></p>
             </div>
         </span>

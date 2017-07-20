@@ -4,6 +4,7 @@
 
 <g:form class="form-horizontal" name="frmItem" role="form" action="saveDp_ajax" method="POST">
     <g:hiddenField name="id" value="${departamentoItemInstance?.id}"/>
+    <g:hiddenField name="subgrupo.id" value="${subgrupo?.id}"/>
 
     <h3 style="text-align: center">${subgrupo.descripcion}</h3>
     <br>

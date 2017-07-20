@@ -391,6 +391,14 @@
        totalesRenta()
     });
 
+    $("#ivaBienes").change(function () {
+        totalesIva()
+    });
+
+    $("#ivaServicios").change(function () {
+       totalesIva()
+    });
+
     $(".baseS").keydown(function (ev) {
 
     }).keyup(function () {
@@ -424,11 +432,37 @@
 
 
     function totalesRenta() {
-
         var vr = parseFloat($("#valorRetenido").val());
         var vrs = parseFloat($("#valorRetenidoSrvc").val());
-        $("#sumaRtcnRenta").val(parseFloat((vr + vrs).toFixed(2)));
+        var rt = parseFloat($("#baseRenta").val()) * parseFloat($("#porcentaje").val())/100;
+        var rts = parseFloat($("#baseRentaSrvc").val()) * parseFloat($("#porcentajeSrvc").val())/100;
+        console.log('calculado:', rt, 'valor:', vrs)
+        if(Math.abs(rt - vr) > 0.01) {
+            $("#valorRetenido").val(rt)
+            $("#valorRetenido").focus()
+        } else if(Math.abs(rts - vrs) > 0.01) {
+            $("#valorRetenidoSrvc").val(rts)
+            $("#valorRetenidoSrvc").focus()
+        } else {
+            $("#sumaRtcnRenta").val(parseFloat((rt + rts).toFixed(2)));
+        }
+    }
 
+    function totalesIva() {
+        var iva = parseFloat($("#ivaBienes").val());
+        var srvc = parseFloat($("#ivaServicios").val());
+        var iva_b = parseFloat($("#baseIvaBienes").val()) * parseFloat($("#pcntIvaBienes").val())/100;
+        var iva_s = parseFloat($("#baseIvaServicios").val()) * parseFloat($("#pcntIvaSrvc").val())/100;
+        console.log('calculado:', iva_b, 'valor:', iva)
+        if(Math.abs(iva - iva_b) > 0.01) {
+            $("#ivaBienes").val(iva_b)
+            $("#ivaBienes").focus()
+        } else if(Math.abs(iva_s - srvc) > 0.01) {
+            $("#ivaServicios").val(iva_s)
+            $("#ivaServicios").focus()
+        } else {
+            $("#sumaRtcnIva").val(parseFloat((iva_b + iva_s).toFixed(2)));
+        }
     }
 
 

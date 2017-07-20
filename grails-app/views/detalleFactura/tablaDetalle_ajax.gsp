@@ -15,18 +15,18 @@
 <table class="table table-bordered table-hover table-condensed">
     <tbody>
     <g:each in="${detalles}" var="detalle">
-        <tr>
-            <td style="width: 40px">${detalle?.item?.codigo}</td>
+        <tr style="color:${detalle.item.tipoIVA.id == 2? '#000000' : '#005060'}">
+            <td style="width: 90px;">${detalle?.item?.codigo}</td>
             <td style="width: 200px">${detalle?.item?.nombre}</td>
             <td style="width: 50px" title="${detalle?.bodega?.descripcion}">${detalle?.bodega?.descripcion}</td>
             <td style="width: 50px" title="${detalle?.centroCosto?.nombre}">${detalle?.centroCosto?.nombre?.substring(10)}</td>
             <td style="width: 30px">${detalle?.item?.unidad}</td>
-            <td style="width: 45px">${detalle?.cantidad?.toInteger()}</td>
-            <td style="width: 100px"><g:formatNumber number="${detalle?.precioUnitario}" maxFractionDigits="4" minFractionDigits="4"/></td>
+            <td style="width: 45px; text-align: right"">${detalle?.cantidad?.toInteger()}</td>
+            <td style="width: 80px; text-align: right""><g:formatNumber number="${detalle?.precioUnitario}" maxFractionDigits="4" minFractionDigits="4"/></td>
             <g:if test="${detalle?.proceso?.tipoProceso?.codigo?.trim() != 'T'}">
-                <td style="width: 50px">${detalle?.descuento}</td>
+                <td style="width: 50px;text-align: right"">${detalle?.descuento}</td>
             </g:if>
-            <td style="width: 90px"><g:formatNumber number="${detalle?.cantidad * detalle?.precioUnitario}" maxFractionDigits="2" minFractionDigits="2"/></td>
+            <td style="width: 90px;text-align: right""><g:formatNumber number="${detalle?.cantidad * detalle?.precioUnitario}" maxFractionDigits="2" minFractionDigits="2"/></td>
             <td style="width: 60px; text-align: center">
                 <a href="#" class="btn btn-danger btn-sm btnBorrarItemDetalle"
                    title="Borrar Item" idI="${detalle?.id}"><i class="fa fa-trash-o"></i></a>
@@ -42,14 +42,18 @@
 <table class="table table-bordered table-hover table-condensed">
     <tbody>
     <tr class="colorAsiento">
-        <td style="width: 100px">Tarifa 0%</td>
-        <td style="width: 100px"></td>
-        <td style="width: 100px">Tarifa 12%</td>
-        <td style="width: 100px"></td>
-        <td style="width: 100px">Desc</td>
-        <td style="width: 100px"></td>
-        <td style="width: 100px">Iva</td>
-        <td style="width: 100px"></td>
+        <td style="width: 80px; text-align: right">Tarifa 0%:</td>
+        <td style="width: 80px; font-weight: bold">${totl?.basecero}</td>
+        <td style="width: 100px; text-align: right">Tarifa 12%:</td>
+        <td style="width: 80px; font-weight: bold">${totl?.base__nz}</td>
+        <td style="width: 80px; text-align: right">Descuento:</td>
+        <td style="width: 80px; font-weight: bold">${totl?.dsct}</td>
+        <td style="width: 70px; text-align: right">IVA:</td>
+        <td style="width: 80px; font-weight: bold">${totl?.iva}</td>
+        <td style="width: 70px; text-align: right">Flete:</td>
+        <td style="width: 80px; font-weight: bold">${totl?.flte}</td>
+        <td style="width: 80px; text-align: right">Total:</td>
+        <td style="width: 100px; font-weight: bold">${totl?.totl}</td>
     </tr>
     </tbody>
 </table>

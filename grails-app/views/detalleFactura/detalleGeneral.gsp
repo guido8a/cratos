@@ -107,17 +107,17 @@
     <table class="table table-bordered table-hover table-condensed" style="margin-top: 10px">
         <thead>
         <tr>
-            <th style="width: 70px">Código</th>
+            <th style="width: 90px">Código</th>
             <th style="width: 200px">Descripción</th>
             <th style="width: 50px">Bodega</th>
             <th style="width: 50px">C. Cost.</th>
             <th style="width: 30px">Uni</th>
             <th style="width: 40px">Canti</th>
-            <th style="width: 90px">P.U.</th>
+            <th style="width: 80px">P.U.</th>
             <g:if test="${proceso?.tipoProceso?.id != 8}">
                 <th style="width: 50px">% Desc</th>
             </g:if>
-            <th style="width: 80px">Total</th>
+            <th style="width: 90px">Total</th>
             <th style="width: 60px"><i class="fa fa-pencil"></i> </th>
         </tr>
         </thead>

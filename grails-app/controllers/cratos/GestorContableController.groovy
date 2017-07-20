@@ -351,12 +351,13 @@ class GestorContableController extends cratos.seguridad.Shield {
     }
 
     def guardarValores_ajax () {
-//        println("params " + params)
+        println "guardarValores_ajax " + params
         def genera = Genera.get(params.genera)
         genera.valor = params.valor.toDouble()
         genera.porcentajeImpuestos = params.impuesto.toDouble()
         genera.porcentaje = params.porcentaje.toDouble()
         genera.baseSinIva = params.sinIva.toDouble()
+        genera.flete = params.flete.toDouble()
 
         try{
             genera.save(flush: true)
@@ -399,20 +400,23 @@ class GestorContableController extends cratos.seguridad.Shield {
     def totales_ajax () {
         def gestor = Gestor.get(params.id)
         def tipoComprobante = TipoComprobante.get(params.tipo)
-        def cuentasDebe = Genera.findAllByGestorAndTipoComprobanteAndDebeHaber(gestor, tipoComprobante,'D').sort{it.debeHaber}
-        def cuentasHaber = Genera.findAllByGestorAndTipoComprobanteAndDebeHaber(gestor, tipoComprobante,'H').sort{it.debeHaber}
+        def cuentasDebe = Genera.findAllByGestorAndTipoComprobanteAndDebeHaber(gestor, tipoComprobante,'D')
+        def cuentasHaber = Genera.findAllByGestorAndTipoComprobanteAndDebeHaber(gestor, tipoComprobante,'H')
 
         def baseD =  cuentasDebe.porcentaje.sum()
         def impD = cuentasDebe.porcentajeImpuestos.sum()
         def valorD =  cuentasDebe.valor.sum()
         def sinD = cuentasDebe.baseSinIva.sum()
+        def fleteD = cuentasDebe.flete.sum()
 
         def baseH =  cuentasHaber.porcentaje.sum()
         def impH = cuentasHaber.porcentajeImpuestos.sum()
         def valorH =  cuentasHaber.valor.sum()
         def sinH = cuentasHaber.baseSinIva.sum()
+        def fleteH = cuentasHaber.flete.sum()
 
-        return [baseD: baseD, impD: impD, valorD: valorD, baseH: baseH, impH: impH, valorH: valorH, sinD: sinD, sinH: sinH]
+        return [baseD: baseD, impD: impD, valorD: valorD, baseH: baseH, impH: impH, valorH: valorH, sinD: sinD,
+                sinH: sinH, fleteD:fleteD, fleteH: fleteH]
     }
 
     def registrar_ajax () {

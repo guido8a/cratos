@@ -7,12 +7,12 @@
 
 <style type="text/css">
 .largo{
-    width: 80px;
+    width: 70px;
 }
 </style>
 
 <table class="table table-bordered table-hover table-condensed">
-    <tbody>
+    <tbody style="font-size: 12px">
     <g:set var="por" value="${0}" />
     <g:set var="imp" value="${0}" />
     <g:set var="val" value="${0}" />
@@ -22,24 +22,36 @@
     <g:if test="${movimientos}">
         <g:each in="${movimientos}" var="genera" status="i">
             <tr style="background-color: ${(genera.tipoComprobante.id.toInteger() == 1)?'#D4E6FC':((genera.tipoComprobante.id.toInteger() == 2)?'#99CC99':'#FFCC99')} !important; " class="movimiento">
-            <td style="width: 285px;">${genera.cuenta.numero}<span style="font-size: 12px"> (${genera.cuenta.descripcion})</span></td>
+            <td style="width: 220px;">${genera.cuenta.numero}<span style="font-size: 12px"> (${genera.cuenta.descripcion})</span></td>
             <g:if test="${genera.debeHaber=='D'}">
-                <td class="largo"><g:textField type="number" name="porcentaje" id="por_${genera?.id}" class="validacionNumero form-control" style="width: 80px;" value="${genera.porcentaje ?: 0}" /></td>
-                <td class="largo"><g:textField type="number" name="porcentaje" id="sin_${genera?.id}" class="validacionNumero form-control" style="width: 80px;" value="${genera.baseSinIva ?: 0}" /></td>
-                <td class="largo"><g:textField type="number" name="impuestos" id="imp_${genera?.id}" class="validacionNumero form-control" style="width: 70px;" value="${genera.porcentajeImpuestos?:0}" /></td>
-                <td class="largo"><g:textField type="number" name="valor" id="val_${genera?.id}" class="validacionNumero form-control" style="width: 80px;" value="${genera.valor?:0}" /></td>
+                <td class="largo"><g:textField type="number" name="porcentaje" id="por_${genera?.id}"
+                                               class="validacionNumero form-control" style="width: 65px;"
+                                               value="${genera.porcentaje ?: 0}" /></td>
+                <td class="largo"><g:textField type="number" name="porcentaje" id="sin_${genera?.id}"
+                                               class="validacionNumero form-control" style="width: 65px;"
+                                               value="${genera.baseSinIva ?: 0}" /></td>
+                <td class="largo"><g:textField type="number" name="impuestos" id="imp_${genera?.id}"
+                                               class="validacionNumero form-control" style="width: 65px;"
+                                               value="${genera.porcentajeImpuestos?:0}" /></td>
+                <td class="largo"><g:textField type="number" name="valor" id="val_${genera?.id}"
+                                               class="validacionNumero form-control" style="width: 65px;"
+                                               value="${genera.valor?:0}" /></td>
+                <td class="largo"><g:textField type="number" name="flete" id="fl_${genera?.id}"
+                                               class="validacionNumero form-control" style="width: 65px;"
+                                               value="${genera?.flete?:0}" /></td>
                 <td class="largo"></td>
                 <td class="largo"></td>
                 <td class="largo"></td>
                 <td class="largo"></td>
-                <td style="width: 70px">
+                <td class="largo"></td>
+                <td style="width: 50px">
                     <g:if test="${gestor?.estado != 'R'}">
 
                         <div class="btn-group">
-                            <a href="#" class="btn btn-success btn-sm btnGuardarMovi" cuenta="${genera?.id}" iden="${i}" title="Guardar cambios">
+                            <a href="#" class="btn btn-success btn-xs btnGuardarMovi" cuenta="${genera?.id}" iden="${i}" title="Guardar cambios">
                                 <i class="fa fa-save"></i>
                             </a>
-                            <a href="#" class="btn btn-danger btn-sm btnEliminarMovi" cuenta="${genera?.id}" title="Eliminar movimiento">
+                            <a href="#" class="btn btn-danger btn-xs btnEliminarMovi" cuenta="${genera?.id}" title="Eliminar movimiento">
                                 <i class="fa fa-times"></i>
                             </a>
                         </div>
@@ -56,17 +68,29 @@
                 <td class="largo"></td>
                 <td class="largo"></td>
                 <td class="largo"></td>
-                <td class="largo"><g:textField type="number" name="porcentajeDown" id="por_${genera?.id}" class="validacionNumero form-control" style="width: 80px;" value="${genera.porcentaje ?: 0}" /></td>
-                <td class="largo"><g:textField type="number" name="porcentajeDown" id="sin_${genera?.id}" class="validacionNumero form-control" style="width: 80px;" value="${genera.baseSinIva ?: 0}" /></td>
-                <td class="largo"><g:textField type="number" name="impuestos" id="imp_${genera?.id}" class="validacionNumero form-control" style="width: 70px;" value="${genera.porcentajeImpuestos?:0}" /></td>
-                <td class="largo"><g:textField type="number" name="valor" id="val_${genera?.id}" class="validacionNumero form-control" style="width: 80px;" value="${genera.valor?:0}" /></td>
-                <td style="width: 70px">
+                <td class="largo"></td>
+                <td class="largo"><g:textField type="number" name="porcentajeDown" id="por_${genera?.id}"
+                                               class="validacionNumero form-control" style="width: 65px;"
+                                               value="${genera.porcentaje ?: 0}" /></td>
+                <td class="largo"><g:textField type="number" name="porcentajeDown" id="sin_${genera?.id}"
+                                               class="validacionNumero form-control" style="width: 65px;"
+                                               value="${genera.baseSinIva ?: 0}" /></td>
+                <td class="largo"><g:textField type="number" name="impuestos" id="imp_${genera?.id}"
+                                               class="validacionNumero form-control" style="width: 65px;"
+                                               value="${genera.porcentajeImpuestos?:0}" /></td>
+                <td class="largo"><g:textField type="number" name="valor" id="val_${genera?.id}"
+                                               class="validacionNumero form-control" style="width: 65px;"
+                                               value="${genera.valor?:0}" /></td>
+                <td class="largo"><g:textField type="number" name="flete" id="fl_${genera?.id}"
+                                               class="validacionNumero form-control" style="width: 65px;"
+                                               value="${genera.valor?:0}" /></td>
+                <td style="width: 50px">
                     <g:if test="${gestor?.estado != 'R'}">
                         <div class="btn-group">
-                            <a href="#" class="btn btn-success btn-sm btnGuardarMovi" cuenta="${genera?.id}" iden="${i}" title="Guardar cambios">
+                            <a href="#" class="btn btn-success btn-xs btnGuardarMovi" cuenta="${genera?.id}" iden="${i}" title="Guardar cambios">
                                 <i class="fa fa-save"></i>
                             </a>
-                            <a href="#" class="btn btn-danger btn-sm btnEliminarMovi" title="Eliminar movimiento" cuenta="${genera?.id}" nombreCuenta="${genera?.cuenta?.descripcion}">
+                            <a href="#" class="btn btn-danger btn-xs btnEliminarMovi" title="Eliminar movimiento" cuenta="${genera?.id}" nombreCuenta="${genera?.cuenta?.descripcion}">
                                 <i class="fa fa-times"></i>
                             </a>
                         </div>
@@ -169,6 +193,7 @@
         var gestor = '${gestor?.id}';
         var tipo = '${tipo?.id}';
         var sinIva = $("#sin_" + genera).val();
+        var flete = $("#fl_" + genera).val();
 
         $.ajax({
             type: 'POST',
@@ -178,7 +203,8 @@
                 porcentaje: porcentaje,
                 impuesto: impuesto,
                 valor: valor,
-                sinIva: sinIva
+                sinIva: sinIva,
+                flete: flete
             },
             success: function (msg){
                 if(msg == 'ok'){

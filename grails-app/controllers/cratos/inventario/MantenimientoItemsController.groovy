@@ -546,7 +546,7 @@ class MantenimientoItemsController extends Shield {
     }
 
     def saveDp_ajax() {
-//        println params
+        println "save $params"
         def accion = "create"
         def departamento = new DepartamentoItem()
         if (params.codigo) {

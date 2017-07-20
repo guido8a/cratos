@@ -5,11 +5,14 @@ class Genera implements Serializable {
     double porcentajeImpuestos
     double porcentaje
     double baseSinIva
+    double flete
     TipoComprobante tipoComprobante
     Cuenta cuenta
     Gestor gestor
     String debeHaber
+
     static auditable = true
+
     static mapping = {
         table 'gnra'
         cache usage: 'read-write', include: 'non-lazy'
@@ -25,6 +28,7 @@ class Genera implements Serializable {
             gestor column: 'gstr__id'
             debeHaber column: 'gnradbhb'
             baseSinIva column: 'gnrapcbz'
+            flete column: 'gnraflte'
         }
     }
     static constraints = {
@@ -36,5 +40,6 @@ class Genera implements Serializable {
         gestor(blank: false, nullable: false, attributes: [title: 'gestor'])
         debeHaber(blank: false, maxSize: 1, attributes: [title: 'debe o haber'])
         baseSinIva(blank: true, nullable: true)
+        flete(blank: true, nullable: true)
     }
 }
