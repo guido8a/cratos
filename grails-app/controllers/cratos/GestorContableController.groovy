@@ -369,10 +369,11 @@ class GestorContableController extends cratos.seguridad.Shield {
     }
 
     def guardarGestor () {
-//        println "params guardar $params"
+        println "params guardar $params"
         def gestor
         def fuente = Fuente.get(params.fuente)
         def empresa = session.empresa
+
         if(params.gestor){
             gestor = Gestor.get(params.gestor)
         }else{

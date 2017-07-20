@@ -117,7 +117,7 @@
                 </g:link>
             </g:if>
             <g:if test="${proceso?.tipoProceso?.id == 1 || proceso?.tipoProceso?.id == 2 || proceso?.tipoProceso?.id == 8}">
-                <a href="#" class="btn btn-warning" id="btnDetalle">
+                <a href="#" class="btn btn-warning" id="btnDetalle" style="color: #0b0b0b">
                     <i class="fa fa-list"></i>
                     Detalle
                 </a>

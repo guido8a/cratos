@@ -124,10 +124,21 @@ class DetalleFacturaController extends cratos.seguridad.Shield  {
     def tablaItems_ajax () {
         def proceso = Proceso.get(params.proceso)
         def detalles = DetalleFactura.findAllByProceso(proceso)
-        def subgrupos = SubgrupoItems.findAllByEmpresa(proceso.empresa)
-        def departamento = DepartamentoItem.findAllBySubgrupoInList(subgrupos)
-//        def todos = Item.findAllByDepartamentoInList(departamento)
-        def todos = Item.withCriteria {
+        def subgruposConNueve = SubgrupoItems.findAllByEmpresaAndCodigo(proceso.empresa,'999')
+        def subgruposSinNueve = SubgrupoItems.findAllByEmpresaAndCodigoNotEqual(proceso.empresa,'999')
+        def departamento
+        def todos
+
+//        println("sub con " +  subgruposConNueve)
+//        println("sub sin " +  subgruposSinNueve)
+
+        if(proceso.gestor.tipo == 'G'){
+            departamento = DepartamentoItem.findAllBySubgrupoInList(subgruposConNueve)
+        }else{
+            departamento = DepartamentoItem.findAllBySubgrupoInList(subgruposSinNueve)
+        }
+
+        todos = Item.withCriteria {
             'in'("departamento",departamento)
             and{
                 ilike("nombre", '%' + params.nombre + '%')
@@ -135,6 +146,8 @@ class DetalleFacturaController extends cratos.seguridad.Shield  {
             }
             order ("codigo","asc")
         }
+
+//        println("items " + todos)
 
         return[ items: todos, proceso: proceso]
     }
