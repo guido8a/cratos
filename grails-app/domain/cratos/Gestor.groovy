@@ -9,6 +9,8 @@ class Gestor implements Serializable {
     Fuente fuente
     String observaciones
     String esDepreciacion // S si, N no
+    String tipo // G gasto, I inventario
+
     static auditable = true
     static hasMany = [movimientos: Genera]
     static mapping = {
@@ -27,6 +29,7 @@ class Gestor implements Serializable {
             tipoProceso column: 'tpps__id'
             observaciones column: 'gstrobsr'
             esDepreciacion column: 'gstrdprc'
+            tipo column: 'gstrtipo'
         }
     }
     static constraints = {
@@ -38,5 +41,6 @@ class Gestor implements Serializable {
         fuente(blank: true, nullable: true, attributes: [title: 'fuente'])
         observaciones(blank: true,nullable: true, maxSize: 127, attributes: [title: 'observaciones'])
         esDepreciacion(blank: true,nullable: true, maxSize: 1, attributes: [title: 'para definir si es el gestor de la depreciacion'])
+        tipo(blank: false, nullable: false, attributes: [title: 'tipo de gestor'], inList: ['G', 'I'])
     }
 }
