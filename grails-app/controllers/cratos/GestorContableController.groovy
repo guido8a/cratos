@@ -11,8 +11,8 @@ class GestorContableController extends cratos.seguridad.Shield {
         session.movimientos=[]
 //        println "params " + params
         def lista = buscadorService.buscar(Gestor, "Gestor", "incluyente", [campos: ["nombre", "descripcion"],
-              criterios: [params.nombre, params.nombre], operadores: ["like", "like"], ordenado: "nombre", orden: "asc"],
-             true," and empresa=${session.empresa.id}")
+                                                                            criterios: [params.nombre, params.nombre], operadores: ["like", "like"], ordenado: "nombre", orden: "asc"],
+                true," and empresa=${session.empresa.id}")
         def numRegistros = lista.get(lista.size() - 1)
         lista.pop()
         return [lista: lista]
@@ -258,12 +258,13 @@ class GestorContableController extends cratos.seguridad.Shield {
 
     def formGestor () {
         def titulo = "Nuevo Gestor"
+        def tipo = ['G': 'Gasto','I' :'Inventario']
         if(params.id){
             titulo = params.ver? "Ver Gestor" : "Editar Gestor"
             def gestorInstance = Gestor.get(params.id)
-            return [gestorInstance: gestorInstance, verGestor: params.ver, titulo: titulo]
+            return [gestorInstance: gestorInstance, verGestor: params.ver, titulo: titulo, tipo: tipo]
         } else
-            return [verGestor: params.ver, titulo: titulo]
+            return [verGestor: params.ver, titulo: titulo, tipo: tipo]
     }
 
     def tablaGestor_ajax () {
@@ -293,7 +294,7 @@ class GestorContableController extends cratos.seguridad.Shield {
         def res
 
         if(params.nombre == "" && params.codigo == ""){
-        res = Cuenta.findAllByEmpresaAndMovimiento(empresa,'1').sort{it.numero}
+            res = Cuenta.findAllByEmpresaAndMovimiento(empresa,'1').sort{it.numero}
         }else{
             res = Cuenta.withCriteria {
                 eq("empresa", empresa)
@@ -326,7 +327,7 @@ class GestorContableController extends cratos.seguridad.Shield {
         genera.valor = 0
 
         if(!genera.save(flush: true)){
-           render "no"
+            render "no"
         }else{
             render "ok"
         }
@@ -368,33 +369,31 @@ class GestorContableController extends cratos.seguridad.Shield {
     }
 
     def guardarGestor () {
-        println "params guardar $params"
+//        println "params guardar $params"
         def gestor
         def fuente = Fuente.get(params.fuente)
         def empresa = session.empresa
         if(params.gestor){
             gestor = Gestor.get(params.gestor)
-            gestor.nombre = params.nombre
-            gestor.tipoProceso = TipoProceso.get(params.tipoProceso)
-            gestor.observaciones = params.observacion
-            gestor.fuente = fuente
         }else{
             gestor = new Gestor()
-            gestor.nombre = params.nombre
-            gestor.tipoProceso = TipoProceso.get(params.tipoProceso)
-            gestor.observaciones = params.observacion
-            gestor.fuente = fuente
             gestor.empresa = empresa
             gestor.estado = 'A'
         }
 
-        if(!gestor.save(flush: true)){
-            render "no"
-//            println("error " + gestor.errors)
-        }else{
-            render "ok_" + gestor?.id
-        }
+        gestor.nombre = params.nombre
+        gestor.tipoProceso = TipoProceso.get(params.tipoProceso)
+        gestor.observaciones = params.observacion
+        gestor.fuente = fuente
+        gestor.tipo = params.tipo
 
+        try{
+           gestor.save(flush: true)
+            render "ok_" + gestor?.id
+        }catch (e){
+            render "no"
+             println("error " + gestor.errors)
+        }
     }
 
     def totales_ajax () {
@@ -451,7 +450,7 @@ class GestorContableController extends cratos.seguridad.Shield {
 
                 if(totalesDebe != 0 && totalesHaber != 0){
                     if(debeValor == haberValor && debeImpuesto == haberImpuesto && debePorcentaImpuesto == haberPorcentaImpuesto){
-                            errores += 1
+                        errores += 1
                     }else{
                         render "no_No se puede registrar el gestor contable, los valores no cuadran entre DEBE y HABER, TIPO: (${tipo?.descripcion})"
                         return
