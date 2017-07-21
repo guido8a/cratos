@@ -162,6 +162,26 @@
                 </li>
 
 
+                <li><span id="situacionFi">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <a href="#" class="link btn btn-info btn-ajax" data-toggle="modal" data-target="#situacionN">
+                            Estado de Situación
+                            </a>
+                        </div>
+                        <div class="col-md-8">
+                            Estado de Situación
+                        </div>
+                    </div>
+                </span>
+
+                    <div class="descripcion hide">
+                        <h4>Estado de Situación</h4>
+                        <p>Estado de Situación financiera a una fecha determinada.</p>
+                    </div>
+                </li>
+
+
 
                 %{--<li>--}%
                     %{--<span id="imprimirComprobante">--}%
@@ -501,6 +521,45 @@
         </div>
     </div>
 </div>
+
+%{--dialog situación--}%
+<div class="modal fade" id="situacionN" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="modalSituacionN">Situación</h4>
+            </div>
+
+            <div class="modal-body" id="bodySituacionN">
+                <div class="fila" style="margin-bottom: 15px">
+                    <label class="uno">Contabilidad:</label>
+                    <g:select name="contP15" id="contP15"
+                              from="${cratos.Contabilidad.findAllByInstitucion(session.empresa, [sort: 'fechaInicio'])}"
+                              optionKey="id" optionValue="descripcion" noSelection="['-1': 'Seleccione la contabilidad']"
+                              class="form-control dos"/>
+                </div>
+
+                <div id="divPeriodo15" class="fila" style="margin-bottom: 20px">
+                    <label class="uno">Período:</label>
+                </div>
+
+                <div id="divNivel" class="fila">
+                    <label class="uno">Nivel:</label>
+                    <g:select name="nivel_name" from="${niveles}" optionKey="key" optionValue="value" id="nivelSituacion" class="form-control col-md-2" style="width: 100px"/>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Cancelar
+                </button>
+                <button type="button" class="btn btnAceptarSituacionN btn-success"><i class="fa fa-print"></i> Aceptar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 %{--dialog balance--}%
 <div class="modal fade" id="balance" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -1006,6 +1065,10 @@
             updatePeriodoSinTodo("11");
         });
 
+        $("#contP15").change(function () {
+            updatePeriodoSinTodo("15");
+        });
+
         $(".btnAceptarPlan").click(function () {
             var cont = $("#contCuentas").val()
             url = "${g.createLink(controller:'reportes' , action: 'planDeCuentas')}?cont=" + cont + "Wempresa=${session.empresa.id}";
@@ -1225,7 +1288,15 @@
             var cont = $("#contP11").val();
             var per = $("#periodo11").val();
            var url = "${g.createLink(controller: 'reportes3', action: 'imprimirLibroDiario')}?cont=" + cont + "Wperiodo=" + per + "Wempresa=${session.empresa.id}";
-            location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=comprobanteIngreso.pdf";
+            location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=libroDiario.pdf";
+        });
+
+        $(".btnAceptarSituacionN").click(function () {
+            var cont = $("#contP15").val();
+            var per = $("#periodo15").val();
+            var nivel = $("#nivelSituacion").val();
+            var url = "${g.createLink(controller: 'reportes3', action: 'reporteSituacion')}?cont=" + cont + "Wperiodo=" + per + "Wempresa=${session.empresa.id}" + "Wnivel=" + nivel;
+            location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=situacion.pdf";
         });
 
     });

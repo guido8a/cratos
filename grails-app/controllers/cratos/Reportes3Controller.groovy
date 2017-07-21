@@ -582,5 +582,20 @@ class Reportes3Controller {
 
     }
 
+    def reporteSituacion () {
+//        println("params " + params)
+        def periodoFinal = Periodo.get(params.periodo).fechaFin.format("yyyy-MM-dd")
+        def empresa = Empresa.get(params.empresa)
+
+        def cn = dbConnectionService.getConnection()
+        def sql = "select * from estado_st(${params.periodo},${params.nivel})"
+        println("sql " + sql)
+        def data = cn.rows(sql.toString())
+        cn.close()
+
+        println("data " + data)
+
+        return[periodo: periodoFinal, empresa: empresa.id, cuentas: data]
+    }
 
 }

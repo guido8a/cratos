@@ -13,11 +13,12 @@ class ReportesController {
         def camposCliente = ["nombre": ["Nombre", "string"], "ruc": ["Ruc", "string"]]
 
         def clientes = Proveedor.findAllByEmpresa(session.empresa)
+        def niveles = [0: 'Todos', 1: '1', 2 : '2', 3 : '3', 4 : '4', 5 : '5', 6 :'6']
 
         if (params.msn)
-            [camposCliente: camposCliente, msn: params.msn, clientes: clientes]
+            [camposCliente: camposCliente, msn: params.msn, clientes: clientes, niveles: niveles]
         else
-            [camposCliente: camposCliente, clientes: clientes]
+            [camposCliente: camposCliente, clientes: clientes, niveles: niveles]
     }
 
     def index_old() {
@@ -176,7 +177,6 @@ class ReportesController {
            def contabilidad = Contabilidad.get(params.cont)
 
             if(params.per == '-1'){
-
                 periodo = Periodo.findAllByContabilidad(contabilidad)
                 periodo.each {
                    saldoPeriodo = SaldoMensual.findAllByPeriodo(it)
