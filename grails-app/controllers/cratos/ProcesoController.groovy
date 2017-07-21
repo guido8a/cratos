@@ -938,36 +938,33 @@ class ProcesoController extends cratos.seguridad.Shield {
                 retencion.fechaEmision = new Date().parse("dd-MM-yyyy", fecha)
             }
             //detalle
+/*
             def detalle = DetalleRetencion.findAllByRetencion(retencion)
             detalle.each { det ->
                 if (det.cuenta.impuesto.sri == 'RNT') {
-//                   println("entro RNT!")
                     det.porcentaje = params.porcentaje
                     det.conceptoRetencionImpuestoRenta = params.concepto
                     det.base = params.base
                     det.total = params.valorRetenido
                 }
                 if (det.cuenta.impuesto.sri == 'ICE') {
-//                   println("entro ICE!")
                     det.porcentaje = params.icePorcentaje.toDouble()
                     det.base = params.iceBase.toDouble()
                     det.total = params.valorRetenidoIce.toDouble()
                 }
                 if (det.cuenta.impuesto.sri == 'BNS') {
-//                   println("entro BNS!")
                     det.porcentaje = params.bienesPorcentaje.toDouble()
                     det.base = params.bienesBase.toDouble()
                     det.total = params.valorRetenidoBienes.toDouble()
                 }
                 if (det.cuenta.impuesto.sri == 'SRV') {
-//                   println("entro SRV!")
                     det.porcentaje = params.serviciosPorcentaje.toDouble()
                     det.base = params.serviciosBase.toDouble()
                     det.total = params.valorRetenidoServicios.toDouble()
                 } else {
-//                   println("NO entro!")
                 }
             }
+*/
             render "ok"
 //            println("ok")
 
@@ -975,20 +972,6 @@ class ProcesoController extends cratos.seguridad.Shield {
 //            println("error al grabar la retencion" + retencion.errors)
             render "Error al grabar!"
         }
-    }
-
-    def pagos_ajax () {
-        def proceso = Proceso.get(params.proceso)
-        def formasPago = ProcesoFormaDePago.findAllByProceso(proceso).tipoPago
-        def listaId = TipoPago.list().id - formasPago.id
-        def listaFormasPago = TipoPago.findAllByIdInList(listaId)
-        return [proceso: proceso, lista: listaFormasPago]
-    }
-
-    def tablaPagos_ajax () {
-        def proceso = Proceso.get(params.proceso)
-        def formasPago = ProcesoFormaDePago.findAllByProceso(proceso)
-        return [formas: formasPago, proceso: proceso]
     }
 
     def borrarFormaPago_ajax () {
@@ -1517,13 +1500,6 @@ class ProcesoController extends cratos.seguridad.Shield {
 //        def porcentaje = PorcentajeIva.get(params.porcentaje)
 //        def valor = params.base.toDouble() * (porcentaje.valor / 100)
         def valor = (params.base ? params.base.toDouble() : 0) * (params.porcentaje ? (params.porcentaje.toDouble()  / 100) : 0)
-        return [valor: valor]
-    }
-
-    def calcularValorBI_ajax () {
-       def porcentaje = PorcentajeIva.get(params.porcentaje)
-//       def valor = params.base.toDouble() * (porcentaje.valor / 100)
-        def valor = (params.base ? params.base.toDouble() : 0) * (porcentaje ? (porcentaje?.valor?.toDouble()  / 100) : 0) * 0.12
         return [valor: valor]
     }
 

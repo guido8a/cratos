@@ -48,7 +48,7 @@
             </g:link>
         </div>
 
-        <div class="col-md-6" style="margin-left: 20px;">
+        <div class="col-md-5" style="margin-left: 20px;">
             Buscar por:
             <div class="btn-group">
                 <input id="buscar" type="search" class="form-control" value="${session.buscar}">

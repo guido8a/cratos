@@ -151,6 +151,7 @@ class XmlController extends cratos.seguridad.Shield {
                     def detalleRetencion = []
                     def ice = null, bns = null, srv = null
                     def local = "01"
+/*
                     if (retencion) {
                         detalleRetencion = DetalleRetencion.findByRetencion(retencion)
                         detalleRetencion.each { dr ->
@@ -164,6 +165,7 @@ class XmlController extends cratos.seguridad.Shield {
                         }
                         local = retencion.tipoPago
                     }
+*/
                     detalleCompras() {
                         codSustento(proceso.sustentoTributario?.codigo)
                         tpIdProv(proceso.proveedor?.tipoIdentificacion?.codigoSri)

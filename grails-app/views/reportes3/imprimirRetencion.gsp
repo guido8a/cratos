@@ -5,7 +5,7 @@
   Time: 1:32 PM
 --%>
 
-<%@ page import="cratos.DetalleRetencion" contentType="text/html;charset=UTF-8" %>
+%{--<%@ page import="cratos.DetalleRetencion" contentType="text/html;charset=UTF-8" %>--}%
 <html>
     <head>
         <title>Retención</title>
@@ -24,6 +24,7 @@
         .hoja {
             width      : 17cm;
             /*background : #d8f0fa;*/
+
         }
 
         .left {
@@ -121,6 +122,7 @@
                     </thead>
                     <tbody>
                         <g:set value="${0}" var="total"/>
+%{--
                         <g:each in="${DetalleRetencion.findAllByRetencion(retencion)}" var="det">
                             <g:set value="${total + det.total}" var="total"/>
                             <tr>
@@ -148,6 +150,7 @@
                                 </td>
                             </tr>
                         </g:each>
+--}%
                     </tbody>
                     <tfoot>
                         <tr>

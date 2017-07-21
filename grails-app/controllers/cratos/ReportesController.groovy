@@ -79,13 +79,11 @@ class ReportesController {
 
     def retencion() {
 
-//        println "retencion " + params
+/*
         def proceso = Proceso.findAllByAdquisicion(Adquisiciones.get(params.id))
         def p
         def empresa = Empresa.get(params.empr)
-        // println "procesos " + proceso + " empresa " + empresa
         proceso.each {
-            //println "proceso " + it.gestor.empresa
             if (it.gestor.empresa == empresa) {
                 p = it
                 println "si empresa "
@@ -104,6 +102,7 @@ class ReportesController {
         } else {
             render "Transacción no encontrada"
         }
+*/
     }
 
     def updatePeriodo() {
@@ -309,7 +308,7 @@ class ReportesController {
         file.eachLine {
             def parts = it.split("&")
 
-            def item = Item2.findByNombre(parts[0])
+            def item = Item.findByNombre(parts[0])
             if (!item) {
                 println "no item " + parts[0]
                 println "parts " + parts

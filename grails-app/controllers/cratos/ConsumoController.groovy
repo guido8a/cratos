@@ -121,14 +121,14 @@ class ConsumoController extends cratos.seguridad.Shield  {
                 println "error factura: " + factura.errors
             }
 
-//        println "SAVE ITEM2 " + factura.persona + "   " + factura.direccion + "   " + factura.telefono
+//        println "SAVE Item " + factura.persona + "   " + factura.direccion + "   " + factura.telefono
             if (params.add == "true") {
                 def consumo = new Consumo()
                 if (params.consumo && params.consumo != "") {
                     consumo = Consumo.get(params.consumo.toLong())
                 }
                 consumo.factura = factura
-                consumo.item = Item2.get(params.item.toLong())
+                consumo.item = Item.get(params.item.toLong())
                 consumo.cantidad = params.cantidad.toDouble()
                 consumo.descuento = params.descuento.toDouble()
                 consumo.observaciones = params.observaciones

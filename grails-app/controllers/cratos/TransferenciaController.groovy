@@ -134,7 +134,7 @@ class TransferenciaController {
 
                 def detalle = new DetalleTransferencia();
                 detalle.transferencia = transferenciaInstance;
-                detalle.item = Item2.get(id);
+                detalle.item = Item.get(id);
                 detalle.cantidad = (cantidad);
                 detalle.precioUnitario = (precio);
 

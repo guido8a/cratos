@@ -139,7 +139,7 @@ class OrdenCompraController extends cratos.seguridad.Shield {
 
                 detalleOrden.precioUnitario = precio.toDouble()
                 detalleOrden.cantidad = cantidad.toDouble()
-                detalleOrden.item = Item2.get(id.toLong())
+                detalleOrden.item = Item.get(id.toLong())
                 detalleOrden.ordenCompra = ordenCompraInstance
                 if (!detalleOrden.save(flush: true)) {
                     ok = false
