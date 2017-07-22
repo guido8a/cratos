@@ -1,8 +1,7 @@
 package cratos
 
 import com.lowagie.text.*
-import com.lowagie.text.pdf.PdfPCell
-import com.lowagie.text.pdf.PdfPTable
+import com.lowagie.text.pdf.*
 
 class ReportesPdfService {
 
