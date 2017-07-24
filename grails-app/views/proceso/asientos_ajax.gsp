@@ -53,7 +53,7 @@
         <th width="570px">Nombre</th>
         <th width="100px">DEBE</th>
         <th width="100px">HABER</th>
-        <th width="130px"><i class="fa fa-pencil"></i></th>
+        <th width="145px"><i class="fa fa-pencil"></i></th>
     </tr>
     </thead>
 </table>
@@ -75,7 +75,7 @@
                             class="derecha">${asiento.debe ? g.formatNumber(number: asiento.debe, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2) : 0.00}</td>
                         <td width="100px"
                             class="derecha">${asiento.haber ? g.formatNumber(number: asiento.haber, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2) : 0.00}</td>
-                        <td width="120px" style="text-align: center">
+                        <td width="130px" style="text-align: center">
                             <g:if test="${asiento?.comprobante?.registrado != 'S'}">
                                 <div class="btn-group">
                                     <a href="#" class="btn btn-success btn-sm btnEditarAsiento" idAs="${asiento?.id}"

@@ -77,15 +77,15 @@
         <div class="col-md-3">
             %{--<g:textField type="number" name="valorAuxiliarP_name" id="valorPagar" readonly="${auxiliar ? true : false}" --}%
             <g:textField type="number" name="valorAuxiliarP_name" id="valorPagar"
-                         class="validacionNumero form-control valorP" placeholder="${auxiliar ? auxiliar?.debe : asiento?.debe}"
-                         style="width: 90px;" value="${auxiliar ? auxiliar?.debe : asiento?.debe}" />
+                         class="validacionNumero form-control valorP" placeholder="${auxiliar ? auxiliar?.debe : maximoDebe}"
+                         style="width: 90px;" value="${auxiliar ? auxiliar?.debe : maximoDebe}" />
         </div>
         <div class="col-md-2">Haber</div>
         <div class="col-md-3">
             <g:textField type="number" name="valorAuxiliarC_name" id="valorCobrar"
-                         placeholder="${auxiliar ? auxiliar?.haber : asiento?.haber}"
+                         placeholder="${auxiliar ? auxiliar?.haber : maximoHaber}"
                          class="validacionNumero form-control valorC" style="width: 90px;"
-                         value="${auxiliar ? auxiliar?.haber : asiento?.haber}" />
+                         value="${auxiliar ? auxiliar?.haber : maximoHaber}" />
         </div>
     </div>
 </div>
@@ -128,4 +128,62 @@
         $(".valorP").val(0).prop('readonly', true)
     }).keyup(function () {
     });
+
+    $(".valorC").keydown(function (ev) {
+
+    }).keyup(function () {
+        if('${auxiliar?.id}'){
+            if($(".valorC").val() > ${maximoHaber} && $(".valorC").val() > ${auxiliar?.haber ?: 0}){
+                $(".valorC").val(${auxiliar?.haber ?: 0})
+            }
+        }else{
+            if($(".valorC").val() > ${maximoHaber}){
+                $(".valorC").val(${maximoHaber})
+            }
+        }
+    });
+
+    $(".valorP").keydown(function (ev) {
+
+
+    }).keyup(function () {
+        if('${auxiliar?.id}'){
+            if($(".valorP").val() > ${maximoDebe} && $(".valorP").val() > ${auxiliar?.debe ?: 0}){
+                $(".valorP").val(${auxiliar?.debe ?: 0})
+            }
+        }else{
+            if($(".valorP").val() > ${maximoDebe}){
+                $(".valorP").val(${maximoDebe})
+            }
+        }
+
+    });
+
+    %{--$(".valorP").change(function () {--}%
+        %{--if('${auxiliar?.id}'){--}%
+            %{--if($(".valorP").val() > ${maximoDebe}){--}%
+                %{--$(".valorP").val(${auxiliar?.debe ?: 0})--}%
+            %{--}--}%
+        %{--}else{--}%
+            %{--if($(".valorP").val() > ${maximoDebe}){--}%
+                %{--$(".valorP").val(${maximoDebe})--}%
+            %{--}--}%
+        %{--}--}%
+    %{--})--}%
+
+    %{--$(".valorC").change(function () {--}%
+        %{--if('${auxiliar?.id}'){--}%
+            %{--if($(".valorC").val() >= ${maximoHaber}){--}%
+                %{--$(".valorC").val(${auxiliar?.haber ?: 0})--}%
+            %{--}--}%
+        %{--}else{--}%
+            %{--if($(".valorC").val() > ${maximoHaber}){--}%
+                %{--$(".valorC").val(${maximoHaber})--}%
+            %{--}--}%
+        %{--}--}%
+    %{--})--}%
+
+
+
+
 </script>

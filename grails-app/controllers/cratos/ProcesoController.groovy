@@ -1147,13 +1147,36 @@ class ProcesoController extends cratos.seguridad.Shield {
         def auxiliar
         def empresa = Empresa.get(session.empresa.id)
         def proveedores = Proveedor.findAllByEmpresa(empresa).sort{it.nombre}
+        def existentes
+        def debeEx = 0
+        def haberEx = 0
+        def maximoDebe = 0
+        def maximoHaber = 0
         if(params.auxiliar){
             auxiliar = Auxiliar.get(params.auxiliar)
             asiento = auxiliar.asiento
-            return [asiento: asiento, auxiliar: auxiliar, comprobante: comprobante, proveedores: proveedores]
+            existentes = Auxiliar.findAllByAsiento(asiento)
+            debeEx = existentes.debe.sum()
+            haberEx = existentes.haber.sum()
+            maximoDebe = asiento.debe.toDouble() - (debeEx ?: 0)
+            maximoHaber = asiento.haber.toDouble() - (haberEx ?:0)
+//            println("debeEx " + debeEx)
+//            println("haberEx " + haberEx)
+//            println("maximoDebe " + maximoDebe)
+//            println("maximoHaber " + maximoHaber)
+            return [asiento: asiento, auxiliar: auxiliar, comprobante: comprobante, proveedores: proveedores, maximoDebe: maximoDebe, maximoHaber: maximoHaber]
         }else{
             asiento = Asiento.get(params.asiento)
-            return [asiento: asiento, comprobante: comprobante, proveedores: proveedores]
+            existentes = Auxiliar.findAllByAsiento(asiento)
+            debeEx = existentes.debe.sum()
+            haberEx = existentes.haber.sum()
+            maximoDebe = asiento.debe.toDouble() - (debeEx ?: 0)
+            maximoHaber = asiento.haber.toDouble() - (haberEx ?: 0)
+//            println("debeEx " + debeEx)
+//            println("haberEx " + haberEx)
+//            println("maximoDebe " + maximoDebe)
+//            println("maximoHaber " + maximoHaber)
+            return [asiento: asiento, comprobante: comprobante, proveedores: proveedores, maximoDebe: maximoDebe, maximoHaber: maximoHaber]
         }
     }
 

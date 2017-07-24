@@ -589,11 +589,11 @@ class Reportes3Controller {
 
         def cn = dbConnectionService.getConnection()
         def sql = "select * from estado_st(${params.periodo},${params.nivel})"
-        println("sql " + sql)
+//        println("sql " + sql)
         def data = cn.rows(sql.toString())
         cn.close()
 
-        println("data " + data)
+//        println("data " + data)
 
         return[periodo: periodoFinal, empresa: empresa.id, cuentas: data]
     }
