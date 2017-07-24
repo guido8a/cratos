@@ -13,6 +13,8 @@ class Auxiliar implements Serializable {
     String factura
     String documento
 
+    static auditable = true
+
     static mapping = {
         table 'axlr'
         cache usage: 'read-write', include: 'non-lazy'

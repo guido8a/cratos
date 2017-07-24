@@ -10,10 +10,12 @@
         <label>Cuenta:</label>
     </div>
     <div class="col-md-3">
-        <input type="text" name="codigoAsiento_name" id="codigoAsiento" value="${asiento?.cuenta?.numero}" readonly style="width: 120px"/>
+        <input type="text" name="codigoAsiento_name" id="codigoAsiento" value="${asiento?.cuenta?.numero}" readonly
+               style="width: 100px"/>
     </div>
-    <div class="col-md-5" style="margin-left: -27px">
-        <input type="text" name="nombreAsiento_name" id="nombreAsiento" class="" value="${asiento?.cuenta?.descripcion}" readonly style="width: 350px" title="${asiento?.cuenta?.descripcion}"/>
+    <div class="col-md-5" style="margin-left: -45px">
+        <input type="text" name="nombreAsiento_name" id="nombreAsiento" class="" value="${asiento?.cuenta?.descripcion}"
+               readonly style="width: 350px" title="${asiento?.cuenta?.descripcion}"/>
     </div>
 
 </div>
@@ -22,7 +24,8 @@
         <label>Descripción:</label>
     </div>
     <div class="col-md-3">
-        <g:textField name="descripcion_name" id="descripcionAux" class="form-control" style="width: 400px" value="${auxiliar?.descripcion ?: ''}" readonly="${auxiliar ? true : false}"/>
+        <g:textField name="descripcion_name" id="descripcionAux" class="form-control" style="width: 400px"
+                     value="${auxiliar?.descripcion ?: ''}" readonly="${auxiliar ? true : false}"/>
     </div>
 </div>
 <div class="row">
@@ -30,7 +33,8 @@
         <label>Proveedor:</label>
     </div>
     <div class="col-md-3">
-        <g:select name="proveedor_name" id="proveedor" from="${proveedores}" class="form-control" optionValue="nombre" optionKey="id" style="width: 400px" value="${auxiliar?.proveedor?.id}"/>
+        <g:select name="proveedor_name" id="proveedor" from="${proveedores}" class="form-control" optionValue="nombre"
+                  optionKey="id" style="width: 400px" value="${auxiliar?.proveedor?.id}"/>
         %{--<g:textField name="proveedorName" id="proveedor_nombre" value="${auxiliar ? auxiliar?.proveedor?.nombre : asiento?.comprobante?.proceso?.proveedor?.nombre}" class="form-control" readonly="true" style="width: 400px"/>--}%
         %{--<g:hiddenField name="proveedor_name" id="proveedor" value="${auxiliar?.proveedor?.id}"/>--}%
     </div>
@@ -40,26 +44,27 @@
     <div class="col-md-2">
         <label>Documento:</label>
     </div>
-    <div class="col-md-3">
-        <g:textField name="referencia_name" id="referencia" class="form-control" style="width: 400px" value="${auxiliar?.documento ?: ''}"/>
+    <div class="col-md-4">
+        <g:textField name="referencia_name" id="referencia" class="form-control" value="${auxiliar?.documento ?: ''}"/>
     </div>
-</div>
 
-
-<div class="row">
     <div class="col-md-2">
-        <label>Fecha Pago:</label>
+        <label>Fecha de Pago:</label>
     </div>
     <div class="col-md-4">
-        <elm:datepicker name="fechapago_name" title="Fecha de pago" class="datepicker form-control required fechaPago" value="${auxiliar?.fechaPago ?: new java.util.Date().format("dd-MM-yyyy")}"/>
+        <elm:datepicker name="fechapago_name" title="Fecha de pago" class="datepicker form-control required fechaPago"
+                        value="${auxiliar?.fechaPago ?: new java.util.Date().format("dd-MM-yyyy")}"/>
     </div>
 </div>
+
+
 <div class="row">
     <div class="col-md-2">
         <label>Forma de Pago:</label>
     </div>
     <div class="col-md-3">
-        <g:select name="tipo_name" from="${cratos.TipoPago.list()}" optionKey="id" optionValue="descripcion" id="tipoPago" class="form-control" style="width: 400px" value="${auxiliar?.tipoPago?.id}"/>
+        <g:select name="tipo_name" from="${cratos.TipoPago.list()}" optionKey="id" optionValue="descripcion"
+                  id="tipoPago" class="form-control" style="width: 400px" value="${auxiliar?.tipoPago?.id}"/>
     </div>
 </div>
 
@@ -70,11 +75,17 @@
     <div class="col-md-10">
         <div class="col-md-2">Debe</div>
         <div class="col-md-3">
-            <g:textField type="number" name="valorAuxiliarP_name" id="valorPagar" readonly="${auxiliar ? true : false}" class="validacionNumero form-control valorP" placeholder="${auxiliar ? auxiliar?.debe : asiento?.debe}" style="width: 90px;" value="${auxiliar ? auxiliar?.debe : asiento?.debe}" />
+            %{--<g:textField type="number" name="valorAuxiliarP_name" id="valorPagar" readonly="${auxiliar ? true : false}" --}%
+            <g:textField type="number" name="valorAuxiliarP_name" id="valorPagar"
+                         class="validacionNumero form-control valorP" placeholder="${auxiliar ? auxiliar?.debe : asiento?.debe}"
+                         style="width: 90px;" value="${auxiliar ? auxiliar?.debe : asiento?.debe}" />
         </div>
         <div class="col-md-2">Haber</div>
         <div class="col-md-3">
-            <g:textField type="number" name="valorAuxiliarC_name" id="valorCobrar" readonly="${auxiliar ? true : false}" placeholder="${auxiliar ? auxiliar?.haber : asiento?.haber}" class="validacionNumero form-control valorC" style="width: 90px;" value="${auxiliar ? auxiliar?.haber : asiento?.haber}" />
+            <g:textField type="number" name="valorAuxiliarC_name" id="valorCobrar"
+                         placeholder="${auxiliar ? auxiliar?.haber : asiento?.haber}"
+                         class="validacionNumero form-control valorC" style="width: 90px;"
+                         value="${auxiliar ? auxiliar?.haber : asiento?.haber}" />
         </div>
     </div>
 </div>

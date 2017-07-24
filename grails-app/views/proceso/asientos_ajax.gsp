@@ -1,6 +1,6 @@
 <style type="text/css">
     .colorAtras {
-        background-color: #ffd5af;
+        background-color: #dfa58f;
         color: #0b0b0b;
         text-align: center;
         font-weight: bold;
@@ -8,7 +8,7 @@
 
     .colorAsiento {
         color: #0b0b0b;
-        background-color: #5aa6ff;
+        background-color: #7ac6ff;
     }
 
     .derecha {
@@ -21,7 +21,7 @@
 
     .dato {
         font-weight: normal;
-        background-color:  #fffddc;
+        background-color: #ffd5af;
     }
     .total {
         /*font-weight: bold;*/
@@ -101,19 +101,23 @@
 
                     <g:if test="${cratos.Auxiliar.findAllByAsiento(asiento)}">
                         <g:set var="auxiliares1" value="${cratos.Auxiliar.findAllByAsiento(asiento)}"/>
+                        <g:set var="cabecera" value="N"/>
                         <g:each in="${auxiliares1}" var="auxiliar">
-                        %{--<g:if test="${auxiliar.asiento.comprobante == comprobante}">--}%
+                            <g:if test="${cabecera != 'S'}">
                             <tr>
-                                <td class="colorAtras">F.Pago</td>
+                                <td class="colorAtras">Fecha</td>
                                 <td class="colorAtras">Proveedor</td>
                                 <td class="colorAtras">Debe</td>
                                 <td class="colorAtras">Haber</td>
                                 <td class="colorAtras"><i class="fa fa-pencil"></i></td>
+                                <g:set var="cabecera" value="S"/>
                             </tr>
+                            </g:if>
                             <tr class="colorAtras">
-                                <g:set var="dcmt" value="${auxiliar?.comprobante?.proceso?.documento? ' - Doc: ' + auxiliar?.comprobante?.proceso?.documento : ''}"/>
+                                %{--<g:set var="dcmt" value="${auxiliar?.comprobante?.proceso?.documento? ' - Doc: ' + auxiliar?.documento : ''}"/>--}%
+                                <g:set var="dcmt" value="${auxiliar?.documento? ' - Doc: ' + auxiliar?.documento : ''}"/>
                                 <td class="dato">${auxiliar?.fechaPago?.format("dd-MM-yyyy")}</td>
-                                %{--<td class="dato">${auxiliar?.proveedor?.nombre} - ${auxiliar?.comprobante?.prefijo} - ${auxiliar?.comprobante?.numero}</td>--}%
+                                %{--<td class="dato">${auxiliar?.proveedor?.nombre} - ${auxiliar?.documento}</td>--}%
                                 <td class="dato izquierda">${auxiliar?.proveedor?.nombre} ${dcmt}</td>
                                 <td class="dato derecha">${auxiliar?.debe ? g.formatNumber(number: auxiliar.debe, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2) : 0.00}</td>
                                 <td class="dato derecha">${auxiliar.haber ? g.formatNumber(number: auxiliar.haber, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2) : 0.00}</td>
@@ -133,7 +137,6 @@
                                     </g:if>
                                 </td>
                             </tr>
-                        %{--</g:if>--}%
                         </g:each>
                     </g:if>
 
