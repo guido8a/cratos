@@ -1145,13 +1145,15 @@ class ProcesoController extends cratos.seguridad.Shield {
         def comprobante = Comprobante.get(params.comprobante)
         def asiento
         def auxiliar
+        def empresa = Empresa.get(session.empresa.id)
+        def proveedores = Proveedor.findAllByEmpresa(empresa).sort{it.nombre}
         if(params.auxiliar){
             auxiliar = Auxiliar.get(params.auxiliar)
             asiento = auxiliar.asiento
-            return [asiento: asiento, auxiliar: auxiliar, comprobante: comprobante]
+            return [asiento: asiento, auxiliar: auxiliar, comprobante: comprobante, proveedores: proveedores]
         }else{
             asiento = Asiento.get(params.asiento)
-            return [asiento: asiento, comprobante: comprobante]
+            return [asiento: asiento, comprobante: comprobante, proveedores: proveedores]
         }
     }
 
@@ -1178,6 +1180,7 @@ class ProcesoController extends cratos.seguridad.Shield {
         auxiliar.tipoPago = tipoPago
         auxiliar.debe = params.debe.toDouble()
         auxiliar.haber = params.haber.toDouble()
+        auxiliar.documento = params.documento
 
         try{
             auxiliar.save(flush: true)

@@ -30,11 +30,22 @@
         <label>Proveedor:</label>
     </div>
     <div class="col-md-3">
-        %{--<g:select name="proveedor_name" id="proveedor" from="${cratos.Proveedor.list().sort{it.nombre}}" class="form-control" optionValue="nombre" optionKey="id" style="width: 400px" value="${auxiliar?.proveedor?.id}"/>--}%
-        <g:textField name="proveedorName" id="proveedor_nombre" value="${auxiliar ? auxiliar?.proveedor?.nombre : asiento?.comprobante?.proceso?.proveedor?.nombre}" class="form-control" readonly="true" style="width: 400px"/>
-        <g:hiddenField name="proveedor_name" id="proveedor" value="${auxiliar?.proveedor?.id}"/>
+        <g:select name="proveedor_name" id="proveedor" from="${proveedores}" class="form-control" optionValue="nombre" optionKey="id" style="width: 400px" value="${auxiliar?.proveedor?.id}"/>
+        %{--<g:textField name="proveedorName" id="proveedor_nombre" value="${auxiliar ? auxiliar?.proveedor?.nombre : asiento?.comprobante?.proceso?.proveedor?.nombre}" class="form-control" readonly="true" style="width: 400px"/>--}%
+        %{--<g:hiddenField name="proveedor_name" id="proveedor" value="${auxiliar?.proveedor?.id}"/>--}%
     </div>
 </div>
+
+<div class="row">
+    <div class="col-md-2">
+        <label>Documento:</label>
+    </div>
+    <div class="col-md-3">
+        <g:textField name="referencia_name" id="referencia" class="form-control" style="width: 400px" value="${auxiliar?.documento ?: ''}"/>
+    </div>
+</div>
+
+
 <div class="row">
     <div class="col-md-2">
         <label>Fecha Pago:</label>

@@ -11,6 +11,7 @@ class Auxiliar implements Serializable {
     TipoPago tipoPago
     Comprobante comprobante
     String factura
+    String documento
 
     static mapping = {
         table 'axlr'
@@ -29,6 +30,7 @@ class Auxiliar implements Serializable {
             tipoPago column: 'tppg__id'
             comprobante column: 'cmpr__id'
             factura column: 'axlrfctr'
+            documento column: 'axlrrefe'
         }
     }
     static constraints = {
@@ -41,6 +43,7 @@ class Auxiliar implements Serializable {
         tipoPago (blank: true, nullable: true)
         comprobante (blank: true, nullable: true)
         factura (blank: true, nullable: true)
+        documento (blank: true, nullable: true)
     }
 
 

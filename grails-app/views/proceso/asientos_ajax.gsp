@@ -362,7 +362,8 @@
                                             fechaPago: $(".fechaPago").val(),
                                             proveedor: $("#proveedor").val(),
                                             descripcion: $("#descripcionAux").val(),
-                                            auxiliar: idAuxiliar
+                                            auxiliar: idAuxiliar,
+                                            documento: $("#referencia").val()
                                         },
                                         success: function (msg) {
                                             if (msg == 'ok') {
