@@ -43,6 +43,34 @@ class ProcesoController extends cratos.seguridad.Shield {
             render(view: "procesoForm", model: [proceso: null])
     }
 
+    /** actualiza los valores de proceso a los totales de detalle **/
+    def actlProceso = {
+        println "actlProceso $params"
+        def proceso = Proceso.get(params.id)
+        def cn = dbConnectionService.getConnection()
+
+        def sql = "select * from total_detalle(${proceso.id},0,0)"
+// base__nz | basecero | basenoiv | iva  | ice  | dsct | flte | totl
+//----------+----------+----------+------+------+------+------+------
+//     4.50 |     0.00 |     0.00 | 0.54 | 0.00 | 0.00 | 0.00 | 5.04
+
+        cn.eachRow(sql.toString()) {d ->
+            proceso.valor = d.totl
+            proceso.baseImponibleIva = d.base__nz
+            proceso.baseImponibleIva0 = d.basecero
+            proceso.baseImponibleNoIva = d.basenoiv
+            proceso.ivaGenerado = d.iva
+            proceso.iceGenerado = d.ice
+            if(proceso.gestor.tipo == 'I')
+                proceso.flete = d.flte
+            else {
+                proceso.flete = 0
+            }
+        }
+        proceso.save(flush: true)
+        redirect(action: 'nuevoProceso', id: proceso.id)
+    }
+
     def save = {
         println "save proceso: $params"
         def proceso
@@ -345,6 +373,7 @@ class ProcesoController extends cratos.seguridad.Shield {
         [data: data, sstr: params.sstr, tpcpSri: params.tpcp, estado: params.etdo?:'']
     }
 
+/*
     def valorAsiento = {
         if (request.method == 'POST') {
             params.lang="en"
@@ -371,11 +400,11 @@ class ProcesoController extends cratos.seguridad.Shield {
                 render "ok"
             else
                 render "error"
-//            render(view: "detalleProceso", model: [comprobantes: comprobantes, asientos: asientos])
         } else {
             redirect(controller: "shield", action: "ataques")
         }
     }
+*/
 
     /*TODO Crear periodos y probar el mayorizar y desmayorizar... move on*/
     def registrarComprobante = {

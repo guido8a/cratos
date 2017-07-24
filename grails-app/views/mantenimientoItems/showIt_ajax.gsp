@@ -100,6 +100,18 @@
                 </div>
             </g:if>
 
+            <g:if test="${itemInstance?.ice}">
+                <div class="row">
+                    <div class="col-md-4 text-info">
+                        ICE (%)
+                    </div>
+
+                    <div class="col-md-8">
+                        ${itemInstance?.ice}
+                    </div>
+                </div>
+            </g:if>
+
             <g:if test="${itemInstance?.stockMinimo}">
                 <div class="row">
                     <div class="col-md-4 text-info">

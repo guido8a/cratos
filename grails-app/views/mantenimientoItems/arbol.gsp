@@ -140,10 +140,12 @@
     }
 
     function createEditRow(id, nodo, padre, url, tipo) {
-        console.log("id:", id, "nodo:", nodo, "padre:", padre, "tipo", tipo);
+//        console.log("id:", id, "nodo:", nodo, "padre:", padre, "tipo", tipo);
         var data = tipo == "Crear" ? {'padre': id, 'nodo': nodo} : {'id': id, 'nodo': nodo, 'padre': padre};
-//        var data = {id: id, nodo: nodo, padre: padre};
-        console.log("data:", data);
+        if(nodo == "Artículo" && tipo == "Crear") {
+            data = {'padre': padre, 'nodo': nodo};
+        }
+//        console.log("data:", data);
         $.ajax({
             type: "POST",
             url: url,

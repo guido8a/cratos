@@ -42,18 +42,20 @@
 <table class="table table-bordered table-hover table-condensed">
     <tbody>
     <tr class="colorAsiento">
-        <td style="width: 80px; text-align: right">Tarifa 0%:</td>
-        <td style="width: 80px; font-weight: bold">${totl?.basecero}</td>
+        <td style="width: 90px; text-align: right">Tarifa 0%:</td>
+        <td style="width: 80px; font-weight: bold">${totl?.basecero + totl?.basenoiv}</td>
         <td style="width: 100px; text-align: right">Tarifa 12%:</td>
         <td style="width: 80px; font-weight: bold">${totl?.base__nz}</td>
         <td style="width: 80px; text-align: right">Descuento:</td>
         <td style="width: 80px; font-weight: bold">${totl?.dsct}</td>
-        <td style="width: 70px; text-align: right">IVA:</td>
+        <td style="width: 40px; text-align: right">IVA:</td>
         <td style="width: 80px; font-weight: bold">${totl?.iva}</td>
         <td style="width: 70px; text-align: right">Flete:</td>
         <td style="width: 80px; font-weight: bold">${totl?.flte}</td>
-        <td style="width: 80px; text-align: right">Total:</td>
-        <td style="width: 100px; font-weight: bold">${totl?.totl}</td>
+        <td style="width: 40px; text-align: right">Ice:</td>
+        <td style="width: 50px; font-weight: bold">${totl?.ice}</td>
+        <td style="width: 60px; text-align: right">Total:</td>
+        <td style="width: 80px; font-weight: bold">${totl?.totl}</td>
     </tr>
     </tbody>
 </table>

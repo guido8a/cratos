@@ -14,7 +14,7 @@
 </style>
 
 <g:form class="form-horizontal" name="frmItem" role="form" action="saveIt_ajax" method="POST">
-    <g:hiddenField name="padre" value="${departamento.id}"/>
+    <g:hiddenField name="padre" value="${departamento?.id}"/>
     <g:hiddenField name="id" value="${itemInstance?.id}"/>
     <h3 style="text-align: center">${departamento.descripcion}</h3>
     <br>
@@ -106,17 +106,16 @@
                 Estado
             </label>
 
-            <div class="col-md-9">
+            <div class="col-md-3">
                 <g:select id="estado" name="estado" from="['A': 'Activo', 'B': 'Dado de baja']"
                           class="many-to-one " value="${itemInstance?.estado}" optionKey="key" optionValue="value"/>
                 <p class="help-block ui-helper-hidden"></p>
             </div>
         </span>
-    </div>
 
-    <div class="form-group ${hasErrors(bean: itemInstance, field: 'fecha', 'error')} ">
+    %{--<div class="form-group ${hasErrors(bean: itemInstance, field: 'fecha', 'error')} ">--}%
         <span class="grupo">
-            <label class="col-md-3 control-label text-info">
+            <label class="col-md-2 control-label text-info">
                 Fecha
             </label>
 
@@ -126,6 +125,7 @@
                 <p class="help-block ui-helper-hidden"></p>
             </div>
         </span>
+    %{--</div>--}%
     </div>
 
     <div class="form-group ${hasErrors(bean: itemInstance, field: 'precioVenta', 'error')} ">
@@ -167,7 +167,7 @@
             <div class="col-md-4">
                 <g:select id="tipoIVA" name="tipoIVA.id" from="${cratos.inventario.TipoIVA.list([sort: 'descripcion'])}"
                           optionKey="id" optionValue="descripcion"
-                          class="many-to-one " value="${itemInstance?.tipoIVA?.id}" noSelection="['': '']"/>
+                          class="many-to-one " value="${itemInstance?.tipoIVA?.id?:'2'}" noSelection="['': '']"/>
                 <p class="help-block ui-helper-hidden"></p>
             </div>
         </span>
@@ -215,6 +215,17 @@
             <div class="col-md-3">
                 <g:textField name="peso" class="form-control required" value="${itemInstance?.peso}"
                              title="Peso unitario en Kg"/>
+                <p class="help-block ui-helper-hidden"></p>
+            </div>
+        </span>
+        <span class="col-sx-2">
+            <label class="col-md-3 control-label text-info">
+                % ICE
+            </label>
+
+            <div class="col-md-3">
+                <g:textField name="ice" class="form-control required" value="${itemInstance?.ice}"
+                             title="Porcentaje aplicado de ICE"/>
                 <p class="help-block ui-helper-hidden"></p>
             </div>
         </span>
