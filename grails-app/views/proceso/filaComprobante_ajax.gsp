@@ -8,7 +8,7 @@
                  value="${proceso?.comprobante?.descripcion}"/>
 </div>
 <div class="col-md-2">
-    <g:textField name="documento" class="form-control" disabled="true"
+    <g:textField name="documento" id="comprobanteDoc" class="form-control" disabled="true"
                  title="Documento" style="width: 170px" placeholder="Documento"
                  value="${proceso?.comprobante?.proceso?.documento}"/>
 </div>

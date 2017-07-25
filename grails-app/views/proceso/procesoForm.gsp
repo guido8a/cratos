@@ -147,9 +147,9 @@
         <div class="linea"></div>
 
         <input type="hidden" name="id" value="${proceso?.id}" id="idProceso"/>
-                %{--<input type="hidden" name="empleado.id" value="${session.usuario.id}"/>--}%
-                %{--<input type="hidden" name="periodoContable.id" value="${session?.contabilidad?.id}"/>--}%
-            <input type="hidden" name="data" id="data"/>
+        %{--<input type="hidden" name="empleado.id" value="${session.usuario.id}"/>--}%
+        %{--<input type="hidden" name="periodoContable.id" value="${session?.contabilidad?.id}"/>--}%
+        <input type="hidden" name="data" id="data"/>
         <div class="row">
             <div class="col-xs-2 negrilla">
                 Fecha de Emisión:
@@ -157,11 +157,11 @@
 
             <div class="col-xs-2">
                 <g:if test="${(proceso?.estado == 'R')}">
-                    ${proceso?.fechaEmision.format("dd-MM-yyyy")}
+                    ${proceso?.fechaEmision?.format("dd-MM-yyyy")}
                 </g:if>
                 <g:else>
                     <elm:datepicker name="fecha" title="Fecha de emisión del comprobante"
-                                    class="datepicker form-control required col-xs-3"
+                                    class="datepicker form-control required col-xs-3 fechaE"
                                     value="${proceso?.fechaEmision}" maxDate="new Date()"
                                     style="width: 80px; margin-left: 5px"/>
                 </g:else>
@@ -173,7 +173,7 @@
 
             <div class="col-xs-2">
                 <g:if test="${(proceso?.estado == 'R')}">
-                    ${proceso?.fechaIngresoSistema.format("dd-MM-yyyy")}
+                    ${proceso?.fechaIngresoSistema?.format("dd-MM-yyyy")}
                 </g:if>
                 <g:else>
                     <elm:datepicker name="fechaingreso" title="Fecha de registro en el sistema"
@@ -189,27 +189,27 @@
             </div>
 
             <div class="col-xs-3 negrilla">
-                <g:select class="form-control required cmbRequired tipoProcesoSel" name="tipoProceso" id="tipoProceso"
+                <g:select class="form-control required cmbRequired tipoProcesoSel ${proceso ? '' : 'hidden'}" name="tipoProceso" id="tipoProceso"
                           from="${cratos.TipoProceso.list(sort: 'codigo')}" label="Proceso tipo: "
                           value="${proceso?.tipoProceso?.id}" optionKey="id"
-                          optionValue="descripcion" title="Tipo de la transacción" disabled="${(proceso?.estado == 'R') ? true : false}"/>
+                          optionValue="descripcion" title="Tipo de la transacción" disabled="${(proceso?.estado == 'R') ? true : false}" />
             </div>
 
 
         </div>
 
         <div class="row" id="gestorDiv">
-%{--
-            <div class="col-xs-2 negrilla">
-                Gestor a utilizar:
-            </div>
-            <div class="col-xs-10 negrilla">
-                <g:select class="form-control required" name="gestor"
-                          from="${cratos.Gestor.findAllByEstadoAndEmpresa('R', session.empresa, [sort: 'nombre'])}"
-                          value="${proceso?.gestor?.id}" optionKey="id" optionValue="nombre"
-                          title="Proceso tipo" disabled="${registro ? true : false}"/>
-            </div>
---}%
+            %{--
+                        <div class="col-xs-2 negrilla">
+                            Gestor a utilizar:
+                        </div>
+                        <div class="col-xs-10 negrilla">
+                            <g:select class="form-control required" name="gestor"
+                                      from="${cratos.Gestor.findAllByEstadoAndEmpresa('R', session.empresa, [sort: 'nombre'])}"
+                                      value="${proceso?.gestor?.id}" optionKey="id" optionValue="nombre"
+                                      title="Proceso tipo" disabled="${registro ? true : false}"/>
+                        </div>
+            --}%
         </div>
 
         <div class="row" id="divCargaProveedor">
@@ -232,40 +232,40 @@
             <div class="col-xs-10 negrilla">
                 <g:textField name="descripcion" id="descripcion" value="${proceso?.descripcion}" maxlength="255"
                              class="form-control required" readonly="${(proceso?.estado == 'R') ? true : false}" />
-%{--
-                <textArea style="height:55px;resize: none" maxlength="255" name="descripcion"
-                          id="descripcion" title="La descripción de la transacción contable"
-                          class="form-control" ${registro ? 'readonly' : ''}>${proceso?.descripcion}</textArea>
---}%
+                %{--
+                                <textArea style="height:55px;resize: none" maxlength="255" name="descripcion"
+                                          id="descripcion" title="La descripción de la transacción contable"
+                                          class="form-control" ${registro ? 'readonly' : ''}>${proceso?.descripcion}</textArea>
+                --}%
             </div>
         </div>
 
         <div class="row" id="libretinFacturas">
-%{--
-            <div class="col-xs-2 negrilla">
-                Libretín de Facturas:
-            </div>
+            %{--
+                        <div class="col-xs-2 negrilla">
+                            Libretín de Facturas:
+                        </div>
 
-            <div class="col-xs-5">
-                <g:select name="libretin" from="${libreta}" value="${retencion?.documentoEmpresa}"
-                          class="form-control" optionKey="id" libre="1"
-                          optionValue="${{"Desde: " + it?.numeroDesde + ' - Hasta: ' + it?.numeroHasta + " - Autorización: " +
-                                  it?.fechaAutorizacion?.format("dd-MM-yyyy")}}"/>
-                <g:hiddenField name="libretinName" id="idLibre" value=""/>
-            </div>
-            <div class="col-xs-5">
-                <g:textField name="numEstablecimiento" id="numEstablecimiento" readonly="true"  style="width: 50px"
-                             title="Número de Establecimento" value="${proceso?.facturaEstablecimiento}"/> -
-                <g:textField name="numeroEmision" id="numEmision" readonly="true" style="width: 50px"
-                             title="Numeración Emisión" value="${proceso?.facturaPuntoEmision}"/>
+                        <div class="col-xs-5">
+                            <g:select name="libretin" from="${libreta}" value="${retencion?.documentoEmpresa}"
+                                      class="form-control" optionKey="id" libre="1"
+                                      optionValue="${{"Desde: " + it?.numeroDesde + ' - Hasta: ' + it?.numeroHasta + " - Autorización: " +
+                                              it?.fechaAutorizacion?.format("dd-MM-yyyy")}}"/>
+                            <g:hiddenField name="libretinName" id="idLibre" value=""/>
+                        </div>
+                        <div class="col-xs-5">
+                            <g:textField name="numEstablecimiento" id="numEstablecimiento" readonly="true"  style="width: 50px"
+                                         title="Número de Establecimento" value="${proceso?.facturaEstablecimiento}"/> -
+                            <g:textField name="numeroEmision" id="numEmision" readonly="true" style="width: 50px"
+                                         title="Numeración Emisión" value="${proceso?.facturaPuntoEmision}"/>
 
-                <g:textField name="serie" id="serie" value="${proceso?.facturaSecuencial}" maxlength="9"
-                             class="form-control required validacionNumero"
-                             style="width: 120px; display: inline"/>
+                            <g:textField name="serie" id="serie" value="${proceso?.facturaSecuencial}" maxlength="9"
+                                         class="form-control required validacionNumero"
+                                         style="width: 120px; display: inline"/>
 
-            </div>
-            <p class="help-block ui-helper-hidden"></p>
---}%
+                        </div>
+                        <p class="help-block ui-helper-hidden"></p>
+            --}%
         </div>
 
         <div class="row" id="pagoProceso">
@@ -293,10 +293,10 @@
                         <div class="col-xs-4">
                             <label style="margin-left: 50px">Aplica convenio de doble tributación?</label> <br/>
                             <div style="margin-left: 50px">
-                            <g:radioGroup class="convenio" labels="['SI', 'NO']" values="['SI', 'NO']" name="convenio"
-                                          value="${proceso?.convenio?:'NO'}">
-                                ${it?.label} ${it?.radio}
-                            </g:radioGroup>
+                                <g:radioGroup class="convenio" labels="['SI', 'NO']" values="['SI', 'NO']" name="convenio"
+                                              value="${proceso?.convenio?:'NO'}">
+                                    ${it?.label} ${it?.radio}
+                                </g:radioGroup>
                             </div>
                         </div>
 
@@ -758,7 +758,7 @@
     $(function () {
         $("#btn-br-prcs").click(function () {
             bootbox.confirm("Está seguro? si esta transacción tiene un comprobante, este será anulado. " +
-                    "Esta acción es irreversible", function (result) {
+                "Esta acción es irreversible", function (result) {
                 if (result) {
                     $(".br_prcs").submit()
                 }
@@ -929,8 +929,8 @@
                     error += "<li>Ingrese valores en la base imponible</li>"
                 }
                 if ((parseFloat($("#iva12").val()) + parseFloat($("#iva0").val()) + parseFloat($("#noIva").val()) +
-                        parseFloat($("#ivaGenerado").val()) + parseFloat($("#iceGenerado").val()) +
-                        parseFloat($("#flete").val())) > parseFloat($("#comprobanteSaldo").val()) ) {
+                    parseFloat($("#ivaGenerado").val()) + parseFloat($("#iceGenerado").val()) +
+                    parseFloat($("#flete").val())) > parseFloat($("#comprobanteSaldo").val()) ) {
                     error += "<li>Revise el valores de base imponible e impuestos generados</li>"
                 }
 
@@ -945,7 +945,7 @@
                 }
 
                 if ((parseFloat($("#valorPagoNC").val()) + parseFloat($("#ivaGeneradoNC").val())) > parseFloat($("#comprobanteSaldo").val()) ||
-                        (parseFloat($("#valorPagoNC").val()) + parseFloat($("#ivaGeneradoNC").val())) <= 0 ) {
+                    (parseFloat($("#valorPagoNC").val()) + parseFloat($("#ivaGeneradoNC").val())) <= 0 ) {
                     error += "<li>Revise el valor de la Nota de Crédito y el IVA</li>"
                 }
 
@@ -1116,42 +1116,51 @@
 
 
 
-/*
-    $("#procesoForm").validate({
-        errorClass: "help-block",
-        errorPlacement: function (error, element) {
-            if (element.parent().hasClass("input-group")) {
-                error.insertAfter(element.parent());
-            } else {
-                error.insertAfter(element);
-            }
-            element.parents(".grupo").addClass('has-error');
-        },
-        success: function (label) {
-            label.parents(".grupo").removeClass('has-error');
-        },
-        rules: {
-            serie: {
-                remote: {
-                    type: 'POST',
-                    url: "${createLink(controller: 'proceso', action: 'valSerieFactura_ajax')}",
-                    data: {
-                        fcdt: $("#libretin").val(),
-                        id  : "${proceso?.id}"
-                    }
-                }
-            }
-        },
-        messages: {
-            serie : {
-                remote : "Número de comprobante no válido!"
-            }
-        }
+    /*
+     $("#procesoForm").validate({
+     errorClass: "help-block",
+     errorPlacement: function (error, element) {
+     if (element.parent().hasClass("input-group")) {
+     error.insertAfter(element.parent());
+     } else {
+     error.insertAfter(element);
+     }
+     element.parents(".grupo").addClass('has-error');
+     },
+     success: function (label) {
+     label.parents(".grupo").removeClass('has-error');
+     },
+     rules: {
+     serie: {
+     remote: {
+     type: 'POST',
+    %{--url: "${createLink(controller: 'proceso', action: 'valSerieFactura_ajax')}",--}%
+     data: {
+     fcdt: $("#libretin").val(),
+     %{--id  : "${proceso?.id}"--}%
+     }
+     }
+     }
+     },
+     messages: {
+     serie : {
+     remote : "Número de comprobante no válido!"
+     }
+     }
+     });
+     */
+
+    $(".fechaE").change(function () {
+        revisarFecha();
     });
-*/
 
+    revisarFecha();
 
-
+    function revisarFecha () {
+        if($(".fechaE").val() != '' || $(".fechaE").val()){
+            $(".tipoProcesoSel").removeClass('hidden')
+        }
+    }
 
 </script>
 </body>

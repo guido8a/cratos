@@ -32,7 +32,8 @@
         var saldo = $(this).attr('sldo');
         var id = $(this).attr('id_cp');
         $("#comprobanteDesc").val(descripcion);
-        $("#documento").val($(this).attr('dcmt'));
+//        $("#documento").val($(this).attr('dcmt'));
+        $("#comprobanteDoc").val($(this).attr('dcmt'));
         $("#comprobanteSaldo").val(saldo);
         $("#comprobanteSel").val(id);
         if($("#valorPago").val() == '0') {

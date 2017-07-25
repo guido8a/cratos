@@ -177,9 +177,16 @@
     }
 
     $("#btn_buscar").click(function () {
-        console.log("btn_buscar")
+//        console.log("btn_buscar")
         $('#modal-proveedor').modal('show')
         $("#resultados").html('')
+
+        if(!'${proceso}'){
+            $("#comprobanteDesc").val('');
+            $("#comprobanteDoc").val('');
+            $("#comprobanteSaldo").val('');
+        }
+
     });
 
     $(".proveedor").dblclick(function(){
@@ -188,19 +195,19 @@
 
     $("#btn_cargar").click(function(){
         var tipo = $("#tipoProceso").val()
-        console.log("btn_cargar, tipo:", tipo);
-        console.log("ruc: ", $("#prve").val());
+//        console.log("btn_cargar, tipo:", tipo);
+//        console.log("ruc: ", $("#prve").val());
         if($("#prve").val() != '' && (tipo == '1'))
             cargarSstr($("#prve__id").val())
         if($("#prve").val() != '' && (tipo == '4' || tipo == '6' || tipo == '7'))
-            console.log('remueve hide...')
+//            console.log('remueve hide...')
             $("#btnBuscarComp").removeClass('hidden')
     });
 
     $("#btn_cargarCl").click(function(){
         var tipo = $("#tipoProceso").val()
         var prve = $("#prve__id").val()
-        console.log("ttpp: ", $("#tipoProceso").val());
+//        console.log("ttpp: ", $("#tipoProceso").val());
         if($("#prve").val() != '' && (tipo == '6' || tipo == '7'  || tipo == '5'))
             $("#btnBuscarComp").removeClass('hidden')
         if($("#prve").val() != '' && (tipo == '2'))
