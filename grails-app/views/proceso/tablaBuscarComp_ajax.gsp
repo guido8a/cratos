@@ -1,19 +1,6 @@
-<table class="table table-bordered table-hover table-condensed">
-    <thead>
-    <tr>
-        <th style="width: 150px">Nombre</th>
-        <th style="width: 350px">Concepto</th>
-        <th style="width: 150px">Documento</th>
-        <th style="width: 70px">Por Pagar</th>
-        <th style="width: 70px">Pagado</th>
-        <th style="width: 70px">Saldo</th>
-        <th style="width: 50px"><i class="fa fa-pencil"></i> </th>
-    </tr>
-    </thead>
-</table>
 
-<div class="row-fluid"  style="width: 99.7%;height: 350px;overflow-y: auto;float: right;margin-bottom: 20px">
-    <div class="span12">
+
+
         <table class="table table-bordered table-condensed">
             <tbody>
             <g:each in="${res}" var="comprobante">
@@ -37,8 +24,6 @@
             </g:each>
             </tbody>
         </table>
-    </div>
-</div>
 
 <script type="application/javascript">
 

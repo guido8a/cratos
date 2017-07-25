@@ -1244,18 +1244,55 @@ class ProcesoController extends cratos.seguridad.Shield {
 
     def tablaBuscarComp_ajax () {
 //        println "tablaBuscarComp_ajax: $params"
+//        def cn = dbConnectionService.getConnection()
+//        def proveedor = Proveedor.get(params.proveedor)
+//        def sql
+//        if(params.tipo == '4') {
+//            sql = "select * from porpagar(${proveedor?.id}) where sldo <> 0;"
+//        } else if(params.tipo in ['6', '7', '5']) {
+//            sql = "select cmpr__id, clntnmbr prvenmbr, dscr, dcmt, debe hber, ntcr pgdo, sldo from ventas(${proveedor?.id}) " +
+//                    "where sldo <> 0"
+//        }
+//        println "sql<<<<<: $sql"
+//        def res = cn.rows(sql.toString())
+//        return [res: res]
+
+//        println("params tabla buscar compro " + params)
+        def tipo = TipoPago.get(params.tipo)
         def cn = dbConnectionService.getConnection()
-        def proveedor = Proveedor.get(params.proveedor)
-        def sql
-        if(params.tipo == '4') {
-            sql = "select * from porpagar(${proveedor?.id}) where sldo <> 0;"
-        } else if(params.tipo in ['6', '7', '5']) {
-            sql = "select cmpr__id, clntnmbr prvenmbr, dscr, dcmt, debe hber, ntcr pgdo, sldo from ventas(${proveedor?.id}) " +
-                    "where sldo <> 0"
+        def sql = ''
+        def res
+
+        if(params.descripcion && !params.numero){
+            if(params.tipo == '4') {
+                sql = "select * from ventas(${params.proveedor}) where dscr ilike '%${params.descripcion}%'"
+            } else if(params.tipo in ['6', '7', '5']) {
+                sql = "select * from porpagar(${params.proveedor}) where dscr ilike '%${params.descripcion}%'"
+            }
+        }else if (params.numero && !params.descripcion){
+            if(params.tipo == '4') {
+                sql = "select * from ventas(${params.proveedor}) where dcmt ilike '%${params.numero}%' "
+            } else if(params.tipo in ['6', '7', '5']) {
+                sql = "select * from porpagar(${params.proveedor}) where dcmt ilike '%${params.numero}%' "
+            }
+        }else if (params.descripcion && params.numero){
+            if(params.tipo == '4') {
+                sql = "select * from ventas(${params.proveedor}) where dscr ilike '%${params.descripcion}%' AND dcmt ilike '%${params.numero}%' "
+            } else if(params.tipo in ['6', '7', '5']) {
+                sql = "select * from porpagar(${params.proveedor}) where dscr ilike '%${params.descripcion}%' AND dcmt ilike '%${params.numero}%' "
+            }
+        }else{
+            if(params.tipo == '4') {
+                sql = "select * from ventas(${params.proveedor})"
+            } else if(params.tipo in ['6', '7', '5']) {
+                sql = "select * from porpagar(${params.proveedor})"
+            }
         }
-        println "sql<<<<<: $sql"
-        def res = cn.rows(sql.toString())
-        return [res: res]
+
+//        println("sql " + sql)
+
+        res = cn.rows(sql.toString())
+        return [res:res]
     }
 
     def filaComprobante_ajax () {
@@ -1682,6 +1719,12 @@ class ProcesoController extends cratos.seguridad.Shield {
     def valoresServicio_ajax () {
         def porcentajeIva = PorcentajeIva.get(params.porcentaje)
         return [porcentajeIva: porcentajeIva]
+    }
+
+    def compBuscador () {
+        def proveedor = Proveedor.get(params.proveedor)
+        def tipo = TipoPago.get(params.tipo)
+        return [proveedor: proveedor, tipo:tipo]
     }
 
 }

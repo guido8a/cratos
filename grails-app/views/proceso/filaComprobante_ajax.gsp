@@ -48,7 +48,7 @@
         }
         $.ajax({
             type    : "POST",
-            url     : "${g.createLink(controller: 'proceso',action: 'tablaBuscarComp_ajax')}",
+            url     : "${g.createLink(controller: 'proceso',action: 'compBuscador')}",
             data    : {
                 proveedor: idProveedor,
                 tipo:      tipo
