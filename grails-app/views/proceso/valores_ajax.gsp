@@ -4,7 +4,7 @@
 }
 </style>
 
-<g:if test="${tipo == '4' || tipo == '5'}">
+<g:if test="${tipo == '4' || tipo == '5' || tipo == '8'}">
     <div class="row" style="font-size: 12px">
         <div class="col-xs-2 negrilla" style="width: 120px">
             Valor:

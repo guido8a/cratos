@@ -1,4 +1,4 @@
-<%@ page import="cratos.Asiento; cratos.sri.TipoComprobanteSri" %>
+<%@ page import="cratos.inventario.Bodega; cratos.Asiento; cratos.sri.TipoComprobanteSri" %>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -232,40 +232,32 @@
             <div class="col-xs-10 negrilla">
                 <g:textField name="descripcion" id="descripcion" value="${proceso?.descripcion}" maxlength="255"
                              class="form-control required" readonly="${(proceso?.estado == 'R') ? true : false}" />
-                %{--
-                                <textArea style="height:55px;resize: none" maxlength="255" name="descripcion"
-                                          id="descripcion" title="La descripción de la transacción contable"
-                                          class="form-control" ${registro ? 'readonly' : ''}>${proceso?.descripcion}</textArea>
-                --}%
+            </div>
+        </div>
+        <div class="row hidden" id="bodegas">
+            <div class="col-xs-2 negrilla">
+                Bodega que entrega:
+            </div>
+
+            <div class="col-xs-4 negrilla">
+                <g:select class="form-control required cmbRequired tipoProcesoSel" name="bodega" id="bodega"
+                          from="${cratos.inventario.Bodega.list(sort: 'descripcion')}" label="Bodega"
+                          value="${proceso?.bodega?.id}" optionKey="id"
+                          optionValue="descripcion" title="Bodega que entrega" disabled="${(proceso?.estado == 'R') ? true : false}" />
+            </div>
+            <div class="col-xs-2 negrilla" style="text-align: right">
+                Bodega que recibe:
+            </div>
+
+            <div class="col-xs-4 negrilla">
+                <g:select class="form-control required cmbRequired tipoProcesoSel" name="bodegaRecibe" id="bodegaRecibe"
+                          from="${cratos.inventario.Bodega.list(sort: 'descripcion')}" label="bodega que recibe"
+                          value="${proceso?.bodegaRecibe?.id}" optionKey="id"
+                          optionValue="descripcion" title="Bodega que recibe" disabled="${(proceso?.estado == 'R') ? true : false}" />
             </div>
         </div>
 
         <div class="row" id="libretinFacturas">
-            %{--
-                        <div class="col-xs-2 negrilla">
-                            Libretín de Facturas:
-                        </div>
-
-                        <div class="col-xs-5">
-                            <g:select name="libretin" from="${libreta}" value="${retencion?.documentoEmpresa}"
-                                      class="form-control" optionKey="id" libre="1"
-                                      optionValue="${{"Desde: " + it?.numeroDesde + ' - Hasta: ' + it?.numeroHasta + " - Autorización: " +
-                                              it?.fechaAutorizacion?.format("dd-MM-yyyy")}}"/>
-                            <g:hiddenField name="libretinName" id="idLibre" value=""/>
-                        </div>
-                        <div class="col-xs-5">
-                            <g:textField name="numEstablecimiento" id="numEstablecimiento" readonly="true"  style="width: 50px"
-                                         title="Número de Establecimento" value="${proceso?.facturaEstablecimiento}"/> -
-                            <g:textField name="numeroEmision" id="numEmision" readonly="true" style="width: 50px"
-                                         title="Numeración Emisión" value="${proceso?.facturaPuntoEmision}"/>
-
-                            <g:textField name="serie" id="serie" value="${proceso?.facturaSecuencial}" maxlength="9"
-                                         class="form-control required validacionNumero"
-                                         style="width: 120px; display: inline"/>
-
-                        </div>
-                        <p class="help-block ui-helper-hidden"></p>
-            --}%
         </div>
 
         <div class="row" id="pagoProceso">
@@ -562,7 +554,17 @@
             cargarCompPago();
         }
 
-        if(tipo != '1') cargarTipo(tipo);
+        if(tipo != '1') {
+            cargarTipo(tipo);
+            $("#pagoProceso").hide()
+        }
+
+        if(tipo == '8') {
+            $("#bodegas").removeClass('hidden');
+        } else {
+            $("#bodegas").addClass('hidden');
+        }
+
     });
 
     $("#tipoProceso").change(function () {
@@ -608,6 +610,12 @@
         }
 
         cargaGestor(tipo);
+
+        if(tipo == '8') {
+            $("#bodegas").removeClass('hidden');
+        } else {
+            $("#bodegas").addClass('hidden');
+        }
     });
 
     $("#tipoComprobante").change(function () {
