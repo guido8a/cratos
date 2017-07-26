@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta name="layout" content="main">
-    <title>Procesos Contables</title>
+    <title>Gestores Contables</title>
 
     <style type="text/css">
 
@@ -37,18 +37,13 @@
     <div class="linea45"></div>
 
     <div>
-        <div class="col-md-2">
+        <div class="col-md-3">
             <g:link class="btn btn-primary" action="nuevoProceso">
-                <i class="fa fa-file-o"></i> Nueva Transacción
-            </g:link>
-        </div>
-        <div class="col-md-1">
-            <g:link class="btn btn-primary" action="procesosAnulados">
-                <i class="fa fa-file-o"></i> Anulados
+                <i class="fa fa-file-o"></i> Nuevo Gestor
             </g:link>
         </div>
 
-        <div class="col-md-5" style="margin-left: 20px;">
+        <div class="col-md-7" style="margin-left: 20px;">
             Buscar por:
             <div class="btn-group">
                 <input id="buscar" type="search" class="form-control" value="${session.buscar}">
@@ -58,31 +53,20 @@
             <a href="#" name="busqueda" class="btn btn-azul btnBusqueda btn-ajax"><i
                     class="fa fa-check-square-o"></i> Buscar</a>
         </div>
-
-        <div class="col-md-2" style="margin-right: 0px; padding: 0 ">
-            <span class="text-info" style="font-size: 15px"><strong>${session.contabilidad.descripcion}</strong></span>
-        </div>
-        <div class="col-md-1" >
-        <a href="#" class="btn btn-azul" id="btnCambiarConta" style="margin-left: 0">
-            <i class="fa fa-refresh"></i> Cambiar
-        </a>
-        </div>
     </div>
 </div>
 
 <div style="margin-top: 30px; min-height: 650px" class="vertical-container">
-    <p class="css-vertical-text">Procesos encontrados</p>
+    <p class="css-vertical-text">Gestores encontrados</p>
 
     <div class="linea"></div>
     <table class="table table-bordered table-hover table-condensed" style="width: 1070px">
         <thead>
         <tr>
-            <th class="alinear" style="width: 70px">Fecha</th>
-            <th class="alinear" style="width: 240px">Descripción</th>
-            <th class="alinear" style="width: 80px">Estado</th>
-            <th class="alinear" style="width: 60px">Comprobante</th>
-            <th class="alinear" style="width: 80px">Tipo</th>
-            <th class="alinear" style="width: 180px">Proveedor</th>
+            <th class="alinear" style="width: 130px">Proceso</th>
+            <th class="alinear" style="width: 700px">Nombre</th>
+            <th class="alinear" style="width: 120px">Estado</th>
+            <th class="alinear" style="width: 120px">Tipo</th>
         </tr>
         </thead>
     </table>
@@ -92,7 +76,7 @@
 </div>
 
 <div><strong>Nota</strong>: Si existen muchos registros que coinciden con el criterio de búsqueda, se retorna
-  como máximo 20 <span style="margin-left: 40px; color: #0b2c89">Se ordena por fecha de proceso desde el más reciente</span>
+  como máximo 20 <span style="margin-left: 40px; color: #0b2c89">Se ordena por proceso y nombre del gestor</span>
 </div>
 
 <div class="modal fade " id="dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -134,7 +118,7 @@
 
         $.ajax({
             type: "POST",
-            url: "${g.createLink(controller: 'proceso', action: 'tablaBuscarPrcs')}",
+            url: "${g.createLink(action: 'tablaBuscarGstr')}",
             data: datos,
             success: function (msg) {
                 $("#bandeja").html(msg);
@@ -166,74 +150,38 @@
         var id = $tr.data("id");
 
         var editar = {
-            label: " Ir al proceso",
+            label: " Editar",
             icon: "fa fa-file-text-o",
             action: function () {
-                location.href = '${createLink(controller: "proceso", action: "nuevoProceso")}?id=' + id;
+                location.href = '${createLink(action: "formGestor")}?id=' + id;
             }
         };
 
-        var retencion = {
-            label: " Retenciones",
-            icon: "fa fa-money",
+        var ver = {
+            label: " Ver gestor",
+            icon: "fa fa-search-plus",
             action: function () {
-                location.href = '${createLink(controller: "proceso", action: "detalleSri")}?id=' + id;
+                location.href = '${createLink(action: "formGestor")}?id=' + id;
             }
         };
 
-        var imprimir = {
-            label: " Imprimir Comprobante",
-            icon: "fa fa-file",
+        var copiar = {
+            label: " Copiar gestor..",
+            icon: "fa fa-copy",
             action: function () {
-                %{--location.href = '${createLink(controller: "proceso", action: "detalleSri")}?id=' + id;--}%
-                var url = "${g.createLink(controller: 'reportes3', action: 'imprimirCompDiario')}?id=" + id + "Wempresa=${session.empresa.id}";
-                location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=comprobante.pdf";
+                location.href = '${createLink(action: "copiarGestor")}?id=' + id;
             }
         };
 
-        var auxiliar = {
-            label: " Auxiliar",
-            icon: "fa fa-table",
-            action: function () {
-                location.href = '${createLink(controller: "axlr", action: "show")}?id=' + id;
-            }
-        };
 
-        items.editar = editar;
-        items.auxiliar = auxiliar;
-
-        if(etdo == 'R') {
-            items.retencion = retencion;
-            items.imprimir = imprimir;
+        if(etdo != 'R') {
+            items.editar = editar;
         }
+        items.ver = ver;
+        items.copiar = copiar;
 
         return items
     }
-
-    $("#btnCambiarConta").click(function () {
-        $.ajax({
-            type: 'POST',
-            url: "${createLink(controller: 'proceso', action: 'cambiarContabilidad_ajax')}",
-            data:{
-
-            },
-            success: function(msg){
-                bootbox.dialog({
-                    title   : "",
-                    message : msg,
-                    class    : "long",
-                    buttons : {
-                        cancelar : {
-                            label     : "<i class='fa fa-times'></i> Cancelar",
-                            className : "btn-primary",
-                            callback  : function () {
-                            }
-                        }
-                    }
-                });
-            }
-        })
-    });
 
 
 </script>

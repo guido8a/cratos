@@ -55,7 +55,7 @@
 </g:if>
 <div class="btn-toolbar toolbar">
     <div class="btn-group">
-        <g:link class="btn btn-primary" action="index">
+        <g:link class="btn btn-primary" action="buscarGstr">
             <i class="fa fa-arrow-left"></i>
             Lista de Gestores
         </g:link>

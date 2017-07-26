@@ -4,6 +4,8 @@ class GestorContableController extends cratos.seguridad.Shield {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
     def buscadorService
+    def dbConnectionService
+
     def index = {
     }
 
@@ -208,11 +210,11 @@ class GestorContableController extends cratos.seguridad.Shield {
             return
         }
 
-        def adquisiciones = Adquisiciones.findAllByGestor(gestor)
-        def facturas = Factura.findAllByGestor(gestor)
+//        def adquisiciones = Adquisiciones.findAllByGestor(gestor)
+//        def facturas = Factura.findAllByGestor(gestor)
         def procesos = Proceso.findAllByGestor(gestor)
 
-        if (adquisiciones.size() == 0 && facturas.size() == 0 && procesos.size() == 0) {
+        if (procesos.size() == 0) {
             def generas = Genera.findAllByGestor(gestor)
             generas.each { gen ->
                 try {
@@ -228,13 +230,7 @@ class GestorContableController extends cratos.seguridad.Shield {
             }
             redirect(action: "index")
         } else {
-            def msn = "El gestor se utiliza en "
-            if (adquisiciones.size() > 0) {
-                msn += adquisiciones.size() + " adquisici" + (adquisiciones.size() == 1 ? "ón, " : "ones, ")
-            }
-            if (facturas.size() > 0) {
-                msn += facturas.size() + " factura" + (facturas.size() == 1 ? ", " : "s, ")
-            }
+            def msn = "El gestor ya ha sido utilizado en "
             if (procesos.size() > 0) {
                 msn += procesos.size() + " proceso" + (procesos.size() == 1 ? ", " : "s, ")
             }
@@ -490,5 +486,37 @@ class GestorContableController extends cratos.seguridad.Shield {
 
 
     }
+
+    def buscarGstr() {
+//        println "busqueda "
+    }
+
+    def tablaBuscarGstr() {
+        println "buscar .... $params"
+        def data = []
+        def cn = dbConnectionService.getConnection()
+        def cont = session.contabilidad.id
+        def buscar = params.buscar.trim()?:'%'
+
+        def sql = "select gstr__id, tppsdscr, gstrnmbr, gstretdo, case gstrtipo when 'G' then 'Gasto' " +
+                "when 'I' then 'Inventario' end as tipo from gstr, tpps where tpps.tpps__id = gstr.tpps__id and " +
+                "empr__id = ${session.empresa.id} and gstrnmbr ilike '%${buscar}%' order by tppsdscr, gstrnmbr"
+
+        println "buscar .. ${sql}"
+
+        data = cn.rows(sql.toString())
+
+        def msg = ""
+        if(data?.size() > 20){
+            data.pop()   //descarta el último puesto que son 21
+            msg = "<div class='alert-danger' style='margin-top:-20px; diplay:block; height:25px;margin-bottom: 20px;'>" +
+                    " <i class='fa fa-warning fa-2x pull-left'></i> Su búsqueda ha generado más de 20 resultados. " +
+                    "Use más letras para especificar mejor la búsqueda.</div>"
+        }
+        cn.close()
+
+        return [data: data, msg: msg]
+    }
+
 
 }
