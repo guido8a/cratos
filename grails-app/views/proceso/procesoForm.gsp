@@ -249,11 +249,11 @@
                 Bodega que recibe:
             </div>
 
-            <div class="col-xs-4 negrilla">
-                <g:select class="form-control required cmbRequired tipoProcesoSel" name="bodegaRecibe" id="bodegaRecibe"
-                          from="${cratos.inventario.Bodega.list(sort: 'descripcion')}" label="bodega que recibe"
-                          value="${proceso?.bodegaRecibe?.id}" optionKey="id"
-                          optionValue="descripcion" title="Bodega que recibe" disabled="${(proceso?.estado == 'R') ? true : false}" />
+            <div class="col-xs-4 negrilla" id="divBodegaRecibe">
+                %{--<g:select class="form-control required cmbRequired tipoProcesoSel" name="bodegaRecibe" id="bodegaRecibe"--}%
+                          %{--from="${cratos.inventario.Bodega.list(sort: 'descripcion')}" label="bodega que recibe"--}%
+                          %{--value="${proceso?.bodegaRecibe?.id}" optionKey="id"--}%
+                          %{--optionValue="descripcion" title="Bodega que recibe" disabled="${(proceso?.estado == 'R') ? true : false}" />--}%
             </div>
         </div>
 
@@ -485,7 +485,7 @@
     $(document).ready(function () {
         var tipo = $(".tipoProcesoSel option:selected").val();
         var prve = $("#prve__id").val();
-        console.log("prve__id:", prve);
+//        console.log("prve__id:", prve);
 
         $("#listaErrores").html('');
         $("#divErrores").hide();
@@ -506,7 +506,7 @@
             $("#pagoProceso").show()
             cargarProveedor(tipo);
             if ("${proceso?.sustentoTributario}") {
-                console.log("proceso:", "${proceso?.tipoCmprSustento?.id}");
+                %{--console.log("proceso:", "${proceso?.tipoCmprSustento?.id}");--}%
                 cargarSstr("${proceso?.proveedor?.id}")
             }
 
@@ -550,7 +550,7 @@
 
         cargarBotonBuscar($(".tipoProcesoSel option:selected").val());
         if (tipo =='4' || tipo == '6' || tipo == '7' || tipo == '5') {
-            console.log('carga ComPago')
+//            console.log('carga ComPago')
             cargarCompPago();
         }
 
@@ -587,7 +587,7 @@
         }
 
         if (tipo == '2' || tipo == '6' || tipo == '7') {
-            console.log('libretin con tpps:', tipo);
+//            console.log('libretin con tpps:', tipo);
 //            $("#libretin").change();
             cargarLibretin();
             $("#libretinFacturas").show()
@@ -596,10 +596,10 @@
         }
 
         if (tipo != '1') {
-            console.log('No es C');
+//            console.log('No es C');
             $("#pagoProceso").hide()
         } else {
-            console.log('Es C...');
+//            console.log('Es C...');
             $("#pagoProceso").show()
         }
 
@@ -619,7 +619,7 @@
     });
 
     $("#tipoComprobante").change(function () {
-        console.log("cambia tpcp")
+//        console.log("cambia tpcp")
 //        console.log("cambia tpcp", $("#tipoComprobante").val())
 //        cargarTipo( $(".tipoProcesoSel option:selected").val(), $("#tipoComprobante").val() );
     });
@@ -635,7 +635,7 @@
                 rgst: "${proceso?.estado}"
             },
             success: function (msg) {
-                console.log('ok....')
+//                console.log('ok....')
                 $("#gestorDiv").html(msg)
                 $("#gestorDiv").show()
             }
@@ -656,7 +656,7 @@
                 etdo: "${proceso?.estado}"
             },
             success: function (msg) {
-                console.log('ok....')
+//                console.log('ok....')
                 $("#divSustento").html(msg)
                 $("#divSustento").show()
             }
@@ -683,7 +683,7 @@
     };
 
     function cargarProveedor(tipo) {
-        console.log('cargar prve:', tipo)
+//        console.log('cargar prve:', tipo)
         if (tipo != '-1') {
             $.ajax({
                 type: 'POST',
@@ -778,12 +778,12 @@
         })
 
         $("#btn_buscar").click(function () {
-            console.log("clickf1")
+//            console.log("clickf1")
             $('#modal-proveedor').modal('show')
         });
 
         $("#prve").dblclick(function () {
-            console.log("clickfff")
+//            console.log("clickfff")
             $("#btn_buscar").click()
         });
 
@@ -998,9 +998,8 @@
         });
 
         $("#buscarPrve").click(function () {
-            console.log('bbbbbb');
             var tipo = $(".tipoProcesoSel option:selected").val();
-            console.log('buscar...', tipo);
+//            console.log('buscar...', tipo);
             $.ajax({
                 type: "POST",
                 url: "${g.createLink(controller: 'proceso',action: 'buscarProveedor')}",
@@ -1097,28 +1096,27 @@
 
     function cargarLibretin() {
         var fcha =  $("#fecha_input").val()
-        if(fcha.length < 10) {
-//            $("#listaErrores").append("No se ha ingresado la fecha de Emisión")
-//            $("#listaErrores").show()
-//            $("#divErrores").show()
-            $(".tipoProcesoSel").val(0);
-            $("#fecha_input").focus();
-        } else {
-            var tpps = $(".tipoProcesoSel option:selected").val();
-            $.ajax({
-                type: 'POST',
-                async: 'true',
-                url: "${createLink(controller: 'proceso', action: 'numeracion_ajax')}",
-                data: {
-                    proceso: '${proceso?.id}',
-                    tpps: tpps,
-                    fcha: $("#fecha_input").val()
-                },
-                success: function (msg) {
-                    $("#libretinFacturas").html(msg)
-                    $("#libretinFacturas").show()
-                }
-            });
+        if(fcha){
+            if(fcha.length < 10) {
+                $(".tipoProcesoSel").val(0);
+                $("#fecha_input").focus();
+            } else {
+                var tpps = $(".tipoProcesoSel option:selected").val();
+                $.ajax({
+                    type: 'POST',
+                    async: 'true',
+                    url: "${createLink(controller: 'proceso', action: 'numeracion_ajax')}",
+                    data: {
+                        proceso: '${proceso?.id}',
+                        tpps: tpps,
+                        fcha: $("#fecha_input").val()
+                    },
+                    success: function (msg) {
+                        $("#libretinFacturas").html(msg)
+                        $("#libretinFacturas").show()
+                    }
+                });
+            }
         }
     }
 
@@ -1168,6 +1166,27 @@
         if($(".fechaE").val() != '' || $(".fechaE").val()){
             $(".tipoProcesoSel").removeClass('hidden')
         }
+    }
+
+    revisarBodega($("#bodega").val());
+
+    $("#bodega").change(function () {
+        var bodega = $("#bodega").val();
+       revisarBodega(bodega)
+    });
+
+    function revisarBodega (bodega) {
+        $.ajax({
+           type: 'POST',
+            url: '${createLink(controller: 'proceso', action: 'bodegaRecibe_ajax')}',
+            data:{
+                bodega: bodega,
+                proceso: '${proceso?.id}'
+            },
+            success: function (msg){
+                $("#divBodegaRecibe").html(msg)
+            }
+        });
     }
 
 </script>

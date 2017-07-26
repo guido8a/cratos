@@ -76,7 +76,7 @@
     <div class="col-xs-1" style="width: 140px;">
         <b>Precio</b>
         <g:textField name="precio_name" id="precioItem" class="form-control number pre" value=""
-                     style="text-align: right;"/>
+                     style="text-align: right;" readonly="${proceso?.tipoProceso?.codigo?.trim() == 'V'}"/>
     </div>
 
     <div class="col-xs-1 camposTexto">
@@ -108,11 +108,11 @@
             <i class="fa fa-plus"></i>
         </a>
 
-        <a href="#" id="btnGuardar" class="btn btn-success btn-sm hidden" title="Guardar Item">
+        <a href="#" id="btnGuardar" class="btn btn-success hidden" title="Guardar Item">
             <i class="fa fa-save"></i>
         </a>
 
-        <a href="#" id="btnCancelar" class="btn btn-warning btn-sm hidden" title="Cancelar Edición">
+        <a href="#" id="btnCancelar" class="btn btn-warning hidden" title="Cancelar Edición">
             <i class="fa fa-times-circle"></i>
         </a>
     </div>
@@ -181,14 +181,18 @@
 
 
     $("#btnAgregar").click(function () {
-        guardarDetalle()
+        var idDet = $("#idDetalle").val();
+        guardarDetalle(idDet)
     });
 
     $("#btnGuardar").click(function () {
         var idDet = $("#idDetalle").val();
         guardarDetalle(idDet)
+        $("#btnBuscar").removeClass('hidden');
+        $("#btnAgregar").removeClass('hidden');
+        $("#btnGuardar").addClass('hidden');
+        $("#btnCancelar").addClass('hidden');
     });
-
 
     function guardarDetalle(id) {
         var item = $("#idItem").val();

@@ -14,7 +14,7 @@
             <td style="width: 90px">${item?.precioVenta}</td>
             <td style="width: 50px; text-align: center">
                 <a href="#" class="btn btn-success btnAgregarItem"
-                   title="Agregar Item" codigo="${item?.codigo}" nombre="${item?.nombre}" precio="${item?.precioVenta}" idI="${item?.id}"><i class="fa fa-check"></i></a> </td>
+                   title="Agregar Item" codigo="${item?.codigo}" nombre="${item?.nombre}" precio="${item?.precioVenta}" idI="${item?.id}" costo="${item?.precioCosto}"><i class="fa fa-check"></i></a> </td>
         </tr>
     </g:each>
     </tbody>
@@ -26,10 +26,16 @@
         var codigo = $(this).attr('codigo');
         var nombre = $(this).attr('nombre');
         var precio = $(this).attr('precio');
+        var precioCosto = $(this).attr('costo');
         var idI = $(this).attr('idI');
         $("#codigoItem").val(codigo);
         $("#nombreItem").val(nombre);
+        <g:if test="${proceso?.tipoProceso?.codigo?.trim() == 'T'}">
+        $("#precioItem").val(precioCosto);
+        </g:if>
+        <g:else>
         $("#precioItem").val(precio);
+        </g:else>
         $("#idItem").val(idI);
         $("#cantidadItem").val(1);
         $("#descuentoItem").val(0);

@@ -1,5 +1,6 @@
 package cratos
 
+import cratos.inventario.Bodega
 import cratos.inventario.Item
 import cratos.seguridad.Persona
 import cratos.sri.Pais
@@ -79,7 +80,7 @@ class ProcesoController extends cratos.seguridad.Shield {
         def sustento = SustentoTributario.get(params.tipoCmprSustento)  //????
         def comprobanteSri = TipoCmprSustento.get(params."tipoComprobanteSri.id")
 
-        def proveedor = Proveedor.get(params."proveedor.id")
+        def proveedor
         def gestor = Gestor.get(params.gestor)
         def fechaRegistro = new Date().parse("dd-MM-yyyy", params.fecha_input)   //fecha del cmpr
         def fechaIngresoSistema = new Date().parse("dd-MM-yyyy",params.fechaingreso_input)   //registro
@@ -91,7 +92,6 @@ class ProcesoController extends cratos.seguridad.Shield {
             proceso.estado = "N"
             proceso.contabilidad = Contabilidad.get(session.contabilidad.id)
             proceso.empresa = Empresa.get(session.empresa.id)
-//            proceso.tipoTransaccion = tipoTran
         }
 
         proceso.gestor = gestor
@@ -125,9 +125,8 @@ class ProcesoController extends cratos.seguridad.Shield {
                 proceso.documento = params.dcmtEstablecimiento + "-" + params.dcmtEmision + "-" + '0' * (9-params.dcmtSecuencial.size()) + params.dcmtSecuencial
                 proceso.sustentoTributario = sustento
                 proceso.tipoCmprSustento = comprobanteSri
+                proveedor = Proveedor.get(params."proveedor.id")
                 proceso.proveedor = proveedor
-                println "compras.... tipoCmprSustento: ${comprobanteSri}"
-
                 proceso.pago = params.pago
 
                 proveedor.autorizacionSri = params.dcmtAutorizacion
@@ -142,7 +141,7 @@ class ProcesoController extends cratos.seguridad.Shield {
                     proceso.pais = null
                 }
                 if (params?."mdfcComprobante.id"?.toInteger() > 0) {
-                    println "---- ${TipoCmprSustento.get(params."mdfcComprobante.id".toInteger())}"
+//                    println "---- ${TipoCmprSustento.get(params."mdfcComprobante.id".toInteger())}"
                     proceso.modificaCmpr = TipoCmprSustento.get(params."mdfcComprobante.id".toInteger())
                     proceso.modificaSerie01 = params.mdfcEstablecimiento
                     proceso.modificaSerie02 = params.mdfcEmision
@@ -153,18 +152,19 @@ class ProcesoController extends cratos.seguridad.Shield {
                 }
                 break
             case '2':  //ventas
-                println "------ ventas------"
+//                println "------ ventas------"
                 proceso.tipoTransaccion = TipoTransaccion.get(2)
                 proceso.documento = params.numEstablecimiento + "-" + params.numeroEmision + "-" + '0' * (9-params.serie.size()) + params.serie
                 proceso.facturaEstablecimiento = params.numEstablecimiento
                 proceso.facturaPuntoEmision = params.numeroEmision
                 proceso.facturaSecuencial = params.serie.toInteger()?:0
                 proceso.tipoCmprSustento = comprobanteSri
+                proveedor = Proveedor.get(params."proveedor.id")
                 proceso.proveedor = proveedor
                 break
 
             case ['6','7']:  //NC y ND
-                println "------ Nota de crédito y Débito------"
+//                println "------ Nota de crédito y Débito------"
                 proceso.tipoTransaccion = null
                 proceso.documento = params.numEstablecimiento + "-" + params.numeroEmision + "-" + '0' * (9-params.serie.size()) + params.serie
                 proceso.facturaEstablecimiento = params.numEstablecimiento
@@ -172,30 +172,42 @@ class ProcesoController extends cratos.seguridad.Shield {
                 proceso.facturaSecuencial = params.serie.toInteger()?:0
                 proceso.comprobante = Comprobante.get(params.comprobanteSel_name)
 //                proceso.tipoCmprSustento = comprobanteSri
+                proveedor = Proveedor.get(params."proveedor.id")
                 proceso.proveedor = proveedor
                 break
 
             case '3':  //Ajustes
-                println "------ Ajustes------"
+//                println "------ Ajustes------"
                 poneNulos(proceso)
                 proceso.proveedor = null
                 proceso.baseImponibleIva = params.valorPago.toDouble()
                 break
 
             case '4':  //Pagos
-                println "------ pagos------"
+//                println "------ pagos------"
                 poneNulos(proceso)
+                proveedor = Proveedor.get(params."proveedor.id")
                 proceso.proveedor = proveedor
                 proceso.comprobante = Comprobante.get(params.comprobanteSel_name)
                 proceso.baseImponibleIva = params.valorPago.toDouble()
                 break
 
             case '5':  //Ingresos
-                println "------ ingresos------"
+//                println "------ ingresos------"
                 poneNulos(proceso)
+                proveedor = Proveedor.get(params."proveedor.id")
                 proceso.proveedor = proveedor
                 proceso.comprobante = Comprobante.get(params.comprobanteSel_name)
                 proceso.baseImponibleIva = params.valorPago.toDouble()
+                break
+            case '8':  //Transferencias
+                poneNulos(proceso)
+                proceso.proveedor = null
+                proceso.baseImponibleIva = params.valorPago.toDouble()
+                def bodega1 = Bodega.get(params.bodega)
+                def bodega2 = Bodega.get(params.bodegaRecibe)
+                proceso.bodega = bodega1
+                proceso.bodegaRecibe = bodega2
                 break
         }
 
@@ -203,7 +215,10 @@ class ProcesoController extends cratos.seguridad.Shield {
 
         try {
             proceso.save(flush: true)
-            proveedor.save(flush: true)
+            if(params.tipoProceso != '8' && params.tipoProceso != '3' ){
+                println("entro !!!!!")
+                proveedor.save(flush: true)
+            }
             println "...6"
             proceso.refresh()
             println "...7: ${proceso.tipoCmprSustento?.id}"
@@ -249,7 +264,7 @@ class ProcesoController extends cratos.seguridad.Shield {
 
         } catch (e) {
             println "...8"
-            println "error al grabar el proceso $e"
+            println "error al grabar el proceso $e" + proceso.errors
         }
     }
 
@@ -1725,6 +1740,15 @@ class ProcesoController extends cratos.seguridad.Shield {
         def proveedor = Proveedor.get(params.proveedor)
         def tipo = TipoPago.get(params.tipo)
         return [proveedor: proveedor, tipo:tipo]
+    }
+
+    def bodegaRecibe_ajax () {
+        def bodega = Bodega.get(params.bodega)
+        def todas = Bodega.list().sort{it.descripcion}
+        def bodegasRecibe = todas - bodega
+        def proceso = Proceso.get(params.proceso)
+
+        return[bodegas: bodegasRecibe, proceso: proceso]
     }
 
 }

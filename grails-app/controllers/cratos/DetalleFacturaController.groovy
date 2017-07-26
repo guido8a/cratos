@@ -153,7 +153,7 @@ class DetalleFacturaController extends cratos.seguridad.Shield  {
     }
 
     def guardarDetalle_ajax () {
-        println("params " + params)
+//        println("params " + params)
         def proceso = Proceso.get(params.proceso)
         def item = Item.get(params.item)
         def bodega = Bodega.get(params.bodega)
@@ -164,41 +164,43 @@ class DetalleFacturaController extends cratos.seguridad.Shield  {
             params.descuento = 0
         }
 
-        println("tipo " + proceso.tipoProceso.codigo)
+        if(params.id){
+            detalle = DetalleFactura.get(params.id)
+//            detalle.descuento = params.descuento.toDouble()
+            detalle.precioUnitario = params.precio.toDouble()
+            detalle.centroCosto = centroCostos
+            detalle.bodega = bodega
+            detalle.cantidad = params.cantidad.toDouble()
+        }else{
+            if(especifico){
+                detalle = DetalleFactura.get(especifico.id)
+                detalle.cantidad = detalle.cantidad.toDouble() + params.cantidad.toDouble()
+//                detalle.descuento = params.descuento.toDouble()
+                detalle.precioUnitario = params.precio.toDouble()
+
+            }else{
+                detalle = new DetalleFactura()
+                detalle.proceso = proceso
+                detalle.item = item
+//                detalle.descuento = params.descuento.toDouble()
+                detalle.precioUnitario = params.precio.toDouble()
+                detalle.centroCosto = centroCostos
+                detalle.bodega = bodega
+                detalle.cantidad = params.cantidad.toDouble()
+            }
+        }
+
+//        println("tipo " + proceso.tipoProceso.codigo)
 
         switch (proceso.tipoProceso.codigo.trim()){
             case 'C':
-                if(params.id){
-                    println("entro id")
-                    detalle = DetalleFactura.get(params.id)
-                    detalle.descuento = params.descuento.toDouble()
-                    detalle.precioUnitario = params.precio.toDouble()
-                    detalle.centroCosto = centroCostos
-                    detalle.bodega = bodega
-                    detalle.cantidad = params.cantidad.toDouble()
-                }else{
-                    if(especifico){
-                        println("entro especifico")
-                        detalle = DetalleFactura.get(especifico.id)
-                        detalle.cantidad = detalle.cantidad.toDouble() + params.cantidad.toDouble()
-                        detalle.descuento = params.descuento.toDouble()
-                        detalle.precioUnitario = params.precio.toDouble()
-
-                    }else{
-                        println("entro nuevo")
-                        detalle = new DetalleFactura()
-                        detalle.proceso = proceso
-                        detalle.item = item
-                        detalle.descuento = params.descuento.toDouble()
-                        detalle.precioUnitario = params.precio.toDouble()
-                        detalle.centroCosto = centroCostos
-                        detalle.bodega = bodega
-                        detalle.cantidad = params.cantidad.toDouble()
-                    }
-                }
+                detalle.descuento = params.descuento.toDouble()
                 break
-
             case 'V':
+                detalle.descuento = params.descuento.toDouble()
+                break
+            case "T":
+                detalle.descuento = 0
                 break
 
         }
