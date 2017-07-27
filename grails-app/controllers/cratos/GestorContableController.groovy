@@ -376,6 +376,7 @@ class GestorContableController extends cratos.seguridad.Shield {
             gestor = new Gestor()
             gestor.empresa = empresa
             gestor.estado = 'A'
+            gestor.fecha = new Date()
         }
 
         gestor.nombre = params.nombre
@@ -383,6 +384,7 @@ class GestorContableController extends cratos.seguridad.Shield {
         gestor.observaciones = params.observacion
         gestor.fuente = fuente
         gestor.tipo = params.tipo
+
 
         try{
            gestor.save(flush: true)
@@ -492,7 +494,7 @@ class GestorContableController extends cratos.seguridad.Shield {
     }
 
     def tablaBuscarGstr() {
-        println "buscar .... $params"
+//        println "buscar .... $params"
         def data = []
         def cn = dbConnectionService.getConnection()
         def cont = session.contabilidad.id
@@ -502,7 +504,7 @@ class GestorContableController extends cratos.seguridad.Shield {
                 "when 'I' then 'Inventario' end as tipo from gstr, tpps where tpps.tpps__id = gstr.tpps__id and " +
                 "empr__id = ${session.empresa.id} and gstrnmbr ilike '%${buscar}%' order by tppsdscr, gstrnmbr"
 
-        println "buscar .. ${sql}"
+//        println "buscar .. ${sql}"
 
         data = cn.rows(sql.toString())
 
@@ -516,6 +518,28 @@ class GestorContableController extends cratos.seguridad.Shield {
         cn.close()
 
         return [data: data, msg: msg]
+    }
+
+    def copiarGestor_ajax () {
+//        println("params copiar " + params)
+        def gestor = Gestor.get(params.id)
+        def nuevo = new Gestor()
+        nuevo.nombre = params.nombre
+        nuevo.empresa = gestor.empresa
+        nuevo.estado = 'A'
+        nuevo.fecha = new Date()
+        nuevo.fuente = gestor.fuente
+        nuevo.tipo = gestor.tipo
+        nuevo.tipoProceso = gestor.tipoProceso
+        nuevo.observaciones = gestor.observaciones
+
+        try {
+        nuevo.save(flush: true)
+            render "ok"
+        }catch (e){
+            render "no"
+            println("error al copiar el gestor " + e )
+        }
     }
 
 

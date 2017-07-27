@@ -75,17 +75,17 @@
                 </div>
             </div>
 
-            <div class="fila">
-                <div class="label">
-                    Descripción:
-                </div>
+            %{--<div class="fila">--}%
+                %{--<div class="label">--}%
+                    %{--Descripción:--}%
+                %{--</div>--}%
 
-                <div class="campo">
-                    <span class="grupo">
-                        <input name="descripcion" type="textArea" value="${gestorInstance?.descripcion}" maxlength="255"  style="width:700px;" class="form-control required"/>
-                    </span>
-                </div>
-            </div>
+                %{--<div class="campo">--}%
+                    %{--<span class="grupo">--}%
+                        %{--<input name="descripcion" type="textArea" value="${gestorInstance?.descripcion}" maxlength="255"  style="width:700px;" class="form-control required"/>--}%
+                    %{--</span>--}%
+                %{--</div>--}%
+            %{--</div>--}%
 
             <div class="fila">
                 <div class="label">

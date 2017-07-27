@@ -38,7 +38,7 @@
 
     <div>
         <div class="col-md-3">
-            <g:link class="btn btn-primary" action="nuevoProceso">
+            <g:link class="btn btn-primary" action="formGestor">
                 <i class="fa fa-file-o"></i> Nuevo Gestor
             </g:link>
         </div>
@@ -76,7 +76,7 @@
 </div>
 
 <div><strong>Nota</strong>: Si existen muchos registros que coinciden con el criterio de búsqueda, se retorna
-  como máximo 20 <span style="margin-left: 40px; color: #0b2c89">Se ordena por proceso y nombre del gestor</span>
+como máximo 20 <span style="margin-left: 40px; color: #0b2c89">Se ordena por proceso y nombre del gestor</span>
 </div>
 
 <div class="modal fade " id="dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -98,6 +98,15 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div>
+
+%{--<div class="form-copiar" style="display:none;">--}%
+    %{--<form class="form" role="form">--}%
+        %{--<div class="form-group">--}%
+            %{--<label>Nombre</label>--}%
+            %{--<g:textField name="copiadoName" id="copiado" class="form-control copiarGes" value=""/>--}%
+        %{--</div>--}%
+    %{--</form>--}%
+%{--</div>--}%
 
 
 <script>
@@ -166,10 +175,49 @@
         };
 
         var copiar = {
-            label: " Copiar gestor..",
+            label: " Copiar gestor",
             icon: "fa fa-copy",
             action: function () {
-                location.href = '${createLink(action: "copiarGestor")}?id=' + id;
+                var b = bootbox.dialog({
+                    id: "dlgCopiarGestor",
+                    title: "Copiar Gestor",
+                    message:  "<label>Nombre</label> </br> <input name='copiName' id='copiado' style='height: 40px;' class='form-control'/>",
+                    buttons: {
+                        cancelar: {
+                            label: "<i class='fa fa-times'></i> Cancelar",
+                            className: "btn-primary",
+                            callback: function () {
+                            }
+                        },
+                        aceptar: {
+                            label: "<i class='fa fa-times'></i> Aceptar",
+                            className: "btn-success",
+                            callback: function () {
+                                var cp = $("#copiado").val();
+                                $.ajax({
+                                    type: 'POST',
+                                    url: '${createLink(controller: 'gestorContable', action: 'copiarGestor_ajax')}',
+                                    data:{
+                                        id: id,
+                                        nombre:  cp
+                                    },
+                                    success: function(msg){
+                                        if(msg == 'ok'){
+                                            bootbox.hideAll();
+                                            log("Gestor copiado correctamente","success");
+                                            setTimeout(function () {
+                                                location.reload(true);
+                                            }, 1500);
+                                        }else{
+                                            log("Error al copiar el gestor ","error")
+                                        }
+
+                                    }
+                                })
+                            }
+                        }
+                    } //buttons
+                }); //dialog
             }
         };
 
