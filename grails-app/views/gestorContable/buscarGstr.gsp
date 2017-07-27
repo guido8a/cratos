@@ -99,16 +99,6 @@ como máximo 20 <span style="margin-left: 40px; color: #0b2c89">Se ordena por pr
     </div><!-- /.modal-dialog -->
 </div>
 
-%{--<div class="form-copiar" style="display:none;">--}%
-    %{--<form class="form" role="form">--}%
-        %{--<div class="form-group">--}%
-            %{--<label>Nombre</label>--}%
-            %{--<g:textField name="copiadoName" id="copiado" class="form-control copiarGes" value=""/>--}%
-        %{--</div>--}%
-    %{--</form>--}%
-%{--</div>--}%
-
-
 <script>
     $(function () {
         $("#limpiaBuscar").click(function () {

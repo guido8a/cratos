@@ -202,7 +202,9 @@ class DetalleFacturaController extends cratos.seguridad.Shield  {
             case "T":
                 detalle.descuento = 0
                 break
-
+            case 'NC':
+                detalle.descuento = params.descuento.toDouble()
+                break
         }
 
         try{

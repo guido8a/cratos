@@ -9,7 +9,7 @@
 <html>
 <head>
     <meta name="layout" content="main"/>
-    <title>Detalle de ${proceso?.tipoProceso?.id == 1 ? ' Compras' : (proceso?.tipoProceso?.id == 2 ? ' Ventas' : ' Transferencias')}</title>
+    <title>Detalle de ${proceso?.tipoProceso?.codigo?.trim() == 'C' ? ' Compras' : (proceso?.tipoProceso?.codigo?.trim() == 'V' ? ' Ventas' : (proceso?.tipoProceso?.codigo?.trim() == 'T' ? 'Transferencias' : 'Nota de Crédito'))}</title>
     <style type="text/css">
 
     .camposTexto {
@@ -37,7 +37,7 @@
 
 
 <div class="col-xs-12" style="text-align: center; margin-bottom: 20px">
-    <b style="font-size: 18px;">Detalle de ${proceso?.tipoProceso?.id == 1 ? ' Compras' : (proceso?.tipoProceso?.id == 2 ? ' Ventas' : ' Transferencias')} de ${proceso?.descripcion}</b>
+    <b style="font-size: 18px;">Detalle de ${proceso?.tipoProceso?.codigo?.trim() == 'C' ? ' Compras' : (proceso?.tipoProceso?.codigo?.trim() == 'V' ? ' Ventas' : (proceso?.tipoProceso?.codigo?.trim() == 'T' ? 'Transferencias' : 'Nota de Crédito'))} de ${proceso?.descripcion}</b>
 </div>
 
 <div class="vertical-container" style="position: relative;float: left;width: 95%;padding-left: 45px;">
@@ -76,7 +76,7 @@
     <div class="col-xs-1" style="width: 140px;">
         <b>Precio</b>
         <g:textField name="precio_name" id="precioItem" class="form-control number pre" value=""
-                     style="text-align: right;" readonly="${proceso?.tipoProceso?.codigo?.trim() == 'V'}"/>
+                     style="text-align: right;" readonly="${proceso?.tipoProceso?.codigo?.trim() == 'V' || proceso?.tipoProceso?.codigo?.trim() == 'NC' }"/>
     </div>
 
     <div class="col-xs-1 camposTexto">

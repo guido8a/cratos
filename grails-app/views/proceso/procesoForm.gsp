@@ -116,7 +116,7 @@
                     Imprimir retención
                 </g:link>
             </g:if>
-            <g:if test="${proceso?.tipoProceso?.id == 1 || proceso?.tipoProceso?.id == 2 || proceso?.tipoProceso?.id == 8}">
+            <g:if test="${proceso?.tipoProceso?.codigo?.trim() == 'C' || proceso?.tipoProceso?.codigo?.trim() == 'V' || proceso?.tipoProceso?.codigo?.trim() == 'T' || proceso?.tipoProceso?.codigo?.trim() == 'NC'}">
                 <a href="#" class="btn btn-warning" id="btnDetalle" style="color: #0b0b0b">
                     <i class="fa fa-list"></i>
                     Detalle
