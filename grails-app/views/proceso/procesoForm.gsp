@@ -251,9 +251,9 @@
 
             <div class="col-xs-4 negrilla" id="divBodegaRecibe">
                 %{--<g:select class="form-control required cmbRequired tipoProcesoSel" name="bodegaRecibe" id="bodegaRecibe"--}%
-                          %{--from="${cratos.inventario.Bodega.list(sort: 'descripcion')}" label="bodega que recibe"--}%
-                          %{--value="${proceso?.bodegaRecibe?.id}" optionKey="id"--}%
-                          %{--optionValue="descripcion" title="Bodega que recibe" disabled="${(proceso?.estado == 'R') ? true : false}" />--}%
+                %{--from="${cratos.inventario.Bodega.list(sort: 'descripcion')}" label="bodega que recibe"--}%
+                %{--value="${proceso?.bodegaRecibe?.id}" optionKey="id"--}%
+                %{--optionValue="descripcion" title="Bodega que recibe" disabled="${(proceso?.estado == 'R') ? true : false}" />--}%
             </div>
         </div>
 
@@ -928,6 +928,22 @@
                 }
             }
 
+            if(tipoP == '5'){
+                if ($("#descripcion").val().length < 1) {
+                    error += "<li>Llene el campo Descripción</li>"
+                }
+
+                if ($("#valorPago").val() == 0) {
+                    error += "<li>Ingrese el valor del ajuste</li>"
+                }
+                if ($("#prve").val() == "" || $("#prve").val() == null) {
+                    error += "<li>Seleccione el proveedor</li>"
+                }
+                if(!$("#comprobanteSel").val()){
+                    error += "<li>Seleccione el comprobante</li>"
+                }
+            }
+
             if (tipoP == '6' || tipoP == '7') {   /* Nota de crédito y débito */
 //
 //                if (isNaN(parseFloat($("#comprobanteSaldo").val()))) {
@@ -1152,7 +1168,7 @@
     %{--url: "${createLink(controller: 'proceso', action: 'valSerieFactura_ajax')}",--}%
      data: {
      fcdt: $("#libretin").val(),
-     %{--id  : "${proceso?.id}"--}%
+    %{--id  : "${proceso?.id}"--}%
      }
      }
      }
@@ -1181,12 +1197,12 @@
 
     $("#bodega").change(function () {
         var bodega = $("#bodega").val();
-       revisarBodega(bodega)
+        revisarBodega(bodega)
     });
 
     function revisarBodega (bodega) {
         $.ajax({
-           type: 'POST',
+            type: 'POST',
             url: '${createLink(controller: 'proceso', action: 'bodegaRecibe_ajax')}',
             data:{
                 bodega: bodega,

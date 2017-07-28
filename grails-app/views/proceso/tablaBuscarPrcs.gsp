@@ -14,12 +14,12 @@ th, td {
 
 <g:set var="clase" value="${'principal'}"/>
 
-<div class="" style="width: 99.7%;height: ${msg == '' ? 590 : 565}px; overflow-y: auto;float: right; margin-top: -20px">
+<div class="" style="width: 99.7%;height: ${msg == '' ? 600 : 575}px; overflow-y: auto;float: right; margin-top: -20px">
     <table class="table-bordered table-condensed table-hover" width="1060px">
         <g:each in="${data}" var="dato" status="z">
 
             <tr id="${dato.prcs__id}" data-id="${dato.prcs__id}" data-ed="${dato.prcsetdo}" class="${clase}">
-                <td width="70px">
+                <td width="65px">
                     ${dato?.prcsfcha.format("dd-MM-yyyy")}
                 </td>
 
@@ -27,11 +27,11 @@ th, td {
                     ${dato?.prcsdscr}
                 </td>
 
-                <td width="80px">
+                <td width="85px">
                     ${dato.prcsetdo == 'R' ? 'Registrado' : 'No registrado'}
                 </td>
 
-                <td width="60px" class="text-info">
+                <td width="80px" class="text-info">
                     ${dato.cmprnmro}
                 </td>
 
@@ -39,7 +39,7 @@ th, td {
                     ${dato.tpps}
                 </td>
 
-                <td width="180px" class="text-info">
+                <td width="170px" class="text-info">
                     ${dato.prve}
                 </td>
             </tr>

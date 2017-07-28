@@ -37,7 +37,7 @@
 
 
 <div class="col-xs-12" style="text-align: center; margin-bottom: 20px">
-    <b style="font-size: 18px;">Detalle de ${proceso?.tipoProceso?.codigo?.trim() == 'C' ? ' Compras' : (proceso?.tipoProceso?.codigo?.trim() == 'V' ? ' Ventas' : (proceso?.tipoProceso?.codigo?.trim() == 'T' ? 'Transferencias' : 'Nota de Crédito'))} de ${proceso?.descripcion}</b>
+    <b style="font-size: 18px;">Detalle de ${proceso?.tipoProceso?.codigo?.trim() == 'C' ? ' Compras' : (proceso?.tipoProceso?.codigo?.trim() == 'V' ? ' Ventas' : (proceso?.tipoProceso?.codigo?.trim() == 'T' ? 'Transferencias' : 'Nota de Crédito'))} de " ${proceso?.descripcion} "</b>
 </div>
 
 <div class="vertical-container" style="position: relative;float: left;width: 95%;padding-left: 45px;">

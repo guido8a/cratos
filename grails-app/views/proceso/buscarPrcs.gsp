@@ -80,7 +80,7 @@
             <th class="alinear" style="width: 70px">Fecha</th>
             <th class="alinear" style="width: 240px">Descripción</th>
             <th class="alinear" style="width: 80px">Estado</th>
-            <th class="alinear" style="width: 60px">Comprobante</th>
+            <th class="alinear" style="width: 80px">Comprobante</th>
             <th class="alinear" style="width: 80px">Tipo</th>
             <th class="alinear" style="width: 180px">Proveedor</th>
         </tr>
@@ -199,8 +199,18 @@
             }
         };
 
+        var detalle = {
+            label: " Detalle",
+            icon: "fa fa-bars",
+            action: function () {
+                location.href = '${createLink(controller: "detalleFactura", action: "detalleGeneral")}?id=' + id;
+            }
+        };
+
+
         items.editar = editar;
         items.auxiliar = auxiliar;
+        items.detalle = detalle;
 
         if(etdo == 'R') {
             items.retencion = retencion;
