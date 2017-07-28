@@ -929,9 +929,10 @@
             }
 
             if (tipoP == '6' || tipoP == '7') {   /* Nota de crédito y débito */
-                if (isNaN(parseFloat($("#comprobanteSaldo").val()))) {
-                    error += "<li>No hay comprobante, seleccione uno</li>"
-                }
+//
+//                if (isNaN(parseFloat($("#comprobanteSaldo").val()))) {
+//                    error += "<li>No hay comprobante, seleccione uno</li>"
+//                }
 
                 if ($("#iva12").val() == 0 && $("#iva0").val() == 0 && $("#noIva").val() == 0) {
                     error += "<li>Ingrese valores en la base imponible</li>"
@@ -944,6 +945,14 @@
 
                 if ($("#serie").hasClass('error')){
                     error += "<li>Revise el número de de la Nota de Crédito</li>"
+                }
+
+                if ($("#descripcion").val().length < 1) {
+                    error += "<li>Llene el campo Descripción</li>"
+                }
+
+                if(!$("#comprobanteSel").val()){
+                    error += "<li>Seleccione el comprobante</li>"
                 }
             }
 
