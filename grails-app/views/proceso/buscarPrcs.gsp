@@ -164,6 +164,7 @@
 
         var etdo = $tr.data("ed");
         var id = $tr.data("id");
+        var tp = $tr.data("tipo")
 
         var editar = {
             label: " Ir al proceso",
@@ -210,12 +211,17 @@
 
         items.editar = editar;
         items.auxiliar = auxiliar;
-        items.detalle = detalle;
+
+        if(tp == 'Compras' || tp == 'Ventas' || tp == 'Transferencias' || tp == 'Nota de crédito'){
+            items.detalle = detalle;
+        }
+
 
         if(etdo == 'R') {
             items.retencion = retencion;
             items.imprimir = imprimir;
         }
+
 
         return items
     }

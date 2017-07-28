@@ -27,13 +27,19 @@
                 <td style="width: 50px;text-align: right">${detalle?.descuento}</td>
             </g:if>
             <td style="width: 90px;text-align: right"><g:formatNumber number="${detalle?.cantidad * detalle?.precioUnitario}" maxFractionDigits="2" minFractionDigits="2"/></td>
-            <td style="width: 60px; text-align: center">
-                <a href="#" class="btn btn-danger btn-sm btnBorrarItemDetalle"
-                   title="Borrar Item" idI="${detalle?.id}"><i class="fa fa-trash-o"></i></a>
+            <g:if test="${truncar}">
+                <td style="width: 60px; text-align: center"></td>
+            </g:if>
+            <g:else>
+                <td style="width: 60px; text-align: center">
+                    <a href="#" class="btn btn-danger btn-sm btnBorrarItemDetalle"
+                       title="Borrar Item" idI="${detalle?.id}"><i class="fa fa-trash-o"></i></a>
 
-                <a href="#" class="btn btn-success btn-sm btnEditarItem"
-                   title="Editar Item"  idI="${detalle?.id}"><i class="fa fa-pencil"></i></a>
-            </td>
+                    <a href="#" class="btn btn-success btn-sm btnEditarItem"
+                       title="Editar Item"  idI="${detalle?.id}"><i class="fa fa-pencil"></i></a>
+                </td>
+            </g:else>
+
         </tr>
     </g:each>
     </tbody>

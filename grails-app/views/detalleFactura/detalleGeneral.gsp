@@ -24,14 +24,19 @@
 
 <div class="btn-toolbar toolbar">
     <div class="btn-group">
+
         <g:link class="btn btn-primary btn-ajax" id="${proceso?.id}" controller="proceso"
                 action="actlProceso">
             <i class="fa fa-chevron-left"></i> Proceso</g:link>
-    </div>
-    <div class="btn-group">
-        <g:link class="btn btn-info btn-ajax" id="${proceso?.id}" controller="proceso"
-                action="actlProceso">
-            <i class="fa fa-save"></i> Grabar</g:link>
+    %{--</div>--}%
+    %{--<div class="btn-group">--}%
+
+        <g:if test="${!truncar}">
+            <g:link class="btn btn-info btn-ajax" id="${proceso?.id}" controller="proceso"
+                    action="actlProceso">
+                <i class="fa fa-save"></i> Grabar</g:link>
+        </g:if>
+
     </div>
 </div>
 
@@ -40,7 +45,7 @@
     <b style="font-size: 18px;">Detalle de ${proceso?.tipoProceso?.codigo?.trim() == 'C' ? ' Compras' : (proceso?.tipoProceso?.codigo?.trim() == 'V' ? ' Ventas' : (proceso?.tipoProceso?.codigo?.trim() == 'T' ? 'Transferencias' : 'Nota de Crédito'))} de " ${proceso?.descripcion} "</b>
 </div>
 
-<div class="vertical-container" style="position: relative;float: left;width: 95%;padding-left: 45px;">
+<div class="vertical-container ${truncar ? 'hidden' : ''}" style="position: relative;float: left;width: 95%;padding-left: 45px;">
     <p class="css-vertical-text">Item</p>
 
     <div class="linea" style="height: 98%;"></div>
@@ -62,6 +67,7 @@
     <g:hiddenField name="idItem_name" id="idItem" value=""/>
     <g:hiddenField name="idDetalle_name" id="idDetalle" value=""/>
 
+
     <div class="col-xs-2" style="text-align: center">
         <b>Código</b>
         <g:textField name="codigo_name" id="codigoItem" class="form-control" value="" readonly="true"/>
@@ -70,7 +76,7 @@
     <div class="col-xs-4 camposTexto" style="margin-left: -25px; width: 400px">
         <b>Nombre</b>
         <g:textField name="nombre_name" id="nombreItem" class="form-control" value="" readonly="true"
-                    />
+        />
     </div>
 
     <div class="col-xs-1" style="width: 140px;">
@@ -107,15 +113,14 @@
         <a href="#" id="btnAgregar" class="btn btn-success" title="Agregar Item al detalle">
             <i class="fa fa-plus"></i>
         </a>
-
         <a href="#" id="btnGuardar" class="btn btn-success hidden" title="Guardar Item">
             <i class="fa fa-save"></i>
         </a>
-
         <a href="#" id="btnCancelar" class="btn btn-warning hidden" title="Cancelar Edición">
             <i class="fa fa-times-circle"></i>
         </a>
     </div>
+
 </div>
 
 <div class="vertical-container" style="position: relative;float: left;width: 95%;padding-left: 45px">

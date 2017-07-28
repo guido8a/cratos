@@ -113,7 +113,16 @@ class DetalleFacturaController extends cratos.seguridad.Shield  {
         def empresa = Empresa.get(session.empresa.id)
         def bodegas = Bodega.findAllByEmpresa(empresa).sort{it.descripcion}
         def centros = CentroCosto.findAllByEmpresa(empresa).sort{it.nombre}
-        return [proceso: proceso, bodegas: bodegas, centros: centros]
+        def detalles = DetalleFactura.findAllByProceso(proceso)
+        def truncar
+
+        if(detalles && proceso.estado == 'R'){
+            truncar = true
+        }else{
+            truncar = false
+        }
+
+        return [proceso: proceso, bodegas: bodegas, centros: centros, truncar: truncar]
     }
 
     def buscarItems_ajax () {
@@ -222,8 +231,13 @@ class DetalleFacturaController extends cratos.seguridad.Shield  {
         def proceso = Proceso.get(params.proceso)
         def detalles = DetalleFactura.findAllByProceso(proceso).sort{it?.item?.codigo}
         def totl = cn.rows("select * from total_detalle(${params.proceso},0,0)".toString())[0]
-
-        return[detalles: detalles, totl: totl]
+        def truncar
+        if(detalles && proceso.estado == 'R'){
+            truncar = true
+        }else{
+            truncar = false
+        }
+        return[detalles: detalles, totl: totl, truncar: truncar]
     }
 
     def cargarEdicion_ajax () {
