@@ -7,6 +7,7 @@ class Contabilidad implements Serializable {
     String descripcion
     Empresa institucion
     Date presupuesto
+    int cuenta
     static mapping = {
         table 'cont'
         cache usage: 'read-write', include: 'non-lazy'
@@ -20,6 +21,7 @@ class Contabilidad implements Serializable {
             descripcion column: 'contdscr'
             institucion column: 'empr__id'
             presupuesto column: 'contprsp'
+            cuenta column: 'cntaesst'
         }
     }
     static constraints = {
@@ -29,6 +31,7 @@ class Contabilidad implements Serializable {
         descripcion(size: 1..63, blank: false, attributes: [title: 'Descripción del periodo contable'])
         institucion(blank: true, nullable: true, attributes: [title: 'Institución o empresa a la que pertenece el periodo contable'])
         presupuesto(blank: false, attributes: [title: 'Fecha de aprobación del presupuesto'])
+        cuenta(blank: true, nullable: true)
     }
 
     String toString() {

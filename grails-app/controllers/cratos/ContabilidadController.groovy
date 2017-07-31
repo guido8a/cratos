@@ -58,6 +58,7 @@ class ContabilidadController extends cratos.seguridad.Shield {
 
     def form_ajax() {
         def contabilidadInstance = new Contabilidad(params)
+        def empresa = Empresa.get(session.empresa.id)
         if (params.id) {
             contabilidadInstance = Contabilidad.get(params.id)
             if (!contabilidadInstance) {
@@ -65,7 +66,13 @@ class ContabilidadController extends cratos.seguridad.Shield {
                 return
             }
         }
-        return [contabilidadInstance: contabilidadInstance]
+
+        def cuentas = Cuenta.withCriteria {
+            ilike("numero", '3%')
+            eq("empresa", empresa)
+            order("descripcion","asc")
+        }
+        return [contabilidadInstance: contabilidadInstance, cuentas: cuentas]
     } //form para cargar con ajax en un dialog
 
     def save_ajax() {
@@ -78,6 +85,7 @@ class ContabilidadController extends cratos.seguridad.Shield {
             contabilidadInstance =  Contabilidad.get(params.id)
             contabilidadInstance.descripcion = params.descripcion
             contabilidadInstance.prefijo = params.prefijo.toUpperCase()
+            contabilidadInstance.cuenta = params.cuenta.toInteger()
 
             if (!contabilidadInstance.save(flush: true)) {
                 render "NO_Error al guardar los datos de la contabilidad"
@@ -96,6 +104,7 @@ class ContabilidadController extends cratos.seguridad.Shield {
             contabilidadInstance.fechaInicio = params.fechaInicio
             contabilidadInstance.fechaCierre = params.fechaCierre
             contabilidadInstance.presupuesto = params.fechaInicio
+            contabilidadInstance.cuenta = params.cuenta.toInteger()
 
 
             if (!contabilidadInstance.save(flush: true)) {

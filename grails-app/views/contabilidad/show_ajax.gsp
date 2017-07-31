@@ -57,6 +57,20 @@
         </div>
     </g:if>
 
+    <g:if test="${contabilidadInstance?.cuenta}">
+        <div class="row">
+            <div class="col-md-3 text-info">
+                Cuenta
+            </div>
+
+            <div class="col-md-9">
+                ${cratos.Cuenta.get(contabilidadInstance?.cuenta).descripcion}
+            </div>
+
+        </div>
+    </g:if>
+
+
 %{--<g:if test="${contabilidadInstance?.presupuesto}">--}%
 %{--<div class="row">--}%
 %{--<div class="col-md-3 text-info">--}%

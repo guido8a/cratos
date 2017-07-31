@@ -56,12 +56,27 @@
                     Descripción
                 </label>
 
-                <div class="col-md-6">
+                <div class="col-md-8">
                     <g:textField name="descripcion" maxlength="63" required="" class="form-control required" value="${contabilidadInstance?.descripcion}"/>
                 </div>
                 *
             </span>
         </div>
+
+
+        <div class="form-group ${hasErrors(bean: contabilidadInstance, field: 'descripcion', 'error')} required">
+            <span class="grupo">
+                <label for="descripcion" class="col-md-2 control-label text-info">
+                    Cuenta
+                </label>
+
+                <div class="col-md-8">
+                    <g:select name="cuenta" from="${cuentas}" optionValue="descripcion" optionKey="id" class="form-control" value="${contabilidadInstance?.cuenta}"/>
+                </div>
+                *
+            </span>
+        </div>
+
     </g:form>
 
     <script type="text/javascript">

@@ -74,7 +74,7 @@ class ProcesoController extends cratos.seguridad.Shield {
     }
 
     def save = {
-        println "save proceso: $params"
+//        println "save proceso: $params"
         def proceso
         def comprobante
 
@@ -110,7 +110,7 @@ class ProcesoController extends cratos.seguridad.Shield {
         proceso.descripcion = params.descripcion
         proceso.fecha = new Date()
 
-        println "proceso: ${proceso.id}, tipoProceso: ${params.tipoProceso}, get: ${TipoProceso.get(params.tipoProceso)}"
+//        println "proceso: ${proceso.id}, tipoProceso: ${params.tipoProceso}, get: ${TipoProceso.get(params.tipoProceso)}"
 
         proceso.tipoProceso = TipoProceso.get(params.tipoProceso)
         proceso.usuario = session.usuario
@@ -212,7 +212,7 @@ class ProcesoController extends cratos.seguridad.Shield {
                 break
         }
 
-        println "...2"
+//        println "...2"
 
         try {
             proceso.save(flush: true)
@@ -220,9 +220,9 @@ class ProcesoController extends cratos.seguridad.Shield {
                 println("ejecutó proceso.save")
                 proveedor.save(flush: true)
             }
-            println "...6"
+//            println "...6"
             proceso.refresh()
-            println "...7: ${proceso.tipoCmprSustento?.id}"
+//            println "...7: ${proceso.tipoCmprSustento?.id}"
 
             if (proceso.errors.getErrorCount() == 0) {
                 if (params.data != "") {
@@ -244,14 +244,14 @@ class ProcesoController extends cratos.seguridad.Shield {
                             tppgLista.add(tppg)
                         }
                     }
-                    println "existentes: $tppgLista"
+//                    println "existentes: $tppgLista"
                     if(tppgLista) {
                         fp = ProcesoFormaDePago.findAllByProcesoAndTipoPagoNotInList(proceso, tppgLista)
                     } else {
-                        println "borrar todo........."
+//                        println "borrar todo........."
                     }
 
-                    println "a borrar: $fp"
+//                    println "a borrar: $fp"
                     fp.each {
                         println "borrando: ${it}"
                         it.delete(flush: true)
@@ -264,7 +264,7 @@ class ProcesoController extends cratos.seguridad.Shield {
             redirect(action: 'nuevoProceso', id: proceso.id)
 
         } catch (e) {
-            println "...8"
+//            println "...8"
             println "error al grabar el proceso $e" + proceso.errors
         }
     }

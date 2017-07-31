@@ -130,7 +130,7 @@
         <div class="col-xs-2 negrilla">
             <input type="text" name="baseImponibleIva" id="iva12" size="7" value="${proceso?.baseImponibleIva ?: 0.00}"
                    class="required  number form-control validacionNumero"
-                   validate="required number" ${proceso?.estado == 'R' ? 'disabled' : ( band ? 'disabled' : '')} />
+                   validate="required number" ${proceso?.estado == 'R' ? 'readonly' : ( band ? 'readonly' : '')} />
         </div>
 
         <div class="col-xs-2 negrilla" style="width: 120px">
@@ -140,7 +140,7 @@
         <div class="col-xs-2 negrilla">
             <input type="text" name="baseImponibleIva0" size="7" id="iva0" value="${proceso?.baseImponibleIva0 ?: 0.00}"
                    class="required number form-control validacionNumero"
-                   validate="required number" ${proceso?.estado == 'R' ? 'disabled' : ( band ? 'disabled' : '')} />
+                   validate="required number"  ${proceso?.estado == 'R' ? 'readonly' : ( band ? 'readonly' : '')}  />
         </div>
 
         <div class="col-xs-2 negrilla" style="width: 120px">
@@ -150,7 +150,7 @@
         <div class="col-xs-2 negrilla">
             <input type="text" name="baseImponibleNoIva" id="noIva" size="7"
                    value="${proceso?.baseImponibleNoIva ?: 0.00}" class="required number form-control validacionNumero"
-                   validate="required number" ${proceso?.estado == 'R' ? 'disabled' : ( band ? 'disabled' : '')} />
+                   validate="required number" ${proceso?.estado == 'R' ? 'readonly' : ( band ? 'readonly' : '')}  />
         </div>
     </div>
 
@@ -162,7 +162,7 @@
         <div class="col-xs-2 negrilla">
             <input type="text" name="ivaGenerado" id="ivaGenerado" value="${proceso?.ivaGenerado}"
                    class="required number form-control validacionNumero"
-                   validate="required number" ${proceso?.estado == 'R' ? 'disabled' : ( band ? 'disabled' : '')} />
+                   validate="required number"  ${proceso?.estado == 'R' ? 'readonly' : ( band ? 'readonly' : '')}  />
         </div>
 
         <div class="col-xs-2 negrilla" style="width: 120px">
@@ -172,7 +172,7 @@
         <div class="col-xs-2 negrilla">
             <input type="text" name="iceGenerado" id="iceGenerado" value="${proceso?.iceGenerado ?: 0.00}"
                    class="required number form-control validacionNumero"
-                   validate="required number" ${proceso?.estado == 'R' ? 'disabled' : ( band ? 'disabled' : '')}/>
+                   validate="required number"  ${proceso?.estado == 'R' ? 'readonly' : ( band ? 'readonly' : '')} />
         </div>
 
         <div class="col-xs-2 negrilla" style="width: 120px">
@@ -182,7 +182,7 @@
         <div class="col-xs-2 negrilla">
             <input type="text" name="flete" id="flete" value="${proceso?.flete ?: 0.00}"
                    class="required number form-control validacionNumero"
-                   validate="required number" ${proceso?.estado == 'R' ? 'disabled' : ( band ? 'disabled' : '')} />
+                   validate="required number"  ${proceso?.estado == 'R' ? 'readonly' : ( band ? 'readonly' : '')}  />
         </div>
     </div>
 </g:elseif>
