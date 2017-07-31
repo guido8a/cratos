@@ -1,6 +1,7 @@
 package cratos
 
 import cratos.inventario.Bodega
+import cratos.inventario.DetalleFactura
 import cratos.inventario.Item
 import cratos.seguridad.Persona
 import cratos.sri.Pais
@@ -1341,6 +1342,15 @@ class ProcesoController extends cratos.seguridad.Shield {
         def atrz
         def sql
 
+        def detalles = DetalleFactura.findAllByProceso(proceso)
+        println("--> " + detalles)
+        def band
+        if(detalles.size() > 0){
+          band = true
+        }else{
+          band = false
+        }
+
         def cn = dbConnectionService.getConnection()
         def tipo = 0
         def tpcp = params?.tpcp?.toInteger()
@@ -1359,11 +1369,11 @@ class ProcesoController extends cratos.seguridad.Shield {
             cn.close()
         }
         sql = "select prveatrz from prve where prve__id = ${params.prve}"
-        println "sql1: $sql"
+//        println "sql1: $sql"
         atrz = cn.rows(sql.toString())[0]?.prveatrz
-        println "autorizacion: $atrz"
+//        println "autorizacion: $atrz"
 
-        [proceso: proceso, tipo: params.tipo, data: data, atrz: atrz]
+        [proceso: proceso, tipo: params.tipo, data: data, atrz: atrz, band: band]
     }
 
     def proveedor_ajax () {

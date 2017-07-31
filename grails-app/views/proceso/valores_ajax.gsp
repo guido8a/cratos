@@ -12,36 +12,10 @@
 
         <div class="col-xs-2 negrilla">
             <g:textField name="valorPago" id="valorPago" class="form-control required number validacionNumero"
-                         value="${proceso?.baseImponibleIva ?: 0}"/>
+                         value="${proceso?.baseImponibleIva ?: 0}" disabled="${proceso?.estado == 'R' ? true : false}"/>
         </div>
     </div>
 </g:if>
-%{--
-<g:elseif test="${tipo == '6' || tipo == '7'}">
-    <div class="row" style="font-size: 12px">
-        <div class="col-xs-2 negrilla" style="width: 120px">
-            Valor:
-        </div>
-
-        <div class="col-xs-2 negrilla">
-            <g:textField name="valorPagoNC" id="valorPagoNC" class="form-control required number validacionNumero"
-                         value="${proceso?.valor}"/>
-        </div>
-    </div>
-
-    <div class="row" style="font-size: 12px">
-        <div class="col-xs-2 negrilla" style="width: 120px">
-            IVA generado:
-        </div>
-
-        <div class="col-xs-2 negrilla">
-            <input type="text" name="ivaGeneradoNC" id="ivaGeneradoNC" value="${proceso?.ivaGenerado}"
-                   class="required number form-control validacionNumero"
-                   validate="required number" ${proceso?.estado == 'R' ? 'disabled' : ''}/>
-        </div>
-    </div>
-</g:elseif>
---}%
 
 <g:elseif test="${tipo == '1' || tipo == '2' || tipo == '3' || tipo == '6' || tipo == '7'}">
     <g:set var="iva" value="${cratos.ParametrosAuxiliares.list().first().iva}"/>
@@ -156,7 +130,7 @@
         <div class="col-xs-2 negrilla">
             <input type="text" name="baseImponibleIva" id="iva12" size="7" value="${proceso?.baseImponibleIva ?: 0.00}"
                    class="required  number form-control validacionNumero"
-                   validate="required number" ${proceso?.estado == 'R' ? 'disabled' : ''}/>
+                   validate="required number" ${proceso?.estado == 'R' ? 'disabled' : ( band ? 'disabled' : '')} />
         </div>
 
         <div class="col-xs-2 negrilla" style="width: 120px">
@@ -166,7 +140,7 @@
         <div class="col-xs-2 negrilla">
             <input type="text" name="baseImponibleIva0" size="7" id="iva0" value="${proceso?.baseImponibleIva0 ?: 0.00}"
                    class="required number form-control validacionNumero"
-                   validate="required number" ${proceso?.estado == 'R' ? 'disabled' : ''}/>
+                   validate="required number" ${proceso?.estado == 'R' ? 'disabled' : ( band ? 'disabled' : '')} />
         </div>
 
         <div class="col-xs-2 negrilla" style="width: 120px">
@@ -176,7 +150,7 @@
         <div class="col-xs-2 negrilla">
             <input type="text" name="baseImponibleNoIva" id="noIva" size="7"
                    value="${proceso?.baseImponibleNoIva ?: 0.00}" class="required number form-control validacionNumero"
-                   validate="required number" ${proceso?.estado == 'R' ? 'disabled' : ''}/>
+                   validate="required number" ${proceso?.estado == 'R' ? 'disabled' : ( band ? 'disabled' : '')} />
         </div>
     </div>
 
@@ -188,7 +162,7 @@
         <div class="col-xs-2 negrilla">
             <input type="text" name="ivaGenerado" id="ivaGenerado" value="${proceso?.ivaGenerado}"
                    class="required number form-control validacionNumero"
-                   validate="required number" ${proceso?.estado == 'R' ? 'disabled' : ''}/>
+                   validate="required number" ${proceso?.estado == 'R' ? 'disabled' : ( band ? 'disabled' : '')} />
         </div>
 
         <div class="col-xs-2 negrilla" style="width: 120px">
@@ -198,7 +172,7 @@
         <div class="col-xs-2 negrilla">
             <input type="text" name="iceGenerado" id="iceGenerado" value="${proceso?.iceGenerado ?: 0.00}"
                    class="required number form-control validacionNumero"
-                   validate="required number" ${proceso?.estado == 'R' ? 'disabled' : ''}/>
+                   validate="required number" ${proceso?.estado == 'R' ? 'disabled' : ( band ? 'disabled' : '')}/>
         </div>
 
         <div class="col-xs-2 negrilla" style="width: 120px">
@@ -208,7 +182,7 @@
         <div class="col-xs-2 negrilla">
             <input type="text" name="flete" id="flete" value="${proceso?.flete ?: 0.00}"
                    class="required number form-control validacionNumero"
-                   validate="required number" ${proceso?.estado == 'R' ? 'disabled' : ''}/>
+                   validate="required number" ${proceso?.estado == 'R' ? 'disabled' : ( band ? 'disabled' : '')} />
         </div>
     </div>
 </g:elseif>

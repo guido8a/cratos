@@ -116,12 +116,12 @@
                     Imprimir retención
                 </g:link>
             </g:if>
-                <g:if test="${proceso?.tipoProceso?.codigo?.trim() == 'C' || proceso?.tipoProceso?.codigo?.trim() == 'V' || proceso?.tipoProceso?.codigo?.trim() == 'T' || proceso?.tipoProceso?.codigo?.trim() == 'NC'}">
-                    <a href="#" class="btn btn-warning" id="btnDetalle" style="color: #0b0b0b">
-                        <i class="fa fa-list"></i>
-                        Detalle
-                    </a>
-                </g:if>
+            <g:if test="${proceso?.tipoProceso?.codigo?.trim() == 'C' || proceso?.tipoProceso?.codigo?.trim() == 'V' || proceso?.tipoProceso?.codigo?.trim() == 'T' || proceso?.tipoProceso?.codigo?.trim() == 'NC'}">
+                <a href="#" class="btn btn-warning" id="btnDetalle" style="color: #0b0b0b">
+                    <i class="fa fa-list"></i>
+                    Detalle
+                </a>
+            </g:if>
         </g:if>
 
 
@@ -198,31 +198,11 @@
 
         </div>
 
-        <div class="row" id="gestorDiv">
-            %{--
-                        <div class="col-xs-2 negrilla">
-                            Gestor a utilizar:
-                        </div>
-                        <div class="col-xs-10 negrilla">
-                            <g:select class="form-control required" name="gestor"
-                                      from="${cratos.Gestor.findAllByEstadoAndEmpresa('R', session.empresa, [sort: 'nombre'])}"
-                                      value="${proceso?.gestor?.id}" optionKey="id" optionValue="nombre"
-                                      title="Proceso tipo" disabled="${registro ? true : false}"/>
-                        </div>
-            --}%
-        </div>
-
-        <div class="row" id="divCargaProveedor">
-        </div>
-
-        <div class="row" id="divFilaComprobante">
-        </div>
-
-        <div class="row" id="divSustento">
-        </div>
-
-        <div class="row" id="divComprobanteSustento">
-        </div>
+        <div class="row" id="gestorDiv"></div>
+        <div class="row" id="divCargaProveedor"></div>
+        <div class="row" id="divFilaComprobante"></div>
+        <div class="row" id="divSustento"></div>
+        <div class="row" id="divComprobanteSustento"></div>
 
         <div class="row">
             <div class="col-xs-2 negrilla">
@@ -249,12 +229,7 @@
                 Bodega que recibe:
             </div>
 
-            <div class="col-xs-4 negrilla" id="divBodegaRecibe">
-                %{--<g:select class="form-control required cmbRequired tipoProcesoSel" name="bodegaRecibe" id="bodegaRecibe"--}%
-                %{--from="${cratos.inventario.Bodega.list(sort: 'descripcion')}" label="bodega que recibe"--}%
-                %{--value="${proceso?.bodegaRecibe?.id}" optionKey="id"--}%
-                %{--optionValue="descripcion" title="Bodega que recibe" disabled="${(proceso?.estado == 'R') ? true : false}" />--}%
-            </div>
+            <div class="col-xs-4 negrilla" id="divBodegaRecibe"></div>
         </div>
 
         <div class="row" id="libretinFacturas">
