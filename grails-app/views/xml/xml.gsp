@@ -35,8 +35,8 @@
             <div class="form-group">
                 <label for="anio" class="col-md-1 control-label">Año</label>
 
-                <div class="col-md-2">
-                    <g:select name="anio" from="${anios}" class="form-control"/>
+                <div class="col-md-4">
+                    <g:select name="contabilidad" from="${cont}" optionKey="id" optionValue="descripcion" class="form-control"/>
                 </div>
             </div>
 

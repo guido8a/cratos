@@ -34,7 +34,7 @@ class PrflController extends cratos.seguridad.Shield {
     def ajaxPermisos = {
         def prfl = params.prfl.toInteger()
         def tpac = params.tpac
-//        println "---------parametros: ${params}"
+        println "---------parametros: ${params}"
         def resultado = []
         def i = 0
         def ids = params.ids
@@ -57,7 +57,7 @@ class PrflController extends cratos.seguridad.Shield {
         cn.close()
 //        println "-------------------------" + resultado
 
-        return [datos: resultado, mdlo__id: ids, tpac__id: tpac]
+        render(view: 'lsta', model: [datos: resultado, mdlo__id: ids, tpac__id: tpac])
     }
 
     def creaMdlo = {
@@ -204,7 +204,6 @@ class PrflController extends cratos.seguridad.Shield {
 //
       println "grabar SQL: ${tx}"
         cn.eachRow(tx.toString()) { d ->
-
             try {
                 Prms.get(d.prms__id).delete(flush: true)
                 println "borra: ${d.prms__id}"

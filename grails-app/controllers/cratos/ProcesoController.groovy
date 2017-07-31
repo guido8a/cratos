@@ -216,7 +216,7 @@ class ProcesoController extends cratos.seguridad.Shield {
         try {
             proceso.save(flush: true)
             if(params.tipoProceso != '8' && params.tipoProceso != '3' ){
-                println("entro !!!!!")
+                println("ejecutó proceso.save")
                 proveedor.save(flush: true)
             }
             println "...6"

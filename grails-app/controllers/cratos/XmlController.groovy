@@ -5,6 +5,7 @@ import groovy.xml.MarkupBuilder
 class XmlController extends cratos.seguridad.Shield {
 
     def utilitarioService
+    def dbConnectionService
 
     def test1() {
         def writer = new StringWriter()
@@ -33,30 +34,8 @@ class XmlController extends cratos.seguridad.Shield {
     } //test1
 
     def xml() {
-        def hoy = new Date()
-        def anioFin = hoy.format("yyyy").toInteger()
-        def anios = []
-        5.times {
-            def p = getPeriodosByAnio(anioFin - it)
-            if (p.size() > 0) {
-                anios.add(anioFin - it)
-            }
-        }
-        def per = Periodo.withCriteria {
-            ge("fechaInicio", new Date().parse("dd-MM-yyyy", "01-01-" + hoy.format("yyyy")))
-            le("fechaFin", utilitarioService.getLastDayOfMonth(hoy))
-            order("fechaInicio", "asc")
-        }
-        def periodos = []
-        per.each { p ->
-            def key = p.fechaInicio.format("MM")
-            def val = fechaConFormato(p.fechaInicio, "MMMM yyyy").toUpperCase()
-            def m = [:]
-            m.id = key
-            m.val = val
-            periodos.add(m)
-        }
-        return [anios: anios, periodos: periodos]
+        def cont = Contabilidad.findAllByInstitucion(session.empresa)
+        return [cont: cont, periodos: null]
     }
 
     def getPeriodos() {
@@ -89,6 +68,7 @@ class XmlController extends cratos.seguridad.Shield {
 
 
     def createXml() {
+        println "createXml: $params"
         def primero = new Date().parse("dd-MM-yyyy", "01-${params.mes}-" + params.anio)
 
         def override = false
@@ -97,11 +77,15 @@ class XmlController extends cratos.seguridad.Shield {
             override = true
         }
 
+//        println "... ${primero} - ${utilitarioService.getLastDayOfMonth(primero)}"
+
         def per = Periodo.withCriteria {
             ge("fechaInicio", primero)
             le("fechaFin", utilitarioService.getLastDayOfMonth(primero))
             order("fechaInicio", "asc")
         }
+
+        println "periodo: $per"
 
         def empresa = Empresa.get(session.empresa.id)
 
@@ -137,6 +121,7 @@ class XmlController extends cratos.seguridad.Shield {
         def xml = new MarkupBuilder(writer)
         xml.mkp.xmlDeclaration(version: "1.0", encoding: "UTF-8", standalone: "no")
 
+        println "inicia generacion de ATS"
         xml.iva() {
             TipoIDInformante('R')
             IdInformante(empresa.ruc)

@@ -1,7 +1,10 @@
 package cratos
 
+import cratos.inventario.Marca
 import cratos.seguridad.Persona
 import cratos.seguridad.Shield
+import org.codehaus.groovy.grails.commons.DomainClassArtefactHandler
+import org.codehaus.groovy.grails.orm.hibernate.cfg.GrailsDomainBinder
 
 class InicioController extends Shield {
     def dbConnectionService
@@ -156,6 +159,13 @@ class InicioController extends Shield {
     def parametrosEmpresa () {
         def empresa = session.empresa.id
         return[empresa: empresa]
+    }
+
+    def nuevo() {
+        def pr = Proceso.get(607)
+        def tableName = GrailsDomainBinder.superclass.getMapping(pr.class).table.name
+
+        render "ok --$dt"
     }
 
 }

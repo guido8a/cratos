@@ -68,8 +68,11 @@ grails.project.dependency.resolution = {
         runtime ":database-migration:1.4.0"
         runtime ":jquery:1.11.1"
         compile "org.grails.plugins:barcode4j:0.3"
-        compile "org.grails.plugins:audit-logging:1.1.3"
-//        runtime ":kerberos:1.3"
+
+//        compile "org.grails.plugins:audit-logging:1.1.3"
+
+        runtime ":kerberos8:0.2"
+
         // Uncomment these to enable additional asset-pipeline capabilities
         //compile ":sass-asset-pipeline:1.9.0"
         //compile ":less-asset-pipeline:1.10.0"

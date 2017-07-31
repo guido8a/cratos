@@ -38,7 +38,7 @@
             Selecione el tipo de acción
             <div class="btn-group" data-toggle="buttons">
                 <g:each var="tp" in="${cratos.seguridad.Tpac.list()}" status="i">
-                    <label class="btn btn-info tipo ${(tp.id == 1) ? 'active' : ''}">
+                    <label class="btn btn-info tipoAc ${(tp.id == 1) ? 'active' : ''}">
                         <input type="radio" id="tpac${i}" name="tpac" value="${tp.id}" ${(tp.id == 1) ? 'checked=' : ''}> ${tp.tipo}
                     </label>
                 </g:each>
@@ -58,7 +58,7 @@
                 <div class="btn-group" data-toggle="buttons">
                     <g:each in="${lstacmbo}" status="i" var="d">
                         <label class="btn btn-info modulo">
-                            <input type="radio" id="check${i}" name="modulo" value="${d[0]?.encodeAsHTML()}" nombre="${d[1]?.encodeAsHTML()}"> ${d[1]?.encodeAsHTML()}
+                            <input type="radio" id="check${i}" data-id="check${i}" name="modulo" value="${d[0]?.encodeAsHTML()}" nombre="${d[1]?.encodeAsHTML()}"> ${d[1]?.encodeAsHTML()}
                         </label>
                     </g:each>
                 </div>
@@ -113,7 +113,7 @@
             } //submit form
             function deleteRow(itemId, tipo) {
                 var url = "", str = "";
-                console.log('tipo:', tipo, 'id:', itemId)
+//                console.log('tipo:', tipo, 'id:', itemId)
                 switch (tipo) {
                     case "perfil":
                         url = '${createLink(controller: 'prfl', action:'delete_ajax')}';
@@ -233,6 +233,13 @@
                     return false;
                 });
 
+                $("#perfil").change(function () {
+                    var $ck = $('.modulo.active').find('input');
+//                    console.log('seccionado', $ck)
+                    $ck.click();
+                });
+
+
                 $(".modulo").click(function () {
                     setTimeout(function () {
                         $.ajax({
@@ -241,7 +248,7 @@
                             data    : {
                                 ids  : $(".modulo.active").find("input").val(),
                                 prfl : $('#perfil').val(),
-                                tpac : $(".tipo.active").find("input").val()
+                                tpac : $(".tipoAc.active").find("input").val()
                             },
                             success : function (msg) {
                                 $("#ajx").html(msg)
