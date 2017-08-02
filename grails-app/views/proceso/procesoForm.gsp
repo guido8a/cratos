@@ -607,7 +607,8 @@
             data: {
                 tipo: tipo,
                 gstr_id: "${proceso?.gestor?.id}",
-                rgst: "${proceso?.estado}"
+                rgst: "${proceso?.estado}",
+                proceso: '${proceso?.id}'
             },
             success: function (msg) {
 //                console.log('ok....')

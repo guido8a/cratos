@@ -15,12 +15,11 @@
 <div class="col-md-2">
     <g:textField name="comprobanteSaldoName" id="comprobanteSaldo" class="form-control"
                  disabled="true" title="Saldo del Comprobante" style="width:165px;" placeholder="Saldo"
-                 value="${saldo}" />
+                 value="${saldo ? saldo : 0}" />
 </div>
 <div class="col-xs-1" style="margin-left: -10px">
     <g:if test="${proceso?.estado == 'N' || !proceso?.id}">
         <a href="#" id="btnBuscarComp" class="btn btn-info ${proceso?.id ? '' : 'hidden'}">
-        %{--<a href="#" id="btnBuscarComp" class="btn btn-info" >--}%
             <i class="fa fa-search"></i>
             Buscar
         </a>

@@ -82,7 +82,7 @@
                                        title="Editar asiento">
                                         <i class="fa fa-pencil"></i>
                                     </a>
-                                    <a href="#" class="btn btn-azul btn-sm btnCentroCostos" idAs="${asiento?.id}"
+                                    <a href="#" class="btn btn-azul btn-sm btnCentroCostos" idAs="${asiento?.id}" nomAs="${asiento?.cuenta?.descripcion}"
                                        title="Centro de Costos">
                                         <i class="fa fa-dollar"></i>
                                     </a>
@@ -154,6 +154,36 @@
 </div>
 
 <script type="text/javascript">
+
+
+    $(".btnCentroCostos").click(function (){
+        var asiento = $(this).attr('idAs');
+        var nombreAs = $(this).attr('nomAs');
+        $.ajax({
+            type: 'POST',
+            url: '${createLink(controller: 'proceso', action: 'centroCostos_ajax')}',
+            data:{
+                asiento: asiento
+            },
+            success: function (msg){
+                bootbox.dialog({
+                    title: 'Centro de Costos de ' + nombreAs,
+                    message: msg,
+//                    class: 'long',
+                    buttons:{
+                        cancelar: {
+                            label: "<i class='fa fa-times'></i> Cancelar",
+                            className: "btn-primary",
+                            callback: function () {
+                            }
+                        }
+                    }
+                })
+            }
+        });
+    });
+
+
 
     $(".btnAgregarAsiento").click(function () {
         agregar('${comprobante?.id}', null)

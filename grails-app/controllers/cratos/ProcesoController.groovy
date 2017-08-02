@@ -1,6 +1,7 @@
 package cratos
 
 import cratos.inventario.Bodega
+import cratos.inventario.CentroCosto
 import cratos.inventario.DetalleFactura
 import cratos.inventario.Item
 import cratos.seguridad.Persona
@@ -299,8 +300,10 @@ class ProcesoController extends cratos.seguridad.Shield {
 
     def cargaGestor = {
         println "cargar gestor $params "
+        def proceso = Proceso.get(params.proceso)
+        def detalle = DetalleFactura.findAllByProceso(proceso)
         def gstr = Gestor.findAllByEmpresaAndTipoProceso(session.empresa, TipoProceso.get(params.tipo), [sort: 'nombre'])
-        [gstr: gstr, gstr_id: params.gstr_id, rgst: params.rgst]
+        [gstr: gstr, gstr_id: params.gstr_id, rgst: params.rgst, detalle: detalle]
     }
 
     def cargaComprobantes = {
@@ -389,38 +392,6 @@ class ProcesoController extends cratos.seguridad.Shield {
         [data: data, sstr: params.sstr, tpcpSri: params.tpcp, estado: params.etdo?:'']
     }
 
-/*
-    def valorAsiento = {
-        if (request.method == 'POST') {
-            params.lang="en"
-            def key = "org.springframework.web.servlet.DispatcherServlet.LOCALE_RESOLVER"
-            def localeResolver = request.getAttribute(key)
-            localeResolver.setLocale(request, response, new Locale("en"))
-            println "cambiar Valor Asiento " + params
-            def vd = params.vd.toDouble()
-            def vh = params.vh.toDouble()
-            // println "vd "+vd +" vh  "+vh
-            def proceso = Proceso.get(params.proceso)
-            def comprobantes = Comprobante.findAllByProceso(proceso)
-            def asiento = Asiento.get(params.id)
-            def asientos = []
-            comprobantes.each {
-                asientos += Asiento.findAllByComprobante(it)
-            }
-            params.controllerName = controllerName
-            params.actionName = actionName
-            asiento.debe = vd
-            asiento.haber = vh
-            asiento.cuenta = Cuenta.get(params.cnta)
-            if (asiento.save(flush: true))
-                render "ok"
-            else
-                render "error"
-        } else {
-            redirect(controller: "shield", action: "ataques")
-        }
-    }
-*/
 
     /*TODO Crear periodos y probar el mayorizar y desmayorizar... move on*/
     def registrarComprobante = {
@@ -1324,10 +1295,10 @@ class ProcesoController extends cratos.seguridad.Shield {
                 sql = "select sldo from porpagar(${proceso?.proveedor?.id}) where cmpr__id = ${proceso?.comprobante?.id}"
             } else
                 println "2--------- ${proceso.tipoProceso.id}"
-                if(proceso.tipoProceso.id.toInteger() in [5, 6, 7]) {
-                    println "si se contiene-----"
-                    sql = "select sldo from ventas(${proceso?.proveedor?.id}) where cmpr__id = ${proceso?.comprobante?.id}"
-                }
+            if(proceso.tipoProceso.id.toInteger() in [5, 6, 7]) {
+                println "si se contiene-----"
+                sql = "select sldo from ventas(${proceso?.proveedor?.id}) where cmpr__id = ${proceso?.comprobante?.id}"
+            }
             println "sql: $sql"
             data = cn.firstRow(sql.toString())
         }
@@ -1346,9 +1317,9 @@ class ProcesoController extends cratos.seguridad.Shield {
         println("--> " + detalles)
         def band
         if(detalles.size() > 0){
-          band = true
+            band = true
         }else{
-          band = false
+            band = false
         }
 
         def cn = dbConnectionService.getConnection()
@@ -1356,14 +1327,14 @@ class ProcesoController extends cratos.seguridad.Shield {
         def tpcp = params?.tpcp?.toInteger()
         if(tpcp in [4, 5] && params.tpps == '1') {
             sql = "select cast(tittcdgo as integer) cdgo from titt, prve, tptr " +
-                  "where prve.tpid__id = titt.tpid__id and prve__id = ${params.prve} and " +
-                  "tptr.tptr__id = titt.tptr__id and tptrcdgo = '1'"
+                    "where prve.tpid__id = titt.tpid__id and prve__id = ${params.prve} and " +
+                    "tptr.tptr__id = titt.tptr__id and tptrcdgo = '1'"
 //        println "sql1: $sql"
             def titt = cn.rows(sql.toString())[0]?.cdgo
 //            println "identif: $titt"
             sql = "select tcst__id id, tcsrcdgo codigo, tcsrdscr descripcion from tcst, tcsr " +
-                  "where tcsr.tcsr__id = tcst.tcsr__id and titt @> '{${titt}}' " +
-                  "order by tcsrcdgo"
+                    "where tcsr.tcsr__id = tcst.tcsr__id and titt @> '{${titt}}' " +
+                    "order by tcsrcdgo"
 //        println "sql2: $sql"
             data = cn.rows(sql.toString())
             cn.close()
@@ -1482,7 +1453,7 @@ class ProcesoController extends cratos.seguridad.Shield {
 
             if(libretin?.size() > 0) {
                 [libretin: libretin, estb: libretin[0].numeroEstablecimiento, emsn: libretin[0].numeroEmision, nmro: nmro,
-                tipo: tipo, proceso: proceso]
+                 tipo: tipo, proceso: proceso]
             } else {
                 [libretin: libretin, estb: 0, emsn: 0, nmro: 0, tipo: tipo, proceso: proceso]
             }
@@ -1759,6 +1730,93 @@ class ProcesoController extends cratos.seguridad.Shield {
         def proceso = Proceso.get(params.proceso)
 
         return[bodegas: bodegasRecibe, proceso: proceso]
+    }
+
+    def centroCostos_ajax () {
+        def empresa = Empresa.get(session.empresa.id)
+        def cs = CentroCosto.findAllByEmpresa(empresa)
+        def asiento = Asiento.get(params.asiento)
+        def centros = AsientoCentro.findAllByAsiento(asiento)
+        def valorTotal = 0
+        def tipo = 0
+
+        if(asiento.debe == 0){
+            valorTotal = (asiento.haber.toDouble() - (centros.haber.sum() ? centros.haber.sum().toDouble() : 0 ))
+            tipo = 2
+        }else if(asiento.haber == 0){
+            valorTotal = (asiento.debe.toDouble() - (centros.debe.sum() ? centros.debe.sum().toDouble() : 0 ))
+            tipo = 1
+        }
+
+
+
+//        println("--> " + valorTotal)
+
+        return[cs:cs, asiento: asiento, valor: valorTotal, tipo: tipo]
+    }
+
+    def tablaCentroCostos_ajax () {
+        def asiento = Asiento.get(params.asiento)
+        def centros = AsientoCentro.findAllByAsiento(asiento)
+        return[centros: centros, tipo: params.tipo]
+    }
+
+    def guardarCentro_ajax () {
+//        println("params " + params)
+
+        def asiento = Asiento.get(params.asiento)
+        def centro = CentroCosto.get(params.centro)
+        def centroEspe = AsientoCentro.findByAsientoAndCentroCosto(asiento,centro)
+        def asientoCentro
+        if(centroEspe){
+          asientoCentro = AsientoCentro.get(centroEspe.id)
+            if(params.tipo == '1'){
+                asientoCentro.debe = params.valor.toDouble() + asientoCentro.debe.toDouble()
+            }else{
+                asientoCentro.haber = params.valor.toDouble() + asientoCentro.haber.toDouble()
+            }
+        }else{
+            asientoCentro = new AsientoCentro()
+            asientoCentro.asiento = asiento
+            asientoCentro.centroCosto = centro
+            if(params.tipo == '1'){
+                asientoCentro.debe = params.valor.toDouble()
+            }else{
+                asientoCentro.haber = params.valor.toDouble()
+            }
+        }
+
+        try{
+            asientoCentro.save(flush: true)
+            render "ok"
+        }catch (e){
+            println("Error al agregar el cs " + e)
+            render "no"
+        }
+    }
+
+    def calcularValor_ajax () {
+        def asiento = Asiento.get(params.asiento)
+        def centros = AsientoCentro.findAllByAsiento(asiento)
+        def valorTotal = 0
+
+        if(asiento.debe == 0){
+            valorTotal = (asiento.haber.toDouble() - (centros.haber.sum() ? centros.haber.sum().toDouble() : 0 ))
+        }else if(asiento.haber == 0){
+            valorTotal = (asiento.debe.toDouble() - (centros.debe.sum() ? centros.debe.sum().toDouble() : 0 ))
+        }
+        render valorTotal
+    }
+
+    def borrarCentro_ajax () {
+        def asientoCentro = AsientoCentro.get(params.id)
+        try{
+            asientoCentro.delete(flush: true)
+            render "ok"
+        }catch (e){
+            println("Error al borrar el centro " + e)
+            render "no"
+        }
     }
 
 }

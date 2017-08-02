@@ -24,7 +24,7 @@
 <script type="text/javascript">
 
     $("#tipoCmprSustento").click(function () {
-        console.log("clic en tipoCmprSustento")
+//        console.log("clic en tipoCmprSustento")
         var prve = $("#prve__id").val();
         if(!prve) {
             $("#btn_buscar").click()
@@ -32,7 +32,7 @@
     });
 
     $("#btn_cargarCp").click(function () {
-        console.log("change...", $("#tipoCmprSustento").val());
+//        console.log("change...", $("#tipoCmprSustento").val());
         if($("#tipoCmprSustento").val() != '-1') {
             $("#tipoCmprSustento").change()
         }
@@ -45,7 +45,7 @@
         var sstr = $(".sustentoSri option:selected").val();
         var prve = $("#prve__id").val();
 
-        console.log("cambia tipoCmprSustento")
+//        console.log("cambia tipoCmprSustento")
         $.ajax({
             type: 'POST',
             url: "${createLink(controller: 'proceso', action: 'cargaTcsr')}",

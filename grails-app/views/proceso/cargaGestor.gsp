@@ -5,5 +5,5 @@
     <g:select class="form-control required" name="gestor"
               from="${gstr}"
               value="${gstr_id}" optionKey="id" optionValue="nombre"
-              title="Proceso tipo" disabled="${rgst == 'R' ? true : false}" />
+              title="Proceso tipo" disabled="${rgst == 'R' ? true : ( detalle ? true : false)}" />
 </div>
