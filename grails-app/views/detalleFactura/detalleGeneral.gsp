@@ -160,11 +160,13 @@
     });
 
     function buscarItem() {
+        var bodega = $("#bodegas").val();
         $.ajax({
             type: 'POST',
             url: '${createLink(controller: 'detalleFactura', action: 'buscarItems_ajax')}',
             data: {
-                proceso: '${proceso?.id}'
+                proceso: '${proceso?.id}',
+                bodega: bodega
             },
             success: function (msg) {
                 bootbox.dialog({

@@ -133,7 +133,7 @@
 
     }).keyup(function () {
         if('${auxiliar?.id}'){
-            if($(".valorC").val() > ${maximoHaber} && $(".valorC").val() > ${auxiliar?.haber ?: 0}){
+            if($(".valorC").val() > ${maximoHaber} && $(".valorC").val() > ${totHaber ?: 0}){
                 $(".valorC").val(${auxiliar?.haber ?: 0})
             }
         }else{
@@ -148,7 +148,7 @@
 
     }).keyup(function () {
         if('${auxiliar?.id}'){
-            if($(".valorP").val() > ${maximoDebe} && $(".valorP").val() > ${auxiliar?.debe ?: 0}){
+            if($(".valorP").val() > ${maximoDebe} && $(".valorP").val() > ${totDebe ?: 0}){
                 $(".valorP").val(${auxiliar?.debe ?: 0})
             }
         }else{
@@ -158,32 +158,6 @@
         }
 
     });
-
-    %{--$(".valorP").change(function () {--}%
-        %{--if('${auxiliar?.id}'){--}%
-            %{--if($(".valorP").val() > ${maximoDebe}){--}%
-                %{--$(".valorP").val(${auxiliar?.debe ?: 0})--}%
-            %{--}--}%
-        %{--}else{--}%
-            %{--if($(".valorP").val() > ${maximoDebe}){--}%
-                %{--$(".valorP").val(${maximoDebe})--}%
-            %{--}--}%
-        %{--}--}%
-    %{--})--}%
-
-    %{--$(".valorC").change(function () {--}%
-        %{--if('${auxiliar?.id}'){--}%
-            %{--if($(".valorC").val() >= ${maximoHaber}){--}%
-                %{--$(".valorC").val(${auxiliar?.haber ?: 0})--}%
-            %{--}--}%
-        %{--}else{--}%
-            %{--if($(".valorC").val() > ${maximoHaber}){--}%
-                %{--$(".valorC").val(${maximoHaber})--}%
-            %{--}--}%
-        %{--}--}%
-    %{--})--}%
-
-
 
 
 </script>

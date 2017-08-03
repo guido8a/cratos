@@ -27,8 +27,10 @@
     <thead>
     <tr>
         <th style="width: 80px">Código</th>
-        <th style="width: 240px">Nombre</th>
+        <th style="width: 180px">Nombre</th>
         <th style="width: 80px">Precio</th>
+        <th style="width: 70px">Existencias</th>
+        <th style="width: 80px">Fecha</th>
         <th style="width: 55px"><i class="fa fa-plus"></i> </th>
     </tr>
     </thead>
@@ -55,7 +57,8 @@
             data:{
                 proceso: '${proceso?.id}',
                 codigo: codigo,
-                nombre: nombre
+                nombre: nombre,
+                bodega: '${bodega?.id}'
             },
             success: function (msg) {
                 $("#divTablaItems").html(msg)

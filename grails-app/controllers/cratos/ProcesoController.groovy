@@ -1168,6 +1168,8 @@ class ProcesoController extends cratos.seguridad.Shield {
         def haberEx = 0
         def maximoDebe = 0
         def maximoHaber = 0
+        def totDebe = 0
+        def totHaber = 0
         if(params.auxiliar){
             auxiliar = Auxiliar.get(params.auxiliar)
             asiento = auxiliar.asiento
@@ -1176,11 +1178,15 @@ class ProcesoController extends cratos.seguridad.Shield {
             haberEx = existentes.haber.sum()
             maximoDebe = asiento.debe.toDouble() - (debeEx ?: 0)
             maximoHaber = asiento.haber.toDouble() - (haberEx ?:0)
+            totDebe = auxiliar.debe + maximoDebe
+            totHaber = auxiliar.haber + maximoHaber
 //            println("debeEx " + debeEx)
 //            println("haberEx " + haberEx)
 //            println("maximoDebe " + maximoDebe)
 //            println("maximoHaber " + maximoHaber)
-            return [asiento: asiento, auxiliar: auxiliar, comprobante: comprobante, proveedores: proveedores, maximoDebe: maximoDebe, maximoHaber: maximoHaber]
+//            println("debe " + asiento.debe.toDouble())
+//            println("haber " + asiento.haber.toDouble())
+            return [asiento: asiento, auxiliar: auxiliar, comprobante: comprobante, proveedores: proveedores, maximoDebe: maximoDebe, maximoHaber: maximoHaber, totDebe: totDebe, totHaber: totHaber]
         }else{
             asiento = Asiento.get(params.asiento)
             existentes = Auxiliar.findAllByAsiento(asiento)

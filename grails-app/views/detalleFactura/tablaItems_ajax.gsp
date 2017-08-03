@@ -9,12 +9,19 @@
     <tbody>
     <g:each in="${items}" var="item">
         <tr>
-            <td style="width: 80px">${item?.codigo}</td>
-            <td style="width: 270px">${item?.nombre}</td>
-            <td style="width: 90px">${item?.precioVenta}</td>
+            <td style="width: 60px">${item.itemcdgo}</td>
+            <td style="width: 210px">${item.itemnmbr}</td>
+            <g:if test="${proceso?.tipoProceso?.codigo?.trim() == 'V' || proceso?.tipoProceso?.codigo?.trim() == 'NC'}">
+                <td style="width: 90px; text-align: right">${item.itempcun}</td>
+            </g:if>
+            <g:if test="${proceso?.tipoProceso?.codigo?.trim() == 'C' || proceso?.tipoProceso?.codigo?.trim() == 'T'}">
+                <td style="width: 90px; text-align: right">${item.itempccs}</td>
+            </g:if>
+            <td style="width: 90px; text-align: center">${item.exst.toInteger()}</td>
+           <td style="width: 90px"><g:formatDate date="${item.fcha}" format="dd-MM-yyyy HH:mm"/> </td>
             <td style="width: 50px; text-align: center">
                 <a href="#" class="btn btn-success btnAgregarItem"
-                   title="Agregar Item" codigo="${item?.codigo}" nombre="${item?.nombre}" precio="${item?.precioVenta}" idI="${item?.id}" costo="${item?.precioCosto}"><i class="fa fa-check"></i></a> </td>
+                   title="Agregar Item" codigo="${item.itemcdgo}" nombre="${item.itemnmbr}" precio="${item.itempcun}" idI="${item.item__id}" costo="${item.itempccs}"><i class="fa fa-check"></i></a> </td>
         </tr>
     </g:each>
     </tbody>

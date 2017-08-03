@@ -127,38 +127,31 @@ class DetalleFacturaController extends cratos.seguridad.Shield  {
 
     def buscarItems_ajax () {
         def proceso = Proceso.get(params.proceso)
-        return [proceso: proceso]
+        def bodega = Bodega.get(params.bodega)
+        return [proceso: proceso, bodega: bodega]
     }
 
     def tablaItems_ajax () {
+//        println("params " + params)
         def proceso = Proceso.get(params.proceso)
-        def detalles = DetalleFactura.findAllByProceso(proceso)
-        def subgruposConNueve = SubgrupoItems.findAllByEmpresaAndCodigo(proceso.empresa,'999')
-        def subgruposSinNueve = SubgrupoItems.findAllByEmpresaAndCodigoNotEqual(proceso.empresa,'999')
-        def departamento
-        def todos
+        def bodega = Bodega.get(params.bodega)
 
-//        println("sub con " +  subgruposConNueve)
-//        println("sub sin " +  subgruposSinNueve)
-
-        if(proceso.gestor.tipo == 'G'){
-            departamento = DepartamentoItem.findAllBySubgrupoInList(subgruposConNueve)
+        def cn = dbConnectionService.getConnection()
+        def sql
+        if(params.nombre && params.codigo){
+            sql = "select * from lsta_item('${proceso?.id}','${bodega?.id}') where itemcdgo ilike '${params.codigo}' and itemnmbr ilike '%${params.nombre}%' "
+        }else if (params.nombre){
+            sql = "select * from lsta_item('${proceso?.id}','${bodega?.id}') where itemnmbr ilike '%${params.nombre}%' "
+        }else if(params.codigo){
+            sql = "select * from lsta_item('${proceso?.id}','${bodega?.id}') where itemcdgo ilike '%${params.codigo}%' "
         }else{
-            departamento = DepartamentoItem.findAllBySubgrupoInList(subgruposSinNueve)
+            sql = "select * from lsta_item('${proceso?.id}','${bodega?.id}')"
         }
+        def res = cn.rows(sql.toString())
+//        println("res " + res)
+//        println("sql " + sql)
+        return[items: res, proceso: proceso]
 
-        todos = Item.withCriteria {
-            'in'("departamento",departamento)
-            and{
-                ilike("nombre", '%' + params.nombre + '%')
-                ilike("codigo", '%' + params.codigo + '%')
-            }
-            order ("codigo","asc")
-        }
-
-//        println("items " + todos)
-
-        return[ items: todos, proceso: proceso]
     }
 
     def guardarDetalle_ajax () {
