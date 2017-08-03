@@ -34,9 +34,7 @@
     </div>
     <div class="col-md-3">
         <g:select name="proveedor_name" id="proveedor" from="${proveedores}" class="form-control" optionValue="nombre"
-                  optionKey="id" style="width: 400px" value="${auxiliar?.proveedor?.id}"/>
-        %{--<g:textField name="proveedorName" id="proveedor_nombre" value="${auxiliar ? auxiliar?.proveedor?.nombre : asiento?.comprobante?.proceso?.proveedor?.nombre}" class="form-control" readonly="true" style="width: 400px"/>--}%
-        %{--<g:hiddenField name="proveedor_name" id="proveedor" value="${auxiliar?.proveedor?.id}"/>--}%
+                  optionKey="id" style="width: 400px" value="${auxiliar?.proveedor?.id}" disabled="${auxiliar?.asiento?.comprobante?.proceso?.tipoProceso?.codigo?.trim() == 'A' && auxiliar?.asiento?.comprobante?.proceso?.gestor?.codigo == 'SLDO' ? false : true}"/>
     </div>
 </div>
 

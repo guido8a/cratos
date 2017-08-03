@@ -182,7 +182,7 @@ class ProcesoController extends cratos.seguridad.Shield {
 //                println "------ Ajustes------"
                 poneNulos(proceso)
                 proceso.proveedor = null
-                proceso.baseImponibleIva = params.valorPago.toDouble()
+//                proceso.baseImponibleIva = params.valorPago.toDouble()
                 break
 
             case '4':  //Pagos
