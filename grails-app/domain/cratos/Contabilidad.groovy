@@ -7,7 +7,7 @@ class Contabilidad implements Serializable {
     String descripcion
     Empresa institucion
     Date presupuesto
-    int cuenta
+    Cuenta cuenta
     static mapping = {
         table 'cont'
         cache usage: 'read-write', include: 'non-lazy'

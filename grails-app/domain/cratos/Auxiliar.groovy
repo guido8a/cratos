@@ -8,7 +8,7 @@ class Auxiliar implements Serializable {
     Date fechaRegistro = new Date()
     Date fechaPago
     Proveedor proveedor
-    TipoPago tipoPago
+    TipoDocumentoPago tipoDocumentoPago
     Comprobante comprobante
     String factura
     String documento
@@ -29,7 +29,7 @@ class Auxiliar implements Serializable {
             fechaRegistro column: 'axlrfcrg'
             fechaPago column: 'axlrfcpg'
             proveedor column: 'prve__id'
-            tipoPago column: 'tppg__id'
+            tipoDocumentoPago column: 'tpdp__id'
             comprobante column: 'cmpr__id'
             factura column: 'axlrfctr'
             documento column: 'axlrrefe'
@@ -42,7 +42,7 @@ class Auxiliar implements Serializable {
         fechaPago(blank: true, nullable: true)
         fechaRegistro(blank: true, nullable: true)
         proveedor(blank: true, nullable: true)
-        tipoPago (blank: true, nullable: true)
+        tipoDocumentoPago (blank: true, nullable: true)
         comprobante (blank: true, nullable: true)
         factura (blank: true, nullable: true)
         documento (blank: true, nullable: true)

@@ -116,8 +116,17 @@ class LoginController {
                 ge("fechaCierre", ahora)
                 order("fechaCierre", "desc")
             }
+            println ".... cont: $cont"
             if (cont.size() == 0) {
+                println ".... 1, ${user.empresa}"
+                try {
+                    def ccccc = Contabilidad.list()
+                } catch (e) {
+                    println "++++ $e"
+                }
+                println ".... 2---"
                 def conts = Contabilidad.findAllByInstitucion(user.empresa, [sort: "fechaCierre", order: "desc"])
+                println ".... 2"
                 if (conts.size() > 0) {
                     cont = conts[0]
                 }
@@ -126,6 +135,7 @@ class LoginController {
             } else {
                 cont = cont[0]
             }
+            println ".... 3"
             session.contabilidad = cont
 //            if (!session.contabilidad) {
 //                def conts = Contabilidad.list([sort: "fechaCierre", order: "desc"])
