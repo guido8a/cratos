@@ -135,16 +135,16 @@
 
                         <li>
                             <i class="fa-li ${iconGen}"></i>
-                            <span id="tipoDocProv">
-                                <g:link controller="tipoDocumentoProveedor" action="list">Tipo de Documentos de Proveedor o Cliente</g:link> para
-                                distinguir entre documentos de retención, facturas u otros.
+                            <span id="tipoDocPago">
+                                <g:link controller="tipoDocumentoPago" action="list">Tipo de Documento de Pago</g:link> para
+                                el registro de la forma de pago a proveedores y clientes.
                             </span>
 
                             <div class="descripcion hide">
-                                <h4>Tipo de Documento de Proveedor o Cliente</h4>
+                                <h4>Tipo de Documento de Pago</h4>
 
-                                <p>Distintos tipos de documentos que puede generar la transacción, como factura, retención, comprobante de
-                                ingreso, etc.</p>
+                                <p>Documento de pago de obligaciones de cuentas por pagar o cuentas por cobrar. Forma de
+                                pago.</p>
                             </div>
                         </li>
 
@@ -182,6 +182,7 @@
                             </div>
                         </li>
 
+%{--
                         <li>
                             <i class="fa-li ${iconGen}"></i>
                             <span id="tipoDoc">
@@ -197,6 +198,7 @@
                                 <p>No se aplica a los productos bancarios, solo al registro contable</p>
                             </div>
                         </li>
+--}%
 
                         <li>
                             <i class="fa-li ${iconGen}"></i>
@@ -314,7 +316,7 @@
                             </span>
 
                             <div class="descripcion hide">
-                                <h4>Parámtros de Funcionamiento</h4>
+                                <h4>Parámetros de Funcionamiento</h4>
 
                                 <p>Parámetros de funcionamiento generales como el valor del IVA.</p>
                             </div>

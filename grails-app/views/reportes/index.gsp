@@ -90,6 +90,31 @@
         <div class="left pull-left">
             <ul class="fa-ul">
                 <li>
+                    <span id="ats">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <a href="#" class="link btn btn-info btn-ajax" data-toggle="modal" data-target="#modalAts">
+                                    ATS
+                                </a>
+                            </div>
+                            <div class="col-md-8">
+                                Anexo transaccional simplificado
+                            </div>
+                        </div>
+                    </span>
+
+                    <div class="descripcion hide">
+                        <h4>ATS</h4>
+
+                        <p>Permite la generació del ATS en un período determinado.
+                        </p>
+
+                        <p>Se genera el anexo en xml conforme las especificaciones del SRI.</p>
+
+                        <p>El sistema requiere que se seleccione la contabilidad o período contable.</p>
+                    </div>
+                </li>
+                <li>
                     <span id="planDeCuentas">
                         <div class="row">
                             <div class="col-md-4">
@@ -516,6 +541,40 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Cancelar
                 </button>
                 <button type="button" class="btn btnAceptarLibro btn-success"><i class="fa fa-print"></i> Aceptar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+%{--dialog ATS--}%
+<div class="modal fade" id="modalAts" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Generar ATS</h4>
+            </div>
+
+            <div class="modal-body">
+                <div class="fila" style="margin-bottom: 15px">
+                    <label class="uno">Contabilidad:</label>
+                    <g:select name="contAts" id="contP20"
+                              from="${cratos.Contabilidad.findAllByInstitucion(session.empresa, [sort: 'fechaInicio'])}"
+                              optionKey="id" optionValue="descripcion" noSelection="['-1': 'Seleccione la contabilidad']"
+                              class="form-control dos" value="-1"/>
+                </div>
+
+                <div class="fila" id="divPeriodo20">
+                    <label class="uno">Período:</label>
+
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Cancelar
+                </button>
+                <button type="button" class="btn btnAceptarAts btn-success"><i class="fa fa-print"></i> Aceptar
                 </button>
             </div>
         </div>
@@ -1069,6 +1128,10 @@
             updatePeriodoSinTodo("15");
         });
 
+        $("#contP20").change(function () {
+            updatePeriodoSinTodo("20");
+        });
+
         $(".btnAceptarPlan").click(function () {
             var cont = $("#contCuentas").val()
             url = "${g.createLink(controller:'reportes' , action: 'planDeCuentas')}?cont=" + cont + "Wempresa=${session.empresa.id}";
@@ -1287,8 +1350,15 @@
         $(".btnAceptarLibro").click(function () {
             var cont = $("#contP11").val();
             var per = $("#periodo11").val();
-           var url = "${g.createLink(controller: 'reportes3', action: 'imprimirLibroDiario')}?cont=" + cont + "Wperiodo=" + per + "Wempresa=${session.empresa.id}";
+            var url = "${g.createLink(controller: 'reportes3', action: 'imprimirLibroDiario')}?cont=" + cont + "Wperiodo=" + per + "Wempresa=${session.empresa.id}";
             location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=libroDiario.pdf";
+        });
+
+        $(".btnAceptarAts").click(function () {
+            var cont = $("#contP20").val();
+            var prms = $("#periodo20").val();
+            console.log('cont', cont, 'mes', prms)
+            crearXML(prms, cont, 0);
         });
 
         $(".btnAceptarSituacionN").click(function () {
@@ -1298,6 +1368,77 @@
             var url = "${g.createLink(controller: 'reportes3', action: 'reporteSituacion')}?cont=" + cont + "Wperiodo=" + per + "Wempresa=${session.empresa.id}" + "Wnivel=" + nivel;
             location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=situacion.pdf";
         });
+
+        function crearXML(mes, anio, override) {
+            $.ajax({
+                type    : "POST",
+                url     : "${createLink(controller: 'xml', action: 'createXml')}",
+                data    : {
+                    mes      : mes,
+                    anio     : anio,
+                    override : override
+                },
+                success : function (msg) {
+                    var parts = msg.split("_");
+                    if (parts[0] == "NO") {
+                        if (parts[1] == "1") {
+                            var msgs = "Ya existe un archivo XML para el periodo " + mes + "-" + anio + "." +
+                                    "<ul><li>Si desea <strong>sobreescribir el archivo existente</strong>, haga click en el botón <strong>'Sobreescribir'</strong></li>" +
+                                    "<li>Si desea <strong>descargar el archivo previamente generado</strong>, haga click en el botón <strong>'Descargar'</strong></li>" +
+                                    "<li>Si desea <strong>ver la lista de archivos generados</strong>, haga cilck en el botón <strong>'Archivos'</strong></li></ul>";
+                            bootbox.dialog({
+                                title   : "Alerta",
+                                message : msgs,
+                                buttons : {
+                                    sobreescribir : {
+                                        label     : "<i class='fa fa-pencil'></i> Sobreescribir",
+                                        className : "btn-primary",
+                                        callback  : function () {
+                                            crearXML(mes, anio, 1);
+                                        }
+                                    },
+                                    descargar     : {
+                                        label     : "<i class='fa fa-download'></i> Descargar",
+                                        className : "btn-success",
+                                        callback  : function () {
+                                            location.href = "${createLink(action:'downloadFile')}?mes=" + mes + "&anio=" + anio;
+                                        }
+                                    },
+                                    archivos      : {
+                                        label     : "<i class='fa fa-files-o'></i> Archivos",
+                                        className : "btn-default",
+                                        callback  : function () {
+                                            location.href = "${createLink(action:'downloads')}";
+                                        }
+                                    },
+                                    cancelar      : {
+                                        label     : "Cancelar",
+                                        className : "btn-default",
+                                        callback  : function () {
+                                        }
+                                    }
+                                }
+                            });
+                        }
+                    } else if (parts[0] == "OK") {
+                        bootbox.dialog({
+                            title   : "Descargar archivo",
+                            message : "Archivo generado exitosamente",
+                            buttons : {
+                                descargar : {
+                                    label     : "<i class='fa fa-download'> Descargar",
+                                    className : "btn-success",
+                                    callback  : function () {
+                                        location.href = "${createLink(action:'downloadFile')}?mes=" + mes + "&anio=" + anio;
+                                    }
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+        }
+
 
     });
 </script>

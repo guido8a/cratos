@@ -156,8 +156,7 @@
                 $anio.change(function () {
                     getPeriodos();
                 });
-            })
-            ;
+            });
         </script>
 
     </body>
