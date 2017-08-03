@@ -1,7 +1,6 @@
 package cratos
 
-class TipoDocumentoProveedor implements Serializable {
-    String codigo
+class TipoDocumentoPago {
     String descripcion
 
     static auditable = true
@@ -13,12 +12,10 @@ class TipoDocumentoProveedor implements Serializable {
         id generator: 'identity'
         version false
         columns {
-            codigo column: 'tpdpcdgo'
             descripcion column: 'tpdpdscr'
         }
     }
     static constraints = {
-        codigo(size: 1..1, blank: false, attributes: [title: 'codigo'])
-        descripcion(blank: false, maxSize: 31, attributes: [title: 'descripcion'])
+        descripcion(blank: false, maxSize: 63, attributes: [title: 'descripción'])
     }
 }

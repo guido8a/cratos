@@ -152,6 +152,10 @@
                    value="${proceso?.baseImponibleNoIva ?: 0.00}" class="required number form-control validacionNumero"
                    validate="required number" ${proceso?.estado == 'R' ? 'readonly' : ( band ? 'readonly' : '')}  />
         </div>
+
+        <div class="col-xs-2 negrilla" style="text-align: center">
+            Total
+        </div>
     </div>
 
     <div class="row" style="font-size: 12px">
@@ -181,6 +185,11 @@
 
         <div class="col-xs-2 negrilla">
             <input type="text" name="flete" id="flete" value="${proceso?.flete ?: 0.00}"
+                   class="required number form-control validacionNumero"
+                   validate="required number"  ${proceso?.estado == 'R' ? 'readonly' : ( band ? 'readonly' : '')}  />
+        </div>
+        <div class="col-xs-2 negrilla text-info">
+            <input type="text" name="total" id="total" value="${proceso?.valor ?: 0.00}"
                    class="required number form-control validacionNumero"
                    validate="required number"  ${proceso?.estado == 'R' ? 'readonly' : ( band ? 'readonly' : '')}  />
         </div>
