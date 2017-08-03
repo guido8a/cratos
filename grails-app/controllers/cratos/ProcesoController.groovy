@@ -1170,6 +1170,7 @@ class ProcesoController extends cratos.seguridad.Shield {
         def maximoHaber = 0
         def totDebe = 0
         def totHaber = 0
+        def band
         if(params.auxiliar){
             auxiliar = Auxiliar.get(params.auxiliar)
             asiento = auxiliar.asiento
@@ -1186,7 +1187,8 @@ class ProcesoController extends cratos.seguridad.Shield {
 //            println("maximoHaber " + maximoHaber)
 //            println("debe " + asiento.debe.toDouble())
 //            println("haber " + asiento.haber.toDouble())
-            return [asiento: asiento, auxiliar: auxiliar, comprobante: comprobante, proveedores: proveedores, maximoDebe: maximoDebe, maximoHaber: maximoHaber, totDebe: totDebe, totHaber: totHaber]
+            band = auxiliar?.asiento?.comprobante?.proceso?.tipoProceso?.codigo?.trim() == 'A' && auxiliar?.asiento?.comprobante?.proceso?.gestor?.codigo == 'SLDO'
+            return [asiento: asiento, auxiliar: auxiliar, comprobante: comprobante, proveedores: proveedores, maximoDebe: maximoDebe, maximoHaber: maximoHaber, totDebe: totDebe, totHaber: totHaber, band: band]
         }else{
             asiento = Asiento.get(params.asiento)
             existentes = Auxiliar.findAllByAsiento(asiento)
@@ -1198,7 +1200,8 @@ class ProcesoController extends cratos.seguridad.Shield {
 //            println("haberEx " + haberEx)
 //            println("maximoDebe " + maximoDebe)
 //            println("maximoHaber " + maximoHaber)
-            return [asiento: asiento, comprobante: comprobante, proveedores: proveedores, maximoDebe: maximoDebe, maximoHaber: maximoHaber]
+            band = asiento?.comprobante?.proceso?.tipoProceso?.codigo?.trim() == 'A' && asiento?.comprobante?.proceso?.gestor?.codigo == 'SLDO'
+            return [asiento: asiento, comprobante: comprobante, proveedores: proveedores, maximoDebe: maximoDebe, maximoHaber: maximoHaber, band: band]
         }
     }
 
