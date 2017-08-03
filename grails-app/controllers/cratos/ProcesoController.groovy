@@ -1209,7 +1209,7 @@ class ProcesoController extends cratos.seguridad.Shield {
 //        println("params " + params)
         def asiento
         def comprobante = Comprobante.get(params.comprobante)
-        def tipoPago = TipoPago.get(params.tipoPago)
+        def tipoPago = TipoDocumentoPago.get(params.tipoPago)
         def proveedor = Proveedor.get(params.proveedor)
         def fechaPago =  new Date().parse("dd-MM-yyyy", params.fechaPago)
         def auxiliar
@@ -1225,7 +1225,7 @@ class ProcesoController extends cratos.seguridad.Shield {
         auxiliar.descripcion = params.descripcion
         auxiliar.fechaPago = fechaPago
         auxiliar.proveedor = proveedor
-        auxiliar.tipoPago = tipoPago
+        auxiliar.tipoDocumentoPago = tipoPago
         auxiliar.debe = params.debe.toDouble()
         auxiliar.haber = params.haber.toDouble()
         auxiliar.documento = params.documento

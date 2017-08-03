@@ -62,7 +62,7 @@
     </div>
     <div class="col-md-3">
         <g:select name="tipo_name" from="${cratos.TipoDocumentoPago.list().sort{it.descripcion}}" optionKey="id" optionValue="descripcion"
-                  id="tipoPago" class="form-control" style="width: 400px" value="${auxiliar?.tipoPago?.id}"/>
+                  id="tipoPago" class="form-control" style="width: 400px" value="${auxiliar?.tipoDocumentoPago?.id}"/>
     </div>
 </div>
 
