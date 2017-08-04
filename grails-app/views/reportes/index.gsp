@@ -1401,14 +1401,14 @@
                                         label     : "<i class='fa fa-download'></i> Descargar",
                                         className : "btn-success",
                                         callback  : function () {
-                                            location.href = "${createLink(action:'downloadFile')}?mes=" + mes + "&anio=" + anio;
+                                            location.href = "${createLink(controller: 'xml', action:'downloadFile')}?mes=" + mes;
                                         }
                                     },
                                     archivos      : {
                                         label     : "<i class='fa fa-files-o'></i> Archivos",
                                         className : "btn-default",
                                         callback  : function () {
-                                            location.href = "${createLink(action:'downloads')}";
+                                            location.href = "${createLink(controller: 'xml', action:'downloads')}";
                                         }
                                     },
                                     cancelar      : {
@@ -1429,7 +1429,7 @@
                                     label     : "<i class='fa fa-download'> Descargar",
                                     className : "btn-success",
                                     callback  : function () {
-                                        location.href = "${createLink(action:'downloadFile')}?mes=" + mes + "&anio=" + anio;
+                                        location.href = "${createLink(controller: 'xml', action:'downloadFile')}?mes=" + mes;
                                     }
                                 }
                             }

@@ -28,6 +28,7 @@ class Proceso implements Serializable {
     String descripcion
 //    String tipoProceso /*para saber si es compra, venta etc etc........... C--> compra, V---> venta, A--> Ajuste, O--> otros, R->Depreciacion*/
     String estado
+    String establecimiento
 
     double baseImponibleIva = 0
     double baseImponibleIva0 = 0
@@ -91,6 +92,7 @@ class Proceso implements Serializable {
             fechaIngresoSistema column: 'prcsfcis'
             descripcion column: 'prcsdscr'
             estado column: 'prcsetdo'
+            establecimiento column: 'prcsnmes'
 
             baseImponibleIva column: 'prcsbsnz'
             baseImponibleIva0 column: 'prcsbszr'
@@ -149,6 +151,7 @@ class Proceso implements Serializable {
         fechaIngresoSistema(blank: true, nullable: true)
         descripcion(size: 1..255, blank: true, nullable: true, attributes: [title: 'descripcion'])
         estado(blank: true, maxSize: 1, attributes: [title: 'estado'])
+        establecimiento(blank: true, size: 3..3, attributes: [title: 'estado'])
 
         baseImponibleIva(blank: true, nullable: true, attributes: [title: 'baseImponibleIva'])
         baseImponibleIva0(blank: true, nullable: true, attributes: [title: 'baseImponibleIva0'])
@@ -157,7 +160,6 @@ class Proceso implements Serializable {
         iceGenerado(blank: true, nullable: true, attributes: [title: 'iceGenerado'])
         impuesto(blank: true, nullable: true, attributes: [title: 'impuesto'])
         valor(blank: true, nullable: true, attributes: [title: 'valor'])
-        valor(blank: true, nullable: true, attributes: [title: 'flete'])
 
         procesoSerie01(blank: true, nullable: true, maxSize: 3, attributes: [title: 'establecimeinto documento'])
         procesoSerie02(blank: true, nullable: true, maxSize: 3, attributes: [title: 'punto de emisión documento'])

@@ -69,7 +69,6 @@ class XmlController extends cratos.seguridad.Shield {
 
     def createXml() {
         println "createXml: $params"
-        def primero = new Date().parse("dd-MM-yyyy", "01-${params.mes}-" + params.anio)
 
         def override = false
         def sobreescribe = [1, "1", true, "true"]
@@ -77,57 +76,35 @@ class XmlController extends cratos.seguridad.Shield {
             override = true
         }
 
-//        println "... ${primero} - ${utilitarioService.getLastDayOfMonth(primero)}"
-
-        def per = Periodo.withCriteria {
-            ge("fechaInicio", primero)
-            le("fechaFin", utilitarioService.getLastDayOfMonth(primero))
-            order("fechaInicio", "asc")
-        }
-
-        println "periodo: $per"
+        def prdo = Periodo.get(params.mes)
+        println "periodo: $prdo"
 
         def empresa = Empresa.get(session.empresa.id)
 
-//        def fechaInicio = new Date().parse("dd-MM-yyyy", "01-11-2013")
-//        def fechaFin = new Date().parse("dd-MM-yyyy", "30-11-2013")
-
-//        def fechaInicio = new Date().parse("dd-MM-yyyy", "01-12-2013")
-//        def fechaFin = new Date().parse("dd-MM-yyyy", "31-12-2013")
-
-//        def periodo = Periodo.get(24) //noviembre 2013
-//        def periodo = Periodo.get(25) //diciembre 2013
-        def periodo
-
-        if (per.size() == 1) {
-            periodo = per.first()
-        } else if (per.size() == 0) {
-            flash.message = "No se encontró un periodo para generar el archivo XML"
-            redirect(action: "errores")
-            return
-        } else {
-            flash.message = "Ha ocurrido un error grave: se encontraron ${per.size()} periodos para ${params.mes}-${params.anio}"
-            redirect(action: "errores")
-            return
-        }
+        println "...2"
 
         def procesos = Proceso.withCriteria {
-            ge("fecha", periodo.fechaInicio)
-            le("fecha", periodo.fechaFin)
-        }// todos los procesos entre fecha ini y fecha fin
+            ge("fecha", prdo.fechaInicio)
+            le("fecha", prdo.fechaFin)
+        }// todo: usar sql para sacar ordenado por establecimiento (prcsnmes) y fecha y
+         // hacer un each para cada establecimiento
+
+        println "...procesos: ${procesos.size()}"
 
         def writer = new StringWriter()
-
         def xml = new MarkupBuilder(writer)
         xml.mkp.xmlDeclaration(version: "1.0", encoding: "UTF-8", standalone: "no")
 
         println "inicia generacion de ATS"
         xml.iva() {
+            /** hacer un each para cada establecimiento PRCSNMES */
+
             TipoIDInformante('R')
             IdInformante(empresa.ruc)
             razonSocial(empresa.nombre)
-            Anio(periodo.fechaInicio.format("yyyy"))
-            Mes(periodo.fechaInicio.format("MM"))
+            Anio(prdo.fechaInicio.format("yyyy"))
+            Mes(prdo.fechaInicio.format("MM"))
+            numEstabRuc(procesos[0].establecimiento)
             totalVentas(0.00)
             codigoOperativo("IVA")
             compras() {
@@ -155,7 +132,7 @@ class XmlController extends cratos.seguridad.Shield {
                         codSustento(proceso.sustentoTributario?.codigo)
                         tpIdProv(proceso.proveedor?.tipoIdentificacion?.codigoSri)
                         idProv(proceso.proveedor?.ruc)
-                        tipoComprobante(proceso.tipoComprobanteSri?.codigo)
+//                        tipoComprobante(proceso.tipoComprobanteSri?.codigo)
                         fechaRegistro(fechaConFormato(proceso.fechaIngresoSistema))
                         establecimiento(proceso.facturaEstablecimiento)
                         puntoEmision(proceso.facturaPuntoEmision)
@@ -165,11 +142,11 @@ class XmlController extends cratos.seguridad.Shield {
                         baseNoGraIva(numero(proceso.baseImponibleNoIva))
                         baseImponible(numero(proceso.baseImponibleIva0))
                         baseImpGrav(numero(proceso.baseImponibleIva))
-                        montoIce(numero(ice?.total ?: 0))
+//                        montoIce(numero(ice?.total ?: 0))
                         montoIva(numero(proceso?.ivaGenerado ?: 0))
-                        valorRetBienes(numero(bns?.total))
-                        valorRetServicios(srv?.porcentaje == 100 ? numero(0) : numero(srv?.total ?: 0))
-                        valRetServ100(srv?.porcentaje == 100 ? numero(srv?.total ?: 0) : numero(0))
+//                        valorRetBienes(numero(bns?.total))
+//                        valorRetServicios(srv?.porcentaje == 100 ? numero(0) : numero(srv?.total ?: 0))
+//                        valRetServ100(srv?.porcentaje == 100 ? numero(srv?.total ?: 0) : numero(0))
                         pagoExterior() {
                             pagoLocExt(local)
                             if (local == "01") {
@@ -177,15 +154,15 @@ class XmlController extends cratos.seguridad.Shield {
                                 aplicConvDobTrib("NA")
                                 pagExtSujRetNorLeg("NA")
                             } else {
-                                paisEfecPago(retencion.pais?.codigo)
-                                aplicConvDobTrib(retencion.convenio)
-                                pagExtSujRetNorLeg(retencion.normaLegal)
+//                                paisEfecPago(retencion.pais?.codigo)
+//                                aplicConvDobTrib(retencion.convenio)
+//                                pagExtSujRetNorLeg(retencion.normaLegal)
                             }
                         }
-                        estabRetencion1(retencion?.numeroEstablecimiento)
-                        ptoEmiRetencion1(retencion?.numeroPuntoEmision)
-                        secRetencion1(retencion?.numeroSecuencial)
-                        autRetencion1(retencion?.numeroAutorizacionComprobante)
+//                        estabRetencion1(retencion?.numeroEstablecimiento)
+//                        ptoEmiRetencion1(retencion?.numeroPuntoEmision)
+//                        secRetencion1(retencion?.numeroSecuencial)
+//                        autRetencion1(retencion?.numeroAutorizacionComprobante)
                         fechaEmiRet1(fechaConFormato(retencion?.fechaEmision))
                     }
                 }
@@ -193,7 +170,7 @@ class XmlController extends cratos.seguridad.Shield {
         }
 
         def pathxml = servletContext.getRealPath("/") + "xml/" + empresa.id + "/"  //web-app/xml
-        def fileName = "AnexoTransaccional_" + fechaConFormato(periodo.fechaInicio, "MM_yyyy")
+        def fileName = "AnexoTransaccional_" + fechaConFormato(prdo.fechaInicio, "MM_yyyy")
         def ext = ".xml"
         def path = pathxml + fileName + ext
 
@@ -207,10 +184,8 @@ class XmlController extends cratos.seguridad.Shield {
         }
 
         if (!cont && !override) {
-//            redirect(action: "errores", params: [tipo: 1, periodo: periodo.toString(), mes: params.mes, anio: params.anio])
             render "NO_1"
         } else {
-//            file.append(writer.toString())
             file.write(writer.toString())
             render "OK"
 //            def output = response.getOutputStream()
@@ -222,22 +197,26 @@ class XmlController extends cratos.seguridad.Shield {
     }
 
     def downloadFile() {
-//        println "DownloadFile: " + params
-        def mes = params.mes
-        def anio = params.anio
+        println "DownloadFile: " + params
+        def fileName = ""
+        if(params.archivo){
+            fileName = params.archivo
+        } else {
+            def prdo = Periodo.get(params.mes)
+            fileName = "AnexoTransaccional_" + fechaConFormato(prdo.fechaInicio, "MM_yyyy") + ".xml"
+        }
 
         def empresa = Empresa.get(session.empresa.id)
         def pathxml = servletContext.getRealPath("/") + "xml/" + empresa.id + "/"  //web-app/xml
-        def fileName = "AnexoTransaccional_" + mes + "_" + anio
-        def ext = ".xml"
-        def path = pathxml + fileName + ext
-        new File(pathxml).mkdirs()
+        def path = pathxml + fileName
+
+//        new File(pathxml).mkdirs()
         def file = new File(path)
 
         if (file.exists()) {
             def b = file.getBytes()
             response.setContentType("application/xml")
-            response.setHeader("Content-disposition", "attachment; filename=" + fileName + ext)
+            response.setHeader("Content-disposition", "attachment; filename=" + fileName)
             response.setContentLength(b.length)
             response.getOutputStream().write(b)
 

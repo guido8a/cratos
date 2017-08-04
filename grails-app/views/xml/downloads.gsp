@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: luz
-  Date: 12/23/13
-  Time: 12:54 PM
---%>
-
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
     <head>
@@ -57,7 +50,7 @@
                             <td>${arch.anio}</td>
                             <td>${arch.modified}</td>
                             <td>
-                                <g:link action="downloadFile" params="[mes: arch.mes, anio: arch.anio]">
+                                <g:link action="downloadFile" params="[archivo: arch.file]">
                                     ${arch.file}
                                 </g:link>
                             </td>
