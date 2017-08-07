@@ -1241,53 +1241,33 @@ class ProcesoController extends cratos.seguridad.Shield {
     }
 
     def tablaBuscarComp_ajax () {
-//        println "tablaBuscarComp_ajax: $params"
-//        def cn = dbConnectionService.getConnection()
-//        def proveedor = Proveedor.get(params.proveedor)
-//        def sql
-//        if(params.tipo == '4') {
-//            sql = "select * from porpagar(${proveedor?.id}) where sldo <> 0;"
-//        } else if(params.tipo in ['6', '7', '5']) {
-//            sql = "select cmpr__id, clntnmbr prvenmbr, dscr, dcmt, debe hber, ntcr pgdo, sldo from ventas(${proveedor?.id}) " +
-//                    "where sldo <> 0"
-//        }
-//        println "sql<<<<<: $sql"
-//        def res = cn.rows(sql.toString())
-//        return [res: res]
-
-//        println("params tabla buscar compro " + params)
-        def tipo = TipoPago.get(params.tipo)
+        println "tablaBuscarComp_ajax: $params"
         def cn = dbConnectionService.getConnection()
         def sql = ''
+        def whds = ''
+        def whnm = ''
+        def wh = ''
         def res
 
-        if(params.descripcion && !params.numero){
-            if(params.tipo == '4') {
-                sql = "select * from ventas(${params.proveedor}) where dscr ilike '%${params.descripcion}%'"
-            } else if(params.tipo in ['6', '7', '5']) {
-                sql = "select * from porpagar(${params.proveedor}) where dscr ilike '%${params.descripcion}%'"
-            }
-        }else if (params.numero && !params.descripcion){
-            if(params.tipo == '4') {
-                sql = "select * from ventas(${params.proveedor}) where dcmt ilike '%${params.numero}%' "
-            } else if(params.tipo in ['6', '7', '5']) {
-                sql = "select * from porpagar(${params.proveedor}) where dcmt ilike '%${params.numero}%' "
-            }
-        }else if (params.descripcion && params.numero){
-            if(params.tipo == '4') {
-                sql = "select * from ventas(${params.proveedor}) where dscr ilike '%${params.descripcion}%' AND dcmt ilike '%${params.numero}%' "
-            } else if(params.tipo in ['6', '7', '5']) {
-                sql = "select * from porpagar(${params.proveedor}) where dscr ilike '%${params.descripcion}%' AND dcmt ilike '%${params.numero}%' "
-            }
-        }else{
-            if(params.tipo == '4') {
-                sql = "select * from ventas(${params.proveedor})"
-            } else if(params.tipo in ['6', '7', '5']) {
-                sql = "select * from porpagar(${params.proveedor})"
-            }
+        if(params.descripcion) {
+            whds = " dscr ilike '%${params.descripcion}%'"
+        }
+        if(params.numero) {
+            whnm = " dcmt ilike '%${params.numero}%'"
         }
 
-//        println("sql " + sql)
+        if(params.descripcion || params.numero) {
+            wh = "where ${whds? whds : ''} ${whnm? 'and ' + whnm : ''}"
+        }
+        println "where: $wh"
+
+        if(params.tipo.toInteger() == 4) {
+            sql = "select cmpr__id, prvenmbr, dscr, dcmt, fcha, hber, pgdo, sldo from porpagar(${params.proveedor}) ${wh}"
+        } else if(params.tipo.toInteger() in [5, 6, 7]) {
+            sql = "select cmpr__id, clntnmbr prvenmbr, dscr, dcmt, fcha, debe hber, ntcr pgdo, sldo from ventas(${params.proveedor}) ${wh}"
+        }
+
+        println("sql " + sql)
 
         res = cn.rows(sql.toString())
         return [res:res]
@@ -1313,7 +1293,7 @@ class ProcesoController extends cratos.seguridad.Shield {
             println "sql: $sql"
             data = cn.firstRow(sql.toString())
         }
-
+        println "saldo: ${data?.sldo}"
         return[proceso: proceso, saldo: data?.sldo]
     }
 
