@@ -17,7 +17,7 @@
                  title="Numeración Emisión" value="${proceso?.facturaPuntoEmision?:emsn}"/>
 
     <g:textField name="serie" id="serie" value="${proceso?.facturaSecuencial?:nmro}" maxlength="9"
-                 class="form-control required validacionNumero" readonly="${proceso?.estado == 'R' ? true : false}"
+                 class="form-control required validacionNumeroSinPuntos" readonly="${proceso?.estado == 'R' ? true : false}"
                  style="width: 120px; display: inline"/>
     <p class="help-block ui-helper-hidden" id="error_serie"></p>
 </div>
@@ -25,8 +25,36 @@
 
 
 <script type="text/javascript">
+
+
+
+    function validarNumSinPuntos(ev) {
+        /*
+         48-57      -> numeros
+         96-105     -> teclado numerico
+         188        -> , (coma)
+         190        -> . (punto) teclado
+         110        -> . (punto) teclado numerico
+         8          -> backspace
+         46         -> delete
+         9          -> tab
+         37         -> flecha izq
+         39         -> flecha der
+         */
+        return ((ev.keyCode >= 48 && ev.keyCode <= 57) ||
+        (ev.keyCode >= 96 && ev.keyCode <= 105) ||
+        ev.keyCode == 8 || ev.keyCode == 46 || ev.keyCode == 9 ||
+        ev.keyCode == 37 || ev.keyCode == 39 );
+    }
+
+    $(".validacionNumeroSinPuntos").keydown(function (ev) {
+        return validarNumSinPuntos(ev);
+    }).keyup(function () {
+    });
+
+
     $("#libretin").change(function () {
-        console.log('libretin..')
+//        console.log('libretin..')
         var idLibretin = $("#libretin option:selected").val();
         $.ajax({
             type: 'POST',
@@ -46,7 +74,7 @@
     });
 
     $("#serie").change(function () {
-        console.log('serie--libretin..')
+//        console.log('serie--libretin..')
         var idLibretin = $("#libretin option:selected").val();
         $.ajax({
             type: 'POST',

@@ -273,6 +273,12 @@
                                     bootbox.alert("Ingrese un valor distinto a cero")
                                     return false;
                                 } else {
+
+                                    if($("#valorAsientoDebe").val().split('.').length - 1 > 1 || $("#valorAsientoHaber").val().split('.').length - 1 > 1) {
+                                        bootbox.alert("El número ingresado no es válido!")
+                                        return false;
+                                    }
+
                                     if ($("#idCuentaNueva").val()) {
                                         openLoader("Guardando..");
                                         $.ajax({
@@ -382,33 +388,39 @@
                                     bootbox.alert("Ingrese un valor distinto a cero");
                                     return false;
                                 } else {
-                                    openLoader("Guardando..");
-                                    $.ajax({
-                                        type: 'POST',
-                                        url: '${createLink(controller: 'proceso', action: 'guardarAuxiliar_ajax')}',
-                                        data: {
-                                            asiento: idAsiento,
-                                            debe: $("#valorPagar").val(),
-                                            haber: $("#valorCobrar").val(),
-                                            comprobante: '${comprobante?.id}',
-                                            tipoPago: $("#tipoPago").val(),
-                                            fechaPago: $(".fechaPago").val(),
-                                            proveedor: $("#proveedor").val(),
-                                            descripcion: $("#descripcionAux").val(),
-                                            auxiliar: idAuxiliar,
-                                            documento: $("#referencia").val()
-                                        },
-                                        success: function (msg) {
-                                            if (msg == 'ok') {
-                                                log("Auxiliar contable guardado correctamente", "success");
-                                                cargarComprobante('${proceso?.id}');
-                                                closeLoader();
-                                            } else {
-                                                log("Error al guardar el auxiliar contable", "error");
-                                                closeLoader();
+
+                                    if($("#valorPagar").val().split('.').length - 1 > 1 || $("#valorCobrar").val().split('.').length - 1 > 1) {
+                                        bootbox.alert("El número ingresado no es válido!");
+                                        return false;
+                                    }else{
+                                        openLoader("Guardando..");
+                                        $.ajax({
+                                            type: 'POST',
+                                            url: '${createLink(controller: 'proceso', action: 'guardarAuxiliar_ajax')}',
+                                            data: {
+                                                asiento: idAsiento,
+                                                debe: $("#valorPagar").val(),
+                                                haber: $("#valorCobrar").val(),
+                                                comprobante: '${comprobante?.id}',
+                                                tipoPago: $("#tipoPago").val(),
+                                                fechaPago: $(".fechaPago").val(),
+                                                proveedor: $("#proveedor").val(),
+                                                descripcion: $("#descripcionAux").val(),
+                                                auxiliar: idAuxiliar,
+                                                documento: $("#referencia").val()
+                                            },
+                                            success: function (msg) {
+                                                if (msg == 'ok') {
+                                                    log("Auxiliar contable guardado correctamente", "success");
+                                                    cargarComprobante('${proceso?.id}');
+                                                    closeLoader();
+                                                } else {
+                                                    log("Error al guardar el auxiliar contable", "error");
+                                                    closeLoader();
+                                                }
                                             }
-                                        }
-                                    });
+                                        });
+                                    }
                                 }
                             }
                         }

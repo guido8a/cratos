@@ -87,7 +87,7 @@
 
     <div class="col-xs-1 camposTexto">
         <b>Cant.</b>
-        <g:textField name="cantidad_name" id="cantidadItem" class="form-control number canti" value=""
+        <g:textField name="cantidad_name" id="cantidadItem" class="form-control validacionNumeroSinPuntos canti" value=""
                      style="text-align: right"/>
     </div>
     <g:if test="${proceso?.tipoProceso?.codigo?.trim() != 'T'}">
@@ -150,6 +150,30 @@
 </div>
 
 <script type="text/javascript">
+
+    function validarNumSinPuntos(ev) {
+        /*
+         48-57      -> numeros
+         96-105     -> teclado numerico
+         188        -> , (coma)
+         190        -> . (punto) teclado
+         110        -> . (punto) teclado numerico
+         8          -> backspace
+         46         -> delete
+         9          -> tab
+         37         -> flecha izq
+         39         -> flecha der
+         */
+        return ((ev.keyCode >= 48 && ev.keyCode <= 57) ||
+        (ev.keyCode >= 96 && ev.keyCode <= 105) ||
+        ev.keyCode == 8 || ev.keyCode == 46 || ev.keyCode == 9 ||
+        ev.keyCode == 37 || ev.keyCode == 39 );
+    }
+
+    $(".validacionNumeroSinPuntos").keydown(function (ev) {
+        return validarNumSinPuntos(ev);
+    }).keyup(function () {
+    });
 
     $("#codigoItem").dblclick(function () {
         buscarItem();
