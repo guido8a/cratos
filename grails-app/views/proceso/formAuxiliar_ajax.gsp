@@ -40,10 +40,10 @@
 
 <div class="row">
     <div class="col-md-2">
-        <label>Documento:</label>
+        <label>Factura: </label>
     </div>
     <div class="col-md-4">
-        <g:textField name="referencia_name" id="referencia" class="form-control" value="${auxiliar?.documento ?: ''}"/>
+        <g:textField name="factura_name" id="facturaAuxiliar" class="form-control ${band2 ? 'required' : ''}" value="${auxiliar?.factura ?: ''}"/>
     </div>
 
     <div class="col-md-2">
@@ -63,6 +63,15 @@
     <div class="col-md-3">
         <g:select name="tipo_name" from="${cratos.TipoDocumentoPago.list().sort{it.descripcion}}" optionKey="id" optionValue="descripcion"
                   id="tipoPago" class="form-control" style="width: 400px" value="${auxiliar?.tipoDocumentoPago?.id}"/>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-2">
+        <label>Documento:</label>
+    </div>
+    <div class="col-md-9">
+        <g:textField name="referencia_name" id="referencia" class="form-control" value="${auxiliar?.documento ?: ''}"/>
     </div>
 </div>
 
