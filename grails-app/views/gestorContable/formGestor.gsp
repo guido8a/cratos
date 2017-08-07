@@ -32,6 +32,9 @@
     }
     </style>
 
+    <script src="${resource(dir: 'js/plugins/Toggle-Button-Checkbox/js', file: 'bootstrap-checkbox.js')}"></script>
+
+
 </head>
 
 <body>
@@ -134,24 +137,33 @@
                           optionValue="descripcion"
                           class="form-control required col-md-3" id="fuenteGestor" />
             </div>
-            %{--<div class="col-xs-1 negrilla">--}%
-            %{--</div>--}%
-            <div class="col-xs-2 negrilla">
-                Tipo de proceso:
-            </div>
 
-            <div class="col-xs-2 negrilla">
-                <g:select class="form-control required cmbRequired tipoProcesoSel" name="tipoProceso" id="tipoProceso"
-                          from="${cratos.TipoProceso.list(sort: 'codigo')}" label="Proceso tipo: "
-                          value="${gestorInstance?.tipoProceso?.id}" optionKey="id"
-                          optionValue="descripcion" title="Tipo de proceso o transacción" disabled="${gestorInstance?.estado == 'R'  ? true : false}"/>
-            </div>
             <div class="col-xs-1 negrilla">
                 Tipo:
             </div>
 
             <div class="col-xs-2 negrilla" style="margin-left: 0">
                 <g:select class="form-control required tipoD" from="${tipo}" optionValue="value" optionKey="key" name="tipoD_name" value="${gestorInstance?.tipo}" disabled="${gestorInstance?.estado == 'R' ? true : false}" title="Tipo de Detalle"/>
+            </div>
+
+        </div>
+
+        <div class="fila">
+            <div class="col-xs-2 negrilla">
+                Tipo de proceso:
+            </div>
+
+            <div class="col-xs-3 negrilla">
+                <g:select class="form-control required cmbRequired tipoProcesoSel" name="tipoProceso" id="tipoProceso"
+                          from="${cratos.TipoProceso.list(sort: 'codigo')}" label="Proceso tipo: "
+                          value="${gestorInstance?.tipoProceso?.id}" optionKey="id"
+                          optionValue="descripcion" title="Tipo de proceso o transacción" disabled="${gestorInstance?.estado == 'R'  ? true : false}"/>
+            </div>
+            <div class="col-xs-3 negrilla hidden" id="divS">
+                Gestor para saldos iniciales:
+            </div>
+            <div class="col-xs-2 negrilla hidden" id="divSI">
+                <g:checkBox name="saldoIni_name" id="saldoIni" class="form-control salIni" data-on-Label="Si" checked="${gestorInstance?.codigo == 'SLDO' ?: false}"/>
             </div>
 
         </div>
@@ -235,6 +247,30 @@
 
 
 <script type="text/javascript">
+
+    cargarCheck($(".tipoProcesoSel option:selected").val())
+
+    $(".tipoProcesoSel").change(function () {
+        var sel = $(this).val()
+        cargarCheck(sel)
+    });
+
+    function cargarCheck (seleccionado) {
+        if(seleccionado == '3'){
+            $("#divS").removeClass('hidden')
+            $("#divSI").removeClass('hidden')
+        }else{
+            $("#divS").addClass('hidden')
+            $("#divSI").addClass('hidden')
+        }
+
+    }
+
+    $(function() {
+        $("#saldoIni").checkboxpicker({
+        });
+    });
+
 
     $("#btnRegistrar").click(function () {
         bootbox.dialog({
@@ -370,7 +406,8 @@
                 observacion: observacion,
                 fuente: fuente,
                 tipoProceso:  $(".tipoProcesoSel option:selected").val(),
-                tipo:  $(".tipoD option:selected").val()
+                tipo:  $(".tipoD option:selected").val(),
+                saldoInicial: $(".salIni").prop('checked')
             },
             success: function (msg) {
                 var parts = msg.split("_");

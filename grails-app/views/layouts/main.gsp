@@ -88,6 +88,7 @@
         <link href='${resource(dir: 'css', file: 'buscador.css')}' rel='stylesheet'>
         %{--<link href='${resource(dir: '/js/plugins/homeycombs/css', file: 'homeycombs.css')}' rel='stylesheet'>--}%
 
+
         <script type="text/javascript">
             var spinner24Url = "${resource(dir:'images/spinners', file:'spinner_24.GIF')}";
             var spinner64Url = "${resource(dir:'images/spinners', file:'spinner_64.GIF')}";

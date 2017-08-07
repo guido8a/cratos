@@ -17,6 +17,8 @@ import java.sql.Connection
 
 import org.apache.poi.ss.usermodel.Row
 
+import java.text.DecimalFormat
+import java.text.NumberFormat
 
 
 class ProcesoController extends cratos.seguridad.Shield {
@@ -48,7 +50,7 @@ class ProcesoController extends cratos.seguridad.Shield {
 
     /** actualiza los valores de proceso a los totales de detalle **/
     def actlProceso = {
-        println "actlProceso $params"
+//        println "actlProceso $params"
         def proceso = Proceso.get(params.id)
         def cn = dbConnectionService.getConnection()
 
@@ -280,7 +282,7 @@ class ProcesoController extends cratos.seguridad.Shield {
 
     def registrar = {
         if (request.method == 'POST') {
-            println "registrar " + params
+//            println "registrar " + params
             def proceso = Proceso.get(params.id)
             if (proceso.estado == "R") {
                 render("El proceso ya ha sido registrado previamente")
@@ -1777,6 +1779,7 @@ class ProcesoController extends cratos.seguridad.Shield {
         def centro = CentroCosto.get(params.centro)
         def centroEspe = AsientoCentro.findByAsientoAndCentroCosto(asiento,centro)
         def asientoCentro
+        params.valor = params.valor.replaceAll(',','')
         if(centroEspe){
           asientoCentro = AsientoCentro.get(centroEspe.id)
             if(params.tipo == '1'){

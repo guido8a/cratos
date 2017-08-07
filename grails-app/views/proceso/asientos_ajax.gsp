@@ -1,3 +1,4 @@
+<%@ page import="cratos.AsientoCentro" %>
 <style type="text/css">
     .colorAtras {
         background-color: #dfa58f;
@@ -32,9 +33,7 @@
 
 
 <div class="col-md-7 etiqueta"><label>Comprobante:</label> ${comprobante?.descripcion}</div>
-
 <div class="col-md-3 etiqueta"><label>Tipo:</label> ${comprobante?.tipo?.descripcion}</div>
-
 <div class="col-md-2 etiqueta"><label>Número:</label> ${comprobante?.prefijo}${comprobante?.numero}</div>
 
 <g:if test="${comprobante?.registrado != 'S'}">
@@ -50,7 +49,8 @@
     <thead>
     <tr>
         <th width="100px">Asiento</th>
-        <th width="570px">Nombre</th>
+        <th width="520px">Nombre</th>
+        <th width="50px">CC</th>
         <th width="100px">DEBE</th>
         <th width="100px">HABER</th>
         <th width="145px"><i class="fa fa-pencil"></i></th>
@@ -65,12 +65,12 @@
             <g:set var="sumadebe" value="${0.0}"/>
             <g:set var="sumahber" value="${0.0}"/>
             <g:each in="${asientos}" var="asiento">
-                %{--<g:if test="${asiento.comprobante == comprobante}">--}%
                 <g:set var="sumadebe" value="${sumadebe + asiento.debe}"/>
                 <g:set var="sumahber" value="${sumahber + asiento.haber}"/>
                     <tr class="colorAsiento">
                         <td width="100px">${asiento?.cuenta?.numero}</td>
-                        <td width="570px">${asiento?.cuenta?.descripcion}</td>
+                        <td width="520px">${asiento?.cuenta?.descripcion}</td>
+                        <td width="50px">${cratos.AsientoCentro.findAllByAsiento(asiento) ? cratos.AsientoCentro.findAllByAsiento(asiento)?.first()?.centroCosto?.codigo : ''}</td>
                         <td width="100px"
                             class="derecha">${asiento.debe ? g.formatNumber(number: asiento.debe, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2) : 0.00}</td>
                         <td width="100px"
@@ -107,6 +107,7 @@
                             <tr>
                                 <td class="colorAtras">Fecha</td>
                                 <td class="colorAtras">Proveedor</td>
+                                <td class="colorAtras"></td>
                                 <td class="colorAtras">Debe</td>
                                 <td class="colorAtras">Haber</td>
                                 <td class="colorAtras"><i class="fa fa-pencil"></i></td>
@@ -114,11 +115,10 @@
                             </tr>
                             </g:if>
                             <tr class="colorAtras">
-                                %{--<g:set var="dcmt" value="${auxiliar?.comprobante?.proceso?.documento? ' - Doc: ' + auxiliar?.documento : ''}"/>--}%
                                 <g:set var="dcmt" value="${auxiliar?.documento? ' - Doc: ' + auxiliar?.documento : ''}"/>
                                 <td class="dato">${auxiliar?.fechaPago?.format("dd-MM-yyyy")}</td>
-                                %{--<td class="dato">${auxiliar?.proveedor?.nombre} - ${auxiliar?.documento}</td>--}%
                                 <td class="dato izquierda">${auxiliar?.proveedor?.nombre} ${dcmt}</td>
+                                <td class="dato izquierda"></td>
                                 <td class="dato derecha">${auxiliar?.debe ? g.formatNumber(number: auxiliar.debe, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2) : 0.00}</td>
                                 <td class="dato derecha">${auxiliar.haber ? g.formatNumber(number: auxiliar.haber, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2) : 0.00}</td>
 
@@ -143,7 +143,7 @@
                 %{--</g:if>--}%
             </g:each>
             <tr class="colorAsiento">
-                <td colspan="2" class="total derecha">Totales del asiento</td>
+                <td colspan="3" class="total derecha">Totales del asiento</td>
                 <td class="total derecha">${Math.round(sumadebe*100)/100}</td>
                 <td class="total derecha">${Math.round(sumahber*100)/100}</td>
                 <td class="total derecha">Dif: ${Math.round((sumadebe - sumahber)*100)/100}</td>

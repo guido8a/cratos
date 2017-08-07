@@ -146,20 +146,7 @@ class CentroCostoController extends cratos.seguridad.Shield {
 
 //        println("params:" + params)
 
-//        params.each { k, v ->
-//            if (v != "date.struct" && v instanceof java.lang.String) {
-//                params[k] = v.toUpperCase()
-//            }
-//        }
-
-        //nuevo
-
-        def persona
-
-//        params.descripcion = params.descripcion.toUpperCase()
-//        params.codigo = params.codigo.toUpperCase()
           params.empresa = session.empresa
-
 
         //original
         def centroCostoInstance = new CentroCosto()
@@ -174,12 +161,10 @@ class CentroCostoController extends cratos.seguridad.Shield {
 
             centroCostoInstance = new CentroCosto()
             centroCostoInstance.properties = params
-//            centrocostoInstance.estado = '1'
-//            centroCostoInstance.empresa = session.empresa
-
 
         } //update
 
+        centroCostoInstance.codigo = params.codigo.toUpperCase()
 
         if (!centroCostoInstance.save(flush: true)) {
             def msg = "NO_No se pudo ${params.id ? 'actualizar' : 'crear'} Centro de Costos."

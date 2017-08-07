@@ -369,6 +369,7 @@ class GestorContableController extends cratos.seguridad.Shield {
         def gestor
         def fuente = Fuente.get(params.fuente)
         def empresa = session.empresa
+        def tipoProceso = TipoProceso.get(params.tipoProceso)
 
         if(params.gestor){
             gestor = Gestor.get(params.gestor)
@@ -380,11 +381,19 @@ class GestorContableController extends cratos.seguridad.Shield {
         }
 
         gestor.nombre = params.nombre
-        gestor.tipoProceso = TipoProceso.get(params.tipoProceso)
+        gestor.tipoProceso = tipoProceso
+        if(tipoProceso.codigo.trim() == 'A'){
+            if(params.saldoInicial == 'true'){
+                gestor.codigo = 'SLDO'
+            }else{
+                gestor.codigo = null
+            }
+        }else{
+            gestor.codigo = null
+        }
         gestor.observaciones = params.observacion
         gestor.fuente = fuente
         gestor.tipo = params.tipo
-
 
         try{
            gestor.save(flush: true)

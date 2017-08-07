@@ -13,14 +13,9 @@
                 <label for="empresa" class="col-md-2 control-label text-info">
                     Empresa
                 </label>
-
                 <div class="col-md-6">
-                    %{--<g:select id="empresa" name="empresa.id" from="${cratos.Empresa.list()}" optionKey="id" required=""--}%
-                              %{--value="${centroCostoInstance?.empresa?.id}" class="many-to-one form-control"/>--}%
                     <g:textField name="empresa" class="form-control" value="${session.empresa}" readonly="true"/>
-
                 </div>
-
             </span>
         </div>
 
@@ -33,6 +28,20 @@
                 <div class="col-md-6">
                     <g:textField name="nombre" maxlength="127" required="" class="form-control required"
                                  value="${centroCostoInstance?.nombre}"/>
+                </div>
+                *
+            </span>
+        </div>
+
+        <div class="form-group ${hasErrors(bean: centroCostoInstance, field: 'codigo', 'error')} required">
+            <span class="grupo">
+                <label for="codigo" class="col-md-2 control-label text-info">
+                    Código
+                </label>
+
+                <div class="col-md-6">
+                    <g:textField name="codigo" maxlength="3" required="" class="form-control required allCaps"
+                                 value="${centroCostoInstance?.codigo}"/>
                 </div>
                 *
             </span>

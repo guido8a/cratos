@@ -17,16 +17,16 @@
             <i class="fa fa-file-o"></i> Crear
         </g:link>
     </div>
-    <div class="btn-group pull-right col-md-3">
-        <div class="input-group">
-            <input type="text" class="form-control" placeholder="Buscar">
-            <span class="input-group-btn">
-                <a href="#" class="btn btn-default" type="button">
-                    <i class="fa fa-search"></i>&nbsp;
-                </a>
-            </span>
-        </div><!-- /input-group -->
-    </div>
+    %{--<div class="btn-group pull-right col-md-3">--}%
+        %{--<div class="input-group">--}%
+            %{--<input type="text" class="form-control" placeholder="Buscar">--}%
+            %{--<span class="input-group-btn">--}%
+                %{--<a href="#" class="btn btn-default" type="button">--}%
+                    %{--<i class="fa fa-search"></i>&nbsp;--}%
+                %{--</a>--}%
+            %{--</span>--}%
+        %{--</div><!-- /input-group -->--}%
+    %{--</div>--}%
 </div>
 
 <div class="vertical-container vertical-container-list">
@@ -37,11 +37,9 @@
         <thead>
         <tr>
 
-            <th>Empresa</th>
-
-            <g:sortableColumn property="nombre" title="Nombre" />
-
-            <th width="110">Acciones</th>
+            <th style="width: 100px">Código</th>
+            <th style="width: 500px">Nombre</th>
+            <th style="width: 100px">Acciones</th>
         </tr>
         </thead>
         <tbody>
@@ -49,9 +47,9 @@
             <g:each in="${centroCostoInstanceList}" status="i" var="centroCostoInstance">
                 <g:if test="${centroCostoInstance.empresa.id == session.empresa.id}">
                     <tr data-id="${centroCostoInstance.id}">
-                        <td>${fieldValue(bean: centroCostoInstance, field: "empresa")}</td>
+                        <td>${fieldValue(bean: centroCostoInstance, field: "codigo")}</td>
                         <td>${fieldValue(bean: centroCostoInstance, field: "nombre")}</td>
-                        <td>
+                        <td style="text-align: center">
                             <a href="#" data-id="${centroCostoInstance.id}" class="btn btn-info btn-sm btn-show btn-ajax" title="Ver">
                                 <i class="fa fa-laptop"></i>
                             </a>
@@ -69,12 +67,9 @@
         <g:else>
             <g:each in="${centroCostoInstanceList}" status="i" var="centroCostoInstance">
                 <tr data-id="${centroCostoInstance.id}">
-
-                    <td>${fieldValue(bean: centroCostoInstance, field: "empresa")}</td>
-
+                    <td>${fieldValue(bean: centroCostoInstance, field: "codigo")}</td>
                     <td>${fieldValue(bean: centroCostoInstance, field: "nombre")}</td>
-
-                    <td>
+                    <td style="text-align: center">
                         <a href="#" data-id="${centroCostoInstance.id}" class="btn btn-info btn-sm btn-show btn-ajax" title="Ver">
                             <i class="fa fa-laptop"></i>
                         </a>
@@ -109,7 +104,9 @@
                     var parts = msg.split("_");
                     log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
                     if (parts[0] == "OK") {
-                        location.reload(true);
+                        setTimeout(function () {
+                            location.reload(true);
+                        }, 1000);
                     } else {
                         closeLoader();
                         spinner.replaceWith($btn);
@@ -124,7 +121,7 @@
     function deleteRow(itemId) {
         bootbox.dialog({
             title   : "Alerta",
-            message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea eliminar el Centro de Costo seleccionado? Esta acción no se puede deshacer.</p>",
+            message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea eliminar el Centro de Costos seleccionado? Esta acción no se puede deshacer.</p>",
             buttons : {
                 cancelar : {
                     label     : "Cancelar",
@@ -147,7 +144,9 @@
                                 var parts = msg.split("_");
                                 log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
                                 if (parts[0] == "OK") {
-                                    location.reload(true);
+                                    setTimeout(function () {
+                                        location.reload(true);
+                                    }, 1000);
                                 } else {
                                     closeLoader();
                                     spinner.replaceWith($btn);
@@ -170,7 +169,7 @@
             success : function (msg) {
                 var b = bootbox.dialog({
                     id      : "dlgCreateEdit",
-                    title   : title + " Centro de Costo",
+                    title   : title + " Centro de Costos",
                     message : msg,
                     buttons : {
                         cancelar : {
@@ -213,7 +212,7 @@
                 },
                 success : function (msg) {
                     bootbox.dialog({
-                        title   : "Ver Centro de Costo",
+                        title   : "Ver Centro de Costos",
                         message : msg,
                         buttons : {
                             ok : {

@@ -147,8 +147,6 @@
         <div class="linea"></div>
 
         <input type="hidden" name="id" value="${proceso?.id}" id="idProceso"/>
-        %{--<input type="hidden" name="empleado.id" value="${session.usuario.id}"/>--}%
-        %{--<input type="hidden" name="periodoContable.id" value="${session?.contabilidad?.id}"/>--}%
         <input type="hidden" name="data" id="data"/>
         <div class="row">
             <div class="col-xs-2 negrilla">
@@ -168,7 +166,7 @@
             </div>
 
             <div class="col-xs-1 negrilla">
-                Fecha de registro:
+                Fecha<br>Registro:
             </div>
 
             <div class="col-xs-2">
@@ -183,17 +181,26 @@
                 </g:else>
             </div>
 
+            <div class="col-xs-1 negrilla">
+                Estable-<br>cimiento:
+            </div>
 
-            <div class="col-xs-2 negrilla">
+            <div class="col-xs-1 negrilla">
+                <g:textField name="establecimiento_name" id="establecimientoNuevo" class="form-control required" maxlength="3" value="${proceso?.establecimiento}" disabled="${proceso?.estado == 'R' ?: false}"/>
+            </div>
+
+            <div class="col-xs-1 negrilla">
                 Tipo de transacción:
             </div>
 
-            <div class="col-xs-3 negrilla">
+            <div class="col-xs-2 negrilla">
                 <g:select class="form-control required cmbRequired tipoProcesoSel ${proceso ? '' : 'hidden'}" name="tipoProceso" id="tipoProceso"
                           from="${cratos.TipoProceso.list(sort: 'codigo')}" label="Proceso tipo: "
                           value="${proceso?.tipoProceso?.id}" optionKey="id"
-                          optionValue="descripcion" title="Tipo de la transacción" disabled="${(proceso?.estado == 'R') ? true : false}" />
+                          optionValue="descripcion" title="Tipo de la transacción" disabled="${proceso?.estado == 'R' ?: false}" />
             </div>
+
+
 
 
         </div>
@@ -211,7 +218,7 @@
 
             <div class="col-xs-10 negrilla">
                 <g:textField name="descripcion" id="descripcion" value="${proceso?.descripcion}" maxlength="255"
-                             class="form-control required" readonly="${(proceso?.estado == 'R') ? true : false}" />
+                             class="form-control required" readonly="${proceso?.estado == 'R' ?: false}" />
             </div>
         </div>
         <div class="row hidden" id="bodegas">
@@ -223,7 +230,7 @@
                 <g:select class="form-control required cmbRequired tipoProcesoSel" name="bodega" id="bodega"
                           from="${cratos.inventario.Bodega.list(sort: 'descripcion')}" label="Bodega"
                           value="${proceso?.bodega?.id}" optionKey="id"
-                          optionValue="descripcion" title="Bodega que entrega" disabled="${(proceso?.estado == 'R') ? true : false}" />
+                          optionValue="descripcion" title="Bodega que entrega" disabled="${proceso?.estado == 'R' ?: false}" />
             </div>
             <div class="col-xs-2 negrilla" style="text-align: right">
                 Bodega que recibe:
@@ -242,7 +249,7 @@
             <div class="col-xs-3">
                 <g:select class="form-control" name="pago"
                           from="${['01': '01 - PAGO A RESIDENTE', '02': '02 - PAGO A NO RESIDENTE']}" optionKey="key"
-                          optionValue="value" value="${proceso?.pago}" disabled="${(proceso?.estado == 'R') ? true : false}"/>
+                          optionValue="value" value="${proceso?.pago}" disabled="${proceso?.estado == 'R' ?: false}"/>
             </div>
 
             <div class="exterior col-xs-12" hidden="hidden" style="margin-top: 20px">
@@ -255,7 +262,7 @@
                             <g:select class="form-control" style="margin-left: -30px; width: 230px"
                                       name="pais" from="${cratos.sri.Pais.list([sort: 'nombre'])}"
                                       optionKey="id" optionValue="nombre" value="${proceso?.pais?.id}"
-                                      disabled="${(proceso?.estado == 'R') ? true : false}"/>
+                                      disabled="${proceso?.estado == 'R' ?: false}"/>
                         </div>
                         <div class="col-xs-4">
                             <label style="margin-left: 50px">Aplica convenio de doble tributación?</label> <br/>
@@ -593,11 +600,11 @@
         }
     });
 
-    $("#tipoComprobante").change(function () {
+//    $("#tipoComprobante").change(function () {
 //        console.log("cambia tpcp")
 //        console.log("cambia tpcp", $("#tipoComprobante").val())
 //        cargarTipo( $(".tipoProcesoSel option:selected").val(), $("#tipoComprobante").val() );
-    });
+//    });
 
 
     function cargaGestor(tipo) {
@@ -802,6 +809,7 @@
             var info = ""
             var tipoP = $(".tipoProcesoSel option:selected").val();
 
+
             $("#listaErrores").html('');
             $("#divErrores").hide();
 
@@ -858,7 +866,7 @@
                 }
             }
 
-            if (tipoP == '2') {   /* compras */
+            if (tipoP == '2') {   /* ventas */
                 if ($("#fecha_input").val().length < 10) {
                     error += "<li>Seleccione la fecha de emisión</li>"
                 }
@@ -921,10 +929,6 @@
             }
 
             if (tipoP == '6' || tipoP == '7') {   /* Nota de crédito y débito */
-//
-//                if (isNaN(parseFloat($("#comprobanteSaldo").val()))) {
-//                    error += "<li>No hay comprobante, seleccione uno</li>"
-//                }
 
                 if ($("#iva12").val() == 0 && $("#iva0").val() == 0 && $("#noIva").val() == 0) {
                     error += "<li>Ingrese valores en la base imponible</li>"
@@ -962,6 +966,13 @@
                     error += "<li>Revise el número de de la Nota de Crédito</li>"
                 }
             }
+
+
+
+            if(!$("#establecimientoNuevo").val()){
+                error += "<li>Ingrese un número de establecimiento</li>"
+            }
+
 
             if (error != "") {
                 $("#listaErrores").append(error)
@@ -1120,42 +1131,6 @@
             }
         }
     }
-
-
-
-    /*
-     $("#procesoForm").validate({
-     errorClass: "help-block",
-     errorPlacement: function (error, element) {
-     if (element.parent().hasClass("input-group")) {
-     error.insertAfter(element.parent());
-     } else {
-     error.insertAfter(element);
-     }
-     element.parents(".grupo").addClass('has-error');
-     },
-     success: function (label) {
-     label.parents(".grupo").removeClass('has-error');
-     },
-     rules: {
-     serie: {
-     remote: {
-     type: 'POST',
-    %{--url: "${createLink(controller: 'proceso', action: 'valSerieFactura_ajax')}",--}%
-     data: {
-     fcdt: $("#libretin").val(),
-    %{--id  : "${proceso?.id}"--}%
-     }
-     }
-     }
-     },
-     messages: {
-     serie : {
-     remote : "Número de comprobante no válido!"
-     }
-     }
-     });
-     */
 
     $(".fechaE").change(function () {
         revisarFecha();
