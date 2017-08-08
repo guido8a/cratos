@@ -2,7 +2,6 @@ package cratos.sri
 
 class TipoIdentificacion implements Serializable {
 
-    String tipoAnexo
     String codigo
     String descripcion
     String codigoSri
@@ -16,7 +15,6 @@ class TipoIdentificacion implements Serializable {
         id generator: 'identity'
         version false
         columns {
-            tipoAnexo column: 'tpidtpax'
             codigo column: 'tpidcdgo'
             descripcion column: 'tpiddscr'
             codigoSri column: 'tpidcdsr'
@@ -25,7 +23,6 @@ class TipoIdentificacion implements Serializable {
     static constraints = {
         codigo(size: 1..4, blank: false, attributes: [title: 'codigo'])
         descripcion(blank: false, maxSize: 63, attributes: [title: 'Identificción principal'])
-        tipoAnexo(maxSize: 2, inList: ["c", "v", "cv"], blank: true)
         codigoSri(maxSize: 2, blank: true, nullable: true)
     }
 }
