@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: gato
-  Date: 16/05/17
-  Time: 11:21
---%>
-
 <div class="row">
     <div class="col-md-2">
         <label>Cuenta:</label>
@@ -43,34 +36,40 @@
         <label>Factura: </label>
     </div>
     <div class="col-md-4">
-        <g:textField name="factura_name" id="facturaAuxiliar" class="form-control ${band2 ? 'required' : ''}" value="${auxiliar?.factura ?: ''}"/>
+        <g:textField name="factura_name" id="facturaAuxiliar" class="form-control ${band2 ? 'required' : ''}"
+                     value="${auxiliar?.factura ?: ''}" minlength="17" maxlength="17"/>
     </div>
+</div>
 
+
+<div class="row">
     <div class="col-md-2">
         <label>Fecha de Pago:</label>
     </div>
     <div class="col-md-4">
+        %{--
+                <elm:datepicker name="fechapago_name" title="Fecha de pago" class="datepicker form-control required fechaPago"
+                                value="${auxiliar?.fechaPago ?: new java.util.Date().format("dd-MM-yyyy")}"/>
+        --}%
         <elm:datepicker name="fechapago_name" title="Fecha de pago" class="datepicker form-control required fechaPago"
-                        value="${auxiliar?.fechaPago ?: new java.util.Date().format("dd-MM-yyyy")}"/>
+                        value="${auxiliar?.fechaPago}"/>
     </div>
-</div>
 
-
-<div class="row">
     <div class="col-md-2">
         <label>Forma de Pago:</label>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-4">
         <g:select name="tipo_name" from="${cratos.TipoDocumentoPago.list().sort{it.descripcion}}" optionKey="id" optionValue="descripcion"
-                  id="tipoPago" class="form-control" style="width: 400px" value="${auxiliar?.tipoDocumentoPago?.id}"/>
+                  id="tipoPago" class="form-control" value="${auxiliar?.tipoDocumentoPago?.id}"
+                  noSelection="${['-1': 'Seleccione...']}"/>
     </div>
 </div>
 
 <div class="row">
-    <div class="col-md-2">
-        <label>Documento:</label>
+    <div class="col-md-4">
+        <label>Documento de Pago:</label>
     </div>
-    <div class="col-md-9">
+    <div class="col-md-5">
         <g:textField name="referencia_name" id="referencia" class="form-control" value="${auxiliar?.documento ?: ''}"/>
     </div>
 </div>
@@ -80,18 +79,18 @@
         <label>Valor:</label>
     </div>
     <div class="col-md-10">
-        <div class="col-md-2">Debe</div>
-        <div class="col-md-3">
+        <div class="col-md-2">Debe (CxC)</div>
+        <div class="col-md-4">
             %{--<g:textField type="number" name="valorAuxiliarP_name" id="valorPagar" readonly="${auxiliar ? true : false}" --}%
             <g:textField type="number" name="valorAuxiliarP_name" id="valorPagar"
-                         class="validacionNumero form-control valorP" placeholder="${auxiliar ? auxiliar?.debe : maximoDebe}"
-                         style="width: 90px;" value="${auxiliar ? auxiliar?.debe : maximoDebe}" />
+                         class="validacionNumero form-control valorP required" placeholder="${auxiliar ? auxiliar?.debe : maximoDebe}"
+                         style="width: 120px;" value="${auxiliar ? auxiliar?.debe : maximoDebe}" />
         </div>
-        <div class="col-md-2">Haber</div>
-        <div class="col-md-3">
+        <div class="col-md-2">Haber (CxP)</div>
+        <div class="col-md-4">
             <g:textField type="number" name="valorAuxiliarC_name" id="valorCobrar"
                          placeholder="${auxiliar ? auxiliar?.haber : maximoHaber}"
-                         class="validacionNumero form-control valorC" style="width: 90px;"
+                         class="validacionNumero form-control valorC required" style="width: 120px;"
                          value="${auxiliar ? auxiliar?.haber : maximoHaber}" />
         </div>
     </div>

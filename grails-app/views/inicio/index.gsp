@@ -251,7 +251,7 @@
         </li>
         <li class="hex">
             <div class="hexIn">
-                <a class="hexLink" href="${createLink(controller: 'gestorContable', action: 'index')}">
+                <a class="hexLink" href="${createLink(controller: 'gestorContable', action: 'buscarGstr')}">
                     <img src="${resource(dir: 'images',file: 'gestor1.png')}" alt=""  style="width: 100%; height: 100%" />
                     <h1>Gestor</h1>
                     <p>Gestor contable o procesos tipo</p>
