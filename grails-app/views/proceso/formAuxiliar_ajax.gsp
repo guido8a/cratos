@@ -35,26 +35,13 @@
     <div class="col-md-2">
         <label>Factura: </label>
     </div>
-    <div class="col-md-4">
-        <g:textField name="factura_name" id="facturaAuxiliar" class="form-control ${band2 ? 'required' : ''}"
-                     value="${auxiliar?.factura ?: ''}" minlength="17" maxlength="17"/>
+    <div class="col-md-10">
+        <g:select name="factura_name" id="facturaAuxiliar" from="${res}"
+                  optionKey="${{it.dcmt}}" optionValue="${{it.dcmt + ' - ' +  it.dscr + ' - $ ' + it.sldo}}" class="form-control" value="${auxiliar?.factura}"/>
     </div>
 </div>
 
-
 <div class="row">
-    <div class="col-md-2">
-        <label>Fecha de Pago:</label>
-    </div>
-    <div class="col-md-4">
-        %{--
-                <elm:datepicker name="fechapago_name" title="Fecha de pago" class="datepicker form-control required fechaPago"
-                                value="${auxiliar?.fechaPago ?: new java.util.Date().format("dd-MM-yyyy")}"/>
-        --}%
-        <elm:datepicker name="fechapago_name" title="Fecha de pago" class="datepicker form-control required fechaPago"
-                        value="${auxiliar?.fechaPago}"/>
-    </div>
-
     <div class="col-md-2">
         <label>Forma de Pago:</label>
     </div>
@@ -62,6 +49,14 @@
         <g:select name="tipo_name" from="${cratos.TipoDocumentoPago.list().sort{it.descripcion}}" optionKey="id" optionValue="descripcion"
                   id="tipoPago" class="form-control" value="${auxiliar?.tipoDocumentoPago?.id}"
                   noSelection="${['-1': 'Seleccione...']}"/>
+    </div>
+
+    <div class="col-md-2">
+        <label>Fecha de Pago:</label>
+    </div>
+    <div class="col-md-4">
+        <elm:datepicker name="fechapago_name" title="Fecha de pago" class="datepicker form-control required fechaPago"
+                        value="${auxiliar?.fechaPago}"/>
     </div>
 </div>
 
@@ -126,12 +121,12 @@
     });
 
     $(".valorP").keydown(function (ev) {
-        $(".valorC").val(0).prop('readonly', true)
+        $(".valorC").val(0).prop('disabled', true)
     }).keyup(function () {
     });
 
     $(".valorC").keydown(function (ev) {
-        $(".valorP").val(0).prop('readonly', true)
+        $(".valorP").val(0).prop('disabled', true)
     }).keyup(function () {
     });
 

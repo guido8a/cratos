@@ -956,33 +956,7 @@ class ProcesoController extends cratos.seguridad.Shield {
                 retencion.fechaEmision = new Date().parse("dd-MM-yyyy", fecha)
             }
             //detalle
-/*
-            def detalle = DetalleRetencion.findAllByRetencion(retencion)
-            detalle.each { det ->
-                if (det.cuenta.impuesto.sri == 'RNT') {
-                    det.porcentaje = params.porcentaje
-                    det.conceptoRetencionImpuestoRenta = params.concepto
-                    det.base = params.base
-                    det.total = params.valorRetenido
-                }
-                if (det.cuenta.impuesto.sri == 'ICE') {
-                    det.porcentaje = params.icePorcentaje.toDouble()
-                    det.base = params.iceBase.toDouble()
-                    det.total = params.valorRetenidoIce.toDouble()
-                }
-                if (det.cuenta.impuesto.sri == 'BNS') {
-                    det.porcentaje = params.bienesPorcentaje.toDouble()
-                    det.base = params.bienesBase.toDouble()
-                    det.total = params.valorRetenidoBienes.toDouble()
-                }
-                if (det.cuenta.impuesto.sri == 'SRV') {
-                    det.porcentaje = params.serviciosPorcentaje.toDouble()
-                    det.base = params.serviciosBase.toDouble()
-                    det.total = params.valorRetenidoServicios.toDouble()
-                } else {
-                }
-            }
-*/
+
             render "ok"
 //            println("ok")
 
@@ -1166,6 +1140,9 @@ class ProcesoController extends cratos.seguridad.Shield {
         def auxiliar
         def empresa = Empresa.get(session.empresa.id)
         def proveedores = Proveedor.findAllByEmpresa(empresa).sort{it.nombre}
+        def cn = dbConnectionService.getConnection()
+        def sql
+        def res
         def existentes
         def debeEx = 0
         def haberEx = 0
@@ -1193,9 +1170,11 @@ class ProcesoController extends cratos.seguridad.Shield {
 //            println("haber " + asiento.haber.toDouble())
             band = auxiliar?.asiento?.comprobante?.proceso?.tipoProceso?.codigo?.trim() == 'A' && auxiliar?.asiento?.comprobante?.proceso?.gestor?.codigo == 'SLDO'
             band2 = auxiliar?.asiento?.comprobante?.proceso?.tipoProceso?.codigo?.trim() == 'P' || auxiliar?.asiento?.comprobante?.proceso?.tipoProceso?.codigo?.trim() == 'I' || auxiliar?.asiento?.comprobante?.proceso?.tipoProceso?.codigo?.trim() == 'NC' || auxiliar?.asiento?.comprobante?.proceso?.tipoProceso?.codigo?.trim() == 'ND'
+            sql = "select * from porpagar(${auxiliar?.asiento?.comprobante?.proceso?.proveedor?.id})"
+            res = cn.rows(sql.toString())
             return [asiento: asiento, auxiliar: auxiliar, comprobante: comprobante, proveedores: proveedores,
                     maximoDebe: maximoDebe, maximoHaber: maximoHaber, totDebe: totDebe, totHaber: totHaber,
-                    band: band, band2: band2]
+                    band: band, band2: band2, res: res]
         } else {
             asiento = Asiento.get(params.asiento)
             existentes = Auxiliar.findAllByAsiento(asiento)
@@ -1209,13 +1188,15 @@ class ProcesoController extends cratos.seguridad.Shield {
 //            println("maximoHaber " + maximoHaber)
             band = asiento?.comprobante?.proceso?.tipoProceso?.codigo?.trim() == 'A' && asiento?.comprobante?.proceso?.gestor?.codigo == 'SLDO'
             band2 = asiento?.comprobante?.proceso?.tipoProceso?.codigo?.trim() == 'P' || asiento?.comprobante?.proceso?.tipoProceso?.codigo?.trim() == 'I' || asiento?.comprobante?.proceso?.tipoProceso?.codigo?.trim() == 'NC' || asiento?.comprobante?.proceso?.tipoProceso?.codigo?.trim() == 'ND'
+            sql = "select * from porpagar(${asiento?.comprobante?.proceso?.proveedor?.id})"
+            res = cn.rows(sql.toString())
             return [asiento: asiento, comprobante: comprobante, proveedores: proveedores, maximoDebe: maximoDebe,
-                    maximoHaber: maximoHaber, band: band, band2: band2]
+                    maximoHaber: maximoHaber, band: band, band2: band2, res: res]
         }
     }
 
     def guardarAuxiliar_ajax () {
-//        println("params " + params)
+//        println("params ga" + params)
         def asiento
         def comprobante = Comprobante.get(params.comprobante)
         def tipoPago = TipoDocumentoPago.get(params.tipoPago)

@@ -4,7 +4,7 @@
 <html>
     <head>
         <meta name="layout" content="main">
-        <title>Tipo de Identificación</title>
+        <title>Tipos de Identificación</title>
     </head>
     <body>
 
@@ -14,68 +14,34 @@
         <div class="btn-toolbar toolbar">
             <div class="btn-group">
                 <g:link action="form" class="btn btn-info btnCrear">
-                    <i class="fa fa-file-o"></i> Crear
+                    <i class="fa fa-file-o"></i> Nuevo Tipo
                 </g:link>
             </div>
-            <div class="btn-group pull-right col-md-3">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Buscar">
-                    <span class="input-group-btn">
-                        <a href="#" class="btn btn-default" type="button">
-                            <i class="fa fa-search"></i>&nbsp;
-                        </a>
-                    </span>
-                </div><!-- /input-group -->
-            </div>
         </div>
 
-        <div class="vertical-container vertical-container-list">
-            <p class="css-vertical-text">Tipo de Identificación</p>
-
-            <div class="linea"></div>
-            <table class="table table-condensed table-bordered table-striped table-hover">
-                <thead>
-                    <tr>
+        <table class="table table-condensed table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Descripción</th>
+                    <th>Código SRI</th>
+                </tr>
+            </thead>
+            <tbody>
+                <g:each in="${tipoIdentificacionInstanceList}" status="i" var="tipoIdentificacionInstance">
+                    <tr data-id="${tipoIdentificacionInstance.id}">
                         
-                        <g:sortableColumn property="codigo" title="Código" />
+                        <td>${fieldValue(bean: tipoIdentificacionInstance, field: "codigo")}</td>
                         
-                        <g:sortableColumn property="descripcion" title="Descripción" />
+                        <td>${fieldValue(bean: tipoIdentificacionInstance, field: "descripcion")}</td>
                         
-                        <g:sortableColumn property="tipoAnexo" title="Tipo de Anexo" />
+                        <td>${fieldValue(bean: tipoIdentificacionInstance, field: "codigoSri")}</td>
                         
-                        <g:sortableColumn property="codigoSri" title="Código SRI" />
-                        
-                        <th width="110">Acciones</th>
                     </tr>
-                </thead>
-                <tbody>
-                    <g:each in="${tipoIdentificacionInstanceList}" status="i" var="tipoIdentificacionInstance">
-                        <tr data-id="${tipoIdentificacionInstance.id}">
-                            
-                            <td>${fieldValue(bean: tipoIdentificacionInstance, field: "codigo")}</td>
-                            
-                            <td>${fieldValue(bean: tipoIdentificacionInstance, field: "descripcion")}</td>
-                            
-                            <td>${fieldValue(bean: tipoIdentificacionInstance, field: "tipoAnexo")}</td>
-                            
-                            <td>${fieldValue(bean: tipoIdentificacionInstance, field: "codigoSri")}</td>
-                            
-                            <td>
-                                <a href="#" data-id="${tipoIdentificacionInstance.id}" class="btn btn-info btn-sm btn-show btn-ajax" title="Ver">
-                                    <i class="fa fa-laptop"></i>
-                                </a>
-                                <a href="#" data-id="${tipoIdentificacionInstance.id}" class="btn btn-success btn-sm btn-edit btn-ajax" title="Editar">
-                                    <i class="fa fa-pencil"></i>
-                                </a>
-                                <a href="#" data-id="${tipoIdentificacionInstance.id}" class="btn btn-danger btn-sm btn-delete btn-ajax" title="Eliminar">
-                                    <i class="fa fa-trash-o"></i>
-                                </a>
-                            </td>
-                        </tr>
-                    </g:each>
-                </tbody>
-            </table>
-        </div>
+                </g:each>
+            </tbody>
+        </table>
+
         <elm:pagination total="${tipoIdentificacionInstanceCount}" params="${params}"/>
 
         <script type="text/javascript">
@@ -84,21 +50,19 @@
                 var $form = $("#frmTipoIdentificacion");
                 var $btn = $("#dlgCreateEdit").find("#btnSave");
                 if ($form.valid()) {
-                    $btn.replaceWith(spinner);
-                    openLoader("Grabando");
+                $btn.replaceWith(spinner);
                     $.ajax({
                         type    : "POST",
-                        url     : $form.attr("action"),
+                        url     : '${createLink(action:'save')}',
                         data    : $form.serialize(),
                             success : function (msg) {
-                        var parts = msg.split("_");
-                        log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
-                        if (parts[0] == "OK") {
-                            location.reload(true);
+                        if (msg == "OK") {
+                            log("Tipo de Identificación guardada correctamente","success");
+                            setTimeout(function () {
+                                location.reload(true);
+                            }, 1000);
                         } else {
-                            closeLoader();
-                            spinner.replaceWith($btn);
-                            return false;
+                            log("Error al guardar el Tipo de Identificación","error");
                         }
                     }
                 });
@@ -121,22 +85,20 @@
                             label     : "<i class='fa fa-trash-o'></i> Eliminar",
                             className : "btn-danger",
                             callback  : function () {
-                                openLoader("Eliminando");
                                 $.ajax({
                                     type    : "POST",
-                                    url     : '${createLink(action:'delete_ajax')}',
+                                    url     : '${createLink(action:'delete')}',
                                     data    : {
                                         id : itemId
                                     },
                                     success : function (msg) {
-                                        var parts = msg.split("_");
-                                        log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
-                                        if (parts[0] == "OK") {
-                                            location.reload(true);
+                                        if (msg == "OK") {
+                                            log("Tipo de Identificación borrada correctamente","success");
+                                            setTimeout(function () {
+                                                location.reload(true);
+                                            }, 1000);
                                         } else {
-                                            closeLoader();
-                                            spinner.replaceWith($btn);
-                                            return false;
+                                            log("Error al borrar el Tipo de Identificación","error");
                                         }
                                     }
                                 });
@@ -175,7 +137,7 @@
                             } //buttons
                         }); //dialog
                         setTimeout(function () {
-                            b.find(".form-control").not(".datepicker").first().focus()
+                            b.find(".form-control").first().focus()
                         }, 500);
                     } //success
                 }); //ajax
@@ -188,39 +150,67 @@
                     return false;
                 });
 
-                $(".btn-show").click(function () {
-                    var id = $(this).data("id");
-                    $.ajax({
-                        type    : "POST",
-                        url     : "${createLink(action:'show_ajax')}",
-                        data    : {
-                            id : id
-                        },
-                        success : function (msg) {
-                            bootbox.dialog({
-                                title   : "Ver Tipo de Identificación",
-                                message : msg,
-                                buttons : {
-                                    ok : {
-                                        label     : "Aceptar",
-                                        className : "btn-primary",
-                                        callback  : function () {
+                context.settings({
+                    onShow : function (e) {
+                        $("tr.success").removeClass("success");
+                        var $tr = $(e.target).parent();
+                        $tr.addClass("success");
+                        id = $tr.data("id");
+                    }
+                });
+                context.attach('tbody>tr', [
+                    {
+                        header : 'Acciones'
+                    },
+                    {
+                        text   : 'Ver',
+                        icon   : "<i class='fa fa-search'></i>",
+                        action : function (e) {
+                            $("tr.success").removeClass("success");
+                            e.preventDefault();
+                            $.ajax({
+                                type    : "POST",
+                                url     : "${createLink(action:'show_ajax')}",
+                                data    : {
+                                    id : id
+                                },
+                                success : function (msg) {
+                                    bootbox.dialog({
+                                        title   : "Ver Tipo de Identificación",
+                                        message : msg,
+                                        buttons : {
+                                            ok : {
+                                                label     : "Aceptar",
+                                                className : "btn-primary",
+                                                callback  : function () {
+                                                }
+                                            }
                                         }
-                                    }
+                                    });
                                 }
                             });
                         }
-                    });
-                });
-                $(".btn-edit").click(function () {
-                    var id = $(this).data("id");
-                    createEditRow(id);
-                });
-                $(".btn-delete").click(function () {
-                    var id = $(this).data("id");
-                    deleteRow(id);
-                });
-
+                    },
+                    {
+                        text   : 'Editar',
+                        icon   : "<i class='fa fa-pencil'></i>",
+                        action : function (e) {
+                            $("tr.success").removeClass("success");
+                            e.preventDefault();
+                            createEditRow(id);
+                        }
+                    },
+                    {divider : true},
+                    {
+                        text   : 'Eliminar',
+                        icon   : "<i class='fa fa-trash-o'></i>",
+                        action : function (e) {
+                            $("tr.success").removeClass("success");
+                            e.preventDefault();
+                            deleteRow(id);
+                        }
+                    }
+                ]);
             });
         </script>
 
