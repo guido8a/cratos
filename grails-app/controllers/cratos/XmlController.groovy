@@ -69,106 +69,110 @@ class XmlController extends cratos.seguridad.Shield {
 
     def createXml() {
         println "createXml: $params"
-
-        def override = false
-        def sobreescribe = [1, "1", true, "true"]
-        if (sobreescribe.contains(params.override)) {
-            override = true
-        }
-
-        def prdo = Periodo.get(params.mes)
-        println "periodo: $prdo"
-
+        def cn = dbConnectionService.getConnection()
+        def sql = " "
         def empresa = Empresa.get(session.empresa.id)
+        def prdo = Periodo.get(params.mes)
 
-        println "...2"
+        def pathxml = servletContext.getRealPath("/") + "xml/" + empresa.id + "/"  //web-app/xml
+        def fileName = "AnexoTransaccional_" + fechaConFormato(prdo.fechaInicio, "MM_yyyy") + ".xml"
+        def path = pathxml + fileName
+        new File(pathxml).mkdirs()
+        def file = new File(path)
 
-        def procesos = Proceso.withCriteria {
-            ge("fecha", prdo.fechaInicio)
-            le("fecha", prdo.fechaFin)
-        }// todo: usar sql para sacar ordenado por establecimiento (prcsnmes) y fecha y
-         // hacer un each para cada establecimiento
+        println "existe: ${file.exists()}, over: ${params.override}"
 
-        println "...procesos: ${procesos.size()}"
+        if (file.exists() && (params.override != '1')) {
+            render "NO_1"
+        } else {
+            sql = "select prcs__id, prcsnmes from prcs where prcsfcrg between '${prdo.fechaInicio}' and " +
+                    "'${prdo.fechaFin}' order by prcsnmes, prcsfcrg"
+            def prcs = cn.rows(sql.toString())
 
-        def writer = new StringWriter()
-        def xml = new MarkupBuilder(writer)
-        xml.mkp.xmlDeclaration(version: "1.0", encoding: "UTF-8", standalone: "no")
+            println "...procesos: ${prcs.size()}"
 
-        println "inicia generacion de ATS"
-        xml.iva() {
-            /** hacer un each para cada establecimiento PRCSNMES */
+            def writer = new StringWriter()
+            def xml = new MarkupBuilder(writer)
+//        xml.mkp.xmlDeclaration(version: "1.0", encoding: "UTF-8", standalone: "no")
+            xml.mkp.xmlDeclaration(version: "1.0", encoding: "UTF-8", standalone: "yes")
 
-            TipoIDInformante('R')
-            IdInformante(empresa.ruc)
-            razonSocial(empresa.nombre)
-            Anio(prdo.fechaInicio.format("yyyy"))
-            Mes(prdo.fechaInicio.format("MM"))
-            numEstabRuc(procesos[0].establecimiento)
-            totalVentas(0.00)
-            codigoOperativo("IVA")
-            compras() {
-                procesos.each { proceso ->
-                    def retencion = Retencion.findByProceso(proceso)
-                    def detalleRetencion = []
-                    def ice = null, bns = null, srv = null
-                    def local = "01"
-/*
-                    if (retencion) {
-                        detalleRetencion = DetalleRetencion.findByRetencion(retencion)
-                        detalleRetencion.each { dr ->
-                            if (dr.impuesto?.sri == 'ICE') {
-                                ice = dr
-                            } else if (dr.impuesto?.sri == 'BNS') {
-                                bns = dr
-                            } else if (dr.impuesto?.sri == 'SRV') {
-                                srv = dr
+            println "inicia generacion de ATS"
+            xml.iva() {
+                /** TODO: hacer un each para cada establecimiento PRCSNMES */
+
+                TipoIDInformante('R')
+                IdInformante(empresa.ruc)
+                razonSocial(empresa.nombre)
+                Anio(prdo.fechaInicio.format("yyyy"))
+                Mes(prdo.fechaInicio.format("MM"))
+//                numEstabRuc(procesos[0].establecimiento)
+                numEstabRuc(prcs[0].prcsnmes)
+                totalVentas(0.00)
+                codigoOperativo("IVA")
+                compras() {
+//                    procesos.each { proceso ->
+                    prcs.each { pr ->
+                        def proceso = Proceso.get(pr.prcs__id)
+                        def retencion = Retencion.findByProceso(proceso)
+                        def detalleRetencion = []
+                        def ice = null, bns = null, srv = null
+                        def local = proceso.pago?: '01'
+
+                        detalleCompras() {
+                            codSustento(proceso.sustentoTributario?.codigo)
+                            tpIdProv(proceso.proveedor?.tipoIdentificacion?.codigoSri)
+                            idProv(proceso.proveedor?.ruc)
+                            tipoComprobante(proceso?.tipoCmprSustento?.tipoComprobanteSri?.codigo?.trim())
+                            parteRel(proceso?.proveedor?.relacionado)
+
+                            fechaRegistro(fechaConFormato(proceso.fechaIngresoSistema))
+                            establecimiento(proceso.procesoSerie01)
+                            puntoEmision(proceso.procesoSerie02)
+                            secuencial(proceso.secuencial)
+                            fechaEmision(fechaConFormato(proceso.fechaRegistro))
+
+                            autorizacion(proceso?.autorizacion)
+                            baseNoGraIva(numero(proceso.baseImponibleNoIva))
+                            baseImponible(numero(proceso.baseImponibleIva0))
+                            baseImpGrav(numero(proceso.baseImponibleIva))
+                            baseImpExe('0.00')   /* ??? crear campo */
+
+                            montoIce(numero(proceso?.iceGenerado))
+                            montoIva(numero(proceso?.ivaGenerado))
+
+                            valRetBien10(numero(vlorRtcnIVA(proceso.id, 10)))
+                            valRetServ20(numero(vlorRtcnIVA(proceso.id, 20)))
+                            valorRetBienes(numero(vlorRtcnIVA(proceso.id, 30)))
+                            valRetServ50(numero(vlorRtcnIVA(proceso.id, 50)))
+                            valorRetServicios(numero(vlorRtcnIVA(proceso.id, 70)))
+                            valRetServ100(numero(vlorRtcnIVA(proceso.id, 100)))
+
+//                            println "...pago: ${local}"
+                            pagoExterior() {
+                                pagoLocExt(local)
+                                if (local == "01") {
+                                    paisEfecPago("NA")
+                                    aplicConvDobTrib("NA")
+                                    pagExtSujRetNorLeg("NA")
+                                } else {
+                                paisEfecPago(proceso.pais?.codigo)
+                                aplicConvDobTrib(proceso?.convenio)
+                                pagExtSujRetNorLeg(proceso?.normaLegal)
+                                }
                             }
-                        }
-                        local = retencion.tipoPago
-                    }
-*/
-                    detalleCompras() {
-                        codSustento(proceso.sustentoTributario?.codigo)
-                        tpIdProv(proceso.proveedor?.tipoIdentificacion?.codigoSri)
-                        idProv(proceso.proveedor?.ruc)
-//                        tipoComprobante(proceso.tipoComprobanteSri?.codigo)
-                        fechaRegistro(fechaConFormato(proceso.fechaIngresoSistema))
-                        establecimiento(proceso.facturaEstablecimiento)
-                        puntoEmision(proceso.facturaPuntoEmision)
-                        secuencial(proceso.facturaSecuencial)
-                        fechaEmision(fechaConFormato(proceso.fecha))
-                        autorizacion(proceso.proveedor?.autorizacionSri)
-                        baseNoGraIva(numero(proceso.baseImponibleNoIva))
-                        baseImponible(numero(proceso.baseImponibleIva0))
-                        baseImpGrav(numero(proceso.baseImponibleIva))
-//                        montoIce(numero(ice?.total ?: 0))
-                        montoIva(numero(proceso?.ivaGenerado ?: 0))
-//                        valorRetBienes(numero(bns?.total))
-//                        valorRetServicios(srv?.porcentaje == 100 ? numero(0) : numero(srv?.total ?: 0))
-//                        valRetServ100(srv?.porcentaje == 100 ? numero(srv?.total ?: 0) : numero(0))
-                        pagoExterior() {
-                            pagoLocExt(local)
-                            if (local == "01") {
-                                paisEfecPago("NA")
-                                aplicConvDobTrib("NA")
-                                pagExtSujRetNorLeg("NA")
-                            } else {
-//                                paisEfecPago(retencion.pais?.codigo)
-//                                aplicConvDobTrib(retencion.convenio)
-//                                pagExtSujRetNorLeg(retencion.normaLegal)
-                            }
-                        }
 //                        estabRetencion1(retencion?.numeroEstablecimiento)
 //                        ptoEmiRetencion1(retencion?.numeroPuntoEmision)
 //                        secRetencion1(retencion?.numeroSecuencial)
 //                        autRetencion1(retencion?.numeroAutorizacionComprobante)
-                        fechaEmiRet1(fechaConFormato(retencion?.fechaEmision))
+                            fechaEmiRet1(fechaConFormato(retencion?.fechaEmision))
+                        }
                     }
                 }
             }
+            file.write(writer.toString())
+            render "OK"
         }
-
+/*
         def pathxml = servletContext.getRealPath("/") + "xml/" + empresa.id + "/"  //web-app/xml
         def fileName = "AnexoTransaccional_" + fechaConFormato(prdo.fechaInicio, "MM_yyyy")
         def ext = ".xml"
@@ -188,12 +192,14 @@ class XmlController extends cratos.seguridad.Shield {
         } else {
             file.write(writer.toString())
             render "OK"
+*/
+
 //            def output = response.getOutputStream()
 //            def header = "attachment; filename=" + fileName;
 //            response.setContentType("application/xml")
 //            response.setHeader("Content-Disposition", header);
 //            output.write(file.getBytes());
-        }
+//        }
     }
 
     def downloadFile() {
@@ -325,6 +331,14 @@ class XmlController extends cratos.seguridad.Shield {
 
     private String numero(number) {
         numero(number, 2, "show")
+    }
+
+    def vlorRtcnIVA(prcs, pcnt) {
+        def cn = dbConnectionService.getConnection()
+        def sql = "select rtcn_iva from rtcn, pciv where prcs__id = ${prcs} and " +
+                "pciv.pciv__id = rtcn.pciv__id and pcivvlor = ${pcnt}"
+        def retencion = cn.rows(sql.toString())[0]?.rtcn_iva?:0.0
+        retencion.toDouble()
     }
 
 }

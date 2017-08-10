@@ -33,6 +33,7 @@ class Proceso implements Serializable {
     double baseImponibleIva = 0
     double baseImponibleIva0 = 0
     double baseImponibleNoIva = 0
+    double excentoIva = 0
     double ivaGenerado = 0
     double iceGenerado = 0
     double impuesto
@@ -97,6 +98,7 @@ class Proceso implements Serializable {
             baseImponibleIva column: 'prcsbsnz'
             baseImponibleIva0 column: 'prcsbszr'
             baseImponibleNoIva column: 'prcsnoiv'
+            excentoIva column: 'prcsexiv'
             ivaGenerado column: 'prcs_iva'
             iceGenerado column: 'prcs_ice'
             impuesto column: 'prcsimpt'
@@ -156,6 +158,7 @@ class Proceso implements Serializable {
         baseImponibleIva(blank: true, nullable: true, attributes: [title: 'baseImponibleIva'])
         baseImponibleIva0(blank: true, nullable: true, attributes: [title: 'baseImponibleIva0'])
         baseImponibleNoIva(blank: true, nullable: true, attributes: [title: 'baseImponibleNoIva'])
+        excentoIva(blank: true, nullable: true, attributes: [title: 'excentoIva'])
         ivaGenerado(blank: true, nullable: true, attributes: [title: 'ivaGenerado'])
         iceGenerado(blank: true, nullable: true, attributes: [title: 'iceGenerado'])
         impuesto(blank: true, nullable: true, attributes: [title: 'impuesto'])

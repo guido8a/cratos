@@ -186,7 +186,7 @@
             </div>
 
             <div class="col-xs-1 negrilla">
-                <g:textField name="establecimiento_name" id="establecimientoNuevo" class="form-control required validacionNumeroSinPuntos" maxlength="3" value="${proceso?.establecimiento}" disabled="${proceso?.estado == 'R' ?: false}"/>
+                <g:textField name="establecimiento" id="establecimiento" class="form-control required validacionNumeroSinPuntos" maxlength="3" value="${proceso?.establecimiento}" disabled="${proceso?.estado == 'R' ?: false}"/>
             </div>
 
             <div class="col-xs-1 negrilla">
@@ -969,7 +969,7 @@
 
 
 
-            if(!$("#establecimientoNuevo").val()){
+            if(!$("#establecimiento").val()){
                 error += "<li>Ingrese un número de establecimiento</li>"
             }
 

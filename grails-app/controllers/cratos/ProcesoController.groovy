@@ -77,7 +77,7 @@ class ProcesoController extends cratos.seguridad.Shield {
     }
 
     def save = {
-//        println "save proceso: $params"
+        println "save proceso: $params"
         def proceso
         def comprobante
 
@@ -99,12 +99,14 @@ class ProcesoController extends cratos.seguridad.Shield {
         }
 
         proceso.gestor = gestor
+        proceso.establecimiento = params.establecimiento
         proceso.valor = (params.baseImponibleIva0?:0).toDouble() + (params.baseImponibleIva?:0).toDouble() +
-                (params.baseImponibleNoIva?:0).toDouble()
+                (params.baseImponibleNoIva?:0).toDouble() + (params.excentoIva?:0).toDouble()
         proceso.impuesto = (params.ivaGenerado?:0).toDouble() + (params.iceGenerado?:0).toDouble()
         proceso.baseImponibleIva = (params.baseImponibleIva?:0).toDouble()
         proceso.baseImponibleIva0 = (params.baseImponibleIva0?:0).toDouble()
         proceso.baseImponibleNoIva = (params.baseImponibleNoIva?:0).toDouble()
+        proceso.excentoIva = (params.excentoIva?:0).toDouble()
         proceso.ivaGenerado = (params.ivaGenerado?:0).toDouble()
         proceso.iceGenerado = (params.iceGenerado?:0).toDouble()
         proceso.flete = (params.flete?:0).toDouble()
@@ -121,12 +123,13 @@ class ProcesoController extends cratos.seguridad.Shield {
 
         switch (params.tipoProceso) {
             case '1': //Compras
+                def secuencial =  '0' * (9-params.dcmtSecuencial.size()) + params.dcmtSecuencial
                 proceso.tipoTransaccion = TipoTransaccion.get(1)
                 proceso.procesoSerie01 = params.dcmtEstablecimiento
                 proceso.procesoSerie02 = params.dcmtEmision
-                proceso.secuencial = params.dcmtSecuencial?:0
+                proceso.secuencial = secuencial
                 proceso.autorizacion = params.dcmtAutorizacion
-                proceso.documento = params.dcmtEstablecimiento + "-" + params.dcmtEmision + "-" + '0' * (9-params.dcmtSecuencial.size()) + params.dcmtSecuencial
+                proceso.documento = params.dcmtEstablecimiento + "-" + params.dcmtEmision + "-" + secuencial
                 proceso.sustentoTributario = sustento
                 proceso.tipoCmprSustento = comprobanteSri
                 proveedor = Proveedor.get(params."proveedor.id")
@@ -157,11 +160,12 @@ class ProcesoController extends cratos.seguridad.Shield {
                 break
             case '2':  //ventas
 //                println "------ ventas------"
+                def secuencial =  '0' * (9-params.serie.size()) + params.serie
                 proceso.tipoTransaccion = TipoTransaccion.get(2)
-                proceso.documento = params.numEstablecimiento + "-" + params.numeroEmision + "-" + '0' * (9-params.serie.size()) + params.serie
+                proceso.documento = params.numEstablecimiento + "-" + params.numeroEmision + "-" + secuencial
                 proceso.facturaEstablecimiento = params.numEstablecimiento
                 proceso.facturaPuntoEmision = params.numeroEmision
-                proceso.facturaSecuencial = params.serie.toInteger()?:0
+                proceso.facturaSecuencial = secuencial
                 proceso.tipoCmprSustento = comprobanteSri
                 proveedor = Proveedor.get(params."proveedor.id")
                 proceso.proveedor = proveedor
@@ -169,11 +173,12 @@ class ProcesoController extends cratos.seguridad.Shield {
 
             case ['6','7']:  //NC y ND
 //                println "------ Nota de crédito y Débito------"
+                def secuencial = "-" + '0' * (9-params.serie.size()) + params.serie
                 proceso.tipoTransaccion = null
-                proceso.documento = params.numEstablecimiento + "-" + params.numeroEmision + "-" + '0' * (9-params.serie.size()) + params.serie
+                proceso.documento = params.numEstablecimiento + "-" + params.numeroEmision + secuencial
                 proceso.facturaEstablecimiento = params.numEstablecimiento
                 proceso.facturaPuntoEmision = params.numeroEmision
-                proceso.facturaSecuencial = params.serie.toInteger()?:0
+                proceso.facturaSecuencial = secuencial
                 proceso.comprobante = Comprobante.get(params.comprobanteSel_name)
 //                proceso.tipoCmprSustento = comprobanteSri
                 proveedor = Proveedor.get(params."proveedor.id")

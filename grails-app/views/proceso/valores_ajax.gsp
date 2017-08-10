@@ -123,75 +123,85 @@
     </g:if>
 
     <div class="row" style="font-size: 12px">
-        <div class="col-xs-2 negrilla" style="width: 120px">
-            Base imponible IVA ${iva}%:
+        <div class="col-xs-1 negrilla" style="width: 100px">
+            Base Impo. IVA ${iva}%:
         </div>
 
-        <div class="col-xs-2 negrilla">
+        <div class="col-xs-2 negrilla" style="margin-left: -20px">
             <input type="text" name="baseImponibleIva" id="iva12" size="7" value="${proceso?.baseImponibleIva ?: 0.00}"
                    class="required  number form-control validacionNumero"
                    validate="required number" ${proceso?.estado == 'R' ? 'readonly' : ( band ? 'readonly' : '')} />
         </div>
 
-        <div class="col-xs-2 negrilla" style="width: 120px">
-            Base imponible IVA 0%:
+        <div class="col-xs-1 negrilla" style="width: 100px">
+            Base impo. IVA 0%:
         </div>
 
-        <div class="col-xs-2 negrilla">
+        <div class="col-xs-2 negrilla" style="margin-left: -20px">
             <input type="text" name="baseImponibleIva0" size="7" id="iva0" value="${proceso?.baseImponibleIva0 ?: 0.00}"
                    class="required number form-control validacionNumero"
                    validate="required number"  ${proceso?.estado == 'R' ? 'readonly' : ( band ? 'readonly' : '')}  />
         </div>
 
-        <div class="col-xs-2 negrilla" style="width: 120px">
-            Base imponible no aplica IVA:
+        <div class="col-xs-1 negrilla" style="width: 100px">
+            No aplica el IVA:
         </div>
 
-        <div class="col-xs-2 negrilla">
+        <div class="col-xs-2 negrilla" style="margin-left: -20px">
             <input type="text" name="baseImponibleNoIva" id="noIva" size="7"
                    value="${proceso?.baseImponibleNoIva ?: 0.00}" class="required number form-control validacionNumero"
                    validate="required number" ${proceso?.estado == 'R' ? 'readonly' : ( band ? 'readonly' : '')}  />
         </div>
 
-        <div class="col-xs-2 negrilla" style="text-align: center">
-            Total
+        <div class="col-xs-1 negrilla" style="width: 100px">
+            Excento del IVA:
+        </div>
+
+        <div class="col-xs-2 negrilla" style="margin-left: -20px">
+            <input type="text" name="excentoIva" id="excentoIva" size="7"
+                   value="${proceso?.excentoIva ?: 0.00}" class="required number form-control validacionNumero"
+                   validate="required number" ${proceso?.estado == 'R' ? 'readonly' : ( band ? 'readonly' : '')}  />
         </div>
     </div>
 
     <div class="row" style="font-size: 12px">
-        <div class="col-xs-2 negrilla" style="width: 120px">
+        <div class="col-xs-1 negrilla" style="width: 100px">
             IVA generado:
         </div>
 
-        <div class="col-xs-2 negrilla">
+        <div class="col-xs-2 negrilla" style="margin-left: -20px">
             <input type="text" name="ivaGenerado" id="ivaGenerado" value="${proceso?.ivaGenerado}"
                    class="required number form-control validacionNumero"
                    validate="required number"  ${proceso?.estado == 'R' ? 'readonly' : ( band ? 'readonly' : '')}  />
         </div>
 
-        <div class="col-xs-2 negrilla" style="width: 120px">
+        <div class="col-xs-1 negrilla" style="width: 100px">
             ICE generado:
         </div>
 
-        <div class="col-xs-2 negrilla">
+        <div class="col-xs-2 negrilla" style="margin-left: -20px">
             <input type="text" name="iceGenerado" id="iceGenerado" value="${proceso?.iceGenerado ?: 0.00}"
                    class="required number form-control validacionNumero"
                    validate="required number"  ${proceso?.estado == 'R' ? 'readonly' : ( band ? 'readonly' : '')} />
         </div>
 
-        <div class="col-xs-2 negrilla" style="width: 120px">
+        <div class="col-xs-1 negrilla" style="width: 100px">
             Flete:
         </div>
 
-        <div class="col-xs-2 negrilla">
+        <div class="col-xs-2 negrilla" style="margin-left: -20px">
             <input type="text" name="flete" id="flete" value="${proceso?.flete ?: 0.00}"
                    class="required number form-control validacionNumero"
                    validate="required number"  ${proceso?.estado == 'R' ? 'readonly' : ( band ? 'readonly' : '')}  />
         </div>
-        <div class="col-xs-2 negrilla text-info">
-            <input type="text" name="total" id="total" value="${proceso?.valor ?: 0.00}"
+
+        <div class="col-xs-1 negrilla text-info" style="width: 100px">
+            Valor Total:
+        </div>
+        <div class="col-xs-2 negrilla text-info" style="margin-left: -20px">
+            <input type="text" name="total" value="${proceso?.valor ?: 0.00}"
                    class="required number form-control validacionNumero"
-                   validate="required number"  ${proceso?.estado == 'R' ? 'readonly' : ( band ? 'readonly' : '')}  />
+                   validate="required number"  readonly style="font-weight: bold" />
         </div>
     </div>
 </g:elseif>
