@@ -31,15 +31,18 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="col-md-2">
-        <label>Factura: </label>
+<g:if test="${band3}">
+    <div class="row">
+        <div class="col-md-2">
+            <label>Factura: </label>
+        </div>
+        <div class="col-md-10">
+            <g:select name="factura_name" id="facturaAuxiliar" from="${res}"
+                      optionKey="${{it.dcmt}}" optionValue="${{it.dcmt + ' - ' +  it.dscr + ' - $ ' + it.sldo}}" class="form-control" value="${auxiliar?.factura}"/>
+        </div>
     </div>
-    <div class="col-md-10">
-        <g:select name="factura_name" id="facturaAuxiliar" from="${res}"
-                  optionKey="${{it.dcmt}}" optionValue="${{it.dcmt + ' - ' +  it.dscr + ' - $ ' + it.sldo}}" class="form-control" value="${auxiliar?.factura}"/>
-    </div>
-</div>
+</g:if>
+
 
 <div class="row">
     <div class="col-md-2">

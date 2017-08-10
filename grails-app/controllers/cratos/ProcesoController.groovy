@@ -1157,6 +1157,7 @@ class ProcesoController extends cratos.seguridad.Shield {
         def totHaber = 0
         def band
         def band2
+        def band3
         if(params.auxiliar){
             auxiliar = Auxiliar.get(params.auxiliar)
             asiento = auxiliar.asiento
@@ -1175,11 +1176,12 @@ class ProcesoController extends cratos.seguridad.Shield {
 //            println("haber " + asiento.haber.toDouble())
             band = auxiliar?.asiento?.comprobante?.proceso?.tipoProceso?.codigo?.trim() == 'A' && auxiliar?.asiento?.comprobante?.proceso?.gestor?.codigo == 'SLDO'
             band2 = auxiliar?.asiento?.comprobante?.proceso?.tipoProceso?.codigo?.trim() == 'P' || auxiliar?.asiento?.comprobante?.proceso?.tipoProceso?.codigo?.trim() == 'I' || auxiliar?.asiento?.comprobante?.proceso?.tipoProceso?.codigo?.trim() == 'NC' || auxiliar?.asiento?.comprobante?.proceso?.tipoProceso?.codigo?.trim() == 'ND'
+            band3 = auxiliar?.asiento?.comprobante?.proceso?.tipoProceso?.codigo?.trim() == 'P' || auxiliar?.asiento?.comprobante?.proceso?.tipoProceso?.codigo?.trim() == 'I' || auxiliar?.asiento?.comprobante?.proceso?.tipoProceso?.codigo?.trim() == 'NC'
             sql = "select * from porpagar(${auxiliar?.asiento?.comprobante?.proceso?.proveedor?.id})"
             res = cn.rows(sql.toString())
             return [asiento: asiento, auxiliar: auxiliar, comprobante: comprobante, proveedores: proveedores,
                     maximoDebe: maximoDebe, maximoHaber: maximoHaber, totDebe: totDebe, totHaber: totHaber,
-                    band: band, band2: band2, res: res]
+                    band: band, band2: band2, res: res, band3: band3]
         } else {
             asiento = Asiento.get(params.asiento)
             existentes = Auxiliar.findAllByAsiento(asiento)
@@ -1193,10 +1195,11 @@ class ProcesoController extends cratos.seguridad.Shield {
 //            println("maximoHaber " + maximoHaber)
             band = asiento?.comprobante?.proceso?.tipoProceso?.codigo?.trim() == 'A' && asiento?.comprobante?.proceso?.gestor?.codigo == 'SLDO'
             band2 = asiento?.comprobante?.proceso?.tipoProceso?.codigo?.trim() == 'P' || asiento?.comprobante?.proceso?.tipoProceso?.codigo?.trim() == 'I' || asiento?.comprobante?.proceso?.tipoProceso?.codigo?.trim() == 'NC' || asiento?.comprobante?.proceso?.tipoProceso?.codigo?.trim() == 'ND'
+            band3 = auxiliar?.asiento?.comprobante?.proceso?.tipoProceso?.codigo?.trim() == 'C' || auxiliar?.asiento?.comprobante?.proceso?.tipoProceso?.codigo?.trim() == 'I' || auxiliar?.asiento?.comprobante?.proceso?.tipoProceso?.codigo?.trim() == 'NC'
             sql = "select * from porpagar(${asiento?.comprobante?.proceso?.proveedor?.id})"
             res = cn.rows(sql.toString())
             return [asiento: asiento, comprobante: comprobante, proveedores: proveedores, maximoDebe: maximoDebe,
-                    maximoHaber: maximoHaber, band: band, band2: band2, res: res]
+                    maximoHaber: maximoHaber, band: band, band2: band2, res: res, band3: band3]
         }
     }
 
