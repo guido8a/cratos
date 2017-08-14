@@ -32,9 +32,11 @@
 </style>
 
 
-<div class="col-md-7 etiqueta"><label>Comprobante:</label> ${comprobante?.descripcion}</div>
-<div class="col-md-3 etiqueta"><label>Tipo:</label> ${comprobante?.tipo?.descripcion}</div>
+<div class="col-md-4 etiqueta"><label>Comprobante:</label> ${comprobante?.descripcion}</div>
+%{--<div class="col-md-3 etiqueta"><label>Tipo:</label> ${comprobante?.tipo?.descripcion}</div>--}%
+<div class="col-md-3 etiqueta"><label>Transacción:</label> ${comprobante?.proceso?.tipoProceso?.descripcion}</div>
 <div class="col-md-2 etiqueta"><label>Número:</label> ${comprobante?.prefijo}${comprobante?.numero}</div>
+<div class="col-md-3 etiqueta"><label>Valor:</label> <g:formatNumber number="${comprobante?.proceso?.valor}" maxFractionDigits="2" format="##,##0"/></div>
 
 <g:if test="${comprobante?.registrado != 'S'}">
     <div class="btn-group" style="float: right; margin-top: -75px">
@@ -58,7 +60,7 @@
     </thead>
 </table>
 
-<div class="row-fluid" style="width: 100%; height: 300px; overflow-y: auto;float: right; margin-top: -20px">
+<div class="row-fluid" style="width: 100%; height: 500px; overflow-y: auto;float: right; margin-top: -20px">
     <div class="span12">
         <table class="table table-bordered table-condensed" width="980px">
             <tbody>
@@ -232,7 +234,8 @@
                                 var parts = msg.split("_");
                                 if (parts[0] == 'ok') {
                                     log(parts[1], "success");
-                                    cargarComprobante('${proceso?.id}');
+                                    %{--cargarComprobante('${proceso?.id}');--}%
+                                    cargarComprobanteP('${proceso?.id}');
                                     closeLoader();
                                 } else {
                                     log(parts[1], "error");
@@ -295,7 +298,8 @@
                                             success: function (msg) {
                                                 if (msg == 'ok') {
                                                     log("Asiento contable guardado correctamente", "success");
-                                                    cargarComprobante('${proceso?.id}');
+                                                    %{--cargarComprobante('${proceso?.id}');--}%
+                                                    cargarComprobanteP('${proceso?.id}');
                                                     closeLoader();
                                                 } else {
                                                     log("Error al guardar asiento contable", "error");
@@ -345,7 +349,8 @@
                                 var parts = msg.split("_");
                                 if (parts[0] == 'ok') {
                                     log(parts[1], "success");
-                                    cargarComprobante('${proceso?.id}');
+                                    %{--cargarComprobante('${proceso?.id}');--}%
+                                    cargarComprobanteP('${proceso?.id}');
                                     closeLoader();
                                 } else {
                                     log(parts[1], "error");
@@ -417,7 +422,8 @@
                                                 success: function (msg) {
                                                     if (msg == 'ok') {
                                                         log("Auxiliar contable guardado correctamente", "success");
-                                                        cargarComprobante('${proceso?.id}');
+                                                        %{--cargarComprobante('${proceso?.id}');--}%
+                                                        cargarComprobanteP('${proceso?.id}');
                                                         closeLoader();
                                                     } else {
                                                         log("Error al guardar el auxiliar contable", "error");

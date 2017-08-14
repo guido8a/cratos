@@ -210,7 +210,7 @@
 
 
         items.editar = editar;
-        items.auxiliar = auxiliar;
+//        items.auxiliar = auxiliar;
 
         if(tp == 'Compras' || tp == 'Ventas' || tp == 'Transferencias' || tp == 'Nota de crédito'){
             items.detalle = detalle;

@@ -31,9 +31,10 @@
             },
             success: function (msg) {
                 if(msg == 'ok'){
-                    log("Registro borrado correctamente","success")
+                    log("Registro borrado correctamente","success");
                     cargarTablaCentros();
                     actualizarValor();
+                    cargarComprobanteP('${asiento?.comprobante?.proceso?.id}');
                 }else{
                     log("Error al borrar el registro", "error")
                 }

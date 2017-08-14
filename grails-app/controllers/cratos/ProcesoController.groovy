@@ -1752,7 +1752,7 @@ class ProcesoController extends cratos.seguridad.Shield {
     def tablaCentroCostos_ajax () {
         def asiento = Asiento.get(params.asiento)
         def centros = AsientoCentro.findAllByAsiento(asiento)
-        return[centros: centros, tipo: params.tipo]
+        return[centros: centros, tipo: params.tipo, asiento: asiento]
     }
 
     def guardarCentro_ajax () {
@@ -1812,6 +1812,12 @@ class ProcesoController extends cratos.seguridad.Shield {
             println("Error al borrar el centro " + e)
             render "no"
         }
+    }
+
+    def comprobante () {
+        println("--> " + params)
+        def proceso = Proceso.get(params.proceso)
+        return[proceso: proceso]
     }
 
 }

@@ -16,12 +16,8 @@
 
 </style>
 
-%{--<div id="tabs" style="width: 800px; height: 1060px">--}%
 <ul class="nav nav-tabs">
     <g:each in="${comprobantes}" var="comprobante" status="j">
-    %{--<a href="#" class="btn btn-azul btn-sm btnComprobante" idComp="${comprobante?.id}" style="margin-bottom: 10px">--}%
-    %{--<i class="fa fa-file-text-o"></i> ${comprobante?.tipo?.descripcion}--}%
-    %{--</a>--}%
     <li class="${j == 0 ? 'active' : ''}"><a data-toggle="tab" href="#" class="btnComprobante" idComp="${comprobante?.id}">${comprobante?.tipo?.descripcion}</a></li>
     </g:each>
 </ul>

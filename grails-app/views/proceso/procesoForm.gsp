@@ -29,7 +29,6 @@
         line-height: 16px;
         background: rgba(255, 2, 10, 0.35);
         margin-right: 5px;
-        /*font-weight: bold;*/
         font-size: 12px;
         cursor: pointer;
         float: right;
@@ -69,6 +68,24 @@
         </g:link>
     </div>
 
+    <div class="btn-group" style="margin-right: 20px">
+        <a href="#" class="btn btn-success previous disabled" id="guardarProceso">
+            <i class="fa fa-gear"></i>
+            Proceso
+        </a>
+        <g:if test="${proceso?.estado == 'R'}">
+            <a href="#" class="btn btn-success" id="comprobanteN">
+                <i class="fa fa-calendar-o"></i>
+                Comprobante
+            </a>
+        </g:if>
+        <g:if test="${proceso?.tipoProceso?.id == 1}">
+            <g:link class="btn btn-success" action="detalleSri" id="${proceso?.id}" style="margin-bottom: 10px;">
+                <i class="fa fa-money"></i> Retenciones
+            </g:link>
+        </g:if>
+    </div>
+
     <div class="btn-group">
         <g:if test="${!proceso || (proceso?.estado == 'N')}">
             <a href="#" class="btn btn-success" id="guardarProceso">
@@ -104,11 +121,11 @@
                 </a>
             </g:else>
 
-            <g:if test="${proceso?.tipoProceso?.id == 1}">
-                <g:link class="btn btn-primary" action="detalleSri" id="${proceso?.id}" style="margin-bottom: 10px;">
-                    <i class="fa fa-money"></i> Retenciones
-                </g:link>
-            </g:if>
+            %{--<g:if test="${proceso?.tipoProceso?.id == 1}">--}%
+                %{--<g:link class="btn btn-primary" action="detalleSri" id="${proceso?.id}" style="margin-bottom: 10px;">--}%
+                    %{--<i class="fa fa-money"></i> Retenciones--}%
+                %{--</g:link>--}%
+            %{--</g:if>--}%
             <g:if test="${cratos.Retencion.findByProceso(proceso)}">
                 <g:link controller="reportes3" action="imprimirRetencion" class="btn btn-default btnRetencion"
                         id="${proceso?.id}" params="[empresa: session.empresa.id]" style="margin-bottom: 10px;">
@@ -295,17 +312,17 @@
     </div>
 
 </g:form>
-<g:if test="${proceso}">
-    <div class="vertical-container" skip="1" style="margin-top: 5px; color:black; margin-bottom:20px; height:auto; max-height: 520px; overflow: auto;">
-        <p class="css-vertical-text">Comprobante</p>
+%{--<g:if test="${proceso}">--}%
+    %{--<div class="vertical-container" skip="1" style="margin-top: 5px; color:black; margin-bottom:20px; height:auto; max-height: 520px; overflow: auto;">--}%
+        %{--<p class="css-vertical-text">Comprobante</p>--}%
 
-        <div class="linea"></div>
+        %{--<div class="linea"></div>--}%
 
-        <div id="divComprobante" class="col-xs-12"
-             style="margin-bottom: 0px ;padding: 0px;display: none;margin-top: 5px;">
-        </div>
-    </div>
-</g:if>
+        %{--<div id="divComprobante" class="col-xs-12"--}%
+             %{--style="margin-bottom: 0px ;padding: 0px;display: none;margin-top: 5px;">--}%
+        %{--</div>--}%
+    %{--</div>--}%
+%{--</g:if>--}%
 
 
 <!-- Modal -->
@@ -462,7 +479,7 @@
     });
 
     //    cargarProveedor($(".tipoProcesoSel option:selected").val());
-    cargarComprobante('${proceso?.id}');
+    %{--cargarComprobante('${proceso?.id}');--}%
 
     $(document).ready(function () {
         var tipo = $(".tipoProcesoSel option:selected").val();
@@ -600,11 +617,11 @@
         }
     });
 
-//    $("#tipoComprobante").change(function () {
-//        console.log("cambia tpcp")
-//        console.log("cambia tpcp", $("#tipoComprobante").val())
-//        cargarTipo( $(".tipoProcesoSel option:selected").val(), $("#tipoComprobante").val() );
-//    });
+    //    $("#tipoComprobante").change(function () {
+    //        console.log("cambia tpcp")
+    //        console.log("cambia tpcp", $("#tipoComprobante").val())
+    //        cargarTipo( $(".tipoProcesoSel option:selected").val(), $("#tipoComprobante").val() );
+    //    });
 
 
     function cargaGestor(tipo) {
@@ -1051,18 +1068,18 @@
         });
     });
 
-    function cargarComprobante(proceso) {
-        $.ajax({
-            type: 'POST',
-            url: "${createLink(controller: 'proceso',action: 'comprobante_ajax')}",
-            data: {
-                proceso: proceso
-            },
-            success: function (msg) {
-                $("#divComprobante").html(msg).show("slide");
-            }
-        });
-    }
+    %{--function cargarComprobante(proceso) {--}%
+        %{--$.ajax({--}%
+            %{--type: 'POST',--}%
+            %{--url: "${createLink(controller: 'proceso',action: 'comprobante_ajax')}",--}%
+            %{--data: {--}%
+                %{--proceso: proceso--}%
+            %{--},--}%
+            %{--success: function (msg) {--}%
+                %{--$("#divComprobante").html(msg).show("slide");--}%
+            %{--}--}%
+        %{--});--}%
+    %{--}--}%
 
 
     cargarExterior($("#pago option:selected").val());
@@ -1164,6 +1181,10 @@
             }
         });
     }
+
+    $("#comprobanteN").click(function () {
+        location.href="${createLink(controller: 'proceso', action: 'comprobante')}/?proceso=" + '${proceso?.id}'
+    })
 
 </script>
 </body>

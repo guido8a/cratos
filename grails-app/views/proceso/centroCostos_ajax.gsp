@@ -94,6 +94,7 @@
                         log("Agregado correctamente","success");
                         cargarTablaCentros();
                         actualizarValor();
+                        cargarComprobanteP('${asiento?.comprobante?.proceso?.id}');
                     }else{
                         log("Error al agregar el centro de costos","error")
                     }

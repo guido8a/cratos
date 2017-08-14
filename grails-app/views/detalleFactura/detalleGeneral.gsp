@@ -32,9 +32,9 @@
     %{--<div class="btn-group">--}%
 
         <g:if test="${!truncar}">
-            <g:link class="btn btn-info btn-ajax" id="${proceso?.id}" controller="proceso"
+            <g:link class="btn btn-success btn-ajax" id="${proceso?.id}" controller="proceso"
                     action="actlProceso">
-                <i class="fa fa-save"></i> Grabar</g:link>
+                <i class="fa fa-save"></i> Guardar </g:link>
         </g:if>
 
     </div>

@@ -28,8 +28,8 @@
 
 <div class="btn-toolbar toolbar">
     <div class="btn-group">
-        <g:link class="btn regresar btn-primary btn-ajax" id="${proceso?.id}" action="nuevoProceso">
-            <i class="fa fa-chevron-left"></i> Proceso</g:link>
+    %{--<g:link class="btn regresar btn-primary btn-ajax" id="${proceso?.id}" action="nuevoProceso">--}%
+    %{--<i class="fa fa-chevron-left"></i> Proceso</g:link>--}%
         <g:link class="btn regresar btn-info btn-ajax" action="buscarPrcs">
             <i class="fa fa-chevron-left"></i> Lista de Procesos</g:link>
     </div>
@@ -40,8 +40,26 @@
         </div>
     </g:if>
     <div class="text-info negrilla" style="margin-left: 10px; text-align: right; width: 400px; display: inline-block">Transacción: ${proceso.descripcion}</div>
-</div>
 
+
+
+    <div class="btn-group" style="margin-right: 20px; margin-left: 10px">
+        <g:link class="btn regresar btn-success btn-ajax" id="${proceso?.id}" action="nuevoProceso">
+            <i class="fa fa-gear"></i> Proceso
+        </g:link>
+        <g:if test="${proceso?.estado == 'R'}">
+            <a href="#" class="btn btn-success" id="comprobanteN">
+                <i class="fa fa-calendar-o"></i>
+                Comprobante
+            </a>
+        </g:if>
+        <g:if test="${proceso?.tipoProceso?.id == 1}">
+            <g:link class="btn btn-success previous disabled" action="detalleSri" id="${proceso?.id}" style="margin-bottom: 10px;">
+                <i class="fa fa-money"></i> Retenciones
+            </g:link>
+        </g:if>
+    </div>
+</div>
 
 <div style="padding: 0.7em; margin-top:5px; display: none;" class="alert alert-danger ui-corner-all"
      id="divErroresDetalle">
@@ -113,12 +131,12 @@
                 <g:select name="libretin" from="${libreta}" value="${retencion?.documentoEmpresa}"
                           class="form-control" optionKey="id" libre="1"
                           optionValue="${{"Desde: " + it?.numeroDesde + ' - Hasta: ' + it?.numeroHasta + " - Autorización: " +
-                                      it?.fechaAutorizacion?.format("dd-MM-yyyy")}}"/>
+                                  it?.fechaAutorizacion?.format("dd-MM-yyyy")}}"/>
                 <g:hiddenField name="libretinName" id="idLibre" value=""/>
             </div>
             <div class="col-xs-5">
                 <g:textField name="numEstablecimiento" id="numEstablecimiento" readonly="true"  style="width: 50px"
-                                 title="Número de Establecimento"/> -
+                             title="Número de Establecimento"/> -
                 <g:textField name="numeroEmision" id="numEmision" readonly="true" style="width: 50px" title="Numeración Emisión"/>
 
                 <g:textField name="serie" id="serie" value="${retencion?.numero}" maxlength="10" class="form-control required validacionNumero"
@@ -134,70 +152,70 @@
         <p class="css-vertical-text">Impuesto a la Renta</p>
 
         <div class="linea"></div>
-                <div class="fila" style="margin-top: 30px">
-                    <div class="col-xs-7">
-                        <label>Retención Impuesto a la Renta Bienes </label>
-                        <g:select class="form-control" name="conceptoRenta"
-                                  from="${crirBienes}"
-                                  optionKey="id" optionValue="${{ it.codigo + ' : ' + it.porcentaje + '% ' + it.descripcion }}"
-                                  value="${retencion?.conceptoRIRBienes?.id?:6}"/>
-                    </div>
+        <div class="fila" style="margin-top: 30px">
+            <div class="col-xs-7">
+                <label>Retención Impuesto a la Renta Bienes </label>
+                <g:select class="form-control" name="conceptoRenta"
+                          from="${crirBienes}"
+                          optionKey="id" optionValue="${{ it.codigo + ' : ' + it.porcentaje + '% ' + it.descripcion }}"
+                          value="${retencion?.conceptoRIRBienes?.id?:6}"/>
+            </div>
 
-                    <div class="col-xs-2">
-                        <label>Base Imponible</label>
-                        <g:textField class="form-control number baseB" title="La base imponible del IR."
-                                     style="text-align: right" name="baseRenta"
-                                     value="${retencion?.baseRenta ?: base}"/>
-                        <p class="help-block ui-helper-hidden"></p>
-                    </div>
+            <div class="col-xs-2">
+                <label>Base Imponible</label>
+                <g:textField class="form-control number baseB" title="La base imponible del IR."
+                             style="text-align: right" name="baseRenta"
+                             value="${retencion?.baseRenta ?: base}"/>
+                <p class="help-block ui-helper-hidden"></p>
+            </div>
 
-                    <div class="col-xs-1">
-                        <label>Porcentaje</label>
-                            <g:textField class="form-control" title="% de rentención" name="porcentaje"
-                                         readonly="true"
-                                         style="text-align: right; width: 70px;"/>
-                    </div>
+            <div class="col-xs-1">
+                <label>Porcentaje</label>
+                <g:textField class="form-control" title="% de rentención" name="porcentaje"
+                             readonly="true"
+                             style="text-align: right; width: 70px;"/>
+            </div>
 
-                    <div class="col-xs-2">
-                        <label>Valor Retenido</label>
-                            <g:textField class="form-control number required" title="Valor retenido" name="valorRetenido"
-                                         value="${g.formatNumber(number: retenido, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2)}"
-                                         style="text-align: right"/>
-                    </div>
-                </div>
+            <div class="col-xs-2">
+                <label>Valor Retenido</label>
+                <g:textField class="form-control number required" title="Valor retenido" name="valorRetenido"
+                             value="${g.formatNumber(number: retenido, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2)}"
+                             style="text-align: right"/>
+            </div>
+        </div>
 
-                <div class="fila" style="margin-top: 50px">
-                    <div class="col-xs-7">
-                        <label>Retención Impuesto a la Renta Servicios</label>
-                        <g:select class="form-control" name="conceptoRentaSrvc"
-                                  from="${crirServicios}"
-                                  optionKey="id" optionValue="${{ it.codigo + ' - ' + it.descripcion }}"
-                                  value="${retencion?.conceptoRIRServicios?.id?:1}"/>
-                    </div>
+        <div class="fila" style="margin-top: 50px">
+            <div class="col-xs-7">
+                <label>Retención Impuesto a la Renta Servicios</label>
+                <g:select class="form-control" name="conceptoRentaSrvc"
+                          from="${crirServicios}"
+                          optionKey="id" optionValue="${{ it.codigo + ' - ' + it.descripcion }}"
+                          value="${retencion?.conceptoRIRServicios?.id?:1}"/>
+            </div>
 
-                    <div class="col-xs-2">
-                        <label>Base Imponible</label>
-                        <g:textField class="form-control number baseS"
-                                     title="La base imponible del IR." style="text-align: right" name="baseRentaSrvc"
-                                     value="${retencion?.baseRentaServicios ?: 0}"/>
-                    </div>
+            <div class="col-xs-2">
+                <label>Base Imponible</label>
+                <g:textField class="form-control number baseS"
+                             title="La base imponible del IR." style="text-align: right" name="baseRentaSrvc"
+                             value="${retencion?.baseRentaServicios ?: 0}"/>
+            </div>
 
-                    <div class="col-xs-1">
-                        <label>Porcentaje</label>
-                        <g:textField class="form-control" title="% de rentención" name="porcentajeSrvc"
-                                     readonly="true" style="text-align: right; width: 70px;"/>
-                    </div>
+            <div class="col-xs-1">
+                <label>Porcentaje</label>
+                <g:textField class="form-control" title="% de rentención" name="porcentajeSrvc"
+                             readonly="true" style="text-align: right; width: 70px;"/>
+            </div>
 
-                    <div class="col-xs-2">
-                        <label>Valor Servicios</label>
-                        <g:textField class="form-control number required valorSer" title="Valor retenido" name="valorRetenidoSrvc"
-                                     value="${g.formatNumber(number: retenido, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2)}"
-                                     style="text-align: right"/>
-                    </div>
-                    <div class="col-xs-2">
-                    </div>
+            <div class="col-xs-2">
+                <label>Valor Servicios</label>
+                <g:textField class="form-control number required valorSer" title="Valor retenido" name="valorRetenidoSrvc"
+                             value="${g.formatNumber(number: retenido, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2)}"
+                             style="text-align: right"/>
+            </div>
+            <div class="col-xs-2">
+            </div>
 
-                </div>
+        </div>
 
         <div style="margin-top: 45px">
             <div class="col-xs-3">
@@ -328,8 +346,8 @@
         </div>
 
     </div>
-    %{--</div>--}%
-    %{--</div>--}%
+%{--</div>--}%
+%{--</div>--}%
 
 </g:form>
 <script type="text/javascript">
@@ -388,7 +406,7 @@
     });
 
     $("#valorRetenidoSrvc").change(function () {
-       totalesRenta()
+        totalesRenta()
     });
 
     $("#ivaBienes").change(function () {
@@ -396,7 +414,7 @@
     });
 
     $("#ivaServicios").change(function () {
-       totalesIva()
+        totalesIva()
     });
 
     $(".baseS").keydown(function (ev) {
@@ -720,11 +738,11 @@
             wrapper: "li",
             invalidHandler: function (form, validator) {
                 var errors = validator.numberOfInvalids();
-                        console.log("**" + errors);
+                console.log("**" + errors);
                 if (errors) {
                     var message = errors == 1
-                            ? 'Se encontró 1 error.'
-                            : 'Se encontraron ' + errors + ' errores';
+                        ? 'Se encontró 1 error.'
+                        : 'Se encontraron ' + errors + ' errores';
                     $("#divErrores").show();
                     $("#spanError").html(message);
 
@@ -802,6 +820,10 @@
         $("#pcivBienes").change();
         $("#pcivSrvc").change();
     });
+
+    $("#comprobanteN").click(function () {
+        location.href="${createLink(controller: 'proceso', action: 'comprobante')}/?proceso=" + '${proceso?.id}'
+    })
 
 </script>
 
