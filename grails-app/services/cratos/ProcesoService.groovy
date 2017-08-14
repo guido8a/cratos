@@ -291,7 +291,7 @@ class ProcesoService {
         def cn = dbConnectionService.getConnection()
         def msg = ""
             try {
-                cn.eachRow("select mayorizar from mayorizar($cmpr.id, 1)".toString()) {d ->
+                cn.eachRow("select mayorizar from mayorizar($cmpr, 1)".toString()) {d ->
                     msg = "ok_" + d.mayorizar
                 }
             } catch (e) {

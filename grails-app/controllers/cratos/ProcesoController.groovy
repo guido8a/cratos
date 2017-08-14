@@ -1389,10 +1389,21 @@ class ProcesoController extends cratos.seguridad.Shield {
         return[comprobante: comprobante, auxiliares: auxiliares, band: band]
     }
     def mayorizar_ajax () {
-//        println("params " + params)
-        def comprobante = Comprobante.get(params.id)
-        def res = procesoService.mayorizar(comprobante)
-//        println("res " + res)
+        def cn = dbConnectionService.getConnection()
+        def sql = "select asntdebe - sum(axlrdebe) debe, asnthber - sum(axlrhber) hber from asnt, axlr " +
+                "where asnt.asnt__id = axlr.asnt__id and asnt.cmpr__id = ${params.id} group by asntdebe, asnthber;"
+        def valores = cn.rows(sql.toString())[0]
+        def res
+        if(valores?.debe == 0 && valores?.hber == 0) {
+            println "cuadra"
+            res = procesoService.mayorizar(params.id)
+        }  else {
+            println "no cuadra"
+            render "no_no cuadran los valores de asientos y sus respectivos auxiliares"
+            return
+        }
+
+        println("res " + res)
         render res
     }
 
