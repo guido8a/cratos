@@ -63,6 +63,5 @@ class Reembolso {
         reembolsoEmsn(blank: true, nullable: true, maxSize: 10, attributes: [title: 'reembolso documento'])
         reembolsoSecuencial(blank: true, nullable: true, maxSize: 10, attributes: [title: 'reembolso secuencial'])
         autorizacion(blank: true, nullable: true, maxSize: 10, attributes: [title: 'reembolso autorizacion'])
-
      }
 }
