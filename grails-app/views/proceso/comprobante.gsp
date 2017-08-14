@@ -16,7 +16,7 @@
 
 <div class="btn-group" style="margin-right: 20px">
     <a href="#" class="btn btn-success previous" id="irProceso">
-        <i class="fa fa-gear"></i>
+        <i class="fa fa-chevron-left"></i>
         Proceso
     </a>
     <a href="#" class="btn btn-success disabled" id="comprobanteN">

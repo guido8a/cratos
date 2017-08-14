@@ -744,7 +744,7 @@
                 tpps: tpps
             },
             success: function (msg) {
-                $("#divValores").html(msg)
+                $("#divValores").html(msg).show("slide")
                 if(tipo == '1' || tipo == '2' || tipo == '6' || tipo == '7') {
 //                    $("#lblValores").html(flecha + "Valores")
                     $("#lblValores").html("Valores")

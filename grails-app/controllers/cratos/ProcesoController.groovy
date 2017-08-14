@@ -1377,7 +1377,16 @@ class ProcesoController extends cratos.seguridad.Shield {
     def botonesMayo_ajax () {
         def comprobante = Comprobante.get(params.comprobante).refresh()
         def auxiliares = Auxiliar.findAllByComprobante(comprobante)
-        return[comprobante: comprobante, auxiliares: auxiliares]
+        def asientos = Asiento.findAllByComprobante(comprobante)
+        def totalDebe = asientos.debe.sum()
+        def totalHaber = asientos.haber.sum()
+        def band
+        if((totalDebe - totalHaber) == 0 && totalDebe == comprobante.proceso.valor.toDouble() && totalHaber == comprobante.proceso.valor.toDouble()){
+            band = true
+        }else{
+            band = false
+        }
+        return[comprobante: comprobante, auxiliares: auxiliares, band: band]
     }
     def mayorizar_ajax () {
 //        println("params " + params)
@@ -1397,7 +1406,7 @@ class ProcesoController extends cratos.seguridad.Shield {
 
 
     def numeracion_ajax () {
-        println "numeracion_ajax: $params"
+//        println "numeracion_ajax: $params"
         def cn = dbConnectionService.getConnection()
         def proceso
         if(params.proceso) {

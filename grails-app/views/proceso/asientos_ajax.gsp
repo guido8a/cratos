@@ -29,6 +29,11 @@
         background-color: #1270c3;
         color: #fdcfa0;
     }
+
+    .rojo{
+        color: #702213
+    }
+
 </style>
 
 
@@ -39,7 +44,7 @@
 <div class="col-md-3 etiqueta"><label>Valor:</label> <g:formatNumber number="${comprobante?.proceso?.valor}" maxFractionDigits="2" format="##,##0"/></div>
 
 <g:if test="${comprobante?.registrado != 'S'}">
-    <div class="btn-group" style="float: right; margin-top: -75px">
+    <div class="btn-group" style="float: right; margin-top: -90px">
         <a href="#" class="btn btn-success btnAgregarAsiento" comp="${comprobante?.id}"
            title="Agregar asiento contable">
             <i class="fa fa-plus">Agregar Asiento</i>
@@ -80,10 +85,15 @@
                         <td width="130px" style="text-align: center">
                             <g:if test="${asiento?.comprobante?.registrado != 'S'}">
                                 <div class="btn-group">
-                                    <a href="#" class="btn btn-success btn-sm btnEditarAsiento" idAs="${asiento?.id}"
-                                       title="Editar asiento">
-                                        <i class="fa fa-pencil"></i>
-                                    </a>
+                                    <g:if test="${cratos.Auxiliar.findByAsiento(asiento)}">
+                                    </g:if>
+                                    <g:else>
+                                        <a href="#" class="btn btn-success btn-sm btnEditarAsiento" idAs="${asiento?.id}"
+                                           title="Editar asiento">
+                                            <i class="fa fa-pencil"></i>
+                                        </a>
+                                    </g:else>
+
                                     <a href="#" class="btn btn-azul btn-sm btnCentroCostos" idAs="${asiento?.id}" nomAs="${asiento?.cuenta?.descripcion}"
                                        title="Centro de Costos">
                                         <i class="fa fa-dollar"></i>
@@ -92,11 +102,13 @@
                                        title="Agregar auxiliar">
                                         <i class="fa fa-plus"></i>
                                     </a>
-                                    <a href="#" class="btn btn-danger btn-sm btnEliminarAsiento" idAs="${asiento?.id}"
-                                       title="Eliminar asiento">
-                                        <i class="fa fa-times"></i>
-                                    </a>
-                                </div>
+                                    <g:if test="${!cratos.Auxiliar.findByAsiento(asiento)}">
+                                        <a href="#" class="btn btn-danger btn-sm btnEliminarAsiento" idAs="${asiento?.id}"
+                                           title="Eliminar asiento">
+                                            <i class="fa fa-times"></i>
+                                        </a>
+                                    </g:if>
+                                  </div>
                             </g:if>
                         </td>
                     </tr>
@@ -127,6 +139,7 @@
                                 <td class="dato" style="text-align: center; width: 100px">
                                     <g:if test="${auxiliar?.asiento?.comprobante?.registrado != 'S'}">
                                         <div class="btn-group">
+
                                             <a href="#" class="btn btn-success btn-sm btnEditarAuxiliar"
                                                idAu="${auxiliar?.id}" title="Editar auxiliar">
                                                 <i class="fa fa-pencil"></i>
@@ -146,8 +159,8 @@
             </g:each>
             <tr class="colorAsiento">
                 <td colspan="3" class="total derecha">Totales del asiento</td>
-                <td class="total derecha">${Math.round(sumadebe*100)/100}</td>
-                <td class="total derecha">${Math.round(sumahber*100)/100}</td>
+                <td class="total derecha ${Math.round(sumadebe*100)/100 != proceso?.valor ? 'rojo' : ''}">${Math.round(sumadebe*100)/100}</td>
+                <td class="total derecha ${Math.round(sumahber*100)/100 != proceso?.valor ? 'rojo' : ''}">${Math.round(sumahber*100)/100}</td>
                 <td class="total derecha">Dif: ${Math.round((sumadebe - sumahber)*100)/100}</td>
             </tr>
             </tbody>

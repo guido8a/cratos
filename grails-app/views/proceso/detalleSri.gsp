@@ -45,7 +45,7 @@
 
     <div class="btn-group" style="margin-right: 20px; margin-left: 10px">
         <g:link class="btn regresar btn-success btn-ajax" id="${proceso?.id}" action="nuevoProceso">
-            <i class="fa fa-gear"></i> Proceso
+            <i class="fa fa-chevron-left"></i> Proceso
         </g:link>
         <g:if test="${proceso?.estado == 'R'}">
             <a href="#" class="btn btn-success" id="comprobanteN">

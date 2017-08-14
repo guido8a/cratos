@@ -9,48 +9,25 @@
 <div class="btn-toolbar toolbar">
     <div class="btn-group-sm">
         <g:if test="${comprobante.registrado != 'S'}">
-            <a href="#" class="btn btnMayorizar btn-success btn-" id="reg_${comprobante?.id}" idComp="${comprobante?.id}" style="margin-bottom: 10px;">
-                <i class="fa fa-pencil-square-o"></i>
-                Mayorizar
-            </a>
+            <g:if test="${band}">
+                <a href="#" class="btn btnMayorizar btn-success" id="reg_${comprobante?.id}" idComp="${comprobante?.id}" style="margin-bottom: 10px;">
+                    <i class="fa fa-pencil-square-o"></i>
+                    Mayorizar
+                </a>
+            </g:if>
         </g:if>
         <g:else>
-            <g:if test="${!auxiliares}">
+            %{--<g:if test="${!auxiliares}">--}%
                 <a href="#" class="btn btn-danger" id="desmayo" idComp="${comprobante?.id}" style="margin-bottom: 10px;">
                     <i class="fa fa-pencil-square-o "></i>
                     Desmayorizar
                 </a>
-            </g:if>
+            %{--</g:if>--}%
             <a href="#" class="btn btn-info" id="imprimir" iden="${comprobante?.proceso?.id}" nombre="${comprobante.prefijo + comprobante.numero}" style="margin-bottom: 10px;">
                 <i class="fa fa-print"></i>
                 Imprimir
             </a>
         </g:else>
-        %{--<g:if test="${cratos.Retencion.countByProceso(comprobante?.proceso) > 0}">--}%
-            %{--<g:link class="btn btn-primary" action="detalleSri" id="${comprobante?.proceso?.id}" style="margin-bottom: 10px;">--}%
-                %{--<i class="fa fa-shield"></i> SRI--}%
-            %{--</g:link>--}%
-            %{--<g:if test="${cratos.Retencion.findByProceso(comprobante?.proceso).numeroSecuencial}">--}%
-                %{--<g:link controller="reportes3" action="imprimirRetencion" class="btn btn-default btnRetencion" id="${comprobante?.proceso?.id}" params="[empresa: session.empresa.id]" style="margin-bottom: 10px;">--}%
-                    %{--<i class="fa fa-print"></i>--}%
-                    %{--Imprimir retención--}%
-                %{--</g:link>--}%
-            %{--</g:if>--}%
-        %{--</g:if>--}%
-        %{--<g:set var="activo" value="${false}"/>--}%
-        %{--<g:each var="asiento" in="${asientos}" status="i">--}%
-            %{--<g:if test="${asiento.cuenta.resultado == 'A'}">--}%
-                %{--<g:set var="activo" value="${true}"/>--}%
-            %{--</g:if>--}%
-        %{--</g:each>--}%
-
-        %{--<g:if test="${activo}">--}%
-            %{--<g:link controller="activoFijo" action="list" params="['proceso.id': comprobante?.proceso?.id]" class="btn btn-info">--}%
-                %{--<i class="fa fa-desktop"></i>--}%
-                %{--Registrar activos fijos--}%
-            %{--</g:link>--}%
-        %{--</g:if>--}%
-
     </div>
 </div>
 
@@ -107,7 +84,6 @@
                 openLoader("Mayorizando...");
                 $.ajax({
                     type    : "POST",
-                    %{--url     : "${g.createLink(controller: 'proceso',action: 'registrarComprobante')}",--}%
                     url     : "${createLink(controller: 'proceso',action: 'mayorizar_ajax')}",
                     data    : "id=" + id,
                     success : function (msg) {
