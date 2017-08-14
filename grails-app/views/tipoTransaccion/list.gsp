@@ -1,10 +1,10 @@
 
-<%@ page import="cratos.sri.TipoComprobanteSri" %>
+<%@ page import="cratos.sri.TipoTransaccion" %>
 <!DOCTYPE html>
 <html>
 <head>
     <meta name="layout" content="main">
-    <title>Tipos de Comprobante Sri</title>
+    <title>Tipos de Transacciones</title>
 </head>
 <body>
 
@@ -22,29 +22,29 @@
 <table class="table table-condensed table-bordered table-striped">
     <thead>
     <tr>
-        <th>Código</th>
+        <th style="width: 100px">Código</th>
         <th>Descripción</th>
     </tr>
     </thead>
     <tbody>
-    <g:each in="${tipoComprobanteSriInstanceList}" status="i" var="tipoComprobanteSriInstance">
-        <tr data-id="${tipoComprobanteSriInstance.id}">
+    <g:each in="${tipoTransaccionInstanceList}" status="i" var="tipoTransaccionInstance">
+        <tr data-id="${tipoTransaccionInstance.id}">
 
-            <td>${fieldValue(bean: tipoComprobanteSriInstance, field: "codigo")}</td>
+            <td>${fieldValue(bean: tipoTransaccionInstance, field: "codigo")}</td>
 
-            <td>${fieldValue(bean: tipoComprobanteSriInstance, field: "descripcion")}</td>
+            <td>${fieldValue(bean: tipoTransaccionInstance, field: "descripcion")}</td>
 
         </tr>
     </g:each>
     </tbody>
 </table>
 
-<elm:pagination total="${tipoComprobanteSriInstanceCount}" params="${params}"/>
+<elm:pagination total="${tipoTransaccionInstanceCount}" params="${params}"/>
 
 <script type="text/javascript">
     var id = null;
     function submitForm() {
-        var $form = $("#frmTipoComprobanteSri");
+        var $form = $("#frmTipoTransaccion");
         var $btn = $("#dlgCreateEdit").find("#btnSave");
         if ($form.valid()) {
             $btn.replaceWith(spinner);
@@ -53,13 +53,13 @@
                 url     : '${createLink(action:'save')}',
                 data    : $form.serialize(),
                 success : function (msg) {
-                    if (msg == "OK") {
-                        log("Tipo de comprobante SRI guardado correctamente","success");
+                    if(msg == 'OK'){
+                        log("Tipo de transacción guardada correctamente","success");
                         setTimeout(function () {
                             location.reload(true);
-                        }, 1000);
-                    } else {
-                            log("Error al guardar el tipo de comprobante SRI","error")
+                        }, 800);
+                    }else{
+                        log("Error al guardar el Tipo de transacción","error");
                     }
                 }
             });
@@ -70,7 +70,7 @@
     function deleteRow(itemId) {
         bootbox.dialog({
             title   : "Alerta",
-            message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea eliminar el Tipo de Comprobante Sri seleccionado? Esta acción no se puede deshacer.</p>",
+            message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea eliminar el Tipo de Transacción seleccionado? Esta acción no se puede deshacer.</p>",
             buttons : {
                 cancelar : {
                     label     : "Cancelar",
@@ -89,13 +89,13 @@
                                 id : itemId
                             },
                             success : function (msg) {
-                                if (msg == "OK") {
+                                if(msg == 'OK'){
+                                    log("Tipo de transacción borrada correctamente","success");
                                     setTimeout(function () {
-                                        log("Tipo de comprobante SRI borrado correctamente","success");
                                         location.reload(true);
-                                    }, 1000);
-                                } else {
-                                    log("Error al borrar el tipo de comprobante SRI","error")
+                                    }, 800);
+                                }else{
+                                    log("Error al borrar el Tipo de transacción","error");
                                 }
                             }
                         });
@@ -114,7 +114,7 @@
             success : function (msg) {
                 var b = bootbox.dialog({
                     id      : "dlgCreateEdit",
-                    title   : title + " Tipo de Comprobante Sri",
+                    title   : title + " Tipo de Transacción",
                     message : msg,
                     buttons : {
                         cancelar : {
@@ -173,7 +173,7 @@
                         },
                         success : function (msg) {
                             bootbox.dialog({
-                                title   : "Ver Tipo de Comprobante Sri",
+                                title   : "Ver Tipo de Transacción",
                                 message : msg,
                                 buttons : {
                                     ok : {

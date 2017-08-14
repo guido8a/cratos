@@ -4,6 +4,7 @@ class SustentoTributario implements Serializable {
 
     String codigo
     String descripcion
+    String creditoTributario
 
     static mapping = {
         table 'sstr'
@@ -14,6 +15,7 @@ class SustentoTributario implements Serializable {
         columns {
             codigo column: 'sstrcdgo'
             descripcion column: 'sstrdscr'
+            creditoTributario column: 'sstrcrtr'
         }
     }
 

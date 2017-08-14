@@ -1,32 +1,32 @@
-<%@ page import="cratos.sri.TipoComprobanteSri" %>
+<%@ page import="cratos.sri.TipoTransaccion" %>
 
 <script type="text/javascript" src="${resource(dir: 'js', file: 'ui.js')}"></script>
-<g:if test="${!tipoComprobanteSriInstance}">
-    <elm:notFound elem="TipoComprobanteSri" genero="o" />
+<g:if test="${!tipoTransaccionInstance}">
+    <elm:notFound elem="TipoTransaccion" genero="o" />
 </g:if>
 <g:else>
-    <g:form class="form-horizontal" name="frmTipoComprobanteSri" role="form" action="save" method="POST">
-        <g:hiddenField name="id" value="${tipoComprobanteSriInstance?.id}" />
+    <g:form class="form-horizontal" name="frmTipoTransaccion" role="form" action="save" method="POST">
+        <g:hiddenField name="id" value="${tipoTransaccionInstance?.id}" />
         
-        <div class="form-group ${hasErrors(bean: tipoComprobanteSriInstance, field: 'codigo', 'error')} ">
+        <div class="form-group ${hasErrors(bean: tipoTransaccionInstance, field: 'codigo', 'error')} ">
             <span class="grupo">
                 <label for="codigo" class="col-md-2 control-label text-info">
                     Código
                 </label>
                 <div class="col-md-2">
-                    <g:textField name="codigo" maxlength="4" required="" class="allCaps form-control required" value="${tipoComprobanteSriInstance?.codigo}"/>
+                    <g:textField name="codigo" maxlength="1" required="" class="allCaps form-control required" value="${tipoTransaccionInstance?.codigo}"/>
                 </div>
                 
             </span>
         </div>
         
-        <div class="form-group ${hasErrors(bean: tipoComprobanteSriInstance, field: 'descripcion', 'error')} ">
+        <div class="form-group ${hasErrors(bean: tipoTransaccionInstance, field: 'descripcion', 'error')} ">
             <span class="grupo">
                 <label for="descripcion" class="col-md-2 control-label text-info">
                     Descripción
                 </label>
-                <div class="col-md-10">
-                    <g:textField name="descripcion" maxlength="127" required="" class="form-control required" value="${tipoComprobanteSriInstance?.descripcion}"/>
+                <div class="col-md-8">
+                    <g:textField name="descripcion" maxlength="31" required="" class="form-control required" value="${tipoTransaccionInstance?.descripcion}"/>
                 </div>
                 
             </span>
@@ -35,7 +35,7 @@
     </g:form>
 
     <script type="text/javascript">
-        var validator = $("#frmTipoComprobanteSri").validate({
+        var validator = $("#frmTipoTransaccion").validate({
             errorClass     : "help-block",
             errorPlacement : function (error, element) {
                 if (element.parent().hasClass("input-group")) {

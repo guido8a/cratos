@@ -72,6 +72,7 @@
             <li><a href="#empresa" data-toggle="tab">Empresa</a></li>
             <li><a href="#activos" data-toggle="tab">Artículos de inventario y facturación</a></li>
             <li><a href="#nomina" data-toggle="tab">Nómina</a></li>
+            <li><a href="#sri" data-toggle="tab">SRI / ATS</a></li>
         </ul>
 
         <!-- Tab panes -->
@@ -179,40 +180,6 @@
                                 o internacionales, no se trata de sus propios productos bancarios</p>
 
                                 <p>Se aplica al control de cuentas contables como libro bancos</p>
-                            </div>
-                        </li>
-
-%{--
-                        <li>
-                            <i class="fa-li ${iconGen}"></i>
-                            <span id="tipoDoc">
-                                <g:link controller="tipoDocumento" action="list">Tipo de Documento de pago</g:link> con los que se
-                                permite realizar pagos a proveedores
-                            </span>
-
-                            <div class="descripcion hide">
-                                <h4>Tipo de Documento de Pago</h4>
-
-                                <p>Son los diferentes tipos de documentos de pago que pueden aceptarse para transacciones entre la institución financiera y sus proveedores</p>
-
-                                <p>No se aplica a los productos bancarios, solo al registro contable</p>
-                            </div>
-                        </li>
---}%
-
-                        <li>
-                            <i class="fa-li ${iconGen}"></i>
-                            <span id="tipoId">
-                                <g:link controller="tipoIdentificacion" action="list">Tipo de Identificación</g:link> de la persona
-                                natural o jurídica, puede ser RUC, Cédula, pasaporte, etc.
-                            </span>
-
-                            <div class="descripcion hide">
-                                <h4>Tipo de Identificaci&oacute;n</h4>
-
-                                <p>Tipos de identificación que posee la persona natural o jurídica, como por ejempla RUC, cédula, pasaporte, etc.</p>
-
-                                <p class="info">No se debe editar este parámetro.</p>
                             </div>
                         </li>
 
@@ -692,6 +659,74 @@
                 <div class="nomina right pull-right">
                 </div>
             </div>
+
+
+        <div class="tab-pane" id="sri">
+            <div class="left pull-left">
+                <ul class="fa-ul">
+                    <li>
+                        <i class="fa-li ${iconGen}"></i>
+                        <span id="tipoId">
+                            <g:link controller="tipoIdentificacion" action="list">Tipo de Identificación</g:link> de la persona
+                            natural o jurídica, puede ser RUC, Cédula, pasaporte, etc.
+                        </span>
+
+                        <div class="descripcion hide">
+                            <h4>Tipo de Identificaci&oacute;n</h4>
+
+                            <p>Tipos de identificación que posee la persona natural o jurídica, como por ejempla RUC, cédula, pasaporte, etc.</p>
+
+                            <p class="info">No se debe editar este parámetro.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fa-li ${iconGen}"></i>
+                        <span id="tipoTra">
+                            <g:link controller="tipoTransaccion" action="list">Tipo de Transacción</g:link> Compra, venta, etc.
+                        </span>
+
+                        <div class="descripcion hide">
+                            <h4>Tipo de Transacción</h4>
+
+                            <p>Tipos de Transacción del proceso.</p>
+
+                            <p class="info">No se debe editar este parámetro.</p>
+                        </div>
+                    </li>
+
+                    <li>
+                        <i class="fa-li ${iconGen}"></i>
+                        <span id="tipoCom">
+                            <g:link controller="tipoComprobanteSri" action="list">Tipo de Comprobante SRI</g:link>
+                        </span>
+
+                        <div class="descripcion hide">
+                            <h4>Tipo de Comprobante SRI</h4>
+
+                            <p>Tipo de Comprobante SRI.</p>
+                       </div>
+                    </li>
+
+                    <li>
+                        <i class="fa-li ${iconGen}"></i>
+                        <span id="tipoST">
+                            <g:link controller="sustentoTributario" action="list">Tipo de Sustento Tributario</g:link>
+                        </span>
+
+                        <div class="descripcion hide">
+                            <h4>Tipo de Sustento Tributario</h4>
+
+                            <p>Tipo de Sustento Tributario</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="sri right pull-right">
+            </div>
+        </div>
+
+
         </div>
 
         <script type="text/javascript">
