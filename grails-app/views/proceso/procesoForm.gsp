@@ -69,7 +69,7 @@
     </div>
 
     <div class="btn-group" style="margin-right: 20px">
-        <a href="#" class="btn btn-success previous disabled" id="guardarProceso">
+        <a href="#" class="btn btn-success previous disabled" id="procesoN">
             <i class="fa fa-gear"></i>
             Proceso
         </a>

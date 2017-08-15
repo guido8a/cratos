@@ -85,14 +85,14 @@
                         <td width="130px" style="text-align: center">
                             <g:if test="${asiento?.comprobante?.registrado != 'S'}">
                                 <div class="btn-group">
-                                    <g:if test="${cratos.Auxiliar.findByAsiento(asiento)}">
-                                    </g:if>
-                                    <g:else>
+                                    %{--<g:if test="${cratos.Auxiliar.findByAsiento(asiento)}">--}%
+                                    %{--</g:if>--}%
+                                    %{--<g:else>--}%
                                         <a href="#" class="btn btn-success btn-sm btnEditarAsiento" idAs="${asiento?.id}"
                                            title="Editar asiento">
                                             <i class="fa fa-pencil"></i>
                                         </a>
-                                    </g:else>
+                                    %{--</g:else>--}%
 
                                     <a href="#" class="btn btn-azul btn-sm btnCentroCostos" idAs="${asiento?.id}" nomAs="${asiento?.cuenta?.descripcion}"
                                        title="Centro de Costos">
@@ -102,12 +102,12 @@
                                        title="Agregar auxiliar">
                                         <i class="fa fa-plus"></i>
                                     </a>
-                                    <g:if test="${!cratos.Auxiliar.findByAsiento(asiento)}">
+                                    %{--<g:if test="${!cratos.Auxiliar.findByAsiento(asiento)}">--}%
                                         <a href="#" class="btn btn-danger btn-sm btnEliminarAsiento" idAs="${asiento?.id}"
                                            title="Eliminar asiento">
                                             <i class="fa fa-times"></i>
                                         </a>
-                                    </g:if>
+                                    %{--</g:if>--}%
                                   </div>
                             </g:if>
                         </td>

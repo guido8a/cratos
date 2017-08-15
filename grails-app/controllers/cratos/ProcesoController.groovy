@@ -165,7 +165,7 @@ class ProcesoController extends cratos.seguridad.Shield {
                 proceso.documento = params.numEstablecimiento + "-" + params.numeroEmision + "-" + secuencial
                 proceso.facturaEstablecimiento = params.numEstablecimiento
                 proceso.facturaPuntoEmision = params.numeroEmision
-                proceso.facturaSecuencial = secuencial
+                proceso.facturaSecuencial = secuencial.toInteger()
                 proceso.tipoCmprSustento = comprobanteSri
                 proveedor = Proveedor.get(params."proveedor.id")
                 proceso.proveedor = proveedor
@@ -178,7 +178,7 @@ class ProcesoController extends cratos.seguridad.Shield {
                 proceso.documento = params.numEstablecimiento + "-" + params.numeroEmision + secuencial
                 proceso.facturaEstablecimiento = params.numEstablecimiento
                 proceso.facturaPuntoEmision = params.numeroEmision
-                proceso.facturaSecuencial = secuencial
+                proceso.facturaSecuencial = secuencial.toInteger()
                 proceso.comprobante = Comprobante.get(params.comprobanteSel_name)
 //                proceso.tipoCmprSustento = comprobanteSri
                 proveedor = Proveedor.get(params."proveedor.id")
