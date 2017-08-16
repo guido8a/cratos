@@ -364,7 +364,7 @@ class ProcesoController extends cratos.seguridad.Shield {
 //        println "sql2: $sql"
         def data = cn.rows(sql.toString())
         cn.close()
-        [data: data, tpcpSri: params.tpcp, estado: params.etdo?:'']
+        [data: data, tpcpSri: params.tpcp, estado: params.etdo?:'', esta: params.esta]
     }
 
     def cargaSstr() {
@@ -1835,10 +1835,75 @@ class ProcesoController extends cratos.seguridad.Shield {
     }
 
     def comprobante () {
-        println("--> " + params)
         def proceso = Proceso.get(params.proceso)
         return[proceso: proceso]
     }
 
+    def reembolso () {
+        def proceso = Proceso.get(params.proceso)
+        return[proceso: proceso]
+    }
+
+    def formReembolso_ajax () {
+        def proceso = Proceso.get(params.proceso)
+        return[proceso: proceso]
+    }
+
+    def buscarProveedor_ajax () {
+        def proceso = Proceso.get(params.proceso)
+        return[proceso: proceso]
+    }
+
+    def tablaProveedor_ajax () {
+//        println "buscar proveedor "+params
+        def prve = []
+        def proceso = Proceso.get(params.proceso)
+        def tr = TipoRelacion.list()
+        def tipo =   " 1,2,3 "
+        if(!params.tipoProceso){
+            params.tipoProceso = proceso.tipoProceso.codigo.trim()
+        }
+        switch (params.tipoProceso) {
+            case "P":
+                tr = TipoRelacion.findAllByCodigoInList(['C','P'])
+                tipo = " 1, 3 "
+                break
+            case "NC" :
+                tr = TipoRelacion.findAllByCodigoInList(['C','E'])
+                tipo = " 2,3 "
+                break
+            case "V"  :
+                tr = TipoRelacion.findAllByCodigoInList(['C','E'])
+                tipo = " 2, 3 "
+                break
+        }
+
+        def cn = dbConnectionService.getConnection()
+        def sql
+
+        if(!params.ruc && !params.nom){
+            sql = "select prve__id id, prve_ruc ruc, prvenmbr nombre, tppvdscr tipoProveedor, prveatrz from prve, tppv " +
+                    "where tppv.tppv__id = prve.tppv__id and tprl__id in (${tipo}) and empr__id = ${session?.empresa?.id} order by prve_ruc;"
+        }else{
+            if(params.ruc && params.nom){
+                sql = "select prve__id id, prve_ruc ruc, prvenmbr nombre, tppvdscr tipoProveedor, prveatrz from prve, tppv " +
+                        "where tppv.tppv__id = prve.tppv__id and tprl__id in (${tipo}) and empr__id = ${session?.empresa?.id} and prve_ruc like '%${params.ruc}%' and prvenmbr ilike '%${params.nom}%' order by prve_ruc;"
+            }else{
+                if(params.nom){
+                    sql = "select prve__id id, prve_ruc ruc, prvenmbr nombre, tppvdscr tipoProveedor, prveatrz from prve, tppv " +
+                            "where tppv.tppv__id = prve.tppv__id and tprl__id in (${tipo}) and empr__id = ${session?.empresa?.id} and prvenmbr ilike '%${params.nom}%' order by prve_ruc;"
+                }
+
+                if(params.ruc){
+                    sql = "select prve__id id, prve_ruc ruc, prvenmbr nombre, tppvdscr tipoProveedor, prveatrz from prve, tppv " +
+                            "where tppv.tppv__id = prve.tppv__id and tprl__id in (${tipo}) and empr__id = ${session?.empresa?.id} and prve_ruc like '%${params.ruc}%' order by prve_ruc;"
+                }
+            }
+        }
+
+        prve = cn.rows(sql.toString())
+
+        [prve: prve, proceso: proceso]
+    }
 }
 

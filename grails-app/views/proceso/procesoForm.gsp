@@ -78,8 +78,14 @@
                 <i class="fa fa-calendar-o"></i>
                 Comprobante
             </a>
+            <g:if test="${proceso?.tipoProceso?.codigo?.trim() == 'V' && proceso?.tipoCmprSustento?.tipoComprobanteSri?.codigo?.trim() == '41'}">
+                <a href="#" class="btn btn-success" id="reembolsoN">
+                    <i class="fa fa-thumbs-up"></i>
+                    Reembolso
+                </a>
+            </g:if>
         </g:if>
-        <g:if test="${proceso?.tipoProceso?.id == 1}">
+        <g:if test="${proceso?.tipoProceso?.codigo?.trim() == 'C'}">
             <g:link class="btn btn-success" action="detalleSri" id="${proceso?.id}" style="margin-bottom: 10px;">
                 <i class="fa fa-money"></i> Retenciones
             </g:link>
@@ -105,7 +111,7 @@
         <g:if test="${proceso}">
             <g:if test="${!aux}">
                 <g:if test="${proceso?.tipoProceso?.id != 4}">
-                    <g:form action="borrarProceso" class="br_prcs" style="margin:0px;display: inline">
+                    <g:form action="borrarProceso" class="br_prcs" style="display: inline">
                         <input type="hidden" name="id" value="${proceso?.id}">
                         <a class="btn btn-danger" id="btn-br-prcs" action="borrarProceso">
                             <i class="fa fa-trash-o"></i>
@@ -121,11 +127,11 @@
                 </a>
             </g:else>
 
-            %{--<g:if test="${proceso?.tipoProceso?.id == 1}">--}%
-                %{--<g:link class="btn btn-primary" action="detalleSri" id="${proceso?.id}" style="margin-bottom: 10px;">--}%
-                    %{--<i class="fa fa-money"></i> Retenciones--}%
-                %{--</g:link>--}%
-            %{--</g:if>--}%
+        %{--<g:if test="${proceso?.tipoProceso?.id == 1}">--}%
+        %{--<g:link class="btn btn-primary" action="detalleSri" id="${proceso?.id}" style="margin-bottom: 10px;">--}%
+        %{--<i class="fa fa-money"></i> Retenciones--}%
+        %{--</g:link>--}%
+        %{--</g:if>--}%
             <g:if test="${cratos.Retencion.findByProceso(proceso)}">
                 <g:link controller="reportes3" action="imprimirRetencion" class="btn btn-default btnRetencion"
                         id="${proceso?.id}" params="[empresa: session.empresa.id]" style="margin-bottom: 10px;">
@@ -142,7 +148,7 @@
         </g:if>
 
 
-        <a href="#" class="btn btn-default" style="cursor: default" id="abrir-fp">
+        <a href="#" class="btn btn-primary" style="cursor: default; margin-right: 20px" id="abrir-fp">
             <i class="fa fa-usd"></i>
             Forma de Pago
         </a>
@@ -313,15 +319,15 @@
 
 </g:form>
 %{--<g:if test="${proceso}">--}%
-    %{--<div class="vertical-container" skip="1" style="margin-top: 5px; color:black; margin-bottom:20px; height:auto; max-height: 520px; overflow: auto;">--}%
-        %{--<p class="css-vertical-text">Comprobante</p>--}%
+%{--<div class="vertical-container" skip="1" style="margin-top: 5px; color:black; margin-bottom:20px; height:auto; max-height: 520px; overflow: auto;">--}%
+%{--<p class="css-vertical-text">Comprobante</p>--}%
 
-        %{--<div class="linea"></div>--}%
+%{--<div class="linea"></div>--}%
 
-        %{--<div id="divComprobante" class="col-xs-12"--}%
-             %{--style="margin-bottom: 0px ;padding: 0px;display: none;margin-top: 5px;">--}%
-        %{--</div>--}%
-    %{--</div>--}%
+%{--<div id="divComprobante" class="col-xs-12"--}%
+%{--style="margin-bottom: 0px ;padding: 0px;display: none;margin-top: 5px;">--}%
+%{--</div>--}%
+%{--</div>--}%
 %{--</g:if>--}%
 
 
@@ -1069,16 +1075,16 @@
     });
 
     %{--function cargarComprobante(proceso) {--}%
-        %{--$.ajax({--}%
-            %{--type: 'POST',--}%
-            %{--url: "${createLink(controller: 'proceso',action: 'comprobante_ajax')}",--}%
-            %{--data: {--}%
-                %{--proceso: proceso--}%
-            %{--},--}%
-            %{--success: function (msg) {--}%
-                %{--$("#divComprobante").html(msg).show("slide");--}%
-            %{--}--}%
-        %{--});--}%
+    %{--$.ajax({--}%
+    %{--type: 'POST',--}%
+    %{--url: "${createLink(controller: 'proceso',action: 'comprobante_ajax')}",--}%
+    %{--data: {--}%
+    %{--proceso: proceso--}%
+    %{--},--}%
+    %{--success: function (msg) {--}%
+    %{--$("#divComprobante").html(msg).show("slide");--}%
+    %{--}--}%
+    %{--});--}%
     %{--}--}%
 
 
@@ -1185,6 +1191,10 @@
     $("#comprobanteN").click(function () {
         location.href="${createLink(controller: 'proceso', action: 'comprobante')}/?proceso=" + '${proceso?.id}'
     })
+
+    $("#reembolsoN").click(function () {
+        location.href="${createLink(controller: 'proceso', action: 'reembolso')}/?proceso=" + '${proceso?.id}'
+    });
 
 </script>
 </body>

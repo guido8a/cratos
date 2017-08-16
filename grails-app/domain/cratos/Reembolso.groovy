@@ -2,7 +2,6 @@ package cratos
 
 class Reembolso {
 
-    Gestor gestor
     Proveedor proveedor
     cratos.sri.TipoCmprSustento tipoCmprSustento
 
@@ -18,6 +17,7 @@ class Reembolso {
     String reembolsoEmsn
     String reembolsoSecuencial
     String autorizacion
+    Date fecha
 
     static auditable = true
 
@@ -28,7 +28,6 @@ class Reembolso {
         id generator: 'identity'
         version false
         columns {
-            gestor column: 'gstr__id'
             proveedor column: 'prve__id'
             tipoCmprSustento column: 'tcst__id'
 
@@ -44,10 +43,10 @@ class Reembolso {
             reembolsoEmsn column: 'rembnmem'
             reembolsoSecuencial column: 'rembscnc'
             autorizacion column: 'prcsatrz'
+            fecha column: 'rembfcha'
         }
     }
     static constraints = {
-        gestor(blank: true, nullable: true, attributes: [title: 'gestor'])
         proveedor(blank: true, nullable: true, attributes: [title: 'proveedor'])
         tipoCmprSustento(nullable: true, blank: true)
 
