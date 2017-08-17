@@ -2,6 +2,7 @@ package cratos
 
 class Reembolso {
 
+    Proceso proceso
     Proveedor proveedor
     cratos.sri.TipoCmprSustento tipoCmprSustento
 
@@ -28,6 +29,7 @@ class Reembolso {
         id generator: 'identity'
         version false
         columns {
+            proceso column: 'prcs__id'
             proveedor column: 'prve__id'
             tipoCmprSustento column: 'tcst__id'
 

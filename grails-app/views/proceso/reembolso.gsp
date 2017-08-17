@@ -42,36 +42,6 @@
 
         <div class="linea"></div>
 
-        %{--<div class="col-md-10" style="margin-top: 15px">--}%
-            %{--<div class="col-md-2 negrilla">--}%
-                %{--Gestor:--}%
-            %{--</div>--}%
-            %{--<div class="col-md-8 negrilla">--}%
-                %{--<g:textField name="gestorR" value="${proceso?.gestor?.nombre}" class="form-control" readonly=""/>--}%
-            %{--</div>--}%
-        %{--</div>--}%
-
-        %{--<div class="col-md-10"  style="margin-top: 10px">--}%
-            %{--<div class="col-md-2 negrilla">--}%
-                %{--Cliente:--}%
-            %{--</div>--}%
-            %{--<div class="col-md-3 negrilla">--}%
-                %{--<g:textField name="proveedorCodigoR" value="${proceso?.proveedor?.ruc}" class="form-control" readonly=""/>--}%
-            %{--</div>--}%
-            %{--<div class="col-md-5 negrilla">--}%
-                %{--<g:textField name="proveedorR" value="${proceso?.proveedor?.nombre}" class="form-control" readonly=""/>--}%
-            %{--</div>--}%
-        %{--</div>--}%
-
-        %{--<div class="col-md-10"  style="margin-top: 10px">--}%
-            %{--<div class="col-md-2 negrilla">--}%
-                %{--Tipo de comprobante:--}%
-            %{--</div>--}%
-            %{--<div class="col-md-8 negrilla">--}%
-                %{--<g:textField name="tipoCompR" value="${proceso?.tipoCmprSustento?.tipoComprobanteSri?.descripcion}" class="form-control" readonly=""/>--}%
-            %{--</div>--}%
-        %{--</div>--}%
-
         <div class="col-md-10" style="margin-top: 10px; margin-bottom: 10px">
             <div class="btn-group" style="float: left;">
                 <a href="#" class="btn btn-success" id="agregarN">
@@ -101,6 +71,19 @@
 
 <script type="text/javascript">
 
+    function cargarTablaReembolso () {
+        $.ajax({
+           type: 'POST',
+            url:'${createLink(controller: 'proceso', action: 'tablaReembolso_ajax')}',
+            data:{
+
+            },
+            success: function (msg) {
+
+            }
+        });
+    }
+
 
 
     $("#agregarN").click(function () {
@@ -127,6 +110,37 @@
                             label: "<i class='fa fa-save'></i> Guardar",
                             className: "btn-success",
                             callback: function () {
+
+                                $.ajax({
+                                    type: 'POST',
+                                    url: '${createLink(controller: 'proceso', action: 'guardarReembolso_ajax')}',
+                                    data:{
+                                        proveedor: $("#prve_idPro").val(),
+                                        comprobante: $("#tipoComprobante option:selected").val(),
+                                        establecimiento: $("#dcmtEstablecimientoR").val(),
+                                        emision: $("#dcmtEmisionR").val(),
+                                        secuencial: $("#dcmtSecuencialR").val(),
+                                        autorizacion: $("#dcmtAutorizacionR").val(),
+                                        fecha: $("#fechaR_input").val(),
+                                        baseImponibleIva: $("#ivaR").val(),
+                                        baseImponibleIva0: $("#iva0R").val(),
+                                        noAplicaIva: $("#noIvaR").val(),
+                                        excentoIva: $("#excentoIvaR").val(),
+                                        ivaGenerado: $("#ivaGeneradoR").val(),
+                                        iceGenerado: $("#iceGeneradoR").val()
+                                    },
+                                    success: function (msg) {
+                                        if(msg == 'ok'){
+                                            log("Reemnbolso agregado correctamente!","success");
+                                            setTimeout(function () {
+                                                location.reload(true)
+                                            }, 800);
+                                        }else{
+                                            log("Error al agregar el reembolso","error")
+                                        }
+                                    }
+                                });
+
                                 bootbox.hideAll();
                             }
                         }
