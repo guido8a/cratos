@@ -53,26 +53,19 @@
 
     <div class="col-md-10 negrilla" style="margin-left: -80px">
         <div class="col-md-3">
-            <input type="text" name="dcmtEstablecimiento" id="dcmtEstablecimientoR" size="3" maxlength="3"
-                   style="width: 100px;"
-                   value="${proceso?.procesoSerie01}" class="form-control validacionNumero"
-                   validate=" number" placeholder="Establ." />
+            <input type="text" name="dcmtEstablecimiento" id="dcmtEstablecimientoR" maxlength="10"
+                   style="width: 100px;" value="" class="form-control required validacionNumeroSinPuntos" placeholder="Establ." />
         </div>
 
         <div class="col-md-3">
-            <input type="text" name="dcmtEmision" id="dcmtEmisionR" size="3" maxlength="3" style="width: 100px;"
-                   value="${proceso?.procesoSerie02}"
-                   class="form-control validacionNumero " validate=" number" placeholder="Emisión"
-                   title="El número de punto de emisión del documento" />
+            <input type="text" name="dcmtEmision" id="dcmtEmisionR" maxlength="10" style="width: 100px;"
+                   value="" class="form-control required validacionNumeroSinPuntos" placeholder="Emisión" title="El número de punto de emisión del documento" />
         </div>
 
         <div class="col-md-4">
-            <input type="text" name="dcmtSecuencial" id="dcmtSecuencialR" size="10" maxlength="9"
-                   style="width: 115px;"
-                   value="${proceso?.secuencial}"
-                   class="form-control label-shared validacionNumero " validate=" number"
-                   title="El número de secuencia del documento" }
-                   placeholder="Secuencial"/>
+            <input type="text" name="dcmtSecuencial" id="dcmtSecuencialR" maxlength="10"
+                   style="width: 115px;" value="" class="form-control label-shared required validacionNumeroSinPuntos"
+                   title="El número de secuencia del documento" placeholder="Secuencial"/>
         </div>
     </div>
 </div>
@@ -83,10 +76,9 @@
     </div>
 
     <div class="col-xs-3 negrilla">
-        <input type="text" name="dcmtAutorizacion" id="dcmtAutorizacionR" size="10" maxlength="15"
-               value="" class=" digits form-control label-shared validacionNumero"
-               validate=" number" placeholder="Autorización"
-               title="El número autorización de la factura a registrar" style="margin-left: -15px"/>
+        <input type="text" name="dcmtAutorizacion" id="dcmtAutorizacionR" maxlength="10"
+               value="" class=" digits form-control label-shared required validacionNumeroSinPuntos"
+               placeholder="Autorización" title="El número autorización de la factura a registrar" style="margin-left: -15px; width: 150px"/>
     </div>
 
     <div class="col-xs-2 negrilla" style="font-size: 12px">
@@ -168,6 +160,57 @@
 
 
 <script type="text/javascript">
+
+    function validarNumSinPuntos(ev) {
+        /*
+         48-57      -> numeros
+         96-105     -> teclado numerico
+         188        -> , (coma)
+         190        -> . (punto) teclado
+         110        -> . (punto) teclado numerico
+         8          -> backspace
+         46         -> delete
+         9          -> tab
+         37         -> flecha izq
+         39         -> flecha der
+         */
+        return ((ev.keyCode >= 48 && ev.keyCode <= 57) ||
+        (ev.keyCode >= 96 && ev.keyCode <= 105) ||
+        ev.keyCode == 8 || ev.keyCode == 46 || ev.keyCode == 9 ||
+        ev.keyCode == 37 || ev.keyCode == 39 );
+    }
+
+    $(".validacionNumeroSinPuntos").keydown(function (ev) {
+        return validarNumSinPuntos(ev);
+    }).keyup(function () {
+    });
+
+    function validarNum(ev) {
+        /*
+         48-57      -> numeros
+         96-105     -> teclado numerico
+         188        -> , (coma)
+         190        -> . (punto) teclado
+         110        -> . (punto) teclado numerico
+         8          -> backspace
+         46         -> delete
+         9          -> tab
+         37         -> flecha izq
+         39         -> flecha der
+         */
+        return ((ev.keyCode >= 48 && ev.keyCode <= 57) ||
+        (ev.keyCode >= 96 && ev.keyCode <= 105) ||
+        ev.keyCode == 8 || ev.keyCode == 46 || ev.keyCode == 9 ||
+        ev.keyCode == 37 || ev.keyCode == 39 ||
+        ev.keyCode == 110 || ev.keyCode == 190);
+    }
+
+    $(".validacionNumero").keydown(function (ev) {
+        return validarNum(ev);
+    }).keyup(function () {
+
+    });
+
 
     $("#btn_buscar").click(function () {
         $.ajax({

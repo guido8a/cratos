@@ -27,12 +27,7 @@
         <i class="fa fa-thumbs-up"></i>
         Reembolso
     </a>
-    <g:if test="${proceso?.tipoProceso?.codigo?.trim() == 'C'}">
-        <g:link class="btn btn-success" action="detalleSri" id="${proceso?.id}" style="margin-bottom: 10px;">
-            <i class="fa fa-money"></i> Retenciones
-        </g:link>
-    </g:if>
-</div>
+ </div>
 
 
 
