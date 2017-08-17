@@ -1917,6 +1917,7 @@ class ProcesoController extends cratos.seguridad.Shield {
     def guardarReembolso_ajax () {
         println("params gr " + params)
         def reembolso
+        def proceso = Proceso.get(params.proceso)
         def proveedor = Proveedor.get(params.proveedor)
         def comprobante = TipoCmprSustento.get(params.comprobante)
         def fechaRegistro = new Date().parse("dd-MM-yyyy", params.fecha)
@@ -1924,6 +1925,7 @@ class ProcesoController extends cratos.seguridad.Shield {
             reembolso = Reembolso.get(params.id)
         }else{
             reembolso = new Reembolso()
+            reembolso.proceso = proceso
         }
 
         reembolso.proveedor = proveedor
@@ -1939,7 +1941,7 @@ class ProcesoController extends cratos.seguridad.Shield {
         reembolso.ivaGenerado = params.ivaGenerado.toDouble()
         reembolso.iceGenerado = params.iceGenerado.toDouble()
         reembolso.fecha = fechaRegistro
-
+        reembolso.valor = params.baseImponibleIva.toDouble() + params.baseImponibleIva0.toDouble() + params.noAplicaIva.toDouble() + params.excentoIva.toDouble() + params.ivaGenerado.toDouble() + params.iceGenerado.toDouble()
 
         try{
             reembolso.save(flush: true)
@@ -1953,7 +1955,9 @@ class ProcesoController extends cratos.seguridad.Shield {
     }
 
     def tablaReembolso_ajax () {
-
+        def proceso = Proceso.get(params.proceso)
+        def reembolsos = Reembolso.findAllByProceso(proceso)
+        return [reembolsos: reembolsos]
     }
 }
 

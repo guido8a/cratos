@@ -71,15 +71,17 @@
 
 <script type="text/javascript">
 
+    cargarTablaReembolso();
+
     function cargarTablaReembolso () {
         $.ajax({
            type: 'POST',
             url:'${createLink(controller: 'proceso', action: 'tablaReembolso_ajax')}',
             data:{
-
+                proceso: '${proceso?.id}'
             },
             success: function (msg) {
-
+               $("#divReembolso").html(msg)
             }
         });
     }
@@ -127,14 +129,13 @@
                                         noAplicaIva: $("#noIvaR").val(),
                                         excentoIva: $("#excentoIvaR").val(),
                                         ivaGenerado: $("#ivaGeneradoR").val(),
-                                        iceGenerado: $("#iceGeneradoR").val()
+                                        iceGenerado: $("#iceGeneradoR").val(),
+                                        proceso: '${proceso?.id}'
                                     },
                                     success: function (msg) {
                                         if(msg == 'ok'){
                                             log("Reemnbolso agregado correctamente!","success");
-                                            setTimeout(function () {
-                                                location.reload(true)
-                                            }, 800);
+                                            cargarTablaReembolso();
                                         }else{
                                             log("Error al agregar el reembolso","error")
                                         }
