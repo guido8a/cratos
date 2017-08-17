@@ -85,11 +85,11 @@ class XmlController extends cratos.seguridad.Shield {
         if (file.exists() && (params.override != '1')) {
             render "NO_1"
         } else {
-            sql = "select prcs__id, prcsnmes from prcs where prcsfcrg between '${prdo.fechaInicio}' and " +
+            sql = "select prcs__id, prcsnmes from prcs where prcsfcis between '${prdo.fechaInicio}' and " +
                     "'${prdo.fechaFin}' order by prcsnmes, prcsfcrg"
             def prcs = cn.rows(sql.toString())
 
-            println "...procesos: ${prcs.size()}"
+            println "...procesos: $sql  --> ${prcs.size()}"
 
             def writer = new StringWriter()
             def xml = new MarkupBuilder(writer)

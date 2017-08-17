@@ -136,8 +136,11 @@ class ReembolsoController extends cratos.seguridad.Shield {
         reembolso.ivaGenerado = params.ivaGenerado.toDouble()
         reembolso.iceGenerado = params.iceGenerado.toDouble()
         reembolso.fecha = fechaRegistro
-        reembolso.valor = params.baseImponibleIva.toDouble() + params.baseImponibleIva0.toDouble() + params.noAplicaIva.toDouble() + params.excentoIva.toDouble() + params.ivaGenerado.toDouble() + params.iceGenerado.toDouble()
+        reembolso.valor = params.baseImponibleIva.toDouble() + params.baseImponibleIva0.toDouble() +
+                params.noAplicaIva.toDouble() + params.excentoIva.toDouble() +
+                params.ivaGenerado.toDouble() + params.iceGenerado.toDouble()
 
+        println "...antes de grabar ${reembolso}"
         try{
             reembolso.save(flush: true)
             render "ok"
