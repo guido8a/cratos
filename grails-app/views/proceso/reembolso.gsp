@@ -115,7 +115,7 @@
 
                                 $.ajax({
                                     type: 'POST',
-                                    url: '${createLink(controller: 'proceso', action: 'guardarReembolso_ajax')}',
+                                    url: '${createLink(controller: 'reembolso', action: 'guardarReembolso_ajax')}',
                                     data:{
                                         proveedor: $("#prve_idPro").val(),
                                         comprobante: $("#tipoComprobante option:selected").val(),

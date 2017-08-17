@@ -1914,48 +1914,7 @@ class ProcesoController extends cratos.seguridad.Shield {
         [prve: prve, proceso: proceso]
     }
 
-    def guardarReembolso_ajax () {
-        println("params gr " + params)
-        def reembolso
-        def proceso = Proceso.get(params.proceso)
-        def proveedor = Proveedor.get(params.proveedor)
-        def comprobante = TipoCmprSustento.get(params.comprobante)
-        def fechaRegistro = new Date().parse("dd-MM-yyyy", params.fecha)
-        if(params.id){
-            reembolso = Reembolso.get(params.id)
-        }else{
-            reembolso = new Reembolso()
-            reembolso.proceso = proceso
-        }
 
-        reembolso.proveedor = proveedor
-        reembolso.tipoCmprSustento = comprobante
-        reembolso.reembolsoEstb = params.establecimiento
-        reembolso.reembolsoEmsn = params.emision
-        reembolso.reembolsoSecuencial = params.secuencial
-        reembolso.autorizacion = params.autorizacion
-        reembolso.baseImponibleIva = params.baseImponibleIva.toDouble()
-        reembolso.baseImponibleIva0 = params.baseImponibleIva0.toDouble()
-        reembolso.baseImponibleNoIva = params.noAplicaIva.toDouble()
-        reembolso.excentoIva = params.excentoIva.toDouble()
-        reembolso.ivaGenerado = params.ivaGenerado.toDouble()
-        reembolso.iceGenerado = params.iceGenerado.toDouble()
-        reembolso.fecha = fechaRegistro
-        reembolso.valor = params.baseImponibleIva.toDouble() + params.baseImponibleIva0.toDouble() + params.noAplicaIva.toDouble() + params.excentoIva.toDouble() + params.ivaGenerado.toDouble() + params.iceGenerado.toDouble()
-
-        try{
-            reembolso.save(flush: true)
-            render "ok"
-        }catch (e)
-        {
-            render "no"
-            println("Error al guardar el reembolso " + e)
-        }
-
-
-
-
-    }
 
     def tablaReembolso_ajax () {
         def proceso = Proceso.get(params.proceso)
