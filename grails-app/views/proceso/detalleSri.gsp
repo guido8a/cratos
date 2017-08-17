@@ -158,14 +158,14 @@
                 <g:select class="form-control" name="conceptoRenta"
                           from="${crirBienes}"
                           optionKey="id" optionValue="${{ it.codigo + ' : ' + it.porcentaje + '% ' + it.descripcion }}"
-                          value="${retencion?.conceptoRIRBienes?.id?:6}"/>
+                          value="${retencion?.conceptoRIRBienes?.id}" noSelection="${['-1': 'Seleccione...']}"/>
             </div>
 
             <div class="col-xs-2">
                 <label>Base Imponible</label>
                 <g:textField class="form-control number baseB" title="La base imponible del IR."
                              style="text-align: right" name="baseRenta"
-                             value="${retencion?.baseRenta ?: base}"/>
+                             value="${retencion?.baseRenta?:0}"/>
                 <p class="help-block ui-helper-hidden"></p>
             </div>
 
@@ -197,7 +197,7 @@
                 <label>Base Imponible</label>
                 <g:textField class="form-control number baseS"
                              title="La base imponible del IR." style="text-align: right" name="baseRentaSrvc"
-                             value="${retencion?.baseRentaServicios ?: 0}"/>
+                             value="${retencion?.baseRentaServicios ?: base}"/>
             </div>
 
             <div class="col-xs-1">
@@ -370,7 +370,7 @@
 
     $("#conceptoRentaSrvc").change(function () {
         var concepto = $("#conceptoRentaSrvc option:selected").val();
-        console.log('cambia CRIR:', concepto)
+        console.log('cambia IRSrvc:', concepto)
         cargarRetencionRIR(concepto, 'S');
     });
 
@@ -539,7 +539,9 @@
     $("#btnGuardar").click(function () {
 //        console.log('clic ..guardar...')
         var error = '';
-        var concepto = $("#conceptoReta option:selected").val();
+        var concepto = $("#conceptoRenta option:selected").val();
+
+        console.log('crir:', concepto)
 
         $("#listaErrores").html('');
 
@@ -570,8 +572,8 @@
                 url: '${createLink(controller: 'proceso', action: 'saveRetencion_ajax')}',
                 data: {
                     proceso: '${proceso?.id}',
-                    conceptoRIRBienes: $("#conceptoRetencionImpuestoRenta").val(),
-                    conceptoRIRServicios: $("#conceptoServicios").val(),
+                    conceptoRIRBienes: $("#conceptoRenta").val(),
+                    conceptoRIRServicios: $("#conceptoRentaSrvc").val(),
                     documentoEmpresa: $("#libretin").val(),
                     pcntIvaBienes: $("#pcivBienes").val(),
                     pcntIvaServicios: $("#pcivSrvc").val(),
@@ -811,6 +813,7 @@
 
     $(document).ready(function () {
         console.log('listo...');
+        $("#conceptoRenta").change();
         var concepto = $("#conceptoRenta option:selected").val();
         cargarRetencionRIR(concepto, 'B');
         concepto = $("#conceptoRentaSrvc option:selected").val();
@@ -819,6 +822,7 @@
         $("#libretin").change();
         $("#pcivBienes").change();
         $("#pcivSrvc").change();
+
     });
 
     $("#comprobanteN").click(function () {

@@ -890,6 +890,8 @@ class ProcesoController extends cratos.seguridad.Shield {
         def pcivBien = PorcentajeIva.list([sort: 'valor'])
         def pcivSrvc = PorcentajeIva.list([sort: 'valor'])
 
+        println "retencion renta bienes: ${retencion?.conceptoRIRBienes?.id}"
+
         return [proceso: proceso, libreta: libreta, retencion: retencion, base: baseImponible, crirBienes: crirBienes,
                 crirServicios: crirServicios, pcivBien: pcivBien, pcivSrvc: pcivSrvc]
     }
@@ -1636,15 +1638,21 @@ class ProcesoController extends cratos.seguridad.Shield {
             return
         }
 
-        retencion.conceptoRIRBienes = ConceptoRetencionImpuestoRenta.get(params.conceptoRIRBienes)
+        if(params.conceptoRIRBienes != '-1') {
+            retencion.conceptoRIRBienes = ConceptoRetencionImpuestoRenta.get(params.conceptoRIRBienes)
+            retencion.baseRenta = params.baseRenta.toDouble()
+            retencion.renta = params.renta.toDouble()
+
+        } else {
+            retencion.conceptoRIRBienes = null
+            retencion.baseRenta = 0
+            retencion.renta = 0
+        }
 
         if(params.conceptoRIRBienes != '23') {
             retencion.numero = params.numero.toInteger()
             retencion.numeroComprobante = (libretin.numeroEstablecimiento + "-" + libretin.numeroEmision + "-" + params.numero)
-            /*todo: poner el numero en 9 (fcdtdgto) cifras*/
 
-            retencion.baseRenta = params.baseRenta.toDouble()
-            retencion.renta = params.renta.toDouble()
             retencion.conceptoRIRServicios = ConceptoRetencionImpuestoRenta.get(params.conceptoRIRServicios)
             retencion.baseRentaServicios = params.baseRentaServicios.toDouble()
             retencion.rentaServicios = params.rentaServicios.toDouble()
