@@ -78,17 +78,19 @@
                 <i class="fa fa-calendar-o"></i>
                 Comprobante
             </a>
-            <g:if test="${proceso?.tipoProceso?.codigo?.trim() == 'V' && proceso?.tipoCmprSustento?.tipoComprobanteSri?.codigo?.trim() == '41'}">
-                <a href="#" class="btn btn-success" id="reembolsoN">
-                    <i class="fa fa-thumbs-up"></i>
-                    Reembolso
-                </a>
-            </g:if>
+
         </g:if>
         <g:if test="${proceso?.tipoProceso?.codigo?.trim() == 'C'}">
             <g:link class="btn btn-success" action="detalleSri" id="${proceso?.id}" style="margin-bottom: 10px;">
                 <i class="fa fa-money"></i> Retenciones
             </g:link>
+        </g:if>
+
+        <g:if test="${proceso?.tipoProceso?.codigo?.trim() == 'C' && proceso?.tipoCmprSustento?.tipoComprobanteSri?.codigo?.trim() == '41'}">
+            <a href="#" class="btn btn-success" id="reembolsoN">
+                <i class="fa fa-thumbs-up"></i>
+                Reembolso
+            </a>
         </g:if>
     </div>
 
