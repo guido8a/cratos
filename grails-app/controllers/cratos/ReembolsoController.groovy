@@ -151,6 +151,22 @@ class ReembolsoController extends cratos.seguridad.Shield {
         }
     }
 
+    def borrarReembolso_ajax () {
+
+        def reembolso = Reembolso.get(params.id)
+
+        try{
+            reembolso.delete(flush: true)
+            render "ok"
+        }catch (e){
+            println("error al borrar el reembolso")
+            render "no"
+        }
+
+
+
+    }
+
 
 
 

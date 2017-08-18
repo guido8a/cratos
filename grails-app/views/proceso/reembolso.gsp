@@ -49,10 +49,10 @@
         <table class="table table-bordered table-hover table-condensed" width="1000px">
             <thead>
             <tr>
-                <th width="150px">Proveedor</th>
-                <th width="150px">Tipo de Comprobante</th>
-                <th width="80px">N°</th>
-                <th width="100px">Valor</th>
+                <th width="120px">Proveedor</th>
+                <th width="200px">Tipo de Comprobante</th>
+                <th width="80px">Documento</th>
+                <th width="80px">Valor</th>
                 <th width="45px"><i class="fa fa-pencil"></i></th>
             </tr>
             </thead>
@@ -108,36 +108,44 @@
                             className: "btn-success",
                             callback: function () {
 
-                                $.ajax({
-                                    type: 'POST',
-                                    url: '${createLink(controller: 'reembolso', action: 'guardarReembolso_ajax')}',
-                                    data:{
-                                        proveedor: $("#prve_idPro").val(),
-                                        comprobante: $("#tipoComprobante option:selected").val(),
-                                        establecimiento: $("#dcmtEstablecimientoR").val(),
-                                        emision: $("#dcmtEmisionR").val(),
-                                        secuencial: $("#dcmtSecuencialR").val(),
-                                        autorizacion: $("#dcmtAutorizacionR").val(),
-                                        fecha: $("#fechaR_input").val(),
-                                        baseImponibleIva: $("#ivaR").val(),
-                                        baseImponibleIva0: $("#iva0R").val(),
-                                        noAplicaIva: $("#noIvaR").val(),
-                                        excentoIva: $("#excentoIvaR").val(),
-                                        ivaGenerado: $("#ivaGeneradoR").val(),
-                                        iceGenerado: $("#iceGeneradoR").val(),
-                                        proceso: '${proceso?.id}'
-                                    },
-                                    success: function (msg) {
-                                        if(msg == 'ok'){
-                                            log("Reemnbolso agregado correctamente!","success");
-                                            cargarTablaReembolso();
-                                        }else{
-                                            log("Error al agregar el reembolso","error")
-                                        }
-                                    }
-                                });
+                                var $form = $("#reembolsoForm");
 
-                                bootbox.hideAll();
+                                if($form.valid()){
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: '${createLink(controller: 'reembolso', action: 'guardarReembolso_ajax')}',
+                                        data:{
+                                            proveedor: $("#prve_idPro").val(),
+                                            comprobante: $("#tipoComprobante option:selected").val(),
+                                            establecimiento: $("#dcmtEstablecimientoR").val(),
+                                            emision: $("#dcmtEmisionR").val(),
+                                            secuencial: $("#dcmtSecuencialR").val(),
+                                            autorizacion: $("#dcmtAutorizacionR").val(),
+                                            fecha: $("#fechaR_input").val(),
+                                            baseImponibleIva: $("#ivaR").val(),
+                                            baseImponibleIva0: $("#iva0R").val(),
+                                            noAplicaIva: $("#noIvaR").val(),
+                                            excentoIva: $("#excentoIvaR").val(),
+                                            ivaGenerado: $("#ivaGeneradoR").val(),
+                                            iceGenerado: $("#iceGeneradoR").val(),
+                                            proceso: '${proceso?.id}'
+                                        },
+                                        success: function (msg) {
+                                            if(msg == 'ok'){
+                                                log("Reemnbolso agregado correctamente!","success");
+                                                cargarTablaReembolso();
+                                            }else{
+                                                log("Error al agregar el reembolso","error")
+                                            }
+                                        }
+                                    });
+
+                                    bootbox.hideAll();
+                                }else{
+                                    return false;
+                                }
+
+
                             }
                         }
                     }

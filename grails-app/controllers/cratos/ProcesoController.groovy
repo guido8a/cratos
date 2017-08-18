@@ -1857,7 +1857,8 @@ class ProcesoController extends cratos.seguridad.Shield {
 
     def formReembolso_ajax () {
         def proceso = Proceso.get(params.proceso)
-        return[proceso: proceso]
+        def reembolso = Reembolso.get(params.id)
+        return[proceso: proceso, reembolso: reembolso]
     }
 
     def buscarProveedor_ajax () {
@@ -1922,7 +1923,7 @@ class ProcesoController extends cratos.seguridad.Shield {
     def tablaReembolso_ajax () {
         def proceso = Proceso.get(params.proceso)
         def reembolsos = Reembolso.findAllByProceso(proceso)
-        return [reembolsos: reembolsos]
+        return [reembolsos: reembolsos, proceso: proceso]
     }
 }
 
