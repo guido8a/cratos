@@ -18,7 +18,7 @@
 </g:if>
 
 <g:elseif test="${tipo == '1' || tipo == '2' || tipo == '3' || tipo == '6' || tipo == '7'}">
-    <g:set var="iva" value="${cratos.ParametrosAuxiliares.list().first().iva}"/>
+    %{--<g:set var="iva" value="${cratos.ParametrosAuxiliares.list().first().iva}"/>--}%
 
     <g:if test="${tipo == '1'}">
         <div class="row" style="font-size: 12px">
@@ -124,7 +124,7 @@
 
     <div class="row" style="font-size: 12px">
         <div class="col-xs-1 negrilla" style="width: 100px">
-            Base Impo. IVA ${iva}%:
+            Base Impo. IVA ${valorIva}%:
         </div>
 
         <div class="col-xs-2 negrilla" style="margin-left: -20px">
@@ -245,13 +245,12 @@
 
 
     function calculaIva() {
-        var iva = ${iva ?: 0};
+        var iva = ${valorIva ?: 0};
         var val = parseFloat($("#iva12").val());
         var total = (iva / 100) * val;
+//        console.log('recalcula IVA...')
         $("#ivaGenerado").val(number_format(total, 2, ".", ""));
     }
-
-    calculaIva();
 
     $("#iva12").keyup(function () {
         calculaIva();

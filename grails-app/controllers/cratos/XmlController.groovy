@@ -1,6 +1,8 @@
 package cratos
 
 import groovy.xml.MarkupBuilder
+import java.text.DecimalFormat
+import java.text.NumberFormat;
 
 class XmlController extends cratos.seguridad.Shield {
 
@@ -129,13 +131,15 @@ class XmlController extends cratos.seguridad.Shield {
                             establecimiento(proceso.procesoSerie01)
                             puntoEmision(proceso.procesoSerie02)
                             secuencial(proceso.secuencial)
-                            fechaEmision(fechaConFormato(proceso.fechaRegistro))
+                            fechaEmision(fechaConFormato(proceso.fechaEmision))
 
                             autorizacion(proceso?.autorizacion)
                             baseNoGraIva(numero(proceso.baseImponibleNoIva))
                             baseImponible(numero(proceso.baseImponibleIva0))
                             baseImpGrav(numero(proceso.baseImponibleIva))
                             baseImpExe('0.00')   /* ??? crear campo */
+
+                            println "base: ${numero(proceso.baseImponibleIva)}  -- ${proceso.baseImponibleIva}"
 
                             montoIce(numero(proceso?.iceGenerado))
                             montoIva(numero(proceso?.ivaGenerado))
@@ -172,27 +176,6 @@ class XmlController extends cratos.seguridad.Shield {
             file.write(writer.toString())
             render "OK"
         }
-/*
-        def pathxml = servletContext.getRealPath("/") + "xml/" + empresa.id + "/"  //web-app/xml
-        def fileName = "AnexoTransaccional_" + fechaConFormato(prdo.fechaInicio, "MM_yyyy")
-        def ext = ".xml"
-        def path = pathxml + fileName + ext
-
-        new File(pathxml).mkdirs()
-
-        def file = new File(path)
-
-        def cont = true
-        if (file.exists()) {
-            cont = false
-        }
-
-        if (!cont && !override) {
-            render "NO_1"
-        } else {
-            file.write(writer.toString())
-            render "OK"
-*/
 
 //            def output = response.getOutputStream()
 //            def header = "attachment; filename=" + fileName;
@@ -301,36 +284,11 @@ class XmlController extends cratos.seguridad.Shield {
         return fechaConFormato(fecha, "dd/MM/yyyy")
     }
 
-    private String numero(number, decimales, cero) {
-        def attrs = [:]
-        attrs.number = number
-        def dec = decimales.toInteger()
-
-        attrs["format"] = "##,##0"
-        if (dec > 0) {
-            attrs["format"] += "."
-        }
-        dec.times {
-            attrs["format"] += "#"
-        }
-
-        attrs.maxFractionDigits = dec
-        attrs.minFractionDigits = dec
-
-        if (cero == "false" || cero == false || cero == "hide") {
-            if (number) {
-                if (number.toDouble() == 0.toDouble()) {
-                    return ""
-                }
-            } else {
-                return ""
-            }
-        }
-        return g.formatNumber(attrs)
-    }
-
-    private String numero(number) {
-        numero(number, 2, "show")
+    def numero(nmro) {
+        NumberFormat nf = NumberFormat.getInstance(Locale.US);
+        nf.setGroupingUsed(false)
+        nf.setMinimumFractionDigits(2)
+        nf.format(nmro)
     }
 
     def vlorRtcnIVA(prcs, pcnt) {

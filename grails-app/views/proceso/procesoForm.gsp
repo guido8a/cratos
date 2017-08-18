@@ -177,7 +177,6 @@
             <div class="col-xs-2 negrilla">
                 Fecha de Emisión:
             </div>
-
             <div class="col-xs-2">
                 <g:if test="${(proceso?.estado == 'R')}">
                     ${proceso?.fechaEmision?.format("dd-MM-yyyy")}
@@ -768,6 +767,7 @@
         var iva = ${iva ?: 0};
         var val = parseFloat($("#iva12").val());
         var total = (iva / 100) * val;
+        console.log('iva:', iva, 'total:', total);
         $("#ivaGenerado").val(number_format(total, 2, ".", ""));
     }
 
@@ -1021,11 +1021,6 @@
         });
 
         calculaIva();
-
-
-        $("#iva12").keyup(function () {
-            calculaIva();
-        });
 
         $(".number").blur(function () {
             if (isNaN($(this).val()))

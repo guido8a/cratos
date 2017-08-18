@@ -1304,10 +1304,14 @@ class ProcesoController extends cratos.seguridad.Shield {
 
     def valores_ajax () {
 //        println "valores_ajax $params"
+        def cn = dbConnectionService.getConnection()
         def proceso = Proceso.get(params.proceso)
         def data = []
         def atrz
-        def sql
+        def sql = "select paux_iva from paux where '${proceso.fechaEmision}' between pauxfcin and " +
+                "coalesce(pauxfcfn, now())"
+        println "sqlIva: $sql"
+        def valorIva = cn.rows(sql.toString())[0]?.paux_iva
 
         def detalles = DetalleFactura.findAllByProceso(proceso)
         println("--> " + detalles)
@@ -1318,7 +1322,6 @@ class ProcesoController extends cratos.seguridad.Shield {
             band = false
         }
 
-        def cn = dbConnectionService.getConnection()
         def tipo = 0
         def tpcp = params?.tpcp?.toInteger()
         if(tpcp in [4, 5] && params.tpps == '1') {
@@ -1340,7 +1343,7 @@ class ProcesoController extends cratos.seguridad.Shield {
         atrz = cn.rows(sql.toString())[0]?.prveatrz
 //        println "autorizacion: $atrz"
 
-        [proceso: proceso, tipo: params.tipo, data: data, atrz: atrz, band: band]
+        [proceso: proceso, tipo: params.tipo, data: data, atrz: atrz, band: band, valorIva: valorIva]
     }
 
     def proveedor_ajax () {
