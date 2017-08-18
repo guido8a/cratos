@@ -195,7 +195,7 @@
 
             <div class="col-xs-2">
                 <label>Base Imponible</label>
-                <g:textField class="form-control number baseS"
+                <g:textField class="form-control number"
                              title="La base imponible del IR." style="text-align: right" name="baseRentaSrvc"
                              value="${retencion?.baseRentaServicios ?: base}"/>
             </div>
@@ -208,7 +208,7 @@
 
             <div class="col-xs-2">
                 <label>Valor Servicios</label>
-                <g:textField class="form-control number required valorSer" title="Valor retenido" name="valorRetenidoSrvc"
+                <g:textField class="form-control number required" title="Valor retenido" name="valorRetenidoSrvc"
                              value="${g.formatNumber(number: retenido, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2)}"
                              style="text-align: right"/>
             </div>
@@ -417,22 +417,21 @@
         totalesIva()
     });
 
-    $(".baseS").keydown(function (ev) {
+//    $(".baseS").keydown(function (ev) {
+//
+//    }).keyup(function () {
+//        if( $("#baseRentaSrvc").val() == 0){
+//            $("#baseRentaSrvc").val(0)
+//        }
+//    });
 
-    }).keyup(function () {
-        if( $("#baseRentaSrvc").val() == 0){
-            $("#baseRentaSrvc").val(0)
-        }
-    });
-
-
-    $(".valorSer").keydown(function (ev) {
-
-    }).keyup(function () {
-        if( $("#valorRetenidoSrvc").val() == 0){
-            $("#valorRetenidoSrvc").val(0)
-        }
-    });
+//    $(".valorSer").keydown(function (ev) {
+//
+//    }).keyup(function () {
+//        if( $("#valorRetenidoSrvc").val() == 0){
+//            $("#valorRetenidoSrvc").val(0)
+//        }
+//    });
 
     function actualizaRenta() {
         var pcnt = parseFloat($("#porcentaje").val())

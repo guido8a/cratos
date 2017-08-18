@@ -129,7 +129,7 @@
 
         <div class="col-xs-2 negrilla" style="margin-left: -20px">
             <input type="text" name="baseImponibleIva" id="iva12" size="7" value="${proceso?.baseImponibleIva ?: 0.00}"
-                   class="required  number form-control validacionNumero"
+                   class="required  number form-control validacionNumero valor"
                    validate="required number" ${proceso?.estado == 'R' ? 'readonly' : ( band ? 'readonly' : '')} />
         </div>
 
@@ -139,7 +139,7 @@
 
         <div class="col-xs-2 negrilla" style="margin-left: -20px">
             <input type="text" name="baseImponibleIva0" size="7" id="iva0" value="${proceso?.baseImponibleIva0 ?: 0.00}"
-                   class="required number form-control validacionNumero"
+                   class="required number form-control validacionNumero valor"
                    validate="required number"  ${proceso?.estado == 'R' ? 'readonly' : ( band ? 'readonly' : '')}  />
         </div>
 
@@ -149,7 +149,7 @@
 
         <div class="col-xs-2 negrilla" style="margin-left: -20px">
             <input type="text" name="baseImponibleNoIva" id="noIva" size="7"
-                   value="${proceso?.baseImponibleNoIva ?: 0.00}" class="required number form-control validacionNumero"
+                   value="${proceso?.baseImponibleNoIva ?: 0.00}" class="required number form-control validacionNumero valor"
                    validate="required number" ${proceso?.estado == 'R' ? 'readonly' : ( band ? 'readonly' : '')}  />
         </div>
 
@@ -159,7 +159,7 @@
 
         <div class="col-xs-2 negrilla" style="margin-left: -20px">
             <input type="text" name="excentoIva" id="excentoIva" size="7"
-                   value="${proceso?.excentoIva ?: 0.00}" class="required number form-control validacionNumero"
+                   value="${proceso?.excentoIva ?: 0.00}" class="required number form-control validacionNumero valor"
                    validate="required number" ${proceso?.estado == 'R' ? 'readonly' : ( band ? 'readonly' : '')}  />
         </div>
     </div>
@@ -171,7 +171,7 @@
 
         <div class="col-xs-2 negrilla" style="margin-left: -20px">
             <input type="text" name="ivaGenerado" id="ivaGenerado" value="${proceso?.ivaGenerado}"
-                   class="required number form-control validacionNumero"
+                   class="required number form-control validacionNumero valor"
                    validate="required number"  ${proceso?.estado == 'R' ? 'readonly' : ( band ? 'readonly' : '')}  />
         </div>
 
@@ -181,7 +181,7 @@
 
         <div class="col-xs-2 negrilla" style="margin-left: -20px">
             <input type="text" name="iceGenerado" id="iceGenerado" value="${proceso?.iceGenerado ?: 0.00}"
-                   class="required number form-control validacionNumero"
+                   class="required number form-control validacionNumero valor"
                    validate="required number"  ${proceso?.estado == 'R' ? 'readonly' : ( band ? 'readonly' : '')} />
         </div>
 
@@ -191,7 +191,7 @@
 
         <div class="col-xs-2 negrilla" style="margin-left: -20px">
             <input type="text" name="flete" id="flete" value="${proceso?.flete ?: 0.00}"
-                   class="required number form-control validacionNumero"
+                   class="required number form-control validacionNumero valor"
                    validate="required number"  ${proceso?.estado == 'R' ? 'readonly' : ( band ? 'readonly' : '')}  />
         </div>
 
@@ -199,7 +199,7 @@
             Valor Total:
         </div>
         <div class="col-xs-2 negrilla text-info" style="margin-left: -20px">
-            <input type="text" name="total" value="${proceso?.valor ?: 0.00}"
+            <input type="text" name="total" id="total" value="${proceso?.valor ?: 0.00}"
                    class="required number form-control validacionNumero"
                    validate="required number"  readonly style="font-weight: bold" />
         </div>
@@ -252,8 +252,26 @@
         $("#ivaGenerado").val(number_format(total, 2, ".", ""));
     }
 
-    $("#iva12").keyup(function () {
+    function calculaTotal() {
+        var bsnz = parseFloat($("#iva12").val());
+        var bs_0 = parseFloat($("#iva0").val());
+        var bsni = parseFloat($("#noIva").val());
+        var bsex = parseFloat($("#excentoIva").val());
+        var iva = parseFloat($("#ivaGenerado").val());
+        var ice = parseFloat($("#iceGenerado").val());
+        var flte = parseFloat($("#flete").val());
+        var total = bsnz + bs_0 + bsni + bsex + iva + ice + flte;
+//        console.log('recalcula IVA...')
+        $("#total").val(number_format(total, 2, ".", ""));
+    }
+
+//    $("#iva12").keyup(function () {
+//        calculaIva();
+//    });
+
+    $(".valor").keyup(function () {
         calculaIva();
+        calculaTotal();
     });
 
 

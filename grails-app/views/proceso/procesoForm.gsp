@@ -763,14 +763,6 @@
         });
     }
 
-    function calculaIva() {
-        var iva = ${iva ?: 0};
-        var val = parseFloat($("#iva12").val());
-        var total = (iva / 100) * val;
-        console.log('iva:', iva, 'total:', total);
-        $("#ivaGenerado").val(number_format(total, 2, ".", ""));
-    }
-
     $(function () {
         $("#btn-br-prcs").click(function () {
             bootbox.confirm("Está seguro? si esta transacción tiene un comprobante, este será anulado. " +
@@ -880,6 +872,10 @@
                 if($(".filaFP").size() <1){
                     info+="No ha asignado formas de pago para la transacción contable"
                     bandData=false
+                }
+
+                if(($(".filaFP").size() <1) && (parseFloat($("#total").val()) >= 1000)){
+                    error += "El valor del proceso requiere que se registre la forma de pago"
                 }
 
                 if (bandData) {
@@ -1020,7 +1016,7 @@
             closeLoader()
         });
 
-        calculaIva();
+//        calculaIva();
 
         $(".number").blur(function () {
             if (isNaN($(this).val()))
