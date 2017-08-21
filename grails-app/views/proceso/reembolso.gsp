@@ -19,16 +19,15 @@
         <i class="fa fa-chevron-left"></i>
         Proceso
     </a>
-    <a href="#" class="btn btn-success" id="comprobanteN">
-        <i class="fa fa-calendar-o"></i>
-        Comprobante
-    </a>
+    %{--<a href="#" class="btn btn-success" id="comprobanteN">--}%
+        %{--<i class="fa fa-calendar-o"></i>--}%
+        %{--Comprobante--}%
+    %{--</a>--}%
     <a href="#" class="btn btn-success disabled" id="reembolsoN">
         <i class="fa fa-thumbs-up"></i>
         Reembolso
     </a>
- </div>
-
+</div>
 
 
 <g:if test="${proceso}">
@@ -38,12 +37,14 @@
         <div class="linea"></div>
 
         <div class="col-md-10" style="margin-top: 10px; margin-bottom: 10px">
-            <div class="btn-group" style="float: left;">
-                <a href="#" class="btn btn-success" id="agregarN">
-                    <i class="fa fa-plus"></i>
-                    Agregar
-                </a>
-            </div>
+            <g:if test="${proceso?.estado != 'R'}">
+                <div class="btn-group" style="float: left;">
+                    <a href="#" class="btn btn-success" id="agregarN">
+                        <i class="fa fa-plus"></i>
+                        Agregar
+                    </a>
+                </div>
+            </g:if>
         </div>
 
         <table class="table table-bordered table-hover table-condensed" width="1000px">
@@ -70,22 +71,20 @@
 
     function cargarTablaReembolso () {
         $.ajax({
-           type: 'POST',
+            type: 'POST',
             url:'${createLink(controller: 'proceso', action: 'tablaReembolso_ajax')}',
             data:{
                 proceso: '${proceso?.id}'
             },
             success: function (msg) {
-               $("#divReembolso").html(msg)
+                $("#divReembolso").html(msg)
             }
         });
     }
 
-
-
     $("#agregarN").click(function () {
         $.ajax({
-           type: 'POST',
+            type: 'POST',
             url:'${createLink(controller: 'proceso', action: 'formReembolso_ajax')}',
             data:{
                 proceso: '${proceso?.id}'
@@ -160,7 +159,24 @@
     })
 
     $("#irProceso").click(function () {
-        location.href='${createLink(controller: 'proceso', action: 'nuevoProceso')}/?id=' + '${proceso?.id}'
+        $.ajax({
+            type: 'POST',
+            url: '${createLink(controller: 'proceso', action: 'verificarReembolsos_ajax')}',
+            data:{
+                proceso: '${proceso?.id}'
+            },
+            success: function (msg){
+                if(msg == 'ok'){
+                    location.href='${createLink(controller: 'proceso', action: 'nuevoProceso')}/?id=' + '${proceso?.id}'
+                }else{
+                    bootbox.confirm("<i class='fa fa-warning fa-3x pull-left text-warning text-shadow'></i> La sumatoria de los valores de reembolsos no es igual al total del valor de la transacción!. <br> Desea abandonar esta pantalla?", function (result) {
+                        if(result){
+                            location.href='${createLink(controller: 'proceso', action: 'nuevoProceso')}/?id=' + '${proceso?.id}'
+                        }
+                    })
+                }
+            }
+        });
     })
 
 </script>

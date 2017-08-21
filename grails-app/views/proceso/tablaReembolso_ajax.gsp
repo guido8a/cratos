@@ -5,6 +5,17 @@
   Time: 12:43
 --%>
 
+
+<style type="text/css">
+
+    .rojoE{
+        color: #ff1e25;
+    }
+
+</style>
+
+<g:set var="val" value="${0.0}"/>
+
 <table class="table table-bordered table-hover table-condensed" width="1000px">
     <tbody>
     <g:each in="${reembolsos}" var="reembolso">
@@ -14,25 +25,43 @@
             <td width="80px" style="text-align: center">${reembolso?.reembolsoEstb + " - " + reembolso?.reembolsoEmsn + " - " + reembolso?.reembolsoSecuencial}</td>
             <td width="80px" style="text-align: right"><g:formatNumber number="${reembolso?.valor ?: 0.00}" maxFractionDigits="2" minFractionDigits="2" format="##,##0"/></td>
             <td width="45px" style="text-align: center">
-                <div class="btn-group">
-                    <a href="#" class="btn btn-success btn-sm editarReemb" idr="${reembolso?.id}">
-                        <i class="fa fa-pencil"></i>
-                    </a>
-                    <a href="#" class="btn btn-danger btn-sm borrarReemb" idr="${reembolso?.id}">
-                        <i class="fa fa-trash-o"></i>
-                    </a>
-                </div>
+                <g:if test="${reembolso.proceso.estado != 'R'}">
+                    <div class="btn-group">
+                        <a href="#" class="btn btn-success btn-sm editarReemb" idr="${reembolso?.id}">
+                            <i class="fa fa-pencil"></i>
+                        </a>
+                        <a href="#" class="btn btn-danger btn-sm borrarReemb" idr="${reembolso?.id}">
+                            <i class="fa fa-trash-o"></i>
+                        </a>
+                    </div>
+                </g:if>
             </td>
         </tr>
+        <g:set var="total" value="${val += reembolso?.valor.toDouble()}"/>
     </g:each>
     </tbody>
+</table>
+
+<table class="table table-bordered table-hover table-condensed" width="1000px">
+
+    <thead>
+    <tr>
+        <th>Valor Total: </th>
+        <th>${g.formatNumber(number: proceso?.valor, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2)}</th>
+        <th>Reembolsos: </th>
+        <th class="${proceso?.valor != total ? 'rojoE' : ''}">${g.formatNumber(number: total, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2)}</th>
+        <th>Diferencia: </th>
+        <th>${g.formatNumber(number: proceso?.valor - total, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2)}</th>
+    </tr>
+    </thead>
+
 </table>
 
 <script type="text/javascript">
 
     $(".borrarReemb").click(function () {
         var id = $(this).attr('idr');
-        bootbox.confirm("Está seguro de borrar el reembolso?", function (result) {
+        bootbox.confirm("<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i> Está seguro de borrar el reembolso?", function (result) {
             if (result) {
                 $.ajax({
                    type: 'POST',

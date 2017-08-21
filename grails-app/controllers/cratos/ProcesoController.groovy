@@ -337,6 +337,10 @@ class ProcesoController extends cratos.seguridad.Shield {
         println "cargatcsr $params"
         def cn = dbConnectionService.getConnection()
         def tipo = 0
+        def reembolso
+        if(params.reembolso){
+            reembolso = Reembolso.get(params.reembolso)
+        }
         switch (params.tptr) {
             case '1':
                 tipo = 1
@@ -352,7 +356,7 @@ class ProcesoController extends cratos.seguridad.Shield {
                 "tptr.tptr__id = titt.tptr__id and tptrcdgo = '${tipo}'"
 //        println "sql1: $sql"
         def titt = cn.rows(sql.toString())[0]?.cdgo
-        println "identif: $titt"
+//        println "identif: $titt"
         if(tipo == 2) {
             sql = "select tcst__id id, tcsrcdgo codigo, tcsrdscr descripcion from tcst, tcsr " +
                     "where tcsr.tcsr__id = tcst.tcsr__id and titt @> '{${titt}}' " +
@@ -365,7 +369,7 @@ class ProcesoController extends cratos.seguridad.Shield {
 //        println "sql2: $sql"
         def data = cn.rows(sql.toString())
         cn.close()
-        [data: data, tpcpSri: params.tpcp, estado: params.etdo?:'', esta: params.esta]
+        [data: data, tpcpSri: params.tpcp, estado: params.etdo?:'', esta: params.esta, reembolso: reembolso]
     }
 
     def cargaSstr() {
@@ -1853,7 +1857,8 @@ class ProcesoController extends cratos.seguridad.Shield {
 
     def reembolso () {
         def proceso = Proceso.get(params.proceso)
-        return[proceso: proceso]
+        def reembolsos = Reembolso.findAllByProceso(proceso)
+        return[proceso: proceso, reembolsos: reembolsos]
     }
 
     def formReembolso_ajax () {
@@ -1919,12 +1924,25 @@ class ProcesoController extends cratos.seguridad.Shield {
         [prve: prve, proceso: proceso]
     }
 
-
-
     def tablaReembolso_ajax () {
         def proceso = Proceso.get(params.proceso)
         def reembolsos = Reembolso.findAllByProceso(proceso)
         return [reembolsos: reembolsos, proceso: proceso]
     }
+
+    def verificarReembolsos_ajax (){
+        def proceso = Proceso.get(params.proceso)
+        def reembolsos = Reembolso.findAllByProceso(proceso)
+        if(!reembolsos){
+            render "ok"
+        }else{
+            if(Math.round(proceso?.valor*100)/100 == Math.round(reembolsos?.valor?.sum()*100)/100){
+                render "ok"
+            }else{
+                render "no"
+            }
+        }
+    }
+
 }
 

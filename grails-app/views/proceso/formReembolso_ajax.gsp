@@ -87,10 +87,10 @@
             Fecha :
         </div>
 
-        <div class="col-xs-3 negrilla" style="margin-left: -35px">
+        <div class="col-xs-4 negrilla" style="margin-left: -35px">
             <elm:datepicker name="fechaR_name" title="Fecha" id="fechaR"
                             class="datepicker form-control required" value="${reembolso?.fecha}" maxDate="new Date()"
-                            style="width: 80px;"/>
+                            style="width: 100px;"/>
         </div>
     </div>
     <div class="col-md-12" style="margin-top: 20px">
@@ -200,8 +200,9 @@
     }
 
     $(".validacionNumeroSinPuntos").keydown(function (ev) {
+//        return validarNumSinPuntos(ev);
+    }).keyup(function (ev) {
         return validarNumSinPuntos(ev);
-    }).keyup(function () {
     });
 
     function validarNum(ev) {
@@ -225,9 +226,9 @@
     }
 
     $(".validacionNumero").keydown(function (ev) {
+//        return validarNum(ev);
+    }).keyup(function (ev) {
         return validarNum(ev);
-    }).keyup(function () {
-
     });
 
 
@@ -259,5 +260,32 @@
             } //success
         }); //ajax
     });
+
+
+    <g:if test="${reembolso}">
+    cargarTcsr('${reembolso?.proveedor?.id}');
+    </g:if>
+
+
+    function cargarTcsr(prve) {
+        var tptr = '${proceso?.tipoProceso?.id}';
+        $.ajax({
+            type: 'POST',
+            url: "${createLink(controller: 'proceso', action: 'cargaTcsr')}",
+            data: {
+                tptr: tptr,
+                prve: prve,
+                sstr: "${proceso?.sustentoTributario?.id}",
+                tpcp: "${proceso?.tipoCmprSustento?.id}",
+                etdo: 'N',
+                esta: '1',
+                reembolso: '${reembolso?.id}'
+            },
+            success: function (msg) {
+                $("#divComprobanteSustento").html(msg)
+                $("#divComprobanteSustento").show()
+            }
+        });
+    };
 
 </script>
