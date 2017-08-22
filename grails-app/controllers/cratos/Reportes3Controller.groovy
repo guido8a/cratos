@@ -583,6 +583,8 @@ class Reportes3Controller {
     }
 
     def reporteSituacion () {
+
+
 //        println("params " + params)
         def periodoFinal = Periodo.get(params.periodo).fechaFin.format("yyyy-MM-dd")
         def empresa = Empresa.get(params.empresa)

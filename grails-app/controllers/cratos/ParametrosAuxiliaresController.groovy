@@ -16,7 +16,7 @@ class ParametrosAuxiliaresController extends cratos.seguridad.Shield {
         if (parametrosAuxiliaresInstanceList.size() == 0 && params.offset && params.max) {
             params.offset = params.offset - params.max
         }
-        parametrosAuxiliaresInstanceList = ParametrosAuxiliares.list(params)
+        parametrosAuxiliaresInstanceList = ParametrosAuxiliares.list(params).sort{it?.fechaInicio}
         return [parametrosAuxiliaresInstanceList: parametrosAuxiliaresInstanceList, parametrosAuxiliaresInstanceCount: parametrosAuxiliaresInstanceCount]
     } //list
 
@@ -62,12 +62,12 @@ class ParametrosAuxiliaresController extends cratos.seguridad.Shield {
         } //update
         parametrosAuxiliaresInstance.properties = params
         if (!parametrosAuxiliaresInstance.save(flush: true)) {
-            def msg = "NO_No se pudo ${params.id ? 'actualizar' : 'crear'} ParametrosAuxiliares."
+            def msg = "NO_No se pudo ${params.id ? 'actualizar' : 'crear'} los Parámetros."
             msg += renderErrors(bean: parametrosAuxiliaresInstance)
             render msg
             return
         }
-        render "OK_${params.id ? 'Actualización' : 'Creación'} de ParametrosAuxiliares exitosa."
+        render "OK_${params.id ? 'Actualización' : 'Creación'} de Parámetros exitosa."
     } //save para grabar desde ajax
 
     def delete_ajax() {
@@ -76,9 +76,9 @@ class ParametrosAuxiliaresController extends cratos.seguridad.Shield {
             if (parametrosAuxiliaresInstance) {
                 try {
                     parametrosAuxiliaresInstance.delete(flush: true)
-                    render "OK_Eliminación de ParametrosAuxiliares exitosa."
+                    render "OK_Eliminación de Parámetros Auxiliares exitosa."
                 } catch (e) {
-                    render "NO_No se pudo eliminar ParametrosAuxiliares."
+                    render "NO_No se pudo eliminar los Parámetros Auxiliares."
                 }
             } else {
                 notFound_ajax()

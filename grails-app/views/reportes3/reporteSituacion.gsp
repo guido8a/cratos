@@ -17,6 +17,7 @@
   User: gato
   Date: 29/06/17
   Time: 10:34
+
 --%>
 
 <%@ page contentType="text/html;charset=UTF-8" %>
@@ -59,6 +60,10 @@
         margin-top: 100px !important;
     }
 
+    .derecha {
+    text-align: right; !important;
+    }
+
 
     </style>
 
@@ -89,7 +94,8 @@
                     ${cuenta.cntadscr}
                 </g:else>
             </td>
-            <td style="width: 400px">
+            %{--<td style="width: 400px">--}%
+            <td style="max-width: 50%;">
                 <g:if test="${cuenta.nvel == 1}">
                     <b class="naranja">${cuenta.sldo}</b>
                 </g:if>
@@ -100,13 +106,13 @@
                     <b style="margin-left: 110px" class="azul">${cuenta.sldo}</b>
                 </g:if>
                 <g:if test="${cuenta.nvel == 4}">
-                    <b class="color4" style="margin-left: 160px">${cuenta.sldo}</b>
+                    <b class="color4" style="margin-left: 160px;">${cuenta.sldo}</b>
                 </g:if>
                 <g:if test="${cuenta.nvel == 5}">
-                    <b class="color5" style="margin-left: 210px">${cuenta.sldo}</b>
+                    <b class="color5" style="margin-left: 210px;">${cuenta.sldo}</b>
                 </g:if>
                 <g:if test="${cuenta.nvel == 6}">
-                    <b class="color6" style="margin-left: 260px;">${cuenta.sldo}</b>
+                    <b class="color6 " style="margin-left: 260px;">${cuenta.sldo}</b>
                 </g:if>
             </td>
         </tr>

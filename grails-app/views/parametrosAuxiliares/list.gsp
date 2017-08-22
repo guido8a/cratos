@@ -14,7 +14,7 @@
         <div class="btn-toolbar toolbar">
             <div class="btn-group">
                 <g:link action="form" class="btn btn-info btnCrear">
-                    <i class="fa fa-file-o"></i> Crear
+                    <i class="fa fa-file-o"></i> Nuevo
                 </g:link>
             </div>
             <div class="btn-group pull-right col-md-3">
@@ -38,7 +38,9 @@
                     <tr>
                         
                         <th>Iva</th>
-                        
+                        <th>Desde</th>
+                        <th>Hasta</th>
+
                         <th width="110">Acciones</th>
                     </tr>
                 </thead>
@@ -47,7 +49,9 @@
                         <tr data-id="${parametrosAuxiliaresInstance.id}">
                             
                             <td>${fieldValue(bean: parametrosAuxiliaresInstance, field: "iva")} %</td>
-                            
+                            <td><g:formatDate date="${parametrosAuxiliaresInstance?.fechaInicio}" format="dd-MM-yyyy"/></td>
+                            <td><g:formatDate date="${parametrosAuxiliaresInstance?.fechaFin}" format="dd-MM-yyyy"/></td>
+
                             <td>
                                 <a href="#" data-id="${parametrosAuxiliaresInstance.id}" class="btn btn-info btn-sm btn-show btn-ajax" title="Ver">
                                     <i class="fa fa-laptop"></i>
@@ -82,7 +86,9 @@
                         var parts = msg.split("_");
                         log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
                         if (parts[0] == "OK") {
-                            location.reload(true);
+                            setTimeout(function () {
+                                location.reload(true);
+                            }, 1000);
                         } else {
                             closeLoader();
                             spinner.replaceWith($btn);
@@ -97,7 +103,7 @@
             function deleteRow(itemId) {
                 bootbox.dialog({
                     title   : "Alerta",
-                    message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea eliminar el Parámetro Auxiliar seleccionado? Esta acción no se puede deshacer.</p>",
+                    message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea eliminar este Parámetro Auxiliar seleccionado? Esta acción no se puede deshacer.</p>",
                     buttons : {
                         cancelar : {
                             label     : "Cancelar",
@@ -120,7 +126,9 @@
                                         var parts = msg.split("_");
                                         log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
                                         if (parts[0] == "OK") {
-                                            location.reload(true);
+                                            setTimeout(function () {
+                                                location.reload(true);
+                                            }, 1000);
                                         } else {
                                             closeLoader();
                                             spinner.replaceWith($btn);
@@ -134,7 +142,7 @@
                 });
             }
             function createEditRow(id) {
-                var title = id ? "Editar" : "Crear";
+                var title = id ? "Editar" : "Nuevo";
                 var data = id ? { id: id } : {};
                 $.ajax({
                     type    : "POST",

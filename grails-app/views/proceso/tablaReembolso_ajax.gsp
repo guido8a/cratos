@@ -51,7 +51,7 @@
         <th>Reembolsos: </th>
         <th class="${proceso?.valor != total ? 'rojoE' : ''}">${g.formatNumber(number: total, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2)}</th>
         <th>Diferencia: </th>
-        <th>${g.formatNumber(number: proceso?.valor - total, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2)}</th>
+        <th>${g.formatNumber(number: ((proceso?.valor ?: 0) - (total ?: 0)), format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2)}</th>
     </tr>
     </thead>
 
