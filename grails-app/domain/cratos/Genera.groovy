@@ -6,6 +6,8 @@ class Genera implements Serializable {
     double porcentaje
     double baseSinIva
     double flete
+    double retIva
+    double retRenta
     TipoComprobante tipoComprobante
     Cuenta cuenta
     Gestor gestor
@@ -29,6 +31,8 @@ class Genera implements Serializable {
             debeHaber column: 'gnradbhb'
             baseSinIva column: 'gnrapcbz'
             flete column: 'gnraflte'
+            retIva column: 'gnrartiv'
+            retRenta column: 'gnrartrn'
         }
     }
     static constraints = {

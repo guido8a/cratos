@@ -143,7 +143,9 @@
             </div>
 
             <div class="col-xs-2 negrilla" style="margin-left: 0">
-                <g:select class="form-control required tipoD" from="${tipo}" optionValue="value" optionKey="key" name="tipoD_name" value="${gestorInstance?.tipo}" disabled="${gestorInstance?.estado == 'R' ? true : false}" title="Tipo de Detalle"/>
+                <g:select class="form-control required tipoD" from="${tipo}" optionValue="value" optionKey="key"
+                          name="tipoD_name" value="${gestorInstance?.tipo?:-1}"
+                          disabled="${gestorInstance?.estado == 'R' ? true : false}" title="Tipo de Detalle"/>
             </div>
 
         </div>
@@ -157,7 +159,8 @@
                 <g:select class="form-control required cmbRequired tipoProcesoSel" name="tipoProceso" id="tipoProceso"
                           from="${cratos.TipoProceso.list(sort: 'codigo')}" label="Proceso tipo: "
                           value="${gestorInstance?.tipoProceso?.id}" optionKey="id"
-                          optionValue="descripcion" title="Tipo de proceso o transacción" disabled="${gestorInstance?.estado == 'R'  ? true : false}"/>
+                          optionValue="descripcion" title="Tipo de proceso o transacción"
+                          disabled="${gestorInstance?.estado == 'R'  ? true : false}"/>
             </div>
             <div class="col-xs-3 negrilla hidden" id="divS">
                 Gestor para saldos iniciales:
@@ -205,41 +208,35 @@
                     </div>
                 </g:if>
             </div>
-            <table class="table table-bordered table-hover table-condensed">
+            <table class="table table-bordered table-hover table-condensed" width="1060">
                 <thead>
-                <tr class="letraP">
-                    <th></th>
-                    <th colspan="5">DEBE</th>
-                    <th colspan="5">HABER</th>
-                    <th></th>
-                </tr>
                 <tr>
-                    <th style="width: 220px;" class="letraP">Código (Cuenta)</th>
+                    <th style="width: 340px;" class="letraP">Código (Cuenta)</th>
                     <th style="width: 80px" class="letraP">% B. Imponible</th>
                     <th style="width: 80px" class="letraP">% B.I. Sin IVA</th>
                     <th style="width: 80px" class="letraP">Impuestos</th>
                     <th style="width: 80px" class="letraP">ICE</th>
                     <th style="width: 80px" class="letraP">Flete</th>
-                    <th style="width: 80px" class="letraP">% B. Imponible</th>
-                    <th style="width: 80px" class="letraP">% B.I. Sin IVA</th>
-                    <th style="width: 80px" class="letraP">Impuestos</th>
-                    <th style="width: 80px" class="letraP">ICE</th>
-                    <th style="width: 80px" class="letraP">Flete</th>
-                    <th style="width: 70px" class="letraP"><i class="fa fa-pencil"></i></th>
+                    <th style="width: 80px" class="letraP">Ret. Iva</th>
+                    <th style="width: 80px" class="letraP">Ret. Renta</th>
+                    <th style="width: 60px" class="letraP">D / H</th>
+                    <th style="width: 100px" class="letraP"><i class="fa fa-pencil"></i></th>
                 </tr>
                 </thead>
             </table>
 
 
-            <div class="row-fluid" style="width: 99.7%;height: 320px;overflow-y: auto;float: right; margin-top: -10px">
+            <div class="row-fluid" style="width: 99.7%;height: 410px;overflow-y: auto;float: right; margin-top: -10px">
                 <div class="span12">
                     <div id="cuentaAgregada" style="width: 1070px; height: 280px;"></div>
                 </div>
             </div>
 
+%{--
             <div class="span12">
                 <div id="totales" style="width: 1070px; height: 20px;"></div>
             </div>
+--}%
         </div>
     </div>
 </g:if>

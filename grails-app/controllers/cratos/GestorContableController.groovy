@@ -254,7 +254,7 @@ class GestorContableController extends cratos.seguridad.Shield {
 
     def formGestor () {
         def titulo = "Nuevo Gestor"
-        def tipo = ['G': 'Gasto','I' :'Inventario']
+        def tipo = ['G': 'Gasto', 'I':'Inventario', 'N': 'Ninguno']
         if(params.id){
             titulo = params.ver? "Ver Gestor" : "Editar Gestor"
             def gestorInstance = Gestor.get(params.id)
@@ -264,11 +264,11 @@ class GestorContableController extends cratos.seguridad.Shield {
     }
 
     def tablaGestor_ajax () {
-//        println("tabla gestor" + params)
+        println("tabla gestor" + params)
         def gestor = Gestor.get(params.id)
         def tipoComprobante = TipoComprobante.get(params.tipo)
 
-        def movimientos = Genera.findAllByGestorAndTipoComprobante(gestor, tipoComprobante).sort{it.cuenta.numero}.sort{it.debeHaber}
+        def movimientos = Genera.findAllByGestorAndTipoComprobante(gestor, tipoComprobante)?.sort{it.cuenta.numero}?.sort{it.debeHaber}
 
 //        println("movimientos " + movimientos )
         return [movimientos: movimientos, gestor: gestor, tipo: tipoComprobante]
@@ -355,6 +355,9 @@ class GestorContableController extends cratos.seguridad.Shield {
         genera.porcentaje = params.porcentaje.toDouble()
         genera.baseSinIva = params.sinIva.toDouble()
         genera.flete = params.flete.toDouble()
+        genera.debeHaber = params.debeHaber
+        genera.retIva = params.retIva.toDouble()
+        genera.retRenta = params.retRenta.toDouble()
 
         try{
             genera.save(flush: true)
@@ -393,7 +396,12 @@ class GestorContableController extends cratos.seguridad.Shield {
         }
         gestor.observaciones = params.observacion
         gestor.fuente = fuente
-        gestor.tipo = params.tipo
+        if(params.tipo != '-1') {
+            gestor.tipo = params.tipo
+        } else {
+            gestor.tipo = null
+        }
+
 
         try{
            gestor.save(flush: true)
