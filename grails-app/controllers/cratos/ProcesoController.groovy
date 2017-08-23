@@ -1262,13 +1262,14 @@ class ProcesoController extends cratos.seguridad.Shield {
     }
 
     def tablaBuscarComp_ajax () {
-        println "tablaBuscarComp_ajax: $params"
+//        println "tablaBuscarComp_ajax: $params"
         def cn = dbConnectionService.getConnection()
         def sql = ''
         def whds = ''
         def whnm = ''
         def wh = ''
         def res
+        def tipo = TipoProceso.get(params.tipo)
 
         if(params.descripcion) {
             whds = " dscr ilike '%${params.descripcion}%'"
@@ -1280,7 +1281,7 @@ class ProcesoController extends cratos.seguridad.Shield {
         if(params.descripcion || params.numero) {
             wh = "where ${whds? whds : ''} ${whnm? 'and ' + whnm : ''}"
         }
-        println "where: $wh"
+//        println "where: $wh"
 
         if(params.tipo.toInteger() == 4) {
             sql = "select cmpr__id, prvenmbr, dscr, dcmt, fcha, hber, pgdo, sldo from porpagar(${params.proveedor}) ${wh}"
@@ -1288,14 +1289,14 @@ class ProcesoController extends cratos.seguridad.Shield {
             sql = "select cmpr__id, clntnmbr prvenmbr, dscr, dcmt, fcha, debe hber, ntcr pgdo, sldo from ventas(${params.proveedor}) ${wh}"
         }
 
-        println("sql " + sql)
+//        println("sql " + sql)
 
         res = cn.rows(sql.toString())
-        return [res:res]
+        return [res:res, tipo: tipo]
     }
 
     def filaComprobante_ajax () {
-        println "filaComprobante_ajax: $params"
+//        println "filaComprobante_ajax: $params"
         def proceso = Proceso.get(params.proceso)
         def data
         def cn = dbConnectionService.getConnection()

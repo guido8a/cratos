@@ -18,7 +18,7 @@ th, td {
     <table class="table-bordered table-condensed table-hover" width="1060px">
         <g:each in="${data}" var="dato" status="z">
 
-            <tr id="${dato.prcs__id}" data-id="${dato.prcs__id}" data-ed="${dato.prcsetdo}" data-tipo="${dato?.tpps}" class="${clase}">
+            <tr id="${dato.prcs__id}" data-id="${dato.prcs__id}" data-ed="${dato.prcsetdo}" data-tipo="${dato?.tpps}" data-cm='${cratos.Proceso.get(dato.prcs__id).tipoCmprSustento?.tipoComprobanteSri?.codigo?.trim()}' class="${clase}">
                 <td width="65px">
                     ${dato?.prcsfcha.format("dd-MM-yyyy")}
                 </td>

@@ -246,19 +246,19 @@
                             </div>
                         </li>
 
-                        <li>
-                            <i class="fa-li ${iconGen}"></i>
-                            <span id="tipoComprobanteSRI">
-                                <g:link controller="tipoComprobanteSri" action="list">Tipo de Comprobante según el SRI</g:link> para
-                                los anexos tributarios.
-                            </span>
+                        %{--<li>--}%
+                            %{--<i class="fa-li ${iconGen}"></i>--}%
+                            %{--<span id="tipoComprobanteSRI">--}%
+                                %{--<g:link controller="tipoComprobanteSri" action="list">Tipo de Comprobante según el SRI</g:link> para--}%
+                                %{--los anexos tributarios.--}%
+                            %{--</span>--}%
 
-                            <div class="descripcion hide">
-                                <h4>Tipo de Comprobante según el SRI</h4>
+                            %{--<div class="descripcion hide">--}%
+                                %{--<h4>Tipo de Comprobante según el SRI</h4>--}%
 
-                                <p>Tipo de comprobante que se usa para el enexo tributario.</p>
-                            </div>
-                        </li>
+                                %{--<p>Tipo de comprobante que se usa para el enexo tributario.</p>--}%
+                            %{--</div>--}%
+                        %{--</li>--}%
 
                         <li>
                             <i class="fa-li ${iconGen}"></i>
@@ -289,8 +289,19 @@
                             </div>
                         </li>
 
-                    </ul>
+                        <li>
+                            <i class="fa-li ${iconGen}"></i>
+                            <span id="conceptoIR">
+                                <g:link controller="conceptoRetencionImpuestoRenta" action="list">Concepto de Retención IR</g:link>
+                            </span>
 
+                            <div class="descripcion hide">
+                                <h4>Concepto de Retención IR</h4>
+
+                                <p>Concepto de Retención IR</p>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
 
                 <div class="generales right pull-right">

@@ -45,6 +45,10 @@
         if(tipo == '6') {
             titulo = "Ventas realizadas al Cliente";
         }
+        if(tipo == '5'){
+            titulo = "Cobros pendientes";
+        }
+
         $.ajax({
             type    : "POST",
             url     : "${g.createLink(controller: 'proceso', action: 'compBuscador')}",

@@ -1,238 +1,224 @@
 
 <%@ page import="cratos.ConceptoRetencionImpuestoRenta" %>
-<!doctype html>
+<!DOCTYPE html>
 <html>
     <head>
         <meta name="layout" content="main">
-        <title>Lista de ConceptoRetencionImpuestoRentas</title>
-
-        <script type="text/javascript" src="${resource(dir: 'js/jquery/plugins/contextMenu', file: 'jquery.contextMenu.js')}"></script>
-        <link rel="stylesheet" href="${resource(dir: 'js/jquery/plugins/contextMenu', file: 'jquery.contextMenu.css')}" type="text/css">
-
-        <script type="text/javascript" src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>
-        <script type="text/javascript" src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>
-
+        <title>Concepto de Retención IR</title>
     </head>
     <body>
-        <div class="ui-widget-content ui-corner-all cont">
-            <div class="ui-widget-header ui-corner-all titulo">
-                Lista de ConceptoRetencionImpuestoRentas
-                <div class="fright">
-                    <g:link action="create" class="btnNew miniButton">Nuevo</g:link>
-                </div>
-            </div>
 
-            <div id="list-conceptoRetencionImpuestoRenta" class="content scaffold-list" role="main">
-                <g:if test="${flash.message}">
-                    <div class="message" role="status">${flash.message}</div>
-                </g:if>
-                <table id="tbl-conceptoRetencionImpuestoRenta">
-                    <thead>
-                        <tr>
-                            
-                            <g:sortableColumn property="codigo" title="${message(code: 'conceptoRIRBienes.codigo.label', default: 'Codigo')}" />
-                            
-                            <g:sortableColumn property="descripcion" title="${message(code: 'conceptoRIRBienes.descripcion.label', default: 'Descripcion')}" />
-                            
-                        </tr>
-                    </thead>
-                    <tbody id="tb-conceptoRetencionImpuestoRenta">
-                        <g:each in="${conceptoRetencionImpuestoRentaInstanceList}" status="i" var="conceptoRetencionImpuestoRentaInstance">
-                            <tr class="${(i % 2) == 0 ? 'even' : 'odd'}" id="${conceptoRetencionImpuestoRentaInstance.id}">
-                                
-                                <td>${fieldValue(bean: conceptoRetencionImpuestoRentaInstance, field: "codigo")}</td>
-                                
-                                <td>${fieldValue(bean: conceptoRetencionImpuestoRentaInstance, field: "descripcion")}</td>
-                                
-                            </tr>
-                        </g:each>
-                    </tbody>
-                </table>
-                <g:if test="${conceptoRetencionImpuestoRentaInstanceList.size() < conceptoRetencionImpuestoRentaInstanceTotal}">
-                    <div class="pagination">
-                        <g:paginate total="${conceptoRetencionImpuestoRentaInstanceTotal}"  prev="Ant." next="Sig." />
-                    </div>
-                </g:if>
+        <elm:flashMessage tipo="${flash.tipo}" clase="${flash.clase}">${flash.message}</elm:flashMessage>
+
+    <!-- botones -->
+        <div class="btn-toolbar toolbar">
+            <div class="btn-group">
+                <g:link action="form" class="btn btn-info btnCrear">
+                    <i class="fa fa-file-o"></i> Nuevo
+                </g:link>
             </div>
         </div>
 
-        <ul id="menu-conceptoRetencionImpuestoRenta" class="contextMenu">
-            <li class="show">
-                <a href="#show">Ver</a>
-            </li>
-            <li class="edit">
-                <a href="#edit">Editar</a>
-            </li>
-            <li class="delete">
-                <a href="#delete">Eliminar</a>
-            </li>
-        </ul>
+        <table class="table table-condensed table-bordered table-striped">
+            <thead>
+                <tr>
+                    
+                    <th>Código</th>
+                    <th>Descripción</th>
+                    <th>Modalidad de Pago</th>
+                    <th>%</th>
+                    <th>Tipo</th>
 
-        <div id="dlg-conceptoRetencionImpuestoRenta"></div>
+                </tr>
+            </thead>
+            <tbody>
+                <g:each in="${conceptoRetencionImpuestoRentaInstanceList}" status="i" var="conceptoRetencionImpuestoRentaInstance">
+                    <tr data-id="${conceptoRetencionImpuestoRentaInstance.id}">
+                        
+                        <td>${conceptoRetencionImpuestoRentaInstance?.codigo}</td>
+                        <td>${conceptoRetencionImpuestoRentaInstance?.descripcion}</td>
+                        <td>${conceptoRetencionImpuestoRentaInstance?.modalidadPago?.descripcion}</td>
+                        <td style="text-align: right">${conceptoRetencionImpuestoRentaInstance?.porcentaje}</td>
+                        <td style="text-align: center">${conceptoRetencionImpuestoRentaInstance?.tipo}</td>
 
-        <div id="dlgLoad" class="ui-helper-hidden" style="text-align:center;">
-            Cargando.....Por favor espere......<br/><br/>
-            <img src="${resource(dir: 'images', file: 'spinner64.gif')}" alt=""/>
-        </div>
+                    </tr>
+                </g:each>
+            </tbody>
+        </table>
+
+        <elm:pagination total="${conceptoRetencionImpuestoRentaInstanceCount}" params="${params}"/>
 
         <script type="text/javascript">
-            function openDlg(url, id, cont, ajax, title, buttons) {
-                if (ajax) {
-                $("#dlgLoad").dialog("open");
-                    $.ajax({
-                        async   : false,
-                        type    : "POST",
-                        url     : url,
-                        data    : {
-                            id : id
-                        },
-                        success : function (msg) {
-                            $("#dlg-conceptoRIRBienes").html(msg);
-                        },
-                        complete : function () {
-                            $("#dlgLoad").dialog("close");
-                        }
-                    });
-                    $("#dlg-conceptoRIRBienes").dialog("option", "width", 420);
-                } else {
-                $("#dlg-conceptoRIRBienes").html(cont);
-                }
-                $("#dlg-conceptoRIRBienes").dialog("option", "title", title);
-                $("#dlg-conceptoRIRBienes").dialog("option", "buttons", buttons);
-                $("#dlg-conceptoRIRBienes").dialog("open");
-            }
-
+            var id = null;
             function submitForm() {
-                if ($("#frm-conceptoRIRBienes").valid()) {
-                    $("#dlgLoad").dialog("open");
-                    var data = $("#frm-conceptoRIRBienes").serialize();
-                    var url = $("#frm-conceptoRIRBienes").attr("action");
-
+                var $form = $("#frmConceptoRetencionImpuestoRenta");
+                var $btn = $("#dlgCreateEdit").find("#btnSave");
+                if ($form.valid()) {
+                $btn.replaceWith(spinner);
                     $.ajax({
                         type    : "POST",
-                        url     : url,
-                        data    : data,
-                        success : function (msg) {
-                            location.reload(true);
+                        url     : '${createLink(action:'save')}',
+                        data    : $form.serialize(),
+                            success : function (msg) {
+                        if (msg== "OK") {
+                            log("Concepto de Retención IR guardado correctamente","success");
+                            setTimeout(function () {
+                                location.reload(true);
+                            }, 1000);
+                        } else {
+                            log("Error al guardar la información!", "error");
+                            spinner.replaceWith($btn);
+                            return false;
                         }
-                    });
-                }
+                    }
+                });
+            } else {
+                return false;
+            } //else
             }
+            function deleteRow(itemId) {
+                bootbox.dialog({
+                    title   : "Alerta",
+                    message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea eliminar el Concepto de Retencion IR seleccionado? Esta acción no se puede deshacer.</p>",
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        eliminar : {
+                            label     : "<i class='fa fa-trash-o'></i> Eliminar",
+                            className : "btn-danger",
+                            callback  : function () {
+                                $.ajax({
+                                    type    : "POST",
+                                    url     : '${createLink(action:'delete')}',
+                                    data    : {
+                                        id : itemId
+                                    },
+                                    success : function (msg) {
+                                        if (msg == "ok") {
+                                            log("Concepto IR borrado correctamente","success");
+                                            setTimeout(function () {
+                                                location.reload(true);
+                                            }, 1000);
+                                        }else{
+                                            log("Error al borrar el concepto IR","error");
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    }
+                });
+            }
+            function createEditRow(id) {
+                var title = id ? "Editar" : "Crear";
+                var data = id ? { id: id } : {};
+                $.ajax({
+                    type    : "POST",
+                    url     : "${createLink(action:'form_ajax')}",
+                    data    : data,
+                    success : function (msg) {
+                        var b = bootbox.dialog({
+                            id      : "dlgCreateEdit",
+                            title   : title + " Concepto de Retencion IR",
+                            message : msg,
+                            buttons : {
+                                cancelar : {
+                                    label     : "Cancelar",
+                                    className : "btn-primary",
+                                    callback  : function () {
+                                    }
+                                },
+                                guardar  : {
+                                    id        : "btnSave",
+                                    label     : "<i class='fa fa-save'></i> Guardar",
+                                    className : "btn-success",
+                                    callback  : function () {
+                                        return submitForm();
+                                    } //callback
+                                } //guardar
+                            } //buttons
+                        }); //dialog
+                        setTimeout(function () {
+                            b.find(".form-control").first().focus()
+                        }, 500);
+                    } //success
+                }); //ajax
+            } //createEdit
 
             $(function () {
-                $("#dlgLoad").dialog({
-                    modal         : true,
-                    autoOpen      : false,
-                    closeOnEscape : false,
-                    draggable     : false,
-                    resizable     : false,
-                    zIndex        : 9000,
-                    open          : function (event, ui) {
-                        $(event.target).parent().find(".ui-dialog-titlebar-close").remove();
+
+                $(".btnCrear").click(function() {
+                    createEditRow();
+                    return false;
+                });
+
+                context.settings({
+                    onShow : function (e) {
+                        $("tr.success").removeClass("success");
+                        var $tr = $(e.target).parent();
+                        $tr.addClass("success");
+                        id = $tr.data("id");
                     }
                 });
-
-                $("#dlg-conceptoRIRBienes").dialog({
-                    modal    : true,
-                    autoOpen : false,
-                    width    : 420,
-                    zIndex   : 1000,
-                    position : ["center", 10]
-                });
-
-                $("th").hover(function () {
-                    $(this).addClass("hover");
-                    var i = $(this).index();
-                    $("#tb-conceptoRIRBienes").find("tr").each(function () {
-                        $(this).children().eq(i).addClass("hover");
-                    });
-                }, function () {
-                    $(".hover").removeClass("hover");
-                });
-
-                $("#tb-conceptoRIRBienes").find("tr").hover(function () {
-                    $(this).addClass("hover");
-                }, function () {
-                    $(".hover").removeClass("hover");
-                });
-
-                $(".btnNew").button({
-                    icons : {
-                        primary : "ui-icon-document"
-                    }
-                }).click(function () {
-                            var id = $(this).attr("id");
-                            var url = $(this).attr("href");
-                            var title = "Crear ConceptoRetencionImpuestoRenta";
-                            var buttons = {
-                                "Guardar"  : function () {
-                                    submitForm();
+                context.attach('tbody>tr', [
+                    {
+                        header : 'Acciones'
+                    },
+                    {
+                        text   : 'Ver',
+                        icon   : "<i class='fa fa-search'></i>",
+                        action : function (e) {
+                            $("tr.success").removeClass("success");
+                            e.preventDefault();
+                            $.ajax({
+                                type    : "POST",
+                                url     : "${createLink(action:'show_ajax')}",
+                                data    : {
+                                    id : id
                                 },
-                                "Cancelar" : function () {
-                                    $("#dlg-conceptoRIRBienes").dialog("close");
-                                }
-                            };
-                            openDlg(url, id, "", true, title, buttons);
-                            return false;
-                        });
-
-                $("#tb-conceptoRIRBienes").find("tr").contextMenu({
-                            menu : "menu-conceptoRIRBienes"
-                        },
-                        function (action, el, pos) {
-                            $("#dlg-conceptoRIRBienes").html("");
-                            var id = $(el).attr("id");
-                            var title, buttons, url, cont;
-                            switch (action) {
-                                case "edit":
-                                    title = "Editar ConceptoRetencionImpuestoRenta";
-                                    buttons = {
-                                        "Guardar"  : function () {
-                                            submitForm();
-                                        },
-                                        "Cancelar" : function () {
-                                            $("#dlg-conceptoRIRBienes").dialog("close");
-                                        }
-                                    };
-                                    url = "${createLink(action:'edit')}/" + id;
-                                    break;
-                                case "show":
-                                    title = "Ver ConceptoRetencionImpuestoRenta";
-                                    buttons = {
-                                        "Aceptar" : function () {
-                                            $("#dlg-conceptoRIRBienes").dialog("close");
-                                        }
-                                    };
-                                    url = "${createLink(action:'show')}/" + id;
-                                    break;
-                                case "delete":
-                                    title = "Eliminar ConceptoRetencionImpuestoRenta";
-                                    buttons = {
-                                        "Aceptar"  : function () {
-                                            $("#dlgLoad").dialog("open");
-                                            $.ajax({
-                                                type    : "POST",
-                                                url     : "${createLink(action:'delete')}",
-                                                data    : {
-                                                    id : id
-                                                },
-                                                success : function (msg) {
-                                                    location.reload(true);
+                                success : function (msg) {
+                                    bootbox.dialog({
+                                        title   : "Ver Concepto de Retencion IR",
+                                        message : msg,
+                                        buttons : {
+                                            ok : {
+                                                label     : "Aceptar",
+                                                className : "btn-primary",
+                                                callback  : function () {
                                                 }
-                                            });
-                                        },
-                                        "Cancelar" : function () {
-                                            $("#dlg-conceptoRIRBienes").dialog("close");
+                                            }
                                         }
-                                    };
-                                    cont = "<span style='font-size: 16px;'> Est&aacute; seguro de querer eliminar este ConceptoRetencionImpuestoRenta?";
-                                    cont += "<br/>Esta acci&oacute;n es definitiva.</span>"
-                                    $("#dlg-conceptoRIRBienes").dialog("option", "width", 360);
-                                    break;
-                            }
-                            openDlg(url, id, cont, action != "delete", title, buttons);
-                        });
+                                    });
+                                }
+                            });
+                        }
+                    },
+                    {
+                        text   : 'Editar',
+                        icon   : "<i class='fa fa-pencil'></i>",
+                        action : function (e) {
+                            $("tr.success").removeClass("success");
+                            e.preventDefault();
+                            createEditRow(id);
+                        }
+                    },
+                    {divider : true},
+                    {
+                        text   : 'Eliminar',
+                        icon   : "<i class='fa fa-trash-o'></i>",
+                        action : function (e) {
+                            $("tr.success").removeClass("success");
+                            e.preventDefault();
+                            deleteRow(id);
+                        }
+                    }
+                ]);
             });
         </script>
+
     </body>
 </html>

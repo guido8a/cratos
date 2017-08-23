@@ -1,5 +1,6 @@
 package cratos
 
+import cratos.sri.ModalidadPago
 import org.springframework.dao.DataIntegrityViolationException
 
 class ConceptoRetencionImpuestoRentaController extends cratos.seguridad.Shield {
@@ -8,84 +9,76 @@ class ConceptoRetencionImpuestoRentaController extends cratos.seguridad.Shield {
 
     def index() {
         redirect(action: "list", params: params)
-    }
+    } //index
 
     def list() {
-        params.max = Math.min(params.max ? params.int('max') : 10, 100)
-        [conceptoRetencionImpuestoRentaInstanceList: ConceptoRetencionImpuestoRenta.list(params), conceptoRetencionImpuestoRentaInstanceTotal: ConceptoRetencionImpuestoRenta.count()]
-    }
+        def conceptoRetencionImpuestoRentaInstanceCount = ConceptoRetencionImpuestoRenta.list().size()
+        [conceptoRetencionImpuestoRentaInstanceList: ConceptoRetencionImpuestoRenta.list(params), params: params, conceptoRetencionImpuestoRentaInstanceCount: conceptoRetencionImpuestoRentaInstanceCount]
+    } //list
 
-    def create() {
-        [conceptoRetencionImpuestoRentaInstance: new ConceptoRetencionImpuestoRenta(params)]
-    }
+    def form_ajax() {
+        def conceptoRetencionImpuestoRentaInstance = new ConceptoRetencionImpuestoRenta(params)
+        if(params.id) {
+            conceptoRetencionImpuestoRentaInstance = ConceptoRetencionImpuestoRenta.get(params.id)
+            if(!conceptoRetencionImpuestoRentaInstance) {
+                flash.clase = "alert-error"
+                flash.message =  "No se encontró Concepto Retencion Impuesto Renta con id " + params.id
+                redirect(action:  "list")
+                return
+            } //no existe el objeto
+        } //es edit
+        return [conceptoRetencionImpuestoRentaInstance: conceptoRetencionImpuestoRentaInstance]
+    } //form_ajax
 
     def save() {
-        def conceptoRetencionImpuestoRentaInstance
-        if (params.id) {
-            conceptoRetencionImpuestoRentaInstance = ConceptoRetencionImpuestoRenta.get(params.id)
-            if (!conceptoRetencionImpuestoRentaInstance) {
-                flash.message = "No se encontr&oacute; ConceptoRetencionImpuestoRenta a modificar"
-                render "NO"
-                return
-            }
-            conceptoRetencionImpuestoRentaInstance.properties = params
-        } else {
-            conceptoRetencionImpuestoRentaInstance = new ConceptoRetencionImpuestoRenta(params)
-        }
-        if (!conceptoRetencionImpuestoRentaInstance.save(flush: true)) {
-            render "NO"
-            println conceptoRetencionImpuestoRentaInstance.errors
-            flash.message = "Ha ocurrido un error al guardar ConceptoRetencionImpuestoRenta"
-            return
+//        println("params " + params)
+        def concepto
+        def modalidadPago = ModalidadPago.get(params."modalidadPago.id")
+        if(params.id){
+            concepto = ConceptoRetencionImpuestoRenta.get(params.id)
+        }else{
+            concepto = new ConceptoRetencionImpuestoRenta()
         }
 
-        flash.message = "ConceptoRetencionImpuestoRenta guardado exitosamente"
-//    redirect(action: "show", id: conceptoRetencionImpuestoRentaInstance.id)
-        render "OK"
-    }
+        concepto.descripcion = params.descripcion
+        concepto.codigo = params.codigo
+        concepto.porcentaje = params.porcentaje.toDouble()
+        concepto.tipo = params.tipo.toUpperCase()
+        concepto.modalidadPago = modalidadPago
 
-    def show() {
+        try{
+            concepto.save(flush: true)
+            render "OK"
+        }catch (e){
+            render "no"
+            println("error al guardar el concepto IR " + e)
+        }
+
+
+    } //save
+
+    def show_ajax() {
         def conceptoRetencionImpuestoRentaInstance = ConceptoRetencionImpuestoRenta.get(params.id)
         if (!conceptoRetencionImpuestoRentaInstance) {
-            flash.message = "No se encontr&oacute; ConceptoRetencionImpuestoRenta a mostrar"
-//            redirect(action: "list")
-            render "NO"
+            flash.clase = "alert-error"
+            flash.message =  "No se encontró Concepto Retencion Impuesto Renta con id " + params.id
+            redirect(action: "list")
             return
         }
-
         [conceptoRetencionImpuestoRentaInstance: conceptoRetencionImpuestoRentaInstance]
-    }
-
-    def edit() {
-        def conceptoRetencionImpuestoRentaInstance = ConceptoRetencionImpuestoRenta.get(params.id)
-        if (!conceptoRetencionImpuestoRentaInstance) {
-            flash.message = "No se encontr&oacute; ConceptoRetencionImpuestoRenta a modificar"
-//            redirect(action: "list")
-            render "NO"
-            return
-        }
-
-        [conceptoRetencionImpuestoRentaInstance: conceptoRetencionImpuestoRentaInstance]
-    }
+    } //show
 
     def delete() {
-        def conceptoRetencionImpuestoRentaInstance = ConceptoRetencionImpuestoRenta.get(params.id)
-        if (!conceptoRetencionImpuestoRentaInstance) {
-            flash.message = "No se encontr&oacute; ConceptoRetencionImpuestoRenta a eliminar"
-            render "NO"
-//            redirect(action: "list")
-            return
-        }
+        def concepto = ConceptoRetencionImpuestoRenta.get(params.id)
 
         try {
-            conceptoRetencionImpuestoRentaInstance.delete(flush: true)
-            flash.message = "ConceptoRetencionImpuestoRenta eliminado exitosamente"
-            redirect(action: "list")
+            concepto.delete(flush: true)
+            render "ok"
+        }catch (e){
+            render "no"
+            println("Error al borrar el concepto IR")
         }
-        catch (DataIntegrityViolationException e) {
-            flash.message = "Ha ocurrido un error al eliminar ConceptoRetencionImpuestoRenta"
-//            redirect(action: "show", id: params.id)
-        }
-        render "OK"
-    }
-}
+
+
+    } //delete
+} //fin controller

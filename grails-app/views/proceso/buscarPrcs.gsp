@@ -164,7 +164,10 @@
 
         var etdo = $tr.data("ed");
         var id = $tr.data("id");
-        var tp = $tr.data("tipo")
+        var tp = $tr.data("tipo");
+        var cm = $tr.data("cm");
+
+
 
         var editar = {
             label: " Ir al proceso",
@@ -209,11 +212,22 @@
         };
 
 
+        var reembolso = {
+            label: ' Reembolso',
+            icon: 'fa fa-thumbs-up',
+            action: function () {
+                location.href="${createLink(controller: 'proceso', action: 'reembolso')}/?proceso=" + id
+            }
+        };
+
         items.editar = editar;
-//        items.auxiliar = auxiliar;
 
         if(tp == 'Compras' || tp == 'Ventas' || tp == 'Transferencias' || tp == 'Nota de crédito'){
             items.detalle = detalle;
+        }
+
+        if(tp == 'Compras' && cm == '41'){
+            items.reembolso = reembolso
         }
 
 
