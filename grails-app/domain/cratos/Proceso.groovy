@@ -36,9 +36,11 @@ class Proceso implements Serializable {
     double excentoIva = 0
     double ivaGenerado = 0
     double iceGenerado = 0
-    double impuesto
-    double valor
-    double flete
+    double impuesto = 0
+    double valor = 0
+    double flete = 0
+    double retenidoIva = 0
+    double retenidoRenta = 0
 
     String procesoSerie01
     String procesoSerie02
@@ -104,6 +106,8 @@ class Proceso implements Serializable {
             impuesto column: 'prcsimpt'
             valor column: 'prcsvlor'
             flete column: 'prcsflte'
+            retenidoIva column: 'prcsrtiv'
+            retenidoRenta column: 'prcsrtrn'
 
             procesoSerie01 column: 'prcssr01'
             procesoSerie02 column: 'prcssr02'
