@@ -71,7 +71,7 @@
     <div class="btn-group" style="margin-right: 20px">
         <a href="#" class="btn btn-success previous disabled" id="procesoN">
             <i class="fa fa-gear"></i>
-            Proceso
+            Nuevo Proceso
         </a>
         <g:if test="${proceso?.estado == 'R'}">
             <a href="#" class="btn btn-success" id="comprobanteN">
@@ -111,8 +111,8 @@
         </g:if>
 
         <g:if test="${proceso}">
-            <g:if test="${!aux}">
-                <g:if test="${proceso?.tipoProceso?.id != 4}">
+            %{--<g:if test="${!aux}">--}%
+                <g:if test="${proceso?.estado == 'R'}">
                     <g:form action="borrarProceso" class="br_prcs" style="display: inline">
                         <input type="hidden" name="id" value="${proceso?.id}">
                         <a class="btn btn-danger" id="btn-br-prcs" action="borrarProceso">
@@ -121,13 +121,15 @@
                         </a>
                     </g:form>
                 </g:if>
-            </g:if>
+            %{--</g:if>--}%
+%{--
             <g:else>
                 <a href="#" class="btn btn-default" style="cursor: default">
                     <i class="fa fa-ban"></i>
                     Esta transacción no puede ser eliminada ni desmayorizada porque tiene auxiliares registrados.
                 </a>
             </g:else>
+--}%
 
         %{--<g:if test="${proceso?.tipoProceso?.id == 1}">--}%
         %{--<g:link class="btn btn-primary" action="detalleSri" id="${proceso?.id}" style="margin-bottom: 10px;">--}%
@@ -149,11 +151,12 @@
             </g:if>
         </g:if>
 
-
+        <g:if test="${proceso?.tipoProceso?.codigo?.trim() == 'C' || proceso?.tipoProceso?.codigo?.trim() == 'V'}">
         <a href="#" class="btn btn-primary" style="cursor: default; margin-right: 20px" id="abrir-fp">
             <i class="fa fa-usd"></i>
             Forma de Pago
         </a>
+        </g:if>
     </div>
 </div>
 
@@ -184,7 +187,7 @@
                 <g:else>
                     <elm:datepicker name="fecha" title="Fecha de emisión del comprobante"
                                     class="datepicker form-control required col-xs-3 fechaE"
-                                    value="${proceso?.fechaEmision}" maxDate="new Date()"
+                                    value="${proceso?.fechaEmision?: new Date().format('dd-MM-yyyy')}" maxDate="new Date()"
                                     style="width: 80px; margin-left: 5px"/>
                 </g:else>
             </div>
@@ -200,7 +203,7 @@
                 <g:else>
                     <elm:datepicker name="fechaingreso" title="Fecha de registro en el sistema"
                                     class="datepicker form-control required col-xs-3"
-                                    value="${proceso?.fechaIngresoSistema}" maxDate="new Date()"
+                                    value="${proceso?.fechaIngresoSistema?: new Date().format('dd-MM-yyyy')}" maxDate="new Date()"
                                     style="width: 80px; margin-left: 5px"/>
                 </g:else>
             </div>
@@ -210,7 +213,12 @@
             </div>
 
             <div class="col-xs-1 negrilla">
-                <g:textField name="establecimiento" id="establecimiento" class="form-control required validacionNumeroSinPuntos" maxlength="3" value="${proceso?.establecimiento}" disabled="${proceso?.estado == 'R' ?: false}"/>
+                %{--<g:textField name="establecimiento" id="establecimiento" class="form-control required validacionNumeroSinPuntos"--}%
+                             %{--maxlength="3" value="${proceso?.establecimiento}" disabled="${proceso?.estado == 'R' ?: false}"/>--}%
+                <g:select class="form-control required cmbRequired" name="establecimiento" id="establecimiento"
+                          from="${estb}" label="Proceso tipo: " value="${proceso?.establecimiento}" optionKey="key"
+                          optionValue="value" title="Establecimientos" disabled="${proceso?.estado == 'R' ?: false}"
+                style="margin-left: 0; width: 70px" />
             </div>
 
             <div class="col-xs-1 negrilla">

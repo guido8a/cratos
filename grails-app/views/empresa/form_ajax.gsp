@@ -200,6 +200,20 @@
                 </span>
             </div>
 
+            <div class="form-group keeptogether ${hasErrors(bean: empresaInstance, field: 'establecimientos', 'error')} ">
+                <span class="grupo">
+                    <label for="establecimientos" class="col-md-6 control-label text-info">
+                        Establecimientos habilitados, ejemplo: 001,002,003 Sin espacios
+                    </label>
+
+                    <div class="col-md-6">
+                        <g:textField name="establecimientos" maxlength="20" class="form-control validaLista"
+                                     value="${empresaInstance?.establecimientos}"/>
+                    </div>
+
+                </span>
+            </div>
+
 %{--
             <div class="form-group keeptogether ${hasErrors(bean: empresaInstance, field: 'ordenCompra', 'error')} ">
                 <span class="grupo">
@@ -239,7 +253,34 @@
                 }
                 return true;
             });
+
+            function validarLista(ev) {
+                /*
+                 48-57      -> numeros
+                 96-105     -> teclado numerico
+                 188        -> , (coma)
+                 190        -> . (punto) teclado
+                 110        -> . (punto) teclado numerico
+                 8          -> backspace
+                 46         -> delete
+                 9          -> tab
+                 37         -> flecha izq
+                 39         -> flecha der
+                 */
+                return ((ev.keyCode >= 48 && ev.keyCode <= 57) ||
+                (ev.keyCode >= 96 && ev.keyCode <= 105) ||
+                ev.keyCode == 8 || ev.keyCode == 46 || ev.keyCode == 9 ||
+                ev.keyCode == 37 || ev.keyCode == 39 || ev.keyCode == 188);
+            }
+
+            $(".validaLista").keydown(function (ev) {
+                return validarLista(ev);
+            }).keyup(function () {
+            });
+
+
         </script>
+
 
     </g:else>
 </div>

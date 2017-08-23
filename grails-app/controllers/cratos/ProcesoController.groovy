@@ -37,42 +37,53 @@ class ProcesoController extends cratos.seguridad.Shield {
 //        println "nuevo proceso "+params
 //        def libreta = DocumentoEmpresa.findAllByEmpresaAndFechaInicioLessThanEqualsAndFechaFinGreaterThanEqualsAndTipo(empresa,
 //                new Date(), new Date(),'F', [sort: 'fechaAutorizacion'])
+        def estb = Empresa.get(session.empresa.id).establecimientos.tokenize(',')
+        def mp = [:]
+        estb.each {
+            mp[it] = it
+        }
 
         if (params.id) {
             def proceso = Proceso.get(params.id).refresh()
 //            def registro = (Comprobante.findAllByProceso(proceso)?.size() == 0) ? false : true
             def fps = ProcesoFormaDePago.findAllByProceso(proceso)
 
-            render(view: "procesoForm", model: [proceso: proceso, fps: fps])
+            render(view: "procesoForm", model: [proceso: proceso, fps: fps, estb: mp])
         } else
-            render(view: "procesoForm", model: [proceso: null])
+            render(view: "procesoForm", model: [proceso: null, estb: mp])
     }
 
     /** actualiza los valores de proceso a los totales de detalle **/
     def actlProceso = {
-//        println "actlProceso $params"
+        println "actlProceso $params"
         def proceso = Proceso.get(params.id)
         def cn = dbConnectionService.getConnection()
 
-        def sql = "select * from total_detalle(${proceso.id},0,0)"
-// base__nz | basecero | basenoiv | iva  | ice  | dsct | flte | totl
-//----------+----------+----------+------+------+------+------+------
-//     4.50 |     0.00 |     0.00 | 0.54 | 0.00 | 0.00 | 0.00 | 5.04
+        println "gestor tipo: ${proceso.gestor.tipo}"
 
-        cn.eachRow(sql.toString()) {d ->
-            proceso.valor = d.totl
-            proceso.baseImponibleIva = d.base__nz
-            proceso.baseImponibleIva0 = d.basecero
-            proceso.baseImponibleNoIva = d.basenoiv
-            proceso.ivaGenerado = d.iva
-            proceso.iceGenerado = d.ice
-            if(proceso.gestor.tipo == 'I')
-                proceso.flete = d.flte
-            else {
-                proceso.flete = 0
+        if(proceso.estado != 'R') {
+            def sql = "select * from total_detalle(${proceso.id},0,0)"
+           //  base__nz | basecero | basenoiv | iva  | ice  | dsct | flte | totl
+           // ----------+----------+----------+------+------+------+------+------
+           //      4.50 |     0.00 |     0.00 | 0.54 | 0.00 | 0.00 | 0.00 | 5.04
+
+            cn.eachRow(sql.toString()) {d ->
+                proceso.valor = d.totl
+                proceso.baseImponibleIva = d.base__nz
+                proceso.baseImponibleIva0 = d.basecero
+                proceso.baseImponibleNoIva = d.basenoiv
+                proceso.ivaGenerado = d.iva
+                proceso.iceGenerado = d.ice
+                if(proceso.gestor.tipo == 'I')
+                    proceso.flete = d.flte
+                else {
+                    proceso.flete = 0
+                }
             }
+            proceso.save(flush: true)
+
         }
-        proceso.save(flush: true)
+
         redirect(action: 'nuevoProceso', id: proceso.id)
     }
 
@@ -1313,7 +1324,11 @@ class ProcesoController extends cratos.seguridad.Shield {
         def proceso = Proceso.get(params.proceso)
         def data = []
         def atrz
-        def sql = "select paux_iva from paux where '${proceso.fechaEmision}' between pauxfcin and " +
+        def fcha = "now()"
+        if(proceso?.fechaEmision) {
+            fcha = "'${proceso?.fechaEmision}'"
+        }
+        def sql = "select paux_iva from paux where ${fcha} between pauxfcin and " +
                 "coalesce(pauxfcfn, now())"
         println "sqlIva: $sql"
         def valorIva = cn.rows(sql.toString())[0]?.paux_iva
