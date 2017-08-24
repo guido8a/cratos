@@ -29,8 +29,6 @@
                 </label>
 
                 <div class="col-md-8">
-                    %{--<g:textField name="descripcion" maxlength="127" required="" class="allCaps form-control required"--}%
-                                 %{--value="${tipoSoporteInstance?.descripcion}"/>--}%
                     <g:textArea name="descripcion" maxlength="127" required="" class="allCaps form-control required" value="${tipoSoporteInstance?.descripcion}"
                     style="resize: none"/>
 

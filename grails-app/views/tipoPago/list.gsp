@@ -12,20 +12,14 @@
 
     <!-- botones -->
         <div class="btn-toolbar toolbar">
+
             <div class="btn-group">
+                <g:link controller="inicio" action="parametros" class="btn btn-warning btnRegresar">
+                    <i class="fa fa-chevron-left"></i> Parámetros
+                </g:link>
                 <g:link action="form" class="btn btn-info btnCrear">
                     <i class="fa fa-file-o"></i> Crear
                 </g:link>
-            </div>
-            <div class="btn-group pull-right col-md-3">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Buscar">
-                    <span class="input-group-btn">
-                        <a href="#" class="btn btn-default" type="button">
-                            <i class="fa fa-search"></i>&nbsp;
-                        </a>
-                    </span>
-                </div><!-- /input-group -->
             </div>
         </div>
 
@@ -36,22 +30,22 @@
             <table class="table table-condensed table-bordered table-striped table-hover">
                 <thead>
                     <tr>
-                        
+
                         <g:sortableColumn property="codigo" title="Código" />
-                        
+
                         <g:sortableColumn property="descripcion" title="Descripción" />
-                        
+
                         <th width="110">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     <g:each in="${tipoPagoInstanceList}" status="i" var="tipoPagoInstance">
                         <tr data-id="${tipoPagoInstance.id}">
-                            
+
                             <td>${fieldValue(bean: tipoPagoInstance, field: "codigo")}</td>
-                            
+
                             <td>${fieldValue(bean: tipoPagoInstance, field: "descripcion")}</td>
-                            
+
                             <td>
                                 <a href="#" data-id="${tipoPagoInstance.id}" class="btn btn-info btn-sm btn-show btn-ajax" title="Ver">
                                     <i class="fa fa-laptop"></i>

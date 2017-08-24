@@ -79,15 +79,17 @@
                 </span>
             </div>
 
-
-
             <div class="form-group ${hasErrors(bean: documentoEmpresaInstance, field: 'numeroEstablecimiento', 'error')} ">
                 <span class="grupo">
                     <label for="numeroEstablecimiento" class="col-md-4 control-label text-info">
                         Número Establecimiento
                     </label>
-                    <div class="col-md-3">
-                        <g:textField name="numeroEstablecimiento" maxlength="10" required="" class="form-control validacionNumeroSinPuntos required" value="${documentoEmpresaInstance?.numeroEstablecimiento}"/>
+                    <div class="col-md-4">
+                        %{--<g:textField name="numeroEstablecimiento" maxlength="10" required="" class="form-control validacionNumeroSinPuntos required" value="${documentoEmpresaInstance?.numeroEstablecimiento}"/>--}%
+                        <g:select class="form-control required cmbRequired" name="numeroEstablecimiento" id="numeroEstablecimiento"
+                                  from="${establecimientos}" label="Proceso tipo: " value="${documentoEmpresaInstance?.numeroEstablecimiento}" optionKey="key"
+                                  optionValue="value" title="Establecimientos" />
+
                     </div>
 
                 </span>

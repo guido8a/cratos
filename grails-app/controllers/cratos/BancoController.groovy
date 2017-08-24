@@ -95,13 +95,14 @@ class BancoController extends cratos.seguridad.Shield {
     /* ************************ COPIAR DESDE AQUI ****************************/
 
     def list() {
+        def empresa = Empresa.get(session.empresa.id)
         params.max = Math.min(params.max ? params.max.toInteger() : 10, 100)
-        def bancoInstanceList = Banco.list(params)
+        def bancoInstanceList = Banco.findAllByEmpresa(empresa)
         def bancoInstanceCount = Banco.count()
         if (bancoInstanceList.size() == 0 && params.offset && params.max) {
             params.offset = params.offset - params.max
         }
-        bancoInstanceList = Banco.list(params)
+        bancoInstanceList = Banco.findAllByEmpresa(empresa)
         return [bancoInstanceList: bancoInstanceList, bancoInstanceCount: bancoInstanceCount]
     } //list
 

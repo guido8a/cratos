@@ -179,6 +179,22 @@
                     <p>Por lo general siempre se definirán los mismo reportes para cada empresa, conforme las normas NIIF.</p>
                 </div>
             </li>
+            <li>
+                <i class="fa-li ${iconEmpr}"></i>
+                <span id="bodegas">
+                    <g:link controller="bodega" action="list">Bodegas</g:link> para el control de existencias e inventarios
+                    por centros de costos o en forma general.
+                </span>
+
+                <div class="descripcion hide">
+                    <h4>Bodegas</h4>
+
+                    <p>Son los sitios donde se almacenan los artículos de inventario.</p>
+
+                    <p>Cada bodega debe estar relacionada a un centro de costos, pudiendo haber varias bodegas dentro de un
+                    mismo centro de costos.</p>
+                </div>
+            </li>
         </ul>
     </div>
 
@@ -235,7 +251,15 @@
                             label     : "<i class='fa fa-save'></i> Guardar",
                             className : "btn-success",
                             callback  : function () {
-                                return submitForm();
+                                var comas = $("#establecimientos").val().indexOf(",,");
+                                if(comas == -1){
+                                    return submitForm();
+                                }else{
+                                   bootbox.alert("<i class='fa fa-warning fa-3x pull-left text-warning text-shadow'></i> Error al ingresar el número de establecimiento <br> Doble Coma (,,)")
+                                    return false;
+                                }
+
+
                             } //callback
                         } //guardar
                     } //buttons

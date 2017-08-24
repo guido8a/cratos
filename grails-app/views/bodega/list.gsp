@@ -13,68 +13,34 @@
     <!-- botones -->
         <div class="btn-toolbar toolbar">
             <div class="btn-group">
+                <g:link controller="inicio" action="parametrosEmpresa" class="btn btn-warning btnRegresar">
+                    <i class="fa fa-chevron-left"></i> Parámetros
+                </g:link>
                 <g:link action="form" class="btn btn-info btnCrear">
-                    <i class="fa fa-file-o"></i> Crear
+                    <i class="fa fa-file-o"></i> Nueva
                 </g:link>
             </div>
-            <div class="btn-group pull-right col-md-3">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Buscar">
-                    <span class="input-group-btn">
-                        <a href="#" class="btn btn-default" type="button">
-                            <i class="fa fa-search"></i>&nbsp;
-                        </a>
-                    </span>
-                </div><!-- /input-group -->
-            </div>
-        </div>
+               </div>
 
-        <div class="vertical-container vertical-container-list">
-            <p class="css-vertical-text">Lista de Bodegas</p>
-
-            <div class="linea"></div>
-            <table class="table table-condensed table-bordered table-striped table-hover">
-                <thead>
-                    <tr>
-
-                        <g:sortableColumn property="codigo" title="Código" />
-
-                        <g:sortableColumn property="descripcion" title="Descripción" />
-
-                        <g:sortableColumn property="centroCosto" title="Centro de Costo"/>
+        <table class="table table-condensed table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Descripción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <g:each in="${bodegaInstanceList}" status="i" var="bodegaInstance">
+                    <tr data-id="${bodegaInstance.id}">
+                        <td>${fieldValue(bean: bodegaInstance, field: "codigo")}</td>
                         
-
+                        <td>${fieldValue(bean: bodegaInstance, field: "descripcion")}</td>
                         
-                        <th width="110">Acciones</th>
                     </tr>
-                </thead>
-                <tbody>
-                    <g:each in="${bodegaInstanceList}" status="i" var="bodegaInstance">
-                        <tr data-id="${bodegaInstance.id}">
+                </g:each>
+            </tbody>
+        </table>
 
-                            <td>${fieldValue(bean: bodegaInstance, field: "codigo")}</td>
-
-                            <td>${fieldValue(bean: bodegaInstance, field: "descripcion")}</td>
-
-                            <td>${bodegaInstance?.centroCosto?.nombre}</td>
-
-                            
-                            <td>
-                                <a href="#" data-id="${bodegaInstance.id}" class="btn btn-info btn-sm btn-show btn-ajax" title="Ver">
-                                    <i class="fa fa-laptop"></i>
-                                </a>
-                                <a href="#" data-id="${bodegaInstance.id}" class="btn btn-success btn-sm btn-edit btn-ajax" title="Editar">
-                                    <i class="fa fa-pencil"></i>
-                                </a>
-                                <a href="#" data-id="${bodegaInstance.id}" class="btn btn-danger btn-sm btn-delete btn-ajax" title="Eliminar">
-                                    <i class="fa fa-trash-o"></i>
-                                </a>
-                            </td>
-                        </tr>
-                    </g:each>
-                </tbody>
-            </table>
-        </div>
         <elm:pagination total="${bodegaInstanceCount}" params="${params}"/>
 
         <script type="text/javascript">
@@ -83,22 +49,20 @@
                 var $form = $("#frmBodega");
                 var $btn = $("#dlgCreateEdit").find("#btnSave");
                 if ($form.valid()) {
-                    $btn.replaceWith(spinner);
-                    openLoader("Grabando");
+                $btn.replaceWith(spinner);
                     $.ajax({
                         type    : "POST",
-                        url     : $form.attr("action"),
+                        url     : '${createLink(action:'save')}',
                         data    : $form.serialize(),
                             success : function (msg) {
-                        var parts = msg.split("_");
-                        log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
-                        if (parts[0] == "OK") {
-                            location.reload(true);
-                        } else {
-                            closeLoader();
-                            spinner.replaceWith($btn);
-                            return false;
-                        }
+                                if (msg == "ok") {
+                                    log("Bodega borrada correctamente","success");
+                                    setTimeout(function () {
+                                        location.reload(true);
+                                    }, 1000);
+                                }else{
+                                    log("Error al borrar la bodega","error")
+                                }
                     }
                 });
             } else {
@@ -120,22 +84,20 @@
                             label     : "<i class='fa fa-trash-o'></i> Eliminar",
                             className : "btn-danger",
                             callback  : function () {
-                                openLoader("Eliminando");
                                 $.ajax({
                                     type    : "POST",
-                                    url     : '${createLink(action:'delete_ajax')}',
+                                    url     : '${createLink(action:'delete')}',
                                     data    : {
                                         id : itemId
                                     },
                                     success : function (msg) {
-                                        var parts = msg.split("_");
-                                        log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
-                                        if (parts[0] == "OK") {
-                                            location.reload(true);
-                                        } else {
-                                            closeLoader();
-                                            spinner.replaceWith($btn);
-                                            return false;
+                                        if (msg == "ok") {
+                                            log("Bodega borrada correctamente","success");
+                                            setTimeout(function () {
+                                                location.reload(true);
+                                            }, 1000);
+                                        }else{
+                                            log("Error al borrar la bodega","error")
                                         }
                                     }
                                 });
@@ -174,7 +136,7 @@
                             } //buttons
                         }); //dialog
                         setTimeout(function () {
-                            b.find(".form-control").not(".datepicker").first().focus()
+                            b.find(".form-control").first().focus()
                         }, 500);
                     } //success
                 }); //ajax
@@ -187,39 +149,67 @@
                     return false;
                 });
 
-                $(".btn-show").click(function () {
-                    var id = $(this).data("id");
-                    $.ajax({
-                        type    : "POST",
-                        url     : "${createLink(action:'show_ajax')}",
-                        data    : {
-                            id : id
-                        },
-                        success : function (msg) {
-                            bootbox.dialog({
-                                title   : "Ver Bodega",
-                                message : msg,
-                                buttons : {
-                                    ok : {
-                                        label     : "Aceptar",
-                                        className : "btn-primary",
-                                        callback  : function () {
+                context.settings({
+                    onShow : function (e) {
+                        $("tr.success").removeClass("success");
+                        var $tr = $(e.target).parent();
+                        $tr.addClass("success");
+                        id = $tr.data("id");
+                    }
+                });
+                context.attach('tbody>tr', [
+                    {
+                        header : 'Acciones'
+                    },
+                    {
+                        text   : 'Ver',
+                        icon   : "<i class='fa fa-search'></i>",
+                        action : function (e) {
+                            $("tr.success").removeClass("success");
+                            e.preventDefault();
+                            $.ajax({
+                                type    : "POST",
+                                url     : "${createLink(action:'show_ajax')}",
+                                data    : {
+                                    id : id
+                                },
+                                success : function (msg) {
+                                    bootbox.dialog({
+                                        title   : "Ver Bodega",
+                                        message : msg,
+                                        buttons : {
+                                            ok : {
+                                                label     : "Aceptar",
+                                                className : "btn-primary",
+                                                callback  : function () {
+                                                }
+                                            }
                                         }
-                                    }
+                                    });
                                 }
                             });
                         }
-                    });
-                });
-                $(".btn-edit").click(function () {
-                    var id = $(this).data("id");
-                    createEditRow(id);
-                });
-                $(".btn-delete").click(function () {
-                    var id = $(this).data("id");
-                    deleteRow(id);
-                });
-
+                    },
+                    {
+                        text   : 'Editar',
+                        icon   : "<i class='fa fa-pencil'></i>",
+                        action : function (e) {
+                            $("tr.success").removeClass("success");
+                            e.preventDefault();
+                            createEditRow(id);
+                        }
+                    },
+                    {divider : true},
+                    {
+                        text   : 'Eliminar',
+                        icon   : "<i class='fa fa-trash-o'></i>",
+                        action : function (e) {
+                            $("tr.success").removeClass("success");
+                            e.preventDefault();
+                            deleteRow(id);
+                        }
+                    }
+                ]);
             });
         </script>
 

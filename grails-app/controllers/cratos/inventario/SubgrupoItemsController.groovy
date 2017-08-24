@@ -1,5 +1,6 @@
 package cratos.inventario
 
+import cratos.Empresa
 import org.springframework.dao.DataIntegrityViolationException
 
 class SubgrupoItemsController extends cratos.seguridad.Shield {
@@ -11,8 +12,11 @@ class SubgrupoItemsController extends cratos.seguridad.Shield {
     } //index
 
     def list() {
-        println("params " + params)
-        [subgrupoItemsInstanceList: SubgrupoItems.list(params), params: params]
+//        println("params " + params)
+        def empresa = Empresa.get(session.empresa.id)
+        def lista = SubgrupoItems.findAllByEmpresa(empresa)
+        def subgrupoItemsInstanceCount = SubgrupoItems.findAllByEmpresa(empresa).size()
+        [subgrupoItemsInstanceList: lista, params: params, subgrupoItemsInstanceCount: subgrupoItemsInstanceCount]
     } //list
 
     def form_ajax() {

@@ -245,41 +245,11 @@
                                 <p>Tipo de sustento tributario que se ha se adjuntar a los anexos tributarios que se entregan al SRI.</p>
                             </div>
                         </li>
-
-                        %{--<li>--}%
-                            %{--<i class="fa-li ${iconGen}"></i>--}%
-                            %{--<span id="tipoComprobanteSRI">--}%
-                                %{--<g:link controller="tipoComprobanteSri" action="list">Tipo de Comprobante según el SRI</g:link> para--}%
-                                %{--los anexos tributarios.--}%
-                            %{--</span>--}%
-
-                            %{--<div class="descripcion hide">--}%
-                                %{--<h4>Tipo de Comprobante según el SRI</h4>--}%
-
-                                %{--<p>Tipo de comprobante que se usa para el enexo tributario.</p>--}%
-                            %{--</div>--}%
-                        %{--</li>--}%
-
-                        <li>
-                            <i class="fa-li ${iconGen}"></i>
-                            <span id="tipoComprobanteID">
-                                <g:link controller="tipoComprobanteId" action="list">Tipo de Comprobante que se aplica al tipo de
-                    identificación</g:link> para cada tipo de identificación se aceptan sólo ciertos tipos de comprobantes.
-                            </span>
-
-                            <div class="descripcion hide">
-                                <h4>Tipo de Comprobante por Tipo de Identificación</h4>
-
-                                <p>Para cada tipo de identificación que se use con un proveedor se deben usar sólo un deerminado Tipo de comprobante.</p>
-
-                                <p>Esta información debe ser concordante con lo establecido por el SRI.</p>
-                            </div>
-                        </li>
                         <li>
                             <i class="fa-li ${iconGen}"></i>
                             <span id="paramsAux">
-                                <g:link controller="parametrosAuxiliares" action="list">Parámetros Auxiliares</g:link> para definir
-                                valores de impuestos.
+                                <g:link controller="parametrosAuxiliares" action="list">IVA</g:link> para definir
+                                valores del IVA.
                             </span>
 
                             <div class="descripcion hide">
@@ -337,64 +307,6 @@
                                 <p>Sirve para distinguir de entre los distinctos tipos de empresas beneficiarios del servicio.</p>
                             </div>
                         </li>
-                        <li>
-                            <i class="fa-li ${iconEmpr}"></i>
-                            <span id="centroCostos">
-                                <g:link controller="centroCosto" action="list">Centro de Costos</g:link> de la empresa de acuerdo a
-                                los cuales se llevará el control de bodegas, inventarios y existencias.
-                            </span>
-
-                            <div class="descripcion hide">
-                                <h4>Centro de Costos</h4>
-
-                                <p>Centro de costos para el control de adquisiciones, ventas, inventario y bodegas.</p>
-
-                                <p>Si la empresa no lleva el control de varios centros de costos, se debe definir uno general a la
-                                cual pretenecerán todas las bodegas.</p>
-                            </div>
-                        </li>
-                        <li>
-                            <i class="fa-li ${iconEmpr}"></i>
-                            <span id="banco">
-                                <g:link controller="banco" action="list">Bancos</g:link> en los cuales posee cuentas asociadas a la
-                                contabilidad
-                            </span>
-
-                            <div class="descripcion hide">
-                                <h4>Bancos</h4>
-
-                                <p>Registro de los bancos relacionados con la empresa, ya sea por cuentas de ahorro o corrientes.</p>
-                            </div>
-                        </li>
-                        <li>
-                            <i class="fa-li ${iconEmpr}"></i>
-                            <span id="departamento">
-                                <g:link controller="departamento" action="list">Departamento</g:link> de la empresa que poseen
-                                personal
-                            </span>
-
-                            <div class="descripcion hide">
-                                <h4>Departamentos de Personal</h4>
-
-                                <p>Departamentos de personal de la empresa para el control de la nómina. Cada empleado será vinculado a un
-                                departamento y un cargo.</p>
-                            </div>
-                        </li>
-                        <li>
-                            <i class="fa-li ${iconEmpr}"></i>
-                            <span id="reporteContable">
-                                <g:link controller="reporteCuenta" action="list">Reportes Contables</g:link> Reportes contables
-                                especiales del sistema conforme a las normas NIIF
-                            </span>
-
-                            <div class="descripcion hide">
-                                <h4>Reportes de la Contabilidad</h4>
-
-                                <p>Sirve para definir reportes especiales por empresa.</p>
-
-                                <p>Por lo general siempre se definirán los mismo reportes para cada empresa, conforme las normas NIIF.</p>
-                            </div>
-                        </li>
                     </ul>
                 </div>
 
@@ -436,21 +348,6 @@
                         </li>
                         <li>
                             <i class="fa-li ${iconAct}"></i>
-                            <span id="colores">
-                                <g:link controller="color" action="list">Colores</g:link> de los distintos activos fijos a cargo de
-                                los distintos empleados de la empresa.
-                            </span>
-
-                            <div class="descripcion hide">
-                                <h4>Colores</h4>
-
-                                <p>Colores para personalizar los activos fijos de la Empresa.</p>
-
-                                <p>El color sirve para distinguir de entre varios bienes del mismo tipo, marca y modelo</p>
-                            </div>
-                        </li>
-                        <li>
-                            <i class="fa-li ${iconAct}"></i>
                             <span id="grupos">
                                 <g:link controller="grupo" action="list">Grupos</g:link> de ítems, sirve para clasificar y controlar
                                 los ítems clasificados por grupos.
@@ -462,22 +359,6 @@
                                 <p>Los grupos de ítems, sirven para clasificar y controlar los ítems clasificados por características.</p>
 
                                 <p>El manejo de grupos permite obtener estadísticas de ventas, adquisiciones y transferencias.</p>
-                            </div>
-                        </li>
-                        <li>
-                            <i class="fa-li ${iconAct}"></i>
-                            <span id="bodegas">
-                                <g:link controller="bodega" action="list">Bodegas</g:link> para el control de existencias e inventarios
-                                por centros de costos o en forma general.
-                            </span>
-
-                            <div class="descripcion hide">
-                                <h4>Bodegas</h4>
-
-                                <p>Son los sitios donde se almacenan los artículos de inventario.</p>
-
-                                <p>Cada bodega debe estar relacionada a un centro de costos, pudiendo haber varias bodegas dentro de un
-                                mismo centro de costos.</p>
                             </div>
                         </li>
                         <li>
@@ -504,19 +385,6 @@
                                 <h4>Tipo de Factura</h4>
 
                                 <p>Maneja los difernetes tipos de facturas que pueden existir, tales como Facturas, proformas, notas de venta.</p>
-                            </div>
-                        </li>
-                        <li>
-                            <i class="fa-li ${iconAct}"></i>
-                            <span id="estado">
-                                <g:link controller="estado" action="list">Estado</g:link> de la factura, se aplica también como
-                                referencia a transferencias y adquisiciones.
-                            </span>
-
-                            <div class="descripcion hide">
-                                <h4>Estado de la Factura</h4>
-
-                                <p>Sirve para distinguir enre facturas anuladas, impresas y en proceso de elaboración.</p>
                             </div>
                         </li>
                         <li>

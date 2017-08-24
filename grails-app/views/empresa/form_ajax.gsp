@@ -214,20 +214,6 @@
                 </span>
             </div>
 
-%{--
-            <div class="form-group keeptogether ${hasErrors(bean: empresaInstance, field: 'ordenCompra', 'error')} ">
-                <span class="grupo">
-                    <label for="ordenCompra" class="col-md-6 control-label text-info">
-                        Orden Compra
-                    </label>
-
-                    <div class="col-md-2">
-                        <g:textField name="ordenCompra" maxlength="1" class="form-control" value="${empresaInstance?.ordenCompra}"/>
-                    </div>
-
-                </span>
-            </div>
---}%
 
         </g:form>
 
@@ -273,10 +259,12 @@
                 ev.keyCode == 37 || ev.keyCode == 39 || ev.keyCode == 188);
             }
 
+
             $(".validaLista").keydown(function (ev) {
                 return validarLista(ev);
             }).keyup(function () {
             });
+
 
 
         </script>

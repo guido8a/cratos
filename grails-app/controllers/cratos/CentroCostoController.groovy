@@ -11,17 +11,6 @@ class CentroCostoController extends cratos.seguridad.Shield {
         redirect(action: "list", params: params)
     }
 
-//    def list() {
-//        params.max = Math.min(params.max ? params.int('max') : 10, 100)
-//        if (!params.sort) {
-//            params.sort = "nombre"
-//        }
-//        def c = CentroCosto.createCriteria()
-//        def centroCostoInstanceList = c.list(params) {
-//            eq("empresa", Empresa.get(session.empresa.id))
-//        }
-//        [centroCostoInstanceList: centroCostoInstanceList, centroCostoInstanceTotal: centroCostoInstanceList.totalCount]
-//    }
 
     def create() {
         [centroCostoInstance: new CentroCosto(params)]
@@ -105,13 +94,15 @@ class CentroCostoController extends cratos.seguridad.Shield {
     /* ************************ COPIAR DESDE AQUI ****************************/
 
     def list() {
+        def empresa = Empresa.get(session.empresa.id)
         params.max = Math.min(params.max ? params.max.toInteger() : 10, 100)
-        def centroCostoInstanceList = CentroCosto.list(params)
+        def centroCostoInstanceList = CentroCosto.findAllByEmpresa(empresa)
         def centroCostoInstanceCount = CentroCosto.count()
         if (centroCostoInstanceList.size() == 0 && params.offset && params.max) {
             params.offset = params.offset - params.max
         }
-        centroCostoInstanceList = CentroCosto.list(params)
+
+        centroCostoInstanceList = CentroCosto.findAllByEmpresa(empresa)
         return [centroCostoInstanceList: centroCostoInstanceList, centroCostoInstanceCount: centroCostoInstanceCount]
     } //list
 

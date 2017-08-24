@@ -114,13 +114,14 @@ class DepartamentoController extends cratos.seguridad.Shield  {
     /* ************************ COPIAR DESDE AQUI ****************************/
 
     def list() {
+        def empresa = Empresa.get(session.empresa.id)
         params.max = Math.min(params.max ? params.max.toInteger() : 10, 100)
-        def departamentoInstanceList = Departamento.list(params)
+        def departamentoInstanceList = Departamento.findAllByEmpresa(empresa)
         def departamentoInstanceCount = Departamento.count()
         if (departamentoInstanceList.size() == 0 && params.offset && params.max) {
             params.offset = params.offset - params.max
         }
-        departamentoInstanceList = Departamento.list(params)
+        departamentoInstanceList = Departamento.findAllByEmpresa(empresa)
         return [departamentoInstanceList: departamentoInstanceList, departamentoInstanceCount: departamentoInstanceCount]
     } //list
 

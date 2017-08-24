@@ -15,9 +15,6 @@
                 </label>
 
                 <div class="col-md-6">
-                    %{--<g:select id="empresa" name="empresa.id" from="${cratos.Empresa.list()}" optionKey="id"--}%
-                              %{--value="${bancoInstance?.empresa?.id}" class="many-to-one form-control"--}%
-                              %{--noSelection="['null': '']"/>--}%
                     <g:textField name="empresa.id" id="empresa" value="${session.empresa}" class="form-control" readonly="true"/>
 
                 </div>
@@ -32,7 +29,7 @@
                     Código
                 </label>
 
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <g:textField name="codigo" maxlength="4" required="" class="allCaps form-control required"
                                  value="${bancoInstance?.codigo}"/>
                 </div>
@@ -48,7 +45,7 @@
                     Descripción
                 </label>
 
-                <div class="col-md-6">
+                <div class="col-md-8">
                     <g:textField name="descripcion" maxlength="40" required="" class="form-control required"
                                  value="${bancoInstance?.descripcion}"/>
                 </div>

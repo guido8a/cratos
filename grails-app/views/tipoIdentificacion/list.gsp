@@ -13,6 +13,9 @@
     <!-- botones -->
         <div class="btn-toolbar toolbar">
             <div class="btn-group">
+                <g:link controller="inicio" action="parametros" class="btn btn-warning btnRegresar">
+                    <i class="fa fa-chevron-left"></i> Parámetros
+                </g:link>
                 <g:link action="form" class="btn btn-info btnCrear">
                     <i class="fa fa-file-o"></i> Nuevo Tipo
                 </g:link>

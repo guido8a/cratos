@@ -4,7 +4,7 @@
 <html>
     <head>
         <meta name="layout" content="main">
-        <title>Lista de Tipo de Persona</title>
+        <title>Tipos de Persona</title>
     </head>
     <body>
 
@@ -13,19 +13,12 @@
     <!-- botones -->
         <div class="btn-toolbar toolbar">
             <div class="btn-group">
+                <g:link controller="inicio" action="parametros" class="btn btn-warning btnRegresar">
+                    <i class="fa fa-chevron-left"></i> Parámetros
+                </g:link>
                 <g:link action="form" class="btn btn-info btnCrear">
                     <i class="fa fa-file-o"></i> Crear
                 </g:link>
-            </div>
-            <div class="btn-group pull-right col-md-3">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Buscar">
-                    <span class="input-group-btn">
-                        <a href="#" class="btn btn-default" type="button">
-                            <i class="fa fa-search"></i>&nbsp;
-                        </a>
-                    </span>
-                </div><!-- /input-group -->
             </div>
         </div>
 

@@ -33,7 +33,7 @@
         <thead>
         <tr>
             <th colspan="3">
-                ${tipo?.codigo?.trim() == 'I' ? 'Total cobros pendientes : ' : 'Total pagos : '}
+                ${tipo?.codigo?.trim() == 'I' ? 'Total cobros pendientes : ' : 'Total pagos pendientes al proveedor : '}
             </th>
             <th>
                 <g:formatNumber number="${total}" maxFractionDigits="2" minFractionDigits="2" format="##,##0"/>

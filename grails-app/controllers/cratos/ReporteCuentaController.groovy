@@ -96,13 +96,14 @@ class ReporteCuentaController extends cratos.seguridad.Shield {
     /* ************************ COPIAR DESDE AQUI ****************************/
 
     def list() {
+        def empresa = Empresa.get(session.empresa.id)
         params.max = Math.min(params.max ? params.max.toInteger() : 10, 100)
-        def reporteCuentaInstanceList = ReporteCuenta.list(params)
+        def reporteCuentaInstanceList = ReporteCuenta.findAllByEmpresa(empresa)
         def reporteCuentaInstanceCount = ReporteCuenta.count()
         if (reporteCuentaInstanceList.size() == 0 && params.offset && params.max) {
             params.offset = params.offset - params.max
         }
-        reporteCuentaInstanceList = ReporteCuenta.list(params)
+        reporteCuentaInstanceList = ReporteCuenta.findAllByEmpresa(empresa)
         return [reporteCuentaInstanceList: reporteCuentaInstanceList, reporteCuentaInstanceCount: reporteCuentaInstanceCount]
     } //list
 

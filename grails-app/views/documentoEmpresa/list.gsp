@@ -22,20 +22,13 @@
     <!-- botones -->
         <div class="btn-toolbar toolbar">
             <div class="btn-group">
+                <g:link controller="inicio" action="parametrosEmpresa" class="btn btn-warning btnRegresar">
+                    <i class="fa fa-chevron-left"></i> Parámetros
+                </g:link>
                 <g:link action="form" class="btn btn-info btnCrear">
                     <i class="fa fa-file-o"></i> Nuevo
                 </g:link>
             </div>
-            %{--<div class="btn-group pull-right col-md-3">--}%
-                %{--<div class="input-group">--}%
-                    %{--<input type="text" class="form-control" placeholder="Buscar" value="${params.search}">--}%
-                    %{--<span class="input-group-btn">--}%
-                        %{--<g:link action="list" class="btn btn-default btn-search" type="button">--}%
-                            %{--<i class="fa fa-search"></i>&nbsp;--}%
-                        %{--</g:link>--}%
-                    %{--</span>--}%
-                %{--</div><!-- /input-group -->--}%
-            %{--</div>--}%
         </div>
 
         <table class="table table-condensed table-bordered table-striped">
@@ -82,7 +75,7 @@
             </tbody>
         </table>
 
-        %{--<elm:pagination total="${documentoEmpresaInstanceCount}" params="${params}"/>--}%
+        <elm:pagination total="${documentoEmpresaInstanceCount}" params="${params}"/>
 
         <script type="text/javascript">
             var id = null;
@@ -106,8 +99,10 @@
                         } else {
                             if(parts[1] == '2'){
                                 bootbox.alert(parts[2]);
+                                return false;
                             }else{
                                 log(parts[2],'error');
+
                             }
                             return false;
                         }

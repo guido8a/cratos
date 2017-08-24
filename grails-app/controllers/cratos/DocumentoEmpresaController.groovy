@@ -14,9 +14,10 @@ class DocumentoEmpresaController extends cratos.seguridad.Shield {
 
         def empresa = Empresa.get(session.empresa.id)
         def lista = DocumentoEmpresa.findAllByEmpresa(empresa)
+        def documentoEmpresaInstanceCount = DocumentoEmpresa.findAllByEmpresa(empresa).size()
 
 //        [documentoEmpresaInstanceList: DocumentoEmpresa.list(params), params: params]
-        [documentoEmpresaInstanceList: lista]
+        [documentoEmpresaInstanceList: lista, documentoEmpresaInstanceCount:documentoEmpresaInstanceCount]
     } //list
 
     def form_ajax() {
@@ -31,9 +32,17 @@ class DocumentoEmpresaController extends cratos.seguridad.Shield {
             } //no existe el objeto
         } //es edit
 
+
+        def estb = Empresa.get(session.empresa.id).establecimientos.tokenize(',')
+        def mp = [:]
+        estb.each {
+            mp[it] = it
+        }
+
+
         def lista = ['F':'Factura', "R": 'Retención', "ND": 'Nota de Débito', "NC": 'Nota de Crédito']
 
-        return [documentoEmpresaInstance: documentoEmpresaInstance, lista: lista]
+        return [documentoEmpresaInstance: documentoEmpresaInstance, lista: lista, establecimientos: mp]
     } //form_ajax
 
     def save() {
@@ -160,10 +169,6 @@ class DocumentoEmpresaController extends cratos.seguridad.Shield {
                 }
             }
         }
-
-
-
-
 
     }
 
