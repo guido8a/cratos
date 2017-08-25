@@ -93,7 +93,8 @@
                 </div>
 
                 <div class="campo">
-                    <input name="observaciones" type="textArea" value="${gestorInstance?.observaciones}"  maxlength="125" style="width:700px;" class="form-control"/>
+                    <input name="observaciones" type="textArea" value="${gestorInstance?.observaciones}"
+                           maxlength="125" style="width:700px;" class="form-control"/>
                 </div>
             </div>
 
@@ -103,8 +104,9 @@
                 </div>
 
                 <div class="campo">
-                    <g:select name="fuente.id" type="select" campo="fuente" from="${cratos.Fuente.list([sort: 'descripcion'])}" label="Fuente: "
-                              value="${gestorInstance?.fuente?.id}" optionKey="id" optionValue="descripcion" class="form-control required" style="width: 200px" />
+                    <g:select name="fuente.id" type="select" campo="fuente" from="${cratos.Fuente.list([sort: 'descripcion'])}"
+                              label="Fuente: " value="${gestorInstance?.fuente?.id}" optionKey="id" optionValue="descripcion"
+                              class="form-control required" style="width: 200px" />
                 </div>
             </div>
 
@@ -115,8 +117,10 @@
 
                 <div class="campo">
                     <span class="grupo">
-                        <g:select name="tipoCom" type="select" campo="tipo" from="${cratos.TipoComprobante.list([sort: 'descripcion'])}" label="Tipo comprobante: " value="${tipoCom?.id}"
-                                  optionKey="id" id="tipo" class="form-control required" optionValue="descripcion" style="width: 200px" />
+                        <g:select name="tipoCom" type="select" campo="tipo"
+                                  from="${cratos.TipoComprobante.list([sort: 'descripcion'])}" label="Tipo comprobante: "
+                                  value="${tipoCom?.id}" optionKey="id" id="tipo" class="form-control required"
+                                  optionValue="descripcion" style="width: 200px" />
                     </span>
                 </div>
             </div>

@@ -22,6 +22,7 @@ class Empresa implements Serializable {
     // ...
     String ordenCompra = '0'
     String establecimientos
+    String tipoEmision
 
     static hasMany = [periodosContables: Contabilidad]
 
@@ -53,6 +54,7 @@ class Empresa implements Serializable {
             ordenCompra column: 'emprorcm'
 
             establecimientos column: 'emprestb'
+            tipoEmision column: 'emprtpem'
         }
     }
     static constraints = {
@@ -74,6 +76,7 @@ class Empresa implements Serializable {
         prefijoIngreso(blank: true, nullable: true, size: 1..20)
         ordenCompra(blank: true, nullable: true, maxSize: 1)
         establecimientos(blank: false, nullable: false, maxSize: 63)
+        tipoEmision(blank: false, nullable: false, maxSize: 1, inList: ['F', 'E'])
     }
 
     String toString() {

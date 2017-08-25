@@ -93,13 +93,17 @@ class XmlController extends cratos.seguridad.Shield {
 
             println "...empresa: $sql  --> ${empr}"
 
-            sql = "select distinct prcsnmes from prcs where prcsfcis between '${prdo.fechaInicio}' and " +
-                        "'${prdo.fechaFin}' order by prcsnmes"
+            sql = "select count(distinct prcsnmes) cnta from prcs where prcsfcis between '${prdo.fechaInicio}' and " +
+                        "'${prdo.fechaFin}'"
 
-            def num_estb = cn.rows(sql.toString())
+            def num_estb = cn.rows(sql.toString())[0].cnta
+            num_estb = '0' * (3 - num_estb.toString().size()) + num_estb
 
             println "...nmes: $sql  --> ${num_estb}"
 
+            sql = "select sum(prcsvlor) totl from prcs where prcsfcis between '${prdo.fechaInicio}' and " +
+                    "'${prdo.fechaFin}' and tpps__id = 2"
+            def sumaVentas = cn.rows(sql.toString())[0].totl
 
             def writer = new StringWriter()
             def xml = new MarkupBuilder(writer)
@@ -108,20 +112,18 @@ class XmlController extends cratos.seguridad.Shield {
 
             println "inicia generacion de ATS"
             xml.iva() {
-                num_estb.each { nmes ->
                     TipoIDInformante(empr.tpidcdgo.trim())
                     IdInformante(empr.empr_ruc)
                     razonSocial(empr.emprnmbr)
                     Anio(prdo.fechaInicio.format("yyyy"))
                     Mes(prdo.fechaInicio.format("MM"))
-                    numEstabRuc(nmes.prcsnmes)
-                    totalVentas(0.00)
+                    numEstabRuc(num_estb)  //count(distinct prcsnmes)
+                    totalVentas(numero(sumaVentas?:0))  /**  todo: total ventas ***/
                     codigoOperativo("IVA")
                     println "inicia compras..."
                     compras() {
                         sql = "select prcs__id from prcs where prcsfcis between '${prdo.fechaInicio}' and " +
-                                "'${prdo.fechaFin}' and prcsnmes = '${nmes.prcsnmes}' and tpps__id = 1 " +
-                                "order by prcsfcis"
+                                "'${prdo.fechaFin}' and tpps__id = 1 order by prcsfcis"
                         println "prcsCompras: $sql"
                         def prcsCompras = cn.rows(sql.toString())
 
@@ -149,7 +151,7 @@ class XmlController extends cratos.seguridad.Shield {
                                 baseNoGraIva(numero(proceso.baseImponibleNoIva))
                                 baseImponible(numero(proceso.baseImponibleIva0))
                                 baseImpGrav(numero(proceso.baseImponibleIva))
-                                baseImpExe('0.00')   /* ??? crear campo */
+                                baseImpExe(numero(proceso.excentoIva))   /* ??? crear campo */
 
 //                                println "base: ${numero(proceso.baseImponibleIva)}  -- ${proceso.baseImponibleIva}"
 
@@ -238,42 +240,59 @@ class XmlController extends cratos.seguridad.Shield {
                         }    /* -- each de compras -- */
                     }  /* -- compras-- */
                     sql = "select prcs__id from prcs where prcsfcis between '${prdo.fechaInicio}' and " +
-                            "'${prdo.fechaFin}' and prcsnmes = '${nmes.prcsnmes}' and tpps__id = 2 " +
-                            "order by prcsfcis"
+                            "'${prdo.fechaFin}' and tpps__id = 2 order by prcsfcis"
+                    println "ventas: $sql"
                     def prcsVentas = cn.rows(sql.toString())
 
-                    prcsVentas.each { pr ->
-                        def proceso = Proceso.get(pr.prcs__id)
-                        println "procesando ventas ... ${proceso.id}"
-                        detalleVentas(){
-                            tpIdCliente(proceso.proveedor?.tipoIdentificacion?.codigoSri)
-                            idCliente(proceso.proveedor?.ruc)
-                            parteRelVtas(proceso?.proveedor?.relacionado)
-                            tipoComprobante(proceso?.tipoCmprSustento?.tipoComprobanteSri?.codigo?.trim())
-                            tipoEmision('F')
-                            numeroComprobantes(1)
+                    ventas() {
+                        prcsVentas.each { pr ->
+                            def proceso = Proceso.get(pr.prcs__id)
+                            println "procesando ventas ... ${proceso.id}"
+                            detalleVentas(){
+                                tpIdCliente(proceso.proveedor?.tipoIdentificacion?.codigoSri)
+                                idCliente(proceso.proveedor?.ruc)
+                                parteRelVtas(proceso?.proveedor?.relacionado)
+                                tipoComprobante(proceso?.tipoCmprSustento?.tipoComprobanteSri?.codigo?.trim())
+                                tipoEmision('F')
+                                numeroComprobantes(1)  /** numero de facturas **/
 
-                            baseNoGraIva(numero(proceso.baseImponibleNoIva))
-                            baseImponible(numero(proceso.baseImponibleIva0))
-                            baseImpGrav(numero(proceso.baseImponibleIva))
-                            montoIce(numero(proceso?.iceGenerado))
-                            montoIva(numero(proceso?.ivaGenerado))
-                            valorRetIva(numero(vlorRtcnIVA(proceso.id, 10)))
-                            valorRetRenta(numero(vlorRtcnIVA(proceso.id, 10)))
+                                baseNoGraIva(numero(proceso.baseImponibleNoIva))
+                                baseImponible(numero(proceso.baseImponibleIva0))
+                                baseImpGrav(numero(proceso.baseImponibleIva))
+                                montoIva(numero(proceso?.ivaGenerado))
+                                montoIce(numero(proceso?.iceGenerado))
+                                valorRetIva(numero(proceso?.retenidoIva))
+                                valorRetRenta(numero(proceso?.retenidoRenta))
 
-                            /* tabla prfp --> ProcesoFormaDePago   ** vaor >= 1000 */
-                            if (proceso.valor >= 1000) {
-                                def fp = ProcesoFormaDePago.findAllByProceso(proceso)
-                                formasDePago() {
-                                    fp.each { f ->
-                                        formaPago(f?.tipoPago?.codigo)
+                                /* tabla prfp --> ProcesoFormaDePago   ** vaor >= 1000 */
+                                if (proceso.valor >= 1000) {
+                                    def fp = ProcesoFormaDePago.findAllByProceso(proceso)
+                                    formasDePago() {
+                                        fp.each { f ->
+                                            formaPago(f?.tipoPago?.codigo)
+                                        }
                                     }
                                 }
-                            }
 
+                            }
                         }
                     }
-                }  /* -- num_estb -- */
+                sql = "select prcsnmes, sum(prcsvlor) totl from prcs where prcsfcis between '${prdo.fechaInicio}' and " +
+                        "'${prdo.fechaFin}' and tpps__id = 2 group by prcsnmes"
+                println "ventasTotl: $sql"
+                def totlVentas = cn.rows(sql.toString())
+
+                /* falta sección de ventasEstablecimiento*/
+                ventasEstablecimiento(){
+                    totlVentas.each { tv ->
+                        ventaEst(){
+                             codEstab(tv.prcsnmes)
+                             ventasEstab(tv.totl)
+                             ivaComp(numero(0.0))
+                        }
+                    }
+                }
+
             }   /* -- iva-- */
             file.write(writer.toString())
             render "OK"
