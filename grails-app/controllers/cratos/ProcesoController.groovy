@@ -113,8 +113,7 @@ class ProcesoController extends cratos.seguridad.Shield {
         proceso.establecimiento = params.establecimiento
         proceso.valor = (params.baseImponibleIva0?:0).toDouble() + (params.baseImponibleIva?:0).toDouble() +
                 (params.baseImponibleNoIva?:0).toDouble() + (params.excentoIva?:0).toDouble() +
-                (params.ivaGenerado?:0).toDouble() + (params.iceGenerado?:0).toDouble() +
-                (params.retenidoIva?:0).toDouble() + (params.retenidoRenta?:0).toDouble()
+                (params.ivaGenerado?:0).toDouble() + (params.iceGenerado?:0).toDouble()
         proceso.impuesto = (params.ivaGenerado?:0).toDouble() + (params.iceGenerado?:0).toDouble()
         proceso.baseImponibleIva = (params.baseImponibleIva?:0).toDouble()
         proceso.baseImponibleIva0 = (params.baseImponibleIva0?:0).toDouble()

@@ -241,36 +241,53 @@ class XmlController extends cratos.seguridad.Shield {
                         }  /* detalle de compras */
                     }    /* -- each de compras -- */
                 }  /* -- compras-- */
-                sql = "select prcs__id from prcs where prcsfcis between '${prdo.fechaInicio}' and " +
-                        "'${prdo.fechaFin}' and tpps__id = 2 order by prcsfcis"
+
+                /* totalizar para cada cliente :*/
+                sql = "select prve__id, tcst__id, sum(prcsbsnz) base, sum(prcsbszr) cero, count(*) nmro, " +
+                        "sum(prcsnoiv) no_iva, sum(prcsexiv) excento, sum(prcs_iva) iva, sum(prcs_ice) ice, " +
+                        "sum(prcsrtiv) rt_iva, sum(prcsrtrn) rt_rnta from prcs " +
+                        "where prcsfcis between '${prdo.fechaInicio}' and '${prdo.fechaFin}' and tpps__id = 2 " +
+                        "group by prve__id, tcst__id"
+
                 println "ventas: $sql"
                 def prcsVentas = cn.rows(sql.toString())
 
                 ventas() {
-                    prcsVentas.each { pr ->
-                        def proceso = Proceso.get(pr.prcs__id)
-                        println "procesando ventas ... ${proceso.id}"
+                    prcsVentas.each { vn ->
+                        println "procesando ventas ... ${vn.prve__id}"
                         detalleVentas() {
-                            tpIdCliente(cdgoIdentificacion(proceso.proveedor?.id, proceso.tipoTransaccion.id))
-                            idCliente(proceso.proveedor?.ruc)
-                            parteRelVtas(proceso?.proveedor?.relacionado)
-                            tipoComprobante(proceso?.tipoCmprSustento?.tipoComprobanteSri?.codigo?.trim())
+                            def proveedor = Proveedor.get(vn.prve__id)
+                            def tpcp = cratos.sri.TipoCmprSustento.get(vn.tcst__id)
+                            def tpid = cdgoIdentificacion(vn.prve__id, 2)
+                            tpIdCliente(tpid)
+                            idCliente(proveedor?.ruc.trim())
+                            parteRelVtas(proveedor?.relacionado)
+                            /* si tpIdCliente == 06 imprime tipoCliente*/
+                            if(tpid == '06'){
+                                tipoCliente(proveedor.tipoPersona.codigoSri)
+                            }
+                            tipoComprobante(tpcp?.tipoComprobanteSri?.codigo?.trim())
                             tipoEmision(empr.emprtpem)
-                            numeroComprobantes(1)  /** numero de facturas **/
+                            numeroComprobantes(vn.nmro)  /** numero de facturas **/
 
-                            baseNoGraIva(numero(proceso.baseImponibleNoIva))
-                            baseImponible(numero(proceso.baseImponibleIva0))
-                            baseImpGrav(numero(proceso.baseImponibleIva))
-                            montoIva(numero(proceso?.ivaGenerado))
-                            montoIce(numero(proceso?.iceGenerado))
-                            valorRetIva(numero(proceso?.retenidoIva))
-                            valorRetRenta(numero(proceso?.retenidoRenta))
+                            baseNoGraIva(numero(vn.cero))
+                            baseImponible(numero(vn.no_iva))
+                            baseImpGrav(numero(vn.base))
+                            montoIva(numero(vn.iva))
+                            montoIce(numero(vn.ice))
+                            valorRetIva(numero(vn.rt_iva))
+                            valorRetRenta(numero(vn.rt_rnta))
 
                             /* tabla prfp --> ProcesoFormaDePago   ** vaor >= 1000 */
-                            def fp = ProcesoFormaDePago.findAllByProceso(proceso)
+                            sql = "select distinct tppgcdgo from prcs, prfp, tppg " +
+                                    "where tppg.tppg__id = prfp.tppg__id and prfp.prcs__id = prcs.prcs__id and " +
+                                    "prcsfcis between '${prdo.fechaInicio}' and '${prdo.fechaFin}' and tpps__id = 2 " +
+                                    "and prve__id = ${vn.prve__id}"
+                            println "prfp: $sql"
+                            def fp = cn.rows(sql.toString())
                             formasDePago() {
                                 fp.each { f ->
-                                    formaPago(f?.tipoPago?.codigo)
+                                    formaPago(f.tppgcdgo)
                                 }
                             }
 
