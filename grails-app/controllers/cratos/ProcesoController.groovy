@@ -184,6 +184,7 @@ class ProcesoController extends cratos.seguridad.Shield {
                 proceso.tipoCmprSustento = comprobanteSri
                 proveedor = Proveedor.get(params."proveedor.id")
                 proceso.proveedor = proveedor
+                proceso.pago = params.pago
                 break
 
             case ['6','7']:  //NC y ND
@@ -235,7 +236,6 @@ class ProcesoController extends cratos.seguridad.Shield {
                 break
         }
 
-//        println "...2"
 
         try {
             proceso.save(flush: true)
@@ -243,11 +243,19 @@ class ProcesoController extends cratos.seguridad.Shield {
                 println("ejecutó proceso.save")
                 proveedor.save(flush: true)
             }
-//            println "...6"
             proceso.refresh()
-//            println "...7: ${proceso.tipoCmprSustento?.id}"
 
             if (proceso.errors.getErrorCount() == 0) {
+
+
+                def formasPago = ProcesoFormaDePago.findAllByProceso(proceso)
+
+                formasPago.each {
+                    it.delete(flush: true)
+                }
+
+
+
                 if (params.data != "") {
                     def data = params.data.split(";")
                     def fp

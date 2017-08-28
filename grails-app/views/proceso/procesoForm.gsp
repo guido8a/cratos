@@ -71,7 +71,7 @@
     <div class="btn-group" style="margin-right: 20px">
         <a href="#" class="btn btn-success previous disabled" id="procesoN">
             <i class="fa fa-gear"></i>
-            Nuevo Proceso
+            ${proceso?.id ? 'Proceso' : 'Nuevo Proceso'}
         </a>
         <g:if test="${proceso?.estado == 'R'}">
             <a href="#" class="btn btn-success" id="comprobanteN">
@@ -217,6 +217,7 @@
                              %{--maxlength="3" value="${proceso?.establecimiento}" disabled="${proceso?.estado == 'R' ?: false}"/>--}%
                 <g:select class="form-control required cmbRequired" name="establecimiento" id="establecimiento"
                           from="${estb}" label="Proceso tipo: " value="${proceso?.establecimiento}" optionKey="key"
+                          optionValue="value" title="Establecimientos" disabled="${proceso?.estado == 'R' ?: false}"
                           optionValue="value" title="Establecimientos" disabled="${proceso?.estado == 'R' ?: false}"
                 style="margin-left: 0; width: 70px" />
             </div>
@@ -923,6 +924,21 @@
                 if (!$("#serie").val()) {
                     error += "<li>Ingrese secuencial de la factura a emitir</li>"
                 }
+
+                if(($(".filaFP").size() <1)){
+                    error += "El proceso requiere que se registre la forma de pago"
+                }
+
+
+                if (bandData) {
+                    var data = ""
+                    $(".filaFP").each(function () {
+                        data += $(this).attr("fp") + ";"
+                    })
+                    $("#data").val(data)
+                }
+
+
             }
 
             if (tipoP == '3') {   /* Ajustes */

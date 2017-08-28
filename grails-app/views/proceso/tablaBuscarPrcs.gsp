@@ -35,7 +35,7 @@ th, td {
                     ${dato.cmprnmro}
                 </td>
 
-                <td width="80px" class="text-info">
+                <td width="90px" class="text-info">
                     ${dato.tpps}
                 </td>
 

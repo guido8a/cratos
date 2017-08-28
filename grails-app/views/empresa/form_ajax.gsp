@@ -214,15 +214,14 @@
                 </span>
             </div>
 
-            <div class="form-group keeptogether ${hasErrors(bean: empresaInstance, field: 'establecimientos', 'error')} ">
+            <div class="form-group keeptogether ${hasErrors(bean: empresaInstance, field: 'tipoEmision', 'error')} ">
                 <span class="grupo">
-                    <label for="establecimientos" class="col-md-6 control-label text-info">
+                    <label for="tipoEmision" class="col-md-6 control-label text-info">
                         Emisión Física o Electrónica
                     </label>
 
-                    <div class="col-md-6">
-                        <g:textField name="establecimientos" maxlength="20" class="form-control validaLista"
-                                     value="${empresaInstance?.establecimientos}"/>
+                    <div class="col-md-2">
+                        <g:select from="${['E','F']}" name="tipoEmision" value="${empresaInstance?.tipoEmision}" class="form-control"/>
                     </div>
 
                 </span>

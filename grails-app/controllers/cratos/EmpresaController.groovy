@@ -119,6 +119,7 @@ class EmpresaController extends cratos.seguridad.Shield {
     }
 
     def save_ajax() {
+//        println("params " + params)
         def empresaInstance = new Empresa()
         if (params.id) {
             empresaInstance = Empresa.get(params.id)

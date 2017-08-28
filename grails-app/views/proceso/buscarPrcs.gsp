@@ -127,7 +127,9 @@
 
 <script type="text/javascript">
 
-    $(".btnBusqueda").click(function () {
+    cargarBusqueda();
+
+    function cargarBusqueda () {
         $("#bandeja").html("").append($("<div style='width:100%; text-align: center;'/>").append(spinnerSquare64));
         var buscar = $("#buscar").val();
         var datos = "buscar=" + buscar;
@@ -143,6 +145,10 @@
                 $("#bandeja").html("Ha ocurrido un error");
             }
         });
+    }
+
+    $(".btnBusqueda").click(function () {
+        cargarBusqueda();
     });
 
     $("input").keyup(function (ev) {
@@ -195,14 +201,6 @@
             }
         };
 
-        var auxiliar = {
-            label: " Auxiliar",
-            icon: "fa fa-table",
-            action: function () {
-                location.href = '${createLink(controller: "axlr", action: "show")}?id=' + id;
-            }
-        };
-
         var detalle = {
             label: " Detalle",
             icon: "fa fa-bars",
@@ -219,6 +217,13 @@
                 location.href="${createLink(controller: 'proceso', action: 'reembolso')}/?proceso=" + id
             }
         };
+        var comprobante = {
+            label: 'Comprobante',
+            icon: 'fa fa-calendar-o',
+            action: function () {
+                location.href="${createLink(controller: 'proceso', action: 'comprobante')}/?proceso=" + id
+            }
+        };
 
         items.editar = editar;
 
@@ -232,6 +237,7 @@
 
 
         if(etdo == 'R') {
+            items.comprobante = comprobante;
             items.retencion = retencion;
             items.imprimir = imprimir;
         }
