@@ -147,6 +147,7 @@ class ProveedorController extends cratos.seguridad.Shield {
 
 
     def validarCedula_ajax() {
+        println("params " + params)
         params.ruc = params.ruc.toString().trim()
         if (params.id) {
             def prov = Proveedor.get(params.id)

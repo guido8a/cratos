@@ -400,7 +400,6 @@
 
 
         $("#ruc").keydown(function (ev) {
-
             return validarNum(ev);
         }).keyup(function () {
 
@@ -414,12 +413,15 @@
         });
 
         $("#telefono").keydown(function (ev) {
-
             return validarNum(ev);
         }).keyup(function () {
 
         });
 
+
+        $("#tipoPersona").change(function () {
+            console.log($(this).val())
+        });
 
 
         $("#descuento").keydown(function (ev) {
@@ -467,9 +469,9 @@
             success: function (label) {
                 label.parents(".grupo").removeClass('has-error');
             },
-            rules          : {
+            rules      : {
                 ruc : {
-                    rangelength: [13, 13],
+//                    rangelength: [13, 13],
                     remote : {
                         url  : "${createLink(action: 'validarCedula_ajax')}",
                         type : "post",
@@ -481,8 +483,8 @@
             },
             messages       : {
                 ruc : {
-                    remote : "RUC ya ingresado",
-                    rangelength: "Ingrese un número RUC válido"
+                    remote : "RUC ya ingresado"
+//                    rangelength: "Ingrese un número RUC válido"
                 }
             }
         });

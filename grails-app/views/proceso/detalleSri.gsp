@@ -355,22 +355,27 @@
 
     $("#conceptoRenta").change(function () {
         var concepto = $("#conceptoRenta option:selected").val();
-        console.log('cambia CRIR:', concepto)
+//        console.log('cambia CRIR:', concepto)
         if (concepto == '23') {
-            $("#conceptoRIRServicios").addClass('esconder')
+            $("#conceptoRIRServicios").addClass('esconder');
             $("#divIVA").addClass('esconder');
             $("#serie").val(0);
             $("#serie").attr('readonly', true);
+            $("#baseRenta").val(${proceso?.baseImponibleIva});
+            $("#baseRentaSrvc").val(0);
         } else {
-            $("#conceptoRIRServicios").removeClass('esconder')
-            $("#divIVA").removeClass('esconder')
+            $("#conceptoRIRServicios").removeClass('esconder');
+            $("#divIVA").removeClass('esconder');
+            $("#serie").attr('readonly', false);
+            $("#serie").val('')
+            $("#baseRenta").val(0);
         }
         cargarRetencionRIR(concepto, 'B');
     });
 
     $("#conceptoRentaSrvc").change(function () {
         var concepto = $("#conceptoRentaSrvc option:selected").val();
-        console.log('cambia IRSrvc:', concepto)
+//        console.log('cambia IRSrvc:', concepto)
         cargarRetencionRIR(concepto, 'S');
     });
 
@@ -453,7 +458,7 @@
         var vrs = parseFloat($("#valorRetenidoSrvc").val());
         var rt = parseFloat($("#baseRenta").val()) * parseFloat($("#porcentaje").val())/100;
         var rts = parseFloat($("#baseRentaSrvc").val()) * parseFloat($("#porcentajeSrvc").val())/100;
-        console.log('calculado:', rt, 'valor:', vrs)
+//        console.log('calculado:', rt, 'valor:', vrs)
         if(Math.abs(rt - vr) > 0.01) {
             $("#valorRetenido").val(rt)
             $("#valorRetenido").focus()
@@ -470,7 +475,7 @@
         var srvc = parseFloat($("#ivaServicios").val());
         var iva_b = parseFloat($("#baseIvaBienes").val()) * parseFloat($("#pcntIvaBienes").val())/100;
         var iva_s = parseFloat($("#baseIvaServicios").val()) * parseFloat($("#pcntIvaSrvc").val())/100;
-        console.log('calculado:', iva_b, 'valor:', iva)
+//        console.log('calculado:', iva_b, 'valor:', iva)
         if(Math.abs(iva - iva_b) > 0.01) {
             $("#ivaBienes").val(iva_b)
             $("#ivaBienes").focus()
@@ -540,7 +545,7 @@
         var error = '';
         var concepto = $("#conceptoRenta option:selected").val();
 
-        console.log('crir:', concepto)
+//        console.log('crir:', concepto)
 
         $("#listaErrores").html('');
 
@@ -754,7 +759,7 @@
         });
 
         $(".grabar").click(function () {
-            console.log('clase grabar')
+//            console.log('clase grabar')
             if ($("#sriForm").valid()) {
                 var id = ${proceso?.id};
 //                        console.log("entro grabar");
@@ -789,7 +794,7 @@
                     },
                     success: function (msg) {
 
-                        console.log("--->>>" + msg)
+//                        console.log("--->>>" + msg)
                         if (msg == "ok") {
 //                                    $("#divErrores").hide();
 //                                    $("#divSuccess").show();
@@ -811,7 +816,7 @@
     });
 
     $(document).ready(function () {
-        console.log('listo...');
+//        console.log('listo...');
         $("#conceptoRenta").change();
         var concepto = $("#conceptoRenta option:selected").val();
         cargarRetencionRIR(concepto, 'B');
