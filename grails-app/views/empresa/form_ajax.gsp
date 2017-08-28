@@ -12,11 +12,11 @@
             <div class="keeptogether">
                 <div class="form-group keeptogether ${hasErrors(bean: empresaInstance, field: 'nombre', 'error')} ">
                     <span class="grupo">
-                        <label for="nombre" class="col-md-3 control-label text-info">
+                        <label for="nombre" class="col-xs-3 control-label text-info">
                             Nombre
                         </label>
 
-                        <div class="col-md-6">
+                        <div class="col-xs-6">
                             <g:textField name="nombre" maxlength="63" class="form-control" value="${empresaInstance?.nombre}"/>
                         </div>
 
@@ -25,11 +25,11 @@
 
                 <div class="form-group keeptogether ${hasErrors(bean: empresaInstance, field: 'ruc', 'error')} ">
                     <span class="grupo">
-                        <label for="ruc" class="col-md-3 control-label text-info">
+                        <label for="ruc" class="col-xs-3 control-label text-info">
                             R.U.C.
                         </label>
 
-                        <div class="col-md-6">
+                        <div class="col-xs-6">
                             <g:textField name="ruc" maxlength="13" class="form-control" value="${empresaInstance?.ruc}"/>
                         </div>
 
@@ -38,11 +38,11 @@
 
                 <div class="form-group keeptogether ${hasErrors(bean: empresaInstance, field: 'tipoEmpresa', 'error')} ">
                     <span class="grupo">
-                        <label for="tipoEmpresa" class="col-md-3 control-label text-info">
+                        <label for="tipoEmpresa" class="col-xs-3 control-label text-info">
                             Tipo Empresa
                         </label>
 
-                        <div class="col-md-6">
+                        <div class="col-xs-6">
                             <g:select id="tipoEmpresa" name="tipoEmpresa.id" from="${cratos.TipoEmpresa.list()}" optionKey="id" value="${empresaInstance?.tipoEmpresa?.id}" class="many-to-one form-control" noSelection="['null': '']"/>
                         </div>
 
@@ -51,11 +51,11 @@
 
                 <div class="form-group keeptogether ${hasErrors(bean: empresaInstance, field: 'direccion', 'error')} ">
                     <span class="grupo">
-                        <label for="direccion" class="col-md-3 control-label text-info">
+                        <label for="direccion" class="col-xs-3 control-label text-info">
                             Dirección
                         </label>
 
-                        <div class="col-md-6">
+                        <div class="col-xs-6">
                             <g:textArea name="direccion" maxlength="127" class="form-control" value="${empresaInstance?.direccion}"/>
                         </div>
 
@@ -64,11 +64,11 @@
 
                 <div class="form-group keeptogether ${hasErrors(bean: empresaInstance, field: 'telefono', 'error')} ">
                     <span class="grupo">
-                        <label for="telefono" class="col-md-3 control-label text-info">
+                        <label for="telefono" class="col-xs-3 control-label text-info">
                             Teléfono
                         </label>
 
-                        <div class="col-md-6">
+                        <div class="col-xs-6">
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-phone"></i></span>
                                 <g:textField name="telefono" maxlength="63" class="form-control" value="${empresaInstance?.telefono}"/>
@@ -80,11 +80,11 @@
 
                 <div class="form-group keeptogether ${hasErrors(bean: empresaInstance, field: 'email', 'error')} ">
                     <span class="grupo">
-                        <label for="email" class="col-md-3 control-label text-info">
+                        <label for="email" class="col-xs-3 control-label text-info">
                             E-mail
                         </label>
 
-                        <div class="col-md-6">
+                        <div class="col-xs-6">
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
                                 <g:field type="email" name="email" maxlength="63" class="form-control" value="${empresaInstance?.email}"/>
@@ -97,11 +97,11 @@
 
                 <div class="form-group keeptogether ${hasErrors(bean: empresaInstance, field: 'fechaInicio', 'error')} ">
                     <span class="grupo">
-                        <label for="fechaInicio" class="col-md-3 control-label text-info">
+                        <label for="fechaInicio" class="col-xs-3 control-label text-info">
                             Fecha Inicio
                         </label>
 
-                        <div class="col-md-4">
+                        <div class="col-xs-4">
                             <elm:datepicker name="fechaInicio" title="Fecha de inicio" class="datepicker form-control" value="${empresaInstance?.fechaInicio}"/>
                         </div>
 
@@ -110,11 +110,11 @@
 
                 <div class="form-group keeptogether ${hasErrors(bean: empresaInstance, field: 'fechaFin', 'error')} ">
                     <span class="grupo">
-                        <label for="fechaFin" class="col-md-3 control-label text-info">
+                        <label for="fechaFin" class="col-xs-3 control-label text-info">
                             Fecha Fin
                         </label>
 
-                        <div class="col-md-4">
+                        <div class="col-xs-4">
                             <elm:datepicker name="fechaFin" title="Fecha de fin" class="datepicker form-control" value="${empresaInstance?.fechaFin}"/>
                         </div>
 
@@ -124,11 +124,11 @@
 
             <div class="form-group keeptogether ${hasErrors(bean: empresaInstance, field: 'numeroComprobanteDiario', 'error')} ">
                 <span class="grupo">
-                    <label for="numeroComprobanteDiario" class="col-md-6 control-label text-info">
+                    <label for="numeroComprobanteDiario" class="col-xs-6 control-label text-info">
                         Número Comprobante Diario
                     </label>
 
-                    <div class="col-md-2">
+                    <div class="col-xs-2">
                         <g:textField name="numeroComprobanteDiario" maxlength="20" class="number form-control" value="${empresaInstance?.numeroComprobanteDiario}" type="number"/>
                     </div>
 
@@ -137,11 +137,11 @@
 
             <div class="form-group keeptogether ${hasErrors(bean: empresaInstance, field: 'numeroComprobanteIngreso', 'error')} ">
                 <span class="grupo">
-                    <label for="numeroComprobanteIngreso" class="col-md-6 control-label text-info">
+                    <label for="numeroComprobanteIngreso" class="col-xs-6 control-label text-info">
                         Número Comprobante Ingreso
                     </label>
 
-                    <div class="col-md-2">
+                    <div class="col-xs-2">
                         <g:textField name="numeroComprobanteIngreso" maxlength="20" class="number form-control" value="${empresaInstance?.numeroComprobanteIngreso}" type="number"/>
                     </div>
 
@@ -150,11 +150,11 @@
 
             <div class="form-group keeptogether ${hasErrors(bean: empresaInstance, field: 'numeroComprobanteEgreso', 'error')} ">
                 <span class="grupo">
-                    <label for="numeroComprobanteEgreso" class="col-md-6 control-label text-info">
+                    <label for="numeroComprobanteEgreso" class="col-xs-6 control-label text-info">
                         Número Comprobante Egreso
                     </label>
 
-                    <div class="col-md-2">
+                    <div class="col-xs-2">
                         <g:textField name="numeroComprobanteEgreso" maxlength="20" class="number form-control" value="${empresaInstance?.numeroComprobanteEgreso}" type="number"/>
                     </div>
 
@@ -163,11 +163,11 @@
 
             <div class="form-group keeptogether ${hasErrors(bean: empresaInstance, field: 'prefijoDiario', 'error')} ">
                 <span class="grupo">
-                    <label for="prefijoDiario" class="col-md-6 control-label text-info">
+                    <label for="prefijoDiario" class="col-xs-6 control-label text-info">
                         Prefijo Diario
                     </label>
 
-                    <div class="col-md-2">
+                    <div class="col-xs-2">
                         <g:textField name="prefijoDiario" maxlength="20" class="form-control" value="${empresaInstance?.prefijoDiario}"/>
                     </div>
 
@@ -176,11 +176,11 @@
 
             <div class="form-group keeptogether ${hasErrors(bean: empresaInstance, field: 'prefijoEgreso', 'error')} ">
                 <span class="grupo">
-                    <label for="prefijoEgreso" class="col-md-6 control-label text-info">
+                    <label for="prefijoEgreso" class="col-xs-6 control-label text-info">
                         Prefijo Egreso
                     </label>
 
-                    <div class="col-md-2">
+                    <div class="col-xs-2">
                         <g:textField name="prefijoEgreso" maxlength="20" class="form-control" value="${empresaInstance?.prefijoEgreso}"/>
                     </div>
 
@@ -189,11 +189,11 @@
 
             <div class="form-group keeptogether ${hasErrors(bean: empresaInstance, field: 'prefijoIngreso', 'error')} ">
                 <span class="grupo">
-                    <label for="prefijoIngreso" class="col-md-6 control-label text-info">
+                    <label for="prefijoIngreso" class="col-xs-6 control-label text-info">
                         Prefijo Ingreso
                     </label>
 
-                    <div class="col-md-2">
+                    <div class="col-xs-2">
                         <g:textField name="prefijoIngreso" maxlength="20" class="form-control" value="${empresaInstance?.prefijoIngreso}"/>
                     </div>
 
@@ -202,11 +202,11 @@
 
             <div class="form-group keeptogether ${hasErrors(bean: empresaInstance, field: 'establecimientos', 'error')} ">
                 <span class="grupo">
-                    <label for="establecimientos" class="col-md-6 control-label text-info">
+                    <label for="establecimientos" class="col-xs-6 control-label text-info">
                         Establecimientos habilitados, ejemplo: 001,002,003 Sin espacios
                     </label>
 
-                    <div class="col-md-6">
+                    <div class="col-xs-6">
                         <g:textField name="establecimientos" maxlength="20" class="form-control validaLista"
                                      value="${empresaInstance?.establecimientos}"/>
                     </div>
@@ -214,14 +214,16 @@
                 </span>
             </div>
 
-            <div class="form-group keeptogether ${hasErrors(bean: empresaInstance, field: 'tipoEmision', 'error')} ">
+            <div class="form-group keeptogether ${hasErrors(bean: empresaInstance, field: 'establecimientos', 'error')} ">
                 <span class="grupo">
-                    <label for="tipoEmision" class="col-md-6 control-label text-info">
+                    <label for="establecimientos" class="col-xs-6 control-label text-info">
                         Emisión Física o Electrónica
                     </label>
 
-                    <div class="col-md-2">
-                        <g:select from="${['E','F']}" name="tipoEmision" value="${empresaInstance?.tipoEmision}" class="form-control"/>
+                    <div class="col-xs-6">
+                        <g:select class="form-control required tipoD" from="${emision}" optionValue="value" optionKey="key"
+                                  name="tipoEmision" value="${empresaInstance?.tipoEmision?:'F'}"
+                                  title="Tipo de Emisión de Facturas"/>
                     </div>
 
                 </span>

@@ -54,6 +54,7 @@ class EmpresaController extends cratos.seguridad.Shield {
 
     def form_ajax() {
         def empresaInstance = new Empresa(params)
+        def emision = ['F': 'Física', 'E':'Electrónica']
         if (params.id) {
             empresaInstance = Empresa.get(params.id)
             if (!empresaInstance) {
@@ -61,7 +62,7 @@ class EmpresaController extends cratos.seguridad.Shield {
                 return
             }
         }
-        return [empresaInstance: empresaInstance]
+        return [empresaInstance: empresaInstance, emision: emision]
     } //form para cargar con ajax en un dialog
 
     def listAdmin() {

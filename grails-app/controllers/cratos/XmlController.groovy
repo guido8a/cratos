@@ -87,14 +87,14 @@ class XmlController extends cratos.seguridad.Shield {
         if (file.exists() && (params.override != '1')) {
             render "NO_1"
         } else {
-            sql = "select tpidcdgo, emprnmbr, empr_ruc from empr, tpid where tpid.tpid__id = empr.tpid__id " +
+            sql = "select tpidcdgo, emprnmbr, empr_ruc, emprtpem from empr, tpid where tpid.tpid__id = empr.tpid__id " +
                     "and empr__id = ${empresa_id}"
             def empr = cn.rows(sql.toString()).first()
 
             println "...empresa: $sql  --> ${empr}"
 
             sql = "select count(distinct prcsnmes) cnta from prcs where prcsfcis between '${prdo.fechaInicio}' and " +
-                        "'${prdo.fechaFin}'"
+                    "'${prdo.fechaFin}'"
 
             def num_estb = cn.rows(sql.toString())[0].cnta
             num_estb = '0' * (3 - num_estb.toString().size()) + num_estb
@@ -112,88 +112,89 @@ class XmlController extends cratos.seguridad.Shield {
 
             println "inicia generacion de ATS"
             xml.iva() {
-                    TipoIDInformante(empr.tpidcdgo.trim())
-                    IdInformante(empr.empr_ruc)
-                    razonSocial(empr.emprnmbr)
-                    Anio(prdo.fechaInicio.format("yyyy"))
-                    Mes(prdo.fechaInicio.format("MM"))
-                    numEstabRuc(num_estb)  //count(distinct prcsnmes)
-                    totalVentas(numero(sumaVentas?:0))  /**  todo: total ventas ***/
-                    codigoOperativo("IVA")
-                    println "inicia compras..."
-                    compras() {
-                        sql = "select prcs__id from prcs where prcsfcis between '${prdo.fechaInicio}' and " +
-                                "'${prdo.fechaFin}' and tpps__id = 1 order by prcsfcis"
-                        println "prcsCompras: $sql"
-                        def prcsCompras = cn.rows(sql.toString())
+                TipoIDInformante(empr.tpidcdgo.trim())
+                IdInformante(empr.empr_ruc)
+                razonSocial(empr.emprnmbr)
+                Anio(prdo.fechaInicio.format("yyyy"))
+                Mes(prdo.fechaInicio.format("MM"))
+                numEstabRuc(num_estb)  //count(distinct prcsnmes)
+                totalVentas(numero(sumaVentas ?: 0))  /**  todo: total ventas ***/
+                codigoOperativo("IVA")
+                println "inicia compras..."
+                compras() {
+                    sql = "select prcs__id from prcs where prcsfcis between '${prdo.fechaInicio}' and " +
+                            "'${prdo.fechaFin}' and tpps__id = 1 order by prcsfcis"
+                    println "prcsCompras: $sql"
+                    def prcsCompras = cn.rows(sql.toString())
 
-                        prcsCompras.each { pr ->
-                            def proceso = Proceso.get(pr.prcs__id)
-                            println "procesando ... ${proceso.id}"
-                            def retencion = Retencion.findByProceso(proceso)
-                            def remb = Reembolso.findAllByProceso(proceso)
-                            def local = proceso.pago ?: '01'
+                    prcsCompras.each { pr ->
+                        def proceso = Proceso.get(pr.prcs__id)
+                        println "procesando ... ${proceso.id}"
+                        def retencion = Retencion.findByProceso(proceso)
+                        def remb = Reembolso.findAllByProceso(proceso)
+                        def local = proceso.pago ?: '01'
 
-                            detalleCompras() {
-                                codSustento(proceso.sustentoTributario?.codigo)
-                                tpIdProv(proceso.proveedor?.tipoIdentificacion?.codigoSri)
-                                idProv(proceso.proveedor?.ruc)
-                                tipoComprobante(proceso?.tipoCmprSustento?.tipoComprobanteSri?.codigo?.trim())
-                                parteRel(proceso?.proveedor?.relacionado)
+                        detalleCompras() {
+                            codSustento(proceso.sustentoTributario?.codigo)
+                            tpIdProv(proceso.proveedor?.tipoIdentificacion?.codigoSri)
+                            idProv(proceso.proveedor?.ruc)
+                            tipoComprobante(proceso?.tipoCmprSustento?.tipoComprobanteSri?.codigo?.trim())
+                            parteRel(proceso?.proveedor?.relacionado)
 
-                                fechaRegistro(fechaConFormato(proceso.fechaIngresoSistema))
-                                establecimiento(proceso.procesoSerie01)
-                                puntoEmision(proceso.procesoSerie02)
-                                secuencial(proceso.secuencial)
-                                fechaEmision(fechaConFormato(proceso.fechaEmision))
+                            fechaRegistro(fechaConFormato(proceso.fechaIngresoSistema))
+                            establecimiento(proceso.procesoSerie01)
+                            puntoEmision(proceso.procesoSerie02)
+                            secuencial(proceso.secuencial)
+                            fechaEmision(fechaConFormato(proceso.fechaEmision))
 
-                                autorizacion(proceso?.autorizacion)
-                                baseNoGraIva(numero(proceso.baseImponibleNoIva))
-                                baseImponible(numero(proceso.baseImponibleIva0))
-                                baseImpGrav(numero(proceso.baseImponibleIva))
-                                baseImpExe(numero(proceso.excentoIva))   /* ??? crear campo */
+                            autorizacion(proceso?.autorizacion)
+                            baseNoGraIva(numero(proceso.baseImponibleNoIva))
+                            baseImponible(numero(proceso.baseImponibleIva0))
+                            baseImpGrav(numero(proceso.baseImponibleIva))
+                            baseImpExe(numero(proceso.excentoIva))   /* ??? crear campo */
 
 //                                println "base: ${numero(proceso.baseImponibleIva)}  -- ${proceso.baseImponibleIva}"
 
-                                montoIce(numero(proceso?.iceGenerado))
-                                montoIva(numero(proceso?.ivaGenerado))
+                            montoIce(numero(proceso?.iceGenerado))
+                            montoIva(numero(proceso?.ivaGenerado))
 
-                                valRetBien10(numero(vlorRtcnIVA(proceso.id, 10)))
-                                valRetServ20(numero(vlorRtcnIVA(proceso.id, 20)))
-                                valorRetBienes(numero(vlorRtcnIVA(proceso.id, 30)))
-                                valRetServ50(numero(vlorRtcnIVA(proceso.id, 50)))
-                                valorRetServicios(numero(vlorRtcnIVA(proceso.id, 70)))
-                                valRetServ100(numero(vlorRtcnIVA(proceso.id, 100)))
+                            valRetBien10(numero(vlorRtcnIVA(proceso.id, 10)))
+                            valRetServ20(numero(vlorRtcnIVA(proceso.id, 20)))
+                            valorRetBienes(numero(vlorRtcnIVA(proceso.id, 30)))
+                            valRetServ50(numero(vlorRtcnIVA(proceso.id, 50)))
+                            valorRetServicios(numero(vlorRtcnIVA(proceso.id, 70)))
+                            valRetServ100(numero(vlorRtcnIVA(proceso.id, 100)))
 
-                                if (remb) {
-                                    totbasesImpReemb(numero(proceso?.baseImponibleIva))
+                            if (remb) {
+                                totbasesImpReemb(numero(proceso?.baseImponibleIva))
+                            } else {
+                                totbasesImpReemb(numero(0))
+                            }
+
+                            pagoExterior() {
+                                pagoLocExt(local)
+                                if (local == "01") {
+                                    paisEfecPago("NA")
+                                    aplicConvDobTrib("NA")
+                                    pagExtSujRetNorLeg("NA")
                                 } else {
-                                    totbasesImpReemb(numero(0))
+                                    paisEfecPago(proceso.pais?.codigo)
+                                    aplicConvDobTrib(proceso?.convenio)
+                                    pagExtSujRetNorLeg(proceso?.normaLegal)
                                 }
+                            }
 
-                                pagoExterior() {
-                                    pagoLocExt(local)
-                                    if (local == "01") {
-                                        paisEfecPago("NA")
-                                        aplicConvDobTrib("NA")
-                                        pagExtSujRetNorLeg("NA")
-                                    } else {
-                                        paisEfecPago(proceso.pais?.codigo)
-                                        aplicConvDobTrib(proceso?.convenio)
-                                        pagExtSujRetNorLeg(proceso?.normaLegal)
+                            /* tabla prfp --> ProcesoFormaDePago   ** vaor >= 1000 */
+                            if (proceso.valor >= 1000) {
+                                def fp = ProcesoFormaDePago.findAllByProceso(proceso)
+                                formasDePago() {
+                                    fp.each { f ->
+                                        formaPago(f?.tipoPago?.codigo)
                                     }
                                 }
+                            }
 
-                                /* tabla prfp --> ProcesoFormaDePago   ** vaor >= 1000 */
-                                if (proceso.valor >= 1000) {
-                                    def fp = ProcesoFormaDePago.findAllByProceso(proceso)
-                                    formasDePago() {
-                                        fp.each { f ->
-                                            formaPago(f?.tipoPago?.codigo)
-                                        }
-                                    }
-                                }
-
+                            if(proceso?.tipoCmprSustento?.tipoComprobanteSri?.codigo?.trim() != '41') {
                                 if (retencion?.baseRenta || retencion?.baseRentaServicios) {
                                     air() {
                                         detalleAir() {
@@ -212,83 +213,82 @@ class XmlController extends cratos.seguridad.Shield {
                                         }
                                     }
                                 }
+                            }
 
-                                /* reembolsos */
-                                if (remb) {
-                                    reembolsos() {
-                                        remb.each { r ->
-                                            reembolso() {
-                                                tipoComprobanteReemb(r?.tipoCmprSustento?.tipoComprobanteSri?.codigo.trim())
-                                                tpIdProvReemb(r?.proveedor?.tipoIdentificacion?.codigoSri)
-                                                idProvReemb(r?.proveedor?.ruc)
-                                                establecimientoReemb(r?.reembolsoEstb)
-                                                puntoEmisionReemb(r?.reembolsoEmsn)
-                                                secuencialReemb(r?.reembolsoSecuencial)
-                                                fechaEmisionReemb(fechaConFormato(r?.fecha))
-                                                autorizacionReemb(r?.autorizacion)
-                                                baseImponibleReemb(numero(r?.baseImponibleIva0))
-                                                baseImpGravReemb(numero(r?.baseImponibleIva))
-                                                baseNoGraIvaReemb(numero(r?.baseImponibleNoIva))
-                                                baseImpExeReemb(numero(r?.excentoIva))
-                                                montoIceRemb(numero(r?.iceGenerado))
-                                                montoIvaRemb(numero(r?.ivaGenerado))
-                                            }
-                                        }
-                                    }
-                                }  /* fin reembolsos */
-                            }  /* detalle de compras */
-                        }    /* -- each de compras -- */
-                    }  /* -- compras-- */
-                    sql = "select prcs__id from prcs where prcsfcis between '${prdo.fechaInicio}' and " +
-                            "'${prdo.fechaFin}' and tpps__id = 2 order by prcsfcis"
-                    println "ventas: $sql"
-                    def prcsVentas = cn.rows(sql.toString())
-
-                    ventas() {
-                        prcsVentas.each { pr ->
-                            def proceso = Proceso.get(pr.prcs__id)
-                            println "procesando ventas ... ${proceso.id}"
-                            detalleVentas(){
-                                tpIdCliente(proceso.proveedor?.tipoIdentificacion?.codigoSri)
-                                idCliente(proceso.proveedor?.ruc)
-                                parteRelVtas(proceso?.proveedor?.relacionado)
-                                tipoComprobante(proceso?.tipoCmprSustento?.tipoComprobanteSri?.codigo?.trim())
-                                tipoEmision('F')
-                                numeroComprobantes(1)  /** numero de facturas **/
-
-                                baseNoGraIva(numero(proceso.baseImponibleNoIva))
-                                baseImponible(numero(proceso.baseImponibleIva0))
-                                baseImpGrav(numero(proceso.baseImponibleIva))
-                                montoIva(numero(proceso?.ivaGenerado))
-                                montoIce(numero(proceso?.iceGenerado))
-                                valorRetIva(numero(proceso?.retenidoIva))
-                                valorRetRenta(numero(proceso?.retenidoRenta))
-
-                                /* tabla prfp --> ProcesoFormaDePago   ** vaor >= 1000 */
-                                if (proceso.valor >= 1000) {
-                                    def fp = ProcesoFormaDePago.findAllByProceso(proceso)
-                                    formasDePago() {
-                                        fp.each { f ->
-                                            formaPago(f?.tipoPago?.codigo)
+                            /* reembolsos */
+                            if (remb) {
+                                reembolsos() {
+                                    remb.each { r ->
+                                        reembolso() {
+                                            tipoComprobanteReemb(r?.tipoCmprSustento?.tipoComprobanteSri?.codigo.trim())
+                                            tpIdProvReemb(r?.proveedor?.tipoIdentificacion?.codigoSri)
+                                            idProvReemb(r?.proveedor?.ruc)
+                                            establecimientoReemb(r?.reembolsoEstb)
+                                            puntoEmisionReemb(r?.reembolsoEmsn)
+                                            secuencialReemb(r?.reembolsoSecuencial)
+                                            fechaEmisionReemb(fechaConFormato(r?.fecha))
+                                            autorizacionReemb(r?.autorizacion)
+                                            baseImponibleReemb(numero(r?.baseImponibleIva0))
+                                            baseImpGravReemb(numero(r?.baseImponibleIva))
+                                            baseNoGraIvaReemb(numero(r?.baseImponibleNoIva))
+                                            baseImpExeReemb(numero(r?.excentoIva))
+                                            montoIceRemb(numero(r?.iceGenerado))
+                                            montoIvaRemb(numero(r?.ivaGenerado))
                                         }
                                     }
                                 }
+                            }  /* fin reembolsos */
+                        }  /* detalle de compras */
+                    }    /* -- each de compras -- */
+                }  /* -- compras-- */
+                sql = "select prcs__id from prcs where prcsfcis between '${prdo.fechaInicio}' and " +
+                        "'${prdo.fechaFin}' and tpps__id = 2 order by prcsfcis"
+                println "ventas: $sql"
+                def prcsVentas = cn.rows(sql.toString())
 
+                ventas() {
+                    prcsVentas.each { pr ->
+                        def proceso = Proceso.get(pr.prcs__id)
+                        println "procesando ventas ... ${proceso.id}"
+                        detalleVentas() {
+                            tpIdCliente(cdgoIdentificacion(proceso.proveedor?.id, proceso.tipoTransaccion.id))
+                            idCliente(proceso.proveedor?.ruc)
+                            parteRelVtas(proceso?.proveedor?.relacionado)
+                            tipoComprobante(proceso?.tipoCmprSustento?.tipoComprobanteSri?.codigo?.trim())
+                            tipoEmision(empr.emprtpem)
+                            numeroComprobantes(1)  /** numero de facturas **/
+
+                            baseNoGraIva(numero(proceso.baseImponibleNoIva))
+                            baseImponible(numero(proceso.baseImponibleIva0))
+                            baseImpGrav(numero(proceso.baseImponibleIva))
+                            montoIva(numero(proceso?.ivaGenerado))
+                            montoIce(numero(proceso?.iceGenerado))
+                            valorRetIva(numero(proceso?.retenidoIva))
+                            valorRetRenta(numero(proceso?.retenidoRenta))
+
+                            /* tabla prfp --> ProcesoFormaDePago   ** vaor >= 1000 */
+                            def fp = ProcesoFormaDePago.findAllByProceso(proceso)
+                            formasDePago() {
+                                fp.each { f ->
+                                    formaPago(f?.tipoPago?.codigo)
+                                }
                             }
+
                         }
                     }
+                }
                 sql = "select prcsnmes, sum(prcsvlor) totl from prcs where prcsfcis between '${prdo.fechaInicio}' and " +
                         "'${prdo.fechaFin}' and tpps__id = 2 group by prcsnmes"
                 println "ventasTotl: $sql"
                 def totlVentas = cn.rows(sql.toString())
 
                 /* falta sección de ventasEstablecimiento*/
-                ventasEstablecimiento(){
+                ventasEstablecimiento() {
                     totlVentas.each { tv ->
-                        ventaEst(){
-                             codEstab(tv.prcsnmes)
-                             ventasEstab(tv.totl)
-                             ivaComp(numero(0.0))
+                        ventaEst() {
+                            codEstab(tv.prcsnmes)
+                            ventasEstab(tv.totl)
+                            ivaComp(numero(0.0))
                         }
                     }
                 }
@@ -309,7 +309,7 @@ class XmlController extends cratos.seguridad.Shield {
     def downloadFile() {
         println "DownloadFile: " + params
         def fileName = ""
-        if(params.archivo){
+        if (params.archivo) {
             fileName = params.archivo
         } else {
             def prdo = Periodo.get(params.mes)
@@ -416,8 +416,16 @@ class XmlController extends cratos.seguridad.Shield {
         def cn = dbConnectionService.getConnection()
         def sql = "select rtcn_iva from rtcn, pciv where prcs__id = ${prcs} and " +
                 "pciv.pciv__id = rtcn.pciv__id and pcivvlor = ${pcnt}"
-        def retencion = cn.rows(sql.toString())[0]?.rtcn_iva?:0.0
+        def retencion = cn.rows(sql.toString())[0]?.rtcn_iva ?: 0.0
         retencion.toDouble()
+    }
+
+    def cdgoIdentificacion(prve, tptr) {
+        def cn = dbConnectionService.getConnection()
+        def sql = "select tittcdgo from titt, prve where tptr__id =  ${tptr} and prve.prve__id =  ${prve} and " +
+                "titt.tpid__id = prve.tpid__id"
+        def codigo = cn.rows(sql.toString())[0]?.tittcdgo
+        codigo
     }
 
 }
