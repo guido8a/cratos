@@ -48,22 +48,30 @@
             </g:link>
         </div>
 
-        <div class="col-md-5" style="margin-left: 20px;">
+        <div class="col-md-4" style="margin-left: 10px;">
             Buscar por:
             <div class="btn-group">
                 <input id="buscar" type="search" class="form-control" value="${session.buscar}">
                 <span id="limpiaBuscar" class="glyphicon glyphicon-remove-circle"
                       title="Limpiar texto de búsqueda"></span>
             </div>
-            <a href="#" name="busqueda" class="btn btn-azul btnBusqueda btn-ajax"><i
-                    class="fa fa-check-square-o"></i> Buscar</a>
+        </div>
+
+        <div class="btn-group col-md-2" style="margin-left: -10px;">
+
+            <a href="#" name="busqueda" class="btn btn-azul btnBusqueda btn-ajax">
+                <i class="fa fa-check-square-o"></i> Buscar</a>
+
+            <a href="#" name="busquedaFechas" class="btn btn-azul btnBusquedaFechas btn-ajax" title="Buscar con Fechas">
+                <i class="fa fa-calendar"></i> F.</a>
+
         </div>
 
         <div class="col-md-2" style="margin-right: 0px; padding: 0 ">
             <span class="text-info" style="font-size: 15px"><strong>${session.contabilidad.descripcion}</strong></span>
         </div>
         <div class="col-md-1" >
-        <a href="#" class="btn btn-azul" id="btnCambiarConta" style="margin-left: 0">
+        <a href="#" class="btn btn-azul" id="btnCambiarConta" style="margin-left: -20px">
             <i class="fa fa-refresh"></i> Cambiar
         </a>
         </div>
@@ -269,6 +277,37 @@
                 });
             }
         })
+    });
+
+    $(".btnBusquedaFechas").click(function () {
+        $.ajax({
+           type:'POST',
+            url: '${createLink(controller: 'proceso', action:'fechas_ajax')}',
+            data:{
+
+            },
+            success: function(msg){
+                bootbox.dialog({
+                    title   : "Búsqueda por fechas",
+                    message : msg,
+//                    class    : "long",
+                    buttons : {
+                        cancelar : {
+                            label     : "<i class='fa fa-times'></i> Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        aceptar : {
+                            label     : "<i class='fa fa-save'></i> Aceptar",
+                            className : "btn-success",
+                            callback  : function () {
+                            }
+                        }
+                    }
+                });
+            }
+        });
     });
 
 

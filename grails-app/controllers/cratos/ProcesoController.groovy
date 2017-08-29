@@ -1970,5 +1970,9 @@ class ProcesoController extends cratos.seguridad.Shield {
         }
     }
 
+    def fechas_ajax () {
+
+    }
+
 }
 
