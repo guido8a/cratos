@@ -1,5 +1,10 @@
 <%@ page import="cratos.Proveedor" %>
 
+
+
+
+
+
 <script type="text/javascript" src="${resource(dir: 'js', file: 'ui.js')}"></script>
 <g:if test="${!proveedorInstance}">
     <elm:notFound elem="Proveedor" genero="o"/>
@@ -18,13 +23,16 @@
                         Ruc
                     </label>
 
-                    <div class="col-md-4">
-                        <g:textField name="ruc" maxlength="13" required="" class=" form-control required"
+                    <div class="col-md-4" id="divRuc">
+                        <g:textField name="ruc" maxlength="13" minlength="10" required="" class=" form-control required"
                                      value="${proveedorInstance?.ruc}" readonly="${lectura}"/>
                     </div>
 
                 </span>
             </div>
+
+
+
 
             <div style="margin-left: -60px" class="form-group ${hasErrors(bean: proveedorInstance, field: 'nombre', 'error')} ">
                 <span class="grupo">
@@ -357,6 +365,19 @@
     <script type="text/javascript">
 
 
+        $("#tipoPersona").change(function () {
+            var vl = $(this).val()
+            if(vl == '2'){
+//                $("#ruc").removeProp("minlength")
+                $("#ruc").attr("minlength",13)
+            }else{
+//                $("#ruc").removeProp("maxlength")
+                $("#ruc").attr("minlength",10)
+            }
+
+        });
+
+
 
         function validarNum(ev) {
             /*
@@ -471,8 +492,7 @@
             },
             rules      : {
                 ruc : {
-//                    rangelength: [13, 13],
-                    remote : {
+                                       remote : {
                         url  : "${createLink(action: 'validarCedula_ajax')}",
                         type : "post",
                         data : {
@@ -484,7 +504,6 @@
             messages       : {
                 ruc : {
                     remote : "RUC ya ingresado"
-//                    rangelength: "Ingrese un número RUC válido"
                 }
             }
         });

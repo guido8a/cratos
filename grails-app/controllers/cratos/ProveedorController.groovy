@@ -281,5 +281,4 @@ class ProveedorController extends cratos.seguridad.Shield {
         render "NO_No se encontró Proveedor."
     } //notFound para ajax
 
-
 }
