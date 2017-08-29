@@ -474,28 +474,6 @@
     }).keyup(function () {
     });
 
-    cargarNumeracionFactura($(".libretinFactura option:selected").val());
-
-    function cargarNumeracionFactura(id) {
-        $.ajax({
-            type: 'POST',
-            url: '${createLink(controller: 'proceso', action: 'numeracionFactura_ajax')}',
-            data: {
-                libretin: id
-            },
-            success: function (msg) {
-                $("#divNumeracionFactura").html(msg)
-            }
-        });
-    }
-
-    $(".libretinFactura").change(function () {
-        var idLibretin = $(".libretinFactura option:selected").val();
-        cargarNumeracionFactura(idLibretin);
-    });
-
-    //    cargarProveedor($(".tipoProcesoSel option:selected").val());
-    %{--cargarComprobante('${proceso?.id}');--}%
 
     $(document).ready(function () {
         var tipo = $(".tipoProcesoSel option:selected").val();
@@ -534,6 +512,7 @@
         }
 
         if (prve && (tipo == '2')) {
+            console.log('muestra libretinFacturas --2')
             $("#libretinFacturas").show()
             $("#pagoProceso").hide()
             cargarProveedor(tipo);
@@ -542,6 +521,7 @@
         }
 
         if (tipo == '2' || tipo == '6' || tipo == '7') {
+            console.log('carga y muestra libretinFacturas')
             cargarLibretin();
             $("#libretinFacturas").show()
             $("#pagoProceso").hide()
@@ -1127,15 +1107,17 @@
 
 
     $("#libretin").change(function () {
-        console.log('libretin..')
         var idLibretin = $("#libretin option:selected").val();
+        var nmes = $("#establecimiento option:selected").val();
+        console.log('libretin..', nmes)
         $.ajax({
             type: 'POST',
             url: '${createLink(controller: 'proceso', action: 'numeracion_ajax')}',
             data: {
                 libretin: idLibretin,
                 tpps: $(".tipoProcesoSel option:selected").val(),
-                fcha: $("#fecha_input").val()
+                fcha: $("#fecha_input").val(),
+                nmes: nmes
             },
             success: function (msg) {
                 var partes = msg.split('_');
@@ -1148,6 +1130,12 @@
 
     function cargarLibretin() {
         var fcha =  $("#fecha_input").val()
+        var nmes = $("#establecimiento option:selected").val();
+        console.log('libretin..', nmes)
+        if("${proceso?.fechaEmision}") {
+            fcha = "${proceso?.fechaEmision.format('dd-MM-yyyy')}"
+        }
+        console.log('fcha:', fcha);
         if(fcha){
             if(fcha.length < 10) {
                 $(".tipoProcesoSel").val(0);
@@ -1161,7 +1149,8 @@
                     data: {
                         proceso: '${proceso?.id}',
                         tpps: tpps,
-                        fcha: $("#fecha_input").val()
+                        fcha: fcha,
+                        nmes: nmes
                     },
                     success: function (msg) {
                         $("#libretinFacturas").html(msg)
@@ -1189,6 +1178,13 @@
     $("#bodega").change(function () {
         var bodega = $("#bodega").val();
         revisarBodega(bodega)
+    });
+
+    $("#establecimiento").change(function () {
+        console.log('change... nmes')
+        $("#serie").val('0')
+        $("#libretinFacturas").html('')
+        cargarLibretin()
     });
 
     function revisarBodega (bodega) {

@@ -87,14 +87,15 @@ class XmlController extends cratos.seguridad.Shield {
         if (file.exists() && (params.override != '1')) {
             render "NO_1"
         } else {
-            sql = "select tpidcdgo, emprnmbr, empr_ruc, emprtpem from empr, tpid where tpid.tpid__id = empr.tpid__id " +
-                    "and empr__id = ${empresa_id}"
+            sql = "select tpidcdgo, emprnmbr, empr_ruc, emprtpem from empr, tpid " +
+                    "where tpid.tpid__id = empr.tpid__id and empr__id = ${empresa_id}"
             def empr = cn.rows(sql.toString()).first()
 
             println "...empresa: $sql  --> ${empr}"
 
-            sql = "select count(distinct prcsnmes) cnta from prcs where prcsfcis between '${prdo.fechaInicio}' and " +
-                    "'${prdo.fechaFin}'"
+            sql = "select count(distinct prcsnmes) cnta from prcs " +
+                    "where prcsfcis between '${prdo.fechaInicio}' and '${prdo.fechaFin}' and " +
+                    "prcsetdo = 'R'"
 
             def num_estb = cn.rows(sql.toString())[0].cnta
             num_estb = '0' * (3 - num_estb.toString().size()) + num_estb
@@ -102,7 +103,7 @@ class XmlController extends cratos.seguridad.Shield {
             println "...nmes: $sql  --> ${num_estb}"
 
             sql = "select sum(prcsvlor) totl from prcs where prcsfcis between '${prdo.fechaInicio}' and " +
-                    "'${prdo.fechaFin}' and tpps__id = 2"
+                    "'${prdo.fechaFin}' and tpps__id = 2 and prcsetdo = 'R'"
             def sumaVentas = cn.rows(sql.toString())[0].totl
 
             def writer = new StringWriter()
@@ -123,7 +124,7 @@ class XmlController extends cratos.seguridad.Shield {
                 println "inicia compras..."
                 compras() {
                     sql = "select prcs__id from prcs where prcsfcis between '${prdo.fechaInicio}' and " +
-                            "'${prdo.fechaFin}' and tpps__id = 1 order by prcsfcis"
+                            "'${prdo.fechaFin}' and tpps__id = 1 and prcsetdo = 'R' order by prcsfcis"
                     println "prcsCompras: $sql"
                     def prcsCompras = cn.rows(sql.toString())
 
@@ -246,7 +247,8 @@ class XmlController extends cratos.seguridad.Shield {
                 sql = "select prve__id, tcst__id, sum(prcsbsnz) base, sum(prcsbszr) cero, count(*) nmro, " +
                         "sum(prcsnoiv) no_iva, sum(prcsexiv) excento, sum(prcs_iva) iva, sum(prcs_ice) ice, " +
                         "sum(prcsrtiv) rt_iva, sum(prcsrtrn) rt_rnta from prcs " +
-                        "where prcsfcis between '${prdo.fechaInicio}' and '${prdo.fechaFin}' and tpps__id = 2 " +
+                        "where prcsfcis between '${prdo.fechaInicio}' and '${prdo.fechaFin}' and tpps__id = 2 and " +
+                        "prcsetdo = 'R'" +
                         "group by prve__id, tcst__id"
 
                 println "ventas: $sql"
@@ -281,8 +283,8 @@ class XmlController extends cratos.seguridad.Shield {
                             /* tabla prfp --> ProcesoFormaDePago   ** vaor >= 1000 */
                             sql = "select distinct tppgcdgo from prcs, prfp, tppg " +
                                     "where tppg.tppg__id = prfp.tppg__id and prfp.prcs__id = prcs.prcs__id and " +
-                                    "prcsfcis between '${prdo.fechaInicio}' and '${prdo.fechaFin}' and tpps__id = 2 " +
-                                    "and prve__id = ${vn.prve__id}"
+                                    "prcsfcis between '${prdo.fechaInicio}' and '${prdo.fechaFin}' and " +
+                                    "tpps__id = 2 and prcsetdo = 'R' and prve__id = ${vn.prve__id}"
                             println "prfp: $sql"
                             def fp = cn.rows(sql.toString())
                             formasDePago() {
@@ -295,7 +297,7 @@ class XmlController extends cratos.seguridad.Shield {
                     }
                 }
                 sql = "select prcsnmes, sum(prcsvlor) totl from prcs where prcsfcis between '${prdo.fechaInicio}' and " +
-                        "'${prdo.fechaFin}' and tpps__id = 2 group by prcsnmes"
+                        "'${prdo.fechaFin}' and tpps__id = 2 and prcsetdo = 'R' group by prcsnmes"
                 println "ventasTotl: $sql"
                 def totlVentas = cn.rows(sql.toString())
 

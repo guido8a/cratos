@@ -1453,7 +1453,7 @@ class ProcesoController extends cratos.seguridad.Shield {
 
 
     def numeracion_ajax () {
-//        println "numeracion_ajax: $params"
+        println "numeracion_ajax: $params"
         def cn = dbConnectionService.getConnection()
         def proceso
         if(params.proceso) {
@@ -1484,22 +1484,25 @@ class ProcesoController extends cratos.seguridad.Shield {
             fcdt = DocumentoEmpresa.get(params.libretin)
             sql = "select coalesce(max(prcsfcsc), 0) mxmo from prcs, fcdt " +
                     "where tpps__id = ${params.tpps} and fcdt.fcdt__id = prcs.fcdt__id and " +
-                    "prcs.fcdt__id = ${params.libretin} and prcsfcsc between fcdtdsde and fcdthsta"
+                    "prcs.fcdt__id = ${params.libretin} and prcsfcsc between fcdtdsde and fcdthsta and " +
+                    "fcdtnmes = '${params.nmes}'"
             nmro = cn.rows(sql.toString())[0]?.mxmo + 1
             render "${fcdt.numeroEstablecimiento}_${fcdt.numeroEmision}_${nmro}"
         } else {
             sql = "select fcdt__id id, fcdtdsde numeroDesde, fcdthsta numeroHasta, fcdtfcat fechaAutorizacion, " +
                     "fcdtnmes numeroEstablecimiento, fcdtnmpe numeroEmision " +
-                    "from fcdt where to_date('${params.fcha}', 'DD-MM-YYYY') between fcdtfcin and fcdtfcfn and fcdttipo = '${tpdc}'order by fcdtfcin"
-            println "sql: $sql"
+                    "from fcdt where to_date('${params.fcha}', 'DD-MM-YYYY') between fcdtfcin and fcdtfcfn and " +
+                    "fcdttipo = '${tpdc}' and fcdtnmes = '${params.nmes}' order by fcdtfcin"
+            println "libretin: $sql"
             def libretin = cn.rows(sql.toString())
             sql = "select coalesce(max(prcsfcsc), 0) mxmo from prcs, fcdt " +
                     "where tpps__id = ${params.tpps} and fcdt.fcdt__id = prcs.fcdt__id and " +
-                    "prcs.fcdt__id = ${libretin[0]?.id} and prcsfcsc between fcdtdsde and fcdthsta "
+                    "prcs.fcdt__id = ${libretin[0]?.id} and prcsfcsc between fcdtdsde and fcdthsta and " +
+                    "fcdtnmes = '${params.nmes}'"
 //            println "sql nmro: $sql"
             nmro = cn.rows(sql.toString())[0]?.mxmo
             nmro = nmro == 0 ? libretin[0]?.numeroDesde : nmro + 1
-//            println "valor de nmro: $nmro, ${libretin[0]?.numeroDesde}"
+            println "valor de nmro: $nmro, ${libretin[0]?.numeroDesde}"
 
             if(libretin?.size() > 0) {
                 [libretin: libretin, estb: libretin[0].numeroEstablecimiento, emsn: libretin[0].numeroEmision, nmro: nmro,
@@ -1720,12 +1723,6 @@ class ProcesoController extends cratos.seguridad.Shield {
             println("errores " + e)
             render "no"
         }
-    }
-
-    def numeracionFactura_ajax () {
-        println "numeracionFactura_ajax: $params"
-        def documentoEmpresa = DocumentoEmpresa.get(params.libretin)
-        return [libreta : documentoEmpresa]
     }
 
     def comprobarSerieFactura_ajax () {
