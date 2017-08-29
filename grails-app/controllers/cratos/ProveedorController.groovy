@@ -151,7 +151,7 @@ class ProveedorController extends cratos.seguridad.Shield {
         params.ruc = params.ruc.toString().trim()
         if (params.id) {
             def prov = Proveedor.get(params.id)
-            if (prov.ruc == params.ruc) {
+            if (prov.ruc.trim() == params.ruc.trim()) {
                 render true
                 return
             } else {

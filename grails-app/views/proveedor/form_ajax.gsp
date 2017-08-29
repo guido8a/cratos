@@ -364,10 +364,10 @@
 
     <script type="text/javascript">
 
+        revisarLongitud($("#tipoPersona").val())
 
-        $("#tipoPersona").change(function () {
-            var vl = $(this).val()
-            if(vl == '2'){
+        function revisarLongitud (tipo) {
+            if(tipo == '2'){
 //                $("#ruc").removeProp("minlength")
                 $("#ruc").attr("minlength",13)
             }else{
@@ -375,6 +375,12 @@
                 $("#ruc").attr("minlength",10)
             }
 
+        }
+
+
+        $("#tipoPersona").change(function () {
+            var vl = $(this).val()
+            revisarLongitud(vl)
         });
 
 
