@@ -31,41 +31,80 @@
 </head>
 
 <body>
-<div style="margin-top: 0px; min-height: 50px" class="vertical-container">
+<div style="margin-top: -15px;" class="vertical-container">
     <p class="css-icono" style="margin-bottom: -15px"><i class="fa fa-folder-open-o"></i></p>
 
     <div class="linea45"></div>
 
-    <div>
-        <div class="col-md-2">
-            <g:link class="btn btn-primary" action="nuevoProceso">
+    <div class="row" style="margin-bottom: 10px;">
+
+        <div style="margin-left: 15px; width: 140px" class="col-xs-2">
+        <div>
+            <g:link class="btn btn-primary btn-sm" action="nuevoProceso" style="margin-left: -15px">
                 <i class="fa fa-file-o"></i> Nueva Transacción
             </g:link>
         </div>
-        <div class="col-md-1">
-            <g:link class="btn btn-primary" action="procesosAnulados">
-                <i class="fa fa-file-o"></i> Anulados
+        <div>
+            <g:link class="btn btn-primary btn-sm" action="procesosAnulados" style="margin-left: -15px; margin-top: 5px;">
+                <i class="fa fa-file-o"></i> Ir a Anulados
             </g:link>
         </div>
+        </div>
 
+        <div class="col-xs-3" style="margin-left: 10px;">
+            Buscar por:
+            <div class="btn-group">
+                <input id="buscar" type="search" class="form-control" value="${session.buscar}" style="width: 200px;">
+                <span id="limpiaBuscar" class="glyphicon glyphicon-remove-circle"
+                      title="Limpiar texto de búsqueda"></span>
+            </div>
+        </div>
 
+        <div class="col-xs-2" style="width: 160px; margin-left: -75px">
+            Desde:
+            <elm:datepicker name="fechaDesde" title="Fecha desde" id="fd" class="datepicker form-control fechaD"
+                            maxDate="new Date()"/>
+        </div>
 
-        <div class="row">
-            <div class="col-md-2" style="margin-right: 0px; padding: 0; margin-left: 150px ">
+        <div class="col-xs-2" style="width: 160px; margin-left: -20px">
+            Hasta:
+            <elm:datepicker name="fechaHasta" title="Fecha hasta" class="datepicker form-control fechaH"
+                            maxDate="new Date()"/>
+        </div>
+
+        <div class="btn-group col-xs-2" style="margin-left: -30px; margin-top: 20px; width: 160px;">
+
+            <a href="#" name="busqueda" class="btn btn-info btnBusqueda btn-ajax">
+                <i class="fa fa-check-square-o"></i> Buscar</a>
+
+            <a href="#" name="limpiarBus" class="btn btn-warning btnLimpiarBusqueda btn-ajax" title="Limpiar búsqueda" style="height: 34px">
+                <i class="fa fa-eraser"></i></a>
+        </div>
+        <div  class="col-xs-2" style="width: 300px; border-style: solid; border-radius:10px; border-width: 1px;
+        margin-left: 0px; height: 68px; border-color: #0c6cc2">
+            <div class="col-xs-3" style="margin-left: 5px; padding: 5px; height:30px;
+            text-align: center; width: 260px;">
                 <span class="text-info" style="font-size: 15px"><strong>${session.contabilidad.descripcion}</strong></span>
             </div>
-            <div class="col-md-1" >
-                <a href="#" class="btn btn-azul" id="btnCambiarConta" style="margin-left: -20px">
-                    <i class="fa fa-refresh"></i> Cambiar
+            <div style="width: 100%; text-align: center;">
+                <a href="#" class="btn btn-azul btn-sm" id="btnCambiarConta" style="margin-left: 5px;" title="Cambiar a otra Contabilidad">
+                    <i class="fa fa-refresh"></i> Cambiar Contabilidad
                 </a>
             </div>
         </div>
 
+    </div>
 
-        %{--<div class="col-md-2" style="margin-right: 0px; padding: 0 ">--}%
+
+    <div>
+
+
+
+
+        %{--<div class="col-xs-2" style="margin-right: 0px; padding: 0 ">--}%
         %{--<span class="text-info" style="font-size: 15px"><strong>${session.contabilidad.descripcion}</strong></span>--}%
         %{--</div>--}%
-        %{--<div class="col-md-1" >--}%
+        %{--<div class="col-xs-1" >--}%
         %{--<a href="#" class="btn btn-azul" id="btnCambiarConta" style="margin-left: -20px">--}%
         %{--<i class="fa fa-refresh"></i> Cambiar--}%
         %{--</a>--}%
@@ -73,53 +112,6 @@
     </div>
 
 
-    <div class="row" style="margin-bottom: 10px">
-
-        <div class="col-md-4" style="margin-left: 10px;">
-            Buscar por:
-            <div class="btn-group">
-                <input id="buscar" type="search" class="form-control" value="${session.buscar}">
-                <span id="limpiaBuscar" class="glyphicon glyphicon-remove-circle"
-                      title="Limpiar texto de búsqueda"></span>
-            </div>
-        </div>
-
-
-        <div class="col-md-1 " style="margin-left: -20px">
-            Desde:
-        </div>
-        <div class="col-md-2">
-
-            <elm:datepicker name="fechaDesde" title="Fecha desde" id="fd"
-                            class="datepicker form-control fechaD"
-                            maxDate="new Date()"
-                            style="width: 80px; margin-left: -25px"/>
-        </div>
-
-        <div class="col-md-1">
-            Hasta:
-        </div>
-        <div class="col-md-2">
-
-            <elm:datepicker name="fechaHasta" title="Fecha hasta"
-                            class="datepicker form-control fechaH"
-                            maxDate="new Date()"
-                            style="width: 80px; margin-left: -15px"/>
-        </div>
-
-
-
-        <div class="btn-group col-md-2" style="margin-left: -10px;">
-
-            <a href="#" name="busqueda" class="btn btn-info btnBusqueda btn-ajax">
-                <i class="fa fa-check-square-o"></i> Buscar</a>
-
-            <a href="#" name="limpiarBus" class="btn btn-warning btnLimpiarBusqueda btn-ajax" title="Limpiar búsqueda" style="height: 34px">
-                <i class="fa fa-eraser"></i></a>
-
-        </div>
-
-    </div>
 
 </div>
 
@@ -132,12 +124,13 @@
     <table class="table table-bordered table-hover table-condensed" style="width: 1070px">
         <thead>
         <tr>
-            <th class="alinear" style="width: 70px">Fecha</th>
-            <th class="alinear" style="width: 240px">Descripción</th>
-            <th class="alinear" style="width: 80px">Estado</th>
-            <th class="alinear" style="width: 80px">Comprobante</th>
+            <th class="alinear" style="width: 100px">Fecha</th>
+            <th class="alinear" style="width: 350px">Descripción</th>
+            <th class="alinear" style="width: 50px">Reg.</th>
+            <th class="alinear" style="width: 160px">Documento</th>
+            <th class="alinear" style="width: 80px">Valor</th>
             <th class="alinear" style="width: 80px">Tipo</th>
-            <th class="alinear" style="width: 180px">Proveedor</th>
+            <th class="alinear" style="width: 250px">Proveedor</th>
         </tr>
         </thead>
     </table>

@@ -901,8 +901,8 @@
                 if (!$("#numEstablecimiento").val()) {
                     error += "<li>Seleccione un libretín de facturas/li>"
                 }
-                if (!$("#serie").val()) {
-                    error += "<li>Ingrese secuencial de la factura a emitir</li>"
+                if (!$("#serie").val() || !$("#libretin").val()) {
+                    error += "<li>Ingrese el libretin y el secuencial de la factura a emitir</li>"
                 }
 
                 if(($(".filaFP").size() <1)){
@@ -1182,7 +1182,6 @@
 
     $("#establecimiento").change(function () {
         console.log('change... nmes')
-        $("#serie").val('0')
         $("#libretinFacturas").html('')
         cargarLibretin()
     });
