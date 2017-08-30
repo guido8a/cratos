@@ -48,6 +48,33 @@
             </g:link>
         </div>
 
+
+
+        <div class="row">
+            <div class="col-md-2" style="margin-right: 0px; padding: 0; margin-left: 150px ">
+                <span class="text-info" style="font-size: 15px"><strong>${session.contabilidad.descripcion}</strong></span>
+            </div>
+            <div class="col-md-1" >
+                <a href="#" class="btn btn-azul" id="btnCambiarConta" style="margin-left: -20px">
+                    <i class="fa fa-refresh"></i> Cambiar
+                </a>
+            </div>
+        </div>
+
+
+        %{--<div class="col-md-2" style="margin-right: 0px; padding: 0 ">--}%
+        %{--<span class="text-info" style="font-size: 15px"><strong>${session.contabilidad.descripcion}</strong></span>--}%
+        %{--</div>--}%
+        %{--<div class="col-md-1" >--}%
+        %{--<a href="#" class="btn btn-azul" id="btnCambiarConta" style="margin-left: -20px">--}%
+        %{--<i class="fa fa-refresh"></i> Cambiar--}%
+        %{--</a>--}%
+        %{--</div>--}%
+    </div>
+
+
+    <div class="row" style="margin-bottom: 10px">
+
         <div class="col-md-4" style="margin-left: 10px;">
             Buscar por:
             <div class="btn-group">
@@ -57,26 +84,46 @@
             </div>
         </div>
 
+
+        <div class="col-md-1 " style="margin-left: -20px">
+            Desde:
+        </div>
+        <div class="col-md-2">
+
+            <elm:datepicker name="fechaDesde" title="Fecha desde" id="fd"
+                            class="datepicker form-control fechaD"
+                            maxDate="new Date()"
+                            style="width: 80px; margin-left: -25px"/>
+        </div>
+
+        <div class="col-md-1">
+            Hasta:
+        </div>
+        <div class="col-md-2">
+
+            <elm:datepicker name="fechaHasta" title="Fecha hasta"
+                            class="datepicker form-control fechaH"
+                            maxDate="new Date()"
+                            style="width: 80px; margin-left: -15px"/>
+        </div>
+
+
+
         <div class="btn-group col-md-2" style="margin-left: -10px;">
 
-            <a href="#" name="busqueda" class="btn btn-azul btnBusqueda btn-ajax">
+            <a href="#" name="busqueda" class="btn btn-info btnBusqueda btn-ajax">
                 <i class="fa fa-check-square-o"></i> Buscar</a>
 
-            <a href="#" name="busquedaFechas" class="btn btn-azul btnBusquedaFechas btn-ajax" title="Buscar con Fechas">
-                <i class="fa fa-calendar"></i> F.</a>
+            <a href="#" name="limpiarBus" class="btn btn-warning btnLimpiarBusqueda btn-ajax" title="Limpiar búsqueda" style="height: 34px">
+                <i class="fa fa-eraser"></i></a>
 
         </div>
 
-        <div class="col-md-2" style="margin-right: 0px; padding: 0 ">
-            <span class="text-info" style="font-size: 15px"><strong>${session.contabilidad.descripcion}</strong></span>
-        </div>
-        <div class="col-md-1" >
-        <a href="#" class="btn btn-azul" id="btnCambiarConta" style="margin-left: -20px">
-            <i class="fa fa-refresh"></i> Cambiar
-        </a>
-        </div>
     </div>
+
 </div>
+
+
 
 <div style="margin-top: 30px; min-height: 650px" class="vertical-container">
     <p class="css-vertical-text">Procesos encontrados</p>
@@ -100,7 +147,7 @@
 </div>
 
 <div><strong>Nota</strong>: Si existen muchos registros que coinciden con el criterio de búsqueda, se retorna
-  como máximo 20 <span style="margin-left: 40px; color: #0b2c89">Se ordena por fecha de proceso desde el más reciente</span>
+como máximo 20 <span style="margin-left: 40px; color: #0b2c89">Se ordena por fecha de proceso desde el más reciente</span>
 </div>
 
 <div class="modal fade " id="dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -135,17 +182,59 @@
 
 <script type="text/javascript">
 
+
+
+
+    //    $('.fechaD').datepicker()
+    //        .on("input change", function (e) {
+    //            asignarMinimo();
+    //        });
+    //
+//    $(".fechaD").change(function () {
+//        asignarMinimo();
+//    });
+
+
+
+
+//    $(".fechaD").datepicker({
+//        onSelect: function() {
+//            //- get date from another datepicker without language dependencies
+//            var minDate = $('.fechaD').datepicker('getDate');
+//            console.log(" -- " + minDate)
+//            $(".fechaH").datepicker("change", { minDate: minDate });
+//        }
+//    });
+
+//
+//    function asignarMinimo(){
+////        $(".fechaH").attr("minDate",$(".fechaD").val())
+////        $('.fechaH').datepicker('option', 'minDate',new Date ($(".fechaD").val()))
+////        var minDate = $('.fechaD').datepicker('getDate');
+////        console.log(" -- " + minDate)
+////        $(".fechaH").datepicker("change", { minDate: new Date($(".fechaD").val()) });
+//        $(".fechaH").datepicker('destroy')
+//        $(".fechaH").attr("minDate", '22-8-2017');
+//
+//    }
+
     cargarBusqueda();
 
     function cargarBusqueda () {
         $("#bandeja").html("").append($("<div style='width:100%; text-align: center;'/>").append(spinnerSquare64));
         var buscar = $("#buscar").val();
+        var desde = $(".fechaD").val();
+        var hasta = $(".fechaH").val();
         var datos = "buscar=" + buscar;
 
         $.ajax({
             type: "POST",
             url: "${g.createLink(controller: 'proceso', action: 'tablaBuscarPrcs')}",
-            data: datos,
+            data: {
+                buscar: buscar,
+                desde: desde,
+                hasta: hasta
+            },
             success: function (msg) {
                 $("#bandeja").html(msg);
             },
@@ -156,7 +245,24 @@
     }
 
     $(".btnBusqueda").click(function () {
-        cargarBusqueda();
+
+        $.ajax({
+            type: 'POST',
+            url: '${createLink(controller: 'proceso', action: 'revisarFecha_ajax')}',
+            data:{
+                desde: $(".fechaD").val(),
+                hasta: $(".fechaH").val()
+            },
+            success: function (msg){
+                if(msg != 'ok'){
+                    bootbox.alert("<i class='fa fa-exclamation-circle fa-3x pull-left text-warning text-shadow'></i> La fecha ingresada en 'Hasta' es menor a la fecha ingresada en 'Desde' ");
+                    return false;
+                }else{
+                    cargarBusqueda();
+                }
+            }
+        });
+
     });
 
     $("input").keyup(function (ev) {
@@ -279,9 +385,18 @@
         })
     });
 
+
+    $(".btnLimpiarBusqueda").click(function () {
+        $(".fechaD").val('');
+        $(".fechaH").val('');
+        $("#buscar").val('');
+    });
+
+
+
     $(".btnBusquedaFechas").click(function () {
         $.ajax({
-           type:'POST',
+            type:'POST',
             url: '${createLink(controller: 'proceso', action:'fechas_ajax')}',
             data:{
 
@@ -290,7 +405,7 @@
                 bootbox.dialog({
                     title   : "Búsqueda por fechas",
                     message : msg,
-//                    class    : "long",
+                    //                    class    : "long",
                     buttons : {
                         cancelar : {
                             label     : "<i class='fa fa-times'></i> Cancelar",
@@ -302,7 +417,6 @@
                             label     : "<i class='fa fa-save'></i> Aceptar",
                             className : "btn-success",
                             callback  : function () {
-
                                 $.ajax({
                                     type: 'POST',
                                     url: '${createLink(controller: 'proceso', action: 'revisarFecha_ajax')}',
@@ -312,7 +426,7 @@
                                     },
                                     success: function (msg){
                                         if(msg != 'ok'){
-                                            bootbox.alert("<i class='fa fa-exclamation-circle fa-3x pull-left text-warning text-shadow'></i> La fecha ingresada en 'Hasta' es menor a la fecha ingresada en 'Desde' ")
+                                            bootbox.alert("<i class='fa fa-exclamation-circle fa-3x pull-left text-warning text-shadow'></i> La fecha ingresada en 'Hasta' es menor a la fecha ingresada en 'Desde' ");
                                             return false;
                                         }else{
 
