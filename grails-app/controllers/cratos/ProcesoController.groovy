@@ -1971,5 +1971,18 @@ class ProcesoController extends cratos.seguridad.Shield {
 
     }
 
+    def revisarFecha_ajax() {
+//        println("params " + params)
+
+        def desde = new Date().parse("dd-MM-yyyy", params.desde)
+        def hasta = new Date().parse("dd-MM-yyyy", params.hasta)
+
+        if(desde > hasta){
+            render "no"
+        }else{
+            render "ok"
+        }
+    }
+
 }
 

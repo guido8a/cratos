@@ -1133,7 +1133,7 @@
         var nmes = $("#establecimiento option:selected").val();
         console.log('libretin..', nmes)
         if("${proceso?.fechaEmision}") {
-            fcha = "${proceso?.fechaEmision.format('dd-MM-yyyy')}"
+            fcha = "${proceso?.fechaEmision?.format('dd-MM-yyyy')}"
         }
         console.log('fcha:', fcha);
         if(fcha){
