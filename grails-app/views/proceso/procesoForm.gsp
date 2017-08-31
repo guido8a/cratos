@@ -111,25 +111,25 @@
         </g:if>
 
         <g:if test="${proceso}">
-            %{--<g:if test="${!aux}">--}%
-                <g:if test="${proceso?.estado == 'R'}">
-                    <g:form action="borrarProceso" class="br_prcs" style="display: inline">
-                        <input type="hidden" name="id" value="${proceso?.id}">
-                        <a class="btn btn-danger" id="btn-br-prcs" action="borrarProceso">
-                            <i class="fa fa-trash-o"></i>
-                            Anular Proceso
+        %{--<g:if test="${!aux}">--}%
+            <g:if test="${proceso?.estado == 'R'}">
+                <g:form action="borrarProceso" class="br_prcs" style="display: inline">
+                    <input type="hidden" name="id" value="${proceso?.id}">
+                    <a class="btn btn-danger" id="btn-br-prcs" action="borrarProceso">
+                        <i class="fa fa-trash-o"></i>
+                        Anular Proceso
+                    </a>
+                </g:form>
+            </g:if>
+        %{--</g:if>--}%
+        %{--
+                    <g:else>
+                        <a href="#" class="btn btn-default" style="cursor: default">
+                            <i class="fa fa-ban"></i>
+                            Esta transacción no puede ser eliminada ni desmayorizada porque tiene auxiliares registrados.
                         </a>
-                    </g:form>
-                </g:if>
-            %{--</g:if>--}%
-%{--
-            <g:else>
-                <a href="#" class="btn btn-default" style="cursor: default">
-                    <i class="fa fa-ban"></i>
-                    Esta transacción no puede ser eliminada ni desmayorizada porque tiene auxiliares registrados.
-                </a>
-            </g:else>
---}%
+                    </g:else>
+        --}%
 
         %{--<g:if test="${proceso?.tipoProceso?.id == 1}">--}%
         %{--<g:link class="btn btn-primary" action="detalleSri" id="${proceso?.id}" style="margin-bottom: 10px;">--}%
@@ -151,12 +151,12 @@
             </g:if>
         </g:if>
 
-        <g:if test="${proceso?.tipoProceso?.codigo?.trim() == 'C' || proceso?.tipoProceso?.codigo?.trim() == 'V'}">
-        <a href="#" class="btn btn-primary" style="cursor: default; margin-right: 20px" id="abrir-fp">
+    %{--<g:if test="${proceso?.tipoProceso?.codigo?.trim() == 'C' || proceso?.tipoProceso?.codigo?.trim() == 'V'}">--}%
+        <a href="#" class="btn btn-primary hidden" style="cursor: default; margin-right: 20px" id="abrir-fp">
             <i class="fa fa-usd"></i>
             Forma de Pago
         </a>
-        </g:if>
+        %{--</g:if>--}%
     </div>
 </div>
 
@@ -214,12 +214,12 @@
 
             <div class="col-xs-1 negrilla">
                 %{--<g:textField name="establecimiento" id="establecimiento" class="form-control required validacionNumeroSinPuntos"--}%
-                             %{--maxlength="3" value="${proceso?.establecimiento}" disabled="${proceso?.estado == 'R' ?: false}"/>--}%
+                %{--maxlength="3" value="${proceso?.establecimiento}" disabled="${proceso?.estado == 'R' ?: false}"/>--}%
                 <g:select class="form-control required cmbRequired" name="establecimiento" id="establecimiento"
                           from="${estb}" label="Proceso tipo: " value="${proceso?.establecimiento}" optionKey="key"
                           optionValue="value" title="Establecimientos" disabled="${proceso?.estado == 'R' ?: false}"
                           optionValue="value" title="Establecimientos" disabled="${proceso?.estado == 'R' ?: false}"
-                style="margin-left: 0; width: 70px" />
+                          style="margin-left: 0; width: 70px" />
             </div>
 
             <div class="col-xs-1 negrilla">
@@ -444,6 +444,20 @@
 
 <script type="text/javascript">
 
+    cargarBotonFormasPago($("#tipoProceso").val())
+
+    $("#tipoProceso").change(function () {
+        var sel = $(this).val()
+        cargarBotonFormasPago(sel)
+    });
+
+    function cargarBotonFormasPago (sel) {
+        if(sel == 1 || sel == 2){
+            $("#abrir-fp").removeClass('hidden')
+        }else{
+            $("#abrir-fp").addClass('hidden')
+        }
+    }
 
     $("#btnDetalle").click(function () {
         location.href='${createLink(controller: 'detalleFactura', action: 'detalleGeneral')}/?id=' + '${proceso?.id}' + '&tipo=' + '${proceso?.tipoProceso?.codigo}'
@@ -864,7 +878,7 @@
                 }
 
                 if(($(".filaFP").size() <1) && (parseFloat($("#total").val()) >= 1000)){
-                    error += "El valor del proceso requiere que se registre la forma de pago"
+                    error += "<li> El valor del proceso requiere que se registre la forma de pago <li>"
                 }
 
                 if (bandData) {
@@ -906,7 +920,19 @@
                 }
 
                 if(($(".filaFP").size() <1)){
-                    error += "El proceso requiere que se registre la forma de pago"
+                    error += "<li>El proceso requiere que se registre la forma de pago</li>"
+                }
+
+                var ivaG = ($("#ivaGenerado").val()*100)/100
+                var retenido = ($("#retenidoIva").val()*100)/100
+                if(retenido > ivaG){
+                    error += "<li> El valor retenido del Iva es mayor al del Iva generado </li>"
+                }
+
+                var retenidoR = ($("#retenidoRenta").val()*100)/100
+                var totalBases = ($("#iva12").val()*100)/100 + ($("#iva0").val()*100)/100 + ($("#noIva").val()*100)/100 + ($("#excentoIva").val()*100)/100
+                if(retenidoR > totalBases){
+                  error += " <li> El valor retenido del Impuesto a la Renta es mayor que la suma de las Bases </li>"
                 }
 
 

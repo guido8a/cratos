@@ -26,7 +26,7 @@
                     Descripción
                 </label>
                 <div class="col-md-8">
-                    <g:textField name="descripcion" maxlength="63" required="" class="form-control required" value="${conceptoRetencionImpuestoRentaInstance?.descripcion}"/>
+                    <g:textField name="descripcion" maxlength="255" required="" class="form-control required" value="${conceptoRetencionImpuestoRentaInstance?.descripcion}"/>
                 </div>
                 
             </span>

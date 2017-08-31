@@ -299,5 +299,50 @@
         calculaTotal();
     });
 
+//    $("#retenidoIva").keyup(function (ev){
+//        var ivaG = ($("#ivaGenerado").val()*100)/100
+//        var retenido = ($("#retenidoIva").val()*100)/100
+//        if(retenido > ivaG){
+//            $("#retenidoIva").val( number_format((ivaG ? ivaG : 0),2,".",""))
+//        }
+//    });
+//
+//    $("#iva12").change(function () {
+//        var ivaG = ($("#ivaGenerado").val()*100)/100
+//        $("#retenidoIva").val( number_format((ivaG ? ivaG : 0),2,".",""))
+//        colocarBase();
+//    });
+//
+//    $("#retenidoRenta").keyup(function (ev) {
+//        var retenidoR = ($("#retenidoRenta").val()*100)/100
+//        var totalBases = calcularBases()
+//        if(retenidoR > totalBases){
+//            $("#retenidoRenta").val( number_format((totalBases ? totalBases : 0),2,".",""))
+//        }
+//    });
+
+//    function calcularBases () {
+//        var totalBases = ($("#iva12").val()*100)/100 + ($("#iva0").val()*100)/100 + ($("#noIva").val()*100)/100 + ($("#excentoIva").val()*100)/100
+//        return totalBases
+//    }
+
+//    function colocarBase() {
+//        var totalBases = calcularBases()
+//        $("#retenidoRenta").val( number_format((totalBases ? totalBases : 0),2,".",""))
+//    }
+
+//    $("#iva0").change(function () {
+//        colocarBase()
+//    });
+//
+//    $("#noIva").change(function () {
+//        colocarBase()
+//    });
+//
+//    $("#excentoIva").change(function () {
+//        colocarBase()
+//    });
+
+
 
 </script>

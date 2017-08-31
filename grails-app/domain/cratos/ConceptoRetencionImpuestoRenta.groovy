@@ -26,7 +26,7 @@ class ConceptoRetencionImpuestoRenta implements Serializable {
     }
     static constraints = {
         codigo(size: 1..4, blank: false, attributes: [title: 'codigo'])
-        descripcion(blank: false, maxSize: 63, attributes: [title: 'descripcion'])
+        descripcion(blank: false, maxSize: 255, attributes: [title: 'descripcion'])
         porcentaje(blank: false, nullable: false, attributes: [title: 'porcentaje'])
         modalidadPago(blank: false, nullable: false, attributes: [title: 'Modalidad de pago'])
         tipo(blank: true, nullable: true)

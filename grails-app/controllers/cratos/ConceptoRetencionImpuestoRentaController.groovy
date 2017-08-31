@@ -12,8 +12,15 @@ class ConceptoRetencionImpuestoRentaController extends cratos.seguridad.Shield {
     } //index
 
     def list() {
-        def conceptoRetencionImpuestoRentaInstanceCount = ConceptoRetencionImpuestoRenta.list().size()
-        [conceptoRetencionImpuestoRentaInstanceList: ConceptoRetencionImpuestoRenta.list(params), params: params, conceptoRetencionImpuestoRentaInstanceCount: conceptoRetencionImpuestoRentaInstanceCount]
+//        def conceptoRetencionImpuestoRentaInstanceCount = ConceptoRetencionImpuestoRenta.list([sort: 'codigo', order: 'asc']).size()
+        def conceptoRetencionImpuestoRentaInstanceCount
+        def conceptoRetencionImpuestoRentaInstanceList
+        conceptoRetencionImpuestoRentaInstanceList = ConceptoRetencionImpuestoRenta.list(params)
+        conceptoRetencionImpuestoRentaInstanceCount = ConceptoRetencionImpuestoRenta.count()
+        if (conceptoRetencionImpuestoRentaInstanceList.size() == 0 && params.offset && params.max) {
+            params.offset = params.offset - params.max
+        }
+        [conceptoRetencionImpuestoRentaInstanceList: ConceptoRetencionImpuestoRenta.list([sort: 'codigo', order: 'asc']), params: params, conceptoRetencionImpuestoRentaInstanceCount: conceptoRetencionImpuestoRentaInstanceCount]
     } //list
 
     def form_ajax() {
@@ -41,7 +48,7 @@ class ConceptoRetencionImpuestoRentaController extends cratos.seguridad.Shield {
         }
 
         concepto.descripcion = params.descripcion
-        concepto.codigo = params.codigo
+        concepto.codigo = params.codigo.toUpperCase()
         concepto.porcentaje = params.porcentaje.toDouble()
         concepto.tipo = params.tipo.toUpperCase()
         concepto.modalidadPago = modalidadPago
