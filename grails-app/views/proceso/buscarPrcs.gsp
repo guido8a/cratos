@@ -77,13 +77,13 @@
             <a href="#" name="busqueda" class="btn btn-info btnBusqueda btn-ajax">
                 <i class="fa fa-check-square-o"></i> Buscar</a>
 
-            <a href="#" name="limpiarBus" class="btn btn-warning btnLimpiarBusqueda btn-ajax" title="Limpiar búsqueda" style="height: 34px">
+            <a href="#" name="limpiarBus" class="btn btn-warning btnLimpiarBusqueda btn-ajax" title="Borrar criterios" style="height: 34px">
                 <i class="fa fa-eraser"></i></a>
         </div>
-        <div  class="col-xs-2" style="width: 300px; border-style: solid; border-radius:10px; border-width: 1px;
+        <div  class="col-xs-2" style="width: 260px; border-style: solid; border-radius:10px; border-width: 1px;
         margin-left: 0px; height: 68px; border-color: #0c6cc2">
-            <div class="col-xs-3" style="margin-left: 5px; padding: 5px; height:30px;
-            text-align: center; width: 260px;">
+            <div class="col-xs-3" style="padding: 5px; height:30px;
+            text-align: center; width: 100%;">
                 <span class="text-info" style="font-size: 15px"><strong>${session.contabilidad.descripcion}</strong></span>
             </div>
             <div style="width: 100%; text-align: center;">
@@ -140,7 +140,7 @@
 </div>
 
 <div><strong>Nota</strong>: Si existen muchos registros que coinciden con el criterio de búsqueda, se retorna
-como máximo 20 <span style="margin-left: 40px; color: #0b2c89">Se ordena por fecha de proceso desde el más reciente</span>
+como máximo 30 <span style="margin-left: 40px; color: #0b2c89">Se ordena por fecha de proceso desde el más reciente</span>
 </div>
 
 <div class="modal fade " id="dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

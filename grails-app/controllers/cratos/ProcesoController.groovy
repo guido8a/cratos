@@ -1524,18 +1524,22 @@ class ProcesoController extends cratos.seguridad.Shield {
         def cn = dbConnectionService.getConnection()
         def cont = session.contabilidad.id
         def buscar = params.buscar.trim()?:'%'
+        def fcds = "null"
+        def fchs = "null"
+        if(params.desde) fcds = "'" + new Date().parse("dd-MM-yyyy",params.desde).format('yyyy-MM-dd') + "'"
+        if(params.hasta) fchs = "'" + new Date().parse("dd-MM-yyyy",params.hasta).format('yyyy-MM-dd') + "'"
 
-        def sql = "select * from procesos(${session.empresa.id}, ${cont}, '${buscar}') "
+        def sql = "select * from procesos(${session.empresa.id}, ${cont}, '${buscar}', ${fcds}, ${fchs}) "
 
         println "buscar .. ${sql}"
 
         data = cn.rows(sql.toString())
 
         def msg = ""
-        if(data?.size() > 20){
+        if(data?.size() > 30){
             data.pop()   //descarta el último puesto que son 21
             msg = "<div class='alert-danger' style='margin-top:-20px; diplay:block; height:25px;margin-bottom: 20px;'>" +
-                    " <i class='fa fa-warning fa-2x pull-left'></i> Su búsqueda ha generado más de 20 resultados. " +
+                    " <i class='fa fa-warning fa-2x pull-left'></i> Su búsqueda ha generado más de 30 resultados. " +
                     "Use más letras para especificar mejor la búsqueda.</div>"
         }
         cn.close()
