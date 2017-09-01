@@ -1278,13 +1278,33 @@
             var fechaHasta = $(".fechaHa").val();
 
             if (cont == '-1') {
-                bootbox.alert("Debe elegir una contabilidad!")
+                bootbox.alert("<i class='fa fa-exclamation-circle fa-3x pull-left text-warning text-shadow'></i>  Seleccione una contabilidad!")
             } else {
-//                if (per != null) {
+                if(fechaDesde == '' || fechaHasta == ''){
+                    bootbox.alert("<i class='fa fa-exclamation-circle fa-3x pull-left text-warning text-shadow'></i>  Seleccione las fechas!")
+                }else{
+                    $.ajax({
+                       type: 'POST',
+                        url: '${createLink(controller: 'proceso', action: 'revisarFecha_ajax')}',
+                        data:{
+                            desde: fechaDesde,
+                            hasta: fechaHasta
+                        },
+                        success: function (msg){
+                            if(msg == 'ok'){
+                                url = "${g.createLink(controller:'reportes2' , action: 'libroMayor')}?cont=" + cont + "Wemp=${session.empresa.id}" + "Wper=" + per + "Wcnta=" + cnta + "Wdesde=" + fechaDesde + "Whasta=" + fechaHasta;
+                                location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=auxiliares.pdf"
+                            }else{
+                                bootbox.alert("<i class='fa fa-exclamation-circle fa-3x pull-left text-warning text-shadow'></i> La fecha ingresada en 'Hasta' es menor a la fecha ingresada en 'Desde' ");
+                                return false;
+                            }
+                        }
+                    });
+                    //                if (per != null) {
                     %{--url = "${g.createLink(controller:'reportes' , action: 'auxiliaresContables')}?cont=" + cont + "Wemp=${session.empresa.id}" + "Wper=" + per + "Wcnta=" + cnta;--}%
-                    url = "${g.createLink(controller:'reportes2' , action: 'libroMayor')}?cont=" + cont + "Wemp=${session.empresa.id}" + "Wper=" + per + "Wcnta=" + cnta + "Wdesde=" + fechaDesde + "Whasta=" + fechaHasta;
-                    location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=auxiliares.pdf"
+
 //                }
+                }
             }
 
         });

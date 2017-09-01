@@ -109,7 +109,7 @@
             <th style="width: 580px" class="derecha">Total: </th>
             <th style="width: 80px" class="derecha"><g:formatNumber number="${totalDebe}" maxFractionDigits="2" minFractionDigits="2" format="##,##0" locale="en_US"/></th>
             <th style="width: 80px" class="derecha"><g:formatNumber number="${totalHasta}" maxFractionDigits="2" minFractionDigits="2" format="##,##0" locale="en_US"/></th>
-            <th style="width: 80px" class="derecha">${res.last().slmssldo}</th>
+            <th style="width: 80px" class="derecha"><g:formatNumber number="${res.last().slmssldo}" maxFractionDigits="2" minFractionDigits="2" format="##,##0" locale="en_US"/></th>
         </tr>
         </thead>
     </table>
