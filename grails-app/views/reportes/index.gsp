@@ -168,17 +168,17 @@
                 </li>
 
                 <li><span id="libroD">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <a href="#" class="link btn btn-info btn-ajax" data-toggle="modal" data-target="#libroDiario">
-                                    Libro Diario
-                                </a>
-                            </div>
-                            <div class="col-md-8">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <a href="#" class="link btn btn-info btn-ajax" data-toggle="modal" data-target="#libroDiario">
                                 Libro Diario
-                            </div>
+                            </a>
                         </div>
-                    </span>
+                        <div class="col-md-8">
+                            Libro Diario
+                        </div>
+                    </div>
+                </span>
 
                     <div class="descripcion hide">
                         <h4>Libro Diario</h4>
@@ -191,7 +191,7 @@
                     <div class="row">
                         <div class="col-md-4">
                             <a href="#" class="link btn btn-info btn-ajax" data-toggle="modal" data-target="#situacionN">
-                            Estado de Situación
+                                Estado de Situación
                             </a>
                         </div>
                         <div class="col-md-8">
@@ -209,31 +209,31 @@
 
 
                 %{--<li>--}%
-                    %{--<span id="imprimirComprobante">--}%
-                        %{--<div class="row">--}%
-                            %{--<div class="col-md-4">--}%
-                                %{--<a href="#" class="link btn btn-info btn-ajax" data-toggle="modal" data-target="#comprobante">--}%
-                                    %{--Comprobante--}%
-                                %{--</a>--}%
-                            %{--</div>--}%
-                            %{--<div class="col-md-8">--}%
-                                %{--Permite imprimir un comprobante--}%
-                            %{--</div>--}%
-                        %{--</div>--}%
-                    %{--</span>--}%
+                %{--<span id="imprimirComprobante">--}%
+                %{--<div class="row">--}%
+                %{--<div class="col-md-4">--}%
+                %{--<a href="#" class="link btn btn-info btn-ajax" data-toggle="modal" data-target="#comprobante">--}%
+                %{--Comprobante--}%
+                %{--</a>--}%
+                %{--</div>--}%
+                %{--<div class="col-md-8">--}%
+                %{--Permite imprimir un comprobante--}%
+                %{--</div>--}%
+                %{--</div>--}%
+                %{--</span>--}%
 
-                    %{--<div class="descripcion hide">--}%
-                        %{--<h4>Comprobante</h4>--}%
+                %{--<div class="descripcion hide">--}%
+                %{--<h4>Comprobante</h4>--}%
 
-                        %{--<p>Reporta los comprobantes registrados en el sistema.</p>--}%
+                %{--<p>Reporta los comprobantes registrados en el sistema.</p>--}%
 
-                        %{--<p>Se requiere del número de comprobante o de la descripción. El reporteador cuenta con un buscador para ayudarle--}%
-                        %{--a localizar el comprobante a imprimir</p>--}%
+                %{--<p>Se requiere del número de comprobante o de la descripción. El reporteador cuenta con un buscador para ayudarle--}%
+                %{--a localizar el comprobante a imprimir</p>--}%
 
-                        %{--<p>Use el botón "Buscar" para acceder al buscador. Se puede ingreasar parte del concepto del comprobante o el número.</p>--}%
+                %{--<p>Use el botón "Buscar" para acceder al buscador. Se puede ingreasar parte del concepto del comprobante o el número.</p>--}%
 
-                        %{--<p>Desde la lista de comprobantes, use el botón marcado con un visto para seleccionarlo.</p>--}%
-                    %{--</div>--}%
+                %{--<p>Desde la lista de comprobantes, use el botón marcado con un visto para seleccionarlo.</p>--}%
+                %{--</div>--}%
                 %{--</li>--}%
                 <li>
                     <span id="balanceComprobacion">
@@ -394,7 +394,7 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <a href="#" class="link btn btn-info btn-ajax" id="excelPrueba">
-                                   Excel Prueba
+                                    Excel Prueba
                                 </a>
                             </div>
                             <div class="col-md-8">
@@ -498,7 +498,7 @@
                 <div class="fila">
                     <label class="uno">Número:</label>
                     <div class="col-md-2" id="divNumComp" style="margin-left: -10px"></div>
-                        <g:textField type="text" class="form-control dos number" name="compNum" maxlength="25" style="width: 200px; margin-top: -1px"/>
+                    <g:textField type="text" class="form-control dos number" name="compNum" maxlength="25" style="width: 200px; margin-top: -1px"/>
                 </div>
 
             </div>
@@ -742,9 +742,28 @@
                               class="form-control dos"/>
                 </div>
 
-                <div id="divPeriodo3" class="fila" style="margin-bottom: 15px">
-                    <label class="uno">Periodo:</label>
+                %{--<div id="divPeriodo3" class="fila" style="margin-bottom: 15px">--}%
+                %{--<label class="uno">Periodo:</label>--}%
+                %{--</div>--}%
 
+                <div class="fila">
+                    <div class="col-md-3">
+                        <label>Desde: </label>
+                    </div>
+                    <div class="col-md-5">
+                        <elm:datepicker name="fechaDesde" title="Fecha desde" id="fechaD" class="datepicker form-control fechaDe"
+                                        maxDate="new Date()"/>
+                    </div>
+                </div>
+
+                <div class="fila">
+                    <div class="col-md-3">
+                        <label>Hasta: </label>
+                    </div>
+                    <div class="col-md-5">
+                        <elm:datepicker name="fechaHasta" title="Fecha hasta" id="fechaH" class="datepicker form-control fechaHa"
+                                        maxDate="new Date()"/>
+                    </div>
                 </div>
 
                 <div id="divCuenta3" class="fila">
@@ -972,7 +991,7 @@
 
 
     $("#compTipo").change(function () {
-       var tipo = $("#compTipo option:selected").val();
+        var tipo = $("#compTipo option:selected").val();
         cargarSelComprobante(tipo)
     });
 
@@ -1148,27 +1167,27 @@
         });
 
         %{--$(".btnAceptarComprobante").click(function () {--}%
-            %{--var cont = $("#contComp").val();--}%
-            %{--var tipo = $("#compTipo").val();--}%
-            %{--var num = $("#compNum").val();--}%
-            %{--$.ajax({--}%
-                %{--type    : "POST",--}%
-                %{--url     : "${createLink(controller: 'reportes3', action: 'reporteComprobante')}",--}%
-                %{--data    : {--}%
-                    %{--cont : cont,--}%
-                    %{--tipo : tipo,--}%
-                    %{--num  : num--}%
-                %{--},--}%
-                %{--success : function (msg) {--}%
-                    %{--var parts = msg.split("_");--}%
-                    %{--if (parts[0] != "NO") {--}%
-                        %{--var url = "${g.createLink(controller: 'reportes3', action: 'imprimirCompraGasto')}?id=" + msg + "Wempresa=${session.empresa.id}";--}%
-                         %{--location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=comprobante.pdf"--}%
-                    %{--} else {--}%
-                        %{--bootbox.alert(parts[1])--}%
-                    %{--}--}%
-                %{--}--}%
-            %{--});--}%
+        %{--var cont = $("#contComp").val();--}%
+        %{--var tipo = $("#compTipo").val();--}%
+        %{--var num = $("#compNum").val();--}%
+        %{--$.ajax({--}%
+        %{--type    : "POST",--}%
+        %{--url     : "${createLink(controller: 'reportes3', action: 'reporteComprobante')}",--}%
+        %{--data    : {--}%
+        %{--cont : cont,--}%
+        %{--tipo : tipo,--}%
+        %{--num  : num--}%
+        %{--},--}%
+        %{--success : function (msg) {--}%
+        %{--var parts = msg.split("_");--}%
+        %{--if (parts[0] != "NO") {--}%
+        %{--var url = "${g.createLink(controller: 'reportes3', action: 'imprimirCompraGasto')}?id=" + msg + "Wempresa=${session.empresa.id}";--}%
+        %{--location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=comprobante.pdf"--}%
+        %{--} else {--}%
+        %{--bootbox.alert(parts[1])--}%
+        %{--}--}%
+        %{--}--}%
+        %{--});--}%
         %{--});--}%
 
 
@@ -1193,16 +1212,16 @@
                             case '1':
                                 url = "${g.createLink(controller: 'reportes3', action: 'imprimirCompDiario')}?id=" + msg + "Wempresa=${session.empresa.id}";
                                 location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=comprobanteIngreso.pdf";
-                            break;
+                                break;
                             case '2':
                                 url = "${g.createLink(controller: 'reportes3', action: 'imprimirCompDiario')}?id=" + msg + "Wempresa=${session.empresa.id}";
                                 location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=comprobanteEgreso.pdf";
-                            break;
+                                break;
                             case '3':
                                 url = "${g.createLink(controller: 'reportes3', action: 'imprimirCompDiario')}?id=" + msg + "Wempresa=${session.empresa.id}";
                                 location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=comprobanteDiario.pdf";
-                            break;
-                            }
+                                break;
+                        }
                     } else {
                         bootbox.alert(parts[1])
                     }
@@ -1255,14 +1274,17 @@
             var cont = $("#contP3").val();
             var per = $("#periodo3").val();
             var cnta = $("#cnta3").val();
+            var fechaDesde = $(".fechaDe").val();
+            var fechaHasta = $(".fechaHa").val();
 
             if (cont == '-1') {
                 bootbox.alert("Debe elegir una contabilidad!")
             } else {
-                if (per != null) {
-                    url = "${g.createLink(controller:'reportes' , action: 'auxiliaresContables')}?cont=" + cont + "Wemp=${session.empresa.id}" + "Wper=" + per + "Wcnta=" + cnta;
+//                if (per != null) {
+                    %{--url = "${g.createLink(controller:'reportes' , action: 'auxiliaresContables')}?cont=" + cont + "Wemp=${session.empresa.id}" + "Wper=" + per + "Wcnta=" + cnta;--}%
+                    url = "${g.createLink(controller:'reportes2' , action: 'libroMayor')}?cont=" + cont + "Wemp=${session.empresa.id}" + "Wper=" + per + "Wcnta=" + cnta + "Wdesde=" + fechaDesde + "Whasta=" + fechaHasta;
                     location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=auxiliares.pdf"
-                }
+//                }
             }
 
         });
@@ -1383,9 +1405,9 @@
                     if (parts[0] == "NO") {
                         if (parts[1] == "1") {
                             var msgs = "Ya existe un archivo XML para el periodo " + mes + "-" + anio + "." +
-                                    "<ul><li>Si desea <strong>sobreescribir el archivo existente</strong>, haga click en el botón <strong>'Sobreescribir'</strong></li>" +
-                                    "<li>Si desea <strong>descargar el archivo previamente generado</strong>, haga click en el botón <strong>'Descargar'</strong></li>" +
-                                    "<li>Si desea <strong>ver la lista de archivos generados</strong>, haga cilck en el botón <strong>'Archivos'</strong></li></ul>";
+                                "<ul><li>Si desea <strong>sobreescribir el archivo existente</strong>, haga click en el botón <strong>'Sobreescribir'</strong></li>" +
+                                "<li>Si desea <strong>descargar el archivo previamente generado</strong>, haga click en el botón <strong>'Descargar'</strong></li>" +
+                                "<li>Si desea <strong>ver la lista de archivos generados</strong>, haga cilck en el botón <strong>'Archivos'</strong></li></ul>";
                             bootbox.dialog({
                                 title   : "Alerta",
                                 message : msgs,

@@ -14,7 +14,7 @@
                     Código
                 </label>
                 <div class="col-md-3">
-                    <g:textField name="codigo" maxlength="4" required="" class="allCaps form-control required" value="${conceptoRetencionImpuestoRentaInstance?.codigo}"/>
+                    <g:textField name="codigo" maxlength="5" required="" class="allCaps form-control required" value="${conceptoRetencionImpuestoRentaInstance?.codigo}"/>
                 </div>
                 
             </span>

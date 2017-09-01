@@ -28,7 +28,7 @@
                     
                     <th>Código</th>
                     <th>Descripción</th>
-                    <th>Modalidad de Pago</th>
+                    <th style="width: 150px">Modalidad de Pago</th>
                     <th>%</th>
                     <th>Tipo</th>
 
@@ -40,7 +40,7 @@
                         
                         <td>${conceptoRetencionImpuestoRentaInstance?.codigo}</td>
                         <td style="font-size: 13px">${conceptoRetencionImpuestoRentaInstance?.descripcion}</td>
-                        <td>${conceptoRetencionImpuestoRentaInstance?.modalidadPago?.descripcion}</td>
+                        <td style="font-size: 12px">${conceptoRetencionImpuestoRentaInstance?.modalidadPago?.descripcion}</td>
                         <td style="text-align: right">${conceptoRetencionImpuestoRentaInstance?.porcentaje}</td>
                         <td style="text-align: center">${conceptoRetencionImpuestoRentaInstance?.tipo}</td>
 

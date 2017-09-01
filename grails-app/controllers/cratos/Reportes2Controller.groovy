@@ -9,7 +9,7 @@ import com.itextpdf.text.pdf.PdfWriter
 class Reportes2Controller {
 
     def buscadorService
-
+    def dbConnectionService
     def kerberosoldService
 
     def updateCuenta() {
@@ -489,8 +489,19 @@ class Reportes2Controller {
 
         return [auxiliar: auxiliar, pagos: pagos, fechaInicio: fechaInicio, fechaFin: fechaFin, empresa: empresa]
 
+   }
 
+    def libroMayor () {
+        println("params " + params)
+        def desde = new Date().parse("dd-MM-yyyy", params.desde)
+        def hasta = new Date().parse("dd-MM-yyyy", params.hasta)
+
+        def cn = dbConnectionService.getConnection()
+        def sql = "select * from libro_mayor(${params.emp}, ${params.cont}, ${params.cnta}, '${params.desde}', '${params.hasta}');"
+        println("sql " + sql)
+        def res =  cn.rows(sql.toString())
+
+        return[res: res,empresa: params.emp, desde: desde, hasta: hasta]
     }
-
 
 }
