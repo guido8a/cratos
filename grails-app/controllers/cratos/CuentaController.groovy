@@ -627,4 +627,23 @@ class CuentaController extends cratos.seguridad.Shield {
         render "NO_No se encontró Cuenta."
     } //notFound para ajax
 
+    def buscadorCuentas_ajax () {
+
+    }
+
+    def tablaCuentas_ajax () {
+//        println("params " + params)
+        def empresa = Empresa.get(session.empresa.id)
+
+        def res = Cuenta.withCriteria {
+            eq("empresa",empresa)
+            and{
+                ilike("descripcion", "%" + params.desc + "%")
+                ilike("numero", "%" + params.numero + "%")
+            }
+            order("numero","asc")
+        }
+        return[cuentas: res]
+    }
+
 }

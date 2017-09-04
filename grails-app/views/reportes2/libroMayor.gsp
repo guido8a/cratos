@@ -74,9 +74,8 @@
             <th align="center" style="width: 60px">Número</th>
             <th align="center" style="width: 100px;">Documento</th>
             <th align="center" style="width: 230px">Descripción</th>
-            <th align="center" style="width: 100px">Saldo Inicial</th>
-            <th align="center" style="width: 80px;">Débito</th>
-            <th align="center" style="width: 80px;">Crédito</th>
+            <th align="center" style="width: 80px;">Debe</th>
+            <th align="center" style="width: 80px;">Haber</th>
             <th align="center" style="width: 80px">Saldo</th>
         </tr>
         </thead>
@@ -95,7 +94,6 @@
                 <td>${cuenta.cntanmro}</td>
                 <td class="centro">${j == 0 ? '' : cuenta.cmprdcmt}</td>
                 <td >${j == 0 ? 'SALDO INICIAL' :cuenta.cntadscr}</td>
-                <td class="derecha">${j == 0 ? '' :cuenta.slmsslin}</td>
                 <td class="derecha">${j == 0 ? '' :cuenta.slmsdebe}</td>
                 <td class="derecha">${j == 0 ? '' :cuenta.slmshber}</td>
                 <td class="derecha">${cuenta.slmssldo}</td>
@@ -106,10 +104,10 @@
     <table>
         <thead>
         <tr>
-            <th style="width: 580px" class="derecha">Total: </th>
-            <th style="width: 80px" class="derecha"><g:formatNumber number="${totalDebe}" maxFractionDigits="2" minFractionDigits="2" format="##,##0" locale="en_US"/></th>
-            <th style="width: 80px" class="derecha"><g:formatNumber number="${totalHasta}" maxFractionDigits="2" minFractionDigits="2" format="##,##0" locale="en_US"/></th>
-            <th style="width: 80px" class="derecha"><g:formatNumber number="${res.last().slmssldo}" maxFractionDigits="2" minFractionDigits="2" format="##,##0" locale="en_US"/></th>
+            <th style="width: 480px" class="derecha">Total: </th>
+            <th style="width: 90px" class="derecha"><g:formatNumber number="${totalDebe}" maxFractionDigits="2" minFractionDigits="2" format="##,##0" locale="en_US"/></th>
+            <th style="width: 90px" class="derecha"><g:formatNumber number="${totalHasta}" maxFractionDigits="2" minFractionDigits="2" format="##,##0" locale="en_US"/></th>
+            <th style="width: 90px" class="derecha"><g:formatNumber number="${res.last().slmssldo}" maxFractionDigits="2" minFractionDigits="2" format="##,##0" locale="en_US"/></th>
         </tr>
         </thead>
     </table>

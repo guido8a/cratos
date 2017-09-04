@@ -767,9 +767,24 @@
                 </div>
 
                 <div id="divCuenta3" class="fila">
-                    <label class="uno">Cuenta:</label>
-                    <g:select name="cnta3" from="${cratos.Cuenta.findAllByEmpresa(session.empresa, [sort: 'numero'])}"
-                              optionKey="id" class="form-control dos"/>
+
+                    <div class="col-md-3">
+                        <label class="uno">Cuenta:</label>
+                    </div>
+
+                    <g:hiddenField name="idCntaLibro" value="" />
+
+                    %{--<g:select name="cnta3" from="${cratos.Cuenta.findAllByEmpresa(session.empresa, [sort: 'numero'])}"--}%
+                    %{--optionKey="id" class="form-control dos"/>--}%
+                    <div class="col-md-6">
+                        <g:textField name="cntaLibro" value="" class="form-control" />
+                    </div>
+
+                    <div class="col-md-2">
+                        <a href="#" class="link btn btn-info btn-ajax" id="buscarCuenta">
+                            <i class="fa fa-search"></i> Buscar
+                        </a>
+                    </div>
 
                 </div>
 
@@ -985,10 +1000,42 @@
 
 <script type="text/javascript">
 
+    $("#cntaLibro").dblclick(function () {
+            buscarCuentas();
+    });
+
+    $("#buscarCuenta").click(function () {
+            buscarCuentas();
+    });
+
+    function buscarCuentas () {
+        $.ajax({
+           type: 'POST',
+            url:'${createLink(controller: 'cuenta', action: 'buscadorCuentas_ajax')}',
+            data:{
+
+            },
+            success: function (msg){
+                bootbox.dialog({
+                    title: 'Buscar cuenta',
+                    message: msg,
+                    class: 'long',
+                    buttons:{
+                        cancelar: {
+                            label: "<i class='fa fa-times'></i> Cancelar",
+                            className: "btn-primary",
+                            callback: function () {
+//                                bootbox.hideAll();
+                            }
+                        }
+                    }
+                })
+            }
+        });
+    }
 
 
     cargarSelComprobante($("#compTipo option:selected").val());
-
 
     $("#compTipo").change(function () {
         var tipo = $("#compTipo option:selected").val();
@@ -1273,40 +1320,46 @@
         $(".btnAceptarAuxiliar").click(function () {
             var cont = $("#contP3").val();
             var per = $("#periodo3").val();
-            var cnta = $("#cnta3").val();
+//            var cnta = $("#cnta3").val();
+            var cnta = $("#idCntaLibro").val();
             var fechaDesde = $(".fechaDe").val();
             var fechaHasta = $(".fechaHa").val();
 
             if (cont == '-1') {
                 bootbox.alert("<i class='fa fa-exclamation-circle fa-3x pull-left text-warning text-shadow'></i>  Seleccione una contabilidad!")
             } else {
-                if(fechaDesde == '' || fechaHasta == ''){
-                    bootbox.alert("<i class='fa fa-exclamation-circle fa-3x pull-left text-warning text-shadow'></i>  Seleccione las fechas!")
+                if(cnta == ''){
+                    bootbox.alert("<i class='fa fa-exclamation-circle fa-3x pull-left text-warning text-shadow'></i>  Seleccione una cuenta!")
                 }else{
-                    $.ajax({
-                       type: 'POST',
-                        url: '${createLink(controller: 'proceso', action: 'revisarFecha_ajax')}',
-                        data:{
-                            desde: fechaDesde,
-                            hasta: fechaHasta
-                        },
-                        success: function (msg){
-                            if(msg == 'ok'){
-                                url = "${g.createLink(controller:'reportes2' , action: 'libroMayor')}?cont=" + cont + "Wemp=${session.empresa.id}" + "Wper=" + per + "Wcnta=" + cnta + "Wdesde=" + fechaDesde + "Whasta=" + fechaHasta;
-                                location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=auxiliares.pdf"
-                            }else{
-                                bootbox.alert("<i class='fa fa-exclamation-circle fa-3x pull-left text-warning text-shadow'></i> La fecha ingresada en 'Hasta' es menor a la fecha ingresada en 'Desde' ");
-                                return false;
+                    if(fechaDesde == '' || fechaHasta == ''){
+                        bootbox.alert("<i class='fa fa-exclamation-circle fa-3x pull-left text-warning text-shadow'></i>  Seleccione las fechas!")
+                    }else{
+                        $.ajax({
+                            type: 'POST',
+                            url: '${createLink(controller: 'proceso', action: 'revisarFecha_ajax')}',
+                            data:{
+                                desde: fechaDesde,
+                                hasta: fechaHasta
+                            },
+                            success: function (msg){
+                                if(msg == 'ok'){
+                                    url = "${g.createLink(controller:'reportes2' , action: 'libroMayor')}?cont=" + cont + "Wemp=${session.empresa.id}" + "Wper=" + per + "Wcnta=" + cnta + "Wdesde=" + fechaDesde + "Whasta=" + fechaHasta;
+                                    location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=auxiliares.pdf"
+                                }else{
+                                    bootbox.alert("<i class='fa fa-exclamation-circle fa-3x pull-left text-warning text-shadow'></i> La fecha ingresada en 'Hasta' es menor a la fecha ingresada en 'Desde' ");
+                                    return false;
+                                }
                             }
-                        }
-                    });
-                    //                if (per != null) {
-                    %{--url = "${g.createLink(controller:'reportes' , action: 'auxiliaresContables')}?cont=" + cont + "Wemp=${session.empresa.id}" + "Wper=" + per + "Wcnta=" + cnta;--}%
+                        });
+
+                    }
+                }
+
+            }
+            //                if (per != null) {
+            %{--url = "${g.createLink(controller:'reportes' , action: 'auxiliaresContables')}?cont=" + cont + "Wemp=${session.empresa.id}" + "Wper=" + per + "Wcnta=" + cnta;--}%
 
 //                }
-                }
-            }
-
         });
 
         $(".btnAceptarAuxCliente").click(function () {

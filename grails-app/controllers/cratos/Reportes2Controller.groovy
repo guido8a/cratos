@@ -492,7 +492,7 @@ class Reportes2Controller {
    }
 
     def libroMayor () {
-//        println("params " + params)
+//        println("params lm " + params)
         def desde = new Date().parse("dd-MM-yyyy", params.desde)
         def hasta = new Date().parse("dd-MM-yyyy", params.hasta)
 
