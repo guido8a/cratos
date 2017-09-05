@@ -71,7 +71,7 @@ grails.project.dependency.resolution = {
 
 //        compile "org.grails.plugins:audit-logging:1.1.3"
 
-        runtime ":kerberos8:0.2"
+        runtime ":kerberos8:1.0"
 
         // Uncomment these to enable additional asset-pipeline capabilities
         //compile ":sass-asset-pipeline:1.9.0"
