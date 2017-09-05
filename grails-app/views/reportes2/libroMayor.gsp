@@ -71,7 +71,7 @@
 
         <thead>
         <tr style="font-size: 11px">
-            <th align="center" style="width: 60px">Número</th>
+            <th align="center" style="width: 60px">Fecha</th>
             <th align="center" style="width: 100px;">Documento</th>
             <th align="center" style="width: 230px">Descripción</th>
             <th align="center" style="width: 80px;">Debe</th>
@@ -91,9 +91,9 @@
             <g:set var="totalHasta" value="${totalHasta += cuenta.slmshber.toDouble()}"/>
 
             <tr>
-                <td>${cuenta.cntanmro}</td>
+                <td>${cuenta.cmprfcha}</td>
                 <td class="centro">${j == 0 ? '' : cuenta.cmprdcmt}</td>
-                <td >${j == 0 ? 'SALDO INICIAL' :cuenta.cntadscr}</td>
+                <td>${cuenta.cmprdscr}</td>
                 <td class="derecha">${j == 0 ? '' :cuenta.slmsdebe}</td>
                 <td class="derecha">${j == 0 ? '' :cuenta.slmshber}</td>
                 <td class="derecha">${cuenta.slmssldo}</td>

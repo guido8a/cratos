@@ -3,21 +3,20 @@ package cratos
 class PagosController extends cratos.seguridad.Shield {
 
     def conciliacionBancaria() {
-        def emp = Empresa.get(session.empresa.id)
-        def pagos = PagoAux.withCriteria {
-//            eq("tipoDocumento", TipoDocumento.get(1)) //cheque
-            auxiliar {
-                proveedor {
-                    eq("empresa", emp)
-                }
-            }
-            or {
-                ne("estado", "V")
-                isNull("estado")
-            }
-            order("fecha", "asc")
-        }
-        return [pagos: pagos]
+//        def emp = Empresa.get(session.empresa.id)
+//        def pagos = PagoAux.withCriteria {
+//            auxiliar {
+//                proveedor {
+//                    eq("empresa", emp)
+//                }
+//            }
+//            or {
+//                ne("estado", "V")
+//                isNull("estado")
+//            }
+//            order("fecha", "asc")
+//        }
+//        return [pagos: pagos]
     }
 
     def validarPagoAux() {
