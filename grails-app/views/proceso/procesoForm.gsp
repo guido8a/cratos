@@ -111,7 +111,6 @@
         </g:if>
 
         <g:if test="${proceso}">
-        %{--<g:if test="${!aux}">--}%
             <g:if test="${proceso?.estado == 'R'}">
                 <g:form action="borrarProceso" class="br_prcs" style="display: inline">
                     <input type="hidden" name="id" value="${proceso?.id}">
@@ -121,21 +120,6 @@
                     </a>
                 </g:form>
             </g:if>
-        %{--</g:if>--}%
-        %{--
-                    <g:else>
-                        <a href="#" class="btn btn-default" style="cursor: default">
-                            <i class="fa fa-ban"></i>
-                            Esta transacción no puede ser eliminada ni desmayorizada porque tiene auxiliares registrados.
-                        </a>
-                    </g:else>
-        --}%
-
-        %{--<g:if test="${proceso?.tipoProceso?.id == 1}">--}%
-        %{--<g:link class="btn btn-primary" action="detalleSri" id="${proceso?.id}" style="margin-bottom: 10px;">--}%
-        %{--<i class="fa fa-money"></i> Retenciones--}%
-        %{--</g:link>--}%
-        %{--</g:if>--}%
             <g:if test="${cratos.Retencion.findByProceso(proceso)}">
                 <g:link controller="reportes3" action="imprimirRetencion" class="btn btn-default btnRetencion"
                         id="${proceso?.id}" params="[empresa: session.empresa.id]" style="margin-bottom: 10px;">
@@ -150,13 +134,10 @@
                 </a>
             </g:if>
         </g:if>
-
-    %{--<g:if test="${proceso?.tipoProceso?.codigo?.trim() == 'C' || proceso?.tipoProceso?.codigo?.trim() == 'V'}">--}%
         <a href="#" class="btn btn-primary hidden" style="cursor: default; margin-right: 20px" id="abrir-fp">
             <i class="fa fa-usd"></i>
             Forma de Pago
         </a>
-        %{--</g:if>--}%
     </div>
 </div>
 
@@ -232,10 +213,6 @@
                           value="${proceso?.tipoProceso?.id}" optionKey="id"
                           optionValue="descripcion" title="Tipo de la transacción" disabled="${proceso?.estado == 'R' ?: false}" />
             </div>
-
-
-
-
         </div>
 
         <div class="row" id="gestorDiv"></div>
@@ -316,7 +293,6 @@
                 </fieldset>
             </div>  %{--//exterior--}%
         </div>
-
     </div>
 
     <div class="vertical-container" style="margin-top: 25px;color: black;padding-bottom: 10px;">
@@ -328,17 +304,6 @@
     </div>
 
 </g:form>
-%{--<g:if test="${proceso}">--}%
-%{--<div class="vertical-container" skip="1" style="margin-top: 5px; color:black; margin-bottom:20px; height:auto; max-height: 520px; overflow: auto;">--}%
-%{--<p class="css-vertical-text">Comprobante</p>--}%
-
-%{--<div class="linea"></div>--}%
-
-%{--<div id="divComprobante" class="col-xs-12"--}%
-%{--style="margin-bottom: 0px ;padding: 0px;display: none;margin-top: 5px;">--}%
-%{--</div>--}%
-%{--</div>--}%
-%{--</g:if>--}%
 
 
 <!-- Modal -->
@@ -424,14 +389,11 @@
                             Buscar
                         </a>
                     </div>
-
                 </div>
-
                 <div class="ui-corner-all"
                      style="height: 400px;border: 1px solid #000000; width: 100%;margin-left: 0px;margin-top: 20px;overflow-y: auto"
                      id="resultados"></div>
             </div>
-
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-times"></i> Cerrar
                 </button>

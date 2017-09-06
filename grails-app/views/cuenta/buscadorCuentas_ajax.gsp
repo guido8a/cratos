@@ -15,7 +15,7 @@
 <div class="row" style="margin-bottom: 10px">
     <div class="col-xs-4 negrilla">
         Número:
-        <input type="text" class=" form-control label-shared" style="width: 200px" name="numero_name" id="numeroCuenta"/>
+        <input type="text" class=" form-control label-shared validacionNumeroSinPuntos" style="width: 200px" name="numero_name" id="numeroCuenta"/>
     </div>
     <div class="col-xs-5 negrilla">
         Descripción:
@@ -51,6 +51,31 @@
 
 <script type="text/javascript">
 
+    function validarNumSinPuntos(ev) {
+        /*
+         48-57      -> numeros
+         96-105     -> teclado numerico
+         188        -> , (coma)
+         190        -> . (punto) teclado
+         110        -> . (punto) teclado numerico
+         8          -> backspace
+         46         -> delete
+         9          -> tab
+         37         -> flecha izq
+         39         -> flecha der
+         */
+        return ((ev.keyCode >= 48 && ev.keyCode <= 57) ||
+        (ev.keyCode >= 96 && ev.keyCode <= 105) ||
+        ev.keyCode == 8 || ev.keyCode == 46 || ev.keyCode == 9 ||
+        ev.keyCode == 37 || ev.keyCode == 39 );
+    }
+
+
+    $(".validacionNumeroSinPuntos").keydown(function (ev) {
+        return validarNumSinPuntos(ev);
+    }).keyup(function () {
+    });
+
     $(".btnLimpiar").click(function () {
         $("#numeroCuenta").val('');
         $("#descCuenta").val('');
@@ -66,6 +91,7 @@
     });
 
     function tablaCuentas (numero, desc){
+        openLoader("Buscando");
         $.ajax({
             type: 'POST',
             url:'${createLink(controller: 'cuenta', action: 'tablaCuentas_ajax')}',
@@ -74,10 +100,19 @@
                 desc: desc
             },
             success: function (msg) {
+                closeLoader();
                 $("#divTablaCuentas").html(msg)
             }
         });
     }
+
+    $("#numeroCuenta, #descCuenta").keyup(function (ev) {
+        if (ev.keyCode == 13) {
+            var numero = $("#numeroCuenta").val();
+            var desc = $("#descCuenta").val();
+            tablaCuentas(numero, desc);
+        }
+    });
 
 
 

@@ -39,16 +39,16 @@
     <div class="row" style="margin-bottom: 10px;">
 
         <div style="margin-left: 15px; width: 140px" class="col-xs-2">
-        <div>
-            <g:link class="btn btn-primary btn-sm" action="nuevoProceso" style="margin-left: -15px">
-                <i class="fa fa-file-o"></i> Nueva Transacción
-            </g:link>
-        </div>
-        <div>
-            <g:link class="btn btn-primary btn-sm" action="procesosAnulados" style="margin-left: -15px; margin-top: 5px;">
-                <i class="fa fa-file-o"></i> Ir a Anulados
-            </g:link>
-        </div>
+            <div>
+                <g:link class="btn btn-success btn-sm" action="nuevoProceso" style="margin-left: -15px">
+                    <i class="fa fa-file-o"></i> Nueva Transacción
+                </g:link>
+            </div>
+            <div>
+                <g:link class="btn btn-primary btn-sm" action="procesosAnulados" style="margin-left: -15px; margin-top: 5px;">
+                    <i class="fa fa-times-circle"></i> Ir a Anulados
+                </g:link>
+            </div>
         </div>
 
         <div class="col-xs-3" style="margin-left: 10px;">
@@ -72,7 +72,7 @@
                             maxDate="new Date()"/>
         </div>
 
-        <div class="btn-group col-xs-2" style="margin-left: -30px; margin-top: 20px; width: 160px;">
+        <div class="btn-group col-xs-2" style="margin-left: -20px; margin-top: 20px; width: 160px;">
 
             <a href="#" name="busqueda" class="btn btn-info btnBusqueda btn-ajax">
                 <i class="fa fa-check-square-o"></i> Buscar</a>
@@ -80,6 +80,7 @@
             <a href="#" name="limpiarBus" class="btn btn-warning btnLimpiarBusqueda btn-ajax" title="Borrar criterios" style="height: 34px">
                 <i class="fa fa-eraser"></i></a>
         </div>
+
         <div  class="col-xs-2" style="width: 260px; border-style: solid; border-radius:10px; border-width: 1px;
         margin-left: 0px; height: 68px; border-color: #0c6cc2">
             <div class="col-xs-3" style="padding: 5px; height:30px;
@@ -94,28 +95,7 @@
         </div>
 
     </div>
-
-
-    <div>
-
-
-
-
-        %{--<div class="col-xs-2" style="margin-right: 0px; padding: 0 ">--}%
-        %{--<span class="text-info" style="font-size: 15px"><strong>${session.contabilidad.descripcion}</strong></span>--}%
-        %{--</div>--}%
-        %{--<div class="col-xs-1" >--}%
-        %{--<a href="#" class="btn btn-azul" id="btnCambiarConta" style="margin-left: -20px">--}%
-        %{--<i class="fa fa-refresh"></i> Cambiar--}%
-        %{--</a>--}%
-        %{--</div>--}%
-    </div>
-
-
-
 </div>
-
-
 
 <div style="margin-top: 30px; min-height: 650px" class="vertical-container">
     <p class="css-vertical-text">Procesos encontrados</p>
@@ -148,7 +128,6 @@ como máximo 30 <span style="margin-left: 40px; color: #0b2c89">Se ordena por fe
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                %{--<h4 class="modal-title">Problema y Solución</h4>--}%
                 Problema y Solución..
             </div>
 
@@ -164,52 +143,14 @@ como máximo 30 <span style="margin-left: 40px; color: #0b2c89">Se ordena por fe
 </div>
 
 
-<script>
+<script type="text/javascript">
+
+
     $(function () {
         $("#limpiaBuscar").click(function () {
             $("#buscar").val('');
         });
-
     });
-</script>
-
-<script type="text/javascript">
-
-
-
-
-    //    $('.fechaD').datepicker()
-    //        .on("input change", function (e) {
-    //            asignarMinimo();
-    //        });
-    //
-//    $(".fechaD").change(function () {
-//        asignarMinimo();
-//    });
-
-
-
-
-//    $(".fechaD").datepicker({
-//        onSelect: function() {
-//            //- get date from another datepicker without language dependencies
-//            var minDate = $('.fechaD').datepicker('getDate');
-//            console.log(" -- " + minDate)
-//            $(".fechaH").datepicker("change", { minDate: minDate });
-//        }
-//    });
-
-//
-//    function asignarMinimo(){
-////        $(".fechaH").attr("minDate",$(".fechaD").val())
-////        $('.fechaH').datepicker('option', 'minDate',new Date ($(".fechaD").val()))
-////        var minDate = $('.fechaD').datepicker('getDate');
-////        console.log(" -- " + minDate)
-////        $(".fechaH").datepicker("change", { minDate: new Date($(".fechaD").val()) });
-//        $(".fechaH").datepicker('destroy')
-//        $(".fechaH").attr("minDate", '22-8-2017');
-//
-//    }
 
     cargarBusqueda();
 
@@ -264,7 +205,6 @@ como máximo 30 <span style="margin-left: 40px; color: #0b2c89">Se ordena por fe
         }
     });
 
-
     function createContextMenu(node) {
         var $tr = $(node);
 
@@ -279,8 +219,6 @@ como máximo 30 <span style="margin-left: 40px; color: #0b2c89">Se ordena por fe
         var id = $tr.data("id");
         var tp = $tr.data("tipo");
         var cm = $tr.data("cm");
-
-
 
         var editar = {
             label: " Ir al proceso",
@@ -316,7 +254,6 @@ como máximo 30 <span style="margin-left: 40px; color: #0b2c89">Se ordena por fe
             }
         };
 
-
         var reembolso = {
             label: ' Reembolso',
             icon: 'fa fa-thumbs-up',
@@ -341,7 +278,6 @@ como máximo 30 <span style="margin-left: 40px; color: #0b2c89">Se ordena por fe
         if(tp == 'Compras' && cm == '41'){
             items.reembolso = reembolso
         }
-
 
         if(etdo == 'R') {
             items.comprobante = comprobante;
@@ -380,11 +316,8 @@ como máximo 30 <span style="margin-left: 40px; color: #0b2c89">Se ordena por fe
 
 
     $(".btnLimpiarBusqueda").click(function () {
-        $(".fechaD").val('');
-        $(".fechaH").val('');
-        $("#buscar").val('');
+        $(".fechaD, .fechaH, #buscar").val('');
     });
-
 
 
     $(".btnBusquedaFechas").click(function () {

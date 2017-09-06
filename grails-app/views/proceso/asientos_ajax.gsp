@@ -1,44 +1,43 @@
 <%@ page import="cratos.AsientoCentro" %>
 <style type="text/css">
-    .colorAtras {
-        background-color: #dfa58f;
-        color: #0b0b0b;
-        text-align: center;
-        font-weight: bold;
-    }
+.colorAtras {
+    background-color: #dfa58f;
+    color: #0b0b0b;
+    text-align: center;
+    font-weight: bold;
+}
 
-    .colorAsiento {
-        color: #0b0b0b;
-        background-color: #7ac6ff;
-    }
+.colorAsiento {
+    color: #0b0b0b;
+    background-color: #7ac6ff;
+}
 
-    .derecha {
-        text-align: right;
-    }
+.derecha {
+    text-align: right;
+}
 
-    .izquierda {
-        text-align: left;
-    }
+.izquierda {
+    text-align: left;
+}
 
-    .dato {
-        font-weight: normal;
-        background-color: #ffd5af;
-    }
-    .total {
-        /*font-weight: bold;*/
-        background-color: #1270c3;
-        color: #fdcfa0;
-    }
+.dato {
+    font-weight: normal;
+    background-color: #ffd5af;
+}
+.total {
+    /*font-weight: bold;*/
+    background-color: #1270c3;
+    color: #fdcfa0;
+}
 
-    .rojo{
-        color: #702213
-    }
+.rojo{
+    color: #702213
+}
 
 </style>
 
 
 <div class="col-md-4 etiqueta"><label>Comprobante:</label> ${comprobante?.descripcion}</div>
-%{--<div class="col-md-3 etiqueta"><label>Tipo:</label> ${comprobante?.tipo?.descripcion}</div>--}%
 <div class="col-md-3 etiqueta"><label>Transacción:</label> ${comprobante?.proceso?.tipoProceso?.descripcion}</div>
 <div class="col-md-2 etiqueta"><label>Número:</label> ${comprobante?.prefijo}${comprobante?.numero}</div>
 <div class="col-md-3 etiqueta"><label>Valor:</label> <g:formatNumber number="${comprobante?.proceso?.valor}" maxFractionDigits="2" format="##,##0"/></div>
@@ -47,7 +46,7 @@
     <div class="btn-group" style="float: right; margin-top: -90px">
         <a href="#" class="btn btn-success btnAgregarAsiento" comp="${comprobante?.id}"
            title="Agregar asiento contable">
-            <i class="fa fa-plus">Agregar Asiento</i>
+            <i class="fa fa-plus"> Agregar Asiento</i>
         </a>
     </div>
 </g:if>
@@ -74,50 +73,43 @@
             <g:each in="${asientos}" var="asiento">
                 <g:set var="sumadebe" value="${sumadebe + asiento.debe}"/>
                 <g:set var="sumahber" value="${sumahber + asiento.haber}"/>
-                    <tr class="colorAsiento">
-                        <td width="100px">${asiento?.cuenta?.numero}</td>
-                        <td width="520px">${asiento?.cuenta?.descripcion}</td>
-                        <td width="50px">${cratos.AsientoCentro.findAllByAsiento(asiento) ? cratos.AsientoCentro.findAllByAsiento(asiento)?.first()?.centroCosto?.codigo : ''}</td>
-                        <td width="100px"
-                            class="derecha">${asiento.debe ? g.formatNumber(number: asiento.debe, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2) : 0.00}</td>
-                        <td width="100px"
-                            class="derecha">${asiento.haber ? g.formatNumber(number: asiento.haber, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2) : 0.00}</td>
-                        <td width="130px" style="text-align: center">
-                            <g:if test="${asiento?.comprobante?.registrado != 'S'}">
-                                <div class="btn-group">
-                                    %{--<g:if test="${cratos.Auxiliar.findByAsiento(asiento)}">--}%
-                                    %{--</g:if>--}%
-                                    %{--<g:else>--}%
-                                        <a href="#" class="btn btn-success btn-sm btnEditarAsiento" idAs="${asiento?.id}"
-                                           title="Editar asiento">
-                                            <i class="fa fa-pencil"></i>
-                                        </a>
-                                    %{--</g:else>--}%
+                <tr class="colorAsiento">
+                    <td width="100px">${asiento?.cuenta?.numero}</td>
+                    <td width="520px">${asiento?.cuenta?.descripcion}</td>
+                    <td width="50px">${cratos.AsientoCentro.findAllByAsiento(asiento) ? cratos.AsientoCentro.findAllByAsiento(asiento)?.first()?.centroCosto?.codigo : ''}</td>
+                    <td width="100px"
+                        class="derecha">${asiento.debe ? g.formatNumber(number: asiento.debe, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2) : 0.00}</td>
+                    <td width="100px"
+                        class="derecha">${asiento.haber ? g.formatNumber(number: asiento.haber, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2) : 0.00}</td>
+                    <td width="130px" style="text-align: center">
+                        <g:if test="${asiento?.comprobante?.registrado != 'S'}">
+                            <div class="btn-group">
+                                <a href="#" class="btn btn-success btn-sm btnEditarAsiento" idAs="${asiento?.id}"
+                                   title="Editar asiento">
+                                    <i class="fa fa-pencil"></i>
+                                </a>
+                                <a href="#" class="btn btn-azul btn-sm btnCentroCostos" idAs="${asiento?.id}" nomAs="${asiento?.cuenta?.descripcion}"
+                                   title="Centro de Costos">
+                                    <i class="fa fa-dollar"></i>
+                                </a>
+                                <a href="#" class="btn btn-warning btn-sm btnAgregarAuxiliar" idAs="${asiento?.id}"
+                                   title="Agregar auxiliar">
+                                    <i class="fa fa-plus"></i>
+                                </a>
+                                <a href="#" class="btn btn-danger btn-sm btnEliminarAsiento" idAs="${asiento?.id}"
+                                   title="Eliminar asiento">
+                                    <i class="fa fa-times"></i>
+                                </a>
+                            </div>
+                        </g:if>
+                    </td>
+                </tr>
 
-                                    <a href="#" class="btn btn-azul btn-sm btnCentroCostos" idAs="${asiento?.id}" nomAs="${asiento?.cuenta?.descripcion}"
-                                       title="Centro de Costos">
-                                        <i class="fa fa-dollar"></i>
-                                    </a>
-                                    <a href="#" class="btn btn-warning btn-sm btnAgregarAuxiliar" idAs="${asiento?.id}"
-                                       title="Agregar auxiliar">
-                                        <i class="fa fa-plus"></i>
-                                    </a>
-                                    %{--<g:if test="${!cratos.Auxiliar.findByAsiento(asiento)}">--}%
-                                        <a href="#" class="btn btn-danger btn-sm btnEliminarAsiento" idAs="${asiento?.id}"
-                                           title="Eliminar asiento">
-                                            <i class="fa fa-times"></i>
-                                        </a>
-                                    %{--</g:if>--}%
-                                  </div>
-                            </g:if>
-                        </td>
-                    </tr>
-
-                    <g:if test="${cratos.Auxiliar.findAllByAsiento(asiento)}">
-                        <g:set var="auxiliares1" value="${cratos.Auxiliar.findAllByAsiento(asiento)}"/>
-                        <g:set var="cabecera" value="N"/>
-                        <g:each in="${auxiliares1}" var="auxiliar">
-                            <g:if test="${cabecera != 'S'}">
+                <g:if test="${cratos.Auxiliar.findAllByAsiento(asiento)}">
+                    <g:set var="auxiliares1" value="${cratos.Auxiliar.findAllByAsiento(asiento)}"/>
+                    <g:set var="cabecera" value="N"/>
+                    <g:each in="${auxiliares1}" var="auxiliar">
+                        <g:if test="${cabecera != 'S'}">
                             <tr>
                                 <td class="colorAtras">Fecha</td>
                                 <td class="colorAtras">Proveedor</td>
@@ -127,35 +119,33 @@
                                 <td class="colorAtras"><i class="fa fa-pencil"></i></td>
                                 <g:set var="cabecera" value="S"/>
                             </tr>
-                            </g:if>
-                            <tr class="colorAtras">
-                                <g:set var="dcmt" value="${auxiliar?.documento? ' - Doc: ' + auxiliar?.documento : ''}"/>
-                                <td class="dato">${auxiliar?.fechaPago?.format("dd-MM-yyyy")}</td>
-                                <td class="dato izquierda">${auxiliar?.proveedor?.nombre} ${dcmt}</td>
-                                <td class="dato izquierda"></td>
-                                <td class="dato derecha">${auxiliar?.debe ? g.formatNumber(number: auxiliar.debe, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2) : 0.00}</td>
-                                <td class="dato derecha">${auxiliar.haber ? g.formatNumber(number: auxiliar.haber, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2) : 0.00}</td>
+                        </g:if>
+                        <tr class="colorAtras">
+                            <g:set var="dcmt" value="${auxiliar?.documento? ' - Doc: ' + auxiliar?.documento : ''}"/>
+                            <td class="dato">${auxiliar?.fechaPago?.format("dd-MM-yyyy")}</td>
+                            <td class="dato izquierda">${auxiliar?.proveedor?.nombre} ${dcmt}</td>
+                            <td class="dato izquierda"></td>
+                            <td class="dato derecha">${auxiliar?.debe ? g.formatNumber(number: auxiliar.debe, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2) : 0.00}</td>
+                            <td class="dato derecha">${auxiliar.haber ? g.formatNumber(number: auxiliar.haber, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2) : 0.00}</td>
 
-                                <td class="dato" style="text-align: center; width: 100px">
-                                    <g:if test="${auxiliar?.asiento?.comprobante?.registrado != 'S'}">
-                                        <div class="btn-group">
+                            <td class="dato" style="text-align: center; width: 100px">
+                                <g:if test="${auxiliar?.asiento?.comprobante?.registrado != 'S'}">
+                                    <div class="btn-group">
 
-                                            <a href="#" class="btn btn-success btn-sm btnEditarAuxiliar"
-                                               idAu="${auxiliar?.id}" title="Editar auxiliar">
-                                                <i class="fa fa-pencil"></i>
-                                            </a>
-                                            <a href="#" class="btn btn-danger btn-sm btnEliminarAuxiliar"
-                                               idAu="${auxiliar?.id}" title="Eliminar auxiliar">
-                                                <i class="fa fa-trash-o"></i>
-                                            </a>
-                                        </div>
-                                    </g:if>
-                                </td>
-                            </tr>
-                        </g:each>
-                    </g:if>
-
-                %{--</g:if>--}%
+                                        <a href="#" class="btn btn-success btn-sm btnEditarAuxiliar"
+                                           idAu="${auxiliar?.id}" title="Editar auxiliar">
+                                            <i class="fa fa-pencil"></i>
+                                        </a>
+                                        <a href="#" class="btn btn-danger btn-sm btnEliminarAuxiliar"
+                                           idAu="${auxiliar?.id}" title="Eliminar auxiliar">
+                                            <i class="fa fa-trash-o"></i>
+                                        </a>
+                                    </div>
+                                </g:if>
+                            </td>
+                        </tr>
+                    </g:each>
+                </g:if>
             </g:each>
             <tr class="colorAsiento">
                 <td colspan="3" class="total derecha">Totales del asiento</td>
@@ -197,8 +187,6 @@
             }
         });
     });
-
-
 
     $(".btnAgregarAsiento").click(function () {
         agregar('${comprobante?.id}', null)
@@ -247,7 +235,6 @@
                                 var parts = msg.split("_");
                                 if (parts[0] == 'ok') {
                                     log(parts[1], "success");
-                                    %{--cargarComprobante('${proceso?.id}');--}%
                                     cargarComprobanteP('${proceso?.id}');
                                     closeLoader();
                                 } else {
@@ -445,7 +432,7 @@
                                                 }
                                             });
                                         }
-                                      }
+                                    }
                                 }
                             }
                         }

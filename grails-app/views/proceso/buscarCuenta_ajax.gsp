@@ -15,11 +15,11 @@
 <div class="row" style="margin-bottom: 10px">
     <div class="col-xs-3 negrilla">
         C&oacute;digo:
-        <input type="text" class=" form-control label-shared" style="width: 150px" name="codigo" id="codigoBus"/>
+        <input type="text" class="form-control label-shared validacionNumeroSinPuntos" style="width: 150px" name="codigo_name" id="codigoBus"/>
     </div>
-    <div class="col-xs-3 negrilla">
+    <div class="col-xs-5 negrilla">
         Nombre:
-        <input type="text" class=" form-control label-shared" style="width: 150px" name="nombreBus" id="nombreBus"/>
+        <input type="text" class=" form-control label-shared" style="width: 350px" name="nombre_name" id="nombreBus"/>
     </div>
     <div class="col-xs-2 negrilla">
         <input type="hidden" name="movimientos" value="1"/>
@@ -50,11 +50,43 @@
 
 <script type="text/javascript">
 
+    function validarNumSinPuntos(ev) {
+        /*
+         48-57      -> numeros
+         96-105     -> teclado numerico
+         188        -> , (coma)
+         190        -> . (punto) teclado
+         110        -> . (punto) teclado numerico
+         8          -> backspace
+         46         -> delete
+         9          -> tab
+         37         -> flecha izq
+         39         -> flecha der
+         */
+        return ((ev.keyCode >= 48 && ev.keyCode <= 57) ||
+        (ev.keyCode >= 96 && ev.keyCode <= 105) ||
+        ev.keyCode == 8 || ev.keyCode == 46 || ev.keyCode == 9 ||
+        ev.keyCode == 37 || ev.keyCode == 39 );
+    }
+
+
+    $(".validacionNumeroSinPuntos").keydown(function (ev) {
+        return validarNumSinPuntos(ev);
+    }).keyup(function () {
+//        return validarNumSinPuntos(ev);
+    });
+
+    cargarBuscarCuenta();
+
     $("#buscarM").click(function (){
+        cargarBuscarCuenta();
+    });
+
+    function cargarBuscarCuenta () {
         var cod = $("#codigoBus").val();
         var nom = $("#nombreBus").val();
         var empresa = ${empresa?.id}
-        openLoader("Buscando");
+            openLoader("Buscando");
         $.ajax({
             type: 'POST',
             url: "${createLink(controller: 'proceso', action: 'tablaBuscarCuenta_ajax')}",
@@ -68,6 +100,15 @@
                 $("#divTablaCuentas").html(msg)
             }
         });
+    }
+
+
+    $("#codigoBus, #nombreBus").keyup(function (ev) {
+        if (ev.keyCode == 13) {
+            cargarBuscarCuenta();
+        }
     });
+
+
 
 </script>

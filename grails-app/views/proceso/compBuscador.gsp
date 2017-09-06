@@ -50,12 +50,11 @@
     $(".btnBuscarC").click(function () {
         var desc = $("#descripcionC").val();
         var numero = $("#numeroC").val();
-
         cargarTablaBusqueda(desc,numero)
-
     });
 
     function cargarTablaBusqueda (desc,num) {
+        openLoader("Buscando");
         $.ajax({
             type:'POST',
             url: '${createLink(controller: 'proceso', action: 'tablaBuscarComp_ajax')}',
@@ -66,10 +65,20 @@
                 descripcion : desc
             },
             success: function (msg) {
+                closeLoader();
                 $("#divCargarComprobante").html(msg)
             }
         });
     }
+
+    $("#numeroC, #descripcionC").keyup(function (ev) {
+        if (ev.keyCode == 13) {
+            var desc = $("#descripcionC").val();
+            var numero = $("#numeroC").val();
+            cargarTablaBusqueda(desc,numero)
+        }
+    });
+
 
 
 </script>

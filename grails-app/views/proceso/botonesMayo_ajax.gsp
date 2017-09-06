@@ -17,12 +17,10 @@
             </g:if>
         </g:if>
         <g:else>
-            %{--<g:if test="${!auxiliares}">--}%
-                <a href="#" class="btn btn-danger" id="desmayo" idComp="${comprobante?.id}" style="margin-bottom: 10px;">
-                    <i class="fa fa-pencil-square-o "></i>
-                    Desmayorizar
-                </a>
-            %{--</g:if>--}%
+            <a href="#" class="btn btn-danger" id="desmayo" idComp="${comprobante?.id}" style="margin-bottom: 10px;">
+                <i class="fa fa-pencil-square-o "></i>
+                Desmayorizar
+            </a>
             <a href="#" class="btn btn-info" id="imprimir" iden="${comprobante?.proceso?.id}" nombre="${comprobante.prefijo + comprobante.numero}" style="margin-bottom: 10px;">
                 <i class="fa fa-print"></i>
                 Imprimir

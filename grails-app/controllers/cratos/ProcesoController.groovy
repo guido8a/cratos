@@ -1272,7 +1272,7 @@ class ProcesoController extends cratos.seguridad.Shield {
     }
 
     def tablaBuscarComp_ajax () {
-//        println "tablaBuscarComp_ajax: $params"
+        println "tablaBuscarComp_ajax: $params"
         def cn = dbConnectionService.getConnection()
         def sql = ''
         def whds = ''
@@ -1288,9 +1288,22 @@ class ProcesoController extends cratos.seguridad.Shield {
             whnm = " dcmt ilike '%${params.numero}%'"
         }
 
-        if(params.descripcion || params.numero) {
-            wh = "where ${whds? whds : ''} ${whnm? 'and ' + whnm : ''}"
+//        println("whds " + whds)
+//        println("whnm " + whnm)
+
+
+//        if(params.descripcion || params.numero) {
+//            wh = "where ${whds? whds : ''} ${whnm? 'and ' + whnm : ''}"
+//        }
+
+        if(params.descripcion && params.numero){
+            wh = "where ${whds ? whds : ''} ${whnm? 'and ' + whnm : ''}"
+        }else{
+            if(params.descripcion || params.numero){
+                wh = "where ${whds ? whds : whnm}"
+            }
         }
+
 //        println "where: $wh"
 
         if(params.tipo.toInteger() == 4) {
@@ -1519,7 +1532,7 @@ class ProcesoController extends cratos.seguridad.Shield {
     }
 
     def tablaBuscarPrcs() {
-        println "buscar .... $params"
+//        println "buscar .... $params"
         def data = []
         def cn = dbConnectionService.getConnection()
         def cont = session.contabilidad.id
@@ -1531,7 +1544,7 @@ class ProcesoController extends cratos.seguridad.Shield {
 
         def sql = "select * from procesos(${session.empresa.id}, ${cont}, '${buscar}', ${fcds}, ${fchs}) "
 
-        println "buscar .. ${sql}"
+//        println "buscar .. ${sql}"
 
         data = cn.rows(sql.toString())
 
@@ -1548,34 +1561,34 @@ class ProcesoController extends cratos.seguridad.Shield {
     }
 
     def validarSerie_ajax () {
-        println "validarSerie_ajax: $params"
+//        println "validarSerie_ajax: $params"
         def cn = dbConnectionService.getConnection()
         def fcdt = DocumentoEmpresa.get(params.fcdt)
         def nmro = params.serie.toInteger()
         def sql = ""
-        println "nmro:; $nmro"
+//        println "nmro:; $nmro"
 
         if(nmro) {
             if(nmro >= fcdt.numeroDesde && nmro <= fcdt.numeroHasta) {
-                println "esta en el rango"
+//                println "esta en el rango"
                 sql = "select count(*) cnta from rtcn where empr__id = ${session.empresa.id} and rtcnnmro = ${nmro}"
                 if(params.id) {
                     sql += " and rtcn__id <> ${params.id}"
                 }
-                println "sql: $sql"
+//                println "sql: $sql"
                 def existe = cn.rows(sql.toString())[0].cnta
                 cn.close()
 
 //                render existe > 0 ? true : false
-                println "existe: $existe"
+//                println "existe: $existe"
                 if(existe > 0) {
                     render false
                 } else {
-                    println "no existe... $existe"
+//                    println "no existe... $existe"
                     render true
                 }
             } else {
-                println "fuera del rango..."
+//                println "fuera del rango..."
                 render false
             }
         } else {

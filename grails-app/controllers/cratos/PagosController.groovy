@@ -19,18 +19,18 @@ class PagosController extends cratos.seguridad.Shield {
 //        return [pagos: pagos]
     }
 
-    def validarPagoAux() {
-        params.each { k, v ->
-            if (!k.startsWith("_") && v == "on") {
-                println k + "    " + v
-                def pago = PagoAux.get(k)
-                pago.estado = 'V'
-                if (!pago.save(flush: true)) {
-                    println "error al guardar el pago " + k
-                }
-            }
-        }
-        redirect(action: "conciliacionBancaria")
-    }
+//    def validarPagoAux() {
+//        params.each { k, v ->
+//            if (!k.startsWith("_") && v == "on") {
+//                println k + "    " + v
+//                def pago = PagoAux.get(k)
+//                pago.estado = 'V'
+//                if (!pago.save(flush: true)) {
+//                    println "error al guardar el pago " + k
+//                }
+//            }
+//        }
+//        redirect(action: "conciliacionBancaria")
+//    }
 
 }

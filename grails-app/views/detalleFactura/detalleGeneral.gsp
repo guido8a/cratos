@@ -210,7 +210,6 @@
         });
     }
 
-
     $("#btnAgregar").click(function () {
         var idDet = $("#idDetalle").val();
         guardarDetalle(idDet)

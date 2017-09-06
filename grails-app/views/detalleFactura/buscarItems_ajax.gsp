@@ -10,7 +10,7 @@
         <label>Código:</label>
     </div>
     <div class="col-md-2">
-        <g:textField name="codigoItem_name" id="codigoBuscar" class="form-control"/>
+        <g:textField name="codigoItem_name" id="codigoBuscar" class="form-control validarNumDec"/>
     </div>
     <div class="col-md-1">
         <label>Nombre:</label>
@@ -44,13 +44,42 @@
 
 <script type="text/javascript">
 
+
+    function validarNumDec(ev) {
+        /*
+         48-57      -> numeros
+         96-105     -> teclado numerico
+         188        -> , (coma)
+         190        -> . (punto) teclado
+         110        -> . (punto) teclado numerico
+         8          -> backspace
+         46         -> delete
+         9          -> tab
+         37         -> flecha izq
+         39         -> flecha der
+         */
+        return ((ev.keyCode >= 48 && ev.keyCode <= 57) ||
+        (ev.keyCode >= 96 && ev.keyCode <= 105) ||
+        ev.keyCode == 8 || ev.keyCode == 46 || ev.keyCode == 9 ||
+        ev.keyCode == 37 || ev.keyCode == 39 || ev.keyCode == 190 || ev.keyCode == 110);
+    }
+
+    $(".validarNumDec").keydown(function (ev) {
+        return validarNumDec(ev);
+    }).keyup(function () {
+    });
+
+
     $("#btnBuscarItem").click(function () {
         cargarTablaItems();
     });
 
+    cargarTablaItems();
+
     function cargarTablaItems () {
         var codigo = $("#codigoBuscar").val();
         var nombre = $("#nombreBuscar").val();
+        openLoader("Buscando");
         $.ajax({
             type: 'POST',
             url:'${createLink(controller: 'detalleFactura', action: 'tablaItems_ajax')}',
@@ -61,22 +90,16 @@
                 bodega: '${bodega?.id}'
             },
             success: function (msg) {
+                closeLoader();
                 $("#divTablaItems").html(msg)
             }
         })
     }
 
-    $("#codigoBuscar").keyup(function (ev) {
+        $("#codigoBuscar, #nombreBuscar").keyup(function (ev) {
         if (ev.keyCode == 13) {
             cargarTablaItems();
         }
     });
-
-    $("#nombreBuscar").keyup(function (ev) {
-        if (ev.keyCode == 13) {
-            cargarTablaItems();
-        }
-    });
-
 
 </script>

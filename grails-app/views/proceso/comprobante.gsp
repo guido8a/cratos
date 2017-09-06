@@ -23,7 +23,7 @@
         <i class="fa fa-calendar-o"></i>
         Comprobante
     </a>
-    <g:if test="${proceso?.tipoProceso?.codigo?.trim() == 'V' && proceso?.tipoCmprSustento?.tipoComprobanteSri?.codigo?.trim() == '41'}">
+    <g:if test="${proceso?.tipoProceso?.codigo?.trim() == 'C' && proceso?.tipoCmprSustento?.tipoComprobanteSri?.codigo?.trim() == '41'}">
         <a href="#" class="btn btn-success" id="reembolsoN">
             <i class="fa fa-thumbs-up"></i>
             Reembolso
@@ -70,7 +70,7 @@
 
     $("#irProceso").click(function () {
         location.href='${createLink(controller: 'proceso', action: 'nuevoProceso')}/?id=' + '${proceso?.id}'
-    })
+    });
 
     $("#reembolsoN").click(function () {
         location.href="${createLink(controller: 'proceso', action: 'reembolso')}/?proceso=" + '${proceso?.id}'
