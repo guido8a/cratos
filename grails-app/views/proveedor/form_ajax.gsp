@@ -18,7 +18,7 @@
                 <div class="col-md-3">
                     <g:select id="tipoIdentificacion" name="tipoIdentificacion.id" from="${tipoIdentificacion}"
                               optionKey="id" value="${proveedorInstance?.tipoIdentificacion?.id}"
-                              class="many-to-one form-control" optionValue="descripcion"/>
+                              class="many-to-one form-control" optionValue="descripcion" disabled="${proveedorInstance?.id ? true : false}"/>
                 </div>
             </span>
         </div>
@@ -30,8 +30,8 @@
                 </label>
 
                 <div class="col-md-3" id="divRuc">
-                    <g:textField name="ruc" maxlength="13" minlength="10" required="" class=" form-control required"
-                                 value="${proveedorInstance?.ruc}" readonly="${lectura}"/>
+                    %{--<g:textField name="ruc" maxlength="13" minlength="10" required="" class=" form-control required"--}%
+                                 %{--value="${proveedorInstance?.ruc}" readonly="${lectura}"/>--}%
                 </div>
             </span>
         </div>
@@ -105,7 +105,7 @@
                     <div class="col-md-5">
                         <g:select id="tipoProveedor" name="tipoProveedor.id" from="${cratos.TipoProveedor.list()}" optionKey="id"
                                   value="${proveedorInstance?.tipoProveedor?.id}" optionValue="descripcion" class="many-to-one form-control"
-                                  noSelection="['null': 'Seleccione...']"/>
+                                 />
                     </div>
 
                 </span>
@@ -300,7 +300,26 @@
     <script type="text/javascript">
 
 
-        cargarTipoPersona($("#tipoIdentificacion").val())
+        cargarRuc($("#tipoIdentificacion").val());
+
+
+        function cargarRuc (tipo) {
+            $.ajax({
+               type: 'POST',
+                url: '${createLink(controller: 'proveedor', action: 'ruc_ajax')}',
+                data:{
+                    id: '${proveedorInstance?.id}',
+                    tipo: tipo
+                },
+                success: function (msg) {
+                    $("#divRuc").html(msg)
+                }
+            });
+        }
+
+
+
+        cargarTipoPersona($("#tipoIdentificacion").val());
 
         function cargarTipoPersona (tipo) {
             $.ajax({
@@ -316,23 +335,22 @@
             });
         }
 
-        revisarLongitud($("#tipoIdentificacion").val())
-
-        function revisarLongitud (tipo) {
-            if(tipo == '1'){
-//                $("#ruc").removeProp("minlength")
-                $("#ruc").attr("minlength",13)
-            }else{
-//                $("#ruc").removeProp("maxlength")
-                $("#ruc").attr("minlength",10)
-            }
-        }
+//        revisarLongitud($("#tipoIdentificacion").val())
+//
+//        function revisarLongitud (tipo) {
+//            if(tipo == '1'){
+//                $("#ruc").attr("minlength",13)
+//            }else{
+//                $("#ruc").attr("minlength",10)
+//            }
+//        }
 
 
         $("#tipoIdentificacion").change(function () {
             var vl = $(this).val()
-            revisarLongitud(vl)
+//            revisarLongitud(vl)
             cargarTipoPersona(vl)
+            cargarRuc(vl)
         });
 
 

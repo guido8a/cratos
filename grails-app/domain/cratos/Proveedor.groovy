@@ -79,8 +79,8 @@ class Proveedor {
         nombre(blank: true, nullable: true, maxSize: 63, attributes: [title: 'nombre'])
         direccion(maxSize: 127, blank: true, nullable: true, attributes: [title: 'direccion'])
         fecha(blank: true, nullable: true, attributes: [title: 'fecha'])
-        nombreContacto(size: 1..40, blank: false, nullable: false, attributes: [title: 'nombre del contacto'])
-        apellidoContacto(size: 1..40, blank: false, nullable: false, attributes: [title: 'apellido del contacto'])
+        nombreContacto(size: 1..40, blank: true, nullable: true, attributes: [title: 'nombre del contacto'])
+        apellidoContacto(size: 1..40, blank: true, nullable: true, attributes: [title: 'apellido del contacto'])
 
         descuento(blank: true, nullable: true, attributes: [title: 'descuento'])
         estado(blank: true, nullable: true, attributes: [title: 'estado'])

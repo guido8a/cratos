@@ -192,7 +192,7 @@ class ProveedorController extends cratos.seguridad.Shield {
     } //show para cargar con ajax en un dialog
 
     def form_ajax() {
-        println("params " + params)
+//        println("params " + params)
         def proveedorInstance = new Proveedor(params)
         if (params.id) {
             proveedorInstance = Proveedor.get(params.id)
@@ -301,6 +301,25 @@ class ProveedorController extends cratos.seguridad.Shield {
         }
 
         return[lista: lista, proveedorInstance: proveedorInstance]
+    }
 
+    def ruc_ajax () {
+        def proveedorInstance
+        def lectura
+        def longitud
+        if(params.id){
+            lectura = true
+            proveedorInstance = Proveedor.get(params.id)
+        }else{
+            lectura = false
+        }
+
+        if(params.tipo == '2'){
+            longitud = 10
+        }else{
+            longitud = 13
+        }
+
+        return[proveedorInstance: proveedorInstance, lectura: lectura, longitud: longitud.toInteger()]
     }
 }
