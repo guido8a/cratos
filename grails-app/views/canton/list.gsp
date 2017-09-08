@@ -1,54 +1,223 @@
 
 <%@ page import="cratos.Canton" %>
-<!doctype html>
+<!DOCTYPE html>
 <html>
     <head>
         <meta name="layout" content="main">
-        <g:set var="entityName" value="${message(code: 'canton.label', default: 'Canton')}"/>
-        <title>Lista de Canton</title>
+        <title>Lista de Cantones</title>
     </head>
-
     <body>
-        <a href="#list-canton" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
 
-        <div id="list-canton" class="content scaffold-list" role="main">
-            <div class="ui-widget-header ui-corner-all nav navegacion">
-                <ul style="margin-bottom:0;">
-                    <li><g:link class="create linkButton" action="create">Crear Canton</g:link></li>
-                </ul>
+        <elm:flashMessage tipo="${flash.tipo}" clase="${flash.clase}">${flash.message}</elm:flashMessage>
+
+    <!-- botones -->
+        <div class="btn-toolbar toolbar">
+            <div class="btn-group">
+                <g:link action="form" class="btn btn-info btnCrear">
+                    <i class="fa fa-file-o"></i> Nuevo
+                </g:link>
             </div>
-
-            <div class="contenedor">
-                <h1>Lista de Canton</h1>
-                <g:if test="${flash.message}">
-                    <div class="message ${flash.clase}" role="status"><span class="ss_sprite ${flash.ico}">&nbsp;</span>${flash.message}
-                    </div>
-                </g:if>
-
-                <table>
-                    <thead>
-                        <tr>
-                            
-                            <g:sortableColumn property="nombre" title="Nombre"/>
-                            
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <g:each in="${cantonInstanceList}" status="i" var="cantonInstance">
-                            <tr>
-                                
-                                <td><g:link action="show" id="${cantonInstance.id}">${fieldValue(bean: cantonInstance, field: "nombre")}</g:link></td>
-                                
-                            </tr>
-                        </g:each>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="ui-widget-header pagination" style="padding: 5px;">
-                <g:paginate total="${cantonInstanceTotal}" prev="Anterior" next="Siguiente" params="${params}"/>
-            </div>
-
+            %{--<div class="btn-group pull-right col-md-3">--}%
+                %{--<div class="input-group">--}%
+                    %{--<input type="text" class="form-control" placeholder="Buscar" value="${params.search}">--}%
+                    %{--<span class="input-group-btn">--}%
+                        %{--<g:link action="list" class="btn btn-default btn-search" type="button">--}%
+                            %{--<i class="fa fa-search"></i>&nbsp;--}%
+                        %{--</g:link>--}%
+                    %{--</span>--}%
+                %{--</div><!-- /input-group -->--}%
+            %{--</div>--}%
         </div>
+
+        <table class="table table-condensed table-bordered table-striped">
+            <thead>
+                <tr>
+                    %{--<g:sortableColumn property="nombre" title="Nombre" />--}%
+                    <th>Cantón</th>
+                </tr>
+            </thead>
+            <tbody>
+                <g:each in="${cantonInstanceList}" status="i" var="cantonInstance">
+                    <tr data-id="${cantonInstance.id}">
+                        
+                        <td>${fieldValue(bean: cantonInstance, field: "nombre")}</td>
+                        
+                    </tr>
+                </g:each>
+            </tbody>
+        </table>
+
+        %{--<elm:pagination total="${cantonInstanceCount}" params="${params}"/>--}%
+
+        <script type="text/javascript">
+            var id = null;
+            function submitForm() {
+                var $form = $("#frmCanton");
+                var $btn = $("#dlgCreateEdit").find("#btnSave");
+                if ($form.valid()) {
+                $btn.replaceWith(spinner);
+                    $.ajax({
+                        type    : "POST",
+                        url     : '${createLink(action:'save')}',
+                        data    : $form.serialize(),
+                            success : function (msg) {
+                        if (msg == 'ok') {
+                            log("Cantón guardado correctamente","success");
+                            setTimeout(function () {
+                                location.reload(true);
+                            }, 1000);
+                        } else {
+                            log("Error al guardar el Cantón","error")
+                        }
+                    }
+                });
+            } else {
+                return false;
+            } //else
+            }
+            function deleteRow(itemId) {
+                bootbox.dialog({
+                    title   : "Alerta",
+                    message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea eliminar el cantón seleccionado? Esta acción no se puede deshacer.</p>",
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        eliminar : {
+                            label     : "<i class='fa fa-trash-o'></i> Eliminar",
+                            className : "btn-danger",
+                            callback  : function () {
+                                $.ajax({
+                                    type    : "POST",
+                                    url     : '${createLink(action:'delete')}',
+                                    data    : {
+                                        id : itemId
+                                    },
+                                    success : function (msg) {
+                                        if (msg == 'ok') {
+                                            log("Cantón borrado correctamente","success");
+                                            setTimeout(function () {
+                                                location.reload(true);
+                                            }, 1000);
+                                        } else {
+                                            log("Error al borrar el Cantón","error")
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    }
+                });
+            }
+            function createEditRow(id) {
+                var title = id ? "Editar" : "Crear";
+                var data = id ? { id: id } : {};
+                $.ajax({
+                    type    : "POST",
+                    url     : "${createLink(action:'form_ajax')}",
+                    data    : data,
+                    success : function (msg) {
+                        var b = bootbox.dialog({
+                            id      : "dlgCreateEdit",
+                            title   : title + " Cantón",
+                            message : msg,
+                            buttons : {
+                                cancelar : {
+                                    label     : "Cancelar",
+                                    className : "btn-primary",
+                                    callback  : function () {
+                                    }
+                                },
+                                guardar  : {
+                                    id        : "btnSave",
+                                    label     : "<i class='fa fa-save'></i> Guardar",
+                                    className : "btn-success",
+                                    callback  : function () {
+                                        return submitForm();
+                                    } //callback
+                                } //guardar
+                            } //buttons
+                        }); //dialog
+                        setTimeout(function () {
+                            b.find(".form-control").first().focus()
+                        }, 500);
+                    } //success
+                }); //ajax
+            } //createEdit
+
+            $(function () {
+
+                $(".btnCrear").click(function() {
+                    createEditRow();
+                    return false;
+                });
+
+                context.settings({
+                    onShow : function (e) {
+                        $("tr.success").removeClass("success");
+                        var $tr = $(e.target).parent();
+                        $tr.addClass("success");
+                        id = $tr.data("id");
+                    }
+                });
+                context.attach('tbody>tr', [
+                    {
+                        header : 'Acciones'
+                    },
+                    {
+                        text   : 'Ver',
+                        icon   : "<i class='fa fa-search'></i>",
+                        action : function (e) {
+                            $("tr.success").removeClass("success");
+                            e.preventDefault();
+                            $.ajax({
+                                type    : "POST",
+                                url     : "${createLink(action:'show_ajax')}",
+                                data    : {
+                                    id : id
+                                },
+                                success : function (msg) {
+                                    bootbox.dialog({
+                                        title   : "Ver Cantón",
+                                        message : msg,
+                                        buttons : {
+                                            ok : {
+                                                label     : "Aceptar",
+                                                className : "btn-primary",
+                                                callback  : function () {
+                                                }
+                                            }
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    },
+                    {
+                        text   : 'Editar',
+                        icon   : "<i class='fa fa-pencil'></i>",
+                        action : function (e) {
+                            $("tr.success").removeClass("success");
+                            e.preventDefault();
+                            createEditRow(id);
+                        }
+                    },
+                    {divider : true},
+                    {
+                        text   : 'Eliminar',
+                        icon   : "<i class='fa fa-trash-o'></i>",
+                        action : function (e) {
+                            $("tr.success").removeClass("success");
+                            e.preventDefault();
+                            deleteRow(id);
+                        }
+                    }
+                ]);
+            });
+        </script>
+
     </body>
 </html>

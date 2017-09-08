@@ -2,100 +2,74 @@ package cratos
 
 import org.springframework.dao.DataIntegrityViolationException
 
-class CantonController extends cratos.seguridad.Shield  {
+class CantonController extends cratos.seguridad.Shield {
 
-    static allowedMethods = [save: "POST", update: "POST", delete: "POST", delete: "GET"]
+    static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def index() {
         redirect(action: "list", params: params)
-    }
+    } //index
 
     def list() {
-        params.max = Math.min(params.max ? params.int('max') : 10, 100)
-        [cantonInstanceList: Canton.list(params), cantonInstanceTotal: Canton.count()]
-    }
+        [cantonInstanceList: Canton.list(params).sort{it.nombre}, params: params]
+    } //list
 
-    def create() {
-        [cantonInstance: new Canton(params)]
-    }
+    def form_ajax() {
+        def cantonInstance = new Canton(params)
+        if(params.id) {
+            cantonInstance = Canton.get(params.id)
+            if(!cantonInstance) {
+                flash.clase = "alert-error"
+                flash.message =  "No se encontró Canton con id " + params.id
+                redirect(action:  "list")
+                return
+            } //no existe el objeto
+        } //es edit
+        return [cantonInstance: cantonInstance]
+    } //form_ajax
 
     def save() {
-        def cantonInstance = new Canton(params)
-
-        if (params.id) {
+        def cantonInstance
+        if(params.id){
             cantonInstance = Canton.get(params.id)
-            cantonInstance.properties = params
+        }else{
+            cantonInstance = new Canton()
         }
 
-        if (!cantonInstance.save(flush: true)) {
-            if (params.id) {
-                render(view: "edit", model: [cantonInstance: cantonInstance])
-            } else {
-                render(view: "create", model: [cantonInstance: cantonInstance])
-            }
-            return
+        cantonInstance.nombre = params.nombre
+
+        try{
+            cantonInstance.save(flush: true)
+            render "ok"
+        }catch (e){
+            println("Error al guardar el cantón" + e)
+            render "no"
         }
 
-        if (params.id) {
-            flash.message = "Canton actualizado"
-            flash.clase = "success"
-            flash.ico = "ss_accept"
-        } else {
-            flash.message = "Canton creado"
-            flash.clase = "success"
-            flash.ico = "ss_accept"
-        }
-        redirect(action: "show", id: cantonInstance.id)
-    }
+    } //save
 
-    def show() {
+    def show_ajax() {
         def cantonInstance = Canton.get(params.id)
         if (!cantonInstance) {
-            flash.message = "No se encontró Canton con id " + params.id
-            flash.clase = "error"
-            flash.ico = "ss_delete"
+            flash.clase = "alert-error"
+            flash.message =  "No se encontró Canton con id " + params.id
             redirect(action: "list")
             return
         }
-
         [cantonInstance: cantonInstance]
-    }
-
-    def edit() {
-        def cantonInstance = Canton.get(params.id)
-        if (!cantonInstance) {
-            flash.message = "No se encontró Canton con id " + params.id
-            flash.clase = "error"
-            flash.ico = "ss_delete"
-            redirect(action: "list")
-            return
-        }
-
-        [cantonInstance: cantonInstance]
-    }
+    } //show
 
     def delete() {
-        def cantonInstance = Canton.get(params.id)
-        if (!cantonInstance) {
-            flash.message = "No se encontró Canton con id " + params.id
-            flash.clase = "error"
-            flash.ico = "ss_delete"
-            redirect(action: "list")
-            return
+        def canton = Canton.get(params.id)
+
+        try{
+            canton.delete(flush: true)
+            render "ok"
+        }catch (e){
+            println("error al borrar canton " + e )
+            render "no"
         }
 
-        try {
-            cantonInstance.delete(flush: true)
-            flash.message = "Canton  con id " + params.id + " eliminado"
-            flash.clase = "success"
-            flash.ico = "ss_accept"
-            redirect(action: "list")
-        }
-        catch (DataIntegrityViolationException e) {
-            flash.message = "No se pudo eliminar Canton con id " + params.id
-            flash.clase = "error"
-            flash.ico = "ss_delete"
-            redirect(action: "show", id: params.id)
-        }
-    }
-}
+
+    } //delete
+} //fin controller

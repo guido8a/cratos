@@ -1,5 +1,6 @@
 package cratos
 
+import cratos.sri.TipoIdentificacion
 import org.springframework.dao.DataIntegrityViolationException
 
 class ProveedorController extends cratos.seguridad.Shield {
@@ -216,10 +217,12 @@ class ProveedorController extends cratos.seguridad.Shield {
             soloLectura = params.edi
         }
 
+        def tipoIdentificacion = TipoIdentificacion.withCriteria {
+            ne("codigo","T")
 
-//        println("--- " + countries)
+        }
 
-        return [proveedorInstance: proveedorInstance, paises: countries, lectura: soloLectura]
+        return [proveedorInstance: proveedorInstance, paises: countries, lectura: soloLectura, tipoIdentificacion: tipoIdentificacion]
     } //form para cargar con ajax en un dialog
 
     def save_ajax() {
@@ -281,4 +284,23 @@ class ProveedorController extends cratos.seguridad.Shield {
         render "NO_No se encontró Proveedor."
     } //notFound para ajax
 
+
+    def tipoPersona_ajax () {
+        def lista
+        def proveedorInstance
+        if(params.id){
+            proveedorInstance = Proveedor.get(params.id)
+        }
+
+        if(params.tipo == '2' || params.tipo == '3'){
+            lista = TipoPersona.withCriteria {
+                ne("codigo","J")
+            }
+        }else{
+            lista = TipoPersona.list()
+        }
+
+        return[lista: lista, proveedorInstance: proveedorInstance]
+
+    }
 }
