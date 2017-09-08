@@ -1430,11 +1430,18 @@ class ProcesoController extends cratos.seguridad.Shield {
         def totalDebe = asientos.debe.sum()
         def totalHaber = asientos.haber.sum()
         def band
-        if((totalDebe - totalHaber) == 0 && totalDebe == comprobante.proceso.valor.toDouble() && totalHaber == comprobante.proceso.valor.toDouble()){
+        def gestor = comprobante.proceso.gestor
+
+        if(gestor.codigo == 'SLDO'){
             band = true
         }else{
-            band = false
+            if((totalDebe - totalHaber) == 0 && totalDebe == comprobante.proceso.valor.toDouble() && totalHaber == comprobante.proceso.valor.toDouble()){
+                band = true
+            }else{
+                band = false
+            }
         }
+
         return[comprobante: comprobante, auxiliares: auxiliares, band: band]
     }
     def mayorizar_ajax () {
