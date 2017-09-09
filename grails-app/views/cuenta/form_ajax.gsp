@@ -67,7 +67,7 @@
         <div class="form-group ${hasErrors(bean: cuentaInstance, field: 'auxiliar', 'error')} ${hasErrors(bean: cuentaInstance, field: 'movimiento', 'error')}">
             <span class="grupo">
                 <label for="auxiliar" class="col-md-2 control-label text-info">
-                    Auxiliar
+                    Auxiliar de Cliente/Proveedor
                 </label>
 
                 <div class="col-md-2">
