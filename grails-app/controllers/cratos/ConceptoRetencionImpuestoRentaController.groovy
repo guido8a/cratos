@@ -12,15 +12,15 @@ class ConceptoRetencionImpuestoRentaController extends cratos.seguridad.Shield {
     } //index
 
     def list() {
-//        def conceptoRetencionImpuestoRentaInstanceCount = ConceptoRetencionImpuestoRenta.list([sort: 'codigo', order: 'asc']).size()
-        def conceptoRetencionImpuestoRentaInstanceCount
+//        println("params " + params)
         def conceptoRetencionImpuestoRentaInstanceList
-        conceptoRetencionImpuestoRentaInstanceList = ConceptoRetencionImpuestoRenta.list(params)
-        conceptoRetencionImpuestoRentaInstanceCount = ConceptoRetencionImpuestoRenta.count()
+        conceptoRetencionImpuestoRentaInstanceList = ConceptoRetencionImpuestoRenta.list(params).sort{it.codigo}
+        params.max = Math.min(params.max ? params.max.toInteger() : 10, 100)
+        def conceptoRetencionCount = ConceptoRetencionImpuestoRenta.getCount()
         if (conceptoRetencionImpuestoRentaInstanceList.size() == 0 && params.offset && params.max) {
             params.offset = params.offset - params.max
         }
-        [conceptoRetencionImpuestoRentaInstanceList: ConceptoRetencionImpuestoRenta.list([sort: 'codigo', order: 'asc']), params: params, conceptoRetencionImpuestoRentaInstanceCount: conceptoRetencionImpuestoRentaInstanceCount]
+        [conceptoRetencionImpuestoRentaInstanceList: conceptoRetencionImpuestoRentaInstanceList, conceptoRetencionCount:conceptoRetencionCount, params: params]
     } //list
 
     def form_ajax() {

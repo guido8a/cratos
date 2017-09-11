@@ -22,37 +22,34 @@
             </div>
         </div>
 
-        <table class="table table-condensed table-bordered table-striped">
+        <table class="table table-condensed table-bordered table-striped tabla">
             <thead>
                 <tr>
-                    
                     <th>Código</th>
                     <th>Descripción</th>
                     <th style="width: 150px">Modalidad de Pago</th>
                     <th>%</th>
                     <th>Tipo</th>
-
                 </tr>
             </thead>
             <tbody>
                 <g:each in="${conceptoRetencionImpuestoRentaInstanceList}" status="i" var="conceptoRetencionImpuestoRentaInstance">
                     <tr data-id="${conceptoRetencionImpuestoRentaInstance.id}">
-                        
                         <td>${conceptoRetencionImpuestoRentaInstance?.codigo}</td>
                         <td style="font-size: 13px">${conceptoRetencionImpuestoRentaInstance?.descripcion}</td>
                         <td style="font-size: 12px">${conceptoRetencionImpuestoRentaInstance?.modalidadPago?.descripcion}</td>
                         <td style="text-align: right">${conceptoRetencionImpuestoRentaInstance?.porcentaje}</td>
                         <td style="text-align: center">${conceptoRetencionImpuestoRentaInstance?.tipo}</td>
-
                     </tr>
                 </g:each>
             </tbody>
         </table>
 
-        <elm:pagination total="${conceptoRetencionImpuestoRentaInstanceCount}" params="${params}"/>
+        <elm:pagination total="${conceptoRetencionCount}" params="${params}"/>
 
         <script type="text/javascript">
-            var id = null;
+
+        var id = null;
             function submitForm() {
                 var $form = $("#frmConceptoRetencionImpuestoRenta");
                 var $btn = $("#dlgCreateEdit").find("#btnSave");

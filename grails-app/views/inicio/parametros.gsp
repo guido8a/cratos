@@ -262,7 +262,8 @@
                         <li>
                             <i class="fa-li ${iconGen}"></i>
                             <span id="conceptoIR">
-                                <g:link controller="conceptoRetencionImpuestoRenta" action="list">Concepto de Retención IR</g:link>
+                                %{--<g:link controller="conceptoRetencionImpuestoRenta" action="list">Concepto de Retención IR</g:link>--}%
+                                <a href="#" id="btnCR">Concepto de Retención IR</a>
                             </span>
 
                             <div class="descripcion hide">
@@ -609,6 +610,10 @@
         </div>
 
         <script type="text/javascript">
+
+            $("#btnCR").click(function () {
+               location.href='${createLink(controller: 'conceptoRetencionImpuestoRenta', action: 'list')}?max=' + 10 + "&offset=" + 0
+            });
 
             function prepare() {
                 $(".fa-ul li span").each(function () {
