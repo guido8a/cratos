@@ -168,14 +168,35 @@ class ProveedorController extends cratos.seguridad.Shield {
     /* ************************ COPIAR DESDE AQUI ****************************/
 
     def list() {
+//        params.max = Math.min(params.max ? params.max.toInteger() : 10, 100)
+//        def proveedorInstanceList = Proveedor.findAllByEmpresa(session.empresa, params).sort{it.nombre}
+//        def proveedorInstanceCount = Proveedor.countByEmpresa(session.empresa)
+//        if (proveedorInstanceList.size() == 0 && params.offset && params.max) {
+//            params.offset = params.offset - params.max
+//        }
+//        proveedorInstanceList = Proveedor.findAllByEmpresa(session.empresa, params).sort{it.nombre}
+//        return [proveedorInstanceList: proveedorInstanceList, proveedorInstanceCount: proveedorInstanceCount]
+
+        def empresa = Empresa.get(session.empresa.id)
+        def proveedores = Proveedor.withCriteria {
+            eq("empresa",empresa)
+            tipoRelacion{
+                or{
+                    eq("codigo","P")
+                    eq("codigo","E")
+                }
+            }
+            order("nombre","asc")
+        }
+
+
         params.max = Math.min(params.max ? params.max.toInteger() : 10, 100)
-        def proveedorInstanceList = Proveedor.findAllByEmpresa(session.empresa, params).sort{it.nombre}
-        def proveedorInstanceCount = Proveedor.countByEmpresa(session.empresa)
-        if (proveedorInstanceList.size() == 0 && params.offset && params.max) {
+        def proveedorInstanceCount = proveedores.count {it.id}
+        if (proveedores.size() == 0 && params.offset && params.max) {
             params.offset = params.offset - params.max
         }
-        proveedorInstanceList = Proveedor.findAllByEmpresa(session.empresa, params).sort{it.nombre}
-        return [proveedorInstanceList: proveedorInstanceList, proveedorInstanceCount: proveedorInstanceCount]
+
+        return[proveedores: proveedores, proveedorInstanceCount: proveedorInstanceCount]
     } //list
 
     def show_ajax() {
@@ -227,7 +248,7 @@ class ProveedorController extends cratos.seguridad.Shield {
 
     def save_ajax() {
 
-        println("params:" + params)
+//        println("params:" + params)
 
         def persona
 
@@ -321,5 +342,29 @@ class ProveedorController extends cratos.seguridad.Shield {
         }
 
         return[proveedorInstance: proveedorInstance, lectura: lectura, longitud: longitud.toInteger()]
+    }
+
+    def clientesList () {
+        def empresa = Empresa.get(session.empresa.id)
+        def clientes = Proveedor.withCriteria {
+            eq("empresa",empresa)
+            tipoRelacion{
+                or{
+                    eq("codigo","C")
+                    eq("codigo","E")
+                }
+            }
+            order("nombre","asc")
+        }
+
+        params.max = Math.min(params.max ? params.max.toInteger() : 10, 100)
+        def clienteCount = clientes.count {it.id}
+        if (clientes.size() == 0 && params.offset && params.max) {
+            params.offset = params.offset - params.max
+        }
+
+
+//        println("clientes " + clientes)
+        return[clientes: clientes, clienteCount: clienteCount]
     }
 }

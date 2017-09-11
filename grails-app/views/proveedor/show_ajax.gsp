@@ -274,17 +274,4 @@
         </div>
     </g:if>
 
-    <g:if test="${proveedorInstance?.fechaCaducidad}">
-        <div class="row">
-            <div class="col-md-4 text-info">
-                Fecha Caducidad
-            </div>
-
-            <div class="col-md-7">
-                <g:formatDate date="${proveedorInstance?.fechaCaducidad}" format="dd-MM-yyyy"/>
-            </div>
-
-        </div>
-    </g:if>
-
 </g:else>

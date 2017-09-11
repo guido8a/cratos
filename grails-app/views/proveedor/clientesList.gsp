@@ -1,10 +1,17 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: gato
+  Date: 08/09/17
+  Time: 14:31
+--%>
+
 
 <%@ page import="cratos.Proveedor" %>
 <!DOCTYPE html>
 <html>
 <head>
     <meta name="layout" content="main">
-    <title>Lista de Proveedores</title>
+    <title>Lista de Clientes</title>
 </head>
 <body>
 
@@ -16,17 +23,17 @@
         <g:link controller="inicio" action="parametrosEmpresa" class="btn btn-warning btnRegresar">
             <i class="fa fa-chevron-left"></i> Parámetros
         </g:link>
-        <g:link controller="proveedor" action="clientesList" class="btn btn-success btnClientes">
-            <i class="fa fa-users"></i> Clientes
+        <g:link controller="proveedor" action="list" class="btn btn-success btnProveedor">
+            <i class="fa fa-truck"></i> Proveedores
         </g:link>
         <g:link action="form" class="btn btn-info btnCrear">
-            <i class="fa fa-file-o"></i> Nuevo Proveedor
+            <i class="fa fa-file-o"></i> Nuevo Cliente
         </g:link>
     </div>
 </div>
 
 <div class="vertical-container vertical-container-list">
-    <p class="css-vertical-text">Lista de Proveedores</p>
+    <p class="css-vertical-text">Lista de Clientes</p>
 
     <div class="linea"></div>
     <table class="table table-condensed table-bordered table-striped table-hover">
@@ -41,21 +48,21 @@
         </tr>
         </thead>
         <tbody>
-        <g:each in="${proveedores}" var="proveedor">
-            <tr data-id="${proveedor.id}">
-                <td>${proveedor?.ruc}</td>
-                <td>${proveedor?.nombre}</td>
-                <td>${proveedor?.tipoProveedor?.descripcion}</td>
-                <td>${proveedor?.tipoIdentificacion?.descripcion}</td>
-                <td>${proveedor?.direccion}</td>
+        <g:each in="${clientes}" var="cliente">
+            <tr data-id="${cliente.id}">
+                <td>${cliente?.ruc}</td>
+                <td>${cliente?.nombre}</td>
+                <td>${cliente?.tipoProveedor?.descripcion}</td>
+                <td>${cliente?.tipoIdentificacion?.descripcion}</td>
+                <td>${cliente?.direccion}</td>
                 <td>
-                    <a href="#" data-id="${proveedor.id}" class="btn btn-info btn-sm btn-show btn-ajax" title="Ver">
+                    <a href="#" data-id="${cliente.id}" class="btn btn-info btn-sm btn-show btn-ajax" title="Ver">
                         <i class="fa fa-laptop"></i>
                     </a>
-                    <a href="#" data-id="${proveedor.id}" class="btn btn-success btn-sm btn-edit btn-ajax" title="Editar">
+                    <a href="#" data-id="${cliente.id}" class="btn btn-success btn-sm btn-edit btn-ajax" title="Editar">
                         <i class="fa fa-pencil"></i>
                     </a>
-                    <a href="#" data-id="${proveedor.id}" class="btn btn-danger btn-sm btn-delete btn-ajax" title="Eliminar">
+                    <a href="#" data-id="${cliente.id}" class="btn btn-danger btn-sm btn-delete btn-ajax" title="Eliminar">
                         <i class="fa fa-trash-o"></i>
                     </a>
                 </td>
@@ -64,8 +71,7 @@
         </tbody>
     </table>
 </div>
-
-<elm:pagination total="${proveedorInstanceCount}" params="${params}"/>
+<elm:pagination total="${clienteCount}" params="${params}"/>
 
 <script type="text/javascript">
     var id = null;
