@@ -69,10 +69,10 @@
     </div>
 
     <div class="btn-group" style="margin-right: 20px">
-        <a href="#" class="btn btn-success previous disabled" id="procesoN">
-            <i class="fa fa-gear"></i>
-            ${proceso?.id ? 'Proceso' : 'Nuevo Proceso'}
-        </a>
+
+        <g:link class="btn btn-success" action="nuevoProceso">
+            <i class="fa fa-gear"></i> Nueva Transacción
+        </g:link>
         <g:if test="${proceso?.estado == 'R'}">
             <a href="#" class="btn btn-success" id="comprobanteN">
                 <i class="fa fa-calendar-o"></i>
@@ -834,6 +834,12 @@
                     error += "<li>Ingrese el número de autorización del Documento</li>"
                 }
 
+                if ($("#dcmtAutorizacion").val().length == 10 || $("#dcmtAutorizacion").val().length == 39 || $("#dcmtAutorizacion").val().length == 47) {
+
+                }else{
+                    error += "<li>El número de autorización debe ser de 10, 39 o 47 dígitos</li>"
+                }
+
                 if($(".filaFP").size() <1){
                     info+="No ha asignado formas de pago para la transacción contable"
                     bandData=false
@@ -894,7 +900,7 @@
                 var retenidoR = ($("#retenidoRenta").val()*100)/100
                 var totalBases = ($("#iva12").val()*100)/100 + ($("#iva0").val()*100)/100 + ($("#noIva").val()*100)/100 + ($("#excentoIva").val()*100)/100
                 if(retenidoR > totalBases){
-                  error += " <li> El valor retenido del Impuesto a la Renta es mayor que la suma de las Bases </li>"
+                    error += " <li> El valor retenido del Impuesto a la Renta es mayor que la suma de las Bases </li>"
                 }
 
 

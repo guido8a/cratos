@@ -1354,11 +1354,11 @@ class ProcesoController extends cratos.seguridad.Shield {
         }
         def sql = "select paux_iva from paux where ${fcha} between pauxfcin and " +
                 "coalesce(pauxfcfn, now())"
-        println "sqlIva: $sql"
+//        println "sqlIva: $sql"
         def valorIva = cn.rows(sql.toString())[0]?.paux_iva
 
         def detalles = DetalleFactura.findAllByProceso(proceso)
-        println("--> " + detalles)
+//        println("--> " + detalles)
         def band
         if(detalles.size() > 0){
             band = true
@@ -1451,10 +1451,10 @@ class ProcesoController extends cratos.seguridad.Shield {
         def valores = cn.rows(sql.toString())[0]
         def res
         if(valores?.debe == 0 && valores?.hber == 0) {
-            println "cuadra"
+//            println "cuadra"
             res = procesoService.mayorizar(params.id)
         }  else {
-            println "no cuadra"
+//            println "no cuadra"
             render "no_no cuadran los valores de asientos y sus respectivos auxiliares"
             return
         }
@@ -1473,7 +1473,7 @@ class ProcesoController extends cratos.seguridad.Shield {
 
 
     def numeracion_ajax () {
-        println "numeracion_ajax: $params"
+//        println "numeracion_ajax: $params"
         def cn = dbConnectionService.getConnection()
         def proceso
         if(params.proceso) {
@@ -1513,7 +1513,7 @@ class ProcesoController extends cratos.seguridad.Shield {
                     "fcdtnmes numeroEstablecimiento, fcdtnmpe numeroEmision " +
                     "from fcdt where to_date('${params.fcha}', 'DD-MM-YYYY') between fcdtfcin and fcdtfcfn and " +
                     "fcdttipo = '${tpdc}' and fcdtnmes = '${params.nmes}' order by fcdtfcin"
-            println "libretin: $sql"
+//            println "libretin: $sql"
             def libretin = cn.rows(sql.toString())
             sql = "select coalesce(max(prcsfcsc), 0) mxmo from prcs, fcdt " +
                     "where tpps__id = ${params.tpps} and fcdt.fcdt__id = prcs.fcdt__id and " +
@@ -1522,7 +1522,7 @@ class ProcesoController extends cratos.seguridad.Shield {
 //            println "sql nmro: $sql"
             nmro = cn.rows(sql.toString())[0]?.mxmo
             nmro = nmro == 0 ? libretin[0]?.numeroDesde : nmro + 1
-            println "valor de nmro: $nmro, ${libretin[0]?.numeroDesde}"
+//            println "valor de nmro: $nmro, ${libretin[0]?.numeroDesde}"
 
             if(libretin?.size() > 0) {
                 [libretin: libretin, estb: libretin[0].numeroEstablecimiento, emsn: libretin[0].numeroEmision, nmro: nmro,

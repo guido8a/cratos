@@ -4,6 +4,8 @@
 }
 </style>
 
+<script src="${resource(dir: 'js/plugins/bootstrap-maxlength/js', file: 'bootstrap-maxlength.js')}"></script>
+
 <g:if test="${tipo == '4' || tipo == '5' || tipo == '8'}">
     <div class="row" style="font-size: 12px">
         <div class="col-xs-2 negrilla" style="width: 120px">
@@ -55,11 +57,16 @@
                 Autorización:
             </div>
 
-            <div class="col-xs-2 negrilla">
-                <input type="text" name="dcmtAutorizacion" id="dcmtAutorizacion" size="10" maxlength="15"
-                       value="${proceso?.autorizacion?: atrz}" class=" digits form-control label-shared validacionNumero"
+            <div class="col-xs-4 negrilla">
+                <input type="text" name="dcmtAutorizacion" id="dcmtAutorizacion" maxlength="47"
+                       value="${proceso?.autorizacion?: atrz}" class=" digits form-control label-shared validacionNumero required"
                        validate=" number" placeholder="Autorización"
-                       title="El número autorización de la factura a registrar " ${proceso?.estado == 'R' ? 'disabled' : ''}/>
+                       title="El número autorización de la factura a registrar " ${proceso?.estado == 'R' ? 'disabled' : ''} style="width: 350px"/>
+
+                %{--<g:textField name="dcmtAutorizacion" id="dcmtAutorizacion" maxlength="47"--}%
+                             %{--value="${proceso?.autorizacion?: atrz}"--}%
+                             %{--class=" digits form-control label-shared validacionNumero ${proceso?.estado == 'R' ? 'disabled' : ''}" placeholder="Autorización"--}%
+                             %{--title="El número autorización de la factura a registrar "  style="width: 350px"/>--}%
             </div>
         </div>
 
