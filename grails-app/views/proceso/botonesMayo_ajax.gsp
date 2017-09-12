@@ -60,7 +60,7 @@
                             log(parts[1],"success");
                             closeLoader();
                             setTimeout(function () {
-                                cargarComprobante ('${comprobante?.proceso?.id}');
+                                cargarComprobanteP('${comprobante?.proceso?.id}');
                                 cargarAsiento('${comprobante?.id}');
                                 cargarBotones('${comprobante?.id}');
                             }, 800);
@@ -90,7 +90,7 @@
                             closeLoader();
                             log(parts[1],'success');
                             setTimeout(function () {
-                                cargarComprobante ('${comprobante?.proceso?.id}');
+                                cargarComprobanteP('${comprobante?.proceso?.id}');
                                 cargarAsiento('${comprobante?.id}');
                                 cargarBotones('${comprobante?.id}');
                             }, 800);

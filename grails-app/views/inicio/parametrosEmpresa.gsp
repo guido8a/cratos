@@ -195,6 +195,18 @@
                     mismo centro de costos.</p>
                 </div>
             </li>
+            <li>
+                <i class="fa-li ${iconEmpr}"></i>
+                <span id="canton">
+                    <g:link controller="canton" action="list">Cantón</g:link>
+                </span>
+
+                <div class="descripcion hide">
+                    <h4>Cantón</h4>
+
+                    <p>Cantón</p>
+                </div>
+            </li>
         </ul>
     </div>
 

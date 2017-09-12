@@ -185,11 +185,20 @@
     <ul id="hexGrid">
         <li class="hex">
             <div class="hexIn">
-                <a class="hexLink" href="${createLink(controller: 'inicio', action: 'parametrosEmpresa')}">
-                    <img src="${resource(dir: 'images',file: 'param1.jpeg')}" alt=""  style="width: 100%; height: 100%"/>
-                    <h1>Parámetros</h1>
-                    <p>Parámetros</p>
-                </a>
+                <g:if test="${session.perfil.descripcion == 'Administrador'}">
+                    <a class="hexLink" href="${createLink(controller: 'inicio', action: 'parametros')}">
+                        <img src="${resource(dir: 'images',file: 'param1.jpeg')}" alt=""  style="width: 100%; height: 100%"/>
+                        <h1>Parámetros</h1>
+                        <p>Parámetros</p>
+                    </a>
+                </g:if>
+                <g:else>
+                    <a class="hexLink" href="${createLink(controller: 'inicio', action: 'parametrosEmpresa')}">
+                        <img src="${resource(dir: 'images',file: 'param1.jpeg')}" alt=""  style="width: 100%; height: 100%"/>
+                        <h1>Parámetros Empresa</h1>
+                        <p>Parámetros</p>
+                    </a>
+                </g:else>
             </div>
         </li>
         <li class="hex">

@@ -1997,7 +1997,6 @@ class ProcesoController extends cratos.seguridad.Shield {
 
     def revisarFecha_ajax() {
 //        println("params " + params)
-
         if(params.desde && params.hasta){
             def desde = new Date().parse("dd-MM-yyyy", params.desde)
             def hasta = new Date().parse("dd-MM-yyyy", params.hasta)
@@ -2010,8 +2009,32 @@ class ProcesoController extends cratos.seguridad.Shield {
         }else{
             render "ok"
         }
+    }
 
+    def borrarCeros_ajax(){
+        def comprobante = Comprobante.get(params.comprobante)
+        def asientos = Asiento.findAllByComprobanteAndDebeAndHaber(comprobante,0.0,0.0)
+        def errores = ''
 
+            asientos.each {
+                try{
+                    it.delete(flush: true)
+                }catch (e){
+                    errores += e
+                    println("error al borrar los asientos con 0 " + e)
+                }
+
+            }
+
+//        println("errores " + errores)
+
+        if(errores == ''){
+            render "ok"
+        }else{
+            render "no"
+        }
+
+//        println("ceros " + asientos.cuenta.descripcion)
 
     }
 

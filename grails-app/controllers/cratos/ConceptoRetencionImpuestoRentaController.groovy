@@ -13,6 +13,7 @@ class ConceptoRetencionImpuestoRentaController extends cratos.seguridad.Shield {
 
     def list() {
 //        println("params " + params)
+
         def conceptoRetencionImpuestoRentaInstanceList
         conceptoRetencionImpuestoRentaInstanceList = ConceptoRetencionImpuestoRenta.list(params).sort{it.codigo}
         params.max = Math.min(params.max ? params.max.toInteger() : 10, 100)

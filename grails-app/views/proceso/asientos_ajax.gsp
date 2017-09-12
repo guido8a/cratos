@@ -31,7 +31,10 @@
 }
 
 .rojo{
-    color: #702213
+    /*color: #702213*/
+    /*color: #ff0f24;*/
+    background-color: #702213;
+
 }
 
 </style>
@@ -48,18 +51,22 @@
            title="Agregar asiento contable">
             <i class="fa fa-plus"> Agregar Asiento</i>
         </a>
+        <a href="#" class="btn btn-danger btnBorrarAsientos" comp="${comprobante?.id}"
+           title="Borrar todos los asientos que contienen valores 0">
+            <i class="fa fa-minus"> Borrar Asientos con 0</i>
+        </a>
     </div>
 </g:if>
 
 <table class="table table-bordered table-hover table-condensed" width="1000px">
     <thead>
     <tr>
-        <th width="100px">Asiento</th>
-        <th width="520px">Nombre</th>
+        <th width="100px">ASIENTO</th>
+        <th width="527px">NOMBRE</th>
         <th width="50px">CC</th>
         <th width="100px">DEBE</th>
         <th width="100px">HABER</th>
-        <th width="145px"><i class="fa fa-pencil"></i></th>
+        <th width="133px"><i class="fa fa-pencil"></i></th>
     </tr>
     </thead>
 </table>
@@ -104,7 +111,6 @@
                         </g:if>
                     </td>
                 </tr>
-
                 <g:if test="${cratos.Auxiliar.findAllByAsiento(asiento)}">
                     <g:set var="auxiliares1" value="${cratos.Auxiliar.findAllByAsiento(asiento)}"/>
                     <g:set var="cabecera" value="N"/>
@@ -149,9 +155,9 @@
             </g:each>
             <tr class="colorAsiento">
                 <td colspan="3" class="total derecha">Totales del asiento</td>
-                <td class="total derecha ${Math.round(sumadebe*100)/100 != proceso?.valor ? 'rojo' : ''}">${Math.round(sumadebe*100)/100}</td>
-                <td class="total derecha ${Math.round(sumahber*100)/100 != proceso?.valor ? 'rojo' : ''}">${Math.round(sumahber*100)/100}</td>
-                <td class="total derecha">Dif: ${Math.round((sumadebe - sumahber)*100)/100}</td>
+                <td class="total derecha ${Math.round(sumadebe*100)/100 != proceso?.valor ? 'rojo' : ''}"><g:formatNumber number="${Math.round(sumadebe*100)/100}" format="##,##0" maxFractionDigits="2" minFractionDigits="2"/> </td>
+                <td class="total derecha ${Math.round(sumahber*100)/100 != proceso?.valor ? 'rojo' : ''}"><g:formatNumber number="${Math.round(sumahber*100)/100}" format="##,##0" maxFractionDigits="2" minFractionDigits="2"/> </td>
+                <td class="total derecha" ${Math.round((sumadebe - sumahber)*100)/100 != 0 ? 'rojo' : ''}>Dif: ${Math.round((sumadebe - sumahber)*100)/100}</td>
             </tr>
             </tbody>
         </table>
@@ -159,6 +165,33 @@
 </div>
 
 <script type="text/javascript">
+
+
+    $(".btnBorrarAsientos").click(function (){
+        var comprobante = $(this).attr('comp');
+        bootbox.confirm("<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i> Está seguro de borrar todos los asientos con valor 0.00 ?", function (result) {
+            if (result) {
+                openLoader("Borrando...")
+                $.ajax({
+                    type:'POST',
+                    url: '${createLink(controller: 'proceso', action: 'borrarCeros_ajax')}',
+                    data:{
+                        comprobante: comprobante
+                    },
+                    success: function (msg){
+                        if(msg == 'ok'){
+                            log("Asientos borrados correctamente","success");
+                            cargarComprobanteP('${proceso?.id}');
+                            closeLoader();
+                        }else{
+                            log("Error al borrar los asientos","error");
+                            closeLoader();
+                        }
+                    }
+                });
+            }
+        })
+    });
 
 
     $(".btnCentroCostos").click(function (){
