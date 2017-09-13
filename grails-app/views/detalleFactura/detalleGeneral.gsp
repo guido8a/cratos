@@ -75,8 +75,7 @@
 
     <div class="col-xs-4 camposTexto" style="margin-left: -25px; width: 400px">
         <b>Nombre</b>
-        <g:textField name="nombre_name" id="nombreItem" class="form-control" value="" readonly="true"
-        />
+        <g:textField name="nombre_name" id="nombreItem" class="form-control" value="" readonly="true"/>
     </div>
 
     <div class="col-xs-1" style="width: 140px;">

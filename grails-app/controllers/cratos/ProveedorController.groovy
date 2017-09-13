@@ -249,7 +249,6 @@ class ProveedorController extends cratos.seguridad.Shield {
     def save_ajax() {
 
 //        println("params:" + params)
-
         def persona
 
         //original
@@ -273,13 +272,15 @@ class ProveedorController extends cratos.seguridad.Shield {
         } //update
 
 
-        if (!proveedorInstance.save(flush: true)) {
-            def msg = "NO_No se pudo ${params.id ? 'actualizar' : 'crear'} Proveedor."
-            msg += renderErrors(bean: proveedorInstance)
-            render msg
-            return
+        try{
+            proveedorInstance.save(flush: true)
+            render "ok"
+        }catch (e){
+            render "no"
+            println("error al guardar proveedor " + e)
         }
-        render "OK_${params.id ? 'Actualización' : 'Creación'} de Proveedor exitosa."
+
+
     } //save para grabar desde ajax
 
 
@@ -366,5 +367,39 @@ class ProveedorController extends cratos.seguridad.Shield {
 
 //        println("clientes " + clientes)
         return[clientes: clientes, clienteCount: clienteCount]
+    }
+
+    def proveedor (){
+
+    }
+
+    def tablaProveedor_ajax(){
+//        println("params " + params)
+        def empresa = Empresa.get(session.empresa.id)
+        def tipoRel = null
+        
+        if(params.tipo != '0'){
+           tipoRel = TipoRelacion.get(params.tipo) 
+        }
+
+        def proveedores = Proveedor.withCriteria {
+            eq("empresa",empresa)
+
+            if(params.tipo != '0'){
+                eq("tipoRelacion",tipoRel)
+            }
+
+            and{
+                ilike("ruc", "%" + params.ruc + "%")
+                ilike("nombre", "%" + params.nombre + "%")
+            }
+
+            order("nombre", "asc")
+        }
+
+//        println("pro " + proveedores)
+
+        return[proveedores: proveedores]
+
     }
 }

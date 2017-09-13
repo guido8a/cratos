@@ -926,9 +926,12 @@
                     error += "<li>Llene el campo Descripción</li>"
                 }
 
-                if ($("#valorPago").val() == 0) {
-                    error += "<li>Ingrese el valor del ajuste</li>"
+                if($("#gestor").val() != 78){
+                    if ($("#iva12").val() == 0 && $("#iva0").val() == 0 && $("#noIva").val() == 0) {
+                        error += "<li>Ingrese valores en la base imponible</li>"
+                    }
                 }
+
             }
 
             if(tipoP == '5'){

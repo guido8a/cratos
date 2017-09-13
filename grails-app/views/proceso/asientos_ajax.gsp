@@ -40,10 +40,10 @@
 </style>
 
 
-<div class="col-md-4 etiqueta"><label>Comprobante:</label> ${comprobante?.descripcion}</div>
+<div class="col-md-5 etiqueta"><label>Comprobante:</label> ${comprobante?.descripcion}</div>
 <div class="col-md-3 etiqueta"><label>Transacción:</label> ${comprobante?.proceso?.tipoProceso?.descripcion}</div>
 <div class="col-md-2 etiqueta"><label>Número:</label> ${comprobante?.prefijo}${comprobante?.numero}</div>
-<div class="col-md-3 etiqueta"><label>Valor:</label> <g:formatNumber number="${comprobante?.proceso?.valor}" maxFractionDigits="2" format="##,##0"/></div>
+<div class="col-md-2 etiqueta"><label>Valor:</label> <g:formatNumber number="${comprobante?.proceso?.valor}" maxFractionDigits="2" format="##,##0"/></div>
 
 <g:if test="${comprobante?.registrado != 'S'}">
     <div class="btn-group" style="float: right; margin-top: -90px">

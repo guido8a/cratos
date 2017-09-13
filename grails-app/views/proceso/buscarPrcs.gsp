@@ -281,9 +281,13 @@ como máximo 30 <span style="margin-left: 40px; color: #0b2c89">Se ordena por fe
 
         if(etdo == 'R') {
             items.comprobante = comprobante;
-            items.retencion = retencion;
+            if(tp == 'Compras'){
+                items.retencion = retencion;
+            }
             items.imprimir = imprimir;
         }
+
+
 
 
         return items

@@ -1449,6 +1449,7 @@ class ProcesoController extends cratos.seguridad.Shield {
         def sql = "select asntdebe - sum(axlrdebe) debe, asnthber - sum(axlrhber) hber from asnt, axlr " +
                 "where asnt.asnt__id = axlr.asnt__id and asnt.cmpr__id = ${params.id} group by asntdebe, asnthber;"
         def valores = cn.rows(sql.toString())[0]
+        println("valores " + sql)
         def res
         if(valores?.debe == 0 && valores?.hber == 0) {
 //            println "cuadra"

@@ -32,6 +32,11 @@
     %{--<i class="fa fa-chevron-left"></i> Proceso</g:link>--}%
         <g:link class="btn regresar btn-info btn-ajax" action="buscarPrcs">
             <i class="fa fa-chevron-left"></i> Lista de Procesos</g:link>
+
+
+        <g:link class="btn regresar btn-warning btn-ajax" id="${proceso?.id}" action="nuevoProceso">
+            <i class="fa fa-chevron-left"></i> Proceso
+        </g:link>
     </div>
 
     <g:if test="${proceso?.estado != 'R'}">
@@ -44,20 +49,20 @@
 
 
     <div class="btn-group" style="margin-right: 20px; margin-left: 10px">
-        <g:link class="btn regresar btn-success btn-ajax" id="${proceso?.id}" action="nuevoProceso">
-            <i class="fa fa-chevron-left"></i> Proceso
-        </g:link>
+        %{--<g:link class="btn regresar btn-success btn-ajax" id="${proceso?.id}" action="nuevoProceso">--}%
+            %{--<i class="fa fa-chevron-left"></i> Proceso--}%
+        %{--</g:link>--}%
         <g:if test="${proceso?.estado == 'R'}">
             <a href="#" class="btn btn-success" id="comprobanteN">
                 <i class="fa fa-calendar-o"></i>
                 Comprobante
             </a>
         </g:if>
-        <g:if test="${proceso?.tipoProceso?.id == 1}">
-            <g:link class="btn btn-success previous disabled" action="detalleSri" id="${proceso?.id}" style="margin-bottom: 10px;">
-                <i class="fa fa-money"></i> Retenciones
-            </g:link>
-        </g:if>
+        %{--<g:if test="${proceso?.tipoProceso?.id == 1}">--}%
+            %{--<g:link class="btn btn-success previous disabled" action="detalleSri" id="${proceso?.id}" style="margin-bottom: 10px;">--}%
+                %{--<i class="fa fa-money"></i> Retenciones--}%
+            %{--</g:link>--}%
+        %{--</g:if>--}%
     </div>
 </div>
 
@@ -117,7 +122,7 @@
 
             <div class="col-xs-2">
                 <elm:datepicker name="fechaEmision_name" class="datepicker required form-control fechaEmision"
-                                value="${retencion?.fechaEmision ?: proceso.fechaRegistro}" minDate="${proceso.fechaRegistro}"/>
+                                value="${retencion?.fechaEmision ?: proceso.fechaIngresoSistema}" minDate="${proceso.fechaRegistro}"/>
             </div>
         </div>
 
@@ -165,7 +170,7 @@
                 <label>Base Imponible</label>
                 <g:textField class="form-control number baseB" title="La base imponible del IR."
                              style="text-align: right" name="baseRenta"
-                             value="${retencion?.baseRenta?:0}"/>
+                             value="${retencion?.baseRenta ?: proceso?.baseImponibleIva}"/>
                 <p class="help-block ui-helper-hidden"></p>
             </div>
 
@@ -190,14 +195,14 @@
                 <g:select class="form-control" name="conceptoRentaSrvc"
                           from="${crirServicios}"
                           optionKey="id" optionValue="${{ it.codigo + ' - ' + it.descripcion }}"
-                          value="${retencion?.conceptoRIRServicios?.id?:1}"/>
+                          value="${retencion?.conceptoRIRServicios?.id?:1}" noSelection="${['-1': 'Seleccione...']}"/>
             </div>
 
             <div class="col-xs-2">
                 <label>Base Imponible</label>
                 <g:textField class="form-control number"
                              title="La base imponible del IR." style="text-align: right" name="baseRentaSrvc"
-                             value="${retencion?.baseRentaServicios ?: base}"/>
+                             value="${retencion?.baseRentaServicios ?: 0}"/>
             </div>
 
             <div class="col-xs-1">
@@ -368,7 +373,7 @@
             $("#divIVA").removeClass('esconder');
             $("#serie").attr('readonly', false);
             $("#serie").val('')
-            $("#baseRenta").val(0);
+//            $("#baseRenta").val(0);
         }
         cargarRetencionRIR(concepto, 'B');
     });
