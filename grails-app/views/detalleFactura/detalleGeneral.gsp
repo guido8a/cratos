@@ -25,16 +25,19 @@
 <div class="btn-toolbar toolbar">
     <div class="btn-group">
 
-        <g:link class="btn btn-primary btn-ajax" id="${proceso?.id}" controller="proceso"
-                action="actlProceso">
-            <i class="fa fa-chevron-left"></i> Proceso</g:link>
-    %{--</div>--}%
-    %{--<div class="btn-group">--}%
+        %{--<g:link class="btn btn-primary btn-ajax" id="${proceso?.id}" controller="proceso"--}%
+                %{--action="actlProceso">--}%
+            %{--<i class="fa fa-chevron-left"></i> Proceso--}%
+        %{--</g:link>--}%
+
+        <a href="#" class="btn btn-warning btnIrProceso"><i class="fa fa-chevron-left"></i> Proceso</a>
+
 
         <g:if test="${!truncar}">
             <g:link class="btn btn-success btn-ajax" id="${proceso?.id}" controller="proceso"
                     action="actlProceso">
-                <i class="fa fa-save"></i> Guardar </g:link>
+                <i class="fa fa-save"></i> Guardar
+            </g:link>
         </g:if>
 
     </div>
@@ -149,6 +152,23 @@
 </div>
 
 <script type="text/javascript">
+
+    $(".btnIrProceso").click(function () {
+        $.ajax({
+           type:'POST',
+            url:'${createLink(controller: 'detalleFactura', action: 'verificarDetalle_ajax')}',
+            data:{
+                proceso: '${proceso?.id}'
+            },
+            success: function (msg) {
+                if(msg == 'true'){
+                      location.href='${createLink(controller: 'proceso', action: 'actlProceso', id: proceso?.id)}'
+                }else{
+                    location.href='${createLink(controller: 'proceso', action: 'nuevoProceso')}?id=' + '${proceso?.id}'
+                }
+            }
+        });
+    });
 
     function validarNumSinPuntos(ev) {
         /*

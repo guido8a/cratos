@@ -116,7 +116,7 @@ class DetalleFacturaController extends cratos.seguridad.Shield  {
         def detalles = DetalleFactura.findAllByProceso(proceso)
         def truncar
 
-        if(detalles && proceso.estado == 'R'){
+        if(proceso.estado == 'R'){
             truncar = true
         }else{
             truncar = false
@@ -249,6 +249,20 @@ class DetalleFacturaController extends cratos.seguridad.Shield  {
            println("error al borrar el detalle " + e)
             render "no"
         }
+    }
 
+    def verificarDetalle_ajax () {
+        println("params " + params)
+        def proceso = Proceso.get(params.proceso)
+        def detalles = DetalleFactura.findAllByProceso(proceso)
+        def band
+
+        if(detalles){
+            band = true
+        }else{
+            band = false
+        }
+
+        render band
     }
 }
