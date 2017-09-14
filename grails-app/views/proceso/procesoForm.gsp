@@ -205,7 +205,8 @@
             </div>
 
             <div class="col-xs-2 negrilla">
-                <g:select class="form-control required cmbRequired tipoProcesoSel ${proceso ? '' : 'hidden'}" name="tipoProceso" id="tipoProceso"
+                <g:select class="form-control required cmbRequired tipoProcesoSel ${proceso ? '' : 'hidden'}"
+                          name="tipoProceso" id="tipoProceso"
                           from="${cratos.TipoProceso.list(sort: 'codigo')}" label="Proceso tipo: "
                           value="${proceso?.tipoProceso?.id}" optionKey="id"
                           optionValue="descripcion" title="Tipo de la transacción" disabled="${proceso?.estado == 'R' ?: false}" />

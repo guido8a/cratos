@@ -903,6 +903,59 @@ class ProcesoController extends cratos.seguridad.Shield {
 
     def detalleSri() {
         println "detalleSri: $params"
+        def cn = dbConnectionService.getConnection()
+        def proceso = Proceso.get(params.id)
+        def retencion = Retencion.findByProceso(proceso)
+        def fcdt
+        def sql
+        def nmro = 0
+        def baseImponible = (proceso?.baseImponibleIva ?: 0)
+        def crirBienes = ConceptoRetencionImpuestoRenta.findAllByTipo("B")
+        def crirServicios = ConceptoRetencionImpuestoRenta.findAllByTipo("S")
+        def pcivBien = PorcentajeIva.list([sort: 'valor'])
+        def pcivSrvc = PorcentajeIva.list([sort: 'valor'])
+        def data = []
+
+        sql = "select fcdt__id id, fcdtdsde numeroDesde, fcdthsta numeroHasta, fcdtfcat fechaAutorizacion, " +
+                "fcdtnmes numeroEstablecimiento, fcdtnmpe numeroEmision " +
+                "from fcdt where '${proceso.fechaIngresoSistema}' between fcdtfcin and fcdtfcfn and " +
+                "fcdttipo = 'R' and fcdtnmes = '${proceso.establecimiento}' order by fcdtfcin"
+        println "libretin: $sql"
+        def libretin = cn.rows(sql.toString())
+
+        [proceso: proceso, libreta: libretin, retencion: retencion, base: baseImponible, crirBienes: crirBienes,
+         crirServicios: crirServicios, pcivBien: pcivBien, pcivSrvc: pcivSrvc]
+
+/*
+        if(!retencion){
+            sql = "select coalesce(max(rtcnnmro), 0) mxmo from rtcn, fcdt " +
+                    "where fcdt.fcdt__id = rtcn.fcdt__id and " +
+                    "rtcn.fcdt__id = ${libretin[0]?.id} and rtcnnmro between fcdtdsde and fcdthsta and " +
+                    "fcdtnmes = '${proceso.establecimiento}'"
+            println "sql nmro: $sql"
+            nmro = cn.rows(sql.toString())[0]?.mxmo
+            println "nmro: $nmro"
+            nmro = nmro == 0 ? libretin[0]?.numeroDesde : nmro + 1555
+
+            println "valor de nmro: $nmro, ${libretin[0]?.numeroDesde}, lb: ${libretin.size()}"
+
+            if(libretin?.size() > 0) {
+                return [proceso: proceso, libreta: libretin, retencion: retencion, base: baseImponible, crirBienes: crirBienes,
+                        crirServicios: crirServicios, pcivBien: pcivBien, pcivSrvc: pcivSrvc]
+            } else {
+
+            }
+        } else {
+            return [proceso: proceso, libreta: libretin, retencion: retencion, base: baseImponible, crirBienes: crirBienes,
+                    crirServicios: crirServicios, pcivBien: pcivBien, pcivSrvc: pcivSrvc]
+        }
+*/
+
+
+/*
+
+
+        println "detalleSri: $params"
         def empresa = Empresa.get(session.empresa.id)
         def proceso = Proceso.get(params.id)
         def retencion = Retencion.findByProceso(proceso)
@@ -916,10 +969,13 @@ class ProcesoController extends cratos.seguridad.Shield {
         def pcivBien = PorcentajeIva.list([sort: 'valor'])
         def pcivSrvc = PorcentajeIva.list([sort: 'valor'])
 
-        println "retencion renta bienes: ${retencion?.conceptoRIRBienes?.id}"
+        println "libretin: ${libreta}"
+*/
 
+/*
         return [proceso: proceso, libreta: libreta, retencion: retencion, base: baseImponible, crirBienes: crirBienes,
                 crirServicios: crirServicios, pcivBien: pcivBien, pcivSrvc: pcivSrvc]
+*/
     }
 
     def getPeriodosByAnio(anio) {
@@ -1474,7 +1530,7 @@ class ProcesoController extends cratos.seguridad.Shield {
 
 
     def numeracion_ajax () {
-//        println "numeracion_ajax: $params"
+        println "numeracion_ajax: $params"
         def cn = dbConnectionService.getConnection()
         def proceso
         if(params.proceso) {
@@ -1531,7 +1587,42 @@ class ProcesoController extends cratos.seguridad.Shield {
             } else {
                 [libretin: libretin, estb: 0, emsn: 0, nmro: 0, tipo: tipo, proceso: proceso]
             }
+        }
+    }
 
+    /** se usa en retenciones */
+    def libretin_ajax () {
+        println "libretin_ajax: $params"
+        def cn = dbConnectionService.getConnection()
+        def proceso
+        if(params.proceso) {
+            proceso = Proceso.get(params.proceso)
+        }
+
+        def fcdt = DocumentoEmpresa.get(params.libretin)
+        def sql
+        def nmro = 0
+        if(params.libretin){
+            fcdt = DocumentoEmpresa.get(params.libretin)
+            sql = "select coalesce(max(rtcnnmro), 0) mxmo from rtcn, fcdt " +
+                    "where fcdt.fcdt__id = rtcn.fcdt__id and " +
+                    "rtcn.fcdt__id = ${params.libretin} and rtcnnmro between fcdtdsde and fcdthsta and " +
+                    "fcdtnmes = '${proceso.establecimiento}'"
+            def mxmo = cn.rows(sql.toString())[0]?.mxmo
+            nmro = (mxmo > 0)? mxmo + 1 : fcdt.numeroDesde
+
+            if(!params.rtcn){
+                render "${fcdt.numeroEstablecimiento}_${fcdt.numeroEmision}_${nmro}"
+            } else {
+                def rtcn = Retencion.get(params.rtcn)
+                if(params.libretin.toInteger() == rtcn.documentoEmpresa.id){
+                    render "${fcdt.numeroEstablecimiento}_${fcdt.numeroEmision}_${rtcn.numero}"
+                } else {
+                    render "${fcdt.numeroEstablecimiento}_${fcdt.numeroEmision}_${nmro}"
+                }
+            }
+        } else {
+            render "0_0_"
         }
     }
 
@@ -1577,7 +1668,7 @@ class ProcesoController extends cratos.seguridad.Shield {
 //        println "nmro:; $nmro"
 
         if(nmro) {
-            if(nmro >= fcdt.numeroDesde && nmro <= fcdt.numeroHasta) {
+            if(nmro >= fcdt?.numeroDesde && nmro <= fcdt?.numeroHasta) {
 //                println "esta en el rango"
                 sql = "select count(*) cnta from rtcn where empr__id = ${session.empresa.id} and rtcnnmro = ${nmro}"
                 if(params.id) {
@@ -1642,13 +1733,13 @@ class ProcesoController extends cratos.seguridad.Shield {
 
     def cargaCrir_ajax () {
         def concepto = ConceptoRetencionImpuestoRenta.get(params.id)
-        println "porcentaje: ${concepto?.porcentaje}"
+        println "cargaCrir_ajax params: $params --> porcentaje: ${concepto?.porcentaje}"
         render concepto?.porcentaje?:0
     }
 
     def carga_pciv () {
         def pciv = PorcentajeIva.get(params.id)
-        println "porcentajeIva: ${pciv?.valor}"
+        println "carga_pciv porcentajeIva: ${pciv?.valor}"
         render pciv?.valor?:0
     }
 

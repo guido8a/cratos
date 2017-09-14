@@ -75,7 +75,8 @@
 
 
 
-<g:form name="sriForm" action="cargaCrir_ajax">
+%{--<g:form name="sriForm" action="cargaCrir_ajax">--}%
+<g:form name="sriForm">
     <div class="vertical-container ancho" style="height: 150px; margin-top: 30px">
         <p class="css-vertical-text">Retención</p>
 
@@ -142,11 +143,11 @@
             <div class="col-xs-5">
                 <g:textField name="numEstablecimiento" id="numEstablecimiento" readonly="true"  style="width: 50px"
                              title="Número de Establecimento"/> -
-                <g:textField name="numeroEmision" id="numEmision" readonly="true" style="width: 50px" title="Numeración Emisión"/>
+                <g:textField name="numeroEmision" id="numEmision" readonly="true" style="width: 50px"
+                             title="Numeración Emisión"/>
 
-                <g:textField name="serie" id="serie" value="${retencion?.numero}" maxlength="10" class="form-control required validacionNumero"
-                             style="width: 120px; display: inline"/>
-
+                <g:textField name="serie" id="serie" value="${retencion?.numero?:nmro}" maxlength="10"
+                             class="form-control required validacionNumero"  style="width: 120px; display: inline"/>
             </div>
             <p class="help-block ui-helper-hidden"></p>
         </div>
@@ -163,7 +164,7 @@
                 <g:select class="form-control" name="conceptoRenta"
                           from="${crirBienes}"
                           optionKey="id" optionValue="${{ it.codigo + ' : ' + it.porcentaje + '% ' + it.descripcion }}"
-                          value="${retencion?.conceptoRIRBienes?.id}" noSelection="${['-1': 'Seleccione...']}"/>
+                          value="${retencion?.conceptoRIRBienes?.id?:6}" noSelection="${['-1': 'Seleccione...']}"/>
             </div>
 
             <div class="col-xs-2">
@@ -195,7 +196,7 @@
                 <g:select class="form-control" name="conceptoRentaSrvc"
                           from="${crirServicios}"
                           optionKey="id" optionValue="${{ it.codigo + ' - ' + it.descripcion }}"
-                          value="${retencion?.conceptoRIRServicios?.id?:1}" noSelection="${['-1': 'Seleccione...']}"/>
+                          value="${retencion?.conceptoRIRServicios?.id?:-1}" noSelection="${['-1': 'Seleccione...']}"/>
             </div>
 
             <div class="col-xs-2">
@@ -360,7 +361,7 @@
 
     $("#conceptoRenta").change(function () {
         var concepto = $("#conceptoRenta option:selected").val();
-//        console.log('cambia CRIR:', concepto)
+        console.log('cambia CRIR:', concepto)
         if (concepto == '23') {
             $("#conceptoRIRServicios").addClass('esconder');
             $("#divIVA").addClass('esconder');
@@ -372,8 +373,7 @@
             $("#conceptoRIRServicios").removeClass('esconder');
             $("#divIVA").removeClass('esconder');
             $("#serie").attr('readonly', false);
-            $("#serie").val('')
-//            $("#baseRenta").val(0);
+//            $("#serie").val('')
         }
         cargarRetencionRIR(concepto, 'B');
     });
@@ -557,7 +557,7 @@
         if (!$(".fechaEmision").val()) {
             error += "<li>Seleccione la fecha de emisión de la retención</li>"
         }
-        if ($("#serie").val() == '') {
+        if (($("#serie").val() == '') || !($("#libretin option:selected").val())) {
             if (concepto != '23') {
                 error += "<li>Ingrese el número de comprobante de la retención</li>"
             }
@@ -674,14 +674,20 @@
         var idLibretin = $("#libretin option:selected").val();
         $.ajax({
             type: 'POST',
-            url: '${createLink(controller: 'proceso', action: 'numeracion_ajax')}',
+            url: '${createLink(controller: 'proceso', action: 'libretin_ajax')}',
             data: {
-                libretin: idLibretin
+                libretin: idLibretin,
+                proceso: "${proceso?.id}",
+                fcha: $("#fechaEmision_name_input").val(),
+                rtcn: "${retencion?.id}"
             },
             success: function (msg) {
                 var partes = msg.split('_');
                 $("#numEstablecimiento").val(partes[0])
                 $("#numEmision").val(partes[1])
+                if(partes[2]) {
+                    $("#serie").val(partes[2])
+                }
             }
         })
     });
@@ -824,9 +830,9 @@
 //        console.log('listo...');
         $("#conceptoRenta").change();
         var concepto = $("#conceptoRenta option:selected").val();
-        cargarRetencionRIR(concepto, 'B');
+//        cargarRetencionRIR(concepto, 'B');
         concepto = $("#conceptoRentaSrvc option:selected").val();
-        cargarRetencionRIR(concepto, 'S');
+//        cargarRetencionRIR(concepto, 'S');
         $("#baseRenta").change();
         $("#libretin").change();
         $("#pcivBienes").change();
