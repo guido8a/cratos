@@ -1339,7 +1339,7 @@ class ProcesoController extends cratos.seguridad.Shield {
             data = cn.firstRow(sql.toString())
         }
         println "saldo: ${data?.sldo}"
-        return[proceso: proceso, saldo: data?.sldo]
+        return[proceso: proceso, saldo: data?.sldo ?: 0]
     }
 
     def valores_ajax () {

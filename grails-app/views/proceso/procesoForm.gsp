@@ -194,11 +194,8 @@
             </div>
 
             <div class="col-xs-1 negrilla">
-                %{--<g:textField name="establecimiento" id="establecimiento" class="form-control required validacionNumeroSinPuntos"--}%
-                %{--maxlength="3" value="${proceso?.establecimiento}" disabled="${proceso?.estado == 'R' ?: false}"/>--}%
                 <g:select class="form-control required cmbRequired" name="establecimiento" id="establecimiento"
                           from="${estb}" label="Proceso tipo: " value="${proceso?.establecimiento}" optionKey="key"
-                          optionValue="value" title="Establecimientos" disabled="${proceso?.estado == 'R' ?: false}"
                           optionValue="value" title="Establecimientos" disabled="${proceso?.estado == 'R' ?: false}"
                           style="margin-left: 0; width: 70px" />
             </div>
@@ -1068,20 +1065,6 @@
         });
     });
 
-    %{--function cargarComprobante(proceso) {--}%
-    %{--$.ajax({--}%
-    %{--type: 'POST',--}%
-    %{--url: "${createLink(controller: 'proceso',action: 'comprobante_ajax')}",--}%
-    %{--data: {--}%
-    %{--proceso: proceso--}%
-    %{--},--}%
-    %{--success: function (msg) {--}%
-    %{--$("#divComprobante").html(msg).show("slide");--}%
-    %{--}--}%
-    %{--});--}%
-    %{--}--}%
-
-
     cargarExterior($("#pago option:selected").val());
 
     $("#pago").change(function () {
@@ -1178,9 +1161,11 @@
     });
 
     $("#establecimiento").change(function () {
-        console.log('change... nmes')
+//        console.log('change... nmes')
         $("#libretinFacturas").html('')
-        cargarLibretin()
+//        var tipoProceso = $(".tipoProcesoSel option:selected").val();
+            cargarLibretin()
+
     });
 
     function revisarBodega (bodega) {
