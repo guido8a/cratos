@@ -25,27 +25,24 @@
 <div class="btn-toolbar toolbar">
     <div class="btn-group">
 
-        %{--<g:link class="btn btn-primary btn-ajax" id="${proceso?.id}" controller="proceso"--}%
-                %{--action="actlProceso">--}%
-            %{--<i class="fa fa-chevron-left"></i> Proceso--}%
-        %{--</g:link>--}%
-
-        <a href="#" class="btn btn-warning btnIrProceso"><i class="fa fa-chevron-left"></i> Proceso</a>
-
-
+        <g:link class="btn btn-primary btn-ajax" id="${proceso?.id}" controller="proceso"
+                action="nuevoProceso">
+            <i class="fa fa-chevron-left"></i> Proceso
+        </g:link>
+    </div>
+    <div class="btn-group">
         <g:if test="${!truncar}">
             <g:link class="btn btn-success btn-ajax" id="${proceso?.id}" controller="proceso"
                     action="actlProceso">
                 <i class="fa fa-save"></i> Guardar
             </g:link>
         </g:if>
-
     </div>
 </div>
 
 
 <div class="col-xs-12" style="text-align: center; margin-bottom: 20px">
-    <b style="font-size: 18px;">Detalle de ${proceso?.tipoProceso?.codigo?.trim() == 'C' ? ' Compras' : (proceso?.tipoProceso?.codigo?.trim() == 'V' ? ' Ventas' : (proceso?.tipoProceso?.codigo?.trim() == 'T' ? 'Transferencias' : 'Nota de Crédito'))} de " ${proceso?.descripcion} "</b>
+    <b style="font-size: 18px;">Detalle de ${proceso?.tipoProceso?.codigo?.trim() == 'C' ? ' Compras' : (proceso?.tipoProceso?.codigo?.trim() == 'V' ? ' Ventas' : (proceso?.tipoProceso?.codigo?.trim() == 'T' ? 'Transferencias' : 'Nota de Crédito'))} de "${proceso?.descripcion}"</b>
 </div>
 
 <div class="vertical-container ${truncar ? 'hidden' : ''}" style="position: relative;float: left;width: 95%;padding-left: 45px;">
@@ -154,20 +151,7 @@
 <script type="text/javascript">
 
     $(".btnIrProceso").click(function () {
-        $.ajax({
-           type:'POST',
-            url:'${createLink(controller: 'detalleFactura', action: 'verificarDetalle_ajax')}',
-            data:{
-                proceso: '${proceso?.id}'
-            },
-            success: function (msg) {
-                if(msg == 'true'){
-                      location.href='${createLink(controller: 'proceso', action: 'actlProceso', id: proceso?.id)}'
-                }else{
-                    location.href='${createLink(controller: 'proceso', action: 'nuevoProceso')}?id=' + '${proceso?.id}'
-                }
-            }
-        });
+        location.href='${createLink(controller: 'proceso', action: 'nuevoProceso')}?id=' + '${proceso?.id}'
     });
 
     function validarNumSinPuntos(ev) {

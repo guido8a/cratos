@@ -420,7 +420,8 @@
     }
 
     $("#btnDetalle").click(function () {
-        location.href='${createLink(controller: 'detalleFactura', action: 'detalleGeneral')}/?id=' + '${proceso?.id}' + '&tipo=' + '${proceso?.tipoProceso?.codigo}'
+        location.href='${createLink(controller: 'detalleFactura', action: 'detalleGeneral')}/?id=' +
+                '${proceso?.id}' + '&tipo=' + '${proceso?.tipoProceso?.codigo}'
     });
 
 

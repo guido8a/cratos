@@ -57,33 +57,34 @@ class ProcesoController extends cratos.seguridad.Shield {
     def actlProceso = {
         println "actlProceso $params"
         def proceso = Proceso.get(params.id)
+        def detalle = DetalleFactura.findByProceso(proceso)
         def cn = dbConnectionService.getConnection()
 
         println "gestor tipo: ${proceso.gestor.tipo}"
 
-        if(proceso.estado != 'R') {
-            def sql = "select * from total_detalle(${proceso.id},0,0)"
-           //  base__nz | basecero | basenoiv | iva  | ice  | dsct | flte | totl
-           // ----------+----------+----------+------+------+------+------+------
-           //      4.50 |     0.00 |     0.00 | 0.54 | 0.00 | 0.00 | 0.00 | 5.04
-
-            cn.eachRow(sql.toString()) {d ->
-                proceso.valor = d.totl
-                proceso.baseImponibleIva = d.base__nz
-                proceso.baseImponibleIva0 = d.basecero
-                proceso.baseImponibleNoIva = d.basenoiv
-                proceso.ivaGenerado = d.iva
-                proceso.iceGenerado = d.ice
-                if(proceso.gestor.tipo == 'I')
-                    proceso.flete = d.flte
-                else {
-                    proceso.flete = 0
+        if(detalle) {
+            if(proceso.estado != 'R') {
+                def sql = "select * from total_detalle(${proceso.id}, 0, 0)"
+                //  base__nz | basecero | basenoiv | iva  | ice  | dsct | flte | totl
+                // ----------+----------+----------+------+------+------+------+------
+                //      4.50 |     0.00 |     0.00 | 0.54 | 0.00 | 0.00 | 0.00 | 5.04
+                cn.eachRow(sql.toString()) {d ->
+                    proceso.valor = d.totl
+                    proceso.baseImponibleIva = d.base__nz
+                    proceso.baseImponibleIva0 = d.basecero
+                    proceso.baseImponibleNoIva = d.basenoiv
+                    proceso.ivaGenerado = d.iva
+                    proceso.iceGenerado = d.ice
+                    if(proceso.gestor.tipo == 'I')
+                        proceso.flete = d.flte
+                    else {
+                        proceso.flete = 0
+                    }
                 }
+                println "...graba datos de detalle --> ${proceso.gestor}"
+                proceso.save(flush: true)
             }
-            proceso.save(flush: true)
-
         }
-
         redirect(action: 'nuevoProceso', id: proceso.id)
     }
 
