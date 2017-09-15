@@ -38,6 +38,7 @@
         color: red;
         font-weight: normal;
     }
+
     </style>
 </head>
 
@@ -205,11 +206,11 @@
             </div>
 
             <div class="col-xs-2 negrilla">
-                <g:select class="form-control required cmbRequired tipoProcesoSel ${proceso ? '' : 'hidden'}"
-                          name="tipoProceso" id="tipoProceso"
-                          from="${cratos.TipoProceso.list(sort: 'codigo')}" label="Proceso tipo: "
-                          value="${proceso?.tipoProceso?.id}" optionKey="id"
-                          optionValue="descripcion" title="Tipo de la transacción" disabled="${proceso?.estado == 'R' ?: false}" />
+                    <g:select class="form-control required  cmbRequired tipoProcesoSel ${proceso ? '' : 'hidden'} "
+                              name="tipoProceso" id="tipoProceso"
+                              from="${cratos.TipoProceso.list(sort: 'codigo')}" label="Proceso tipo: "
+                              value="${proceso?.tipoProceso?.id}" optionKey="id"
+                              optionValue="descripcion" title="Tipo de la transacción" disabled="${proceso?.id ? true : false}"/>
             </div>
         </div>
 
@@ -1004,11 +1005,19 @@
                     info += " Esta seguro de continuar?"
                     bootbox.confirm(info, function (result) {
                         if (result) {
+                            openLoader("Guardando..");
+                            if('${proceso?.id}'){
+                                $("#tipoProceso").removeAttr('disabled', false);
+                            }
                             $(".frmProceso").submit();
+                            closeLoader();
                         }
                     })
                 } else {
                     openLoader("Guardando..");
+                    if('${proceso?.id}'){
+                        $("#tipoProceso").removeAttr('disabled', false);
+                    }
                     $(".frmProceso").submit();
                     closeLoader()
                 }

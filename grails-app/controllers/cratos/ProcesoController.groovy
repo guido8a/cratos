@@ -89,7 +89,7 @@ class ProcesoController extends cratos.seguridad.Shield {
     }
 
     def save = {
-        println "save proceso: $params"
+//        println "save proceso: $params"
         def proceso
         def comprobante
 
@@ -329,7 +329,7 @@ class ProcesoController extends cratos.seguridad.Shield {
     }
 
     def cargaGestor = {
-        println "cargar gestor $params "
+//        println "cargar gestor $params "
         def proceso = Proceso.get(params.proceso)
         def detalle = DetalleFactura.findAllByProceso(proceso)
         def gstr = Gestor.findAllByEmpresaAndTipoProceso(session.empresa, TipoProceso.get(params.tipo), [sort: 'nombre'])
@@ -356,7 +356,7 @@ class ProcesoController extends cratos.seguridad.Shield {
     }
 
     def cargaTcsr() {
-        println "cargatcsr $params"
+//        println "cargatcsr $params"
         def cn = dbConnectionService.getConnection()
         def tipo = 0
         def reembolso
@@ -395,7 +395,7 @@ class ProcesoController extends cratos.seguridad.Shield {
     }
 
     def cargaSstr() {
-        println "cargaSstr $params"
+//        println "cargaSstr $params"
         def cn = dbConnectionService.getConnection()
         def tipo = 0
         switch (params.tptr) {
@@ -412,10 +412,10 @@ class ProcesoController extends cratos.seguridad.Shield {
         def sql = "select cast(tittcdgo as integer) cdgo from titt, prve, tptr " +
                 "where prve.tpid__id = titt.tpid__id and prve__id = ${params.prve} and " +
                 "tptr.tptr__id = titt.tptr__id and tptrcdgo = '${tipo}'"
-        println "sql: $sql"
+//        println "sql: $sql"
 
         def titt = cn.rows(sql.toString())[0]?.cdgo
-        println "identif: $titt"
+//        println "identif: $titt"
 
         sql = "select sstr__id id, sstrcdgo codigo, sstrdscr descripcion from sstr " +
                 "where sstr__id in (select distinct(unnest(sstr)) " +
@@ -697,7 +697,7 @@ class ProcesoController extends cratos.seguridad.Shield {
     }
 
     def buscarProveedor = {
-        println "buscar proveedor "+params
+//        println "buscar proveedor "+params
         def prve = []
         def proceso = Proceso.get(params.proceso)
         def tr = TipoRelacion.list()

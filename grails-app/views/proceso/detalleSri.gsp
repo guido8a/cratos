@@ -201,7 +201,7 @@
 
             <div class="col-xs-2">
                 <label>Base Imponible</label>
-                <g:textField class="form-control number"
+                <g:textField class="form-control number brs"
                              title="La base imponible del IR." style="text-align: right" name="baseRentaSrvc"
                              value="${retencion?.baseRentaServicios ?: 0}"/>
             </div>
@@ -359,9 +359,17 @@
 <script type="text/javascript">
 
 
+    revisarComboServicios($("#conceptoRentaSrvc option:selected").val());
+
+    function revisarComboServicios (valor) {
+        if(valor == '-1'){
+            $("#porcentajeSrvc").val(0);
+        }
+    }
+
     $("#conceptoRenta").change(function () {
         var concepto = $("#conceptoRenta option:selected").val();
-        console.log('cambia CRIR:', concepto)
+//        console.log('cambia CRIR:', concepto)
         if (concepto == '23') {
             $("#conceptoRIRServicios").addClass('esconder');
             $("#divIVA").addClass('esconder');
@@ -380,7 +388,7 @@
 
     $("#conceptoRentaSrvc").change(function () {
         var concepto = $("#conceptoRentaSrvc option:selected").val();
-//        console.log('cambia IRSrvc:', concepto)
+        revisarComboServicios(concepto);
         cargarRetencionRIR(concepto, 'S');
     });
 
@@ -427,21 +435,39 @@
         totalesIva()
     });
 
-//    $(".baseS").keydown(function (ev) {
-//
-//    }).keyup(function () {
-//        if( $("#baseRentaSrvc").val() == 0){
-//            $("#baseRentaSrvc").val(0)
-//        }
-//    });
 
-//    $(".valorSer").keydown(function (ev) {
-//
-//    }).keyup(function () {
-//        if( $("#valorRetenidoSrvc").val() == 0){
-//            $("#valorRetenidoSrvc").val(0)
-//        }
-//    });
+    $(".brs").keydown(function (ev) {
+
+    }).keyup(function () {
+        if( $("#baseRentaSrvc").val() == ''){
+            $("#baseRentaSrvc").val(0)
+        }
+    });
+
+    $("#baseRenta").keydown(function (ev) {
+
+    }).keyup(function () {
+        if( $("#baseRenta").val() == ''){
+            $("#baseRenta").val(0)
+        }
+    });
+
+    $("#baseIvaBienes").keydown(function (ev) {
+
+    }).keyup(function () {
+        if( $("#baseIvaBienes").val() == ''){
+            $("#baseIvaBienes").val(0)
+        }
+    });
+
+    $("#baseIvaServicios").keydown(function (ev) {
+
+    }).keyup(function () {
+        if( $("#baseIvaServicios").val() == ''){
+            $("#baseIvaServicios").val(0)
+        }
+    });
+
 
     function actualizaRenta() {
         var pcnt = parseFloat($("#porcentaje").val())
