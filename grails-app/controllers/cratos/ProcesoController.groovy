@@ -1503,20 +1503,35 @@ class ProcesoController extends cratos.seguridad.Shield {
     }
     def mayorizar_ajax () {
         def cn = dbConnectionService.getConnection()
-        def sql = "select asntdebe - sum(axlrdebe) debe, asnthber - sum(axlrhber) hber from asnt, axlr " +
-                "where asnt.asnt__id = axlr.asnt__id and asnt.cmpr__id = ${params.id} group by asntdebe, asnthber;"
-        def valores = cn.rows(sql.toString())[0]
-        println("valores " + sql)
+        def sql = "select sum(asntdebe) - sum(asnthber) suma from asnt " +
+                "where cmpr__id = ${params.id}"
+        def sumaAsnt = cn.rows(sql.toString())[0].suma
         def res
-        if(valores?.debe == 0 && valores?.hber == 0) {
-//            println "cuadra"
-            res = procesoService.mayorizar(params.id)
-        }  else {
-//            println "no cuadra"
-            render "no_no cuadran los valores de asientos y sus respectivos auxiliares"
-            return
-        }
 
+        sql = "select count(*) cnta from asnt, axlr where asnt.asnt__id = axlr.asnt__id and asnt.cmpr__id = ${params.id}"
+
+        if(cn.rows(sql.toString())[0].cnta > 0) {
+            sql = "select asntdebe - sum(axlrdebe) debe, asnthber - sum(axlrhber) hber from asnt, axlr " +
+                    "where asnt.asnt__id = axlr.asnt__id and asnt.cmpr__id = ${params.id} group by asntdebe, asnthber;"
+            def valores = cn.rows(sql.toString())[0]
+            println("valores " + sql)
+            if(valores?.debe == 0 && valores?.hber == 0) {
+//            println "cuadra"
+                res = procesoService.mayorizar(params.id)
+            }  else {
+//            println "no cuadra"
+                render "no_no cuadran los valores de asientos y sus respectivos auxiliares"
+                return
+            }
+        } else {
+            if(sumaAsnt == 0) {
+                res = procesoService.mayorizar(params.id)
+            }  else {
+//            println "no cuadra"
+                render "no_no cuadran los valores de asientos"
+                return
+            }
+        }
         println("res " + res)
         render res
     }
