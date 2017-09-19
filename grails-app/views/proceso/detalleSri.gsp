@@ -487,9 +487,25 @@
     function totalesRenta() {
         var vr = parseFloat($("#valorRetenido").val());
         var vrs = parseFloat($("#valorRetenidoSrvc").val());
-        var rt = parseFloat($("#baseRenta").val()) * parseFloat($("#porcentaje").val())/100;
-        var rts = parseFloat($("#baseRentaSrvc").val()) * parseFloat($("#porcentajeSrvc").val())/100;
-//        console.log('calculado:', rt, 'valor:', vrs)
+        var br = parseFloat($("#baseRenta").val());
+        var brs = parseFloat($("#baseRentaSrvc").val());
+        var pcr = $("#porcentaje").val();
+        var pcrs = $("#porcentajeSrvc").val();
+
+        var rt = parseFloat(br) * parseFloat(pcr)/100;
+        var rts = parseFloat(brs) * parseFloat(pcrs)/100;
+        if(isNaN(rts)) {rts = 0}
+
+        if(isNaN(vrs)) {
+            vrs = 0;
+            $("#valorRetenidoSrvc").val(0);
+        }
+        if(isNaN(vr)) {
+            vr = 0;
+            $("#valorRetenido").val(0);
+        }
+
+//        console.log('calculado:', rt, 'valor:', vrs, 'rt', rt, 'rts', rts, 'brs', brs, 'pcrs', pcrs)
         if(Math.abs(rt - vr) > 0.01) {
             $("#valorRetenido").val(rt)
             $("#valorRetenido").focus()
