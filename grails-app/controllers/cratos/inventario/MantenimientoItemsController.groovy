@@ -14,7 +14,7 @@ class MantenimientoItemsController extends Shield {
     } //index
 
     String makeBasicTree(params) {
-        println "makeBasicTree: $params"
+//        println "makeBasicTree: $params"
         def ids = params.id
         def id
         def tp
@@ -26,7 +26,7 @@ class MantenimientoItemsController extends Shield {
 
         def hijos = []
 
-        println "ids: $ids"
+//        println "ids: $ids"
         if (ids == "#") {
             //root
             def gr = params.tipo.split('_')[1].toInteger()
@@ -42,7 +42,7 @@ class MantenimientoItemsController extends Shield {
         }
 
         if (tree == "" && id) {
-            println "....1  id: $id"
+//            println "....1  id: $id"
             switch (tipo) {
                 case "grupo_manoObra":
                     hijos = DepartamentoItem.findAllBySubgrupo(SubgrupoItems.get(id), [sort: 'codigo'])
@@ -80,11 +80,11 @@ class MantenimientoItemsController extends Shield {
             }
 
             String rel = "", extra = ""
-            println "hijos ... " + hijos
+//            println "hijos ... " + hijos
             tree += "<ul>"
             hijos.each { hijo ->
                 def hijosH, desc, liId
-                println "hijo:---- $hijo, tipo: $tipo"
+//                println "hijo:---- $hijo, tipo: $tipo"
                 switch (tipo) {
                     case "grupo_manoObra":
                         hijosH = Item.findAllByDepartamento(hijo, [sort: 'codigo'])
@@ -105,18 +105,18 @@ class MantenimientoItemsController extends Shield {
                         break;
                     case "subgrupo_material":
                     case "subgrupo_equipo":
-                        println "....2"
+//                        println "....2"
                         def item
                         try {
                             item = Item.list()
-                            println "items: $item"
+//                            println "items: $item"
                         } catch (e) {
                             println "error: $e"
                         }
 
                         hijosH = Item.findAllByDepartamento(hijo, [sort: 'codigo'])
-                        println "codigo: ${hijo.subgrupo.codigo.toString()}"
-                        println "${hijo.subgrupo.codigo.toString().padLeft(3, '0')}, ${hijo.codigo.toString().padLeft(3, '0')}, ${hijo.descripcion}"
+//                        println "codigo: ${hijo.subgrupo.codigo.toString()}"
+//                        println "${hijo.subgrupo.codigo.toString().padLeft(3, '0')}, ${hijo.codigo.toString().padLeft(3, '0')}, ${hijo.descripcion}"
                         desc = hijo.subgrupo.codigo.toString().padLeft(3, '0') + '.' + hijo.codigo.toString().padLeft(3, '0') + " " + hijo.descripcion
                         def parts = tipo.split("_")
                         rel = "departamento_" + parts[1]
@@ -217,7 +217,7 @@ class MantenimientoItemsController extends Shield {
     }
 
     def loadTreePart() {
-        println "loadTreePart...."
+//        println "loadTreePart...."
         render(makeBasicTree(params))
     }
 
