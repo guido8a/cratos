@@ -5,7 +5,6 @@
   Time: 10:43
 --%>
 
-
 <div class="btn-toolbar toolbar">
     <div class="btn-group-sm">
         <g:if test="${comprobante.registrado != 'S'}">

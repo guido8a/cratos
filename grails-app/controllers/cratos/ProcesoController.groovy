@@ -1486,13 +1486,16 @@ class ProcesoController extends cratos.seguridad.Shield {
         def asientos = Asiento.findAllByComprobante(comprobante)
         def totalDebe = asientos.debe.sum()
         def totalHaber = asientos.haber.sum()
+        def debe = Math.round(totalDebe*100)/100
+        def haber = Math.round(totalHaber*100)/100
+        def valor = Math.round(comprobante.proceso.valor*100)/100
         def band
         def gestor = comprobante.proceso.gestor
 
         if(gestor.codigo == 'SLDO'){
             band = true
         }else{
-            if((totalDebe - totalHaber) == 0 && totalDebe == comprobante.proceso.valor.toDouble() && totalHaber == comprobante.proceso.valor.toDouble()){
+            if(( debe - haber) == 0 && debe == valor && haber == valor){
                 band = true
             }else{
                 band = false
@@ -1932,9 +1935,6 @@ class ProcesoController extends cratos.seguridad.Shield {
             valorTotal = (asiento.debe.toDouble() - (centros.debe.sum() ? centros.debe.sum().toDouble() : 0 ))
             tipo = 1
         }
-
-
-
 //        println("--> " + valorTotal)
 
         return[cs:cs, asiento: asiento, valor: valorTotal, tipo: tipo]
