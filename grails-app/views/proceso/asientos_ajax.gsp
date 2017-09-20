@@ -31,8 +31,6 @@
 }
 
 .rojo{
-    /*color: #702213*/
-    /*color: #ff0f24;*/
     background-color: #702213;
 
 }
@@ -52,7 +50,7 @@
             <i class="fa fa-plus"> Agregar Asiento</i>
         </a>
         <a href="#" class="btn btn-danger btnBorrarAsientos" comp="${comprobante?.id}"
-           title="Borrar todos los asientos que contienen valores 0">
+           title="Borrar los asientos con valores en 0 al debe y al haber">
             <i class="fa fa-minus"> Borrar Asientos con 0</i>
         </a>
     </div>

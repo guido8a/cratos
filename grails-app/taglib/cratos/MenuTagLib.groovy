@@ -67,7 +67,7 @@ class MenuTagLib {
         html += '<span class="icon-bar"></span>'
         html += '<span class="icon-bar"></span>'
         html += '</button>'
-        html += '<a class="navbar-brand" href="#">' + attrs.title + '</a>'
+        html += '<a class="navbar-brand" href="#" style="color:#0042B3">' + attrs.title + '</a>'
         html += '</div>'
         //<!-- Collect the nav links, forms, and other content for toggling -->
         html += '<div class="collapse navbar-collapse" id="cratos-navbar-collapse">'
