@@ -1477,7 +1477,7 @@ class ProcesoController extends cratos.seguridad.Shield {
         def empresa = Empresa.get(session.empresa.id)
         def contabilidades = Contabilidad.findAllByInstitucion(empresa, [sort: "fechaInicio"])
         contabilidades.remove(contabilidad)
-        return [usuario: usuario, contabilidad: contabilidad, contabilidades: contabilidades]
+        return [usuario: usuario, contabilidad: contabilidad, contabilidades: contabilidades, tipo: params.tipo]
     }
 
     def botonesMayo_ajax () {

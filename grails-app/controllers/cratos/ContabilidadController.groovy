@@ -21,9 +21,15 @@ class ContabilidadController extends cratos.seguridad.Shield {
     }
 
     def cambiarContabilidad() {
+//        println("params " + params)
         def contabilidad = Contabilidad.get(params.contabilidad)
         session.contabilidad = contabilidad
-        redirect controller: 'proceso', action: 'buscarPrcs'
+        if(params.tipo == '1'){
+            redirect controller: 'contabilidad', action: 'buscarComp'
+        }else{
+            redirect controller: 'proceso', action: 'buscarPrcs'
+        }
+
     }
 
     /* ************************ COPIAR DESDE AQUI ****************************/
@@ -432,6 +438,50 @@ class ContabilidadController extends cratos.seguridad.Shield {
     }
 
     def formPeriodo_ajax () {
+
+    }
+
+    def buscarComp () {
+
+    }
+
+    def tablaComprobantes_ajax () {
+//        println("params c " + params)
+
+        def contabilidad = Contabilidad.get(session.contabilidad.id)
+        def desde
+        def hasta
+        if(params.desde){
+            desde = new Date().parse("dd-MM-yyyy", params.desde)
+        }
+
+        if(params.hasta){
+            hasta = new Date().parse("dd-MM-yyyy", params.hasta)
+        }
+
+        def comprobantes = Comprobante.withCriteria {
+
+            proceso{
+                eq("contabilidad", contabilidad)
+            }
+
+            eq("registrado", 'N')
+
+            if(params.desde && params.hasta){
+                between("fecha", desde, hasta)
+            }
+
+            if(params.descripcion){
+                ilike("descripcion", "%" + params.descripcion.trim() + "%")
+
+            }
+
+            order("fecha","asc")
+        }
+
+//        println("--> " + comprobantes)
+
+        return [comprobantes: comprobantes]
 
     }
 

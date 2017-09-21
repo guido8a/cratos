@@ -11,6 +11,7 @@
     </div>
     <div class="panel-body">
         <g:form controller="contabilidad" action="cambiarContabilidad" name="frmContabilidad">
+            <g:hiddenField name="tipo" value="${tipo}"/>
             <div class="row">
                 <div class="col-md-3">
                     <b>Usuario:</b>
@@ -55,10 +56,4 @@
     $("#btnSave").click(function () {
         $("#frmContabilidad").submit();
     });
-
-/*
-    $("#btnCancelar").click(function () {
-        window.location.href = "${createLink(controller: 'proceso', action: 'buscarPrcs')}";
-    });
-*/
 </script>
