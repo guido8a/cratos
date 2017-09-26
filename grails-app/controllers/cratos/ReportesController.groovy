@@ -7,8 +7,21 @@ class ReportesController {
     def cuentasService
     def buscadorService
     def kerberosoldService
+    def dbConnectionService
 
     def index() {
+        def cn = dbConnectionService.getConnection()
+        def sql
+        def empresa = Empresa.get(session.empresa.id)
+        def contabilidad = Contabilidad.findAllByInstitucion(empresa)
+
+        contabilidad.each {
+            sql = "select * from saldos(${it.id});"
+//            println("sql " + sql)
+            cn.execute(sql.toString())
+        }
+
+
         println session.contabilidad.id
         def camposCliente = ["nombre": ["Nombre", "string"], "ruc": ["Ruc", "string"]]
 
