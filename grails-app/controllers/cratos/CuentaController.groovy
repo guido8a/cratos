@@ -6,6 +6,8 @@ class CuentaController extends cratos.seguridad.Shield {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST", delete: "GET"]
 
+    def dbConnectionService
+
     def index() {
         redirect(action: "list", params: params)
     }
@@ -644,6 +646,41 @@ class CuentaController extends cratos.seguridad.Shield {
             order("numero","asc")
         }
         return[cuentas: res]
+    }
+
+    def padre_ajax () {
+        def padreActual = Cuenta.get(params.nodo).padre
+        def cn = dbConnectionService.getConnection()
+        def cuenta = Cuenta.get(params.nodo)
+        def empresa = Empresa.get(session.empresa.id)
+//        def sql = "select * from cnta where cnta__id in (select cntapdre from cnta where empr__id = ${empresa?.id}) order by cntanmro;"
+        def sql = "select padre.cntapdre abuelo, padre.cnta__id, padre.cntanmro padre, abuelo.cntanmro ablonmro, " +
+                "abuelo.cntadscr ablodscr from cnta, cnta padre, cnta abuelo where cnta.cnta__id = ${cuenta?.id} and padre.cnta__id = cnta.cntapdre and abuelo.cnta__id = padre.cntapdre;"
+        def res = cn.rows(sql.toString());
+//        def filtrada = res.cnta__id - padreActual.id
+//        def todas = Cuenta.findAllByIdInList(filtrada).sort{it.numero}
+        println("res " + res.first())
+
+//        return[padres: todas]
+        return[padres: res]
+
+    }
+
+    def cambiarPadre_ajax () {
+        println("params " + params)
+        def cuenta = Cuenta.get(params.cuenta)
+        def nuevoPadre = Cuenta.get(params.padre)
+
+//        cuenta.padre = nuevoPadre
+//
+//        try{
+//            cuenta.save(flush: true)
+//            render "ok"
+//        }catch (e){
+//            println("error al cambiar de padre " + e)
+//            render "no"
+//        }
+
     }
 
 }

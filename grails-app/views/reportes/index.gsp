@@ -1288,8 +1288,9 @@
             if (cont == '-1') {
                 bootbox.alert("Debe elegir una contabilidad!")
             } else {
-                url = "${g.createLink(controller:'reportes' , action: 'balanceComprobacion')}?cont=" + cont + "Wempresa=${session.empresa.id}" + "Wper=" + per;
+                url = "${g.createLink(controller:'reportes2' , action: 'balanceComprobacion')}?cont=" + cont + "Wemp=${session.empresa.id}" + "Wperiodo=" + per;
                 location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=balanceComprobacion.pdf"
+
             }
         });
 
@@ -1320,7 +1321,6 @@
         $(".btnAceptarAuxiliar").click(function () {
             var cont = $("#contP3").val();
             var per = $("#periodo3").val();
-//            var cnta = $("#cnta3").val();
             var cnta = $("#idCntaLibro").val();
             var fechaDesde = $(".fechaDe").val();
             var fechaHasta = $(".fechaHa").val();
@@ -1344,7 +1344,7 @@
                             success: function (msg){
                                 if(msg == 'ok'){
                                     url = "${g.createLink(controller:'reportes2' , action: 'libroMayor')}?cont=" + cont + "Wemp=${session.empresa.id}" + "Wper=" + per + "Wcnta=" + cnta + "Wdesde=" + fechaDesde + "Whasta=" + fechaHasta;
-                                    location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=auxiliares.pdf"
+                                    location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=libroMayor.pdf"
                                 }else{
                                     bootbox.alert("<i class='fa fa-exclamation-circle fa-3x pull-left text-warning text-shadow'></i> La fecha ingresada en 'Hasta' es menor a la fecha ingresada en 'Desde' ");
                                     return false;

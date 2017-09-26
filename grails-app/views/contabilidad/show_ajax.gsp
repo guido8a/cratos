@@ -64,7 +64,7 @@
             </div>
 
             <div class="col-md-9">
-                ${cratos.Cuenta.get(contabilidadInstance?.cuenta).descripcion}
+                ${contabilidadInstance?.cuenta?.descripcion}
             </div>
 
         </div>

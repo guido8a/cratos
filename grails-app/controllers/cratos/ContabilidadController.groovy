@@ -9,6 +9,7 @@ class ContabilidadController extends cratos.seguridad.Shield {
 
     def utilitarioService
 
+
     def cambiar() {
         def yo = Persona.get(session.usuario.id)
         def cont = Contabilidad.get(session.contabilidad.id)
@@ -86,12 +87,13 @@ class ContabilidadController extends cratos.seguridad.Shield {
 
         def errores = ''
         def contabilidadInstance
+        def cuenta = Cuenta.get(params.cuenta)
 
         if(params.id){
             contabilidadInstance =  Contabilidad.get(params.id)
             contabilidadInstance.descripcion = params.descripcion
             contabilidadInstance.prefijo = params.prefijo.toUpperCase()
-            contabilidadInstance.cuenta = params.cuenta.toInteger()
+            contabilidadInstance.cuenta = cuenta
 
             if (!contabilidadInstance.save(flush: true)) {
                 render "NO_Error al guardar los datos de la contabilidad"
@@ -110,7 +112,7 @@ class ContabilidadController extends cratos.seguridad.Shield {
             contabilidadInstance.fechaInicio = params.fechaInicio
             contabilidadInstance.fechaCierre = params.fechaCierre
             contabilidadInstance.presupuesto = params.fechaInicio
-            contabilidadInstance.cuenta = params.cuenta.toInteger()
+            contabilidadInstance.cuenta = cuenta
 
 
             if (!contabilidadInstance.save(flush: true)) {
@@ -189,72 +191,6 @@ class ContabilidadController extends cratos.seguridad.Shield {
                 }
             }
         }
-
-        //antiguo
-
-//        def errores = ''
-//
-//        params.each { k, v ->
-//            if (v != "date.struct" && v instanceof java.lang.String) {
-//                params[k] = v.toUpperCase()
-//            }
-//        }
-
-//        params.institucion = session.empresa
-//
-//        def contabilidadInstance = new Contabilidad()
-//        if (params.id) {
-//            contabilidadInstance = Contabilidad.get(params.id)
-//            if (!contabilidadInstance) {
-//                notFound_ajax()
-//                return
-//            }
-//        } //update
-//
-//        if (params.anio) {
-//            params.fechaInicio = new Date().parse("dd-MM-yyyy", '01-01-' + params.anio)
-//            params.fechaCierre = new Date().parse("dd-MM-yyyy", '31-12-' + params.anio)
-//        }
-//
-//
-//        contabilidadInstance.properties = params
-//        contabilidadInstance.presupuesto = contabilidadInstance.fechaInicio
-//
-//        if (!contabilidadInstance.save(flush: true)) {
-//            def msg = "NO_No se pudo ${params.id ? 'actualizar' : 'crear'} Contabilidad."
-//            msg += renderErrors(bean: contabilidadInstance)
-//            render msg
-//            return
-//        }
-//
-//        if (Periodo.countByContabilidad(contabilidadInstance) == 0) {
-//            12.times {
-//                def ini = new Date().parse("dd-MM-yyyy", "01-" + ((it + 1).toString().padLeft(2, '0')) + "-" + contabilidadInstance.fechaInicio.format("yyyy"))
-//                def fin = utilitarioService.getLastDayOfMonth(ini)
-////                println("primero " + ini)
-////                println("ultimo " + fin)
-//                def periodoInstance = new Periodo()
-//
-//                periodoInstance.contabilidad = contabilidadInstance
-//                periodoInstance.fechaInicio = ini
-//                periodoInstance.fechaFin = fin
-//                periodoInstance.numero = it + 1
-//
-//                if (!periodoInstance.save(flush: true)) {
-//                   errores += periodoInstance.save()
-//                }
-//            }
-//        }
-//
-////        println("texto errores " + errores)
-//
-//        if(errores == ''){
-//            render "OK_${params.id ? 'Actualización' : 'Creación'} de Contabilidad exitosa."
-//        }else{
-//            render "NO_Error al grabar períodos"
-//        }
-
-//        render "OK_${params.id ? 'Actualización' : 'Creación'} de Contabilidad exitosa."
     } //save para grabar desde ajax
 
     def delete_ajax() {

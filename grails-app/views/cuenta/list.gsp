@@ -206,6 +206,16 @@
                     }
                 };
 
+//                if (!nodeHasChildren){
+//                    items.mover =  {
+//                        label  : "Cambiar de padre",
+//                        icon   : "fa fa-refresh text-danger",
+//                        action : function (obj) {
+//                            cambiarPadre(nodeId, nodeLvl);
+//                        }
+//                    }
+//                }
+
                 if (!nodeHasChildren && !nodeOcupado) {
                     items.eliminar = {
                         label            : "Eliminar cuenta",
@@ -247,47 +257,13 @@
                                     }
                                 }
                             });
-                            %{--bootbox.dialog({--}%
-                            %{--title   : "Alerta",--}%
-                            %{--message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea eliminar la cuenta seleccionada? Esta acción no se puede deshacer.</p>",--}%
-                            %{--buttons : {--}%
-                            %{--cancelar : {--}%
-                            %{--label     : "Cancelar",--}%
-                            %{--className : "btn-default",--}%
-                            %{--callback  : function () {--}%
-                            %{--}--}%
-                            %{--},--}%
-                            %{--eliminar : {--}%
-                            %{--label     : "<i class='fa fa-trash-o'></i> Eliminar",--}%
-                            %{--className : "btn-danger",--}%
-                            %{--callback  : function () {--}%
-                            %{--openLoader("Eliminando");--}%
-                            %{--$.ajax({--}%
-                            %{--type    : "POST",--}%
-                            %{--url     : "${createLink(action: 'deleteCuenta')}",--}%
-                            %{--data    : {--}%
-                            %{--id : nodeId--}%
-                            %{--},--}%
-                            %{--success : function (msg) {--}%
-                            %{--var parts = msg.split("_");--}%
-                            %{--log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)--}%
-                            %{--if (parts[0] == "OK") {--}%
-                            %{--$("#tree").jstree("remove", "#" + nodeStrId);--}%
-                            %{--} else {--}%
-                            %{--closeLoader();--}%
-                            %{--return false;--}%
-                            %{--}--}%
-                            %{--}--}%
-                            %{--});--}%
-                            %{--}--}%
-                            %{--}--}%
-                            %{--}--}%
-                            %{--});--}%
-                        }
+                         }
                     };
                 }
 
-                return items;
+
+
+                    return items;
             }
 
             $(function () {
@@ -340,6 +316,65 @@
                             }
                         });
             });
+
+
+            function cambiarPadre (id) {
+                $.ajax({
+                    type: 'POST',
+                    url: '${createLink(controller: 'cuenta', action: 'padre_ajax')}',
+                    data:{
+                        nodo: id
+                    },
+                    success: function (msg) {
+                        var b = bootbox.dialog({
+                            id      : "dlgCambiarPadre",
+                            title   : "Nuevo Padre",
+                            message : msg,
+                            buttons : {
+                                cancelar : {
+                                    label     : "Cancelar",
+                                    className : "btn-primary",
+                                    callback  : function () {
+                                    }
+                                },
+                                aceptar  : {
+                                    id        : "btnSave",
+                                    label     : "<i class='fa fa-save'></i> Aceptar",
+                                    className : "btn-success",
+                                    callback  : function () {
+                                        bootbox.confirm("<i class='fa fa-warning fa-3x pull-left text-danger text-shadow'></i> Desea mover la cuenta hacia el padre seleccionado?", function (res) {
+                                            if (res) {
+                                                $.ajax({
+                                                    type: 'POST',
+                                                    url: '${createLink(controller: 'cuenta', action: 'cambiarPadre_ajax')}',
+                                                    data:{
+                                                        nodo: id,
+                                                        padre: $("#nuevoPadre").val()
+                                                    },
+                                                    success: function (msg){
+                                                        if(msg == 'ok'){
+                                                            log("Cuenta asignada correctamente!","success")
+                                                            setTimeout(function () {
+                                                                location.reload(true);
+                                                            }, 1000);
+                                                        }else{
+                                                            log("Error al asignar la cuenta a un nuevo padre","error")
+                                                        }
+                                                    }
+                                                });
+                                                bootbox.hideAll();
+                                            }
+                                        });
+                                        return false
+                                    }
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+
+
         </script>
 
     </body>

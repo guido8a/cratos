@@ -5,7 +5,10 @@
   Time: 12:31
 --%>
 
-<table class="table table-bordered table-hover table-condensed"  style="width: 1070px">
+
+
+
+<table class="table table-bordered table-hover table-condensed"  style="width: 1070px" id="tabla">
     <tbody>
     <g:each in="${comprobantes}" var="comprobante">
         <tr data-id="${comprobante?.proceso?.id}">
@@ -20,6 +23,7 @@
 </table>
 
 <script type="text/javascript">
+
     $(function () {
         $("tr").contextMenu({
             items  : createContextMenu,

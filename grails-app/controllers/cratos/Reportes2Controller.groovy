@@ -504,4 +504,15 @@ class Reportes2Controller {
         return[res: res,empresa: params.emp, desde: desde, hasta: hasta]
     }
 
+    def balanceComprobacion () {
+//        println("params " + params)
+        def periodo = Periodo.get(params.periodo);
+        def cn = dbConnectionService.getConnection()
+        def sql = "select cntanmro, cntadscr, slmsslin, slmsdebe, slmshber, cntamvmt from cnta, slms where prdo__id = ${periodo?.id} and slms.cnta__id = cnta.cnta__id and cntamvmt = '1' order by cntanmro"
+//        println("sql " + sql)
+        def res =  cn.rows(sql.toString())
+
+        return[cuentas: res, empresa: params.emp, periodo: periodo]
+    }
+
 }
