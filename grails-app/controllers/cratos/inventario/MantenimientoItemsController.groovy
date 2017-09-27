@@ -186,7 +186,7 @@ class MantenimientoItemsController extends Shield {
                 }
                 clase = (hijosH?.size() > 0) ? "jstree-closed hasChildren" : ""
 
-                tree += "<li id='" + liId + "' class='" + clase + "' rel='" + rel + "' " + extra + ">"
+                tree += "<li id='" + liId + "' class='" + clase + "' rel='" + rel + "' " + extra + " data-jstree='{\"type\":\"${tipo}\"}' >"
                 tree += "<a href='#' class='label_arbol'>" + desc + "</a>"
                 tree += "</li>"
             }

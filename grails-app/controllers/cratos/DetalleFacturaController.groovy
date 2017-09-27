@@ -151,7 +151,6 @@ class DetalleFacturaController extends cratos.seguridad.Shield  {
 //        println("res " + res)
         println "sql $sql"
         return[items: res, proceso: proceso]
-
     }
 
     def guardarDetalle_ajax () {

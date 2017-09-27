@@ -410,11 +410,16 @@
                 root: {
                     icon: "fa fa-folder text-info"
                 },
-                padre: {
+                "grupo": {
+                    %{--icon: "${resource(dir: 'images', file: 'grupo_material.png')}"--}%
                     icon: "glyphicon glyphicon-briefcase text-warning"
                 },
-                hijo: {
-                    icon: "fa fa-money text-success"
+                "subgrupo_material": {
+                    %{--icon: "${resource(dir: 'images', file: 'boxes.png')}"--}%
+                    icon: "${resource(dir: 'images', file: 'grupo_material.png')}"
+                },
+                default: {
+                    icon: "${resource(dir: 'images', file: 'item_material.png')}"
                 }
             },
             search : {
