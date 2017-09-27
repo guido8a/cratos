@@ -200,7 +200,7 @@
         var nodoHijo = "";
 
 //        console.log('nodeStrId:', nodeStrId, 'tipo:', tipo, 'nodeHasChildren:', nodeHasChildren, 'nodeOcupado', nodeOcupado);
-        console.log('padre:', padreId, 'id:', nodeId);
+//        console.log('padre:', padreId, 'id:', nodeId);
 
         switch (tipo) {
             case "sg":
@@ -310,10 +310,10 @@
 
         function doSearch() {
             var val = $.trim($("#search").val());
-            console.log("a buscar:", val);
+//            console.log("a buscar:", val);
             if (val != "") {
 //                $("#btnSearch").replaceWith(sp);
-                console.log("buscando...", val);
+//                console.log("buscando...", val);
                 $('#tree').jstree('search', val);
             }
         }
@@ -343,7 +343,7 @@
         function poneTipo(tipo) {
             var grpo = tipo.split('_')[0];
             var tp;
-            console.log('init....', tipo, "grupo:", grpo);
+//            console.log('init....', tipo, "grupo:", grpo);
             switch (grpo) {
                 case "sg":
                     tp = "subgrupo_material";
@@ -361,9 +361,9 @@
 
         $(".toggle").click(function () {
             var tipo = $(this).attr("id").split('_')[1];
-            console.log("click", $(this).attr("id"), 'tipo:', tipo);
+//            console.log("click", $(this).attr("id"), 'tipo:', tipo);
             if (tipo != current) {
-                console.log('pone current a:', tipo);
+//                console.log('pone current a:', tipo);
                 current = tipo;
                 $('#tree').jstree(true).refresh();
             }
@@ -374,7 +374,7 @@
             $("#treeArea").removeClass("hide").show();
         }).on("select_node.jstree", function (node, selected, event) {
             $('#tree').jstree('toggle_node', selected.selected[0]);
-            console.log('nodo:', selected.node.id);
+//            console.log('nodo:', selected.node.id);
             showInfo(selected.node.id);
         }).jstree({
             plugins: ["types", "state", "contextmenu", "wholerow", "search"],
@@ -393,7 +393,7 @@
                         } else {
                             tp = iniciaNodo()
                         }
-                        console.log("retorna", tp);
+//                        console.log("retorna", tp);
                         return {'id': node.id, tipo: tp};
 //                                        return { 'id' : 1, tipo: 'grupo_material' };
                     }
@@ -435,7 +435,7 @@
             var parts = nodoId.split("_");
             var tipo = parts[0];
             var id = parts[1];
-            console.log('nodo', nodoId, 'tipo', tipo, 'id', id);
+//            console.log('nodo', nodoId, 'tipo', tipo, 'id', id);
 
             switch (tipo) {
                 case "sg":
