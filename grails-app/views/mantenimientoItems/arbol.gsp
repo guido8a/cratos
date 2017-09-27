@@ -51,7 +51,6 @@
                 <i class="icon-truck"></i>
                 Equipos
             </a>
-
             <input type="button" class="btn " value="Cerrar todo" onclick="$('#tree').jstree('close_all');">
 
             <form class="form-search" style="float: left; margin-left: 50px;">
@@ -60,7 +59,6 @@
                     <a href='#' class='btn btn-info' id="btnSearch"><i class='icon-zoom-in'></i> Buscar</a>
                 </div>
             </form>
-
         </div>
 
 
