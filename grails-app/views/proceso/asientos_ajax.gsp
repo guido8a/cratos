@@ -38,8 +38,8 @@
 </style>
 
 
-<div class="col-md-5 etiqueta"><label>Comprobante:</label> ${comprobante?.descripcion}</div>
-<div class="col-md-3 etiqueta"><label>Transacción:</label> ${comprobante?.proceso?.tipoProceso?.descripcion}</div>
+<div class="col-md-6 etiqueta"><label>Comprobante:</label> ${comprobante?.descripcion}</div>
+<div class="col-md-2 etiqueta"><label>Transacción:</label> ${comprobante?.proceso?.tipoProceso?.descripcion}</div>
 <div class="col-md-2 etiqueta"><label>Número:</label> ${comprobante?.prefijo}${comprobante?.numero}</div>
 <div class="col-md-2 etiqueta"><label>Valor:</label> <g:formatNumber number="${comprobante?.proceso?.valor}" maxFractionDigits="2" format="##,##0"/></div>
 
@@ -89,12 +89,10 @@
                     <td width="130px" style="text-align: center">
                         <div class="btn-group">
                         <g:if test="${asiento?.comprobante?.registrado != 'S'}">
-
                                 <a href="#" class="btn btn-success btn-sm btnEditarAsiento" idAs="${asiento?.id}"
                                    title="Editar asiento">
                                     <i class="fa fa-pencil"></i>
                                 </a>
-
                         </g:if>
                         <a href="#" class="btn btn-azul btn-sm btnCentroCostos" idAs="${asiento?.id}" nomAs="${asiento?.cuenta?.descripcion}"
                            title="Centro de Costos">
@@ -135,11 +133,9 @@
                             <td class="dato izquierda"></td>
                             <td class="dato derecha">${auxiliar?.debe ? g.formatNumber(number: auxiliar.debe, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2) : 0.00}</td>
                             <td class="dato derecha">${auxiliar.haber ? g.formatNumber(number: auxiliar.haber, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2) : 0.00}</td>
-
                             <td class="dato" style="text-align: center; width: 100px">
                                 <g:if test="${auxiliar?.asiento?.comprobante?.registrado != 'S'}">
                                     <div class="btn-group">
-
                                         <a href="#" class="btn btn-success btn-sm btnEditarAuxiliar"
                                            idAu="${auxiliar?.id}" title="Editar auxiliar">
                                             <i class="fa fa-pencil"></i>
@@ -457,7 +453,6 @@
                                                 success: function (msg) {
                                                     if (msg == 'ok') {
                                                         log("Auxiliar contable guardado correctamente", "success");
-                                                        %{--cargarComprobante('${proceso?.id}');--}%
                                                         cargarComprobanteP('${proceso?.id}');
                                                         closeLoader();
                                                     } else {

@@ -62,7 +62,6 @@
 </g:if>
 <div class="btn-toolbar toolbar">
     <div class="btn-group">
-
         <g:link class="btn btn-info" action="buscarPrcs">
             <i class="fa fa-chevron-left"></i>
             Lista de Procesos

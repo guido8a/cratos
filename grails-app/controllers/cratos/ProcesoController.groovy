@@ -1264,6 +1264,7 @@ class ProcesoController extends cratos.seguridad.Shield {
             band3 = auxiliar?.asiento?.comprobante?.proceso?.tipoProceso?.codigo?.trim() == 'P' || auxiliar?.asiento?.comprobante?.proceso?.tipoProceso?.codigo?.trim() == 'I' || auxiliar?.asiento?.comprobante?.proceso?.tipoProceso?.codigo?.trim() == 'NC'
             sql = "select * from porpagar(${auxiliar?.asiento?.comprobante?.proceso?.proveedor?.id})"
             res = cn.rows(sql.toString())
+            println("res " + sql)
             return [asiento: asiento, auxiliar: auxiliar, comprobante: comprobante, proveedores: proveedores,
                     maximoDebe: maximoDebe, maximoHaber: maximoHaber, totDebe: totDebe, totHaber: totHaber,
                     band: band, band2: band2, res: res, band3: band3]
@@ -1283,6 +1284,7 @@ class ProcesoController extends cratos.seguridad.Shield {
             band3 = auxiliar?.asiento?.comprobante?.proceso?.tipoProceso?.codigo?.trim() == 'C' || auxiliar?.asiento?.comprobante?.proceso?.tipoProceso?.codigo?.trim() == 'I' || auxiliar?.asiento?.comprobante?.proceso?.tipoProceso?.codigo?.trim() == 'NC'
             sql = "select * from porpagar(${asiento?.comprobante?.proceso?.proveedor?.id})"
             res = cn.rows(sql.toString())
+            println("res " + sql)
             return [asiento: asiento, comprobante: comprobante, proveedores: proveedores, maximoDebe: maximoDebe,
                     maximoHaber: maximoHaber, band: band, band2: band2, res: res, band3: band3]
         }

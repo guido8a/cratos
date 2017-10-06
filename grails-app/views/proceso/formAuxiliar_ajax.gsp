@@ -26,8 +26,7 @@
         <label>Proveedor:</label>
     </div>
     <div class="col-md-3">
-        <g:select name="proveedor_name" id="proveedor" from="${proveedores}" class="form-control" optionValue="nombre"
-                  optionKey="id" style="width: 400px" value="${auxiliar?.proveedor?.id}" disabled="${band ? false : true}"/>
+        <g:select name="proveedor_name" id="proveedor" from="${proveedores}" class="form-control" optionValue="nombre" optionKey="id" style="width: 400px" value="${auxiliar?.proveedor?.id}" disabled="${band ? false : true}"/>
     </div>
 </div>
 
@@ -37,8 +36,8 @@
             <label>Factura: </label>
         </div>
         <div class="col-md-10">
-            <g:select name="factura_name" id="facturaAuxiliar" from="${res}"
-                      optionKey="${{it.dcmt}}" optionValue="${{it.dcmt + ' - ' +  it.dscr + ' - $ ' + it.sldo}}" class="form-control" value="${auxiliar?.factura}"/>
+            <g:select name="factura_name" id="facturaAuxiliar" from="${res}" optionKey="${{it.dcmt}}" optionValue="${{it.dcmt + ' - ' +  it.dscr + ' - $ ' + it.sldo}}" class="form-control" value="${auxiliar?.factura}"/>
+            %{--<g:select name="factura_name" id="facturaAuxiliar" from="${res}" optionKey="${{it.cmpr__id}}" optionValue="${{it?.dcmt + ' - ' +  it?.dscr + ' - $ ' + it?.sldo}}" class="form-control" value="${auxiliar?.factura}"/>--}%
         </div>
     </div>
 </g:if>
@@ -63,14 +62,17 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="col-md-4">
-        <label>Documento de Pago:</label>
+%{--<g:if test="${comprobante?.proceso?.tipoProceso == ('P' || 'I')}">--}%
+    <div class="row">
+        <div class="col-md-4">
+            <label>Documento de Pago:</label>
+        </div>
+        <div class="col-md-5">
+            <g:textField name="referencia_name" id="referencia" class="form-control" value="${auxiliar?.documento ?: ''}"/>
+        </div>
     </div>
-    <div class="col-md-5">
-        <g:textField name="referencia_name" id="referencia" class="form-control" value="${auxiliar?.documento ?: ''}"/>
-    </div>
-</div>
+%{--</g:if>--}%
+
 
 <div class="row">
     <div class="col-md-2">

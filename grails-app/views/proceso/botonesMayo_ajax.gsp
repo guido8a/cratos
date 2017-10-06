@@ -59,6 +59,7 @@
                             log(parts[1],"success");
                             closeLoader();
                             setTimeout(function () {
+                                location.href="${createLink(controller: 'proceso', action: 'comprobante')}?proceso=" + '${comprobante?.proceso?.id}'
                                 cargarComprobanteP('${comprobante?.proceso?.id}');
                                 cargarAsiento('${comprobante?.id}');
                                 cargarBotones('${comprobante?.id}');
@@ -89,6 +90,7 @@
                             closeLoader();
                             log(parts[1],'success');
                             setTimeout(function () {
+                                location.href="${createLink(controller: 'proceso', action: 'comprobante')}?proceso=" + '${comprobante?.proceso?.id}';
                                 cargarComprobanteP('${comprobante?.proceso?.id}');
                                 cargarAsiento('${comprobante?.id}');
                                 cargarBotones('${comprobante?.id}');

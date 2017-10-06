@@ -24,10 +24,13 @@
 
 <div class="btn-toolbar toolbar">
     <div class="btn-group">
-
         <g:link class="btn btn-primary btn-ajax" id="${proceso?.id}" controller="proceso"
                 action="nuevoProceso">
             <i class="fa fa-chevron-left"></i> Proceso
+        </g:link>
+        <g:link class="btn btn-info" controller="proceso" action="buscarPrcs">
+            <i class="fa fa-chevron-circle-left"></i>
+            Lista de Procesos
         </g:link>
     </div>
     <div class="btn-group">
