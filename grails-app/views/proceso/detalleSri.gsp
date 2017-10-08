@@ -591,8 +591,10 @@
 //        console.log('clic ..guardar...')
         var error = '';
         var concepto = $("#conceptoRenta option:selected").val();
+        var pcivB = $("#pcivBienes option:selected").val()
+        var pcivS = $("#pcivSrvc option:selected").val()
 
-//        console.log('crir:', concepto)
+        console.log('pciv:', pcivB, pcivS)
 
         $("#listaErrores").html('');
 
@@ -608,8 +610,10 @@
                 if( parseFloat($("#baseImponible").val()) != parseFloat($("#sumaRenta").val()) ) {
                     error += "<li>Revise los valores de base imponible Renta</li>"
                 }
-                if( parseFloat($("#baseImponible").val()) != parseFloat($("#sumaIva").val()) ) {
-                    error += "<li>Revise los valores de base imponible IVA</li>"
+                if((pcivB != 7) || (pcivS != 7)) {
+                    if( parseFloat($("#baseImponible").val()) != parseFloat($("#sumaIva").val()) ) {
+                        error += "<li>Revise los valores de base imponible IVA</li>"
+                    }
                 }
             }
         }

@@ -30,14 +30,15 @@
     </div>
 </div>
 
+%{--muestra la factura--}%
 <g:if test="${band3}">
     <div class="row">
         <div class="col-md-2">
             <label>Factura: </label>
         </div>
         <div class="col-md-10">
-            <g:select name="factura_name" id="facturaAuxiliar" from="${res}" optionKey="${{it.dcmt}}" optionValue="${{it.dcmt + ' - ' +  it.dscr + ' - $ ' + it.sldo}}" class="form-control" value="${auxiliar?.factura}"/>
-            %{--<g:select name="factura_name" id="facturaAuxiliar" from="${res}" optionKey="${{it.cmpr__id}}" optionValue="${{it?.dcmt + ' - ' +  it?.dscr + ' - $ ' + it?.sldo}}" class="form-control" value="${auxiliar?.factura}"/>--}%
+            %{--<g:select name="factura_name" id="facturaAuxiliar" from="${res}" optionKey="${{it.dcmt}}" optionValue="${{it?.dcmt + ' - ' +  it.dscr + ' - $ ' + it.sldo}}" class="form-control" value="${auxiliar?.factura}"/>--}%
+            <g:select name="factura_name" id="facturaAuxiliar" from="${res}" optionKey="${{it.cmpr__id}}" optionValue="${{it?.dcmt + ' - ' +  it?.dscr + ' - $ ' + it?.sldo}}" class="form-control" value="${auxiliar?.factura}"/>
         </div>
     </div>
 </g:if>
@@ -62,16 +63,27 @@
     </div>
 </div>
 
-%{--<g:if test="${comprobante?.proceso?.tipoProceso == ('P' || 'I')}">--}%
+<g:if test="${comprobante?.proceso?.tipoProceso?.codigo?.trim() in ['C'] || band}">
     <div class="row">
         <div class="col-md-4">
-            <label>Documento de Pago:</label>
+            <label>Documento por pagar:</label>
+        </div>
+        <div class="col-md-5">
+            <g:textField name="factura" id="factura" class="form-control" value="${auxiliar?.factura ?: ''}"/>
+        </div>
+    </div>
+</g:if>
+
+<g:if test="${comprobante?.proceso?.tipoProceso?.codigo?.trim() in ['P', 'I']}">
+    <div class="row">
+        <div class="col-md-4">
+            <label>Documento con que se paga:</label>
         </div>
         <div class="col-md-5">
             <g:textField name="referencia_name" id="referencia" class="form-control" value="${auxiliar?.documento ?: ''}"/>
         </div>
     </div>
-%{--</g:if>--}%
+</g:if>
 
 
 <div class="row">

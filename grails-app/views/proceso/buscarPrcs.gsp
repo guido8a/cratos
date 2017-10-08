@@ -220,6 +220,9 @@ como máximo 30 <span style="margin-left: 40px; color: #0b2c89">Se ordena por fe
         var tp = $tr.data("tipo");
         var cm = $tr.data("cm");
 
+        var dtll = $tr.data("dtll");
+        var rtcn = $tr.data("rtcn");
+
         var editar = {
             label: " Ir al proceso",
             icon: "fa fa-file-text-o",
@@ -271,8 +274,13 @@ como máximo 30 <span style="margin-left: 40px; color: #0b2c89">Se ordena por fe
 
         items.editar = editar;
 
-        if(tp == 'Compras' || tp == 'Ventas' || tp == 'Transferencias' || tp == 'Nota de crédito'){
+//        if(tp == 'Compras' || tp == 'Ventas' || tp == 'Transferencias' || tp == 'Nota de crédito'){
+        if(dtll == 1){
             items.detalle = detalle;
+        }
+
+        if(rtcn == 1){
+            items.retencion = retencion;
         }
 
         if(tp == 'Compras' && cm == '41'){
@@ -281,9 +289,6 @@ como máximo 30 <span style="margin-left: 40px; color: #0b2c89">Se ordena por fe
 
         if(etdo == 'R') {
             items.comprobante = comprobante;
-            if(tp == 'Compras'){
-                items.retencion = retencion;
-            }
             items.imprimir = imprimir;
         }
 

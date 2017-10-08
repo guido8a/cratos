@@ -1291,7 +1291,7 @@ class ProcesoController extends cratos.seguridad.Shield {
     }
 
     def guardarAuxiliar_ajax () {
-//        println("params ga" + params)
+        println "guardarAuxiliar_ajax: $params"
         def asiento
         def comprobante = Comprobante.get(params.comprobante)
         def tipoPago = TipoDocumentoPago.get(params.tipoPago)
@@ -1318,8 +1318,11 @@ class ProcesoController extends cratos.seguridad.Shield {
         auxiliar.debe = params.debe.toDouble()
         auxiliar.haber = params.haber.toDouble()
         auxiliar.documento = params.documento
-        if(params.factura){
-        auxiliar.factura = params.factura
+        if(params.factura) {
+            auxiliar.comprobante = params.factura
+        }
+        if(params.fctr) {
+            auxiliar.factura = params.fctr
         }
 
         try{

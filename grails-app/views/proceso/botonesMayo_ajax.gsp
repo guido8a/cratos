@@ -77,7 +77,8 @@
 
     $(".btnMayorizar").click(function () {
         var id = $(this).attr("idComp");
-        bootbox.confirm("<i class='fa fa-exclamation-circle fa-3x pull-left text-danger text-shadow'></i> Esta seguro de mayorizar este comprobante? Esta acción modificará los saldos", function (result) {
+        bootbox.confirm("<i class='fa fa-exclamation-circle fa-3x pull-left text-danger text-shadow'>" +
+                "</i> Esta seguro de mayorizar este comprobante? Esta acción modificará los saldos", function (result) {
             if (result) {
                 openLoader("Mayorizando...");
                 $.ajax({

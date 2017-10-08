@@ -275,7 +275,7 @@ class ProcesoService {
         try {
             cn.execute("select * from generar($proceso.id)".toString())
             cmpr = Comprobante.findAllByProceso(proceso)
-            anst = Asiento.findAllByComprobanteInList(cmpr)
+            asnt = Asiento.findAllByComprobanteInList(cmpr)
             lista.add(cmpr)
             lista.add(asnt)
         } catch (e) {

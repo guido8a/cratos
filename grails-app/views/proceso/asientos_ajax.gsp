@@ -112,7 +112,7 @@
                     </td>
                 </tr>
                 <g:if test="${cratos.Auxiliar.findAllByAsiento(asiento)}">
-                    <g:set var="auxiliares1" value="${cratos.Auxiliar.findAllByAsiento(asiento)}"/>
+                    <g:set var="auxiliares1" value="${cratos.Auxiliar.findAllByAsiento(asiento).sort{it.proveedor.nombre}}"/>
                     <g:set var="cabecera" value="N"/>
                     <g:each in="${auxiliares1}" var="auxiliar">
                         <g:if test="${cabecera != 'S'}">
@@ -448,7 +448,8 @@
                                                     descripcion: $("#descripcionAux").val(),
                                                     auxiliar: idAuxiliar,
                                                     documento: $("#referencia").val(),
-                                                    factura: $("#facturaAuxiliar").val()
+                                                    factura: $("#facturaAuxiliar").val(),  /* com,probnante que se paga */
+                                                    fctr: $("#factura").val()  /* documento por pagar */
                                                 },
                                                 success: function (msg) {
                                                     if (msg == 'ok') {
