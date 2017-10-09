@@ -74,17 +74,17 @@
                     Buscar
                 </a>
                 <g:if test="${proceso?.estado != 'R'}">
-                    <a href="#" id="btn_editar" class="btn btn-info" title="Editar proveedor">
+                    <a href="#" id="btn_editar" class="btn btn-info" title="Editar cliente">
                         <i class="fa fa-pencil"></i>
                     </a>
                 </g:if>
                 <g:if test="${proceso?.estado != 'R'}">
-                    <a href="#" id="btn_crear" class="btn btn-info" title="Crear proveedor">
+                    <a href="#" id="btn_crear" class="btn btn-info" title="Crear cliente">
                         <i class="fa fa-plus"></i>
                     </a>
                 </g:if>
                 <g:if test="${proceso?.estado != 'R'}">
-                    <a href="#" id="btn_cargarCl" class="btn btn-info" title="Aceptar proveedor">
+                    <a href="#" id="btn_cargarCl" class="btn btn-info" title="Aceptar cliente">
                         <i class="fa fa-check"></i>
                     </a>
                 </g:if>
@@ -159,11 +159,15 @@
                 data    : $form.serialize(),
                 success : function (msg) {
                     var parts = msg.split("_");
-                    log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
-                    if (parts[0] == "OK") {
+                    log(parts[1], parts[0] == "ok" ? "success" : "error"); // log(msg, type, title, hide)
+//                    console.log('retorna', parts[1])
+                    if (parts[0] == "ok") {
                         setTimeout(function () {
-                            location.reload(true);
+                            closeLoader();
                         }, 1000);
+                        var tipo = $(".tipoProcesoSel option:selected").val();
+                        $("#prve__id").val(parts[1]);
+                        cargarProveedor(tipo)
                     } else {
                         closeLoader();
                         spinner.replaceWith($btn);

@@ -292,9 +292,6 @@ como máximo 30 <span style="margin-left: 40px; color: #0b2c89">Se ordena por fe
             items.imprimir = imprimir;
         }
 
-
-
-
         return items
     }
 
@@ -327,56 +324,6 @@ como máximo 30 <span style="margin-left: 40px; color: #0b2c89">Se ordena por fe
     $(".btnLimpiarBusqueda").click(function () {
         $(".fechaD, .fechaH, #buscar").val('');
     });
-
-
-    $(".btnBusquedaFechas").click(function () {
-        $.ajax({
-            type:'POST',
-            url: '${createLink(controller: 'proceso', action:'fechas_ajax')}',
-            data:{
-
-            },
-            success: function(msg){
-                bootbox.dialog({
-                    title   : "Búsqueda por fechas",
-                    message : msg,
-                    //                    class    : "long",
-                    buttons : {
-                        cancelar : {
-                            label     : "<i class='fa fa-times'></i> Cancelar",
-                            className : "btn-primary",
-                            callback  : function () {
-                            }
-                        },
-                        aceptar : {
-                            label     : "<i class='fa fa-save'></i> Aceptar",
-                            className : "btn-success",
-                            callback  : function () {
-                                $.ajax({
-                                    type: 'POST',
-                                    url: '${createLink(controller: 'proceso', action: 'revisarFecha_ajax')}',
-                                    data:{
-                                        desde: $(".fechaD").val(),
-                                        hasta: $(".fechaH").val()
-                                    },
-                                    success: function (msg){
-                                        if(msg != 'ok'){
-                                            bootbox.alert("<i class='fa fa-exclamation-circle fa-3x pull-left text-warning text-shadow'></i> La fecha ingresada en 'Hasta' es menor a la fecha ingresada en 'Desde' ");
-                                            return false;
-                                        }else{
-
-                                        }
-                                    }
-                                })
-
-                            }
-                        }
-                    }
-                });
-            }
-        });
-    });
-
 
 </script>
 

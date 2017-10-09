@@ -77,13 +77,13 @@
 
 %{--<g:form name="sriForm" action="cargaCrir_ajax">--}%
 <g:form name="sriForm">
-    <div class="vertical-container ancho" style="height: 150px; margin-top: 30px">
+    <div class="vertical-container ancho" style="height: 120px; margin-top: 30px">
         <p class="css-vertical-text">Retención</p>
 
         <div class="linea"></div>
 
         <div class="col-xs-12">
-            <div class="col-xs-2 negrilla">
+            <div class="col-xs-1 negrilla">
                 Proveedor:
             </div>
 
@@ -117,7 +117,7 @@
 
         <div class="col-xs-12" style="margin-top: 10px">
 
-            <div class="col-xs-2 negrilla">
+            <div class="col-xs-1 negrilla">
                 Fecha Emisión:
             </div>
 
@@ -125,12 +125,12 @@
                 <elm:datepicker name="fechaEmision_name" class="datepicker required form-control fechaEmision"
                                 value="${retencion?.fechaEmision ?: proceso.fechaIngresoSistema}" minDate="${proceso.fechaRegistro}"/>
             </div>
-        </div>
+        %{--</div>--}%
 
 
-        <div class="col-xs-12" style="margin: 20px 0 10px 0" id="divComprobanteR">
-            <div class="col-xs-2 negrilla">
-                Comprobante N°:
+        %{--<div class="col-xs-12" style="margin: 20px 0 10px 0" id="divComprobanteR">--}%
+            <div class="col-xs-1 negrilla">
+                Compro- bante N°:
             </div>
 
             <div class="col-xs-5">
@@ -333,7 +333,7 @@
             <div class="col-xs-2">
             </div>
             <div class="col-xs-4" style="text-align: right">
-                Total base imponible aplicada al IVA
+                Total IVA
             </div>
 
             <div class="col-xs-2">
@@ -354,6 +354,17 @@
     </div>
 %{--</div>--}%
 %{--</div>--}%
+    <div style="margin-top: 20px">
+        <div class="col-xs-8">
+        </div>
+        <div class="col-xs-2">
+            Total Retenido
+        </div>
+        <div class="col-xs-2">
+            <g:textField class=" form-control number" title="Total retención IVA" name="sumaRetenido"
+                         readonly="true" style="text-align: right"/>
+        </div>
+    </div>
 
 </g:form>
 <script type="text/javascript">

@@ -247,10 +247,8 @@ class ProveedorController extends cratos.seguridad.Shield {
     } //form para cargar con ajax en un dialog
 
     def save_ajax() {
-
-//        println("params:" + params)
+//        println "params:" + params
         def persona
-
         //original
         def proveedorInstance = new Proveedor()
         if (params.id) {
@@ -262,25 +260,20 @@ class ProveedorController extends cratos.seguridad.Shield {
                 return
             }
         } else {
-
             proveedorInstance = new Proveedor()
             proveedorInstance.properties = params
             proveedorInstance.empresa = session.empresa
             proveedorInstance.pais = params."pais.id"
-
-
         } //update
-
 
         try{
             proveedorInstance.save(flush: true)
-            render "ok"
+            def mnsj = "ok_${proveedorInstance.refresh().id}"
+            render mnsj
         }catch (e){
-            render "no"
+            render "no_100"
             println("error al guardar proveedor " + e)
         }
-
-
     } //save para grabar desde ajax
 
 

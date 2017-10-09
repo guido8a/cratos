@@ -36,10 +36,11 @@
                 <tr>
                     <th>Tipo</th>
                     <th>Autorización</th>
+                    <th>Establecimiento</th>
+                    <th>Emisión</th>
                     <th>Número Desde</th>
                     <th>Número Hasta</th>
                     <th>Fecha Autorización</th>
-                    <th>Válido Desde</th>
                     <th>Válido Hasta</th>
                 </tr>
             </thead>
@@ -50,10 +51,11 @@
                         <tr data-id="${documentoEmpresaInstance.id}">
                             <td>${documentoEmpresaInstance?.tipo == 'F'? 'Factura' : (documentoEmpresaInstance?.tipo == 'R'? 'Retención' : (documentoEmpresaInstance?.tipo == 'ND'? 'Nota de Débito' : 'Nota de Cŕedito'))}</td>
                             <td>${fieldValue(bean: documentoEmpresaInstance, field: "autorizacion")}</td>
+                            <td class="derecha">${fieldValue(bean: documentoEmpresaInstance, field: "numeroEstablecimiento")}</td>
+                            <td class="derecha">${fieldValue(bean: documentoEmpresaInstance, field: "numeroEmision")}</td>
                             <td class="derecha">${fieldValue(bean: documentoEmpresaInstance, field: "numeroDesde")}</td>
                             <td class="derecha">${fieldValue(bean: documentoEmpresaInstance, field: "numeroHasta")}</td>
                             <td class="centrado"><g:formatDate date="${documentoEmpresaInstance.fechaAutorizacion}" format="dd-MM-yyyy" /></td>
-                            <td class="centrado"><g:formatDate date="${documentoEmpresaInstance.fechaInicio}" format="dd-MM-yyyy" /></td>
                             <td class="centrado"><g:formatDate date="${documentoEmpresaInstance.fechaFin}" format="dd-MM-yyyy" /></td>
                         </tr>
                     </g:if>
@@ -64,10 +66,11 @@
                     <tr data-id="${documentoEmpresaInstance.id}">
                         <td>${documentoEmpresaInstance?.tipo == 'F'? 'Factura' : (documentoEmpresaInstance?.tipo == 'R'? 'Retención' : (documentoEmpresaInstance?.tipo == 'ND'? 'Nota de Débito' : 'Nota de Cŕedito'))}</td>
                         <td>${fieldValue(bean: documentoEmpresaInstance, field: "autorizacion")}</td>
+                        <td class="derecha">${fieldValue(bean: documentoEmpresaInstance, field: "numeroEstablecimiento")}</td>
+                        <td class="derecha">${fieldValue(bean: documentoEmpresaInstance, field: "numeroEmision")}</td>
                         <td class="derecha">${fieldValue(bean: documentoEmpresaInstance, field: "numeroDesde")}</td>
                         <td class="derecha">${fieldValue(bean: documentoEmpresaInstance, field: "numeroHasta")}</td>
                         <td class="centrado"><g:formatDate date="${documentoEmpresaInstance.fechaAutorizacion}" format="dd-MM-yyyy" /></td>
-                        <td class="centrado"><g:formatDate date="${documentoEmpresaInstance.fechaInicio}" format="dd-MM-yyyy" /></td>
                         <td class="centrado"><g:formatDate date="${documentoEmpresaInstance.fechaFin}" format="dd-MM-yyyy" /></td>
                     </tr>
                 </g:each>

@@ -34,10 +34,10 @@
 
             <div class="form-group ${hasErrors(bean: documentoEmpresaInstance, field: 'autorizacion', 'error')} ">
                 <span class="grupo">
-                    <label for="autorizacion" class="col-md-4 control-label text-info">
+                    <label for="autorizacion" class="col-md-6 control-label text-info">
                         Autorización
                     </label>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <g:textField name="autorizacion" required="" class="allCaps form-control required validacionNumeroSinPuntos" value="${documentoEmpresaInstance?.autorizacion}"/>
                     </div>
 
@@ -46,10 +46,10 @@
 
             <div class="form-group ${hasErrors(bean: documentoEmpresaInstance, field: 'numeroDesde', 'error')} ">
                 <span class="grupo">
-                    <label for="numeroDesde" class="col-md-4 control-label text-info">
+                    <label for="numeroDesde" class="col-md-6 control-label text-info">
                         Número Desde
                     </label>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <g:textField name="numeroDesde" maxlength="15" value="${documentoEmpresaInstance.numeroDesde}" class="form-control validacionNumeroSinPuntos required" required=""/>
                     </div>
 
@@ -58,14 +58,29 @@
 
             <div class="form-group ${hasErrors(bean: documentoEmpresaInstance, field: 'numeroHasta', 'error')} ">
                 <span class="grupo">
-                    <label for="numeroHasta" class="col-md-4 control-label text-info">
+                    <label for="numeroHasta" class="col-md-6 control-label text-info">
                         Número Hasta
                     </label>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <g:textField name="numeroHasta" maxlength="15" value="${documentoEmpresaInstance.numeroHasta}" class="form-control validacionNumeroSinPuntos required" required=""/>
                     </div>
                 </span>
             </div>
+
+            <div class="form-group ${hasErrors(bean: documentoEmpresaInstance, field: 'numeroEstablecimiento', 'error')} ">
+                <span class="grupo">
+                    <label for="numeroEstablecimiento" class="col-md-6 control-label text-info">
+                        Número Establecimiento
+                    </label>
+                    <div class="col-md-3">
+                        <g:select class="form-control required cmbRequired" name="numeroEstablecimiento" id="numeroEstablecimiento"
+                                  from="${establecimientos}" label="Proceso tipo: " value="${documentoEmpresaInstance?.numeroEstablecimiento}" optionKey="key"
+                                  optionValue="value" title="Establecimientos" />
+
+                    </div>
+                </span>
+            </div>
+
 
             <div class="form-group ${hasErrors(bean: documentoEmpresaInstance, field: 'numeroEmision', 'error')} ">
                 <span class="grupo">
@@ -79,21 +94,6 @@
                 </span>
             </div>
 
-            <div class="form-group ${hasErrors(bean: documentoEmpresaInstance, field: 'numeroEstablecimiento', 'error')} ">
-                <span class="grupo">
-                    <label for="numeroEstablecimiento" class="col-md-4 control-label text-info">
-                        Número Establecimiento
-                    </label>
-                    <div class="col-md-4">
-                        %{--<g:textField name="numeroEstablecimiento" maxlength="10" required="" class="form-control validacionNumeroSinPuntos required" value="${documentoEmpresaInstance?.numeroEstablecimiento}"/>--}%
-                        <g:select class="form-control required cmbRequired" name="numeroEstablecimiento" id="numeroEstablecimiento"
-                                  from="${establecimientos}" label="Proceso tipo: " value="${documentoEmpresaInstance?.numeroEstablecimiento}" optionKey="key"
-                                  optionValue="value" title="Establecimientos" />
-
-                    </div>
-
-                </span>
-            </div>
 
 
 

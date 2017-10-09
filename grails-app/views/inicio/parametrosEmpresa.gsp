@@ -137,10 +137,11 @@
             <li>
                 <i class="fa-li ${iconEmpr}"></i>
                 <span id="libretin">
-                    <g:link controller="documentoEmpresa" action="list">Libretín de Facturas</g:link> de la empresa
+                    <g:link controller="documentoEmpresa" action="list">Libretínes de Facturas, Retenciones, NC y otros</g:link>
+                    documentos autorizados por el SRI
                 </span>
                 <div class="descripcion hide">
-                    <h4>Libretín de Facturas</h4>
+                    <h4>Libretínes de Facturas, Retenciones, NC y otros</h4>
                     <p>Todos los libretines de facturas para ser usados digitalmente.</p>
                 </div>
             </li>
