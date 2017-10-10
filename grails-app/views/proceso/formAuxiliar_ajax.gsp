@@ -65,10 +65,10 @@
 
 <g:if test="${comprobante?.proceso?.tipoProceso?.codigo?.trim() in ['C'] || band}">
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-5">
             <label>Documento por pagar:</label>
         </div>
-        <div class="col-md-5">
+        <div class="col-md-6">
             <g:textField name="factura" id="factura" class="form-control" value="${auxiliar?.factura ?: ''}"/>
         </div>
     </div>
@@ -76,10 +76,10 @@
 
 <g:if test="${comprobante?.proceso?.tipoProceso?.codigo?.trim() in ['P', 'I']}">
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-5">
             <label>Documento con que se paga:</label>
         </div>
-        <div class="col-md-5">
+        <div class="col-md-6">
             <g:textField name="referencia_name" id="referencia" class="form-control" value="${auxiliar?.documento ?: ''}"/>
         </div>
     </div>

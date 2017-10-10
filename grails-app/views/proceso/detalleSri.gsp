@@ -298,7 +298,7 @@
 
             <div class="col-xs-3">
                 <g:select name="pcivServicios" id="pcivSrvc"
-                          from="${cratos.sri.PorcentajeIva.list().sort { it.descripcion }}" class="form-control pori"
+                          from="${cratos.sri.PorcentajeIva.list([sort: 'descripcion', order: 'desc'])}" class="form-control pori"
                           optionValue="descripcion" optionKey="id" value="${retencion?.pcntIvaServicios?.id}"/>
             </div>
 
@@ -547,12 +547,18 @@
 
 
     $("#pcivBienes").change(function () {
-        var id = $("#pcivBienes option:selected").val()
+        var id = $("#pcivBienes option:selected").val();
+        if(id == '7'){
+            $("#baseIvaBienes").val(0)
+        }
         cargarPciv(id, 'B')
     });
 
     $("#pcivSrvc").change(function () {
-        var id = $("#pcivSrvc option:selected").val()
+        var id = $("#pcivSrvc option:selected").val();
+        if(id=='7'){
+            $("#baseIvaServicios").val(0)
+        }
         cargarPciv(id, 'S')
     });
 
@@ -605,7 +611,7 @@
         var pcivB = $("#pcivBienes option:selected").val()
         var pcivS = $("#pcivSrvc option:selected").val()
 
-        console.log('pciv:', pcivB, pcivS)
+//        console.log('pciv:', pcivB, pcivS)
 
         $("#listaErrores").html('');
 
@@ -887,14 +893,13 @@
 //        console.log('listo...');
         $("#conceptoRenta").change();
         var concepto = $("#conceptoRenta option:selected").val();
-//        cargarRetencionRIR(concepto, 'B');
-        concepto = $("#conceptoRentaSrvc option:selected").val();
-//        cargarRetencionRIR(concepto, 'S');
+        cargarRetencionRIR(concepto, 'B');
+       var conceptosr = $("#conceptoRentaSrvc option:selected").val();
+        cargarRetencionRIR(conceptosr, 'S');
         $("#baseRenta").change();
         $("#libretin").change();
         $("#pcivBienes").change();
         $("#pcivSrvc").change();
-
     });
 
     $("#comprobanteN").click(function () {

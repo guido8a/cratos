@@ -105,7 +105,7 @@
                                 return false;
                             }else{
                                 log(parts[2],'error');
-
+                                return false;
                             }
                             return false;
                         }

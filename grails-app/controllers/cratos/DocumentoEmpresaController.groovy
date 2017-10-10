@@ -120,23 +120,62 @@ class DocumentoEmpresaController extends cratos.seguridad.Shield {
 
         def documentoEmpresa
         def empresa = Empresa.get(session.empresa.id)
-        def fechaInicio = new Date().parse("dd-MM-yyyy",params."fechaInicio_input")
+//        def fechaInicio = new Date().parse("dd-MM-yyyy",params."fechaInicio_input")
         def fechaFin = new Date().parse("dd-MM-yyyy",params."fechaFin_input")
+        def fechaInicio = new Date().parse("dd-MM-yyyy",params."fechaAutorizacion_input")
         def fechaAutorizacion = new Date().parse("dd-MM-yyyy",params."fechaAutorizacion_input")
         def st = ''
         def libretines = DocumentoEmpresa.findAllByEmpresa(empresa)
+        def band = false
 
-        if(params.numeroDesde.toInteger() >= params.numeroHasta.toInteger()){
-            render "no_2_Los números ingresados en el rango de facturas son incorrectos!"
+        if(params.id){
+            documentoEmpresa = DocumentoEmpresa.get(params.id)
+            if(params.numeroDesde.toInteger() == documentoEmpresa.numeroDesde && params.numeroHasta.toInteger() == documentoEmpresa.numeroHasta){
+                band = true
+            }
+        }
+
+        if(fechaAutorizacion >= fechaFin){
+            render "no_2_La fecha de autorización es mayor a la fecha de finalización"
         }else{
-
-            if(libretines.numeroHasta.contains(params.numeroHasta.toInteger()) || libretines.numeroHasta.contains(params.numeroDesde.toInteger())
-                    || libretines.numeroDesde.contains(params.numeroDesde.toInteger()) || libretines.numeroDesde.contains(params.numeroHasta.toInteger())){
-                render "no_2_El número ingresado ya se encuentra en otro libretín de facturas"
+            if(params.numeroDesde.toInteger() >= params.numeroHasta.toInteger()){
+                render "no_2_Los números ingresados en el rango de facturas son incorrectos!"
             }else{
+                if(!band){
+                    if((libretines.numeroHasta.contains(params.numeroHasta.toInteger()) || libretines.numeroHasta.contains(params.numeroDesde.toInteger())
+                            || libretines.numeroDesde.contains(params.numeroDesde.toInteger()) || libretines.numeroDesde.contains(params.numeroHasta.toInteger()))){
+                        render "no_2_El número ingresado ya se encuentra en otro libretín de facturas"
+                    }else {
+                        if(params.id){
+                            documentoEmpresa = DocumentoEmpresa.get(params.id)
+                            st = 'Información del libretín actualizada correctamente'
+                        }else{
+                            documentoEmpresa = new DocumentoEmpresa()
+                            documentoEmpresa.fechaIngreso = new Date()
+                            documentoEmpresa.empresa = empresa
+                            st = 'Libretín creado correctamente'
+                        }
 
-                if(fechaInicio >= fechaFin){
-                    render "no_2_La fecha de inicio es mayor a la fecha de finalización"
+                        documentoEmpresa.autorizacion = params.autorizacion
+                        documentoEmpresa.numeroDesde = params.numeroDesde.toInteger()
+                        documentoEmpresa.numeroHasta = params.numeroHasta.toInteger()
+                        documentoEmpresa.numeroEmision = params.numeroEmision
+                        documentoEmpresa.numeroEstablecimiento = params.numeroEstablecimiento
+                        documentoEmpresa.digitosEnSecuencial = params.digitosEnSecuencial.toInteger()
+                        documentoEmpresa.fechaAutorizacion = fechaAutorizacion
+                        documentoEmpresa.fechaInicio = fechaInicio
+                        documentoEmpresa.fechaFin = fechaFin
+                        documentoEmpresa.tipo = params.tipo
+
+                        try {
+                            documentoEmpresa.save(flush: true)
+                            render "OK_" + st
+                        }catch (e){
+                            println("error libretin " + e + documentoEmpresa.errors)
+                            render "no_Error al guardar la información del libretín"
+                        }
+
+                    }
                 }else{
                     if(params.id){
                         documentoEmpresa = DocumentoEmpresa.get(params.id)
@@ -169,7 +208,6 @@ class DocumentoEmpresaController extends cratos.seguridad.Shield {
                 }
             }
         }
-
     }
 
     def verificar_ajax () {
