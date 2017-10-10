@@ -33,12 +33,12 @@ th, td {
                     ${dato?.prcsfcha.format("dd-MM-yyyy")}
                 </td>
 
-                <td width="350px" style="color:#186063">
+                <td width="280px" style="color:#186063">
                     ${dato?.prcsdscr}
                 </td>
 
-                <td width="50px" class="${dato.prcsetdo == 'R' ? 'Registrado' : 'NoReg'}">
-                    ${dato.prcsetdo == 'R' ? 'Reg.' : 'No'}
+                <td width="40px" class="${dato.prcsetdo == 'R' ? 'Registrado' : 'NoReg'}">
+                    ${dato.prcsetdo == 'R' ? 'R' : 'N'}
                 </td>
 
                 <td width="160px" class="text-info">
@@ -48,11 +48,14 @@ th, td {
                 <td width="80px" class="text-info" style="text-align: right">
                     ${dato.prcsvlor}
                 </td>
+                <td width="70px" class="text-info" style="text-align: right">
+                    ${dato.rtcn}
+                </td>
                 <td width="80px" class="text-info">
                     ${dato.tpps}
                 </td>
 
-                <td width="240px" class="text-info">
+                <td width="250px" class="text-info">
                     ${dato.prve}
                 </td>
             </tr>

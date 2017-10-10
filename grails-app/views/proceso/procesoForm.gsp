@@ -1082,9 +1082,7 @@
     });
 
     $("#fecha_input").change(function () {
-        if ($("#fechaingreso_input").val().length < 10) {
-            $("#fechaingreso_input").val($("#fecha_input").val())
-        }
+        $("#fechaingreso_input").val($("#fecha_input").val())
     });
 
     function cargarExterior(pago) {

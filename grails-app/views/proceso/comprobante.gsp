@@ -19,10 +19,16 @@
         <i class="fa fa-chevron-left"></i>
         Proceso
     </a>
+%{--
     <a href="#" class="btn btn-success disabled" id="comprobanteN">
         <i class="fa fa-calendar-o"></i>
         Comprobante
     </a>
+--}%
+    <g:link class="btn btn-info" controller="proceso" action="buscarPrcs">
+        <i class="fa fa-chevron-circle-left"></i>
+        Lista de Procesos
+    </g:link>
     <g:if test="${proceso?.tipoProceso?.codigo?.trim() == 'C' && proceso?.tipoCmprSustento?.tipoComprobanteSri?.codigo?.trim() == '41'}">
         <a href="#" class="btn btn-success" id="reembolsoN">
             <i class="fa fa-thumbs-up"></i>

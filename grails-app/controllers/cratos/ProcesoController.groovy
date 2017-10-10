@@ -89,7 +89,7 @@ class ProcesoController extends cratos.seguridad.Shield {
     }
 
     def save = {
-//        println "save proceso: $params"
+        println "save proceso: $params"
         def proceso
         def comprobante
 
@@ -110,11 +110,13 @@ class ProcesoController extends cratos.seguridad.Shield {
             proceso.empresa = Empresa.get(session.empresa.id)
         }
 
+
         proceso.gestor = gestor
         proceso.establecimiento = params.establecimiento
         proceso.valor = (params.baseImponibleIva0?:0).toDouble() + (params.baseImponibleIva?:0).toDouble() +
                 (params.baseImponibleNoIva?:0).toDouble() + (params.excentoIva?:0).toDouble() +
-                (params.ivaGenerado?:0).toDouble() + (params.iceGenerado?:0).toDouble()
+                (params.ivaGenerado?:0).toDouble() + (params.iceGenerado?:0).toDouble() +
+                (params.valorPago?:0).toDouble()
         proceso.impuesto = (params.ivaGenerado?:0).toDouble() + (params.iceGenerado?:0).toDouble()
         proceso.baseImponibleIva = (params.baseImponibleIva?:0).toDouble()
         proceso.baseImponibleIva0 = (params.baseImponibleIva0?:0).toDouble()
@@ -1225,6 +1227,7 @@ class ProcesoController extends cratos.seguridad.Shield {
     }
 
     def formAuxiliar_ajax() {
+        println "formAuxiliar params: $params"
         def comprobante = Comprobante.get(params.comprobante)
         def asiento
         def auxiliar
@@ -1243,6 +1246,8 @@ class ProcesoController extends cratos.seguridad.Shield {
         def band
         def band2
         def band3
+        def funcion = comprobante.proceso.tipoProceso.codigo.trim() in ['P']? "porpagar" : "ventas"
+
         if(params.auxiliar){
             auxiliar = Auxiliar.get(params.auxiliar)
             asiento = auxiliar.asiento
@@ -1260,9 +1265,9 @@ class ProcesoController extends cratos.seguridad.Shield {
 //            println("debe " + asiento.debe.toDouble())
 //            println("haber " + asiento.haber.toDouble())
             band = auxiliar?.asiento?.comprobante?.proceso?.tipoProceso?.codigo?.trim() == 'A' && auxiliar?.asiento?.comprobante?.proceso?.gestor?.codigo == 'SLDO'
-            band2 = auxiliar?.asiento?.comprobante?.proceso?.tipoProceso?.codigo?.trim() == 'P' || auxiliar?.asiento?.comprobante?.proceso?.tipoProceso?.codigo?.trim() == 'I' || auxiliar?.asiento?.comprobante?.proceso?.tipoProceso?.codigo?.trim() == 'NC' || auxiliar?.asiento?.comprobante?.proceso?.tipoProceso?.codigo?.trim() == 'ND'
-            band3 = auxiliar?.asiento?.comprobante?.proceso?.tipoProceso?.codigo?.trim() == 'P' || auxiliar?.asiento?.comprobante?.proceso?.tipoProceso?.codigo?.trim() == 'I' || auxiliar?.asiento?.comprobante?.proceso?.tipoProceso?.codigo?.trim() == 'NC'
-            sql = "select * from porpagar(${auxiliar?.asiento?.comprobante?.proceso?.proveedor?.id})"
+            band2 = auxiliar?.asiento?.comprobante?.proceso?.tipoProceso?.codigo?.trim() in ['P', 'I', 'NC', 'ND']
+            band3 = auxiliar?.asiento?.comprobante?.proceso?.tipoProceso?.codigo?.trim() in ['P', 'I', 'NC']
+            sql = "select * from ${funcion}(${auxiliar?.asiento?.comprobante?.proceso?.proveedor?.id})"
             res = cn.rows(sql.toString())
             println("res " + sql)
             return [asiento: asiento, auxiliar: auxiliar, comprobante: comprobante, proveedores: proveedores,
@@ -1280,9 +1285,9 @@ class ProcesoController extends cratos.seguridad.Shield {
 //            println("maximoDebe " + maximoDebe)
 //            println("maximoHaber " + maximoHaber)
             band = asiento?.comprobante?.proceso?.tipoProceso?.codigo?.trim() == 'A' && asiento?.comprobante?.proceso?.gestor?.codigo == 'SLDO'
-            band2 = asiento?.comprobante?.proceso?.tipoProceso?.codigo?.trim() == 'P' || asiento?.comprobante?.proceso?.tipoProceso?.codigo?.trim() == 'I' || asiento?.comprobante?.proceso?.tipoProceso?.codigo?.trim() == 'NC' || asiento?.comprobante?.proceso?.tipoProceso?.codigo?.trim() == 'ND'
-            band3 = auxiliar?.asiento?.comprobante?.proceso?.tipoProceso?.codigo?.trim() == 'C' || auxiliar?.asiento?.comprobante?.proceso?.tipoProceso?.codigo?.trim() == 'I' || auxiliar?.asiento?.comprobante?.proceso?.tipoProceso?.codigo?.trim() == 'NC'
-            sql = "select * from porpagar(${asiento?.comprobante?.proceso?.proveedor?.id})"
+            band2 = asiento?.comprobante?.proceso?.tipoProceso?.codigo?.trim() in ['P', 'I', 'NC', 'ND']
+            band3 = auxiliar?.asiento?.comprobante?.proceso?.tipoProceso?.codigo?.trim() in ['P', 'I', 'NC']
+            sql = "select * from ${funcion}(${asiento?.comprobante?.proceso?.proveedor?.id})"
             res = cn.rows(sql.toString())
             println("res " + sql)
             return [asiento: asiento, comprobante: comprobante, proveedores: proveedores, maximoDebe: maximoDebe,
@@ -1293,7 +1298,7 @@ class ProcesoController extends cratos.seguridad.Shield {
     def guardarAuxiliar_ajax () {
         println "guardarAuxiliar_ajax: $params"
         def asiento
-        def comprobante = Comprobante.get(params.comprobante)
+        def comprobante = Comprobante.get(params.factura)
         def tipoPago = TipoDocumentoPago.get(params.tipoPago)
         def proveedor = Proveedor.get(params.proveedor)
         def fechaPago
@@ -1319,7 +1324,7 @@ class ProcesoController extends cratos.seguridad.Shield {
         auxiliar.haber = params.haber.toDouble()
         auxiliar.documento = params.documento
         if(params.factura) {
-            auxiliar.comprobante = params.factura
+            auxiliar.comprobante = comprobante
         }
         if(params.fctr) {
             auxiliar.factura = params.fctr
@@ -1496,6 +1501,8 @@ class ProcesoController extends cratos.seguridad.Shield {
         def valor = Math.round(comprobante.proceso.valor*100)/100
         def band
         def gestor = comprobante.proceso.gestor
+
+        println "Mayorizar: debe: $debe, haber: $haber, valor: $valor"
 
         if(gestor.codigo == 'SLDO'){
             band = true
@@ -1900,15 +1907,6 @@ class ProcesoController extends cratos.seguridad.Shield {
         }
     }
 
-    def valoresBienes_ajax (){
-        def porcentajeIva = PorcentajeIva.get(params.porcentaje)
-        return [porcentajeIva: porcentajeIva]
-    }
-
-    def valoresServicio_ajax () {
-        def porcentajeIva = PorcentajeIva.get(params.porcentaje)
-        return [porcentajeIva: porcentajeIva]
-    }
 
     def compBuscador () {
         def proveedor = Proveedor.get(params.proveedor)

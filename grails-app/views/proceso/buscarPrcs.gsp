@@ -105,12 +105,13 @@
         <thead>
         <tr>
             <th class="alinear" style="width: 100px">Fecha</th>
-            <th class="alinear" style="width: 350px">Descripción</th>
-            <th class="alinear" style="width: 50px">Reg.</th>
+            <th class="alinear" style="width: 280px">Descripción</th>
+            <th class="alinear" style="width: 40px">R.</th>
             <th class="alinear" style="width: 160px">Documento</th>
             <th class="alinear" style="width: 80px">Valor</th>
+            <th class="alinear" style="width: 70px">Ret.</th>
             <th class="alinear" style="width: 80px">Tipo</th>
-            <th class="alinear" style="width: 250px">Proveedor</th>
+            <th class="alinear" style="width: 260px">Proveedor</th>
         </tr>
         </thead>
     </table>
@@ -275,11 +276,11 @@ como máximo 30 <span style="margin-left: 40px; color: #0b2c89">Se ordena por fe
         items.editar = editar;
 
 //        if(tp == 'Compras' || tp == 'Ventas' || tp == 'Transferencias' || tp == 'Nota de crédito'){
-        if(dtll == 1){
+        if(dtll){
             items.detalle = detalle;
         }
 
-        if(rtcn == 1){
+        if(rtcn){
             items.retencion = retencion;
         }
 
