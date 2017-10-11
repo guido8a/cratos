@@ -71,16 +71,16 @@
                 Proveedor:
             </div>
 
-            <div class="col-xs-3">
+            <div class="col-xs-2">
                 <input type="text" name="proveedor.ruc" class="form-control " id="prov" readonly="true"
-                       value="${proceso?.proveedor?.ruc ?: ''}" title="RUC del proveedor o cliente" style="width: 150px"
+                       value="${proceso?.proveedor?.ruc ?: ''}" title="RUC del proveedor o cliente" style="width: 160px;"
                        placeholder="RUC"/>
             </div>
 
-            <div class="col-xs-3">
+            <div class="col-xs-4">
                 <input type="text" name="proveedor.nombre" class="form-control  label-shared" id="prov_nombre"
                        readonly="true" value="${proceso?.proveedor?.nombre ?: ''}"
-                       title="Nombre del proveedor o cliente" style="width: 300px; margin-left: -100px"
+                       title="Nombre del proveedor o cliente" style="width: 340px; margin-right: 60px"
                        placeholder="Nombre"/>
             </div>
 
@@ -110,26 +110,32 @@
                                 value="${retencion?.fechaEmision ?: proceso.fechaIngresoSistema}" minDate="${proceso.fechaRegistro}"/>
             </div>
 
-            <div class="col-xs-1 negrilla">
-                Compro- bante N°:
+            <div class="col-xs-2 negrilla">
+                Comprobante N°:
             </div>
 
-            <div class="col-xs-5">
+            <div class="col-xs-4" style="margin-left: -30px">
                 <g:select name="libretin" from="${libreta}" value="${retencion?.documentoEmpresa}"
                           class="form-control" optionKey="id" libre="1"
                           optionValue="${{"Desde: " + it?.numeroDesde + ' - Hasta: ' + it?.numeroHasta + " - Autorización: " +
                                   it?.fechaAutorizacion?.format("dd-MM-yyyy")}}"/>
                 <g:hiddenField name="libretinName" id="idLibre" value=""/>
             </div>
-            <div class="col-xs-5">
+            <div class="col-xs-3">
                 <g:textField name="numEstablecimiento" id="numEstablecimiento" readonly="true"  style="width: 50px"
                              title="Número de Establecimento"/> -
                 <g:textField name="numeroEmision" id="numEmision" readonly="true" style="width: 50px"
                              title="Numeración Emisión"/>
 
                 <g:textField name="serie" id="serie" value="${retencion?.numero?:nmro}" maxlength="10"
-                             class="form-control required validacionNumero"  style="width: 120px; display: inline"/>
+                             class="form-control required validacionNumero"  style="width: 100px; display: inline"/>
             </div>
+
+
+
+
+
+
             <p class="help-block ui-helper-hidden"></p>
         </div>
     </div>
@@ -395,9 +401,11 @@
                 if(tipo == 'B') {
                     $("#porcentaje").val(msg)
                     actualizaRenta()
+                    actualizarTotal(id)
                 } else {
                     $("#porcentajeSrvc").val(msg)
                     actualizaRenta()
+                    actualizarTotal(id)
                 }
             }
         });
@@ -405,26 +413,32 @@
 
     $("#baseRenta").change(function () {
         actualizaRenta()
+        actualizarTotal()
     });
 
     $("#baseRentaSrvc").change(function () {
         actualizaRenta()
+        actualizarTotal()
     });
 
     $("#valorRetenido").change(function () {
         totalesRenta()
+        actualizarTotal()
     });
 
     $("#valorRetenidoSrvc").change(function () {
         totalesRenta()
+        actualizarTotal()
     });
 
     $("#ivaBienes").change(function () {
         totalesIva()
+        actualizarTotal()
     });
 
     $("#ivaServicios").change(function () {
         totalesIva()
+        actualizarTotal()
     });
 
 
@@ -475,6 +489,38 @@
         $("#sumaRtcnRenta").val(parseFloat(Math.round((rtcn + rtcnSrvc)*100)/100).toFixed(2));
     }
 
+    function actualizarTotal(concepto) {
+
+        var pcnt = parseFloat($("#porcentaje").val())
+        var pcntSrvc = parseFloat($("#porcentajeSrvc").val())
+        var base = parseFloat($("#baseRenta").val())
+        var baseSrvc = parseFloat($("#baseRentaSrvc").val())
+        var rtcn     = Math.round(pcnt * base)/ 100;
+        var rtcnSrvc = Math.round(pcntSrvc * baseSrvc)/ 100;
+
+        $("#valorRetenido").val(parseFloat(rtcn).toFixed(2));
+        $("#valorRetenidoSrvc").val(parseFloat(rtcnSrvc).toFixed(2));
+
+        var baseI = parseFloat($("#baseIvaBienes").val());
+        var baseSrvcI = parseFloat($("#baseIvaServicios").val());
+        var pcntI = parseFloat($("#pcntIvaBienes").val());
+        var pcntSrvcI =parseFloat($("#pcntIvaSrvc").val());
+
+        var rtcnI = Math.round(pcntI * baseI)/ 100;
+        var rtcnSrvcI = Math.round(pcntSrvcI * baseSrvcI)/ 100;
+
+        var totalIva = parseFloat(((rtcnI + rtcnSrvcI)*100)/100).toFixed(2);
+        var totalRenta = parseFloat(Math.round((rtcn + rtcnSrvc)*100)/100).toFixed(2);
+
+        if(concepto == '23'){
+            $("#sumaRetenido").val(parseFloat(Math.round((parseFloat(totalRenta))*100)/100).toFixed(2));
+        }else{
+            $("#sumaRetenido").val(parseFloat(Math.round((parseFloat(totalIva) + parseFloat(totalRenta))*100)/100).toFixed(2));
+        }
+
+
+
+    }
 
     function totalesRenta() {
         var vr = parseFloat($("#valorRetenido").val());
@@ -526,7 +572,6 @@
         }
     }
 
-
     $("#pcivBienes").change(function () {
         var id = $("#pcivBienes option:selected").val();
         if(id == '7'){
@@ -554,9 +599,11 @@
                 if(tipo == 'B') {
                     $("#pcntIvaBienes").val(msg)
                     actualizaIva()
+                    actualizarTotal()
                 } else {
                     $("#pcntIvaSrvc").val(msg)
                     actualizaIva()
+                    actualizarTotal()
                 }
             }
         });
@@ -564,10 +611,12 @@
 
     $("#baseIvaBienes").change(function () {
         actualizaIva()
+        actualizarTotal()
     });
 
     $("#baseIvaServicios").change(function () {
         actualizaIva()
+        actualizarTotal()
     });
 
     function actualizaIva() {
@@ -575,8 +624,10 @@
         var pcntSrvc = parseFloat($("#pcntIvaSrvc").val())
         var base = parseFloat($("#baseIvaBienes").val())
         var baseSrvc = parseFloat($("#baseIvaServicios").val())
-        var rtcn = Math.round(pcnt * base * 0.12)/ 100;
-        var rtcnSrvc = Math.round(pcntSrvc * baseSrvc * 0.12)/ 100;
+//        var rtcn = Math.round(pcnt * base * 0.12)/ 100;
+        var rtcn = Math.round(pcnt * base)/ 100;
+//        var rtcnSrvc = Math.round(pcntSrvc * baseSrvc * 0.12)/ 100;
+        var rtcnSrvc = Math.round(pcntSrvc * baseSrvc)/ 100;
 
         $("#ivaBienes").val(parseFloat(rtcn).toFixed(2));
         $("#ivaServicios").val(parseFloat(rtcnSrvc).toFixed(2));
@@ -609,7 +660,8 @@
                     error += "<li>Revise los valores de base imponible Renta</li>"
                 }
                 if((pcivB != 7) || (pcivS != 7)) {
-                    if( parseFloat($("#baseImponible").val()) != parseFloat($("#sumaIva").val()) ) {
+//                    if( parseFloat($("#baseImponible").val()) != parseFloat($("#sumaIva").val()) ) {
+                    if( parseFloat($("#ivaGenerado").val()) != parseFloat($("#sumaIva").val()) ) {
                         error += "<li>Revise los valores de base imponible IVA</li>"
                     }
                 }

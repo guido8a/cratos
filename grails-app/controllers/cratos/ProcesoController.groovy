@@ -905,7 +905,7 @@ class ProcesoController extends cratos.seguridad.Shield {
 
 
     def detalleSri() {
-        println "detalleSri: $params"
+//        println "detalleSri: $params"
         def cn = dbConnectionService.getConnection()
         def proceso = Proceso.get(params.id)
         def retencion = Retencion.findByProceso(proceso)
@@ -923,7 +923,7 @@ class ProcesoController extends cratos.seguridad.Shield {
                 "fcdtnmes numeroEstablecimiento, fcdtnmpe numeroEmision " +
                 "from fcdt where '${proceso.fechaIngresoSistema}' between fcdtfcin and fcdtfcfn and " +
                 "fcdttipo = 'R' and fcdtnmes = '${proceso.establecimiento}' order by fcdtfcin"
-        println "libretin: $sql"
+//        println "libretin: $sql"
         def libretin = cn.rows(sql.toString())
 
         [proceso: proceso, libreta: libretin, retencion: retencion, base: baseImponible, crirBienes: crirBienes,
