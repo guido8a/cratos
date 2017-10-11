@@ -372,8 +372,9 @@
                 <div class="row">
                     <div class="col-xs-2 negrilla" style="width: 140px">
                         <select id="tipoPar" style="margin-right: 5px;" class="form-control">
-                            <option value="1">RUC</option>
                             <option value="2">Nombre</option>
+                            <option value="1">RUC</option>
+
                         </select>
                     </div>
 
