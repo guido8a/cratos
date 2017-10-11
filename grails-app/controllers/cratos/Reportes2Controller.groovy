@@ -457,38 +457,20 @@ class Reportes2Controller {
 
 //       println("---->>" + params)
 
-
         def fechaInicio = new Date().parse("yyyy-MM-dd", params.fechaInicio)
         def fechaFin = new Date().parse("yyyy-MM-dd", params.fechaFin)
         def empresa = Empresa.get(params.empresa)
         def proveedor = Proveedor.get(params.prove)
-
-
         def auxiliar = Auxiliar.findAllByFechaPagoBetweenAndProveedor(fechaInicio, fechaFin, proveedor)
-
-//
-//        println("pro" + proveedor)
-//        println("aux" + auxiliar)
-
         def pago
-
         def pagos = []
-
         auxiliar.each { i ->
-
-
             pago = PagoAux.findAllByAuxiliar(i)
-
-//          println("pagos" + pago.id)
-
             pagos += pago
 
         }
 
-//        println(pagos)
-
         return [auxiliar: auxiliar, pagos: pagos, fechaInicio: fechaInicio, fechaFin: fechaFin, empresa: empresa]
-
    }
 
     def libroMayor () {
@@ -513,6 +495,28 @@ class Reportes2Controller {
         def res =  cn.rows(sql.toString())
 
         return[cuentas: res, empresa: params.emp, periodo: periodo]
+    }
+
+    def retenciones () {
+        def desde = new Date().parse("dd-MM-yyyy", params.desde)
+        def hasta = new Date().parse("dd-MM-yyyy", params.hasta)
+        def contabilidad = Contabilidad.get(params.cont)
+
+         def retenciones = Retencion.withCriteria {
+
+                proceso{
+                    eq("contabilidad", contabilidad)
+                }
+
+                and{
+                    ge("fechaEmision", desde)
+                    le("fechaEmision", hasta)
+                }
+         }
+
+//        println("res " + retenciones)
+
+        return[retenciones: retenciones, empresa: params.emp, desde: desde, hasta: hasta]
     }
 
 }

@@ -29,7 +29,7 @@
             <i class="fa fa-chevron-left"></i> Proceso
         </g:link>
         <g:link class="btn btn-info" controller="proceso" action="buscarPrcs">
-            <i class="fa fa-chevron-circle-left"></i>
+            <i class="fa fa-chevron-left"></i>
             Lista de Procesos
         </g:link>
     </div>

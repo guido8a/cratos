@@ -28,12 +28,8 @@
 
 <div class="btn-toolbar toolbar">
     <div class="btn-group">
-    %{--<g:link class="btn regresar btn-primary btn-ajax" id="${proceso?.id}" action="nuevoProceso">--}%
-    %{--<i class="fa fa-chevron-left"></i> Proceso</g:link>--}%
         <g:link class="btn regresar btn-info btn-ajax" action="buscarPrcs">
             <i class="fa fa-chevron-left"></i> Lista de Procesos</g:link>
-
-
         <g:link class="btn regresar btn-warning btn-ajax" id="${proceso?.id}" action="nuevoProceso">
             <i class="fa fa-chevron-left"></i> Proceso
         </g:link>
@@ -41,28 +37,19 @@
 
     <g:if test="${proceso?.estado != 'R'}">
         <div class="btn-group">
-            <a href="#" class="btn btn-success" id="btnGuardar"><i class="fa fa-floppy-o"></i> Guardar</a>
+            <a href="#" class="btn btn-success" id="btnGuardar">
+                <i class="fa fa-floppy-o"></i> Guardar</a>
         </div>
     </g:if>
     <div class="text-info negrilla" style="margin-left: 10px; text-align: right; width: 400px; display: inline-block">Transacción: ${proceso.descripcion}</div>
 
-
-
     <div class="btn-group" style="margin-right: 20px; margin-left: 10px">
-        %{--<g:link class="btn regresar btn-success btn-ajax" id="${proceso?.id}" action="nuevoProceso">--}%
-            %{--<i class="fa fa-chevron-left"></i> Proceso--}%
-        %{--</g:link>--}%
         <g:if test="${proceso?.estado == 'R'}">
             <a href="#" class="btn btn-success" id="comprobanteN">
                 <i class="fa fa-calendar-o"></i>
                 Comprobante
             </a>
         </g:if>
-        %{--<g:if test="${proceso?.tipoProceso?.id == 1}">--}%
-            %{--<g:link class="btn btn-success previous disabled" action="detalleSri" id="${proceso?.id}" style="margin-bottom: 10px;">--}%
-                %{--<i class="fa fa-money"></i> Retenciones--}%
-            %{--</g:link>--}%
-        %{--</g:if>--}%
     </div>
 </div>
 
@@ -73,9 +60,6 @@
     <ul id="listaErrores"></ul>
 </div>
 
-
-
-%{--<g:form name="sriForm" action="cargaCrir_ajax">--}%
 <g:form name="sriForm">
     <div class="vertical-container ancho" style="height: 120px; margin-top: 30px">
         <p class="css-vertical-text">Retención</p>
@@ -125,10 +109,7 @@
                 <elm:datepicker name="fechaEmision_name" class="datepicker required form-control fechaEmision"
                                 value="${retencion?.fechaEmision ?: proceso.fechaIngresoSistema}" minDate="${proceso.fechaRegistro}"/>
             </div>
-        %{--</div>--}%
 
-
-        %{--<div class="col-xs-12" style="margin: 20px 0 10px 0" id="divComprobanteR">--}%
             <div class="col-xs-1 negrilla">
                 Compro- bante N°:
             </div>
