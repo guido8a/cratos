@@ -875,9 +875,11 @@
                     error += "<li>Seleccione el comprobante</li>"
                 }
 
+/*
                 if ($("#iva12").val() == 0 && $("#iva0").val() == 0 && $("#noIva").val() == 0) {
                     error += "<li>Ingrese valores en la base imponible</li>"
                 }
+*/
 
                 if (!$("#numEstablecimiento").val()) {
                     error += "<li>Seleccione un libretín de facturas/li>"
@@ -1097,7 +1099,7 @@
     $("#libretin").change(function () {
         var idLibretin = $("#libretin option:selected").val();
         var nmes = $("#establecimiento option:selected").val();
-        console.log('libretin..', nmes)
+        console.log('nmes..', nmes, 'libretin', idLibretin)
         $.ajax({
             type: 'POST',
             url: '${createLink(controller: 'proceso', action: 'numeracion_ajax')}',
@@ -1119,11 +1121,10 @@
     function cargarLibretin() {
         var fcha =  $("#fecha_input").val()
         var nmes = $("#establecimiento option:selected").val();
-        console.log('libretin..', nmes)
         if("${proceso?.fechaEmision}") {
             fcha = "${proceso?.fechaEmision?.format('dd-MM-yyyy')}"
         }
-        console.log('fcha:', fcha);
+        console.log('fcha:', fcha, 'nmes', nmes);
         if(fcha){
             if(fcha.length < 10) {
                 $(".tipoProcesoSel").val(0);

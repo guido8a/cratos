@@ -187,6 +187,7 @@ class ProcesoController extends cratos.seguridad.Shield {
                 proveedor = Proveedor.get(params."proveedor.id")
                 proceso.proveedor = proveedor
                 proceso.pago = params.pago
+                proceso.documentoEmpresa = DocumentoEmpresa.get(params.libretin)
                 break
 
             case ['6','7']:  //NC y ND
@@ -201,6 +202,7 @@ class ProcesoController extends cratos.seguridad.Shield {
 //                proceso.tipoCmprSustento = comprobanteSri
                 proveedor = Proveedor.get(params."proveedor.id")
                 proceso.proveedor = proveedor
+                proceso.documentoEmpresa = DocumentoEmpresa.get(params.libretin)
                 break
 
             case '3':  //Ajustes
@@ -1561,7 +1563,7 @@ class ProcesoController extends cratos.seguridad.Shield {
 
 
     def numeracion_ajax () {
-        println "numeracion_ajax: $params"
+//        println "numeracion_ajax: $params"
         def cn = dbConnectionService.getConnection()
         def proceso
         if(params.proceso) {
