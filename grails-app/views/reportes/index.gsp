@@ -1,4 +1,4 @@
-<%@ page contentType="text/html" %>
+<%@ page import="cratos.inventario.Bodega" contentType="text/html" %>
 
 <html>
 <head>
@@ -291,6 +291,24 @@
                     <div class="descripcion hide">
                         <h4>Retenciones</h4>
                         <p>Reporte de las retenciones generadas entre las fechas seleccionadas.</p>
+                    </div>
+                </li>
+                <li>
+                    <span id="reporteKardex">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <a href="#" class="link btn btn-info btn-ajax" data-target="#kardex" data-toggle="modal">
+                                    Kardex
+                                </a>
+                            </div>
+                            <div class="col-md-8">
+                                Kardex
+                            </div>
+                        </div>
+                    </span>
+                    <div class="descripcion hide">
+                        <h4>Kardex</h4>
+                        <p>Reporte de las existencias de items dentro de cada bodega</p>
                     </div>
                 </li>
                 %{--<li>--}%
@@ -799,6 +817,61 @@
                     <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Cancelar
                     </button>
                     <button type="button" class="btn btnAceptarRetenciones btn-success"><i class="fa fa-print"></i> Imprimir
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+%{--dialog retenciones--}%
+<div class="modal fade" id="kardex" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="modalKardex">Kardex</h4>
+            </div>
+
+            <div class="modal-body" id="bodyKardex">
+                <div class="fila" style="margin-bottom: 15px">
+                    <label class="uno">Contabilidad:</label>
+                    <g:select name="contK" id="contK"
+                              from="${cratos.Contabilidad.findAllByInstitucion(session.empresa, [sort: 'fechaInicio'])}"
+                              optionKey="id" optionValue="descripcion" noSelection="['-1': 'Seleccione la contabilidad']"
+                              class="form-control dos"/>
+                </div>
+                <div class="fila" style="margin-bottom: 15px">
+                    <label class="uno">Bodega:</label>
+                    <g:select name="bode_name" id="bode"
+                              from="${cratos.inventario.Bodega.findAllByEmpresa(session.empresa, [sort: 'codigo'])}"
+                              optionKey="id" optionValue="descripcion" noSelection="['-1': 'Seleccione la bodega']"
+                              class="form-control dos"/>
+                </div>
+                <div class="fila">
+                    <div class="col-md-3">
+                        <label>Desde: </label>
+                    </div>
+                    <div class="col-md-5">
+                        <elm:datepicker name="fechaDesde" title="Fecha desde" id="fechaDK" class="datepicker form-control fechaDeK"
+                                        maxDate="new Date()"/>
+                    </div>
+                </div>
+
+                <div class="fila">
+                    <div class="col-md-3">
+                        <label>Hasta: </label>
+                    </div>
+                    <div class="col-md-5">
+                        <elm:datepicker name="fechaHasta" title="Fecha hasta" id="fechaHK" class="datepicker form-control fechaHaK"
+                                        maxDate="new Date()"/>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Cancelar
+                    </button>
+                    <button type="button" class="btn btnAceptarKardex btn-success"><i class="fa fa-print"></i> Imprimir
                     </button>
                 </div>
             </div>
@@ -1401,6 +1474,43 @@
             }
         });
 
+        $(".btnAceptarKardex").click(function () {
+            var cont = $("#contK").val();
+            var fechaDesde = $(".fechaDeK").val();
+            var fechaHasta = $(".fechaHaK").val();
+            var bodega = $("#bode").val();
+
+            if (cont == '-1') {
+                bootbox.alert("<i class='fa fa-exclamation-circle fa-3x pull-left text-warning text-shadow'></i>  Seleccione una contabilidad!")
+            } else {
+                if(bode == '-1'){
+                    bootbox.alert("<i class='fa fa-exclamation-circle fa-3x pull-left text-warning text-shadow'></i>  Seleccione una bodega!")
+                }else{
+                    if(fechaDesde == '' || fechaHasta == ''){
+                        bootbox.alert("<i class='fa fa-exclamation-circle fa-3x pull-left text-warning text-shadow'></i>  Seleccione las fechas!")
+                    }else{
+                        $.ajax({
+                            type: 'POST',
+                            url: '${createLink(controller: 'proceso', action: 'revisarFecha_ajax')}',
+                            data:{
+                                desde: fechaDesde,
+                                hasta: fechaHasta
+                            },
+                            success: function (msg){
+                                if(msg == 'ok'){
+                                    url = "${g.createLink(controller:'reportes2' , action: 'kardex')}?cont=" + cont + "Wemp=${session.empresa.id}" + "Wdesde=" + fechaDesde + "Whasta=" + fechaHasta + "Wbodega=" + bodega;
+                                    location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=kardex.pdf"
+                                }else{
+                                    bootbox.alert("<i class='fa fa-exclamation-circle fa-3x pull-left text-warning text-shadow'></i> La fecha ingresada en 'Hasta' es menor a la fecha ingresada en 'Desde' ");
+                                    return false;
+                                }
+                            }
+                        });
+
+                    }
+                }
+            }
+        });
 
 
         %{--$(".btnAceptarAuxCliente").click(function () {--}%

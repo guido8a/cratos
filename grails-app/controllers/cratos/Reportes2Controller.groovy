@@ -4,6 +4,8 @@ import com.itextpdf.text.*
 import com.itextpdf.text.pdf.PdfPCell
 import com.itextpdf.text.pdf.PdfPTable
 import com.itextpdf.text.pdf.PdfWriter
+import cratos.inventario.Bodega
+import cratos.inventario.Kardex
 
 
 class Reportes2Controller {
@@ -513,10 +515,34 @@ class Reportes2Controller {
                     le("fechaEmision", hasta)
                 }
          }
-
-//        println("res " + retenciones)
-
         return[retenciones: retenciones, empresa: params.emp, desde: desde, hasta: hasta]
+    }
+
+    def kardex () {
+        def desde = new Date().parse("dd-MM-yyyy", params.desde)
+        def hasta = new Date().parse("dd-MM-yyyy", params.hasta)
+        def contabilidad = Contabilidad.get(params.cont)
+        def bodega = Bodega.get(params.bodega)
+
+        def res = Kardex.withCriteria {
+
+            proceso{
+                eq("contabilidad", contabilidad)
+            }
+
+            and{
+                eq("bodega", bodega)
+                ge("fecha", desde)
+                le("fecha", hasta)
+            }
+
+            and{
+                order("item","desc")
+                order("fecha","desc")
+            }
+
+        }
+        return[res: res, empresa: params.emp, desde: desde, hasta: hasta]
     }
 
 }
