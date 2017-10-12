@@ -188,6 +188,8 @@ class ProcesoController extends cratos.seguridad.Shield {
                 proceso.proveedor = proveedor
                 proceso.pago = params.pago
                 proceso.documentoEmpresa = DocumentoEmpresa.get(params.libretin)
+                proceso.retencionVenta = params.retencionVenta
+
                 break
 
             case ['6','7']:  //NC y ND
@@ -336,7 +338,8 @@ class ProcesoController extends cratos.seguridad.Shield {
 //        println "cargar gestor $params "
         def proceso = Proceso.get(params.proceso)
         def detalle = DetalleFactura.findAllByProceso(proceso)
-        def gstr = Gestor.findAllByEmpresaAndTipoProceso(session.empresa, TipoProceso.get(params.tipo), [sort: 'nombre'])
+//        def gstr = Gestor.findAllByEmpresaAndTipoProceso(session.empresa, TipoProceso.get(params.tipo), [sort: 'nombre'])
+        def gstr = Gestor.findAllByEmpresaAndTipoProcesoAndEstado(session.empresa, TipoProceso.get(params.tipo), 'R', [sort: 'nombre'])
         [gstr: gstr, gstr_id: params.gstr_id, rgst: params.rgst, detalle: detalle]
     }
 

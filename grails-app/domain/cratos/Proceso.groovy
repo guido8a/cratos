@@ -41,6 +41,7 @@ class Proceso implements Serializable {
     double flete = 0
     double retenidoIva = 0
     double retenidoRenta = 0
+    String retencionVenta
 
     String procesoSerie01
     String procesoSerie02
@@ -66,6 +67,7 @@ class Proceso implements Serializable {
     Bodega bodegaRecibe
 
     static auditable = true
+
 
     static mapping = {
         table 'prcs'
@@ -108,6 +110,7 @@ class Proceso implements Serializable {
             flete column: 'prcsflte'
             retenidoIva column: 'prcsrtiv'
             retenidoRenta column: 'prcsrtrn'
+            retencionVenta column: 'prcsrtvn'
 
             procesoSerie01 column: 'prcssr01'
             procesoSerie02 column: 'prcssr02'
@@ -167,6 +170,7 @@ class Proceso implements Serializable {
         iceGenerado(blank: true, nullable: true, attributes: [title: 'iceGenerado'])
         impuesto(blank: true, nullable: true, attributes: [title: 'impuesto'])
         valor(blank: true, nullable: true, attributes: [title: 'valor'])
+        retencionVenta(blank: true, nullable: true, attributes: [title: 'Retención en ventas'])
 
         procesoSerie01(blank: true, nullable: true, maxSize: 3, attributes: [title: 'establecimeinto documento'])
         procesoSerie02(blank: true, nullable: true, maxSize: 3, attributes: [title: 'punto de emisión documento'])
