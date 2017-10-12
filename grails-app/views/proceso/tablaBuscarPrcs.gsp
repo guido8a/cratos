@@ -12,10 +12,11 @@ th, td {
 }
 
 .registrado {
-    color: #888;
+    font-weight: bold;
+    color: #225f8b;
 }
 .noReg {
-    color: #444;
+    color: #666;
 }
 </style>
 

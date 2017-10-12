@@ -30,7 +30,6 @@ class ProcesoController extends cratos.seguridad.Shield {
     def utilitarioService
     def dbConnectionService
 
-
     def index = { redirect(action: "buscarPrcs") }
 
     def nuevoProceso = {
@@ -1662,24 +1661,67 @@ class ProcesoController extends cratos.seguridad.Shield {
         }
     }
 
+    /** antes buscarPrcs**/
     def buscarPrcs() {
 //        println "busqueda "
     }
 
-    def tablaBuscarPrcs() {
-//        println "buscar .... $params"
-        def data = []
-        def cn = dbConnectionService.getConnection()
+    def armaSqlProcesos(params){
+        println "armaSql: $params"
         def cont = session.contabilidad.id
-        def buscar = params.buscar.trim()?:'%'
+        def campos = buscadorService.parmProcesos()
+        def operador = buscadorService.operadores()
+        def wh = " prcs__id is not null " //condicion fija
         def fcds = "null"
         def fchs = "null"
+        def tpps = params.tpps.toInteger()
+
+        if(tpps) {
+            def tipo = TipoProceso.get(tpps).descripcion
+            wh = "tpps = '${tipo}'"
+        }
+
         if(params.desde) fcds = "'" + new Date().parse("dd-MM-yyyy",params.desde).format('yyyy-MM-dd') + "'"
         if(params.hasta) fchs = "'" + new Date().parse("dd-MM-yyyy",params.hasta).format('yyyy-MM-dd') + "'"
 
-        def sql = "select * from procesos(${session.empresa.id}, ${cont}, '${buscar}', ${fcds}, ${fchs}) "
+        def sqlSelect = "select * from procesos(${session.empresa.id}, ${cont}, '', ${fcds}, ${fchs}) "
 
-//        println "buscar .. ${sql}"
+        def sqlWhere = "where (${wh})"
+
+        def sqlOrder = "order by prcsfcha limit 40"
+
+        println "operador: $operador"
+
+        if(params.operador) {
+            if(campos.find {it.campo == params.buscador}?.size() > 0) {
+                def op = operador.find {it.valor == params.operador}
+                sqlWhere += " and ${params.buscador} ${op.operador} ${op.strInicio}${params.criterio}${op.strFin}";
+            }
+        }
+
+        println "sql: $sqlSelect $sqlWhere $sqlOrder"
+        "$sqlSelect $sqlWhere $sqlOrder".toString()
+    }
+
+
+
+    def tablaBuscarPrcs() {
+        println "buscar .... $params"
+
+        def cn = dbConnectionService.getConnection()
+
+        params.old = params.criterio
+        params.criterio = buscadorService.limpiaCriterio(params.criterio)
+
+        def sql = armaSqlProcesos(params)
+//        def res = cn.rows(sql)
+        params.criterio = params.old
+//        return [res: res, params: params]
+
+
+
+        /**----*/
+        def data = []
 
         data = cn.rows(sql.toString())
 

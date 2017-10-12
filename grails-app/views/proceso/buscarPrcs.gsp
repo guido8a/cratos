@@ -1,4 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page import="cratos.TipoProceso; cratos.utilitarios.BuscadorService" %>
+
+<%
+    def buscadorServ = grailsApplication.classLoader.loadClass('cratos.utilitarios.BuscadorService').newInstance()
+%>
+
 <html>
 <head>
     <meta name="layout" content="main">
@@ -31,69 +37,89 @@
 </head>
 
 <body>
+
+
+
 <div style="margin-top: -15px;" class="vertical-container">
     <p class="css-icono" style="margin-bottom: -15px"><i class="fa fa-folder-open-o"></i></p>
 
     <div class="linea45"></div>
 
+    <div class="row" style="border-style: solid; border-radius:6px; border-width: 1px;
+            height: 40px; border-color: #0c6cc2; margin-left: 10px;">
+
+        <div class="col-xs-5" style="margin-left: 5px; margin-top: 2px;">
+            <g:link class="btn btn-success" action="nuevoProceso" style="margin-left: -15px">
+                <i class="fa fa-file-o"></i> Nueva Transacción
+            </g:link>
+            <g:link class="btn btn-primary" action="procesosAnulados">
+                <i class="fa fa-times-circle"></i> Ir a Anulados
+            </g:link>
+        </div>
+
+        <div style="margin-top: 2px; margin-right: 5px; text-align: right">
+            <span class="text-info" style="font-size: 15px"><strong>${session.contabilidad.descripcion}</strong></span>
+            <a href="#" class="btn btn-azul" id="btnCambiarConta" style="margin-left: 5px;"
+               title="Cambiar a otra Contabilidad">
+                <i class="fa fa-refresh"></i> Cambiar
+            </a>
+        </div>
+
+    </div>
+
+
     <div class="row" style="margin-bottom: 10px;">
 
-        <div style="margin-left: 15px; width: 140px" class="col-xs-2">
-            <div>
-                <g:link class="btn btn-success btn-sm" action="nuevoProceso" style="margin-left: -15px">
-                    <i class="fa fa-file-o"></i> Nueva Transacción
-                </g:link>
+        <div class="row-fluid">
+            <div style="margin-left: 20px;">
+                <div class="col-xs-5">
+                    <div class="col-xs-4">
+                        <b>Buscar por: </b>
+                        <elm:select name="buscador" from = "${buscadorServ.parmProcesos()}" value="${params.buscador}"
+                            optionKey="campo" optionValue="nombre" optionClass="operador" id="buscador_con" style="width: 120px" />
+                    </div>
+                    <div class="col-xs-4">
+                        <strong style="margin-left: 20px;">Operación:</strong>
+                        <span id="selOpt"></span>
+                    </div>
+                    <div class="col-xs-4">
+                        <b style="margin-left: 20px">Criterio: </b>
+                        <g:textField name="criterio" style="margin-right: 10px; width: 100%" value="${params.criterio}" id="criterio_con"/>
+
+                    </div>
+                </div>
+
+                <div class="col-xs-2" style="margin-left: -20px;">
+                    Desde:
+                    <elm:datepicker name="fechaDesde" title="Fecha desde" id="fd" class="datepicker form-control fechaD"
+                                    maxDate="new Date()"/>
+                </div>
+
+                <div class="col-xs-2" style="margin-left: -20px;">
+                    Hasta:
+                <elm:datepicker name="fechaHasta" title="Fecha hasta" class="datepicker form-control fechaH"
+                                    maxDate="new Date()"/>
+                </div>
+
+                <div class="col-xs-2" style="margin-left: -20px; width: 160px;">
+                    Tipo:
+                    <elm:select name="buscador" from = "${cratos.TipoProceso.list([sort:'codigo'])}" value="params.tpps?:0"
+                        noSelection="${[0:'Todos']}" optionKey="id" optionValue="descripcion" id="tipo_proceso"/>
+                </div>
+
+                <div class="btn-group col-xs-1" style="margin-left: -20px; margin-top: 20px; width: 110px;">
+
+                    <a href="#" name="busqueda" class="btn btn-info btnBusqueda btn-ajax" title="Buscar">
+                        <i class="fa fa-search"></i></a>
+
+                    <a href="#" name="limpiarBus" class="btn btn-warning btnLimpiarBusqueda btn-ajax"
+                       title="Borrar criterios" >
+                        <i class="fa fa-eraser"></i></a>
+                </div>
+
             </div>
-            <div>
-                <g:link class="btn btn-primary btn-sm" action="procesosAnulados" style="margin-left: -15px; margin-top: 5px;">
-                    <i class="fa fa-times-circle"></i> Ir a Anulados
-                </g:link>
-            </div>
+
         </div>
-
-        <div class="col-xs-3" style="margin-left: 10px;">
-            Buscar por:
-            <div class="btn-group">
-                <input id="buscar" type="search" class="form-control" value="${session.buscar}" style="width: 200px;">
-                <span id="limpiaBuscar" class="glyphicon glyphicon-remove-circle"
-                      title="Limpiar texto de búsqueda"></span>
-            </div>
-        </div>
-
-        <div class="col-xs-2" style="width: 160px; margin-left: -75px">
-            Desde:
-            <elm:datepicker name="fechaDesde" title="Fecha desde" id="fd" class="datepicker form-control fechaD"
-                            maxDate="new Date()"/>
-        </div>
-
-        <div class="col-xs-2" style="width: 160px; margin-left: -20px">
-            Hasta:
-            <elm:datepicker name="fechaHasta" title="Fecha hasta" class="datepicker form-control fechaH"
-                            maxDate="new Date()"/>
-        </div>
-
-        <div class="btn-group col-xs-2" style="margin-left: -20px; margin-top: 20px; width: 160px;">
-
-            <a href="#" name="busqueda" class="btn btn-info btnBusqueda btn-ajax">
-                <i class="fa fa-check-square-o"></i> Buscar</a>
-
-            <a href="#" name="limpiarBus" class="btn btn-warning btnLimpiarBusqueda btn-ajax" title="Borrar criterios" style="height: 34px">
-                <i class="fa fa-eraser"></i></a>
-        </div>
-
-        <div  class="col-xs-2" style="width: 260px; border-style: solid; border-radius:10px; border-width: 1px;
-        margin-left: 0px; height: 68px; border-color: #0c6cc2">
-            <div class="col-xs-3" style="padding: 5px; height:30px;
-            text-align: center; width: 100%;">
-                <span class="text-info" style="font-size: 15px"><strong>${session.contabilidad.descripcion}</strong></span>
-            </div>
-            <div style="width: 100%; text-align: center;">
-                <a href="#" class="btn btn-azul btn-sm" id="btnCambiarConta" style="margin-left: 5px;" title="Cambiar a otra Contabilidad">
-                    <i class="fa fa-refresh"></i> Cambiar Contabilidad
-                </a>
-            </div>
-        </div>
-
     </div>
 </div>
 
@@ -153,22 +179,24 @@ como máximo 30 <span style="margin-left: 40px; color: #0b2c89">Se ordena por fe
         });
     });
 
-    cargarBusqueda();
+//    cargarBusqueda();
 
     function cargarBusqueda () {
         $("#bandeja").html("").append($("<div style='width:100%; text-align: center;'/>").append(spinnerSquare64));
-        var buscar = $("#buscar").val();
         var desde = $(".fechaD").val();
         var hasta = $(".fechaH").val();
-        var datos = "buscar=" + buscar;
 
+//        console.log('criterio:', buscar);
         $.ajax({
             type: "POST",
             url: "${g.createLink(controller: 'proceso', action: 'tablaBuscarPrcs')}",
             data: {
-                buscar: buscar,
+                buscador: $("#buscador_con").val(),
+                criterio: $("#criterio_con").val(),
+                operador: $("#oprd").val(),
                 desde: desde,
-                hasta: hasta
+                hasta: hasta,
+                tpps: $("#tipo_proceso").val()
             },
             success: function (msg) {
                 $("#bandeja").html(msg);
@@ -323,8 +351,35 @@ como máximo 30 <span style="margin-left: 40px; color: #0b2c89">Se ordena por fe
 
 
     $(".btnLimpiarBusqueda").click(function () {
-        $(".fechaD, .fechaH, #buscar").val('');
+        $(".fechaD, .fechaH, #criterio_con").val('');
     });
+
+    $("#buscador_con").change(function(){
+        var anterior = "${params.operador}";
+        var opciones = $(this).find("option:selected").attr("class").split(",");
+        poneOperadores(opciones);
+        /* regresa a la opción seleccionada */
+//        $("#oprd option[value=" + anterior + "]").prop('selected', true);
+    });
+
+
+    function poneOperadores (opcn) {
+        var $sel = $("<select name='operador' id='oprd' style='width: 120px'}>");
+        for(var i=0; i<opcn.length; i++) {
+            var opt = opcn[i].split(":");
+            var $opt = $("<option value='"+opt[0]+"'>"+opt[1]+"</option>");
+            $sel.append($opt);
+        }
+        $("#selOpt").html($sel);
+    };
+
+    /* inicializa el select de oprd con la primea opción de busacdor */
+    $(document).ready(function() {
+        $("#buscador_con").change();
+    });
+
+
+
 
 </script>
 
