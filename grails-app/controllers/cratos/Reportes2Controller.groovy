@@ -545,4 +545,51 @@ class Reportes2Controller {
         return[res: res, empresa: params.emp, desde: desde, hasta: hasta]
     }
 
+    def retencionesCodigo () {
+        def desde = new Date().parse("dd-MM-yyyy", params.desde)
+        def hasta = new Date().parse("dd-MM-yyyy", params.hasta)
+        def contabilidad = Contabilidad.get(params.cont)
+
+        def retenciones = Retencion.withCriteria {
+
+            proceso{
+                eq("contabilidad", contabilidad)
+            }
+
+            and{
+                ge("fechaEmision", desde)
+                le("fechaEmision", hasta)
+            }
+        }
+        return[retenciones: retenciones, empresa: params.emp, desde: desde, hasta: hasta]
+    }
+
+    def compras () {
+        def desde = new Date().parse("dd-MM-yyyy", params.desde)
+        def hasta = new Date().parse("dd-MM-yyyy", params.hasta)
+        def contabilidad = Contabilidad.get(params.cont)
+        def tipoProceso = TipoProceso.findByCodigo('C')
+
+        def retenciones = Retencion.withCriteria {
+
+            proceso{
+                eq("contabilidad",contabilidad)
+
+                and{
+                    eq("tipoProceso",tipoProceso)
+                    eq("estado", 'R')
+                }
+            }
+
+            and{
+                ge("fechaEmision", desde)
+                le("fechaEmision", hasta)
+            }
+        }
+
+        println("ret " + retenciones)
+
+        return[retenciones: retenciones, empresa: params.emp, desde: desde, hasta: hasta]
+    }
+
 }
