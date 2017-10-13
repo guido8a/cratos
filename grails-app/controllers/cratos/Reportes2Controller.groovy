@@ -586,10 +586,28 @@ class Reportes2Controller {
                 le("fechaEmision", hasta)
             }
         }
-
-        println("ret " + retenciones)
-
         return[retenciones: retenciones, empresa: params.emp, desde: desde, hasta: hasta]
+    }
+
+    def ventas () {
+        def desde = new Date().parse("dd-MM-yyyy", params.desde)
+        def hasta = new Date().parse("dd-MM-yyyy", params.hasta)
+        def contabilidad = Contabilidad.get(params.cont)
+        def tipoProceso = TipoProceso.findByCodigo('V')
+
+        def ventas = Proceso.withCriteria {
+
+            eq("contabilidad", contabilidad)
+            eq("tipoProceso", tipoProceso)
+
+            and{
+                ge("fechaEmision", desde)
+                le("fechaEmision", hasta)
+            }
+
+        }
+
+        return[ventas: ventas, empresa: params.emp, desde: desde, hasta: hasta]
     }
 
 }
