@@ -43,7 +43,7 @@ class Gestor implements Serializable {
         fuente(blank: true, nullable: true, attributes: [title: 'fuente'])
         observaciones(blank: true,nullable: true, maxSize: 127, attributes: [title: 'observaciones'])
         esDepreciacion(blank: true,nullable: true, maxSize: 1, attributes: [title: 'para definir si es el gestor de la depreciacion'])
-        tipo(blank: false, nullable: false, attributes: [title: 'tipo de gestor'], inList: ['G', 'I', 'N'])
+        tipo(blank: false, nullable: false, attributes: [title: 'tipo de gestor'], inList: ['G', 'I', 'S', 'C'])
         codigo(blank: true, nullable: true)
     }
 }

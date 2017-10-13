@@ -139,7 +139,9 @@
             </div>
 
             <div class="col-xs-1 negrilla">
-                Tipo:
+            </div>
+            <div class="col-xs-2 negrilla">
+                Tipo de detalle:
             </div>
 
             <div class="col-xs-2 negrilla" style="margin-left: 0">

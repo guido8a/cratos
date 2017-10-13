@@ -254,7 +254,7 @@ class GestorContableController extends cratos.seguridad.Shield {
 
     def formGestor () {
         def titulo = "Nuevo Gestor"
-        def tipo = ['G': 'Gasto', 'I':'Inventario', 'N': 'Ninguno']
+        def tipo = ['G': 'Gasto', 'I':'Inventario', 'S': 'Servicios', 'C': 'Sin detalle']
         if(params.id){
             titulo = params.ver? "Ver Gestor" : "Editar Gestor"
             def gestorInstance = Gestor.get(params.id)
