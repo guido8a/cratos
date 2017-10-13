@@ -1667,7 +1667,7 @@ class ProcesoController extends cratos.seguridad.Shield {
     }
 
     def armaSqlProcesos(params){
-        println "armaSql: $params"
+//        println "armaSql: $params"
         def cont = session.contabilidad.id
         def campos = buscadorService.parmProcesos()
         def operador = buscadorService.operadores()
@@ -1684,13 +1684,11 @@ class ProcesoController extends cratos.seguridad.Shield {
         if(params.desde) fcds = "'" + new Date().parse("dd-MM-yyyy",params.desde).format('yyyy-MM-dd') + "'"
         if(params.hasta) fchs = "'" + new Date().parse("dd-MM-yyyy",params.hasta).format('yyyy-MM-dd') + "'"
 
-        def sqlSelect = "select * from procesos(${session.empresa.id}, ${cont}, '', ${fcds}, ${fchs}) "
+        def sqlSelect = "select * from procesos(${session.empresa.id}, ${cont}, ${fcds}, ${fchs}) "
 
         def sqlWhere = "where (${wh})"
 
-        def sqlOrder = "order by prcsfcha limit 40"
-
-        println "operador: $operador"
+        def sqlOrder = "order by prcsfcha limit 31"
 
         if(params.operador) {
             if(campos.find {it.campo == params.buscador}?.size() > 0) {
@@ -1698,32 +1696,21 @@ class ProcesoController extends cratos.seguridad.Shield {
                 sqlWhere += " and ${params.buscador} ${op.operador} ${op.strInicio}${params.criterio}${op.strFin}";
             }
         }
-
-        println "sql: $sqlSelect $sqlWhere $sqlOrder"
+//        println "sql: $sqlSelect $sqlWhere $sqlOrder"
         "$sqlSelect $sqlWhere $sqlOrder".toString()
     }
 
 
 
     def tablaBuscarPrcs() {
-        println "buscar .... $params"
-
+//        println "buscar .... $params"
         def cn = dbConnectionService.getConnection()
-
         params.old = params.criterio
         params.criterio = buscadorService.limpiaCriterio(params.criterio)
 
         def sql = armaSqlProcesos(params)
-//        def res = cn.rows(sql)
         params.criterio = params.old
-//        return [res: res, params: params]
-
-
-
-        /**----*/
-        def data = []
-
-        data = cn.rows(sql.toString())
+        def data = cn.rows(sql.toString())
 
         def msg = ""
         if(data?.size() > 30){
