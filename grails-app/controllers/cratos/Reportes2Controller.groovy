@@ -513,6 +513,7 @@ class Reportes2Controller {
                 and{
                     ge("fechaEmision", desde)
                     le("fechaEmision", hasta)
+                    order("numero","asc")
                 }
          }
         return[retenciones: retenciones, empresa: params.emp, desde: desde, hasta: hasta]

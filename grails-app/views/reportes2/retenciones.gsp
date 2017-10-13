@@ -79,11 +79,9 @@
         <thead>
         <tr style="font-size: 11px; width: 810px">
             <th align="center" style="width: 60px">Fecha</th>
-            <th align="center" style="width: 100px;">Establecimiento</th>
-            <th align="center" style="width: 80px">Emisión</th>
-            <th align="center" style="width: 100px;">Secuencial</th>
+            <th align="center" style="width: 200px;">Retención</th>
             <th align="center" style="width: 120px">Documento</th>
-            <th align="center" style="width: 250px">Beneficiario</th>
+            <th align="center" style="width: 330px">Beneficiario</th>
             <th align="center" style="width: 100px">Valor</th>
         </tr>
         </thead>
@@ -98,14 +96,14 @@
             <g:set var="servicios" value="${retencion?.rentaServicios}"/>
             <g:set var="rentaIVA" value="${retencion?.ivaBienes}"/>
             <g:set var="serviciosIVA" value="${retencion?.ivaServicios}"/>
+            <g:set var="secuencial" value="${retencion?.numeroComprobante?.split("-")[2]}"/>
+            <g:set var="secuencial2" value="${'0' * (9 - retencion?.numeroComprobante?.split("-")[2].size()) + secuencial}"/>
 
             <tr style="width: 810px">
                 <td style="width: 60px"><g:formatDate date="${retencion?.fechaEmision}" format="dd-MM-yyyy" /></td>
-                <td style="width: 100px;" class="centro">${retencion?.numeroComprobante?.split("-")[0]}</td>
-                <td style="width: 80px" class="centro">${retencion?.numeroComprobante?.split("-")[1]}</td>
-                <td style="width: 100px" class="centro">${retencion?.numeroComprobante?.split("-")[2]}</td>
+                <td style="width: 200px;" class="centro">${retencion?.numeroComprobante?.split("-")[0] + " - " + retencion?.numeroComprobante?.split("-")[1] + " - " + secuencial2}</td>
                 <td style="width: 120px">${retencion?.proceso?.documento}</td>
-                <td style="width: 250px">${retencion?.persona}</td>
+                <td style="width: 330px">${retencion?.persona}</td>
                 <td class="derecha" style="width: 100px"><g:formatNumber number="${renta + servicios + rentaIVA + serviciosIVA}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
             </tr>
         </g:each>

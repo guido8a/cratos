@@ -84,7 +84,7 @@
     <div class="col-xs-1" style="width: 140px;">
         <b>Precio</b>
         <g:textField name="precio_name" id="precioItem" class="form-control number pre" value=""
-                     style="text-align: right;" readonly="${proceso?.tipoProceso?.codigo?.trim() == 'V' || proceso?.tipoProceso?.codigo?.trim() == 'NC' }"/>
+                     style="text-align: right;" readonly="${proceso?.tipoProceso?.codigo?.trim() == 'NC' }"/>
     </div>
 
     <div class="col-xs-1 camposTexto">
