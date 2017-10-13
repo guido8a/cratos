@@ -15,23 +15,6 @@
     .alinear {
         text-align: center !important;
     }
-
-    #buscar {
-        width: 240px;
-        border-color: #0c6cc2;
-    }
-
-    #limpiaBuscar {
-        position: absolute;
-        right: 5px;
-        top: 0;
-        bottom: 0;
-        height: 14px;
-        margin: auto;
-        font-size: 14px;
-        cursor: pointer;
-        color: #ccc;
-    }
     </style>
 
 </head>
@@ -76,7 +59,8 @@
                     <div class="col-xs-4">
                         <b>Buscar por: </b>
                         <elm:select name="buscador" from = "${buscadorServ.parmProcesos()}" value="${params.buscador}"
-                            optionKey="campo" optionValue="nombre" optionClass="operador" id="buscador_con" style="width: 120px" />
+                            optionKey="campo" optionValue="nombre" optionClass="operador" id="buscador_con"
+                                    style="width: 120px" class="form-control"/>
                     </div>
                     <div class="col-xs-4">
                         <strong style="margin-left: 20px;">Operación:</strong>
@@ -84,7 +68,8 @@
                     </div>
                     <div class="col-xs-4">
                         <b style="margin-left: 20px">Criterio: </b>
-                        <g:textField name="criterio" style="margin-right: 10px; width: 100%" value="${params.criterio}" id="criterio_con"/>
+                        <g:textField name="criterio" style="margin-right: 10px; width: 100%" value="${params.criterio}"
+                                     id="criterio_con" class="form-control"/>
 
                     </div>
                 </div>
@@ -104,16 +89,18 @@
                 <div class="col-xs-2" style="margin-left: -20px; width: 160px;">
                     Tipo:
                     <elm:select name="buscador" from = "${cratos.TipoProceso.list([sort:'codigo'])}" value="params.tpps?:0"
-                        noSelection="${[0:'Todos']}" optionKey="id" optionValue="descripcion" id="tipo_proceso"/>
+                        noSelection="${[0:'Todos']}" optionKey="id" optionValue="descripcion" id="tipo_proceso"
+                                class="form-control"/>
                 </div>
 
-                <div class="btn-group col-xs-1" style="margin-left: -20px; margin-top: 20px; width: 110px;">
+                <div class="btn-group col-xs-1" style="margin-left: -10px; margin-top: 20px; width: 110px;">
 
-                    <a href="#" name="busqueda" class="btn btn-info btnBusqueda btn-ajax" title="Buscar">
+                    <a href="#" name="busqueda" class="btn btn-info" id="btnBusqueda" title="Buscar"
+                       style="height: 34px; padding: 9px; width: 46px">
                         <i class="fa fa-search"></i></a>
 
-                    <a href="#" name="limpiarBus" class="btn btn-warning btnLimpiarBusqueda btn-ajax"
-                       title="Borrar criterios" >
+                    <a href="#" name="limpiarBus" class="btn btn-warning" id="btnLimpiarBusqueda"
+                       title="Borrar criterios" style="height: 34px; padding: 9px; width: 34px">
                         <i class="fa fa-eraser"></i></a>
                 </div>
 
@@ -207,7 +194,7 @@ como máximo 30 <span style="margin-left: 40px; color: #0b2c89">Se ordena por fe
         });
     }
 
-    $(".btnBusqueda").click(function () {
+    $("#btnBusqueda").click(function () {
 
         $.ajax({
             type: 'POST',
@@ -230,7 +217,7 @@ como máximo 30 <span style="margin-left: 40px; color: #0b2c89">Se ordena por fe
 
     $("input").keyup(function (ev) {
         if (ev.keyCode == 13) {
-            $(".btnBusqueda").click();
+            $("#btnBusqueda").click();
         }
     });
 
@@ -350,7 +337,7 @@ como máximo 30 <span style="margin-left: 40px; color: #0b2c89">Se ordena por fe
     });
 
 
-    $(".btnLimpiarBusqueda").click(function () {
+    $("#btnLimpiarBusqueda").click(function () {
         $(".fechaD, .fechaH, #criterio_con").val('');
     });
 
@@ -364,7 +351,7 @@ como máximo 30 <span style="margin-left: 40px; color: #0b2c89">Se ordena por fe
 
 
     function poneOperadores (opcn) {
-        var $sel = $("<select name='operador' id='oprd' style='width: 120px'}>");
+        var $sel = $("<select name='operador' id='oprd' style='width: 120px' class='form-control'>");
         for(var i=0; i<opcn.length; i++) {
             var opt = opcn[i].split(":");
             var $opt = $("<option value='"+opt[0]+"'>"+opt[1]+"</option>");
