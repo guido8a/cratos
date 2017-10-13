@@ -179,7 +179,7 @@ como máximo 30 <span style="margin-left: 40px; color: #0b2c89">Se ordena por fe
         });
     });
 
-//    cargarBusqueda();
+    cargarBusqueda();
 
     function cargarBusqueda () {
         $("#bandeja").html("").append($("<div style='width:100%; text-align: center;'/>").append(spinnerSquare64));

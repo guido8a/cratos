@@ -1688,9 +1688,9 @@ class ProcesoController extends cratos.seguridad.Shield {
 
         def sqlWhere = "where (${wh})"
 
-        def sqlOrder = "order by prcsfcha limit 31"
+        def sqlOrder = "order by prcsfcha desc limit 31"
 
-        if(params.operador) {
+        if(params.criterio) {
             if(campos.find {it.campo == params.buscador}?.size() > 0) {
                 def op = operador.find {it.valor == params.operador}
                 sqlWhere += " and ${params.buscador} ${op.operador} ${op.strInicio}${params.criterio}${op.strFin}";
