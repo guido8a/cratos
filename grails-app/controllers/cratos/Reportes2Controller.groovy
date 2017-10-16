@@ -5,6 +5,7 @@ import com.itextpdf.text.pdf.PdfPCell
 import com.itextpdf.text.pdf.PdfPTable
 import com.itextpdf.text.pdf.PdfWriter
 import cratos.inventario.Bodega
+import cratos.inventario.DetalleFactura
 import cratos.inventario.Kardex
 
 
@@ -609,6 +610,15 @@ class Reportes2Controller {
         }
 
         return[ventas: ventas, empresa: params.emp, desde: desde, hasta: hasta]
+    }
+
+    def factura () {
+        def proceso = Proceso.get(params.id)
+        def detalles = DetalleFactura.findAllByProceso(proceso)
+        def tipoPago = TipoPago.findByCodigo(proceso?.pago?.toString())
+        def cn = dbConnectionService.getConnection()
+        def totl = cn.rows("select * from total_detalle(${params.id},0,0)".toString())[0]
+        return[proceso: proceso, detalles: detalles, empresa: params.emp, pago: tipoPago, totl: totl]
     }
 
 }

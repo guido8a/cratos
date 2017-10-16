@@ -40,6 +40,11 @@
                 <i class="fa fa-save"></i> Guardar
             </g:link>
         </g:if>
+        <g:if test="${proceso?.tipoProceso?.codigo?.trim() == 'V'}">
+            <a href="#" class="btn btn-info" id="btnImprimirDetalle">
+                <i class="fa fa-print"></i> Imprimir Factura
+            </a>
+        </g:if>
     </div>
 </div>
 
@@ -152,6 +157,11 @@
 </div>
 
 <script type="text/javascript">
+
+    $("#btnImprimirDetalle").click(function () {
+        url = "${g.createLink(controller:'reportes2' , action: 'factura')}?id=" + '${proceso?.id}' + "Wemp=${session.empresa.id}";
+        location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=compras.pdf"
+    });
 
     $(".btnIrProceso").click(function () {
         location.href='${createLink(controller: 'proceso', action: 'nuevoProceso')}?id=' + '${proceso?.id}'

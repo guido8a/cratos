@@ -168,6 +168,153 @@ class ReportesTagLib {
         out << raw(css)
     }
 
+    def estilosFactura = { attrs ->
+
+        def pags = false
+        if (attrs.pags == 1 || attrs.pags == "1" || attrs.pags == "true" || attrs.pags == true || attrs.pags == "si") {
+            pags = true
+        }
+        if (!pags && attrs.pagTitle) {
+            pags = true
+        }
+
+        if (!attrs.orientacion) {
+            attrs.orientacion = "p"
+        }
+        def pOrientacion = attrs.orientacion.toString().toLowerCase()
+        def orientacion = "portrait"
+//        def margenes = [
+//                top   : 1.5,
+//                right : 0.4,
+//                bottom: 0.5,
+//                left  : 1.5
+//        ]
+        def margenes = [
+                top   : 5,
+                right : 0.4,
+                bottom: 0.5,
+                left  : 1.5
+        ]
+        switch (pOrientacion) {
+            case "l":
+            case "landscape":
+            case "horizontal":
+            case "h":
+                orientacion = "landscape"
+                break;
+        }
+
+        def css = "<style type='text/css'>"
+        css += "* {\n" +
+                "    font-family   : 'PT Sans Narrow';\n" +
+                "    font-size     : 10pt;\n" +
+                "}"
+        css += " @page {\n" +
+                "    size          : A5 ${orientacion};\n" +
+                "    margin-top    : ${margenes.top}cm;\n" +
+                "    margin-right  : ${margenes.right}cm;\n" +
+                "    margin-bottom : ${margenes.bottom}cm;\n" +
+                "    margin-left   : ${margenes.left}cm;\n" +
+                "}"
+        css += "@page {\n" +
+                "    @top-right {\n" +
+                "        content : element(header);\n" +
+                "    }\n" +
+                "}"
+        css += "@page {\n" +
+                "    @bottom-right {\n" +
+                "        content : element(footer);\n" +
+                "    }\n" +
+                "}"
+        css += "#header{\n" +
+                "    width      : 100%;\n" +
+                "    text-align : right;\n" +
+                "    position   : running(header);\n" +
+                "}"
+
+        css += "#footer{\n" +
+                "    text-align : right;\n" +
+                "    position   : running(footer);\n" +
+                "    color      : #7D807F;\n" +
+                "}"
+        css += "@page{\n" +
+                "    orphans    : 4;\n" +
+                "    widows     : 2;\n" +
+                "}"
+        css += "table {\n" +
+//                "    page-break-inside : avoid;\n" +
+                "}"
+        css += ".table tr {\n" +
+                "    page-break-inside : avoid;\n" +
+                "}"
+        css += ".no-break {\n" +
+                "    page-break-inside : avoid;\n" +
+                "}"
+        css += ".tituloReporte{\n" +
+                "    text-align     : center;\n" +
+                "    text-transform : uppercase;\n" +
+                "    font-size      : 18pt;\n" +
+                "    color          : #17365D;\n" +
+                "    border-bottom  : solid 2px #4F81BD;\n" +
+                "}"
+        css += ".tituloReporteSinLinea{\n" +
+                "    text-align     : center;\n" +
+                "    text-transform : uppercase;\n" +
+                "    font-size      : 18pt;\n" +
+                "    top : -10px;\n" +
+                "    color          : #17365D;\n" +
+                "}"
+        css += ".tituloRprt{\n" +
+                "    text-align     : center;\n" +
+                "    text-transform : uppercase;\n" +
+                "    font-size      : 18pt;\n" +
+                "    color          : #17365D;\n" +
+                "}"
+        css += ".tituloCuentaRprt{\n" +
+                "    text-align     : center;\n" +
+                "    text-transform : uppercase;\n" +
+                "    font-size      : 18pt;\n" +
+                "    color          : #17365D;\n" +
+                "    margin-top     : 18px\n" +
+                "}"
+        css += ".datosRprt{\n" +
+                "    text-align     : center;\n" +
+                "    text-transform : uppercase;\n" +
+                "    font-size      : 10pt;\n" +
+                "    color          : #17365D;\n" +
+                "}"
+        css += ".numeracion {\n" +
+                "    margin-top     : 0.5cm;\n" +
+                "    margin-bottom  : 0.5cm;\n" +
+                "    font-size      : 12.5pt;\n" +
+                "    font-family    : 'PT Sans';\n" +
+                "    color          : white;\n" +
+                "    text-align     : center;\n" +
+                "}"
+        css += ".numeracion table {\n" +
+                "    border-collapse : collapse;\n" +
+                "    border          : solid 1px #C0C0C0;" +
+                "    margin-left     : auto;\n" +
+                "    margin-right    : auto;\n" +
+                "}"
+        css += ".numeracion table td {\n" +
+                "    padding : 5px;\n" +
+                "}"
+        css += ".fechaReporte{\n" +
+                "    color          : #000;\n" +
+                "    margin-bottom  : 5px;\n" +
+                "}"
+        css += "thead {\n" +
+                "    display:  table-header-group;\n" +
+                "}"
+        css += "tbody {\n" +
+                "    display:  table-row-group;\n" +
+                "}"
+        css += "</style>"
+
+        out << raw(css)
+    }
+
     /**
      * Muestra el header para los reportes
      * @param title el título del reporte

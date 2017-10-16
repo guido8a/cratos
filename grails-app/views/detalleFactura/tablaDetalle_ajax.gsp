@@ -18,8 +18,8 @@
         <tr style="color:${detalle.item.tipoIVA.id == 2? '#000000' : '#005060'}">
             <td style="width: 90px;">${detalle?.item?.codigo}</td>
             <td style="width: 200px">${detalle?.item?.nombre}</td>
-            <td style="width: 50px" title="${detalle?.bodega?.descripcion}">${detalle?.bodega?.descripcion}</td>
-            <td style="width: 50px" title="${detalle?.centroCosto?.nombre}">${detalle?.centroCosto?.nombre?.take(5)}</td>
+            <td style="width: 50px">${detalle?.bodega?.descripcion}</td>
+            <td style="width: 50px">${detalle?.centroCosto?.nombre?.take(5)}</td>
             <td style="width: 30px">${detalle?.item?.unidad}</td>
             <td style="width: 45px; text-align: right">${detalle?.cantidad?.toInteger()}</td>
             <td style="width: 80px; text-align: right"><g:formatNumber number="${detalle?.precioUnitario}" maxFractionDigits="4" minFractionDigits="4"/></td>

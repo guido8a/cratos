@@ -34,7 +34,6 @@
 
     <script src="${resource(dir: 'js/plugins/Toggle-Button-Checkbox/js', file: 'bootstrap-checkbox.js')}"></script>
 
-
 </head>
 
 <body>
@@ -63,36 +62,32 @@
             Lista de Gestores
         </g:link>
 
-        <g:if test="${verGestor}">
+        <g:if test="${band}">
             <g:if test="${gestorInstance?.estado != 'R'}">
-                <a href="${g.createLink(action: 'formGestor', id:gestorInstance?.id)}" class="btn btn-success" title="Editar">
-                    <i class="fa fa-pencil"></i> Editar
-                </a>
-            </g:if>
-        </g:if>
-        <g:else>
-            <g:if test="${(gestorInstance?.estado != 'R') && !verGestor}">
                 <a href="#" id="btnGuardar" class="btn btn-success">
                     <i class="fa fa-save"></i>
                     Guardar
                 </a>
-            </g:if>
-
-            <g:if test="${gestorInstance?.id && gestorInstance?.estado != 'R'}">
-                <a href="#" id="btnRegistrar" class="btn btn-info">
-                    <i class="fa fa-check"></i>
-                    Registrar
-                </a>
-            </g:if>
-
-            <g:if test="${gestorInstance?.id}">
+                <g:if test="${tieneAsientos}">
+                    <a href="#" id="btnRegistrar" class="btn btn-info">
+                        <i class="fa fa-check"></i>
+                        Registrar
+                    </a>
+                </g:if>
                 <g:link action="deleteGestor" id="${gestorInstance?.id}" class="btn btn-danger" name="eliminarGestor">
                     <i class="fa fa-trash-o"></i>
                     Eliminar
                 </g:link>
             </g:if>
-        </g:else>
-
+            <g:else>
+                <g:if test="${gestorInstance?.estado == 'R'}">
+                    <a href="#" id="btnDesRegistrar" class="btn btn-info">
+                        <i class="fa fa-times"></i>
+                        Desregistrar
+                    </a>
+                </g:if>
+            </g:else>
+        </g:if>
     </div>
 </div>
 
@@ -202,7 +197,7 @@
 
                 </span>
 
-                <g:if test="${(gestorInstance?.estado != 'R') && !verGestor}">
+                <g:if test="${(gestorInstance?.estado != 'R') && band}">
                     <div class="btn-group col-md-3">
                         <a href="#" id="btnAgregarMovimiento" class="btn btn-info" title="Agregar una cuenta al gestor">
                             <i class="fa fa-plus"></i> Agregar Cuenta
@@ -234,11 +229,11 @@
                 </div>
             </div>
 
-%{--
-            <div class="span12">
-                <div id="totales" style="width: 1070px; height: 20px;"></div>
-            </div>
---}%
+            %{--
+                        <div class="span12">
+                            <div id="totales" style="width: 1070px; height: 20px;"></div>
+                        </div>
+            --}%
         </div>
     </div>
 </g:if>
@@ -310,8 +305,54 @@
                 }
             }
         });
+    });
+
+
+
+
+    $("#btnDesRegistrar").click(function () {
+        bootbox.dialog({
+            title: "Alerta",
+            message: "<i class='fa fa-warning fa-3x pull-left text-warning text-shadow'></i><p>¿Está seguro que desea quitar el registro el gestor contable?",
+            buttons: {
+                cancelar: {
+                    label: "<i class='fa fa-times'></i> Cancelar",
+                    className: "btn-primary",
+                    callback: function () {
+                    }
+                },
+                eliminar: {
+                    label: "<i class='fa fa-times'></i> Desregistrar",
+                    className: "btn-success",
+                    callback: function () {
+                        openLoader("Quitando Registro..");
+                        $.ajax({
+                            type: 'POST',
+                            url: '${createLink(controller: 'gestorContable', action: 'desRegistrar_ajax')}',
+                            data: {
+                                id: '${gestorInstance?.id}'
+                            },
+                            success: function (msg) {
+                                var parts = msg.split("_");
+                                if (parts[0] == 'ok') {
+                                    log(parts[1], "success");
+                                    setTimeout(function () {
+                                        location.href = "${createLink(controller: 'gestorContable', action: 'formGestor')}/" + '${gestorInstance?.id}'
+                                    }, 1000);
+                                } else {
+                                    log(parts[1], "error");
+                                    closeLoader();
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        });
 
     });
+
+
 
 
     $("#btnAgregarMovimiento").click(function () {

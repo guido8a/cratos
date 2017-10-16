@@ -62,8 +62,7 @@
                                                class="form-control mayusculas" style="width: 40px;"
                                                value="${gnra?.debeHaber}" /></td>
                 <td style="width: 100px">
-                    <g:if test="${gestor?.estado != 'R'}">
-
+                    <g:if test="${gestor?.estado != 'R' && (gestor?.empresa == empresa)}">
                         <div class="btn-group">
                             <a href="#" class="btn btn-success btn-s btnGuardarMovi" cuenta="${gnra?.id}" iden="${i}"
                                title="Guardar cambios">
@@ -74,7 +73,6 @@
                                 <i class="fa fa-times"></i>
                             </a>
                         </div>
-
                     </g:if>
                 </td>
                 </tr>

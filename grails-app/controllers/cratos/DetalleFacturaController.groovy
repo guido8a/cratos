@@ -113,7 +113,6 @@ class DetalleFacturaController extends cratos.seguridad.Shield  {
         def empresa = Empresa.get(session.empresa.id)
         def bodegas = Bodega.findAllByEmpresa(empresa).sort{it.descripcion}
         def centros = CentroCosto.findAllByEmpresa(empresa).sort{it.nombre}
-//        def detalles = DetalleFactura.findAllByProceso(proceso)
         def truncar
 
         if(proceso.estado == 'R'){

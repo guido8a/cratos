@@ -253,25 +253,26 @@ class GestorContableController extends cratos.seguridad.Shield {
     }
 
     def formGestor () {
+        def empresa = Empresa.get(session.empresa.id)
         def titulo = "Nuevo Gestor"
         def tipo = ['G': 'Gasto', 'I':'Inventario', 'S': 'Servicios', 'C': 'Sin detalle']
         if(params.id){
             titulo = params.ver? "Ver Gestor" : "Editar Gestor"
             def gestorInstance = Gestor.get(params.id)
-            return [gestorInstance: gestorInstance, verGestor: params.ver, titulo: titulo, tipo: tipo]
+            def band = (gestorInstance.empresa == empresa)
+            def genera = Genera.findAllByGestor(gestorInstance)
+            return [gestorInstance: gestorInstance, verGestor: params.ver, titulo: titulo, tipo: tipo, band: band, tieneAsientos: genera]
         } else
-            return [verGestor: params.ver, titulo: titulo, tipo: tipo]
+            return [verGestor: params.ver, titulo: titulo, tipo: tipo, band: true]
     }
 
     def tablaGestor_ajax () {
-        println("tabla gestor" + params)
+//        println("tabla gestor" + params)
         def gestor = Gestor.get(params.id)
         def tipoComprobante = TipoComprobante.get(params.tipo)
-
+        def empresa = Empresa.get(session.empresa.id)
         def movimientos = Genera.findAllByGestorAndTipoComprobante(gestor, tipoComprobante)?.sort{it.cuenta.numero}?.sort{it.debeHaber}
-
-//        println("movimientos " + movimientos )
-        return [movimientos: movimientos, gestor: gestor, tipo: tipoComprobante]
+        return [movimientos: movimientos, gestor: gestor, tipo: tipoComprobante, empresa: empresa]
     }
 
     def buscarMovimiento_ajax () {
@@ -502,12 +503,25 @@ class GestorContableController extends cratos.seguridad.Shield {
         }else{
             render "no_Error al registrar el gestor contable"
         }
+    }
 
+    def desRegistrar_ajax() {
+        def gestor = Gestor.get(params.id)
+        gestor.estado = 'A'
 
+        try{
+            gestor.save(flush:true)
+            render "ok_Gestor contable desregistrado correctamente!"
+        }catch (e){
+            println("error al quitar el registro del gestor contable " + e)
+            render "no_Error al quitar el registro del gestor contable"
+        }
     }
 
     def buscarGstr() {
 //        println "busqueda "
+        def empresa = Empresa.get(session.empresa.id)
+        return[empresa: empresa]
     }
 
     def tablaBuscarGstr() {
