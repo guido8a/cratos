@@ -119,6 +119,12 @@
                         Anular Proceso
                     </a>
                 </g:form>
+                <g:if test="${proceso?.tipoProceso?.codigo?.trim() in ['P','I']}">
+                    <a href="#" class="btn btn-info" id="btnConciliar">
+                        <i class="fa fa-pencil-square-o"></i>
+                        Conciliar Total
+                    </a>
+                </g:if>
             </g:if>
             <g:if test="${cratos.Retencion.findByProceso(proceso)}">
                 <g:link controller="reportes3" action="imprimirRetencion" class="btn btn-default btnRetencion"
@@ -127,7 +133,7 @@
                     Imprimir retención
                 </g:link>
             </g:if>
-            <g:if test="${proceso?.tipoProceso?.codigo?.trim() == 'C' || proceso?.tipoProceso?.codigo?.trim() == 'V' || proceso?.tipoProceso?.codigo?.trim() == 'T' || proceso?.tipoProceso?.codigo?.trim() == 'NC'}">
+            <g:if test="${proceso?.tipoProceso?.codigo?.trim() in ['C','V','T','NC']}">
                 <a href="#" class="btn btn-warning" id="btnDetalle" style="color: #0b0b0b">
                     <i class="fa fa-list"></i>
                     Detalle
@@ -205,11 +211,11 @@
             </div>
 
             <div class="col-xs-2 negrilla">
-                    <g:select class="form-control required  cmbRequired tipoProcesoSel ${proceso ? '' : 'hidden'} "
-                              name="tipoProceso" id="tipoProceso"
-                              from="${cratos.TipoProceso.list(sort: 'codigo')}" label="Proceso tipo: "
-                              value="${proceso?.tipoProceso?.id}" optionKey="id"
-                              optionValue="descripcion" title="Tipo de la transacción" disabled="${proceso?.id ? true : false}"/>
+                <g:select class="form-control required  cmbRequired tipoProcesoSel ${proceso ? '' : 'hidden'} "
+                          name="tipoProceso" id="tipoProceso"
+                          from="${cratos.TipoProceso.list(sort: 'codigo')}" label="Proceso tipo: "
+                          value="${proceso?.tipoProceso?.id}" optionKey="id"
+                          optionValue="descripcion" title="Tipo de la transacción" disabled="${proceso?.id ? true : false}"/>
             </div>
         </div>
 
@@ -405,6 +411,57 @@
 
 <script type="text/javascript">
 
+    $("#btnConciliar").click(function () {
+
+        $.ajax({
+           type: 'POST',
+            url:'${createLink(controller: 'proceso', action: 'con_ajax')}',
+            data:{
+                    proceso: '${proceso?.id}'
+            },
+            success: function (msg) {
+                var b = bootbox.dialog({
+                    id: "dlgCon",
+                    title: "Conciliar Total",
+//                    class: "long",
+                    message: msg,
+                    buttons: {
+                        cancelar: {
+                            label: "<i class='fa fa-times'></i> Cancelar",
+                            className: "btn-primary",
+                            callback: function () {
+                            }
+                        },
+                        aceptar:{
+                            label: "<i class='fa fa-save'></i> Guardar",
+                            className: "btn-success",
+                            callback: function () {
+                                $.ajax({
+                                   type:'POST',
+                                    url:'${createLink(controller: 'proceso', action: 'conciliar_ajax')}',
+                                    data:{
+                                        proceso: '${proceso?.id}',
+                                        valor: $("#conciliacion").val()
+                                    },
+                                    success:function (msg){
+                                        if(msg == 'ok'){
+                                            log("Valor cambiado correctamente","success");
+                                            setTimeout(function () {
+                                                location.href="${createLink(controller: 'proceso', action: 'nuevoProceso')}/?id=" + '${proceso?.id}'
+                                            }, 800);
+                                        }else{
+                                            log("Error al cambiar el valor","error")
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    });
+
     cargarBotonFormasPago($("#tipoProceso").val())
 
     $("#tipoProceso").change(function () {
@@ -422,7 +479,7 @@
 
     $("#btnDetalle").click(function () {
         location.href='${createLink(controller: 'detalleFactura', action: 'detalleGeneral')}/?id=' +
-                '${proceso?.id}' + '&tipo=' + '${proceso?.tipoProceso?.codigo}'
+            '${proceso?.id}' + '&tipo=' + '${proceso?.tipoProceso?.codigo}'
     });
 
 
@@ -876,11 +933,11 @@
                     error += "<li>Seleccione el comprobante</li>"
                 }
 
-/*
-                if ($("#iva12").val() == 0 && $("#iva0").val() == 0 && $("#noIva").val() == 0) {
-                    error += "<li>Ingrese valores en la base imponible</li>"
-                }
-*/
+                /*
+                 if ($("#iva12").val() == 0 && $("#iva0").val() == 0 && $("#noIva").val() == 0) {
+                 error += "<li>Ingrese valores en la base imponible</li>"
+                 }
+                 */
 
                 if (!$("#numEstablecimiento").val()) {
                     error += "<li>Seleccione un libretín de facturas/li>"
@@ -1174,7 +1231,7 @@
 //        console.log('change... nmes')
         $("#libretinFacturas").html('')
 //        var tipoProceso = $(".tipoProcesoSel option:selected").val();
-            cargarLibretin()
+        cargarLibretin()
 
     });
 

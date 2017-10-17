@@ -220,6 +220,7 @@ class ProcesoController extends cratos.seguridad.Shield {
                 proceso.proveedor = proveedor
                 proceso.comprobante = Comprobante.get(params.comprobanteSel_name)
                 proceso.baseImponibleIva = params.valorPago.toDouble()
+                proceso.valor = params.valorPago.toDouble()
                 break
 
             case '5':  //Ingresos
@@ -229,6 +230,7 @@ class ProcesoController extends cratos.seguridad.Shield {
                 proceso.proveedor = proveedor
                 proceso.comprobante = Comprobante.get(params.comprobanteSel_name)
                 proceso.baseImponibleIva = params.valorPago.toDouble()
+                proceso.valor = params.valorPago.toDouble()
                 break
             case '8':  //Transferencias
                 poneNulos(proceso)
@@ -2172,16 +2174,31 @@ class ProcesoController extends cratos.seguridad.Shield {
 
             }
 
-//        println("errores " + errores)
-
         if(errores == ''){
             render "ok"
         }else{
             render "no"
         }
+    }
 
-//        println("ceros " + asientos.cuenta.descripcion)
+    def con_ajax(){
+        def proceso = Proceso.get(params.proceso)
+        return[proceso: proceso]
+    }
 
+    def conciliar_ajax () {
+//        println("params " + params)
+        def proceso = Proceso.get(params.proceso)
+        proceso.valor = params.valor.toDouble()
+        proceso.baseImponibleIva = params.valor.toDouble()
+
+        try{
+            proceso.save(flush:true)
+            render "ok"
+        }catch (e){
+            println("error al cambiar el valor " + e)
+            render "no"
+        }
     }
 
 }
