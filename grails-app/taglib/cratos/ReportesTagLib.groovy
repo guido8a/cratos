@@ -190,10 +190,10 @@ class ReportesTagLib {
 //                left  : 1.5
 //        ]
         def margenes = [
-                top   : 5,
+                top   : 4.5,
                 right : 0.4,
                 bottom: 0.5,
-                left  : 1.5
+                left  : 1.0
         ]
         switch (pOrientacion) {
             case "l":

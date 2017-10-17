@@ -21,11 +21,6 @@
         font-size: 15px;
     }
 
-    .hoja {
-        width: 25cm;
-
-    }
-
     h1, h2, h3 {
         text-align: center;
     }
@@ -64,82 +59,101 @@
 <div class="cabeceraIzquierda">
     <g:formatDate date="${proceso?.fechaEmision}" format="dd-MM-yyyy"/>
 </div>
-<div class="cabeceraIzquierda" style="margin-top: 0.60cm">
+<div class="cabeceraIzquierda" style="margin-top: 0.40cm">
     ${proceso?.proveedor?.nombre}
 </div>
-<div class="cabeceraIzquierda" style="margin-top: 0.60cm">
+<div class="cabeceraIzquierda" style="margin-top: 0.30cm">
     ${proceso?.proveedor?.ruc} <span class="centro" style="margin-left: 240px">${proceso?.proveedor?.telefono}</span>
 </div>
-<div class="cabeceraIzquierda" style="margin-top: 0.60cm; margin-bottom: 1cm">
+<div class="cabeceraIzquierda" style="margin-top: 0.30cm; margin-bottom: 1cm">
     ${proceso?.proveedor?.direccion}
 </div>
 
 
-<div style="height: 9cm">
+<div style="height: 9.4cm">
     <table border="0">
         <tbody>
-            <g:each in="${detalles}" var="detalle">
-                <tr>
-                    <td class="centro" style="width: 80px">
-                        ${detalle?.cantidad}
-                    </td>
-                    <td style="width: 270px">
-                        ${detalle?.item?.nombre}
-                    </td>
-                    <td class="derecha" style="width: 80px">
-                        <g:formatNumber number="${detalle?.precioUnitario}" maxFractionDigits="2" minFractionDigits="2" locale="en_US" format="##,##0"/>
-                    </td>
-                    <td class="derecha" style="width: 80px;">
-                        <g:formatNumber number="${detalle?.cantidad * detalle?.precioUnitario}" maxFractionDigits="2" minFractionDigits="2" locale="en_US" format="##,##0"/>
-                    </td>
-                </tr>
-            </g:each>
+        <g:each in="${detalles}" var="detalle">
+            <tr style="width: 540px">
+                <td class="centro" style="width: 60px">
+                    ${detalle?.cantidad}
+                </td>
+                <td style="width: 330px">
+                    ${detalle?.item?.nombre}
+                </td>
+                <td class="derecha" style="width: 75px">
+                    <g:formatNumber number="${detalle?.precioUnitario}" maxFractionDigits="2" minFractionDigits="2" locale="en_US" format="##,##0"/>
+                </td>
+                <td class="derecha" style="width: 75px;">
+                    <g:formatNumber number="${detalle?.cantidad * detalle?.precioUnitario}" maxFractionDigits="2" minFractionDigits="2" locale="en_US" format="##,##0"/>
+                </td>
+            </tr>
+        </g:each>
         </tbody>
     </table>
 </div>
 
-<g:if test="${pago?.codigo == '01'}">
-    <div style="margin-top: 0.60cm; margin-left: 2.5cm">
-        ${'X'}
-    </div>
-</g:if>
-<g:else>
-    <g:if test="${pago?.codigo == '17'}">
-        <div style="margin-top: 0.60cm; margin-left: 5cm">
-            ${'X'}
-        </div>
-    </g:if>
-    <g:else>
-        <g:if test="${pago?.codigo == '19' || pago?.codigo == '16'}">
-            <div style="margin-top: 0.60cm; margin-left: 8cm">
-                ${'X'}
-            </div>
-        </g:if>
-        <g:else>
-            <div style="margin-top: 0.60cm; margin-left: 9.7cm">
-                ${'X'}
-            </div>
-        </g:else>
-    </g:else>
-</g:else>
+<div>
+    <table border="0">
+        <tbody>
+        <tr>
+            <td style="width: 380px">
+                <g:if test="${pago?.codigo == '01'}">
+                    <div style="margin-left: 1cm">
+                        ${'X'}
 
-<div class="derecha" style="margin-right: 0.1cm">
-    <g:formatNumber number="${totl?.base__nz}" maxFractionDigits="2" minFractionDigits="2" locale="en_US" format="##,##0"/>
+                    </div>
+                </g:if>
+                <g:else>
+                    <g:if test="${pago?.codigo == '17'}">
+                        <div style="margin-left: 3.5cm">
+                            ${'X'}
+                        </div>
+                    </g:if>
+                    <g:else>
+                        <g:if test="${pago?.codigo == '19' || pago?.codigo == '16'}">
+                            <div style="margin-left: 6.5cm">
+                                ${'X'}
+                            </div>
+                        </g:if>
+                        <g:else>
+                            <div style="margin-left: 8.2cm">
+                                ${'X'}
+                            </div>
+                        </g:else>
+                    </g:else>
+                </g:else>
+            </td>
+            <td style="width: 80px">
+            </td>
+            <td style="width: 80px" class="derecha">
+                <g:formatNumber number="${totl?.base__nz}" maxFractionDigits="2" minFractionDigits="2" locale="en_US" format="##,##0"/>
+            </td>
+        </tr>
+        <tr style="margin-top: 0.50cm">
+            <td style="width: 380px"></td>
+            <td style="width: 80px"></td>
+            <td style="width: 80px" class="derecha">
+                <g:formatNumber number="${0}" maxFractionDigits="2" minFractionDigits="2" locale="en_US" format="##,##0"/>
+            </td>
+        </tr>
+        <tr style="margin-top: 0.50cm">
+            <td style="width: 380px"></td>
+            <td style="width: 80px"></td>
+            <td style="width: 80px" class="derecha">
+                <g:formatNumber number="${totl?.iva}" maxFractionDigits="2" minFractionDigits="2" locale="en_US" format="##,##0"/>
+            </td>
+        </tr>
+        <tr style="margin-top: 0.50cm">
+            <td style="width: 380px"></td>
+            <td style="width: 80px"></td>
+            <td style="width: 80px" class="derecha">
+                <g:formatNumber number="${totl?.totl}" maxFractionDigits="2" minFractionDigits="2" locale="en_US" format="##,##0"/>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </div>
-
-<div class="derecha" style="margin-top: 0.5cm; margin-right: 0.1cm">
-    <g:formatNumber number="${0}" maxFractionDigits="2" minFractionDigits="2" locale="en_US" format="##,##0"/>
-</div>
-
-<div class="derecha" style="margin-top: 0.5cm; margin-right: 0.1cm">
-    <g:formatNumber number="${totl?.iva}" maxFractionDigits="2" minFractionDigits="2" locale="en_US" format="##,##0"/>
-</div>
-
-<div class="derecha" style="margin-top: 0.5cm; margin-right: 0.1cm">
-    <g:formatNumber number="${totl?.totl}" maxFractionDigits="2" minFractionDigits="2" locale="en_US" format="##,##0"/>
-</div>
-
-
 
 </body>
 </html>
