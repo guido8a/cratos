@@ -436,24 +436,29 @@
                             label: "<i class='fa fa-save'></i> Guardar",
                             className: "btn-success",
                             callback: function () {
-                                $.ajax({
-                                   type:'POST',
-                                    url:'${createLink(controller: 'proceso', action: 'conciliar_ajax')}',
-                                    data:{
-                                        proceso: '${proceso?.id}',
-                                        valor: $("#conciliacion").val()
-                                    },
-                                    success:function (msg){
-                                        if(msg == 'ok'){
-                                            log("Valor cambiado correctamente","success");
-                                            setTimeout(function () {
-                                                location.href="${createLink(controller: 'proceso', action: 'nuevoProceso')}/?id=" + '${proceso?.id}'
-                                            }, 800);
-                                        }else{
-                                            log("Error al cambiar el valor","error")
+                                if($("#conciliacion").val().split('.').length - 1 > 1) {
+                                    bootbox.alert("El número ingresado no es válido!");
+                                    return false;
+                                }else{
+                                    $.ajax({
+                                        type:'POST',
+                                        url:'${createLink(controller: 'proceso', action: 'conciliar_ajax')}',
+                                        data:{
+                                            proceso: '${proceso?.id}',
+                                            valor: $("#conciliacion").val()
+                                        },
+                                        success:function (msg){
+                                            if(msg == 'ok'){
+                                                log("Valor cambiado correctamente","success");
+                                                setTimeout(function () {
+                                                    location.href="${createLink(controller: 'proceso', action: 'nuevoProceso')}/?id=" + '${proceso?.id}'
+                                                }, 800);
+                                            }else{
+                                                log("Error al cambiar el valor","error")
+                                            }
                                         }
-                                    }
-                                });
+                                    });
+                                }
                             }
                         }
                     }
@@ -545,7 +550,7 @@
         }
 
         if (prve && (tipo == '2')) {
-            console.log('muestra libretinFacturas --2')
+//            console.log('muestra libretinFacturas --2')
             $("#libretinFacturas").show()
             $("#pagoProceso").hide()
             cargarProveedor(tipo);
@@ -554,7 +559,7 @@
         }
 
         if (tipo == '2' || tipo == '6' || tipo == '7') {
-            console.log('carga y muestra libretinFacturas')
+//            console.log('carga y muestra libretinFacturas')
             cargarLibretin();
             $("#libretinFacturas").show()
             $("#pagoProceso").hide()
@@ -645,12 +650,6 @@
             $("#bodegas").addClass('hidden');
         }
     });
-
-    //    $("#tipoComprobante").change(function () {
-    //        console.log("cambia tpcp")
-    //        console.log("cambia tpcp", $("#tipoComprobante").val())
-    //        cargarTipo( $(".tipoProcesoSel option:selected").val(), $("#tipoComprobante").val() );
-    //    });
 
 
     function cargaGestor(tipo) {
@@ -775,10 +774,8 @@
             success: function (msg) {
                 $("#divValores").html(msg).show("slide")
                 if(tipo == '1' || tipo == '2' || tipo == '6' || tipo == '7') {
-//                    $("#lblValores").html(flecha + "Valores")
                     $("#lblValores").html("Valores")
                 } else {
-//                    $("#lblValores").html(flecha + "Val")
                     $("#lblValores").html("Val")
                 }
             }
@@ -1048,12 +1045,9 @@
                 }
             }
 
-
-
             if(!$("#establecimiento").val()){
                 error += "<li>Ingrese un número de establecimiento</li>"
             }
-
 
             if (error != "") {
                 $("#listaErrores").append(error)
@@ -1083,8 +1077,6 @@
             }
             closeLoader()
         });
-
-//        calculaIva();
 
         $(".number").blur(function () {
             if (isNaN($(this).val()))
@@ -1182,7 +1174,7 @@
         if("${proceso?.fechaEmision}") {
             fcha = "${proceso?.fechaEmision?.format('dd-MM-yyyy')}"
         }
-        console.log('fcha:', fcha, 'nmes', nmes);
+//        console.log('fcha:', fcha, 'nmes', nmes);
         if(fcha){
             if(fcha.length < 10) {
                 $(".tipoProcesoSel").val(0);
@@ -1230,9 +1222,7 @@
     $("#establecimiento").change(function () {
 //        console.log('change... nmes')
         $("#libretinFacturas").html('')
-//        var tipoProceso = $(".tipoProcesoSel option:selected").val();
         cargarLibretin()
-
     });
 
     function revisarBodega (bodega) {
@@ -1251,7 +1241,7 @@
 
     $("#comprobanteN").click(function () {
         location.href="${createLink(controller: 'proceso', action: 'comprobante')}/?proceso=" + '${proceso?.id}'
-    })
+    });
 
     $("#reembolsoN").click(function () {
         location.href="${createLink(controller: 'proceso', action: 'reembolso')}/?proceso=" + '${proceso?.id}'

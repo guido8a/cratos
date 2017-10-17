@@ -19,12 +19,6 @@
         <i class="fa fa-chevron-left"></i>
         Proceso
     </a>
-%{--
-    <a href="#" class="btn btn-success disabled" id="comprobanteN">
-        <i class="fa fa-calendar-o"></i>
-        Comprobante
-    </a>
---}%
     <g:link class="btn btn-info" controller="proceso" action="buscarPrcs">
         <i class="fa fa-chevron-circle-left"></i>
         Lista de Procesos

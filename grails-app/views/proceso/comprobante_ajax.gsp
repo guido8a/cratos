@@ -6,7 +6,6 @@
     border-right: 1px solid #ddd;
     border-bottom: 1px solid #ddd;
     border-radius: 0px 0px 5px 5px;
-    /*padding: 10px;*/
     background-color: #eeeeee;
 }
 
