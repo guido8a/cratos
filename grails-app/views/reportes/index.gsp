@@ -919,6 +919,17 @@
                               optionKey="id" optionValue="descripcion" noSelection="['-1': 'Seleccione la contabilidad']"
                               class="form-control dos"/>
                 </div>
+
+
+                <div class="fila">
+                    <div class="col-md-3">
+                        <label>Tipo: </label>
+                    </div>
+                    <div class="col-md-5">
+                       <g:select name="tipo" from="${[1: 'Gasto', 2: 'Inventario']}" optionKey="key" optionValue="value" class="form-control"/>
+                    </div>
+                </div>
+
                 <div class="fila">
                     <div class="col-md-3">
                         <label>Desde: </label>
@@ -1642,6 +1653,7 @@
             var cont = $("#contC").val();
             var fechaDesde = $(".fechaDeC").val();
             var fechaHasta = $(".fechaHaC").val();
+            var tipo = $("#tipo").val();
 
             if (cont == '-1') {
                 bootbox.alert("<i class='fa fa-exclamation-circle fa-3x pull-left text-warning text-shadow'></i>  Seleccione una contabilidad!")
@@ -1658,7 +1670,7 @@
                         },
                         success: function (msg){
                             if(msg == 'ok'){
-                                url = "${g.createLink(controller:'reportes2' , action: 'compras')}?cont=" + cont + "Wemp=${session.empresa.id}" + "Wdesde=" + fechaDesde + "Whasta=" + fechaHasta;
+                                url = "${g.createLink(controller:'reportes2' , action: 'compras')}?cont=" + cont + "Wemp=${session.empresa.id}" + "Wdesde=" + fechaDesde + "Whasta=" + fechaHasta + "Wtipo=" + tipo;
                                 location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=compras.pdf"
                             }else{
                                 bootbox.alert("<i class='fa fa-exclamation-circle fa-3x pull-left text-warning text-shadow'></i> La fecha ingresada en 'Hasta' es menor a la fecha ingresada en 'Desde' ");

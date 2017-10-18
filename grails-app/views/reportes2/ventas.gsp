@@ -77,9 +77,8 @@
         <tr>
             <th colspan="3"></th>
             <th class="centro">Cliente</th>
-            <th colspan="5"></th>
-            <th class="centro" colspan="2">Valor Retención</th>
-            <th></th>
+            <th colspan="4"></th>
+            <th class="centro" colspan="4">Valor Retención</th>
         </tr>
         <tr style="font-size: 11px; width: 2100px">
             <th align="center" style="width: 40px">N°</th>

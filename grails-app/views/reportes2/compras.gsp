@@ -56,7 +56,7 @@
 
 <body>
 
-<rep:headerFooter title="${'Compras'}" subtitulo="${'Datos'}" empresa="${empresa}"/>
+<rep:headerFooter title="${'Compras - ' + tipo}" subtitulo="${'Datos'}" empresa="${empresa}"/>
 
 <h2>
     PERÍODO DEL <g:formatDate date="${desde}" format="dd-MM-yyyy"/>
@@ -70,9 +70,9 @@
         <tr>
             <th colspan="3"></th>
             <th class="centro">Proveedor</th>
-            <th colspan="6"></th>
-            <th class="centro" colspan="2">Valor Retención</th>
-            <th></th>
+            <th colspan="5"></th>
+            <th class="centro" colspan="4">Valor Retención</th>
+
         </tr>
         <tr style="font-size: 11px; width: 2100px">
             <th align="center" style="width: 80px">N°</th>
@@ -92,21 +92,22 @@
         </thead>
 
         <tbody>
-        <g:each in="${retenciones}" var="retencion" status="j">
+        <g:each in="${procesos}" var="proceso" status="j">
+            <g:set var="retencion" value="${cratos.Retencion.findByProceso(proceso)}"/>
             <tr style="width: 2100px">
                 <td style="width: 80px">${j+1}</td>
-                <td style="width: 100px"><g:formatDate date="${retencion?.proceso?.fechaIngresoSistema}" format="dd-MM-yyyy"/></td>
-                <td class="centro" style="width: 100px">${cratos.Comprobante.findByProceso(retencion?.proceso)?.numero}</td>
-                <td class="centro" style="width: 300px">${retencion?.proveedor?.nombre}</td>
-                <td class="derecha" style="width: 100px">${retencion?.proceso?.documento}</td>
-                <td class="derecha" style="width: 100px"><g:formatNumber number="${retencion?.proceso?.excentoIva ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
-                <td class="derecha" style="width: 100px"><g:formatNumber number="${retencion?.proceso?.baseImponibleIva ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
-                <td class="derecha" style="width: 100px"><g:formatNumber number="${retencion?.proceso?.ivaGenerado ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
-                <td class="derecha" style="width: 100px"><g:formatNumber number="${retencion?.proceso?.valor ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
+                <td style="width: 100px"><g:formatDate date="${proceso?.fechaIngresoSistema}" format="dd-MM-yyyy"/></td>
+                <td class="centro" style="width: 100px">${cratos.Comprobante.findByProceso(proceso)?.numero}</td>
+                <td class="centro" style="width: 300px">${proceso?.proveedor?.nombre}</td>
+                <td class="derecha" style="width: 100px">${proceso?.documento}</td>
+                <td class="derecha" style="width: 100px"><g:formatNumber number="${proceso?.excentoIva ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
+                <td class="derecha" style="width: 100px"><g:formatNumber number="${proceso?.baseImponibleIva ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
+                <td class="derecha" style="width: 100px"><g:formatNumber number="${proceso?.ivaGenerado ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
+                <td class="derecha" style="width: 100px"><g:formatNumber number="${proceso?.valor ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
                 <td class="derecha" style="width: 100px">${retencion?.numeroComprobante}</td>
-                <td class="derecha" style="width: 100px"><g:formatNumber number="${(retencion?.ivaBienes?.toDouble() + retencion?.ivaServicios?.toDouble()) ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
-                <td class="derecha" style="width: 100px"><g:formatNumber number="${(retencion?.renta?.toDouble() + retencion?.rentaServicios?.toDouble()) ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
-                <td class="derecha" style="width: 100px"><g:formatNumber number="${((retencion?.ivaBienes?.toDouble() + retencion?.ivaServicios?.toDouble()) ?: 0) + ((retencion?.renta?.toDouble() + retencion?.rentaServicios?.toDouble()) ?: 0)}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
+                <td class="derecha" style="width: 100px"><g:formatNumber number="${( (retencion?.ivaBienes?.toDouble() ?: 0) + (retencion?.ivaServicios?.toDouble() ?: 0)) ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
+                <td class="derecha" style="width: 100px"><g:formatNumber number="${( (retencion?.renta?.toDouble() ?: 0) + (retencion?.rentaServicios?.toDouble() ?: 0)) ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
+                <td class="derecha" style="width: 100px"><g:formatNumber number="${( (retencion?.ivaBienes?.toDouble() ?: 0) + (retencion?.ivaServicios?.toDouble() ?: 0) ?: 0) + ((retencion?.renta?.toDouble() ?: 0) + (retencion?.rentaServicios?.toDouble() ?: 0) ?: 0)}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
             </tr>
         </g:each>
         </tbody>

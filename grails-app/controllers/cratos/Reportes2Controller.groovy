@@ -567,28 +567,40 @@ class Reportes2Controller {
     }
 
     def compras () {
+//        println("println " + params)
         def desde = new Date().parse("dd-MM-yyyy", params.desde)
         def hasta = new Date().parse("dd-MM-yyyy", params.hasta)
         def contabilidad = Contabilidad.get(params.cont)
         def tipoProceso = TipoProceso.findByCodigo('C')
+        def gestorTipo
+        def tipo
 
-        def retenciones = Retencion.withCriteria {
+        if(params.tipo == '1'){
+            gestorTipo = 'G'
+            tipo = 'Gasto'
+        }else{
+            gestorTipo = "I"
+            tipo = 'Inventario'
+        }
 
-            proceso{
-                eq("contabilidad",contabilidad)
+        def procesos = Proceso.withCriteria {
 
-                and{
-                    eq("tipoProceso",tipoProceso)
-                    eq("estado", 'R')
-                }
+            eq("contabilidad", contabilidad)
+            eq("tipoProceso", tipoProceso)
+            eq("estado", 'R')
+
+            gestor{
+               eq('tipo', gestorTipo)
             }
 
             and{
                 ge("fechaEmision", desde)
                 le("fechaEmision", hasta)
             }
+
         }
-        return[retenciones: retenciones, empresa: params.emp, desde: desde, hasta: hasta]
+
+        return[empresa: params.emp, desde: desde, hasta: hasta, procesos : procesos, tipo: tipo]
     }
 
     def ventas () {

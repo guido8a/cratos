@@ -15,12 +15,12 @@
 <body>
 
 <div class="btn-group" style="margin-right: 20px">
-    <a href="#" class="btn btn-success previous" id="irProceso">
+    <a href="#" class="btn btn-warning previous" id="irProceso">
         <i class="fa fa-chevron-left"></i>
         Proceso
     </a>
     <g:link class="btn btn-info" controller="proceso" action="buscarPrcs">
-        <i class="fa fa-chevron-circle-left"></i>
+        <i class="fa fa-chevron-left"></i>
         Lista de Procesos
     </g:link>
     <g:if test="${proceso?.tipoProceso?.codigo?.trim() == 'C' && proceso?.tipoCmprSustento?.tipoComprobanteSri?.codigo?.trim() == '41'}">

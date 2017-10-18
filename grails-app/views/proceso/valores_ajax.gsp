@@ -58,7 +58,7 @@
             </div>
 
             <div class="col-xs-4 negrilla">
-                <input type="text" name="dcmtAutorizacion" id="dcmtAutorizacion" maxlength="47"
+                <input type="text" name="dcmtAutorizacion" id="dcmtAutorizacion" maxlength="49"
                        value="${proceso?.autorizacion?: atrz}" class=" digits form-control label-shared validacionNumero required"
                        validate=" number" placeholder="Autorización"
                        title="El número autorización de la factura a registrar " ${proceso?.estado == 'R' ? 'disabled' : ''} style="width: 350px"/>

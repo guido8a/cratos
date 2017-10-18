@@ -888,10 +888,10 @@
                     error += "<li>Ingrese el número de autorización del Documento</li>"
                 }
 
-                if ($("#dcmtAutorizacion").val().length == 10 || $("#dcmtAutorizacion").val().length == 39 || $("#dcmtAutorizacion").val().length == 47) {
+                if ($("#dcmtAutorizacion").val().length == 10 || $("#dcmtAutorizacion").val().length == 37 || $("#dcmtAutorizacion").val().length == 49) {
 
                 }else{
-                    error += "<li>El número de autorización debe ser de 10, 39 o 47 dígitos</li>"
+                    error += "<li>El número de autorización debe ser de 10, 37 o 49 dígitos</li>"
                 }
 
                 if($(".filaFP").size() <1){
