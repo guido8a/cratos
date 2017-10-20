@@ -895,7 +895,7 @@
                 }
 
                 if($(".filaFP").size() <1){
-                    info+="No ha asignado formas de pago para la transacción contable"
+                    info+="No ha asignado formas de pago para la transacción contable";
                     bandData=false
                 }
 
@@ -904,10 +904,10 @@
                 }
 
                 if (bandData) {
-                    var data = ""
+                    var data = "";
                     $(".filaFP").each(function () {
                         data += $(this).attr("fp") + ";"
-                    })
+                    });
                     $("#data").val(data)
                 }
             }

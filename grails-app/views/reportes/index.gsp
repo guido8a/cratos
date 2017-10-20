@@ -311,6 +311,42 @@
                         <p>Reporte de las existencias de items dentro de cada bodega.</p>
                     </div>
                 </li>
+                <li>
+                    <span id="reporteKardex2">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <a href="#" class="link btn btn-info btn-ajax btnKardex2"  data-toggle="modal">
+                                    Kardex por item
+                                </a>
+                            </div>
+                            <div class="col-md-8">
+                                Kardex por item
+                            </div>
+                        </div>
+                    </span>
+                    <div class="descripcion hide">
+                        <h4>Kardex</h4>
+                        <p>Reporte de los items.</p>
+                    </div>
+                </li>
+                <li>
+                    <span id="reporteKardex3">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <a href="#" class="link btn btn-info btn-ajax btnKardex3" data-toggle="modal">
+                                    Reporte de existencias
+                                </a>
+                            </div>
+                            <div class="col-md-8">
+                                Reporte de existencias
+                            </div>
+                        </div>
+                    </span>
+                    <div class="descripcion hide">
+                        <h4>Reporte de existencias</h4>
+                        <p>Reporte de las existencias de items dentro de cada bodega.</p>
+                    </div>
+                </li>
                 <li >
                     <span id="reporteRetencionesCodigo">
                         <div class="row">
@@ -853,7 +889,6 @@
     </div>
 </div>
 
-
 %{--dialog retenciones por codigo--}%
 <div class="modal fade" id="retencionesCodigo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -1009,207 +1044,61 @@
     </div>
 </div>
 
-
-%{--dialog auxiliar por cliente--}%
-%{--<div class="modal fade" id="cliente" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">--}%
-    %{--<div class="modal-dialog">--}%
-        %{--<div class="modal-content">--}%
-            %{--<div class="modal-header">--}%
-                %{--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>--}%
-                %{--<h4 class="modal-title" id="modalAuxCliente">Auxiliar por Cliente</h4>--}%
-            %{--</div>--}%
-
-            %{--<div class="modal-body" id="bodyAuxCliente">--}%
-                %{--<div class="fila">--}%
-                    %{--<label class="uno">Contabilidad:</label>--}%
-                    %{--<g:select name="contP4" id="contP4"--}%
-                              %{--from="${cratos.Contabilidad.findAllByInstitucion(session.empresa, [sort: 'fechaInicio'])}"--}%
-                              %{--optionKey="id" optionValue="descripcion" noSelection="['-1': 'Seleccione la contabilidad']"--}%
-                              %{--class="ui-widget-content ui-corner-all dos"/>--}%
-                %{--</div>--}%
-
-                %{--<div id="divPeriodo4" class="fila">--}%
-                    %{--<label class="uno">Periodo:</label>--}%
-                %{--</div>--}%
-
-                %{--<div id="divCliente" class="fila">--}%
-                    %{--<label class="uno">Clientes:</label>--}%
-                    %{--<g:select name="listaClientes" from="${clientes}" optionValue="nombre" optionKey="id"--}%
-                              %{--class="dos" noSelection="['-1': 'Todos']"/>--}%
-
-                %{--</div>--}%
-            %{--</div>--}%
-
-            %{--<div class="modal-footer">--}%
-                %{--<button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Cancelar--}%
-                %{--</button>--}%
-                %{--<button type="button" class="btn btnAceptarAuxCliente btn-success"><i class="fa fa-print"></i> Aceptar--}%
-                %{--</button>--}%
-            %{--</div>--}%
-        %{--</div>--}%
-    %{--</div>--}%
-%{--</div>--}%
-
-%{--dialog balance x auxiliares--}%
-%{--<div class="modal fade" id="balanceAuxiliares" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">--}%
-    %{--<div class="modal-dialog">--}%
-        %{--<div class="modal-content">--}%
-            %{--<div class="modal-header">--}%
-                %{--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>--}%
-                %{--<h4 class="modal-title" id="modalBalanceAux">Auxiliar por Cliente</h4>--}%
-            %{--</div>--}%
-
-            %{--<div class="modal-body" id="bodyBalanceAux">--}%
-
-                %{--<div class="fila">--}%
-                    %{--<label class="uno">Contabilidad:</label>--}%
-                    %{--<g:select name="contP0" id="contP0"--}%
-                              %{--from="${cratos.Contabilidad.findAllByInstitucion(session.empresa, [sort: 'fechaInicio'])}"--}%
-                              %{--optionKey="id" optionValue="descripcion" noSelection="['': 'Seleccione la contabilidad']"--}%
-                              %{--class="ui-widget-content ui-corner-all dos"/>--}%
-                %{--</div>--}%
-
-                %{--<div id="divPeriodo0" class="fila">--}%
-                    %{--<label class="uno">Periodo:</label>--}%
-                %{--</div>--}%
-
-            %{--</div>--}%
-
-            %{--<div class="modal-footer">--}%
-                %{--<button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Cancelar--}%
-                %{--</button>--}%
-                %{--<button type="button" class="btn btnAceptarBalanceAux btn-success"><i class="fa fa-print"></i> Aceptar--}%
-                %{--</button>--}%
-            %{--</div>--}%
-        %{--</div>--}%
-    %{--</div>--}%
-%{--</div>--}%
-
-%{--dialog balance general--}%
-%{--<div class="modal fade" id="general" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">--}%
-    %{--<div class="modal-dialog">--}%
-        %{--<div class="modal-content">--}%
-            %{--<div class="modal-header">--}%
-                %{--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>--}%
-                %{--<h4 class="modal-title" id="modalGeneral">Balance General</h4>--}%
-            %{--</div>--}%
-
-            %{--<div class="modal-body" id="bodyGeneral">--}%
-
-                %{--<div style="margin-bottom: 10px;">--}%
-                    %{--Antes de generar este reporte asegurese de configurar las cuentas para el cálculo de resultados <a href="${g.createLink(controller: 'cuenta', action: 'cuentaResultados')}" style="color: blue">Aquí</a>--}%
-                %{--</div>--}%
-
-                %{--<div class="fila">--}%
-                    %{--<label class="uno">Contabilidad:</label>--}%
-                    %{--<g:select name="contP6" id="contP6"--}%
-                              %{--from="${cratos.Contabilidad.findAllByInstitucion(session.empresa, [sort: 'fechaInicio'])}"--}%
-                              %{--optionKey="id" optionValue="descripcion" noSelection="['-1': 'Seleccione la contabilidad']"--}%
-                              %{--class="ui-widget-content ui-corner-all dos"/>--}%
-                %{--</div>--}%
-
-                %{--<div id="divPeriodo6" class="fila">--}%
-                    %{--<label class="uno">Periodo:</label>--}%
-                %{--</div>--}%
-
-                %{--<div class="fila">--}%
-                    %{--<label class="uno">Nivel:</label>--}%
-                    %{--<select id="nivel" class="dos">--}%
-                        %{--<option value="1,2">DOS</option>--}%
-                        %{--<option value="1,2,3">TRES</option>--}%
-                        %{--<option value="1,2,3,4">CUATRO</option>--}%
-                        %{--<option value="1,2,3,4,5">CINCO</option>--}%
-                    %{--</select>--}%
-                %{--</div>--}%
-
-                %{--<div class="fila">--}%
-                    %{--Mostrar cuentas con saldo cero? <input type="checkbox" id="cero" value="1" checked="true">--}%
-                %{--</div>--}%
-
-                %{--<div class="fila">--}%
-                    %{--<label class="uno">Firma:</label>--}%
-                    %{--<input type="text" id="firma1" class="dos">--}%
-                %{--</div>--}%
-
-                %{--<div class="fila">--}%
-                    %{--<label class="uno">Firma:</label>--}%
-                    %{--<input type="text" id="firma2" class="dos">--}%
-                %{--</div>--}%
-
-            %{--</div>--}%
-
-            %{--<div class="modal-footer">--}%
-                %{--<button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Cancelar--}%
-                %{--</button>--}%
-                %{--<button type="button" class="btn btnAceptarGeneral btn-success"><i class="fa fa-print"></i> Aceptar--}%
-                %{--</button>--}%
-            %{--</div>--}%
-        %{--</div>--}%
-    %{--</div>--}%
-%{--</div>--}%
-
-%{--<div class="modal fade" id="generalCierre" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">--}%
-    %{--<div class="modal-dialog">--}%
-        %{--<div class="modal-content">--}%
-            %{--<div class="modal-header">--}%
-                %{--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>--}%
-                %{--<h4 class="modal-title" id="modalGeneralCierre">Balance General de cierre </h4>--}%
-            %{--</div>--}%
-
-            %{--<div class="modal-body" id="bodyGeneralCierre">--}%
-
-                %{--<div style="margin-bottom: 10px;">--}%
-                    %{--Antes de generar este reporte asegurese de configurar las cuentas para el cálculo de resultados <a href="${g.createLink(controller: 'cuenta', action: 'cuentaResultados')}" style="color: blue">Aquí</a>--}%
-                %{--</div>--}%
-
-                %{--<div class="fila">--}%
-                    %{--<label class="uno">Contabilidad:</label>--}%
-                    %{--<g:select name="contP6" id="contP6Cierre"--}%
-                              %{--from="${cratos.Contabilidad.findAllByInstitucion(session.empresa, [sort: 'fechaInicio'])}"--}%
-                              %{--optionKey="id" optionValue="descripcion" noSelection="['-1': 'Seleccione la contabilidad']"--}%
-                              %{--class="ui-widget-content ui-corner-all dos"/>--}%
-                %{--</div>--}%
-
-
-                %{--<div class="fila">--}%
-                    %{--<label class="uno">Nivel:</label>--}%
-                    %{--<select id="nivelCierre" class="dos">--}%
-                        %{--<option value="1,2">DOS</option>--}%
-                        %{--<option value="1,2,3">TRES</option>--}%
-                        %{--<option value="1,2,3,4">CUATRO</option>--}%
-                        %{--<option value="1,2,3,4,5">CINCO</option>--}%
-                    %{--</select>--}%
-                %{--</div>--}%
-
-                %{--<div class="fila">--}%
-                    %{--Mostrar cuentas con saldo cero? <input type="checkbox" id="ceroCierre" value="1" checked="true">--}%
-                %{--</div>--}%
-
-                %{--<div class="fila">--}%
-                    %{--<label class="uno">Firma:</label>--}%
-                    %{--<input type="text" id="firma1Cierre" class="dos">--}%
-                %{--</div>--}%
-
-                %{--<div class="fila">--}%
-                    %{--<label class="uno">Firma:</label>--}%
-                    %{--<input type="text" id="firma2Cierre" class="dos">--}%
-                %{--</div>--}%
-
-            %{--</div>--}%
-
-            %{--<div class="modal-footer">--}%
-                %{--<button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Cancelar--}%
-                %{--</button>--}%
-                %{--<button type="button" class="btn btnAceptarGeneralCierre btn-success"><i class="fa fa-print"></i> Aceptar--}%
-                %{--</button>--}%
-            %{--</div>--}%
-        %{--</div>--}%
-    %{--</div>--}%
-%{--</div>--}%
-
 <!-------------------------------------------- MODALES ----------------------------------------------------->
 
 <script type="text/javascript">
+
+    $(".btnKardex3").click(function () {
+        $.ajax({
+            type: 'POST',
+            url:'${createLink(controller: 'reportes2', action: 'modalKardex3_ajax')}',
+            data:{
+
+            },
+            success: function (msg){
+                var b = bootbox.dialog({
+                    id      : "dlgKardex3",
+                    title   : "Existencias",
+                    class: "long",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "<i class='fa fa-times'></i> Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        }
+                    } //buttons
+                }); //dialog
+            }
+        });
+    });
+
+    $(".btnKardex2").click(function () {
+        $.ajax({
+            type: 'POST',
+            url:'${createLink(controller: 'reportes2', action: 'modalKardex2_ajax')}',
+            data:{
+
+            },
+            success: function (msg){
+                var b = bootbox.dialog({
+                    id      : "dlgKardex2",
+                    title   : "Kardex x Item",
+                    class: "long",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "<i class='fa fa-times'></i> Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        }
+                    } //buttons
+                }); //dialog
+            }
+        });
+    });
 
     $("#cntaLibro").dblclick(function () {
         buscarCuentas();
@@ -1338,30 +1227,6 @@
 
         /* ******************************** DIALOGS ********************************************* */
 
-        %{--$(".link").hover(--}%
-        %{--function () {--}%
-        %{--$(this).addClass("linkHover");--}%
-        %{--$(".notice").hide();--}%
-        %{--var id = $(this).parent().attr("text");--}%
-        %{--$("#" + id).show();--}%
-        %{--},--}%
-        %{--function () {--}%
-        %{--$(this).removeClass("linkHover");--}%
-        %{--$(".notice").hide();--}%
-        %{--}).click(function () {--}%
-        %{--var url = $(this).attr("href");--}%
-        %{--var file = $(this).attr("file");--}%
-
-        %{--var dialog = $.trim($(this).attr("dialog"));--}%
-
-        %{--var cont = $.trim($(this).text());--}%
-
-        %{--$("#" + dialog).dialog("option", "title", cont);--}%
-        %{--$("#" + dialog).dialog("open");--}%
-
-        %{--actionUrl = "${createLink(controller:'pdf',action:'pdfLink')}?filename=" + file + "&url=" + url;--}%
-        %{--return false;--}%
-        %{--});--}%
 
         $("#contP").change(function () {
             updatePeriodoSinTodo("");

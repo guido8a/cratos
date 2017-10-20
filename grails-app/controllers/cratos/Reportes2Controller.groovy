@@ -5,8 +5,12 @@ import com.itextpdf.text.pdf.PdfPCell
 import com.itextpdf.text.pdf.PdfPTable
 import com.itextpdf.text.pdf.PdfWriter
 import cratos.inventario.Bodega
+import cratos.inventario.DepartamentoItem
 import cratos.inventario.DetalleFactura
+import cratos.inventario.Grupo
+import cratos.inventario.Item
 import cratos.inventario.Kardex
+import cratos.inventario.SubgrupoItems
 
 
 class Reportes2Controller {
@@ -589,8 +593,12 @@ class Reportes2Controller {
             eq("tipoProceso", tipoProceso)
             eq("estado", 'R')
 
-            gestor{
-               eq('tipo', gestorTipo)
+            if(params.tipo == 'I'){
+                'in'('tipo',['G','S'])
+            }else{
+                gestor{
+                    eq('tipo', gestorTipo)
+                }
             }
 
             and{
@@ -632,5 +640,95 @@ class Reportes2Controller {
         def totl = cn.rows("select * from total_detalle(${params.id},0,0)".toString())[0]
         return[proceso: proceso, detalles: detalles, empresa: params.emp, pago: tipoPago, totl: totl]
     }
+
+    def kardex2 () {
+        println("params " + params)
+        def desde = new Date().parse("dd-MM-yyyy", params.desde)
+        def hasta = new Date().parse("dd-MM-yyyy", params.hasta)
+        def contabilidad = Contabilidad.get(params.cont)
+        def bodega = Bodega.get(params.bodega)
+        def item = Item.get(params.item)
+
+        def res = Kardex.withCriteria {
+            eq("item",item)
+
+            proceso{
+                eq("contabilidad", contabilidad)
+            }
+
+            and{
+
+                eq("bodega", bodega)
+                ge("fecha", desde)
+                le("fecha", hasta)
+            }
+
+            and{
+                order("item","desc")
+                order("fecha","desc")
+            }
+
+        }
+        return[res: res, empresa: params.emp, desde: desde, hasta: hasta]
+    }
+
+    def modalKardex2_ajax () {
+
+    }
+
+    def subgrupoItems_ajax () {
+        def empresa = Empresa.get(session.empresa.id)
+        def grupo = Grupo.get(params.grupo)
+        def subgrupo = SubgrupoItems.findAllByEmpresaAndGrupo(empresa, grupo, [sort: 'descripcion'])
+        return[subgrupo: subgrupo]
+    }
+
+    def departamentoItems_ajax () {
+//        println("params " + params)
+        def subgrupo = SubgrupoItems.get(params.subgrupo)
+        def departamento = DepartamentoItem.findAllBySubgrupo(subgrupo)
+//        println("res " + departamento)
+        return [departamento: departamento]
+    }
+
+    def tablaItems_ajax () {
+        def departamento = DepartamentoItem.get(params.departamento)
+        def items = Item.withCriteria {
+            if(params.departamento != '-1'){
+                eq("departamento", departamento)
+            }
+            ilike("nombre", '%' + params.item + '%')
+            ilike("codigo", '%' + params.codigo + '%')
+        }
+
+        return [items: items]
+    }
+
+    def modalKardex3_ajax () {
+
+    }
+
+    def kardex3 () {
+//        println("params " + params)
+        def bodega = Bodega.get(params.bodega)
+        def departamento = DepartamentoItem.get(params.departamento)
+        def desde = new Date().parse("dd-MM-yyyy", params.desde)
+        def hasta = new Date().parse("dd-MM-yyyy", params.hasta)
+        def contabilidad = Contabilidad.get(params.cont)
+
+        def cn = dbConnectionService.getConnection()
+        def res = cn.rows("select * from rp_kardex('${contabilidad?.id}','${departamento?.id}','${bodega?.id}')")
+
+        return[items: res, empresa: params.emp, desde: desde, hasta: hasta, valor: params.valor]
+    }
+
+//    11:40:33 guido: ( ) Reporte de existencias por grupos de items.: cabecera de cada tabla Grupo -  subgrupo
+//    código | Descripción | Cantidad
+//    código | Descripción | Cantidad  | Unitario | Total
+//    ( ) Kardex por item con y sin valores (unitario | total )
+//
+//    ( ) Costo de ventas en un periodo: Salen todos los items vendidos.
+//    código | Descripción | Cantidad  | Valor| Costo | Utilidad  | Porcentaje
+
 
 }
