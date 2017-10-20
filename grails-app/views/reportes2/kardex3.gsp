@@ -87,8 +87,8 @@
         <thead>
         <tr style="font-size: 11px; width: 700px">
             <th align="center" style="width: 80px">Código</th>
-            <th align="center" style="width: 320px">Item</th>
-            <th align="center" style="width: 100px;">Cantidad</th>
+            <th align="center" style="width: 370px">Item</th>
+            <th align="center" style="width: 50px;">Cantidad</th>
             <g:if test="${valor == 'true'}">
             <th align="center" style="width: 100px">P. Unitario</th>
             <th align="center" style="width: 100px">Total</th>
@@ -100,8 +100,8 @@
         <g:each in="${items}" var="item" status="j">
             <tr style="width: 700px">
                 <td style="width: 80px">${item?.itemcdgo}</td>
-                <td style="width: 320px">${item?.itemnmbr}</td>
-                <td class="derecha" style="width: 100px"><g:formatNumber number="${item?.exst}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
+                <td style="width: 370px">${item?.itemnmbr}</td>
+                <td class="derecha" style="width: 50px"><g:formatNumber number="${item?.exst}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
                 <g:if test="${valor == 'true'}">
                 <td class="derecha" style="width: 100px">${item?.pcun}</td>
                 <td class="derecha" style="width: 100px">${item?.totl}</td>
