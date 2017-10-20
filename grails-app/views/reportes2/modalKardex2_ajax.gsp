@@ -77,7 +77,7 @@
     </div>
 </div>
 
-<div class="fila" style="height: 350px;" id="filaItems">
+<div class="fila hidden" style="height: 350px;" id="filaItems">
     <table class="table table-bordered table-hover table-condensed">
         <thead>
         <tr style="width: 600px">

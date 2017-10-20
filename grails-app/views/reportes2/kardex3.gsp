@@ -77,10 +77,10 @@
 
 <rep:headerFooter title="${'Existencias'}" subtitulo="${'Datos'}" empresa="${empresa}"/>
 
-<h2>
-    PERÍODO DEL <g:formatDate date="${desde}" format="dd-MM-yyyy"/>
-    AL <g:formatDate date="${hasta}" format="dd-MM-yyyy"/>
-</h2>
+%{--<h2>--}%
+    %{--PERÍODO DEL <g:formatDate date="${desde}" format="dd-MM-yyyy"/>--}%
+    %{--AL <g:formatDate date="${hasta}" format="dd-MM-yyyy"/>--}%
+%{--</h2>--}%
 
 <div>
     <table border="1">

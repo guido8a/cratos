@@ -649,26 +649,9 @@ class Reportes2Controller {
         def bodega = Bodega.get(params.bodega)
         def item = Item.get(params.item)
 
-        def res = Kardex.withCriteria {
-            eq("item",item)
+        def cn = dbConnectionService.getConnection()
+        def res = cn.rows("select * from rp_kardex('${contabilidad?.id}','${bodega?.id}','${item?.id}', '${desde}', '${hasta}')")
 
-            proceso{
-                eq("contabilidad", contabilidad)
-            }
-
-            and{
-
-                eq("bodega", bodega)
-                ge("fecha", desde)
-                le("fecha", hasta)
-            }
-
-            and{
-                order("item","desc")
-                order("fecha","desc")
-            }
-
-        }
         return[res: res, empresa: params.emp, desde: desde, hasta: hasta]
     }
 
@@ -712,14 +695,15 @@ class Reportes2Controller {
 //        println("params " + params)
         def bodega = Bodega.get(params.bodega)
         def departamento = DepartamentoItem.get(params.departamento)
-        def desde = new Date().parse("dd-MM-yyyy", params.desde)
-        def hasta = new Date().parse("dd-MM-yyyy", params.hasta)
+//        def desde = new Date().parse("dd-MM-yyyy", params.desde)
+//        def hasta = new Date().parse("dd-MM-yyyy", params.hasta)
         def contabilidad = Contabilidad.get(params.cont)
 
         def cn = dbConnectionService.getConnection()
-        def res = cn.rows("select * from rp_kardex('${contabilidad?.id}','${departamento?.id}','${bodega?.id}')")
+        def res = cn.rows("select * from rp_existencias('${contabilidad?.id}','${departamento?.id}','${bodega?.id}')")
 
-        return[items: res, empresa: params.emp, desde: desde, hasta: hasta, valor: params.valor]
+//        return[items: res, empresa: params.emp, desde: desde, hasta: hasta, valor: params.valor]
+        return[items: res, empresa: params.emp,valor: params.valor]
     }
 
 //    11:40:33 guido: ( ) Reporte de existencias por grupos de items.: cabecera de cada tabla Grupo -  subgrupo

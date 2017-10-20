@@ -80,8 +80,8 @@
         <thead>
         <tr style="font-size: 11px; width: 700px">
             <th align="center" style="width: 80px">Código</th>
-            <th align="center" style="width: 320px">Item</th>
-            <th align="center" style="width: 100px;">Cantidad</th>
+            <th align="center" style="width: 370px">Item</th>
+            <th align="center" style="width: 50px;">Cantidad</th>
             <th align="center" style="width: 100px">P. Unitario</th>
             <th align="center" style="width: 100px">Total</th>
         </tr>
@@ -90,11 +90,11 @@
         <tbody>
         <g:each in="${res}" var="kardex" status="j">
             <tr style="width: 700px">
-                <td style="width: 80px">${kardex?.item?.codigo}</td>
-                <td style="width: 320px">${kardex?.item?.nombre}</td>
-                <td class="derecha" style="width: 100px"><g:formatNumber number="${kardex?.cantidad}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
-                <td class="derecha" style="width: 100px"><g:formatNumber number="${kardex?.precioUnitario}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
-                <td class="derecha" style="width: 100px"><g:formatNumber number="${kardex?.precioUnitario?.toDouble() * kardex?.cantidad?.toDouble()}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
+                <td style="width: 80px">${kardex?.itemcdgo}</td>
+                <td style="width: 370px">${kardex?.itemnmbr}</td>
+                <td class="derecha" style="width: 50px"><g:formatNumber number="${kardex?.exst}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
+                <td class="derecha" style="width: 100px">${kardex?.pcun}</td>
+                <td class="derecha" style="width: 100px">${kardex?.totl}</td>
             </tr>
         </g:each>
         </tbody>

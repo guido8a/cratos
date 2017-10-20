@@ -67,20 +67,26 @@
 </div>
 
 <div class="fila">
-    <div class="col-md-1">
-        <label>Desde: </label>
-    </div>
-    <div class="col-md-2">
-        <elm:datepicker name="fechaDesde" title="Fecha desde" id="fechaDK3" class="datepicker form-control fechaDeK3"
-                        maxDate="new Date()"/>
-    </div>
+    %{--<div class="col-md-1">--}%
+        %{--<label>Desde: </label>--}%
+    %{--</div>--}%
+    %{--<div class="col-md-2">--}%
+        %{--<elm:datepicker name="fechaDesde" title="Fecha desde" id="fechaDK3" class="datepicker form-control fechaDeK3"--}%
+                        %{--maxDate="new Date()"/>--}%
+    %{--</div>--}%
 
-    <div class="col-md-1">
-        <label>Hasta: </label>
+    %{--<div class="col-md-1">--}%
+        %{--<label>Hasta: </label>--}%
+    %{--</div>--}%
+    %{--<div class="col-md-2">--}%
+        %{--<elm:datepicker name="fechaHasta" title="Fecha hasta" id="fechaHK3" class="datepicker form-control fechaHaK3"--}%
+                        %{--maxDate="new Date()"/>--}%
+    %{--</div>--}%
+    <div class="col-md-2">
+        Imprimir con valores:
     </div>
     <div class="col-md-2">
-        <elm:datepicker name="fechaHasta" title="Fecha hasta" id="fechaHK3" class="datepicker form-control fechaHaK3"
-                        maxDate="new Date()"/>
+        <g:checkBox name="valores_name" id="valores" class="form-control valo" data-on-Label="Si"/>
     </div>
 
     <div class="col-md-2">
@@ -90,12 +96,7 @@
     </div>
 
 
-    <div class="col-md-2">
-        Imprimir con valores:
-    </div>
-    <div class="col-md-2">
-        <g:checkBox name="valores_name" id="valores" class="form-control valo" data-on-Label="Si"/>
-    </div>
+
 
 </div>
 
@@ -110,8 +111,8 @@
 
     $("#btnImprimir").click(function () {
         var cont = $("#contK3").val();
-        var fechaDesde = $(".fechaDeK3").val();
-        var fechaHasta = $(".fechaHaK3").val();
+//        var fechaDesde = $(".fechaDeK3").val();
+//        var fechaHasta = $(".fechaHaK3").val();
         var bodega = $("#bode3").val();
         var departamento = $("#departamento2").val();
         var valores = $(".valo").prop('checked');
@@ -122,31 +123,32 @@
             if(bodega == '-1'){
                 bootbox.alert("<i class='fa fa-exclamation-circle fa-3x pull-left text-warning text-shadow'></i>  Seleccione una bodega!")
             }else{
-                if(fechaDesde == '' || fechaHasta == ''){
-                    bootbox.alert("<i class='fa fa-exclamation-circle fa-3x pull-left text-warning text-shadow'></i>  Seleccione las fechas!")
-                }else{
+//                if(fechaDesde == '' || fechaHasta == ''){
+//                    bootbox.alert("<i class='fa fa-exclamation-circle fa-3x pull-left text-warning text-shadow'></i>  Seleccione las fechas!")
+//                }else{
                     if(departamento == '-1'){
                         bootbox.alert("<i class='fa fa-exclamation-circle fa-3x pull-left text-warning text-shadow'></i>  Seleccione el departamento!")
                     }else{
-                        $.ajax({
-                            type: 'POST',
-                            url: '${createLink(controller: 'proceso', action: 'revisarFecha_ajax')}',
-                            data:{
-                                desde: fechaDesde,
-                                hasta: fechaHasta
-                            },
-                            success: function (msg){
-                                if(msg == 'ok'){
-                                    url = "${g.createLink(controller:'reportes2' , action: 'kardex3')}?cont=" + cont + "Wemp=${session.empresa.id}" + "Wdesde=" + fechaDesde + "Whasta=" + fechaHasta + "Wbodega=" + bodega + "Wdepartamento=" + departamento + "Wvalor=" + valores;
+                        %{--$.ajax({--}%
+                            %{--type: 'POST',--}%
+                            %{--url: '${createLink(controller: 'proceso', action: 'revisarFecha_ajax')}',--}%
+                            %{--data:{--}%
+                                %{--desde: fechaDesde,--}%
+                                %{--hasta: fechaHasta--}%
+                            %{--},--}%
+                            %{--success: function (msg){--}%
+                                %{--if(msg == 'ok'){--}%
+                                    %{--url = "${g.createLink(controller:'reportes2' , action: 'kardex3')}?cont=" + cont + "Wemp=${session.empresa.id}" + "Wdesde=" + fechaDesde + "Whasta=" + fechaHasta + "Wbodega=" + bodega + "Wdepartamento=" + departamento + "Wvalor=" + valores;--}%
+                                    url = "${g.createLink(controller:'reportes2' , action: 'kardex3')}?cont=" + cont + "Wemp=${session.empresa.id}" + "Wbodega=" + bodega + "Wdepartamento=" + departamento + "Wvalor=" + valores;
                                     location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=kardex.pdf"
-                                }else{
-                                    bootbox.alert("<i class='fa fa-exclamation-circle fa-3x pull-left text-warning text-shadow'></i> La fecha ingresada en 'Hasta' es menor a la fecha ingresada en 'Desde' ");
-                                    return false;
-                                }
-                            }
-                        });
+//                                }else{
+//                                    bootbox.alert("<i class='fa fa-exclamation-circle fa-3x pull-left text-warning text-shadow'></i> La fecha ingresada en 'Hasta' es menor a la fecha ingresada en 'Desde' ");
+//                                    return false;
+//                                }
+//                            }
+//                        });
                     }
-                }
+//                }
             }
         }
     });
