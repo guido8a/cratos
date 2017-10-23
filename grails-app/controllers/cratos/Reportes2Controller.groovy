@@ -706,6 +706,25 @@ class Reportes2Controller {
         return[items: res, empresa: params.emp,valor: params.valor]
     }
 
+    def modalCostoVentas_ajax () {
+
+    }
+
+    def costoVentas () {
+        //        println("params " + params)
+        def bodega = Bodega.get(params.bodega)
+        def departamento = DepartamentoItem.get(params.departamento)
+        def desde = new Date().parse("dd-MM-yyyy", params.desde)
+        def hasta = new Date().parse("dd-MM-yyyy", params.hasta)
+        def contabilidad = Contabilidad.get(params.cont)
+        def cn = dbConnectionService.getConnection()
+        def sql = "select * from rp_ventas('${contabilidad?.id}','${departamento?.id}','${bodega?.id}','${desde}', '${hasta}')"
+        println("sql " + sql)
+        def res = cn.rows("select * from rp_ventas('${contabilidad?.id}','${departamento?.id}','${bodega?.id}','${desde}', '${hasta}')")
+//        println("res " + res)
+        return[items: res, empresa: params.emp, desde: desde, hasta: hasta, valor: params.valor]
+    }
+
 //    11:40:33 guido: ( ) Reporte de existencias por grupos de items.: cabecera de cada tabla Grupo -  subgrupo
 //    código | Descripción | Cantidad
 //    código | Descripción | Cantidad  | Unitario | Total
