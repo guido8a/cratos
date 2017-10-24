@@ -148,15 +148,15 @@
                 Balance de Comprobación
             </a>
             <a href="#" class="link btn btn-info btn-ajax" data-toggle="modal" data-target="#integral" title="Reporte de Estado de Pérdidas y Ganancias">
-                <i class="fa fa-calendar-o fa-5x"></i><br/>
+                <i class="fa fa-list-ul fa-5x"></i><br/>
                 Estado del Resultado Integral
             </a>
             <a href="#" class="link btn btn-info btn-ajax" data-target="#retenciones" data-toggle="modal">
-                <i class="fa fa-calendar-o  fa-5x"></i><br/>
+                <i class="fa fa-clipboard  fa-5x"></i><br/>
                 Retenciones
             </a>
             <a href="#" class="link btn btn-info btn-ajax" data-target="#retencionesCodigo" data-toggle="modal">
-                <i class="fa fa-calendar-o  fa-5x"></i><br/>
+                <i class="fa fa-clipboard fa-5x"></i><br/>
                 Retenciones X Código
             </a>
         </p>

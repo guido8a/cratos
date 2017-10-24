@@ -139,6 +139,12 @@
                     Detalle
                 </a>
             </g:if>
+            <g:if test="${proceso?.tipoProceso?.codigo?.trim() == 'V' || proceso?.estado == 'R'}">
+                <a href="#" class="btn btn-info" id="btnDocRetencion" style="color: #0b0b0b">
+                    <i class="fa fa-clipboard"></i>
+                    Documento Retención
+                </a>
+            </g:if>
         </g:if>
         <a href="#" class="btn btn-primary hidden" style="cursor: default; margin-right: 20px" id="abrir-fp">
             <i class="fa fa-usd"></i>
@@ -411,13 +417,66 @@
 
 <script type="text/javascript">
 
-    $("#btnConciliar").click(function () {
 
+    $("#btnDocRetencion").click(function () {
         $.ajax({
-           type: 'POST',
+            type: 'POST',
+            url:'${createLink(controller: 'proceso', action: 'docRetencion_ajax')}',
+            data:{
+                proceso: '${proceso?.id}'
+            },
+            success: function (msg){
+                var b = bootbox.dialog({
+                    id: "dlgDR",
+                    title: "Documento de Retención",
+                    class: "long",
+                    message: msg,
+                    buttons: {
+                        cancelar: {
+                            label: "<i class='fa fa-times'></i> Cancelar",
+                            className: "btn-primary",
+                            callback: function () {
+                            }
+                        },
+                        aceptar:{
+                            label: "<i class='fa fa-save'></i> Guardar",
+                            className: "btn-success",
+                            callback: function () {
+                                $.ajax({
+                                    type: 'POST',
+                                    url: '${createLink(controller: 'proceso', action: 'guardarDocRetencion_ajax')}',
+                                    data:{
+                                           proceso :'${proceso?.id}',
+                                           documento: $("#retencionVenta2").val(),
+                                           retenido : $("#retenidoIva2").val(),
+                                           renta: $("#retenidoRenta2").val()
+                                    },
+                                    success: function (msg){
+                                        if(msg == 'ok'){
+                                            log("Documento de retención guardado correctamente","success");
+                                            setTimeout(function () {
+                                                location.href="${createLink(controller: 'proceso', action: 'nuevoProceso')}/?id=" + '${proceso?.id}'
+                                            }, 800);
+                                        }else{
+                                            log("Error al guardar el documento de retención","error")
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    }
+                });
+            }
+        })
+    });
+
+
+    $("#btnConciliar").click(function () {
+        $.ajax({
+            type: 'POST',
             url:'${createLink(controller: 'proceso', action: 'con_ajax')}',
             data:{
-                    proceso: '${proceso?.id}'
+                proceso: '${proceso?.id}'
             },
             success: function (msg) {
                 var b = bootbox.dialog({

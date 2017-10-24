@@ -2201,5 +2201,27 @@ class ProcesoController extends cratos.seguridad.Shield {
         }
     }
 
+    def docRetencion_ajax () {
+        def proceso = Proceso.get(params.proceso)
+        return [proceso: proceso]
+    }
+
+    def guardarDocRetencion_ajax () {
+//        println("params " + params)
+        def proceso = Proceso.get(params.proceso)
+        proceso.retencionVenta = params.documento
+        proceso.retenidoIva = params.retenido.toDouble()
+        proceso.retenidoRenta = params.renta.toDouble()
+
+        try{
+            proceso.save(flush: true)
+            render "ok"
+        }catch (e){
+            println("error al guardar el doc de retencion " + e)
+            render "no"
+        }
+
+    }
+
 }
 
