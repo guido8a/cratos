@@ -1,6 +1,7 @@
 package cratos.seguridad
 
 import cratos.Contabilidad
+import cratos.Empresa
 
 
 class LoginController {
@@ -141,8 +142,9 @@ class LoginController {
                 render "error_"+flash.message
                 return
             } else {
-                return [perfiles:perfiles]
-
+                def empresa = Empresa.get(session.empresa.id)
+                def contabilidades = Contabilidad.findAllByInstitucion(empresa)
+                return [perfiles:perfiles, contabilidades: contabilidades]
             }
         }
        // redirect(controller: 'login', action: "login")
@@ -182,5 +184,16 @@ class LoginController {
         session.cn = null
         session.invalidate()
         redirect(controller: 'login', action: 'login')
+    }
+
+    def verificarPerfil_ajax () {
+        def ses = Sesn.get(params.sesion)
+        def perfil = Prfl.findByNombre('Administrador')
+
+        if(ses?.perfil?.id == perfil?.id || ses?.perfil?.nombre == 'Administrador General'){
+         render "ok"
+        }else{
+         render "no"
+        }
     }
 }

@@ -26,12 +26,12 @@
     }
     .mensaje-svt{
         width: 300px;
-        height: 25px;
+        height: 45px;
         padding: 3px;
         border: 1px solid #A94442;
         display: none;
         background: #F2DEDE;
-        color:#A94442 ;
+        color: #ff1e25;
     }
     .mensaje-svt:before, .mensaje-svt:after{
         position: absolute;
@@ -41,8 +41,8 @@
         border: 1px solid #A94442;
     }
     .mensaje-svt:before{
-        left:303;
-        top:6 ;
+        left:303px;
+        top:6px;
         width: 16px;
         height: 16px;
         background: #F2DEDE;
@@ -51,8 +51,8 @@
         border-radius: 8px;
     }
     .mensaje-svt:after{
-        left:322;
-        top:12 ;
+        left:322px;
+        top:12px;
         width: 12px;
         height: 12px;
         background: #F2DEDE;
@@ -116,7 +116,7 @@
            Desarrollado por: TEDEIN S.A. Versión ${message(code: 'version', default: '1.1.0x')}
        </a>
     </p>
-    <div style=" position: absolute;left: 32;bottom: 53px;" class=" mensaje-svt ui-corner-all" id="msg-container" >
+    <div style=" position: absolute;left: 32px;bottom: 53px;" class=" mensaje-svt ui-corner-all" id="msg-container" >
         <button type="button" class="close" id="close-mensaje">&times;</button>
         <p>
             <i class="fa fa-warning fa-1x pull-left  " style="margin-right: 5px;margin-top: 2px" ></i>

@@ -13,25 +13,25 @@
         <!-- botones -->
         <div class="btn-toolbar toolbar">
             <div class="btn-group">
-                <g:link action="form" class="btn btn-default btnCrear">
-                    <i class="fa fa-file-o"></i> Crear
+                <g:link action="form" class="btn btn-info btnCrear">
+                    <i class="fa fa-file-o"></i> Nuevo Usuario
                 </g:link>
             </div>
 
-            <div class="btn-group pull-right col-md-3">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Buscar">
-                    <span class="input-group-btn">
-                        <a href="#" class="btn btn-default" type="button">
-                            <i class="fa fa-search"></i>&nbsp;
-                        </a>
-                    </span>
-                </div><!-- /input-group -->
-            </div>
+            %{--<div class="btn-group pull-right col-md-3">--}%
+                %{--<div class="input-group">--}%
+                    %{--<input type="text" class="form-control" placeholder="Buscar">--}%
+                    %{--<span class="input-group-btn">--}%
+                        %{--<a href="#" class="btn btn-default" type="button">--}%
+                            %{--<i class="fa fa-search"></i>&nbsp;--}%
+                        %{--</a>--}%
+                    %{--</span>--}%
+                %{--</div><!-- /input-group -->--}%
+            %{--</div>--}%
         </div>
 
     <g:if test="${session.usuario.login == 'admin'}">
-        <h1 style="text-align: center">Empresas</h1>
+        <h1 style="text-align: center">Usuarios</h1>
     </g:if>
     <g:else>
         <h1 style="text-align: center">${session.empresa.nombre}</h1>
@@ -46,11 +46,11 @@
                 <thead>
                     <tr>
                         <th>Empresa</th>
-                        <g:sortableColumn property="cedula" title="Cédula"/>
-                        <g:sortableColumn property="nombre" title="Nombre"/>
-                        <g:sortableColumn property="apellido" title="Apellido"/>
-                        <g:sortableColumn property="login" title="Login"/>
-                        <g:sortableColumn property="activo" title="Activo"/>
+                        <th>Cédula</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Login</th>
+                        <th>Activo</th>
                         <th width="190">Acciones</th>
                     </tr>
                 </thead>
@@ -58,11 +58,11 @@
                     <g:each in="${personaInstanceList}" status="i" var="personaInstance">
                         <tr data-id="${personaInstance.id}">
                             <td style="background-color: #dddddd">${personaInstance?.empresa}</td>
-                            <td>${personaInstance.cedula}</td>
+                            <td style="text-align: center">${personaInstance.cedula}</td>
                             <td>${personaInstance.nombre}</td>
                             <td>${personaInstance.apellido}</td>
-                            <td>${personaInstance.login}</td>
-                            <td><g:formatBoolean boolean="${personaInstance.activo == 1}" true="SI" false="NO"/></td>
+                            <td style="color: #00b3ff">${personaInstance.login}</td>
+                            <td style="text-align: center; color: ${personaInstance.activo == 1 ? '#00aa00' : ' #ff0f24'}"><g:formatBoolean boolean="${personaInstance.activo == 1}" true="SI" false="NO"/></td>
                             <td>
                                 <a href="#" data-id="${personaInstance.id}" class="btn btn-info btn-sm btn-show btn-ajax" title="Ver">
                                     <i class="fa fa-laptop"></i>

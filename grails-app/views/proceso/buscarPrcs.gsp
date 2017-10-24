@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
-<%@ page import="cratos.TipoProceso; cratos.utilitarios.BuscadorService" %>
+<%@ page import="cratos.Empresa; cratos.TipoProceso; cratos.utilitarios.BuscadorService" %>
 
 <%
     def buscadorServ = grailsApplication.classLoader.loadClass('cratos.utilitarios.BuscadorService').newInstance()
@@ -29,25 +29,34 @@
     <div class="linea45"></div>
 
     <div class="row" style="border-style: solid; border-radius:6px; border-width: 1px;
-            height: 40px; border-color: #0c6cc2; margin-left: 10px;">
-
-        <div class="col-xs-5" style="margin-left: 5px; margin-top: 2px;">
-            <g:link class="btn btn-success" action="nuevoProceso" style="margin-left: -15px">
-                <i class="fa fa-file-o"></i> Nueva Transacción
-            </g:link>
-            <g:link class="btn btn-primary" action="procesosAnulados">
-                <i class="fa fa-times-circle"></i> Ir a Anulados
-            </g:link>
-        </div>
+    height: 40px; border-color: #0c6cc2; margin-left: 10px;">
+        %{--<g:if test="${cratos.Contabilidad.findAllByInstitucion(cratos.Empresa.get(session.empresa.id)).size() > 0}">--}%
+            <div class="col-xs-5" style="margin-left: 5px; margin-top: 2px;">
+                <g:link class="btn btn-success" action="nuevoProceso" style="margin-left: -15px">
+                    <i class="fa fa-file-o"></i> Nueva Transacción
+                </g:link>
+                <g:link class="btn btn-primary" action="procesosAnulados">
+                    <i class="fa fa-times-circle"></i> Ir a Anulados
+                </g:link>
+            </div>
+        %{--</g:if>--}%
 
         <div style="margin-top: 2px; margin-right: 5px; text-align: right">
-            <span class="text-info" style="font-size: 15px"><strong>${session.contabilidad.descripcion}</strong></span>
-            <a href="#" class="btn btn-azul" id="btnCambiarConta" style="margin-left: 5px;"
-               title="Cambiar a otra Contabilidad">
-                <i class="fa fa-refresh"></i> Cambiar
-            </a>
-        </div>
+            <span class="text-info" style="font-size: 15px"><strong>${session?.contabilidad?.descripcion ?: 'No existe contabilidad asignada'}</strong></span>
+            %{--<g:if test="${cratos.Contabilidad.findAllByInstitucion(cratos.Empresa.get(session.empresa.id)).size() > 0}">--}%
+                <a href="#" class="btn btn-azul" id="btnCambiarConta" style="margin-left: 5px;"
+                   title="Cambiar a otra Contabilidad">
+                    <i class="fa fa-refresh"></i> Cambiar
+                </a>
+            %{--</g:if>--}%
+            %{--<g:else>--}%
+                %{--<a href="#" class="btn btn-success" id="btnCrearConta" style="margin-left: 5px;"--}%
+                   %{--title="Crear una Contabilidad">--}%
+                    %{--<i class="fa fa-warning"></i> Crear--}%
+                %{--</a>--}%
+            %{--</g:else>--}%
 
+        </div>
     </div>
 
 
@@ -59,7 +68,7 @@
                     <div class="col-xs-4">
                         <b>Buscar por: </b>
                         <elm:select name="buscador" from = "${buscadorServ.parmProcesos()}" value="${params.buscador}"
-                            optionKey="campo" optionValue="nombre" optionClass="operador" id="buscador_con"
+                                    optionKey="campo" optionValue="nombre" optionClass="operador" id="buscador_con"
                                     style="width: 120px" class="form-control"/>
                     </div>
                     <div class="col-xs-4">
@@ -82,14 +91,14 @@
 
                 <div class="col-xs-2" style="margin-left: -20px;">
                     Hasta:
-                <elm:datepicker name="fechaHasta" title="Fecha hasta" class="datepicker form-control fechaH"
+                    <elm:datepicker name="fechaHasta" title="Fecha hasta" class="datepicker form-control fechaH"
                                     maxDate="new Date()"/>
                 </div>
 
                 <div class="col-xs-2" style="margin-left: -20px; width: 160px;">
                     Tipo:
                     <elm:select name="buscador" from = "${cratos.TipoProceso.list([sort:'codigo'])}" value="params.tpps?:0"
-                        noSelection="${[0:'Todos']}" optionKey="id" optionValue="descripcion" id="tipo_proceso"
+                                noSelection="${[0:'Todos']}" optionKey="id" optionValue="descripcion" id="tipo_proceso"
                                 class="form-control"/>
                 </div>
 
