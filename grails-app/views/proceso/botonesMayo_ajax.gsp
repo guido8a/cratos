@@ -39,8 +39,18 @@
     });
 
     $("#imprimir").click(function () {
-        var url = "${g.createLink(controller: 'reportes',action: 'comprobante')}/" + $(this).attr("iden");
-        location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url + "&filename=" + $(this).attr("nombre") + ".pdf"
+        %{--var url--}%
+
+        %{--<g:if test="${comprobante?.proceso?.tipoProceso?.codigo?.trim() in ['P','I']}">--}%
+        %{--url = "${g.createLink(controller: 'reportes',action: 'comprobante2')}/" + $(this).attr("iden");--}%
+        %{--</g:if>--}%
+        %{--<g:else>--}%
+         %{--url = "${g.createLink(controller: 'reportes',action: 'comprobante')}/" + $(this).attr("iden");--}%
+        %{--</g:else>--}%
+        %{--location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url + "&filename=" + $(this).attr("nombre") + ".pdf"--}%
+
+        var url = "${g.createLink(controller: 'reportes3', action: 'imprimirCompDiario')}?id=" + '${comprobante?.proceso?.id}' + "Wempresa=${session.empresa.id}";
+        location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=comprobante.pdf";
     });
 
     $("#desmayo").click(function () {

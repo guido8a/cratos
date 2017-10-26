@@ -1116,7 +1116,7 @@ class ProcesoController extends cratos.seguridad.Shield {
         def comprobante = Comprobante.get(params.comprobante)
         def asientos = Asiento.findAllByComprobante(comprobante).sort{it.cuenta.numero}
         def auxiliares = Auxiliar.findAllByAsientoInList(asientos)
-        def band2 = proceso?.tipoProceso?.codigo?.trim() == 'P' || proceso?.tipoProceso?.codigo?.trim() == 'I' || proceso?.tipoProceso?.codigo?.trim() == 'NC' || proceso?.tipoProceso?.codigo?.trim() == 'ND'
+        def band2 = proceso?.tipoProceso?.codigo?.trim() in ['P','I','NC','ND']
         return [asientos: asientos, comprobante: comprobante, proceso: proceso, auxiliares: auxiliares, band2: band2]
     }
 
@@ -2220,7 +2220,12 @@ class ProcesoController extends cratos.seguridad.Shield {
             println("error al guardar el doc de retencion " + e)
             render "no"
         }
+    }
 
+    def verAuxiliar_ajax () {
+        def auxiliar = Auxiliar.get(params.auxiliar)
+        def comprobante = Comprobante.get(params.comprobante)
+        return[auxiliar: auxiliar, comprobante: comprobante]
     }
 
 }

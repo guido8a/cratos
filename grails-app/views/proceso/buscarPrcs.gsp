@@ -30,7 +30,6 @@
 
     <div class="row" style="border-style: solid; border-radius:6px; border-width: 1px;
     height: 40px; border-color: #0c6cc2; margin-left: 10px;">
-        %{--<g:if test="${cratos.Contabilidad.findAllByInstitucion(cratos.Empresa.get(session.empresa.id)).size() > 0}">--}%
             <div class="col-xs-5" style="margin-left: 5px; margin-top: 2px;">
                 <g:link class="btn btn-success" action="nuevoProceso" style="margin-left: -15px">
                     <i class="fa fa-file-o"></i> Nueva Transacción
@@ -39,23 +38,12 @@
                     <i class="fa fa-times-circle"></i> Ir a Anulados
                 </g:link>
             </div>
-        %{--</g:if>--}%
-
         <div style="margin-top: 2px; margin-right: 5px; text-align: right">
             <span class="text-info" style="font-size: 15px"><strong>${session?.contabilidad?.descripcion ?: 'No existe contabilidad asignada'}</strong></span>
-            %{--<g:if test="${cratos.Contabilidad.findAllByInstitucion(cratos.Empresa.get(session.empresa.id)).size() > 0}">--}%
                 <a href="#" class="btn btn-azul" id="btnCambiarConta" style="margin-left: 5px;"
                    title="Cambiar a otra Contabilidad">
                     <i class="fa fa-refresh"></i> Cambiar
                 </a>
-            %{--</g:if>--}%
-            %{--<g:else>--}%
-                %{--<a href="#" class="btn btn-success" id="btnCrearConta" style="margin-left: 5px;"--}%
-                   %{--title="Crear una Contabilidad">--}%
-                    %{--<i class="fa fa-warning"></i> Crear--}%
-                %{--</a>--}%
-            %{--</g:else>--}%
-
         </div>
     </div>
 
@@ -244,7 +232,6 @@ como máximo 30 <span style="margin-left: 40px; color: #0b2c89">Se ordena por fe
         var id = $tr.data("id");
         var tp = $tr.data("tipo");
         var cm = $tr.data("cm");
-
         var dtll = $tr.data("dtll");
         var rtcn = $tr.data("rtcn");
 
@@ -266,9 +253,8 @@ como máximo 30 <span style="margin-left: 40px; color: #0b2c89">Se ordena por fe
 
         var imprimir = {
             label: " Imprimir Comprobante",
-            icon: "fa fa-file",
+            icon: "fa fa-print",
             action: function () {
-                %{--location.href = '${createLink(controller: "proceso", action: "detalleSri")}?id=' + id;--}%
                 var url = "${g.createLink(controller: 'reportes3', action: 'imprimirCompDiario')}?id=" + id + "Wempresa=${session.empresa.id}";
                 location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=comprobante.pdf";
             }
@@ -291,7 +277,7 @@ como máximo 30 <span style="margin-left: 40px; color: #0b2c89">Se ordena por fe
         };
         var comprobante = {
             label: 'Comprobante',
-            icon: 'fa fa-calendar-o',
+            icon: 'fa fa-clipboard',
             action: function () {
                 location.href="${createLink(controller: 'proceso', action: 'comprobante')}/?proceso=" + id
             }

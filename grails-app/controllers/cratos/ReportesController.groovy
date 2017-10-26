@@ -259,12 +259,12 @@ class ReportesController {
 
 
     def comprobante() {
-        println "imprimir comprobante " + params
+//        println "imprimir comprobante " + params
         def comprobantes = cuentasService.getComprobante(params.id)
-
         def tipoComprobante = []
 
-//        println("CMPR:" + comprobantes.tipo)
+        def proceso = Proceso.get(params.id)
+        def empresa = Empresa.get(proceso.empresa.id)
 
         comprobantes.each { i ->
             tipoComprobante += i.tipo.codigo
@@ -285,11 +285,9 @@ class ReportesController {
         asiento.each { asientos ->
 
             def fecha = asientos.comprobante.fecha
-
             def descripcion = asientos.comprobante.descripcion
 
             if (!comp.containsKey(numero)) {
-
                 comp[numero] = [:]
                 comp[numero].fecha = fecha
                 comp[numero].descripcion = descripcion
@@ -311,7 +309,7 @@ class ReportesController {
 
         comp[numero].items.sort { it.cuenta }
 
-        [asiento: asiento, comprobantes: comprobantes, comp: comp, tipoComprobante: tipoComprobante, comprobante: comprobante]
+        [asiento: asiento, comprobantes: comprobantes, comp: comp, tipoComprobante: tipoComprobante, comprobante: comprobante, empresa: empresa, proceso: proceso]
 
     }
 
@@ -862,6 +860,15 @@ order by rplnnmro
                 break;
         }
     return[prefijo: prefijo]
+    }
+
+    def comprobante2 () {
+
+        def proceso = Proceso.get(params.id)
+        def empresa = Empresa.get(proceso.empresa.id)
+        def comprobante = Comprobante.findByProceso(proceso)
+
+        return[proceso: proceso, empresa: empresa, comprobante: comprobante]
     }
 
 }

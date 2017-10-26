@@ -16,7 +16,7 @@
 <html>
 <head>
     <title>Comprobante</title>
-    <rep:estilos orientacion="l" pagTitle="${"Comprobante " + comprobante?.tipo?.descripcion}"/>
+    <rep:estilos orientacion="l" pagTitle="${"Comprobante " + (comprobante?.proceso?.tipoProceso?.codigo?.trim() == 'P' ? 'de Egreso' : comprobante?.proceso?.tipoProceso?.codigo?.trim() == 'I' ? 'de Ingreso' : '')}"/>
 
     <style type="text/css">
 
@@ -77,24 +77,65 @@
         text-align     : right !important;
     }
 
+    .remove-all-styles {
+        all: revert;
+    }
+
+    .noEstilo{
+        border: none !important;
+    }
+
     </style>
 
 </head>
 
 <body>
 
-<rep:headerFooter title="${'Comprobante ' + comprobante?.tipo?.descripcion}" subtitulo="${'Datos'}" empresa="${empresa}"/>
+<rep:headerFooter title="${"Comprobante " + (comprobante?.proceso?.tipoProceso?.codigo?.trim() == 'P' ? 'de Egreso' : comprobante?.proceso?.tipoProceso?.codigo?.trim() == 'I' ? 'de Ingreso' : '')}" subtitulo="${'Datos'}" empresa="${empresa}"/>
 
-<div style="float: right">
-    <strong style="font-size: 11px">${proceso?.tipoTransaccion?.descripcion?.toUpperCase()} N° ${comprobante?.prefijo + "-" + comprobante?.numero}</strong>
+<div style="text-align: center;">
+    <strong style="font-size: 18px; color: #17375E"> N°: ${comprobante?.prefijo + " " + comprobante?.numero} </strong>
 </div>
 
-<div style="width: 800px; font-size: 11px; margin-bottom: 10px; margin-top: 20px;">
-    <strong>Concepto:</strong><util:clean str="${comprobante?.descripcion}"/>
-    <div style="width: 100px; float: right">
-        <strong>Fecha:</strong><g:formatDate format="yyyy/MM/dd"  date="${comprobante?.fecha}"> </g:formatDate>
-    </div>
-</div>
+
+
+
+<table style="width: 950px; margin-top: 20px" class="noEstilo">
+    <tr style="height: 20px" class="noEstilo">
+        <td width="100px" class="noEstilo">
+            <g:if test="${comprobante?.proceso?.tipoProceso?.codigo?.trim() in ['P','I']}">
+                <b>${comprobante?.proceso?.tipoProceso?.codigo?.trim() == 'P' ? 'A ORDEN DE:' : comprobante?.proceso?.tipoProceso?.codigo?.trim() == 'I' ? 'RECIBIRÁ DE:' : ''}</b>
+            </g:if>
+        </td>
+        <td width="300px" class="noEstilo">
+            <g:if test="${comprobante?.proceso?.tipoProceso?.codigo?.trim() in ['P','I']}">
+                ${comprobante?.proceso?.proveedor?.nombre}
+            </g:if>
+        </td>
+        <td width="100px" class="noEstilo">
+            <b>FECHA: </b>
+        </td>
+        <td width="150px" class="noEstilo">
+            ${comprobante?.proceso?.fechaIngresoSistema?.format("yyyy-MM-dd")}
+        </td>
+    </tr>
+    <tr style="height: 20px">
+        <td width="100px" class="noEstilo">
+            <b>CONCEPTO:</b>
+        </td>
+        <td width="300px" class="noEstilo">
+            ${comprobante?.proceso?.descripcion}
+        </td>
+        <td class="noEstilo">
+            <b>VALOR $:</b>
+        </td>
+        <td class="noEstilo">
+            <g:formatNumber number="${comprobante?.proceso?.valor}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/>
+        </td>
+    </tr>
+</table>
+
+
 
 <div class="hoja" style="margin-top: 20px">
 

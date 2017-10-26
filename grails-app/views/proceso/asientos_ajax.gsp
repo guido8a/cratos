@@ -146,6 +146,14 @@
                                         </a>
                                     </div>
                                 </g:if>
+                                <g:else>
+                                    <div class="btn-group">
+                                        <a href="#" class="btn btn-info btn-sm btnVerAuxiliar"
+                                           idAuxi="${auxiliar?.id}" title="Ver auxiliar">
+                                            <i class="fa fa-search"></i>
+                                        </a>
+                                    </div>
+                                </g:else>
                             </td>
                         </tr>
                     </g:each>
@@ -163,6 +171,33 @@
 </div>
 
 <script type="text/javascript">
+
+
+    $(".btnVerAuxiliar").click(function () {
+        var aux = $(this).attr('idAuxi');
+        $.ajax({
+           type :'POST',
+            url: '${createLink(controller: 'proceso', action: 'verAuxiliar_ajax')}',
+            data:{
+                auxiliar: aux,
+                comprobante: '${comprobante?.id}'
+            },
+            success: function (msg){
+                bootbox.dialog({
+                    title: "Auxiliar",
+                    message: msg,
+                    buttons: {
+                        cancelar: {
+                            label: "<i class='fa fa-times'></i> Cancelar",
+                            className: "btn-primary",
+                            callback: function () {
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    });
 
 
     $(".btnBorrarAsientos").click(function (){

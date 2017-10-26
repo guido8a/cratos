@@ -648,9 +648,11 @@ class Reportes2Controller {
         def contabilidad = Contabilidad.get(params.cont)
         def bodega = Bodega.get(params.bodega)
         def item = Item.get(params.item)
+        def d = desde.format("dd-MM-yyyy")
+        def h = hasta.format("dd-MM-yyyy")
 
         def cn = dbConnectionService.getConnection()
-        def res = cn.rows("select * from rp_kardex('${contabilidad?.id}','${bodega?.id}','${item?.id}', '${desde}', '${hasta}')")
+        def res = cn.rows("select * from rp_kardex('${contabilidad?.id}','${bodega?.id}','${item?.id}', '${d}', '${h}')")
 
         return[res: res, empresa: params.emp, desde: desde, hasta: hasta]
     }
@@ -717,21 +719,14 @@ class Reportes2Controller {
         def desde = new Date().parse("dd-MM-yyyy", params.desde)
         def hasta = new Date().parse("dd-MM-yyyy", params.hasta)
         def contabilidad = Contabilidad.get(params.cont)
+        def d = desde.format("dd-MM-yyyy")
+        def h = hasta.format("dd-MM-yyyy")
         def cn = dbConnectionService.getConnection()
-        def sql = "select * from rp_ventas('${contabilidad?.id}','${departamento?.id}','${bodega?.id}','${desde}', '${hasta}')"
-        println("sql " + sql)
-        def res = cn.rows("select * from rp_ventas('${contabilidad?.id}','${departamento?.id}','${bodega?.id}','${desde}', '${hasta}')")
+        def res = cn.rows("select * from rp_ventas('${contabilidad?.id}','${departamento?.id}','${bodega?.id}','${d}', '${h}')")
 //        println("res " + res)
         return[items: res, empresa: params.emp, desde: desde, hasta: hasta, valor: params.valor]
     }
 
-//    11:40:33 guido: ( ) Reporte de existencias por grupos de items.: cabecera de cada tabla Grupo -  subgrupo
-//    código | Descripción | Cantidad
-//    código | Descripción | Cantidad  | Unitario | Total
-//    ( ) Kardex por item con y sin valores (unitario | total )
-//
-//    ( ) Costo de ventas en un periodo: Salen todos los items vendidos.
-//    código | Descripción | Cantidad  | Valor| Costo | Utilidad  | Porcentaje
 
 
 }
