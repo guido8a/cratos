@@ -142,7 +142,7 @@
             <g:if test="${proceso?.tipoProceso?.codigo?.trim() == 'V' || proceso?.estado == 'R'}">
                 <a href="#" class="btn btn-info" id="btnDocRetencion" style="color: #0b0b0b">
                     <i class="fa fa-clipboard"></i>
-                    Documento Retención
+                    Retención en Ventas
                 </a>
             </g:if>
         </g:if>

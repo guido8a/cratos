@@ -17,7 +17,7 @@ class Reportes2Controller {
 
     def buscadorService
     def dbConnectionService
-    def kerberosoldService
+//    def kerberosoldService
 
     def updateCuenta() {
 
@@ -406,7 +406,7 @@ class Reportes2Controller {
     def estadoDeResultados = {
 //        def contabilidad = Contabilidad.get(params.cont);
 
-        def sp = kerberosoldService.ejecutarProcedure("saldos", params.cont)
+//        def sp = kerberosoldService.ejecutarProcedure("saldos", params.cont)
 //        println "estado de resultados aaaaa " + params
         def periodo = Periodo.get(params.per);
 

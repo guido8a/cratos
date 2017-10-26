@@ -24,7 +24,7 @@ import java.text.NumberFormat
 class ProcesoController extends cratos.seguridad.Shield {
 
     def buscadorService
-    def kerberosoldService
+//    def kerberosoldService
     def procesoService
     def loginService
     def utilitarioService
@@ -435,7 +435,7 @@ class ProcesoController extends cratos.seguridad.Shield {
     }
 
 
-    /*TODO Crear periodos y probar el mayorizar y desmayorizar... move on*/
+/*
     def registrarComprobante = {
         if (request.method == 'POST') {
             println "registrar comprobante " + params
@@ -468,9 +468,10 @@ class ProcesoController extends cratos.seguridad.Shield {
             redirect(controller: "shield", action: "ataques")
         }
     }
+*/
 
+/*
     def desmayorizar() {
-        println "demayo " + params
         if (request.method == 'POST') {
             def comprobante = Comprobante.get(params.id)
             def msn = kerberosoldService.ejecutarProcedure("mayorizar", [comprobante.id, -1])
@@ -492,7 +493,6 @@ class ProcesoController extends cratos.seguridad.Shield {
                 def proceso = comprobante.proceso
                 params.controllerName = controllerName
                 params.actionName = actionName
-//                kerberosService.generarEntradaAuditoria(params,Comprobante,"registrado","R",comprobante.registrado,session.perfil,session.usuario)
                 comprobante.registrado = "N"
                 comprobante.save(flush: true)
                 proceso.estado = "N"
@@ -503,6 +503,7 @@ class ProcesoController extends cratos.seguridad.Shield {
             redirect(controller: "shield", action: "ataques")
         }
     }
+*/
 
     def listar = {
         //println "buscar proceso"
@@ -858,17 +859,18 @@ class ProcesoController extends cratos.seguridad.Shield {
         }
         if (comprobante) {
             if (comprobante.registrado == 'N') {
-                def msn = kerberosoldService.ejecutarProcedure("mayorizar", [comprobante.id, -1])
+//                def msn = kerberosoldService.ejecutarProcedure("mayorizar", [comprobante.id, -1])
                 println "LOG: desmayorizando  comprobante borrar proceso ${comprobante.id} " + msn["mayorizar"]
                 try {
                     def log = new LogMayorizacion()
                     log.usuario = cratos.seguridad.Persona.get(session.usuario.id)
                     log.comprobante = comprobante
                     log.tipo = "B"
-                    log.resultado = msn["mayorizar"].toString()
+//                    log.resultado = msn["mayorizar"].toString()
                     log.save(flush: true)
                 } catch (e) {
-                    println "LOG: error del login de mayorizar " + msn["mayorizar"].toString()
+//                    println "LOG: error del login de mayorizar " + msn["mayorizar"].toString()
+                    println "LOG: error del login de mayorizar " + e
                 }
                 proceso.estado = "B"
                 proceso.save(flush: true)
@@ -1304,7 +1306,7 @@ class ProcesoController extends cratos.seguridad.Shield {
     def guardarAuxiliar_ajax () {
         println "guardarAuxiliar_ajax: $params"
         def asiento
-        def comprobante = Comprobante.get(params.factura)
+        def afecta = Auxiliar.get(params.factura)
         def tipoPago = TipoDocumentoPago.get(params.tipoPago)
         def proveedor = Proveedor.get(params.proveedor)
         def fechaPago
@@ -1329,12 +1331,14 @@ class ProcesoController extends cratos.seguridad.Shield {
         auxiliar.debe = params.debe.toDouble()
         auxiliar.haber = params.haber.toDouble()
         auxiliar.documento = params.documento
+
         if(params.factura) {
-            auxiliar.comprobante = comprobante
+            auxiliar.afecta = afecta
         }
         if(params.fctr) {
             auxiliar.factura = params.fctr
         }
+        println " .... auxiliar padre: ${auxiliar?.afecta?.id}"
 
         try{
             auxiliar.save(flush: true)
@@ -1385,7 +1389,7 @@ class ProcesoController extends cratos.seguridad.Shield {
             sql = "select cmpr__id, clntnmbr prvenmbr, dscr, dcmt, fcha, debe hber, ntcr pgdo, sldo from ventas(${params.proveedor}) ${wh}"
         }
 
-//        println("sql " + sql)
+        println("sql " + sql)
 
         res = cn.rows(sql.toString())
         return [res:res, tipo: tipo]

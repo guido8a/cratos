@@ -4,7 +4,7 @@ class ProcesoService {
 
     static transactional = true
     def dbConnectionService
-    def kerberosoldService
+//    def kerberosoldService
 
     /**
      * Registra el proceso contable y genera el comprobante, asientos y auxiliar

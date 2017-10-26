@@ -483,7 +483,8 @@
                                                     descripcion: $("#descripcionAux").val(),
                                                     auxiliar: idAuxiliar,
                                                     documento: $("#referencia").val(),
-                                                    factura: $("#facturaAuxiliar").val(),  /* com,probnante que se paga */
+                                                    factura: $("#facturaAuxiliar").val(),  /* com,probante que se paga */
+                                                    dcmt: $("#facturaAuxiliar").data('dcmt'),  /* com,probante que se paga */
                                                     fctr: $("#factura").val()  /* documento por pagar */
                                                 },
                                                 success: function (msg) {

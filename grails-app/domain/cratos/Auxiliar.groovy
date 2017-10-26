@@ -12,6 +12,7 @@ class Auxiliar implements Serializable {
     Comprobante comprobante
     String factura
     String documento
+    Auxiliar afecta
 
     static auditable = true
 
@@ -33,6 +34,7 @@ class Auxiliar implements Serializable {
             comprobante column: 'cmpr__id'
             factura column: 'axlrfctr'
             documento column: 'axlrrefe'
+            afecta column: 'axlrpdre'
         }
     }
     static constraints = {
@@ -46,7 +48,7 @@ class Auxiliar implements Serializable {
         comprobante (blank: true, nullable: true)
         factura (blank: true, nullable: true)
         documento (blank: true, nullable: true)
+        afecta (blank: true, nullable: true)
     }
-
 
 }

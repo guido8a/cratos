@@ -10,7 +10,7 @@ class Reportes3Controller {
     def dbConnectionService
     def cuentasService
     def buscadorService
-    def kerberosoldService
+//    def kerberosoldService
 
     def reporteComprobante() {
         def contabilidad = Contabilidad.get(params.cont)
@@ -381,7 +381,7 @@ class Reportes3Controller {
                 html += "</div>"
             } else {
 
-                def sp = kerberosoldService.ejecutarProcedure("saldos", periodo.contabilidadId)
+//                def sp = kerberosoldService.ejecutarProcedure("saldos", periodo.contabilidadId)
 
                 header += "<h1>" + util.clean(str: empresa.nombre) + "</h1>"
                 header += "<h2>ESTADO DE SITUACION FINANCIERA (BALANCE GENERAL CON AUXILIARES)</h2>"
