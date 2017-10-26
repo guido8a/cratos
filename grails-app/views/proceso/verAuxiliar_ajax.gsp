@@ -23,7 +23,7 @@
     <div class="col-md-2">
         <label>Descripción:</label>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-6">
         ${auxiliar?.descripcion}
     </div>
 </div>
@@ -31,7 +31,7 @@
     <div class="col-md-2">
         <label>Proveedor:</label>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-6">
         ${auxiliar?.proveedor?.nombre}
     </div>
 </div>
@@ -47,18 +47,20 @@
 
 
 <div class="row">
-    <div class="col-md-2">
+    <div class="col-md-3">
         <label>Forma de Pago:</label>
     </div>
     <div class="col-md-4">
        ${auxiliar?.tipoDocumentoPago?.descripcion}
     </div>
+</div>
 
-    <div class="col-md-2">
+<div class="row">
+    <div class="col-md-3">
         <label>Fecha de Pago:</label>
     </div>
     <div class="col-md-4">
-       <g:formatDate date="${auxiliar?.fechaPago}" format="dd-MM-yyyy"/>
+        <g:formatDate date="${auxiliar?.fechaPago}" format="dd-MM-yyyy"/>
     </div>
 </div>
 
@@ -79,11 +81,10 @@
             <label>Documento con que se paga:</label>
         </div>
         <div class="col-md-6">
-            <g:textField name="referencia_name" id="referencia" class="form-control" value="${auxiliar?.documento ?: ''}"/>
+            ${auxiliar?.documento ?: ''}
         </div>
     </div>
 </g:if>
-
 
 <div class="row">
     <div class="col-md-2">
@@ -92,17 +93,11 @@
     <div class="col-md-10">
         <div class="col-md-2">Debe (CxC)</div>
         <div class="col-md-4">
-            <g:textField type="number" name="valorAuxiliarP_name" id="valorPagar"
-                         class="validacionNumero form-control valorP required" placeholder="${auxiliar ? auxiliar?.debe : 0}"
-                         style="width: 120px;" value="${auxiliar ? auxiliar?.debe : 0}" />
-            %{--<g:fo--}%
+            <g:formatNumber number="${auxiliar ? auxiliar?.debe : 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/>
         </div>
         <div class="col-md-2">Haber (CxP)</div>
         <div class="col-md-4">
-            <g:textField type="number" name="valorAuxiliarC_name" id="valorCobrar"
-                         placeholder="${auxiliar ? auxiliar?.haber : 0}"
-                         class="validacionNumero form-control valorC required" style="width: 120px;"
-                         value="${auxiliar ? auxiliar?.haber : 0}" />
+            <g:formatNumber number="${auxiliar ? auxiliar?.haber : 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/>
         </div>
     </div>
 </div>
