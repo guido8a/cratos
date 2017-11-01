@@ -98,7 +98,7 @@ class ProcesoController extends cratos.seguridad.Shield {
         def proveedor
         def gestor = Gestor.get(params.gestor)
         def fechaRegistro = new Date().parse("dd-MM-yyyy", params.fecha_input)   //fecha del cmpr
-        def fechaIngresoSistema = new Date().parse("dd-MM-yyyy",params.fechaingreso_input)   //registro
+        def fechaIngresoSistema = new Date().parse("dd-MM-yyyy", params.fechaingreso_input)   //registro
 
         if(params.id){
             proceso = Proceso.get(params.id)

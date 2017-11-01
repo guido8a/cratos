@@ -462,7 +462,9 @@ class CuentaController extends cratos.seguridad.Shield {
         render "DONE"
     }
 
+    /** se invoca con: recursivoCuentas2(null, null, null, empresa) **/
     def recursivoCuentas2(padreOrigen, padreDestino, empresaOrigen, empresaDestino) {
+//        println "inicia recursivo con: $padreOrigen, $padreDestino, $empresaOrigen, $empresaDestino"
         def originales
         if (padreOrigen) {
             if (empresaOrigen) {
@@ -473,8 +475,6 @@ class CuentaController extends cratos.seguridad.Shield {
         } else {
             if (empresaOrigen) {
                 originales = Cuenta.findAllByNivelAndEmpresa(Nivel.get(1), empresaOrigen)
-            } else {
-                originales = Cuenta.findAllByNivelAndEmpresaIsNull(Nivel.get(1))
             }
         }
 
@@ -506,9 +506,10 @@ class CuentaController extends cratos.seguridad.Shield {
 
     def copiarCuentas() {
         def empresa = Empresa.get(session.empresa.id)
+        def origen = Empresa.get(42)
 
         if (Cuenta.countByEmpresa(empresa) == 0) {
-            recursivoCuentas2(null, null, null, empresa)
+            recursivoCuentas2(null, null, origen, empresa)
         }
         redirect(action: 'list')
     }
