@@ -36,6 +36,10 @@ class ContabilidadController extends cratos.seguridad.Shield {
     /* ************************ COPIAR DESDE AQUI ****************************/
 
     def list() {
+        if(params.id == '-1') {
+            flash.message = "No se ha creado aún una contabilidad, por favor cree una para registrar transacciones"
+            flash.tipo = "error"
+        }
         params.max = Math.min(params.max ? params.max.toInteger() : 10, 100)
         params.sort = 'fechaInicio'
 
@@ -294,11 +298,11 @@ class ContabilidadController extends cratos.seguridad.Shield {
 
         if (params.id) {
             flash.message = "Contabilidad actualizado"
-            flash.clase = "success"
+            flash.tipo = "success"
             flash.ico = "ss_accept"
         } else {
             flash.message = "Contabilidad creado"
-            flash.clase = "success"
+            flash.tipo = "success"
             flash.ico = "ss_accept"
         }
 
@@ -326,7 +330,7 @@ class ContabilidadController extends cratos.seguridad.Shield {
         def contabilidadInstance = Contabilidad.get(params.id)
         if (!contabilidadInstance) {
             flash.message = "No se encontró Contabilidad con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "list")
             return
@@ -339,7 +343,7 @@ class ContabilidadController extends cratos.seguridad.Shield {
         def contabilidadInstance = Contabilidad.get(params.id)
         if (!contabilidadInstance) {
             flash.message = "No se encontró Contabilidad con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "list")
             return
@@ -352,7 +356,7 @@ class ContabilidadController extends cratos.seguridad.Shield {
         def contabilidadInstance = Contabilidad.get(params.id)
         if (!contabilidadInstance) {
             flash.message = "No se encontró Contabilidad con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "list")
             return
@@ -361,13 +365,13 @@ class ContabilidadController extends cratos.seguridad.Shield {
         try {
             contabilidadInstance.delete(flush: true)
             flash.message = "Contabilidad  con id " + params.id + " eliminado"
-            flash.clase = "success"
+            flash.tipo = "success"
             flash.ico = "ss_accept"
             redirect(action: "list")
         }
         catch (DataIntegrityViolationException e) {
             flash.message = "No se pudo eliminar Contabilidad con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "show", id: params.id)
         }

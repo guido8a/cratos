@@ -45,11 +45,11 @@ class DetalleFacturaController extends cratos.seguridad.Shield  {
 
         if (params.id) {
             flash.message = "DetalleFactura actualizado"
-            flash.clase = "success"
+            flash.tipo = "success"
             flash.ico = "ss_accept"
         } else {
             flash.message = "DetalleFactura creado"
-            flash.clase = "success"
+            flash.tipo = "success"
             flash.ico = "ss_accept"
         }
         redirect(action: "show", id: detalleFacturaInstance.id)
@@ -59,7 +59,7 @@ class DetalleFacturaController extends cratos.seguridad.Shield  {
         def detalleFacturaInstance = DetalleFactura.get(params.id)
         if (!detalleFacturaInstance) {
             flash.message = "No se encontró DetalleFactura con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "list")
             return
@@ -72,7 +72,7 @@ class DetalleFacturaController extends cratos.seguridad.Shield  {
         def detalleFacturaInstance = DetalleFactura.get(params.id)
         if (!detalleFacturaInstance) {
             flash.message = "No se encontró DetalleFactura con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "list")
             return
@@ -85,7 +85,7 @@ class DetalleFacturaController extends cratos.seguridad.Shield  {
         def detalleFacturaInstance = DetalleFactura.get(params.id)
         if (!detalleFacturaInstance) {
             flash.message = "No se encontró DetalleFactura con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "list")
             return
@@ -94,13 +94,13 @@ class DetalleFacturaController extends cratos.seguridad.Shield  {
         try {
             detalleFacturaInstance.delete(flush: true)
             flash.message = "DetalleFactura  con id " + params.id + " eliminado"
-            flash.clase = "success"
+            flash.tipo = "success"
             flash.ico = "ss_accept"
             redirect(action: "list")
         }
         catch (DataIntegrityViolationException e) {
             flash.message = "No se pudo eliminar DetalleFactura con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "show", id: params.id)
         }

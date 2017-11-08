@@ -38,11 +38,11 @@ class SesnController extends cratos.seguridad.Shield  {
 
         if(params.id) {
             flash.message = "Sesn actualizado"
-            flash.clase = "success"
+            flash.tipo = "success"
             flash.ico ="ss_accept"
         } else {
 		    flash.message = "Sesn creado"
-            flash.clase = "success"
+            flash.tipo = "success"
             flash.ico ="ss_accept"
         }
         redirect(action: "show", id: sesnInstance.id)
@@ -52,7 +52,7 @@ class SesnController extends cratos.seguridad.Shield  {
         def sesnInstance = Sesn.get(params.id)
         if (!sesnInstance) {
             flash.message = "No se encontró Sesn con id "+params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico ="ss_delete"
             redirect(action: "list")
             return
@@ -65,7 +65,7 @@ class SesnController extends cratos.seguridad.Shield  {
         def sesnInstance = Sesn.get(params.id)
         if (!sesnInstance) {
             flash.message = "No se encontró Sesn con id "+params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico ="ss_delete"
             redirect(action: "list")
             return
@@ -78,7 +78,7 @@ class SesnController extends cratos.seguridad.Shield  {
         def sesnInstance = Sesn.get(params.id)
         if (!sesnInstance) {
 			flash.message = "No se encontró Sesn con id "+params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico ="ss_delete"
             redirect(action: "list")
             return
@@ -87,13 +87,13 @@ class SesnController extends cratos.seguridad.Shield  {
         try {
             sesnInstance.delete(flush: true)
 			flash.message = "Sesn  con id "+params.id+" eliminado"
-            flash.clase = "success"
+            flash.tipo = "success"
             flash.ico ="ss_accept"
             redirect(action: "list")
         }
         catch (DataIntegrityViolationException e) {
 			flash.message = "No se pudo eliminar Sesn con id "+params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico ="ss_delete"
             redirect(action: "show", id: params.id)
         }

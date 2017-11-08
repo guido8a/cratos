@@ -38,11 +38,11 @@ class FuenteController extends cratos.seguridad.Shield  {
 
         if (params.id) {
             flash.message = "Fuente actualizado"
-            flash.clase = "success"
+            flash.tipo = "success"
             flash.ico = "ss_accept"
         } else {
             flash.message = "Fuente creado"
-            flash.clase = "success"
+            flash.tipo = "success"
             flash.ico = "ss_accept"
         }
         redirect(action: "show", id: fuenteInstance.id)
@@ -52,7 +52,7 @@ class FuenteController extends cratos.seguridad.Shield  {
         def fuenteInstance = Fuente.get(params.id)
         if (!fuenteInstance) {
             flash.message = "No se encontró Fuente con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "list")
             return
@@ -65,7 +65,7 @@ class FuenteController extends cratos.seguridad.Shield  {
         def fuenteInstance = Fuente.get(params.id)
         if (!fuenteInstance) {
             flash.message = "No se encontró Fuente con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "list")
             return
@@ -78,7 +78,7 @@ class FuenteController extends cratos.seguridad.Shield  {
         def fuenteInstance = Fuente.get(params.id)
         if (!fuenteInstance) {
             flash.message = "No se encontró Fuente con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "list")
             return
@@ -87,13 +87,13 @@ class FuenteController extends cratos.seguridad.Shield  {
         try {
             fuenteInstance.delete(flush: true)
             flash.message = "Fuente  con id " + params.id + " eliminado"
-            flash.clase = "success"
+            flash.tipo = "success"
             flash.ico = "ss_accept"
             redirect(action: "list")
         }
         catch (DataIntegrityViolationException e) {
             flash.message = "No se pudo eliminar Fuente con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "show", id: params.id)
         }

@@ -268,7 +268,7 @@
         (ev.keyCode >= 96 && ev.keyCode <= 105) ||
         ev.keyCode == 8 || ev.keyCode == 46 || ev.keyCode == 9 ||
         ev.keyCode == 37 || ev.keyCode == 39 ||
-        ev.keyCode == 110 || ev.keyCode == 190);
+        ev.keyCode == 110 || ev.keyCode == 190 || ev.ctrlKey);
     }
 
     $(".validacionNumero").keydown(function (ev) {
@@ -284,6 +284,9 @@
             $(this).val("0.00")
     });
 
+    $("#dcmtAutorizacion").bind('paste', function() {
+        $('span').text('paste behaviour detected!')
+    });
 
     function calculaIva() {
         var iva = ${valorIva ?: 0};

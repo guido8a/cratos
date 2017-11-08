@@ -79,11 +79,11 @@ class ProveedorController extends cratos.seguridad.Shield {
 
         if (params.id) {
             flash.message = "Proveedor actualizado"
-            flash.clase = "success"
+            flash.tipo = "success"
             flash.ico = "ss_accept"
         } else {
             flash.message = "Proveedor creado"
-            flash.clase = "success"
+            flash.tipo = "success"
             flash.ico = "ss_accept"
         }
 //            redirect(action: "show", id: proveedorInstance.id)
@@ -99,7 +99,7 @@ class ProveedorController extends cratos.seguridad.Shield {
         def proveedorInstance = Proveedor.get(params.id)
         if (!proveedorInstance) {
             flash.message = "No se encontró Proveedor con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "list")
             return
@@ -112,7 +112,7 @@ class ProveedorController extends cratos.seguridad.Shield {
         def proveedorInstance = Proveedor.get(params.id)
         if (!proveedorInstance) {
             flash.message = "No se encontró Proveedor con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "list")
             return
@@ -125,7 +125,7 @@ class ProveedorController extends cratos.seguridad.Shield {
         def proveedorInstance = Proveedor.get(params.id)
         if (!proveedorInstance) {
             flash.message = "No se encontró Proveedor con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "list")
             return
@@ -134,13 +134,13 @@ class ProveedorController extends cratos.seguridad.Shield {
         try {
             proveedorInstance.delete(flush: true)
             flash.message = "Proveedor  con id " + params.id + " eliminado"
-            flash.clase = "success"
+            flash.tipo = "success"
             flash.ico = "ss_accept"
             redirect(action: "list")
         }
         catch (DataIntegrityViolationException e) {
             flash.message = "No se pudo eliminar Proveedor con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "show", id: params.id)
         }
@@ -160,7 +160,7 @@ class ProveedorController extends cratos.seguridad.Shield {
                 return
             }
         } else {
-            render Proveedor.countByRuc(params.ruc) == 0
+            render Proveedor.countByEmpresaAndRuc(session.empresa, params.ruc) == 0
             return
         }
     }
@@ -272,7 +272,7 @@ class ProveedorController extends cratos.seguridad.Shield {
             render mnsj
         }catch (e){
             render "no_100"
-            println("error al guardar proveedor " + e)
+            println "error al guardar proveedor $e, $proveedorInstance.errors"
         }
     } //save para grabar desde ajax
 

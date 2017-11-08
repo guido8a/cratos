@@ -828,7 +828,8 @@
                 tipo: tipo,
                 tpcp: tpcp,
                 prve: prve,
-                tpps: tpps
+                tpps: tpps,
+                fcha: $("#fecha_input").val()
             },
             success: function (msg) {
                 $("#divValores").html(msg).show("slide")

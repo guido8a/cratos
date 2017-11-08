@@ -300,18 +300,18 @@ class FacturaController extends cratos.seguridad.Shield {
         if (ok) {
             if (params.id) {
                 flash.message = "Factura actualizada"
-                flash.clase = "success"
+                flash.tipo = "success"
                 flash.ico = "ss_accept"
             } else {
                 flash.message = "Factura creada"
-                flash.clase = "success"
+                flash.tipo = "success"
                 flash.ico = "ss_accept"
             }
             render(facturaInstance.id)
 
         } else {
             flash.message = "Ha ocurrido un error"
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             render("error")
 
@@ -324,7 +324,7 @@ class FacturaController extends cratos.seguridad.Shield {
         def facturaInstance = Factura.get(params.id)
         if (!facturaInstance) {
             flash.message = "No se encontró Factura con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "list")
             return
@@ -337,7 +337,7 @@ class FacturaController extends cratos.seguridad.Shield {
         def facturaInstance = Factura.get(params.id)
         if (!facturaInstance) {
             flash.message = "No se encontró Factura con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "list")
             return
@@ -350,7 +350,7 @@ class FacturaController extends cratos.seguridad.Shield {
         def facturaInstance = Factura.get(params.id)
         if (!facturaInstance) {
             flash.message = "No se encontró Factura con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "list")
             return
@@ -359,13 +359,13 @@ class FacturaController extends cratos.seguridad.Shield {
         try {
             facturaInstance.delete(flush: true)
             flash.message = "Factura  con id " + params.id + " eliminado"
-            flash.clase = "success"
+            flash.tipo = "success"
             flash.ico = "ss_accept"
             redirect(action: "list")
         }
         catch (DataIntegrityViolationException e) {
             flash.message = "No se pudo eliminar Factura con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "show", id: params.id)
         }
@@ -506,11 +506,11 @@ class FacturaController extends cratos.seguridad.Shield {
 
         if (ok) {
             flash.message = "Factura generada exitosamente"
-            flash.clase = "success"
+            flash.tipo = "success"
             flash.ico = "ss_accept"
         } else {
             flash.message = "Ha ocurrido un error en la generación de la factura"
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
         }
         redirect(action: "show", id: factura.id)

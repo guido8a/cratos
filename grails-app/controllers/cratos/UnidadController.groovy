@@ -38,11 +38,11 @@ class UnidadController extends cratos.seguridad.Shield  {
 
         if(params.id) {
             flash.message = "Unidad actualizado"
-            flash.clase = "success"
+            flash.tipo = "success"
             flash.ico ="ss_accept"
         } else {
 		    flash.message = "Unidad creado"
-            flash.clase = "success"
+            flash.tipo = "success"
             flash.ico ="ss_accept"
         }
         redirect(action: "show", id: unidadInstance.id)
@@ -52,7 +52,7 @@ class UnidadController extends cratos.seguridad.Shield  {
         def unidadInstance = Unidad2.get(params.id)
         if (!unidadInstance) {
             flash.message = "No se encontró Unidad con id "+params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico ="ss_delete"
             redirect(action: "list")
             return
@@ -65,7 +65,7 @@ class UnidadController extends cratos.seguridad.Shield  {
         def unidadInstance = Unidad2.get(params.id)
         if (!unidadInstance) {
             flash.message = "No se encontró Unidad con id "+params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico ="ss_delete"
             redirect(action: "list")
             return
@@ -78,7 +78,7 @@ class UnidadController extends cratos.seguridad.Shield  {
         def unidadInstance = Unidad2.get(params.id)
         if (!unidadInstance) {
 			flash.message = "No se encontró Unidad con id "+params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico ="ss_delete"
             redirect(action: "list")
             return
@@ -87,13 +87,13 @@ class UnidadController extends cratos.seguridad.Shield  {
         try {
             unidadInstance.delete(flush: true)
 			flash.message = "Unidad  con id "+params.id+" eliminado"
-            flash.clase = "success"
+            flash.tipo = "success"
             flash.ico ="ss_accept"
             redirect(action: "list")
         }
         catch (DataIntegrityViolationException e) {
 			flash.message = "No se pudo eliminar Unidad con id "+params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico ="ss_delete"
             redirect(action: "show", id: params.id)
         }

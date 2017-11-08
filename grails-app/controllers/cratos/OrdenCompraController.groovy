@@ -154,18 +154,18 @@ class OrdenCompraController extends cratos.seguridad.Shield {
         if (ok) {
             if (params.id) {
                 flash.message = "Orden de compra actualizada"
-                flash.clase = "success"
+                flash.tipo = "success"
                 flash.ico = "ss_accept"
             } else {
                 flash.message = "Orden de compra creada"
-                flash.clase = "success"
+                flash.tipo = "success"
                 flash.ico = "ss_accept"
             }
             render(ordenCompraInstance.id)
 
         } else {
             flash.message = "Ha ocurrido un error"
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             render("error")
         }

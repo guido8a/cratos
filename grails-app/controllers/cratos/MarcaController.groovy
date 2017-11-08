@@ -39,11 +39,11 @@ class MarcaController extends cratos.seguridad.Shield  {
 
         if (params.id) {
             flash.message = "Marca actualizado"
-            flash.clase = "success"
+            flash.tipo = "success"
             flash.ico = "ss_accept"
         } else {
             flash.message = "Marca creado"
-            flash.clase = "success"
+            flash.tipo = "success"
             flash.ico = "ss_accept"
         }
         redirect(action: "show", id: marcaInstance.id)
@@ -53,7 +53,7 @@ class MarcaController extends cratos.seguridad.Shield  {
         def marcaInstance = Marca.get(params.id)
         if (!marcaInstance) {
             flash.message = "No se encontró Marca con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "list")
             return
@@ -66,7 +66,7 @@ class MarcaController extends cratos.seguridad.Shield  {
         def marcaInstance = Marca.get(params.id)
         if (!marcaInstance) {
             flash.message = "No se encontró Marca con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "list")
             return
@@ -79,7 +79,7 @@ class MarcaController extends cratos.seguridad.Shield  {
         def marcaInstance = Marca.get(params.id)
         if (!marcaInstance) {
             flash.message = "No se encontró Marca con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "list")
             return
@@ -88,13 +88,13 @@ class MarcaController extends cratos.seguridad.Shield  {
         try {
             marcaInstance.delete(flush: true)
             flash.message = "Marca  con id " + params.id + " eliminado"
-            flash.clase = "success"
+            flash.tipo = "success"
             flash.ico = "ss_accept"
             redirect(action: "list")
         }
         catch (DataIntegrityViolationException e) {
             flash.message = "No se pudo eliminar Marca con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "show", id: params.id)
         }

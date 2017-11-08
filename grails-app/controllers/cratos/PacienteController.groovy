@@ -91,11 +91,11 @@ class PacienteController extends cratos.seguridad.Shield {
 
         if (params.id) {
             flash.message = "Proveedor actualizado"
-            flash.clase = "success"
+            flash.tipo = "success"
             flash.ico = "ss_accept"
         } else {
             flash.message = "Proveedor creado"
-            flash.clase = "success"
+            flash.tipo = "success"
             flash.ico = "ss_accept"
         }
         redirect(action: "show", id: pacienteInstance.id)
@@ -105,7 +105,7 @@ class PacienteController extends cratos.seguridad.Shield {
         def pacienteInstance = Proveedor.get(params.id)
         if (!pacienteInstance) {
             flash.message = "No se encontró Proveedor con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "list")
             return
@@ -118,7 +118,7 @@ class PacienteController extends cratos.seguridad.Shield {
         def pacienteInstance = Proveedor.get(params.id)
         if (!pacienteInstance) {
             flash.message = "No se encontró Proveedor con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "list")
             return
@@ -131,7 +131,7 @@ class PacienteController extends cratos.seguridad.Shield {
         def pacienteInstance = Proveedor.get(params.id)
         if (!pacienteInstance) {
             flash.message = "No se encontró Proveedor con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "list")
             return
@@ -140,13 +140,13 @@ class PacienteController extends cratos.seguridad.Shield {
         try {
             pacienteInstance.delete(flush: true)
             flash.message = "Proveedor  con id " + params.id + " eliminado"
-            flash.clase = "success"
+            flash.tipo = "success"
             flash.ico = "ss_accept"
             redirect(action: "list")
         }
         catch (DataIntegrityViolationException e) {
             flash.message = "No se pudo eliminar Proveedor con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "show", id: params.id)
         }

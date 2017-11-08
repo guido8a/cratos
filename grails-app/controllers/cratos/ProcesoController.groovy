@@ -1420,18 +1420,20 @@ class ProcesoController extends cratos.seguridad.Shield {
     }
 
     def valores_ajax () {
-//        println "valores_ajax $params"
+        println "valores_ajax $params"
         def cn = dbConnectionService.getConnection()
         def proceso = Proceso.get(params.proceso)
         def data = []
         def atrz
         def fcha = "now()"
-        if(proceso?.fechaEmision) {
+        if(proceso) {
             fcha = "'${proceso?.fechaEmision}'"
+        } else {
+            fcha = "'" + new Date().parse("dd-MM-yyyy", params.fcha).format('yyyy-MM-dd') + "'"
         }
         def sql = "select paux_iva from paux where ${fcha} between pauxfcin and " +
                 "coalesce(pauxfcfn, now())"
-//        println "sqlIva: $sql"
+        println "sqlIva: $sql"
         def valorIva = cn.rows(sql.toString())[0]?.paux_iva
 
         def detalles = DetalleFactura.findAllByProceso(proceso)
@@ -1673,7 +1675,7 @@ class ProcesoController extends cratos.seguridad.Shield {
     }
 
     def armaSqlProcesos(params){
-//        println "armaSql: $params"
+        println "armaSql: $params"
         def cont = session.contabilidad.id
         def campos = buscadorService.parmProcesos()
         def operador = buscadorService.operadores()
@@ -1717,6 +1719,7 @@ class ProcesoController extends cratos.seguridad.Shield {
 
         def sql = armaSqlProcesos(params)
         params.criterio = params.old
+        println "sql: $sql"
         def data = cn.rows(sql.toString())
 
         def msg = ""

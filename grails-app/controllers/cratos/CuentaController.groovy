@@ -370,11 +370,11 @@ class CuentaController extends cratos.seguridad.Shield {
 
         if (params.id) {
             flash.message = "Cuenta actualizado"
-            flash.clase = "success"
+            flash.tipo = "success"
             flash.ico = "ss_accept"
         } else {
             flash.message = "Cuenta creado"
-            flash.clase = "success"
+            flash.tipo = "success"
             flash.ico = "ss_accept"
         }
         redirect(action: "show", id: cuentaInstance.id)
@@ -384,7 +384,7 @@ class CuentaController extends cratos.seguridad.Shield {
         def cuentaInstance = Cuenta.get(params.id)
         if (!cuentaInstance) {
             flash.message = "No se encontró Cuenta con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "list")
             return
@@ -397,7 +397,7 @@ class CuentaController extends cratos.seguridad.Shield {
         def cuentaInstance = Cuenta.get(params.id)
         if (!cuentaInstance) {
             flash.message = "No se encontró Cuenta con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "list")
             return
@@ -483,7 +483,7 @@ class CuentaController extends cratos.seguridad.Shield {
             (cuenta.nivelId - 1).times {
                 esp += "\t"
             }
-            println esp + cuenta
+//            println esp + cuenta
             def nueva = new Cuenta()
             nueva.properties = cuenta.properties
             if (empresaDestino) {

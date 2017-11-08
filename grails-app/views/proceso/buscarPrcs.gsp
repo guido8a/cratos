@@ -166,29 +166,34 @@ como máximo 30 <span style="margin-left: 40px; color: #0b2c89">Se ordena por fe
     cargarBusqueda();
 
     function cargarBusqueda () {
-        $("#bandeja").html("").append($("<div style='width:100%; text-align: center;'/>").append(spinnerSquare64));
-        var desde = $(".fechaD").val();
-        var hasta = $(".fechaH").val();
+        var id = parseInt(${session?.contabilidad?.id})
+        console.log("cont", id);
+        if(id > 0) {
+            $("#bandeja").html("").append($("<div style='width:100%; text-align: center;'/>").append(spinnerSquare64));
+            var desde = $(".fechaD").val();
+            var hasta = $(".fechaH").val();
+            $.ajax({
+                type: "POST",
+                url: "${g.createLink(controller: 'proceso', action: 'tablaBuscarPrcs')}",
+                data: {
+                    buscador: $("#buscador_con").val(),
+                    criterio: $("#criterio_con").val(),
+                    operador: $("#oprd").val(),
+                    desde: desde,
+                    hasta: hasta,
+                    tpps: $("#tipo_proceso").val()
+                },
+                success: function (msg) {
+                    $("#bandeja").html(msg);
+                },
+                error: function (msg) {
+                    $("#bandeja").html("Ha ocurrido un error");
+                }
+            });
+        } else {
+            location.href = '${createLink(controller: "contabilidad", action: "list")}?id=-1';
+        }
 
-//        console.log('criterio:', buscar);
-        $.ajax({
-            type: "POST",
-            url: "${g.createLink(controller: 'proceso', action: 'tablaBuscarPrcs')}",
-            data: {
-                buscador: $("#buscador_con").val(),
-                criterio: $("#criterio_con").val(),
-                operador: $("#oprd").val(),
-                desde: desde,
-                hasta: hasta,
-                tpps: $("#tipo_proceso").val()
-            },
-            success: function (msg) {
-                $("#bandeja").html(msg);
-            },
-            error: function (msg) {
-                $("#bandeja").html("Ha ocurrido un error");
-            }
-        });
     }
 
     $("#btnBusqueda").click(function () {

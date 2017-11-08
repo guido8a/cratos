@@ -41,11 +41,11 @@ class TipoPagoController extends cratos.seguridad.Shield  {
 
         if (params.id) {
             flash.message = "TipoPago actualizado"
-            flash.clase = "success"
+            flash.tipo = "success"
             flash.ico = "ss_accept"
         } else {
             flash.message = "TipoPago creado"
-            flash.clase = "success"
+            flash.tipo = "success"
             flash.ico = "ss_accept"
         }
         redirect(action: "show", id: tipoPagoInstance.id)
@@ -55,7 +55,7 @@ class TipoPagoController extends cratos.seguridad.Shield  {
         def tipoPagoInstance = TipoPago.get(params.id)
         if (!tipoPagoInstance) {
             flash.message = "No se encontró TipoPago con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "list")
             return
@@ -68,7 +68,7 @@ class TipoPagoController extends cratos.seguridad.Shield  {
         def tipoPagoInstance = TipoPago.get(params.id)
         if (!tipoPagoInstance) {
             flash.message = "No se encontró TipoPago con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "list")
             return
@@ -81,7 +81,7 @@ class TipoPagoController extends cratos.seguridad.Shield  {
         def tipoPagoInstance = TipoPago.get(params.id)
         if (!tipoPagoInstance) {
             flash.message = "No se encontró TipoPago con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "list")
             return
@@ -90,13 +90,13 @@ class TipoPagoController extends cratos.seguridad.Shield  {
         try {
             tipoPagoInstance.delete(flush: true)
             flash.message = "TipoPago  con id " + params.id + " eliminado"
-            flash.clase = "success"
+            flash.tipo = "success"
             flash.ico = "ss_accept"
             redirect(action: "list")
         }
         catch (DataIntegrityViolationException e) {
             flash.message = "No se pudo eliminar TipoPago con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "show", id: params.id)
         }

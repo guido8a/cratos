@@ -38,11 +38,11 @@ class TipoPersonaController extends cratos.seguridad.Shield  {
 
         if (params.id) {
             flash.message = "TipoPersona actualizado"
-            flash.clase = "success"
+            flash.tipo = "success"
             flash.ico = "ss_accept"
         } else {
             flash.message = "TipoPersona creado"
-            flash.clase = "success"
+            flash.tipo = "success"
             flash.ico = "ss_accept"
         }
         redirect(action: "show", id: tipoPersonaInstance.id)
@@ -52,7 +52,7 @@ class TipoPersonaController extends cratos.seguridad.Shield  {
         def tipoPersonaInstance = TipoPersona.get(params.id)
         if (!tipoPersonaInstance) {
             flash.message = "No se encontró TipoPersona con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "list")
             return
@@ -65,7 +65,7 @@ class TipoPersonaController extends cratos.seguridad.Shield  {
         def tipoPersonaInstance = TipoPersona.get(params.id)
         if (!tipoPersonaInstance) {
             flash.message = "No se encontró TipoPersona con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "list")
             return
@@ -78,7 +78,7 @@ class TipoPersonaController extends cratos.seguridad.Shield  {
         def tipoPersonaInstance = TipoPersona.get(params.id)
         if (!tipoPersonaInstance) {
             flash.message = "No se encontró TipoPersona con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "list")
             return
@@ -87,13 +87,13 @@ class TipoPersonaController extends cratos.seguridad.Shield  {
         try {
             tipoPersonaInstance.delete(flush: true)
             flash.message = "TipoPersona  con id " + params.id + " eliminado"
-            flash.clase = "success"
+            flash.tipo = "success"
             flash.ico = "ss_accept"
             redirect(action: "list")
         }
         catch (DataIntegrityViolationException e) {
             flash.message = "No se pudo eliminar TipoPersona con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "show", id: params.id)
         }

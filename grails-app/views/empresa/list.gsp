@@ -16,9 +16,11 @@
                 <g:link controller="inicio" action="parametros" class="btn btn-warning btnRegresar">
                     <i class="fa fa-chevron-left"></i> Parámetros
                 </g:link>
-                <g:link action="form" class="btn btn-info btnCrear">
-                    <i class="fa fa-file-o"></i> Crear
-                </g:link>
+                <g:if test="${session.perfil.id == 1}">
+                    <g:link action="form" class="btn btn-info btnCrear">
+                        <i class="fa fa-file-o"></i> Crear
+                    </g:link>
+                </g:if>
             </div>
         </div>
 

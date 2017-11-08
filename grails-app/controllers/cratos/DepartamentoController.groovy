@@ -49,11 +49,11 @@ class DepartamentoController extends cratos.seguridad.Shield  {
 
         if (params.id) {
             flash.message = "Departamento actualizado"
-            flash.clase = "success"
+            flash.tipo = "success"
             flash.ico = "ss_accept"
         } else {
             flash.message = "Departamento creado"
-            flash.clase = "success"
+            flash.tipo = "success"
             flash.ico = "ss_accept"
         }
         redirect(action: "show", id: departamentoInstance.id)
@@ -63,7 +63,7 @@ class DepartamentoController extends cratos.seguridad.Shield  {
         def departamentoInstance = Departamento.get(params.id)
         if (!departamentoInstance) {
             flash.message = "No se encontró Departamento con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "list")
             return
@@ -76,7 +76,7 @@ class DepartamentoController extends cratos.seguridad.Shield  {
         def departamentoInstance = Departamento.get(params.id)
         if (!departamentoInstance) {
             flash.message = "No se encontró Departamento con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "list")
             return
@@ -89,7 +89,7 @@ class DepartamentoController extends cratos.seguridad.Shield  {
         def departamentoInstance = Departamento.get(params.id)
         if (!departamentoInstance) {
             flash.message = "No se encontró Departamento con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "list")
             return
@@ -98,13 +98,13 @@ class DepartamentoController extends cratos.seguridad.Shield  {
         try {
             departamentoInstance.delete(flush: true)
             flash.message = "Departamento  con id " + params.id + " eliminado"
-            flash.clase = "success"
+            flash.tipo = "success"
             flash.ico = "ss_accept"
             redirect(action: "list")
         }
         catch (DataIntegrityViolationException e) {
             flash.message = "No se pudo eliminar Departamento con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "show", id: params.id)
         }

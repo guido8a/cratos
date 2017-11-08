@@ -42,11 +42,11 @@ class NivelController extends cratos.seguridad.Shield  {
 
         if(params.id) {
             flash.message = "Nivel actualizado"
-            flash.clase = "success"
+            flash.tipo = "success"
             flash.ico ="ss_accept"
         } else {
 		    flash.message = "Nivel creado"
-            flash.clase = "success"
+            flash.tipo = "success"
             flash.ico ="ss_accept"
         }
         redirect(action: "show", id: nivelInstance.id)
@@ -56,7 +56,7 @@ class NivelController extends cratos.seguridad.Shield  {
         def nivelInstance = Nivel.get(params.id)
         if (!nivelInstance) {
             flash.message = "No se encontró Nivel con id "+params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico ="ss_delete"
             redirect(action: "list")
             return
@@ -69,7 +69,7 @@ class NivelController extends cratos.seguridad.Shield  {
         def nivelInstance = Nivel.get(params.id)
         if (!nivelInstance) {
             flash.message = "No se encontró Nivel con id "+params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico ="ss_delete"
             redirect(action: "list")
             return
@@ -82,7 +82,7 @@ class NivelController extends cratos.seguridad.Shield  {
         def nivelInstance = Nivel.get(params.id)
         if (!nivelInstance) {
 			flash.message = "No se encontró Nivel con id "+params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico ="ss_delete"
             redirect(action: "list")
             return
@@ -91,13 +91,13 @@ class NivelController extends cratos.seguridad.Shield  {
         try {
             nivelInstance.delete(flush: true)
 			flash.message = "Nivel  con id "+params.id+" eliminado"
-            flash.clase = "success"
+            flash.tipo = "success"
             flash.ico ="ss_accept"
             redirect(action: "list")
         }
         catch (DataIntegrityViolationException e) {
 			flash.message = "No se pudo eliminar Nivel con id "+params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico ="ss_delete"
             redirect(action: "show", id: params.id)
         }

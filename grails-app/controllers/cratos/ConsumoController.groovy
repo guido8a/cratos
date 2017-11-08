@@ -209,11 +209,11 @@ class ConsumoController extends cratos.seguridad.Shield  {
 //
 //        if (params.id) {
 //            flash.message = "Consumo actualizado"
-//            flash.clase = "success"
+//            flash.tipo = "success"
 //            flash.ico = "ss_accept"
 //        } else {
 //            flash.message = "Consumo creado"
-//            flash.clase = "success"
+//            flash.tipo = "success"
 //            flash.ico = "ss_accept"
 //        }
 //        redirect(action: "show", id: consumoInstance.id)
@@ -224,7 +224,7 @@ class ConsumoController extends cratos.seguridad.Shield  {
         println "SHOW " + factura.persona + "   " + factura.direccion + "   " + factura.telefono
         if (!factura) {
             flash.message = "No se encontró factura con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "list")
             return
@@ -234,7 +234,7 @@ class ConsumoController extends cratos.seguridad.Shield  {
 //        def consumoInstance = Consumo.get(params.id)
 //        if (!consumoInstance) {
 //            flash.message = "No se encontró Consumo con id " + params.id
-//            flash.clase = "error"
+//            flash.tipo = "error"
 //            flash.ico = "ss_delete"
 //            redirect(action: "list")
 //            return
@@ -247,7 +247,7 @@ class ConsumoController extends cratos.seguridad.Shield  {
         def consumoInstance = Consumo.get(params.id)
         if (!consumoInstance) {
             flash.message = "No se encontró Consumo con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "list")
             return
@@ -260,7 +260,7 @@ class ConsumoController extends cratos.seguridad.Shield  {
         def consumoInstance = Consumo.get(params.id)
         if (!consumoInstance) {
             flash.message = "No se encontró Consumo con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "list")
             return
@@ -269,13 +269,13 @@ class ConsumoController extends cratos.seguridad.Shield  {
         try {
             consumoInstance.delete(flush: true)
             flash.message = "Consumo  con id " + params.id + " eliminado"
-            flash.clase = "success"
+            flash.tipo = "success"
             flash.ico = "ss_accept"
             redirect(action: "list")
         }
         catch (DataIntegrityViolationException e) {
             flash.message = "No se pudo eliminar Consumo con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "show", id: params.id)
         }

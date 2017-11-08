@@ -75,7 +75,7 @@ class Proveedor {
         empresa(blank: true, nullable: true)
         canton(blank: true, nullable: true)
 
-        ruc(size: 1..13, blank: false, attributes: [title: 'ruc'],unique: true)
+        ruc(size: 1..13, blank: false, attributes: [title: 'ruc'])
         nombre(blank: true, nullable: true, maxSize: 63, attributes: [title: 'nombre'])
         direccion(maxSize: 127, blank: true, nullable: true, attributes: [title: 'direccion'])
         fecha(blank: true, nullable: true, attributes: [title: 'fecha'])

@@ -38,11 +38,11 @@ class TipoProveedorController extends cratos.seguridad.Shield  {
 
         if (params.id) {
             flash.message = "TipoProveedor actualizado"
-            flash.clase = "success"
+            flash.tipo = "success"
             flash.ico = "ss_accept"
         } else {
             flash.message = "TipoProveedor creado"
-            flash.clase = "success"
+            flash.tipo = "success"
             flash.ico = "ss_accept"
         }
         redirect(action: "show", id: tipoProveedorInstance.id)
@@ -52,7 +52,7 @@ class TipoProveedorController extends cratos.seguridad.Shield  {
         def tipoProveedorInstance = TipoProveedor.get(params.id)
         if (!tipoProveedorInstance) {
             flash.message = "No se encontró TipoProveedor con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "list")
             return
@@ -65,7 +65,7 @@ class TipoProveedorController extends cratos.seguridad.Shield  {
         def tipoProveedorInstance = TipoProveedor.get(params.id)
         if (!tipoProveedorInstance) {
             flash.message = "No se encontró TipoProveedor con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "list")
             return
@@ -78,7 +78,7 @@ class TipoProveedorController extends cratos.seguridad.Shield  {
         def tipoProveedorInstance = TipoProveedor.get(params.id)
         if (!tipoProveedorInstance) {
             flash.message = "No se encontró TipoProveedor con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "list")
             return
@@ -87,13 +87,13 @@ class TipoProveedorController extends cratos.seguridad.Shield  {
         try {
             tipoProveedorInstance.delete(flush: true)
             flash.message = "TipoProveedor  con id " + params.id + " eliminado"
-            flash.clase = "success"
+            flash.tipo = "success"
             flash.ico = "ss_accept"
             redirect(action: "list")
         }
         catch (DataIntegrityViolationException e) {
             flash.message = "No se pudo eliminar TipoProveedor con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "show", id: params.id)
         }

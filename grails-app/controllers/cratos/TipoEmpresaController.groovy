@@ -38,11 +38,11 @@ class TipoEmpresaController extends cratos.seguridad.Shield  {
 
         if(params.id) {
             flash.message = "TipoEmpresa actualizado"
-            flash.clase = "success"
+            flash.tipo = "success"
             flash.ico ="ss_accept"
         } else {
 		    flash.message = "TipoEmpresa creado"
-            flash.clase = "success"
+            flash.tipo = "success"
             flash.ico ="ss_accept"
         }
         redirect(action: "show", id: tipoEmpresaInstance.id)
@@ -52,7 +52,7 @@ class TipoEmpresaController extends cratos.seguridad.Shield  {
         def tipoEmpresaInstance = TipoEmpresa.get(params.id)
         if (!tipoEmpresaInstance) {
             flash.message = "No se encontró TipoEmpresa con id "+params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico ="ss_delete"
             redirect(action: "list")
             return
@@ -65,7 +65,7 @@ class TipoEmpresaController extends cratos.seguridad.Shield  {
         def tipoEmpresaInstance = TipoEmpresa.get(params.id)
         if (!tipoEmpresaInstance) {
             flash.message = "No se encontró TipoEmpresa con id "+params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico ="ss_delete"
             redirect(action: "list")
             return
@@ -78,7 +78,7 @@ class TipoEmpresaController extends cratos.seguridad.Shield  {
         def tipoEmpresaInstance = TipoEmpresa.get(params.id)
         if (!tipoEmpresaInstance) {
 			flash.message = "No se encontró TipoEmpresa con id "+params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico ="ss_delete"
             redirect(action: "list")
             return
@@ -87,13 +87,13 @@ class TipoEmpresaController extends cratos.seguridad.Shield  {
         try {
             tipoEmpresaInstance.delete(flush: true)
 			flash.message = "TipoEmpresa  con id "+params.id+" eliminado"
-            flash.clase = "success"
+            flash.tipo = "success"
             flash.ico ="ss_accept"
             redirect(action: "list")
         }
         catch (DataIntegrityViolationException e) {
 			flash.message = "No se pudo eliminar TipoEmpresa con id "+params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico ="ss_delete"
             redirect(action: "show", id: params.id)
         }

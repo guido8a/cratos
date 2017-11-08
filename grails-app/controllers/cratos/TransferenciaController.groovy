@@ -187,11 +187,11 @@ class TransferenciaController {
 
 //            if (params.id) {
 //                flash.message = "Transferencia actualizado"
-//                flash.clase = "success"
+//                flash.tipo = "success"
 //                flash.ico = "ss_accept"
 //            } else {
 //                flash.message = "Transferencia creado"
-//                flash.clase = "success"
+//                flash.tipo = "success"
 //                flash.ico = "ss_accept"
 //            }
 //            render transferenciaInstance.id
@@ -203,7 +203,7 @@ class TransferenciaController {
         def transferenciaInstance = Transferencia.get(params.id)
         if (!transferenciaInstance) {
             flash.message = "No se encontró Transferencia con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "list")
             return
@@ -317,7 +317,7 @@ class TransferenciaController {
         def transferenciaInstance = Transferencia.get(params.id)
         if (!transferenciaInstance) {
             flash.message = "No se encontró Transferencia con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "list")
             return
@@ -330,7 +330,7 @@ class TransferenciaController {
         def transferenciaInstance = Transferencia.get(params.id)
         if (!transferenciaInstance) {
             flash.message = "No se encontró Transferencia con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "list")
             return
@@ -339,13 +339,13 @@ class TransferenciaController {
         try {
             transferenciaInstance.delete(flush: true)
             flash.message = "Transferencia  con id " + params.id + " eliminado"
-            flash.clase = "success"
+            flash.tipo = "success"
             flash.ico = "ss_accept"
             redirect(action: "list")
         }
         catch (DataIntegrityViolationException e) {
             flash.message = "No se pudo eliminar Transferencia con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "show", id: params.id)
         }

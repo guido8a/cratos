@@ -38,11 +38,11 @@ class TipoComprobanteController extends cratos.seguridad.Shield  {
 
         if (params.id) {
             flash.message = "TipoComprobante actualizado"
-            flash.clase = "success"
+            flash.tipo = "success"
             flash.ico = "ss_accept"
         } else {
             flash.message = "TipoComprobante creado"
-            flash.clase = "success"
+            flash.tipo = "success"
             flash.ico = "ss_accept"
         }
         redirect(action: "show", id: tipoComprobanteInstance.id)
@@ -52,7 +52,7 @@ class TipoComprobanteController extends cratos.seguridad.Shield  {
         def tipoComprobanteInstance = TipoComprobante.get(params.id)
         if (!tipoComprobanteInstance) {
             flash.message = "No se encontró TipoComprobante con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "list")
             return
@@ -65,7 +65,7 @@ class TipoComprobanteController extends cratos.seguridad.Shield  {
         def tipoComprobanteInstance = TipoComprobante.get(params.id)
         if (!tipoComprobanteInstance) {
             flash.message = "No se encontró TipoComprobante con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "list")
             return
@@ -78,7 +78,7 @@ class TipoComprobanteController extends cratos.seguridad.Shield  {
         def tipoComprobanteInstance = TipoComprobante.get(params.id)
         if (!tipoComprobanteInstance) {
             flash.message = "No se encontró TipoComprobante con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "list")
             return
@@ -87,13 +87,13 @@ class TipoComprobanteController extends cratos.seguridad.Shield  {
         try {
             tipoComprobanteInstance.delete(flush: true)
             flash.message = "TipoComprobante  con id " + params.id + " eliminado"
-            flash.clase = "success"
+            flash.tipo = "success"
             flash.ico = "ss_accept"
             redirect(action: "list")
         }
         catch (DataIntegrityViolationException e) {
             flash.message = "No se pudo eliminar TipoComprobante con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "show", id: params.id)
         }

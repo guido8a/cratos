@@ -49,11 +49,11 @@ class PeriodoController extends cratos.seguridad.Shield  {
 
         if (params.id) {
             flash.message = "Periodo actualizado"
-            flash.clase = "success"
+            flash.tipo = "success"
             flash.ico = "ss_accept"
         } else {
             flash.message = "Periodo creado"
-            flash.clase = "success"
+            flash.tipo = "success"
             flash.ico = "ss_accept"
         }
         redirect(action: "show", id: periodoInstance.id)
@@ -63,7 +63,7 @@ class PeriodoController extends cratos.seguridad.Shield  {
         def periodoInstance = Periodo.get(params.id)
         if (!periodoInstance) {
             flash.message = "No se encontró Periodo con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "list")
             return
@@ -76,7 +76,7 @@ class PeriodoController extends cratos.seguridad.Shield  {
         def periodoInstance = Periodo.get(params.id)
         if (!periodoInstance) {
             flash.message = "No se encontró Periodo con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "list")
             return
@@ -89,7 +89,7 @@ class PeriodoController extends cratos.seguridad.Shield  {
         def periodoInstance = Periodo.get(params.id)
         if (!periodoInstance) {
             flash.message = "No se encontró Periodo con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "list")
             return
@@ -98,13 +98,13 @@ class PeriodoController extends cratos.seguridad.Shield  {
         try {
             periodoInstance.delete(flush: true)
             flash.message = "Periodo  con id " + params.id + " eliminado"
-            flash.clase = "success"
+            flash.tipo = "success"
             flash.ico = "ss_accept"
             redirect(action: "list")
         }
         catch (DataIntegrityViolationException e) {
             flash.message = "No se pudo eliminar Periodo con id " + params.id
-            flash.clase = "error"
+            flash.tipo = "error"
             flash.ico = "ss_delete"
             redirect(action: "show", id: params.id)
         }
