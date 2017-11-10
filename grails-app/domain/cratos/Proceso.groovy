@@ -175,7 +175,7 @@ class Proceso implements Serializable {
         procesoSerie01(blank: true, nullable: true, maxSize: 3, attributes: [title: 'establecimeinto documento'])
         procesoSerie02(blank: true, nullable: true, maxSize: 3, attributes: [title: 'punto de emisión documento'])
         secuencial(blank: true, nullable: true, attributes: [title: 'secuencial'], size: 1..14)
-        autorizacion(blank: true, nullable: true, maxSize: 10, attributes: [title: 'autorizacion documento'])
+        autorizacion(blank: true, nullable: true, maxSize: 49, attributes: [title: 'autorizacion documento'])
         documento(blank: true, nullable: true, size: 1..40)
 
         facturaEstablecimiento(blank: true, nullable: true)

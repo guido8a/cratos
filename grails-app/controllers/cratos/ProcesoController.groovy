@@ -152,7 +152,11 @@ class ProcesoController extends cratos.seguridad.Shield {
                 proceso.proveedor = proveedor
                 proceso.pago = params.pago
 
-                proveedor.autorizacionSri = params.dcmtAutorizacion
+                if(params?.dcmtAutorizacion) {
+                    if(params?.dcmtAutorizacion.size() == 10) {
+                        proveedor.autorizacionSri = params.dcmtAutorizacion
+                    }
+                }
 
                 if (params.pago == '02') {
                     proceso.normaLegal = params.norma
