@@ -1,5 +1,6 @@
 package cratos.inventario
 
+import cratos.Empresa
 import cratos.seguridad.Shield
 import org.springframework.dao.DataIntegrityViolationException
 
@@ -14,7 +15,8 @@ class MantenimientoItemsController extends Shield {
     } //index
 
     String makeBasicTree(params) {
-//        println "makeBasicTree: $params"
+        println "makeBasicTree: $params"
+        def empr = Empresa.get(session.empresa.id)
         def ids = params.id
         def id
         def tp
@@ -48,7 +50,7 @@ class MantenimientoItemsController extends Shield {
                     hijos = DepartamentoItem.findAllBySubgrupo(SubgrupoItems.get(id), [sort: 'codigo'])
                     break;
                 case "grupo":
-                    hijos = SubgrupoItems.findAllByGrupo(Grupo.get(id), [sort: 'codigo'])
+                    hijos = SubgrupoItems.findAllByGrupoAndEmpresa(Grupo.get(id), empr, [sort: 'codigo'])
                     break;
                 case "subgrupo_manoObra":
                     hijos = Item.findAllByDepartamento(DepartamentoItem.get(id), [sort: 'codigo'])
@@ -584,8 +586,9 @@ class MantenimientoItemsController extends Shield {
     }
 
     def showIt_ajax() {
-//        println "showIt_ajax" + params
+        println "showIt_ajax" + params
         def itemInstance = Item.get(params.id)
+        println "itemInstance: $itemInstance"
         return [itemInstance: itemInstance]
     }
 

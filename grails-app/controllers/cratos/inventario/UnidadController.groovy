@@ -60,7 +60,7 @@ class UnidadController extends cratos.seguridad.Shield  {
 
     def save_ajax() {
 
-//        println("params:" + params)
+        println("params:" + params)
 //        params.descripcion = params.descripcion.toUpperCase()
         params.codigo = params.codigo.toUpperCase()
 
@@ -81,7 +81,7 @@ class UnidadController extends cratos.seguridad.Shield  {
             unidad.save(flush: true)
             render "OK_${params.id ? 'Actualización' : 'Creación'} de Unidad."
         }catch (e){
-            println("error al crear unidad " + e)
+            println("error al crear unidad " + e + unidad.errors)
             def msg = "NO_No se pudo ${params.id ? 'actualizar' : 'crear'} Unidad."
             render msg
         }

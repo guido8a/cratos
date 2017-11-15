@@ -80,19 +80,19 @@
             </label>
 
             <div class="col-md-3">
-                <g:select id="unidad" name="unidad.id" from="${cratos.inventario.Unidad.list([sort: 'descripcion'])}"
+                <g:select id="unidad" name="unidad.id" from="${cratos.inventario.Unidad.findAllByEmpresa(session.empresa, [sort: 'descripcion'])}"
                           optionKey="id" optionValue="descripcion"
                           class="many-to-one " value="${itemInstance?.unidad?.id}" noSelection="['': '']"/>
                 <p class="help-block ui-helper-hidden"></p>
             </div>
         </span>
         <span class="grupo">
-            <label class="col-md-3 control-label text-info">
+            <label class="col-md-2 control-label text-info">
                 Marca
             </label>
 
             <div class="col-md-3">
-                <g:select id="marca" name="marca.id" from="${cratos.inventario.Marca.list([sort: 'descripcion'])}"
+                <g:select id="marca" name="marca.id" from="${cratos.inventario.Marca.findAllByEmpresa(session.empresa,[sort: 'descripcion'])}"
                           optionKey="id" optionValue="descripcion"
                           class="many-to-one " value="${itemInstance?.marca?.id}" noSelection="['': '']"/>
                 <p class="help-block ui-helper-hidden"></p>
@@ -164,7 +164,7 @@
                 Tipo de IVA:
             </label>
 
-            <div class="col-md-4">
+            <div class="col-md-9">
                 <g:select id="tipoIVA" name="tipoIVA.id" from="${cratos.inventario.TipoIVA.list([sort: 'descripcion'])}"
                           optionKey="id" optionValue="descripcion"
                           class="many-to-one " value="${itemInstance?.tipoIVA?.id?:'2'}" noSelection="['': '']"/>

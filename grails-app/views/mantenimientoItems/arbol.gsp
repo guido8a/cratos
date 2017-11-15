@@ -238,6 +238,11 @@
             }
         };
 
+
+        var items = {
+        };
+
+/*
         var items = {
             crear: {
                 label: "Nuevo " + nodo,
@@ -247,15 +252,26 @@
                 }
             }
         };
+*/
 
+        var crear = {
+                label: "Nuevo " + nodo,
+                icon: "fa fa-plus-circle text-success",
+                action: function (obj) {
+                    createEditRow(nodeId, nodo, padreId, url, "Crear");
+                }
+        };
 
-        if(tipo != 'it'){
-            items.crearHijo = crearHijo;
-            items.editar = editar;
-        } else {
-            items.editar = editar;
+        if(nodo) {
+           items.crear = crear
         }
 
+        if(tipo != 'it' && (tipo != 'root')){
+            items.crearHijo = crearHijo;
+            items.editar = editar;
+        } else if(tipo != 'root') {
+            items.editar = editar;
+        }
 
         if (!nodeHasChildren && !nodeOcupado) {
             items.eliminar = {
