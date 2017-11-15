@@ -137,7 +137,7 @@
                         <li>
                             <i class="fa-li ${iconGen}"></i>
                             <span id="tipoDocPago">
-                                <g:link controller="tipoDocumentoPago" action="list">Tipo de Documento de Pago</g:link> para
+                                <g:link controller="tipoDocumentoPago" action="list">Forma de Pago</g:link> para
                                 el registro de la forma de pago a proveedores y clientes.
                             </span>
 

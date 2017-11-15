@@ -4,7 +4,7 @@
 <html>
     <head>
         <meta name="layout" content="main">
-        <title>Lista de Tipo de Pagos</title>
+        <title>Tipo de Pago</title>
     </head>
     <body>
 
