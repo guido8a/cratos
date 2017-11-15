@@ -45,7 +45,8 @@
                             Autorización
                         </label>
                         <div class="col-md-6">
-                            <g:textField name="autorizacion" required="" class="allCaps form-control required validacionNumeroSinPuntos" value="${documentoEmpresaInstance?.autorizacion}"/>
+                            <g:textField name="autorizacion" required="" class="allCaps form-control required validacionNumeroSinPuntos"
+                                         value="${documentoEmpresaInstance?.autorizacion}" maxlength="10"/>
                         </div>
 
                     </span>

@@ -11,7 +11,6 @@
         <title><g:layoutTitle default="cratos"/></title>
 
         <!-- Bootstrap core CSS -->
-        %{--<link href="${resource(dir: 'bootstrap-3.0.1/css', file: 'bootstrap.happy1.css')}" rel="stylesheet">--}%
         <link href="${resource(dir: 'bootstrap-3.0.1/css', file: 'bootstrap.happy1.css')}" rel="stylesheet">
 
         <!-- FontAwsome y mFizz: las fuentes con dibujitos para los iconos -->
@@ -33,17 +32,12 @@
 
         <!-- plugins -->
         <!-- para los alerts y confirms y dialogs -->
-        %{--<script src="${resource(dir: 'js/plugins/bootbox/js', file: 'bootbox.js')}"></script>--}%
         <script src="${resource(dir: 'js/plugins/bootbox-4.3.0/js', file: 'bootbox.js')}"></script>
 
         %{--<!-- el datepicker -->--}%
         <script src="${resource(dir: 'js/plugins/bootstrap-datepicker/js', file: 'bootstrap-datepicker.js')}"></script>
         <script src="${resource(dir: 'js/plugins/bootstrap-datepicker/js/locales', file: 'bootstrap-datepicker.es.js')}"></script>
         <link href="${resource(dir: 'js/plugins/bootstrap-datepicker/css', file: 'datepicker.css')}" rel="stylesheet">
-
-        %{--<!-- el datetime picker no vale bien -->--}%
-        %{--<script src="${resource(dir: 'js/plugins/bootstrap-datetimepicker/js', file: 'bootstrap-datetimepicker.min.js')}"></script>--}%
-        %{--<link href="${resource(dir: 'js/plugins/bootstrap-datetimepicker/css', file: 'bootstrap-datetimepicker.min.css')}" rel="stylesheet">--}%
 
         <!-- lo q muestra la cantidad restante de caracteres en los texts -->
         <script src="${resource(dir: 'js/plugins/bootstrap-maxlength/js', file: 'bootstrap-maxlength.js')}"></script>

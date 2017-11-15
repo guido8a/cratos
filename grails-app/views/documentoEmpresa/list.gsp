@@ -1,5 +1,5 @@
 
-<%@ page import="cratos.DocumentoEmpresa" %>
+<%@ page import="cratos.Proceso; cratos.DocumentoEmpresa" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -48,8 +48,8 @@
             <g:if test="${session.perfil.nombre == 'Administrador'}">
                 <g:each in="${documentoEmpresaInstanceList}" status="i" var="documentoEmpresaInstance">
                     <g:if test="${documentoEmpresaInstance.empresa.id == session.empresa.id}">
-                        <tr data-id="${documentoEmpresaInstance.id}">
-                            <td>${documentoEmpresaInstance?.tipo == 'F'? 'Factura' : (documentoEmpresaInstance?.tipo == 'R'? 'Retención' : (documentoEmpresaInstance?.tipo == 'ND'? 'Nota de Débito' : 'Nota de Cŕedito'))}</td>
+                        <tr data-id="${documentoEmpresaInstance.id}" data-usado="${cratos.Proceso.findByDocumentoEmpresa(documentoEmpresaInstance)?.id > 0}">
+                            <td>${documentoEmpresaInstance?.id} ${documentoEmpresaInstance?.tipo == 'F'? 'Factura' : (documentoEmpresaInstance?.tipo == 'R'? 'Retención' : (documentoEmpresaInstance?.tipo == 'ND'? 'Nota de Débito' : 'Nota de Cŕedito'))}</td>
                             <td>${fieldValue(bean: documentoEmpresaInstance, field: "autorizacion")}</td>
                             <td class="derecha">${fieldValue(bean: documentoEmpresaInstance, field: "numeroEstablecimiento")}</td>
                             <td class="derecha">${fieldValue(bean: documentoEmpresaInstance, field: "numeroEmision")}</td>
@@ -228,6 +228,7 @@
                 function createContextMenu(node) {
                     var $tr = $(node);
                     var id = $tr.data("id");
+                    var usado = $tr.data("usado");
 
                     var items = {
                         header : {
@@ -282,7 +283,13 @@
 
                     items.ver = ver;
 
+/*
                     if(verificar(id) == 'false'){
+                        items.editar = editar;
+                        items.eliminar = eliminar;
+                    }
+*/
+                    if(!usado){
                         items.editar = editar;
                         items.eliminar = eliminar;
                     }

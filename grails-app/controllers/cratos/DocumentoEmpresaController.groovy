@@ -4,6 +4,8 @@ import org.springframework.dao.DataIntegrityViolationException
 
 class DocumentoEmpresaController extends cratos.seguridad.Shield {
 
+    def dbConnectionService
+
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def index() {
@@ -114,27 +116,63 @@ class DocumentoEmpresaController extends cratos.seguridad.Shield {
         }
     } //delete
 
+    /***
+     * Se debe validar dentro de cada empresa que no hayan libretines cruzados del mismo tipo
+     * se puede editar un libretin mientras no esté en PRCS: Controlado en "list"
+     * */
     def save_ajax() {
 
-//        println("params " + params)
-
+        println("params " + params)
         def documentoEmpresa
         def empresa = Empresa.get(session.empresa.id)
-//        def fechaInicio = new Date().parse("dd-MM-yyyy",params."fechaInicio_input")
         def fechaFin = new Date().parse("dd-MM-yyyy",params."fechaFin_input")
         def fechaInicio = new Date().parse("dd-MM-yyyy",params."fechaAutorizacion_input")
-        def fechaAutorizacion = new Date().parse("dd-MM-yyyy",params."fechaAutorizacion_input")
+//        def fechaAutorizacion = new Date().parse("dd-MM-yyyy",params."fechaAutorizacion_input")
+        def cn = dbConnectionService.getConnection()
         def st = ''
-        def libretines = DocumentoEmpresa.findAllByEmpresa(empresa)
-        def band = false
+
+        def sql = "select fcdtatrz from fcdt where empr__id = ${empresa.id} and fcdttipo = '${params.tipo}' and " +
+                "(${params.numeroDesde} between fcdtdsde and fcdthsta or " +
+                "${params.numeroHasta} between fcdtdsde and fcdthsta) and fcdt__id <> ${params.id?:0}"
+        println "sql: $sql"
+        def cruzado = cn.rows(sql.toString())[0]?.fcdtatrz
+        println "cruzado: $cruzado"
+
+        if(cruzado){
+            render "no_1_El rango de valores de ${params.numeroDesde} a ${params.numeroHasta} ya está contenido en el Libretin con autorización: $cruzado"
+            return
+        }
+
+        if(fechaInicio >= fechaFin){
+            render "no_2_La fecha de autorización es mayor a la fecha de finalización"
+            return
+        }
 
         if(params.id){
             documentoEmpresa = DocumentoEmpresa.get(params.id)
-            if(params.numeroDesde.toInteger() == documentoEmpresa.numeroDesde && params.numeroHasta.toInteger() == documentoEmpresa.numeroHasta){
-                band = true
-            }
+            documentoEmpresa.properties = params
+        } else {
+            documentoEmpresa = new DocumentoEmpresa(params)
+            documentoEmpresa.fechaIngreso = new Date()
         }
 
+        documentoEmpresa.fechaAutorizacion = fechaInicio
+        documentoEmpresa.fechaInicio = fechaInicio
+        documentoEmpresa.fechaFin = fechaFin
+        documentoEmpresa.empresa = empresa
+
+        try {
+            documentoEmpresa.save(flush: true)
+            println "grabó....."
+            render "OK_Libretín creado correctamente"
+        }catch (e){
+            println("error libretin " + e + documentoEmpresa.errors)
+            render "no_Error al guardar la información del libretín"
+        }
+
+        println "listo..."
+
+/*
         if(fechaAutorizacion >= fechaFin){
             render "no_2_La fecha de autorización es mayor a la fecha de finalización"
         }else{
@@ -207,21 +245,24 @@ class DocumentoEmpresaController extends cratos.seguridad.Shield {
                     }
                 }
             }
-        }
+*/
+//        }
     }
 
     def verificar_ajax () {
         def documentoEmpresa = DocumentoEmpresa.get(params.id)
-        def v = Proceso.findAllByDocumentoEmpresa(documentoEmpresa)
+        def usado = Proceso.findByDocumentoEmpresa(documentoEmpresa)
+        println ".....verificar_ajax: $usado"
+        render (usado?.size() > 0)
+/*
         def r
         if (v.size() > 0) {
             r = true
         } else {
             r = false
         }
-
-//        render (v.size() > 0) ? true : false
         render r
+*/
     }
 
 } //fin controller

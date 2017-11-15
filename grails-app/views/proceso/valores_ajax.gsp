@@ -4,7 +4,8 @@
 }
 </style>
 
-<script src="${resource(dir: 'js/plugins/bootstrap-maxlength/js', file: 'bootstrap-maxlength.js')}"></script>
+<script type="text/javascript" src="${resource(dir: 'js', file: 'ui.js')}"></script>
+
 
 <g:if test="${tipo == '4' || tipo == '5' || tipo == '8'}">
     <div class="row" style="font-size: 12px">
@@ -58,15 +59,19 @@
             </div>
 
             <div class="col-xs-4 negrilla">
-                <input type="text" name="dcmtAutorizacion" id="dcmtAutorizacion" maxlength="49"
-                       value="${proceso?.autorizacion?: atrz}" class=" digits form-control label-shared validacionNumero required"
+                <input type="text" name="dcmtAutorizacion" id="dcmtAutorizacion" size="49" maxlength="49"
+                       style="width: 360px;"
+                       value="${proceso?.autorizacion?: atrz}" class="digits form-control validacionNumero required"
+                       title="El número autorización de la factura a registrar "
+                       validate=" number" placeholder="Autorización" ${proceso?.estado == 'R' ? 'disabled' : ''}/>
+
+%{--
+                <input type="text" name="dcmtAutorizacion" id="dcmtAutorizacion" size="49" maxlength=49"
+                       value="${proceso?.autorizacion?: atrz}" class="digits form-control label-shared validacionNumero required"
                        validate=" number" placeholder="Autorización"
                        title="El número autorización de la factura a registrar " ${proceso?.estado == 'R' ? 'disabled' : ''} style="width: 350px"/>
+--}%
 
-                %{--<g:textField name="dcmtAutorizacion" id="dcmtAutorizacion" maxlength="47"--}%
-                             %{--value="${proceso?.autorizacion?: atrz}"--}%
-                             %{--class=" digits form-control label-shared validacionNumero ${proceso?.estado == 'R' ? 'disabled' : ''}" placeholder="Autorización"--}%
-                             %{--title="El número autorización de la factura a registrar "  style="width: 350px"/>--}%
             </div>
         </div>
 
