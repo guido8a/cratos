@@ -1676,6 +1676,9 @@ class ProcesoController extends cratos.seguridad.Shield {
     /** antes buscarPrcs**/
     def buscarPrcs() {
 //        println "busqueda "
+        def empresa = Empresa.get(session.empresa.id)
+        def contabilidades = Contabilidad.findAllByInstitucion(empresa)
+        return[contabilidades: contabilidades]
     }
 
     def armaSqlProcesos(params){

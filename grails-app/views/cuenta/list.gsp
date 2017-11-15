@@ -53,8 +53,8 @@
                 </div>
             </g:if>
             <g:else>
-                <div class="alert alert-danger">
-                    <i class="fa icon-ghost fa-4x pull-left"></i>
+                <div class="alert alert-danger" style="width: 700px;">
+                    <i class="fa fa-warning fa-4x pull-left"></i>
 
                     <h3>Alerta</h3>
 
@@ -66,7 +66,7 @@
                         Puede crear uno manualmente creando una cuenta ahora, o copiar el plan de cuentas por defecto.
                     </p>
 
-                    <p>
+                    <p style="text-align: center">
                         <a href="#" id="btnCreate" class="btn btn-success"><i class="fa fa-file-o"></i> Crear cuenta</a>
                         <g:link action="copiarCuentas" class="btn btn-primary btnCopiar"><i class="fa fa-copy"></i> Copiar plan de cuentas</g:link>
                     </p>

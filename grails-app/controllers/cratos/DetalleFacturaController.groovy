@@ -121,7 +121,7 @@ class DetalleFacturaController extends cratos.seguridad.Shield  {
             truncar = false
         }
 
-        return [proceso: proceso, bodegas: bodegas, centros: centros, truncar: truncar]
+        return [proceso: proceso, bodegas: bodegas, centros: centros, truncar: truncar, empresa: empresa]
     }
 
     def buscarItems_ajax () {

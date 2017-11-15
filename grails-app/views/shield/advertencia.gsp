@@ -14,7 +14,7 @@
         <div class="alert alert-danger">
 
             <h1 class="text-shadow text-danger">
-                <i class="fa-2x icon-ghost"></i>
+                <i class="fa fa-warning fa-2x"></i>
                 ALERTA!
             </h1>
 

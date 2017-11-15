@@ -4,7 +4,7 @@
 <html>
     <head>
         <meta name="layout" content="main">
-        <title>Lista de FormaDePago</title>
+        <title>Formas de Pago</title>
     </head>
     <body>
 
@@ -24,7 +24,7 @@
         </div>
 
         <div class="vertical-container vertical-container-list">
-            <p class="css-vertical-text">Lista de FormaDePago</p>
+            <p class="css-vertical-text">Forma de Pago</p>
 
             <div class="linea"></div>
             <table class="table table-condensed table-bordered table-striped table-hover">

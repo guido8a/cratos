@@ -110,7 +110,9 @@ como máximo 20 <span style="margin-left: 40px; color: #0b2c89">Se ordena por pr
 
 <script type="text/javascript">
 
-    $(".btnBusqueda").click(function () {
+    cargarBusqueda();
+
+    function cargarBusqueda() {
         $("#bandeja").html("").append($("<div style='width:100%; text-align: center;'/>").append(spinnerSquare64));
         var buscar = $("#buscar").val();
         var datos = "buscar=" + buscar;
@@ -126,6 +128,10 @@ como máximo 20 <span style="margin-left: 40px; color: #0b2c89">Se ordena por pr
                 $("#bandeja").html("Ha ocurrido un error");
             }
         });
+    }
+
+    $(".btnBusqueda").click(function () {
+        cargarBusqueda();
     });
 
     $("input").keyup(function (ev) {

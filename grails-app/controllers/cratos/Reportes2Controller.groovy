@@ -641,6 +641,15 @@ class Reportes2Controller {
         return[proceso: proceso, detalles: detalles, empresa: params.emp, pago: tipoPago, totl: totl]
     }
 
+    def factura_E2 () {
+        def proceso = Proceso.get(params.id)
+        def detalles = DetalleFactura.findAllByProceso(proceso)
+        def tipoPago = TipoPago.findByCodigo(proceso?.pago?.toString())
+        def cn = dbConnectionService.getConnection()
+        def totl = cn.rows("select * from total_detalle(${params.id},0,0)".toString())[0]
+        return[proceso: proceso, detalles: detalles, empresa: params.emp, pago: tipoPago, totl: totl]
+    }
+
     def kardex2 () {
         println("params " + params)
         def desde = new Date().parse("dd-MM-yyyy", params.desde)

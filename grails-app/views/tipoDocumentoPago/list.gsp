@@ -11,7 +11,7 @@
         <elm:flashMessage tipo="${flash.tipo}" clase="${flash.clase}">${flash.message}</elm:flashMessage>
 
     <!-- botones -->
-        <div class="btn-toolbar toolbar">
+        <div class="btn-toolbar toolbar" style="margin-top: 20px">
             <div class="btn-group">
                 <g:link controller="inicio" action="parametros" class="btn btn-warning btnRegresar">
                     <i class="fa fa-chevron-left"></i> Parámetros
@@ -113,7 +113,7 @@
                     success : function (msg) {
                         var b = bootbox.dialog({
                             id      : "dlgCreateEdit",
-                            title   : title + " TipoDocumentoPago",
+                            title   : title + " Documento de Pago",
                             message : msg,
                             buttons : {
                                 cancelar : {
@@ -172,7 +172,7 @@
                                 },
                                 success : function (msg) {
                                     bootbox.dialog({
-                                        title   : "Ver TipoDocumentoPago",
+                                        title   : "Ver Documento de Pago",
                                         message : msg,
                                         buttons : {
                                             ok : {

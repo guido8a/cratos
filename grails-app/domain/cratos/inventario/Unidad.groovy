@@ -1,8 +1,11 @@
 package cratos.inventario
 
+import cratos.Empresa
+
 class Unidad implements Serializable {
     String codigo
     String descripcion
+    Empresa empresa
     static auditable = true
     static mapping = {
         table 'undd'
@@ -14,6 +17,7 @@ class Unidad implements Serializable {
             id column: 'undd__id'
             codigo column: 'unddcdgo'
             descripcion column: 'undddscr'
+            empresa column: 'empr__id'
         }
     }
     static constraints = {

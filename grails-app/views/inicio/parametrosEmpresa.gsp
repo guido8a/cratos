@@ -208,6 +208,35 @@
                     <p>Cantón</p>
                 </div>
             </li>
+            <li>
+                <i class="fa-li ${iconEmpr}"></i>
+                <span id="Unidad">
+                    <g:link controller="unidad" action="list">Unidad</g:link> de conteo o control de los los items.
+                </span>
+
+                <div class="descripcion hide">
+                    <h4>Unidad de Medida</h4>
+
+                    <p>Unidad de control o conteo de obras para el plan anual de adquisiciones (PAC) y para fijar las metas.</p>
+
+                    <p>Pueden ser: kil&oacute;metros, metros, escuelas, unidades, etc.</p>
+                </div>
+            </li>
+            <li>
+                <i class="fa-li ${iconEmpr}"></i>
+                <span id="Marca">
+                    <g:link controller="marca" action="list">Marca</g:link> de los distintos items que se posee como
+                    inventarios o como activos fijos.
+                </span>
+
+                <div class="descripcion hide">
+                    <h4>Marcas</h4>
+
+                    <p>Marca de los artículos d einventario y de los activos fijos de la Empresa.</p>
+
+                    <p>Se de be crear un "Sin Marca" para aquellos bienes que no tienen marca</p>
+                </div>
+            </li>
         </ul>
     </div>
 

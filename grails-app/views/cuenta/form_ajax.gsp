@@ -9,6 +9,7 @@
         <g:hiddenField name="id" value="${cuentaInstance?.id}"/>
         <g:hiddenField name="padre.id" value="${cuentaInstance?.padreId}"/>
         <g:hiddenField name="nivel.id" value="${cuentaInstance?.nivelId}"/>
+        <g:hiddenField name="band" value="${band}"/>
 
         <g:if test="${cuentaInstance?.padre }">
             <div class="form-group ${hasErrors(bean: cuentaInstance, field: 'padre', 'error')} ">
@@ -66,10 +67,9 @@
 
         <div class="form-group ${hasErrors(bean: cuentaInstance, field: 'auxiliar', 'error')} ${hasErrors(bean: cuentaInstance, field: 'movimiento', 'error')}">
             <span class="grupo">
-                <label for="auxiliar" class="col-md-2 control-label text-info">
+                <label for="auxiliar" class="col-md-8 control-label text-info">
                     Auxiliar de Cliente/Proveedor
                 </label>
-
                 <div class="col-md-2">
                     <g:if test="${hijos == 0}">
                         <g:select name="auxiliar" from="${cuentaInstance.constraints.auxiliar.inList}" class="form-control"
@@ -80,9 +80,10 @@
                     </g:else>
                 </div>
             </span>
+        </div>
 
+        <div class="form-group ${hasErrors(bean: cuentaInstance, field: 'retencion', 'error')} ">
             <span class="grupo">
-                <span class="col-md-2"></span>
                 <label for="movimiento" class="col-md-2 control-label text-info">
                     Movimiento
                 </label>
@@ -97,13 +98,9 @@
                         <g:message code="cuenta.movimiento.${cuentaInstance.movimiento}"/>
                     </g:else>
                 </div>
-
             </span>
-        </div>
-
-        <div class="form-group ${hasErrors(bean: cuentaInstance, field: 'retencion', 'error')} ">
             <span class="grupo">
-                <label for="retencion" class="col-md-2 control-label text-info">
+                <label for="retencion" class="col-md-4 control-label text-info">
                     Genera Retención
                 </label>
 
@@ -111,8 +108,8 @@
                     <g:select name="retencion" from="${cuentaInstance.constraints.retencion.inList}" class="form-control" value="${cuentaInstance?.retencion ?: 'N'}"
                               valueMessagePrefix="cuenta.retencion" noSelection="['': 'Seleccione..']"/>
                 </div>
-
             </span>
+
         </div>
 
         <div class="form-group ${hasErrors(bean: cuentaInstance, field: 'cuentaBanco', 'error')} ">

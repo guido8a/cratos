@@ -169,10 +169,10 @@
                     ${asiento?.cuenta?.descripcion} , ${comprobante?.descripcion}
                 </td>
                 <td align="right" style="width: 100px">
-                    ${asiento?.debe}
+                    <g:formatNumber number="${asiento?.debe}" format='##,##0' minFractionDigits="2" maxFractionDigits="2" locale="ec" />
                 </td>
                 <td align="right" style="width: 100px">
-                    ${asiento?.haber}
+                    <g:formatNumber number="${asiento?.haber}" format='##,##0' minFractionDigits="2" maxFractionDigits="2" locale="ec" />
                 </td>
             </tr>
 

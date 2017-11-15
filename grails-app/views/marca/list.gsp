@@ -13,7 +13,7 @@
     <!-- botones -->
         <div class="btn-toolbar toolbar">
             <div class="btn-group">
-                <g:link controller="inicio" action="parametros" class="btn btn-warning btnRegresar">
+                <g:link controller="inicio" action="parametrosEmpresa" class="btn btn-warning btnRegresar">
                     <i class="fa fa-chevron-left"></i> Parámetros
                 </g:link>
                 <g:link action="form" class="btn btn-info btnCrear">

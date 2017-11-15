@@ -40,10 +40,17 @@
             </div>
         <div style="margin-top: 2px; margin-right: 5px; text-align: right">
             <span class="text-info" style="font-size: 15px"><strong>${session?.contabilidad?.descripcion ?: 'No existe contabilidad asignada'}</strong></span>
-                <a href="#" class="btn btn-azul" id="btnCambiarConta" style="margin-left: 5px;"
-                   title="Cambiar a otra Contabilidad">
-                    <i class="fa fa-refresh"></i> Cambiar
-                </a>
+                <g:if test="${contabilidades.size() > 0}">
+                    <a href="#" class="btn btn-azul" id="btnCambiarConta" style="margin-left: 5px;"
+                       title="Cambiar a otra Contabilidad">
+                        <i class="fa fa-refresh"></i> Cambiar
+                    </a>
+                </g:if>
+                <g:else>
+                    <g:link class="btn btn-success" controller="contabilidad" action="list">
+                        <i class="fa fa-file-o"></i> Crear
+                    </g:link>
+               </g:else>
         </div>
     </div>
 
@@ -126,6 +133,10 @@
         </thead>
     </table>
 
+
+    <div class="alert alert-danger hidden" id="mensaje" style="text-align: center">
+    </div>
+
     <div id="bandeja">
     </div>
 </div>
@@ -163,7 +174,13 @@ como máximo 30 <span style="margin-left: 40px; color: #0b2c89">Se ordena por fe
         });
     });
 
+    <g:if test="${contabilidades.size() > 0}">
     cargarBusqueda();
+    </g:if>
+    <g:else>
+    $("#mensaje").removeClass('hidden').append("No existen procesos contables");
+    </g:else>
+
 
     function cargarBusqueda () {
         var id = parseInt(${session?.contabilidad?.id})

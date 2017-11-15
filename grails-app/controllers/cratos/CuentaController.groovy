@@ -528,7 +528,7 @@ class CuentaController extends cratos.seguridad.Shield {
     } //show para cargar con ajax en un dialog
 
     def form_ajax() {
-        println("---> " + params)
+//        println("---> " + params)
         def cuentaInstance = new Cuenta(params)
         def hijos = 0
         if (params.id) {
@@ -580,6 +580,8 @@ class CuentaController extends cratos.seguridad.Shield {
     }
 
     def save_ajax() {
+
+//        println("params---> " + params)
 
         params.each { k, v ->
             if (v != "date.struct" && v instanceof java.lang.String) {

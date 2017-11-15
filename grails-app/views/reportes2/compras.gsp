@@ -67,18 +67,18 @@
 <div>
     <table border="1">
         <thead>
-        <tr>
-            <th colspan="3"></th>
-            <th class="centro">Proveedor</th>
-            <th colspan="5"></th>
-            <th class="centro" colspan="4">Valor Retención</th>
+        %{--<tr>--}%
+            %{--<th colspan="3"></th>--}%
+            %{--<th class="centro">Proveedor</th>--}%
+            %{--<th colspan="5"></th>--}%
+            %{--<th class="centro" colspan="4">Valor Retención</th>--}%
 
-        </tr>
+        %{--</tr>--}%
         <tr style="font-size: 11px; width: 2100px">
             <th align="center" style="width: 80px">N°</th>
             <th align="center" style="width: 80px">Fecha</th>
             <th align="center" style="width: 100px;">N°</th>
-            <th align="center" style="width: 320px">Nombre</th>
+            <th align="center" style="width: 320px">Proveedor</th>
             <th align="center" style="width: 100px;">Documento</th>
             <th align="center" style="width: 100px">Excento</th>
             <th align="center" style="width: 100px">Gravado</th>

@@ -1,7 +1,10 @@
 package cratos.inventario
 
+import cratos.Empresa
+
 class Marca implements Serializable {
     String descripcion
+    Empresa empresa
     static mapping = {
         table 'mrca'
         cache usage: 'read-write', include: 'non-lazy'
@@ -11,6 +14,7 @@ class Marca implements Serializable {
         columns {
             id column: 'mrca__id'
             descripcion column: 'mrcadsrc'
+            empresa column: 'empr__id'
         }
     }
     static constraints = {

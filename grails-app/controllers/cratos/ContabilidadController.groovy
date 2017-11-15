@@ -49,9 +49,9 @@ class ContabilidadController extends cratos.seguridad.Shield {
             params.offset = params.offset - params.max
         }
         contabilidadInstanceList = Contabilidad.findAllByInstitucion(session.empresa, params).sort{it.descripcion}
-//        contabilidadInstanceList = contabilidadInstanceList.sort{it.fechaInicio}
+        def cuentas = Cuenta.countByNivelAndEmpresa(Nivel.get(1), session.empresa, [sort: "numero"])
 
-        return [contabilidadInstanceList: contabilidadInstanceList, contabilidadInstanceCount: contabilidadInstanceCount]
+        return [contabilidadInstanceList: contabilidadInstanceList, contabilidadInstanceCount: contabilidadInstanceCount, cuentas: cuentas]
     } //list
 
     def show_ajax() {
@@ -422,8 +422,9 @@ class ContabilidadController extends cratos.seguridad.Shield {
 //        println("--> " + comprobantes)
 
         return [comprobantes: comprobantes]
-
     }
 
+    def crear_ajax () {
 
+    }
 }

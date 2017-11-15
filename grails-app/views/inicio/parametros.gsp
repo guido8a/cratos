@@ -318,35 +318,35 @@
             <div class="tab-pane" id="activos">
                 <div class="left pull-left">
                     <ul class="fa-ul">
-                        <li>
-                            <i class="fa-li ${iconAct}"></i>
-                            <span id="unidad">
-                                <g:link controller="unidad" action="list">Unidades</g:link> de conteo o control de los los items.
-                            </span>
+                        %{--<li>--}%
+                            %{--<i class="fa-li ${iconAct}"></i>--}%
+                            %{--<span id="unidad">--}%
+                                %{--<g:link controller="unidad" action="list">Unidades</g:link> de conteo o control de los los items.--}%
+                            %{--</span>--}%
 
-                            <div class="descripcion hide">
-                                <h4>Unidad de Medida</h4>
+                            %{--<div class="descripcion hide">--}%
+                                %{--<h4>Unidad de Medida</h4>--}%
 
-                                <p>Unidad de control o conteo de obras para el plan anual de adquisiciones (PAC) y para fijar las metas.</p>
+                                %{--<p>Unidad de control o conteo de obras para el plan anual de adquisiciones (PAC) y para fijar las metas.</p>--}%
 
-                                <p>Pueden ser: kil&oacute;metros, metros, escuelas, unidades, etc.</p>
-                            </div>
-                        </li>
-                        <li>
-                            <i class="fa-li ${iconAct}"></i>
-                            <span id="marca">
-                                <g:link controller="marca" action="list">Marcas</g:link> de los distintos items que se posee como
-                                inventarios o como activos fijos.
-                            </span>
+                                %{--<p>Pueden ser: kil&oacute;metros, metros, escuelas, unidades, etc.</p>--}%
+                            %{--</div>--}%
+                        %{--</li>--}%
+                        %{--<li>--}%
+                            %{--<i class="fa-li ${iconAct}"></i>--}%
+                            %{--<span id="marca">--}%
+                                %{--<g:link controller="marca" action="list">Marcas</g:link> de los distintos items que se posee como--}%
+                                %{--inventarios o como activos fijos.--}%
+                            %{--</span>--}%
 
-                            <div class="descripcion hide">
-                                <h4>Marcas</h4>
+                            %{--<div class="descripcion hide">--}%
+                                %{--<h4>Marcas</h4>--}%
 
-                                <p>Marca de los artículos d einventario y de los activos fijos de la Empresa.</p>
+                                %{--<p>Marca de los artículos d einventario y de los activos fijos de la Empresa.</p>--}%
 
-                                <p>Se de be crear un "Sin Marca" para aquellos bienes que no tienen marca</p>
-                            </div>
-                        </li>
+                                %{--<p>Se de be crear un "Sin Marca" para aquellos bienes que no tienen marca</p>--}%
+                            %{--</div>--}%
+                        %{--</li>--}%
                         <li>
                             <i class="fa-li ${iconAct}"></i>
                             <span id="grupos">

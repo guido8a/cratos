@@ -132,6 +132,10 @@
                 <i class="fa fa-pencil fa-5x"></i><br/>
                 Libro Diario
             </a>
+            <a href="#" class="link btn btn-info btn-ajax" data-toggle="modal" data-target="#libroMayor">
+                <i class="fa fa-pencil fa-5x"></i><br/>
+                Libro Mayor
+            </a>
             <a href="#" class="link btn btn-info btn-ajax" data-toggle="modal" data-target="#situacionN">
                 <i class="fa fa-money fa-5x"></i><br/>
                 Estado de Situación
@@ -828,7 +832,7 @@
 
 
 %{--dialog libro mayor--}%
-<div class="modal fade" id="auxiliar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="libroMayor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

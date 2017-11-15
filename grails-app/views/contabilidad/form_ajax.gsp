@@ -71,7 +71,7 @@
                 </label>
 
                 <div class="col-md-8">
-                    <g:select name="cuenta" from="${cuentas}" optionValue="descripcion" optionKey="id" class="form-control" value="${contabilidadInstance?.cuenta}"/>
+                    <g:select name="cuenta" from="${cuentas}" optionValue="descripcion" optionKey="id" class="form-control" value="${contabilidadInstance?.cuenta?.id}"/>
                 </div>
                 *
             </span>
