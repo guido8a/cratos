@@ -8,6 +8,10 @@ class Contabilidad implements Serializable {
     Empresa institucion
     Date presupuesto
     Cuenta cuenta
+    Cuenta creditoTributarioIva
+    Cuenta creditoTributarioRenta
+    Cuenta retencionCompraIva
+    Cuenta retencionCompraRenta
     static mapping = {
         table 'cont'
         cache usage: 'read-write', include: 'non-lazy'
@@ -22,6 +26,10 @@ class Contabilidad implements Serializable {
             institucion column: 'empr__id'
             presupuesto column: 'contprsp'
             cuenta column: 'cntaesst'
+            creditoTributarioIva column: 'cntactiv'
+            creditoTributarioRenta column: 'cntactrt'
+            retencionCompraIva column: 'cntartiv'
+            retencionCompraRenta column: 'cntartrt'
         }
     }
     static constraints = {
@@ -32,6 +40,10 @@ class Contabilidad implements Serializable {
         institucion(blank: true, nullable: true, attributes: [title: 'Institución o empresa a la que pertenece el periodo contable'])
         presupuesto(blank: false, attributes: [title: 'Fecha de aprobación del presupuesto'])
         cuenta(blank: true, nullable: true)
+        creditoTributarioIva(nullable: true)
+        creditoTributarioRenta(nullable: true)
+        retencionCompraIva(nullable: true)
+        retencionCompraRenta(nullable: true)
     }
 
     String toString() {
