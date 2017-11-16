@@ -96,9 +96,16 @@
                 <td>${cuenta.cmprfcha}</td>
                 <td class="centro">${j == 0 ? '' : cuenta.cmprdcmt}</td>
                 <td>${cuenta.cmprdscr}</td>
-                <td class="derecha">${j == 0 ? '' :cuenta.slmsdebe}</td>
-                <td class="derecha">${j == 0 ? '' :cuenta.slmshber}</td>
-                <td class="derecha">${cuenta.slmssldo}</td>
+                <g:if test="${j == 0}">
+                    <td class="derecha">${''}</td>
+                    <td class="derecha">${''}</td>
+                </g:if>
+                <g:else>
+                    <td class="derecha"><g:formatNumber number="${cuenta.slmsdebe.toDouble()}" locale="en_US" format="##,##0" minFractionDigits="2" maxFractionDigits="2"/> </td>
+                    <td class="derecha"><g:formatNumber number="${cuenta.slmshber.toDouble()}" locale="en_US" format="##,##0" minFractionDigits="2" maxFractionDigits="2"/> </td>
+                </g:else>
+                %{--<td class="derecha">${j == 0 ? '' :cuenta.slmshber}</td>--}%
+                <td class="derecha"><g:formatNumber number="${cuenta.slmssldo.toDouble()}" locale="en_US" format="##,##0" minFractionDigits="2" maxFractionDigits="2"/></td>
                 %{--<td class="derecha"><g:formatNumber number="${cuenta.slmsdebe.toDouble() - cuenta.slmshber.toDouble()}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>--}%
             </tr>
         </g:each>
