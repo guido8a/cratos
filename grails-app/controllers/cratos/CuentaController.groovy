@@ -1,5 +1,7 @@
 package cratos
 
+import cratos.inventario.Grupo
+import cratos.inventario.SubgrupoItems
 import org.springframework.dao.DataIntegrityViolationException
 
 class CuentaController extends cratos.seguridad.Shield {
@@ -504,12 +506,51 @@ class CuentaController extends cratos.seguridad.Shield {
         }
     }
 
+    def copiaGestor() {
+//        println "inicia copiaGestor"
+        def empresa = Empresa.get(session.empresa.id)
+        def empr = Empresa.get(42)
+        def sldo = Gestor.findByCodigoAndEmpresa('SLDO', empr)
+        def gnraSldo = Genera.findAllByGestor(sldo)
+
+//        println "gnra: $gnraSldo"
+        def gstr = new Gestor()
+        gstr.properties = sldo.properties
+        gstr.empresa = empresa
+        gstr.save(flush: true)
+//        println "... crea gestor de saldos ---"
+        gnraSldo.each { gn ->
+//            println "++++genera: ${gn.cuenta.numero}"
+            def gnra = new Genera()
+            gnra.properties = gn.properties
+            gnra.cuenta = Cuenta.findByNumeroAndEmpresa(gn.cuenta.numero, empresa)
+            gnra.gestor = gstr
+            gnra.save(flush: true)
+        }
+    }
+
+    def creaSubgrupos() {
+//        println "inicia creaSubgrupos"
+        def empresa = Empresa.get(session.empresa.id)
+        (1..3).each {
+            def sbgr = new SubgrupoItems()
+            def grpo = Grupo.get(it)
+            sbgr.empresa = empresa
+            sbgr.codigo = '001'
+            sbgr.descripcion = "Grupo 1 ${grpo.descripcion}"
+            sbgr.grupo = grpo
+            sbgr.save(flush: true)
+        }
+    }
+
     def copiarCuentas() {
         def empresa = Empresa.get(session.empresa.id)
         def origen = Empresa.get(42)
 
         if (Cuenta.countByEmpresa(empresa) == 0) {
             recursivoCuentas2(null, null, origen, empresa)
+            copiaGestor()
+            creaSubgrupos()
         }
         redirect(action: 'list')
     }

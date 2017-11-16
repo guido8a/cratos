@@ -15,11 +15,12 @@ class Shield {
 //        return true
         /** **************************************************************************/
         if (!session.usuario || !session.perfil) {
-            //            println "1"
-            redirect(controller: 'login', action: 'login')
+            if(controllerName != "inicio" && actionName != "index") {
+                flash.message = "Usted ha superado el tiempo de inactividad máximo de la sesión"
+            }
+            render "<script type='text/javascript'> window.location.href = '${createLink(controller:'login', action:'login')}'; </script>"
             session.finalize()
             return false
-//            return true
         } else {
             return true
         }

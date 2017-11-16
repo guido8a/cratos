@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta name="layout" content="main">
-    <title>Lista de Contabilidades</title>
+    <title>Contabilidades</title>
 </head>
 
 <body>

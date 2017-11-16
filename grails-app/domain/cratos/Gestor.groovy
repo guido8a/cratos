@@ -13,7 +13,7 @@ class Gestor implements Serializable {
     String codigo
 
     static auditable = true
-    static hasMany = [movimientos: Genera]
+//    static hasMany = [movimientos: Genera]
     static mapping = {
         table 'gstr'
         cache usage: 'read-write', include: 'non-lazy'
