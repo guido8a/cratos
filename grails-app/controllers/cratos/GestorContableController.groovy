@@ -349,7 +349,7 @@ class GestorContableController extends cratos.seguridad.Shield {
     }
 
     def guardarValores_ajax () {
-        println "guardarValores_ajax " + params
+//        println "guardarValores_ajax " + params
         def genera = Genera.get(params.genera)
         genera.valor = params.valor.toDouble()
         genera.porcentajeImpuestos = params.impuesto.toDouble()
@@ -462,26 +462,47 @@ class GestorContableController extends cratos.seguridad.Shield {
                 def haberImpuesto = generaHaber.porcentaje.sum()
                 def haberPorcentaImpuesto = generaHaber.porcentajeImpuestos.sum()
 
-                def totalesDebe = debeValor + debeImpuesto + debePorcentaImpuesto
-                def totalesHaber = haberValor + haberImpuesto + haberPorcentaImpuesto
+                def fleteDebe = generaDebe.flete.sum()
+                def fleteHaber = generaHaber.flete.sum()
 
-                if(totalesDebe != 0 && totalesHaber != 0){
-                    if(debeValor == haberValor && debeImpuesto == haberImpuesto && debePorcentaImpuesto == haberPorcentaImpuesto){
-                        errores += 1
-                    }else{
-                        render "no_No se puede registrar el gestor contable, los valores no cuadran entre DEBE y HABER, TIPO: (${tipo?.descripcion})"
-                        return
-                    }
+                def debeSinIvaD = generaDebe.baseSinIva.sum()
+                def debeSinIvaH = generaHaber.baseSinIva.sum()
+
+
+                def totalesDebe = debeValor + debeImpuesto + debePorcentaImpuesto + fleteDebe + debeSinIvaD
+                def totalesHaber = haberValor + haberImpuesto + haberPorcentaImpuesto + fleteHaber + debeSinIvaH
+
+//                println("totalesdebe " + totalesDebe)
+//                println("totaleshaber " + totalesHaber)
+
+                if(totalesDebe == 0 && totalesHaber == 0){
+                   render "no_No se puede registrar el gestor contable, los valores se encuentran en 0, COMPROBANTE: (${tipo?.descripcion})"
                 }else{
-                    render "no_No se puede registrar el gestor contable, los valores se encuentran en 0, TIPO: (${tipo?.descripcion})"
-                    return
+                    if( (debeImpuesto.toDouble() != haberImpuesto.toDouble()) || (debeSinIvaD.toDouble() != debeSinIvaH.toDouble()) || (debePorcentaImpuesto.toDouble() != haberPorcentaImpuesto.toDouble()) || (debeValor.toDouble() != haberValor.toDouble()) || (fleteDebe.toDouble() != fleteHaber.toDouble() )){
+                        render "no_No se puede registrar el gestor contable, los valores no cuadran entre DEBE y HABER, COMPROBANTE: (${tipo?.descripcion})"
+                        return
+                    }else{
+                        errores += 1
+                    }
                 }
+
+//                if(totalesDebe != 0 && totalesHaber != 0){
+//                    if(debeValor == haberValor && debeImpuesto == haberImpuesto && debePorcentaImpuesto == haberPorcentaImpuesto){
+//                        errores += 1
+//                    }else{
+//                        render "no_No se puede registrar el gestor contable, los valores no cuadran entre DEBE y HABER, COMPROBANTE: (${tipo?.descripcion})"
+//                        return
+//                    }
+//                }else{
+//                    render "no_No se puede registrar el gestor contable, los valores se encuentran en 0, COMPROBANTE: (${tipo?.descripcion})"
+//                    return
+//                }
             }else{
                 if(!generaDebe && !generaHaber){
                     errores += 1
                     vr += 1
                 }else{
-                    render "no_No se puede registrar el gestor contable, ingrese valores tanto en DEBE como en HABER, TIPO: (${tipo?.descripcion})"
+                    render "no_No se puede registrar el gestor contable, ingrese valores tanto en DEBE como en HABER, COMPROBANTE: (${tipo?.descripcion})"
                     return
                 }
             }
@@ -489,8 +510,8 @@ class GestorContableController extends cratos.seguridad.Shield {
 
         def tam = tiposComprobantes.size()
 
-//        println("tam " + tam)
-//        println("errores  " + errores)
+        println("tam " + tam)
+        println("errores  " + errores)
 
         if(tam == errores && tam != vr){
             gestor.estado = 'R'
@@ -570,6 +591,17 @@ class GestorContableController extends cratos.seguridad.Shield {
         }catch (e){
             render "no"
             println("error al copiar el gestor " + e )
+        }
+    }
+
+    def revisarAsiento_ajax () {
+        def gestor = Gestor.get(params.gestor)
+        def genera = Genera.findAllByGestor(gestor)
+
+        if(genera?.size() > 0){
+            render 'ok'
+        }else{
+            render 'no'
         }
     }
 

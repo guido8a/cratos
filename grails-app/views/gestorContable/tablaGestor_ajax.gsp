@@ -90,10 +90,9 @@
         </g:each>
         <tr class="colorAsiento">
             <td class="total derecha">Diferencia de Totales</td>
-            <td class="total derecha ${Math.abs(pcnt) > 0.001 ? 'rojo' : ''}">
-                ${Math.round(pcnt*100)/100}</td>
-            <td class="total derecha ${Math.abs(pcim) > 0.001 ? 'rojo' : ''}">${Math.round((pcim)*100)/100}</td>
+            <td class="total derecha ${Math.abs(pcnt) > 0.001 ? 'rojo' : ''}">${Math.round(pcnt*100)/100}</td>
             <td class="total derecha ${Math.abs(pcbz) > 0.001 ? 'rojo' : ''}">${Math.round(pcbz*100)/100}</td>
+            <td class="total derecha ${Math.abs(pcim) > 0.001 ? 'rojo' : ''}">${Math.round((pcim)*100)/100}</td>
             <td class="total derecha ${Math.abs(vlor) > 0.001 ? 'rojo' : ''}">${Math.round((vlor)*100)/100}</td>
             <td class="total derecha ${Math.abs(flte) > 0.001 ? 'rojo' : ''}">${Math.round((flte)*100)/100}</td>
             <td class="total derecha ${Math.abs(rtiv) > 0.001 ? 'rojo' : ''}">${Math.round((rtiv)*100)/100}</td>
@@ -170,6 +169,7 @@
                                     closeLoader();
                                     cargarMovimientos(gestor, tipo);
                                     cargarTotales(gestor, tipo);
+                                    revisarAsientos();
                                     log("Cuenta borrada correctamente","success");
                                 }else{
                                     closeLoader();
@@ -217,6 +217,7 @@
                     log("Valores guardados correctamente","success");
                     cargarMovimientos(gestor, tipo);
                     cargarTotales(gestor, tipo);
+                    revisarAsientos();
                 }else{
                     log("Error al guardar los valores!","error");
                 }

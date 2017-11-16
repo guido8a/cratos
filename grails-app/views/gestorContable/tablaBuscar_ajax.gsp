@@ -46,6 +46,7 @@
                     if(msg == 'ok'){
                         bootbox.hideAll();
                         cargarMovimientos(gestor, tipo);
+                        revisarAsientos();
                     }else{
 
                     }
@@ -71,6 +72,7 @@
                 if(msg == 'ok'){
                     bootbox.hideAll();
                     cargarMovimientos(gestor, tipo);
+                    revisarAsientos();
                 }else{
 
                 }

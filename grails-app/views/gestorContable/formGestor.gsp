@@ -68,12 +68,12 @@
                     <i class="fa fa-save"></i>
                     Guardar
                 </a>
-                <g:if test="${tieneAsientos}">
-                    <a href="#" id="btnRegistrar" class="btn btn-info">
-                        <i class="fa fa-check"></i>
-                        Registrar
-                    </a>
-                </g:if>
+            %{--<g:if test="${tieneAsientos}">--}%
+                <a href="#" id="btnRegistrar" class="btn btn-info hidden">
+                    <i class="fa fa-check"></i>
+                    Registrar
+                </a>
+            %{--</g:if>--}%
                 <g:link action="deleteGestor" id="${gestorInstance?.id}" class="btn btn-danger" name="eliminarGestor">
                     <i class="fa fa-trash-o"></i>
                     Eliminar
@@ -242,6 +242,25 @@
 
 <script type="text/javascript">
 
+
+    function revisarAsientos () {
+
+        $.ajax({
+            type: 'POST',
+            url: '${createLink(controller: 'gestorContable', action: 'revisarAsiento_ajax')}',
+            data:{
+                gestor: '${gestorInstance?.id}'
+            },
+            success: function (msg){
+                if(msg == 'ok'){
+                    $("#btnRegistrar").removeClass('hidden')
+                }else{
+                    $("#btnRegistrar").addClass('hidden')
+                }
+            }
+        });
+    }
+
     cargarCheck($(".tipoProcesoSel option:selected").val())
 
     $(".tipoProcesoSel").change(function () {
@@ -393,6 +412,7 @@
         var tipoC = $("#tipo").val();
         cargarMovimientos('${gestorInstance?.id}', tipoC);
         cargarTotales('${gestorInstance?.id}', tipoC);
+        revisarAsientos();
     }
 
     $("#tipo").change(function () {
