@@ -481,16 +481,17 @@ class Reportes2Controller {
    }
 
     def libroMayor () {
-//        println("params lm " + params)
+        println("params lm " + params)
         def desde = new Date().parse("dd-MM-yyyy", params.desde)
         def hasta = new Date().parse("dd-MM-yyyy", params.hasta)
+        def cuenta = Cuenta.get(params.cnta)
 
         def cn = dbConnectionService.getConnection()
         def sql = "select * from libro_mayor(${params.emp}, ${params.cont}, ${params.cnta}, '${params.desde}', '${params.hasta}');"
 //        println("sql " + sql)
         def res =  cn.rows(sql.toString())
 
-        return[res: res,empresa: params.emp, desde: desde, hasta: hasta]
+        return[res: res,empresa: params.emp, desde: desde, hasta: hasta, cuenta: cuenta]
     }
 
     def balanceComprobacion () {

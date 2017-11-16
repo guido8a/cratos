@@ -52,17 +52,17 @@
                 $btn.replaceWith(spinner);
                     $.ajax({
                         type    : "POST",
-                        url     : '${createLink(action:'save_ajax')}',
+                        url     : '${createLink(action:'save')}',
                         data    : $form.serialize(),
                             success : function (msg) {
-                        var parts = msg.split("_");
-                        log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
-                        if (parts[0] == "OK") {
-                            location.reload(true);
-                        } else {
-                            spinner.replaceWith($btn);
-                            return false;
-                        }
+                            if(msg == 'OK'){
+                                log("Documento de Pago guardado correctamente","success");
+                                setTimeout(function () {
+                                    location.reload(true);
+                                }, 800);
+                            }else{
+                                log("Error al guardar el Documento de Pago guardado","error");
+                            }
                     }
                 });
             } else {
@@ -86,15 +86,18 @@
                             callback  : function () {
                                 $.ajax({
                                     type    : "POST",
-                                    url     : '${createLink(action:'delete_ajax')}',
+                                    url     : '${createLink(action:'delete')}',
                                     data    : {
                                         id : itemId
                                     },
                                     success : function (msg) {
-                                        var parts = msg.split("_");
-                                        log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
-                                        if (parts[0] == "OK") {
-                                            location.reload(true);
+                                        if(msg == 'ok'){
+                                            log("Documento de Pago eliminado correctamente","success");
+                                            setTimeout(function () {
+                                                location.reload(true);
+                                            }, 800);
+                                        }else{
+                                            log("Error al eliminar el Documento de Pago guardado","error");
                                         }
                                     }
                                 });

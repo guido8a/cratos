@@ -58,6 +58,8 @@
 
 <rep:headerFooter title="${'Libro Mayor'}" subtitulo="${'Datos'}" empresa="${empresa}"/>
 
+<h2>CUENTA : ${cuenta?.numero + " - " + cuenta?.descripcion?.toUpperCase()}</h2>
+
 <h2>
     PERÍODO DEL <g:formatDate date="${desde}" format="dd-MM-yyyy"/>
 
@@ -97,6 +99,7 @@
                 <td class="derecha">${j == 0 ? '' :cuenta.slmsdebe}</td>
                 <td class="derecha">${j == 0 ? '' :cuenta.slmshber}</td>
                 <td class="derecha">${cuenta.slmssldo}</td>
+                %{--<td class="derecha"><g:formatNumber number="${cuenta.slmsdebe.toDouble() - cuenta.slmshber.toDouble()}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>--}%
             </tr>
         </g:each>
         </tbody>
