@@ -92,12 +92,20 @@ class ContabilidadController extends cratos.seguridad.Shield {
         def errores = ''
         def contabilidadInstance
         def cuenta = Cuenta.get(params.cuenta)
+        def creditoIva = Cuenta.get(params.creditoIva)
+        def creditoRenta = Cuenta.get(params.creditoRenta)
+        def retencionIva = Cuenta.get(params.retencionIva)
+        def retencionRenta = Cuenta.get(params.retencionRenta)
 
         if(params.id){
             contabilidadInstance =  Contabilidad.get(params.id)
             contabilidadInstance.descripcion = params.descripcion
             contabilidadInstance.prefijo = params.prefijo.toUpperCase()
             contabilidadInstance.cuenta = cuenta
+            contabilidadInstance.creditoTributarioIva = creditoIva
+            contabilidadInstance.creditoTributarioRenta = creditoRenta
+            contabilidadInstance.retencionCompraIva = retencionIva
+            contabilidadInstance.retencionCompraRenta = retencionRenta
 
             if (!contabilidadInstance.save(flush: true)) {
                 render "NO_Error al guardar los datos de la contabilidad"
@@ -117,7 +125,10 @@ class ContabilidadController extends cratos.seguridad.Shield {
             contabilidadInstance.fechaCierre = params.fechaCierre
             contabilidadInstance.presupuesto = params.fechaInicio
             contabilidadInstance.cuenta = cuenta
-
+            contabilidadInstance.creditoTributarioIva = creditoIva
+            contabilidadInstance.creditoTributarioRenta = creditoRenta
+            contabilidadInstance.retencionCompraIva = retencionIva
+            contabilidadInstance.retencionCompraRenta = retencionRenta
 
             if (!contabilidadInstance.save(flush: true)) {
                 render "NO_Error al crear la contabilidad"

@@ -11,11 +11,11 @@
         <g:if test="${!contabilidadInstance?.id}">
             <div class="form-group ${hasErrors(bean: contabilidadInstance, field: 'fechaInicio', 'error')} required">
                 <span class="grupo">
-                    <label for="fechaInicio" class="col-md-2 control-label text-info">
+                    <label for="fechaInicio" class="col-md-4 control-label text-info">
                         Fecha Inicio
                     </label>
 
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <elm:datepicker name="fechaInicio" title="Fecha de inicio del periodo comtable" class="datepicker form-control required" value="${contabilidadInstance?.fechaInicio}"/>
                     </div>
                     *
@@ -24,11 +24,11 @@
 
             <div class="form-group ${hasErrors(bean: contabilidadInstance, field: 'fechaCierre', 'error')} ">
                 <span class="grupo">
-                    <label for="fechaCierre" class="col-md-2 control-label text-info">
+                    <label for="fechaCierre" class="col-md-4 control-label text-info">
                         Fecha Cierre
                     </label>
 
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <elm:datepicker name="fechaCierre" title="Fecha de cierre del periodo comtable" class="datepicker form-control required" value="${contabilidadInstance?.fechaCierre}"/>
                     </div>
                     *
@@ -39,11 +39,11 @@
 
         <div class="form-group ${hasErrors(bean: contabilidadInstance, field: 'prefijo', 'error')} ">
             <span class="grupo">
-                <label for="prefijo" class="col-md-2 control-label text-info">
+                <label for="prefijo" class="col-md-4 control-label text-info">
                     Prefijo
                 </label>
 
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <g:textField name="prefijo" maxlength="8" class="allCaps form-control" value="${contabilidadInstance?.prefijo}"/>
                 </div>
 
@@ -52,26 +52,77 @@
 
         <div class="form-group ${hasErrors(bean: contabilidadInstance, field: 'descripcion', 'error')} required">
             <span class="grupo">
-                <label for="descripcion" class="col-md-2 control-label text-info">
+                <label for="descripcion" class="col-md-4 control-label text-info">
                     Descripción
                 </label>
 
-                <div class="col-md-8">
+                <div class="col-md-6">
                     <g:textField name="descripcion" maxlength="63" required="" class="form-control required" value="${contabilidadInstance?.descripcion}"/>
                 </div>
                 *
             </span>
         </div>
 
-
         <div class="form-group ${hasErrors(bean: contabilidadInstance, field: 'descripcion', 'error')} required">
             <span class="grupo">
-                <label for="descripcion" class="col-md-2 control-label text-info">
+                <label for="descripcion" class="col-md-4 control-label text-info">
                     Cuenta
                 </label>
 
-                <div class="col-md-8">
+                <div class="col-md-6">
                     <g:select name="cuenta" from="${cuentas}" optionValue="descripcion" optionKey="id" class="form-control" value="${contabilidadInstance?.cuenta?.id}"/>
+                </div>
+                *
+            </span>
+        </div>
+
+        <div class="form-group ${hasErrors(bean: contabilidadInstance, field: 'creditoTributarioIva', 'error')} required">
+            <span class="grupo">
+                <label for="descripcion" class="col-md-4 control-label text-info">
+                    Crédito Tributario IVA
+                </label>
+
+                <div class="col-md-6">
+                    <g:select name="creditoIva" from="${cuentas}" optionValue="descripcion" optionKey="id" class="form-control" value="${contabilidadInstance?.creditoTributarioIva?.id}"/>
+                </div>
+                *
+            </span>
+        </div>
+
+        <div class="form-group ${hasErrors(bean: contabilidadInstance, field: 'creditoTributarioRenta', 'error')} required">
+            <span class="grupo">
+                <label for="descripcion" class="col-md-4 control-label text-info">
+                    Crédito Tributario RENTA
+                </label>
+
+                <div class="col-md-6">
+                    <g:select name="creditoRenta" from="${cuentas}" optionValue="descripcion" optionKey="id" class="form-control" value="${contabilidadInstance?.creditoTributarioRenta?.id}"/>
+                </div>
+                *
+            </span>
+        </div>
+
+        <div class="form-group ${hasErrors(bean: contabilidadInstance, field: 'retencionCompraIva', 'error')} required">
+            <span class="grupo">
+                <label for="descripcion" class="col-md-4 control-label text-info">
+                    Retención en Compras IVA
+                </label>
+
+                <div class="col-md-6">
+                    <g:select name="retencionIva" from="${cuentas}" optionValue="descripcion" optionKey="id" class="form-control" value="${contabilidadInstance?.retencionCompraIva?.id}"/>
+                </div>
+                *
+            </span>
+        </div>
+
+        <div class="form-group ${hasErrors(bean: contabilidadInstance, field: 'retencionCompraRenta', 'error')} required">
+            <span class="grupo">
+                <label for="descripcion" class="col-md-4 control-label text-info">
+                    Retención en Compras RENTA
+                </label>
+
+                <div class="col-md-6">
+                    <g:select name="retencionRenta" from="${cuentas}" optionValue="descripcion" optionKey="id" class="form-control" value="${contabilidadInstance?.retencionCompraRenta?.id}"/>
                 </div>
                 *
             </span>

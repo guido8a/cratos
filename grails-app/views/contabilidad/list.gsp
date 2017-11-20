@@ -13,9 +13,6 @@
 <!-- botones -->
 <div class="btn-toolbar toolbar">
     <div class="btn-group">
-        %{--<g:link action="form" class="btn btn-info btnCrear">--}%
-            %{--<i class="fa fa-file-o"></i> Nueva contabilidad--}%
-        %{--</g:link>--}%
         <a href="#" class="btn btn-info btnCrear">
             <i class="fa fa-file-o"></i> Nueva contabilidad
         </a>
@@ -80,6 +77,7 @@
                     bootbox.dialog({
                         title   : "Plan de cuentas",
                         message : msg,
+                        class : 'long',
                         buttons : {
                             ok : {
                                 label     : "<i class='fa fa-times'></i> Cancelar",
@@ -178,6 +176,7 @@
                     id      : "dlgCreateEdit",
                     title   : title + " Contabilidad",
                     message : msg,
+                    class : 'long',
                     buttons : {
                         cancelar : {
                             label     : "<i class='fa fa-times'></i> Cancelar",

@@ -287,6 +287,7 @@
             $(this).val("0.00")
         if ($(this).val() == "")
             $(this).val("0.00")
+        calculaIva()
     });
 
     $("#dcmtAutorizacion").bind('paste', function() {
@@ -296,8 +297,8 @@
     function calculaIva() {
         var iva = ${valorIva ?: 0};
         var val = parseFloat($("#iva12").val());
-        var total = (iva / 100) * val;
-//        console.log('recalcula IVA...')
+        var ice = parseFloat($("#iceGenerado").val());
+        var total = (iva / 100) * (val + ice);
         $("#ivaGenerado").val(number_format(total, 2, ".", ""));
     }
 
