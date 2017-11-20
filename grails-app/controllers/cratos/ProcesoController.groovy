@@ -1609,14 +1609,14 @@ class ProcesoController extends cratos.seguridad.Shield {
             sql = "select coalesce(max(prcsfcsc), 0) mxmo from prcs, fcdt " +
                     "where tpps__id = ${params.tpps} and fcdt.fcdt__id = prcs.fcdt__id and " +
                     "prcs.fcdt__id = ${params.libretin} and prcsfcsc between fcdtdsde and fcdthsta and " +
-                    "fcdtnmes = '${params.nmes}'"
+                    "fcdtnmes = '${params.nmes}' and empr__id = ${session.empresa.id}"
             nmro = cn.rows(sql.toString())[0]?.mxmo + 1
             render "${fcdt.numeroEstablecimiento}_${fcdt.numeroEmision}_${nmro}"
         } else {
             sql = "select fcdt__id id, fcdtdsde numeroDesde, fcdthsta numeroHasta, fcdtfcat fechaAutorizacion, " +
                     "fcdtnmes numeroEstablecimiento, fcdtnmpe numeroEmision " +
                     "from fcdt where to_date('${params.fcha}', 'DD-MM-YYYY') between fcdtfcin and fcdtfcfn and " +
-                    "fcdttipo = '${tpdc}' and fcdtnmes = '${params.nmes}' order by fcdtfcin"
+                    "fcdttipo = '${tpdc}' and fcdtnmes = '${params.nmes}' and empr__id = ${session.empresa.id} order by fcdtfcin"
 //            println "libretin: $sql"
             def libretin = cn.rows(sql.toString())
             sql = "select coalesce(max(prcsfcsc), 0) mxmo from prcs, fcdt " +
