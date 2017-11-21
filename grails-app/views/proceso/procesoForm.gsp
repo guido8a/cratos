@@ -68,7 +68,7 @@
         </g:link>
     </div>
 
-    <div class="btn-group" style="margin-right: 20px">
+    <div class="btn-group" style="margin-right: 10px">
 
         <g:link class="btn btn-success" action="nuevoProceso">
             <i class="fa fa-gear"></i> Nueva Transacción
@@ -126,13 +126,13 @@
                     </a>
                 </g:if>
             </g:if>
-            <g:if test="${cratos.Retencion.findByProceso(proceso)}">
-                <g:link controller="reportes3" action="imprimirRetencion" class="btn btn-default btnRetencion"
-                        id="${proceso?.id}" params="[empresa: session.empresa.id]" style="margin-bottom: 10px;">
-                    <i class="fa fa-print"></i>
-                    Imprimir retención
-                </g:link>
-            </g:if>
+            %{--<g:if test="${cratos.Retencion.findByProceso(proceso)}">--}%
+                %{--<g:link controller="reportes3" action="imprimirRetencion" class="btn btn-default btnRetencion"--}%
+                        %{--id="${proceso?.id}" params="[empresa: session.empresa.id]" style="margin-bottom: 10px;">--}%
+                    %{--<i class="fa fa-print"></i>--}%
+                    %{--Imprimir retención--}%
+                %{--</g:link>--}%
+            %{--</g:if>--}%
             <g:if test="${proceso?.tipoProceso?.codigo?.trim() in ['C','V','T','NC']}">
                 <a href="#" class="btn btn-warning" id="btnDetalle" style="color: #0b0b0b">
                     <i class="fa fa-list"></i>
@@ -430,11 +430,18 @@
                     id: "dlgDR",
                     title: "Documento de Retención",
                     class: "long",
+                    align: 'right',
                     message: msg,
                     buttons: {
                         cancelar: {
                             label: "<i class='fa fa-times'></i> Cancelar",
                             className: "btn-primary",
+                            callback: function () {
+                            }
+                        },
+                        registrar:{
+                            label: "<i class='fa fa-check'></i> Registrar",
+                            className: "btn-info",
                             callback: function () {
                             }
                         },

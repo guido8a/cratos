@@ -41,7 +41,8 @@
                 <i class="fa fa-floppy-o"></i> Guardar</a>
         </div>
     </g:if>
-    <div class="text-info negrilla" style="margin-left: 10px; text-align: right; width: 400px; display: inline-block">Transacción: ${proceso.descripcion}</div>
+
+    <div class="text-info negrilla" style="margin-left: 10px; text-align: right; width: 350px; display: inline-block; font-size: 16px">Transacción: ${proceso.descripcion}</div>
 
     <div class="btn-group" style="margin-right: 20px; margin-left: 10px">
         <g:if test="${proceso?.estado == 'R'}">
@@ -51,6 +52,28 @@
             </a>
         </g:if>
     </div>
+
+    <div class="btn-group" style="margin-right: 20px; margin-left: 10px">
+        <a href="#" class="btn btn-info" id="registrarR" title="Registrar Retención">
+            <i class="fa fa-check"></i>
+            Registrar
+        </a>
+        <g:if test="${cratos.Retencion.findByProceso(proceso)}">
+            <a href="#" class="btn btn-primary" id="btnRetencion" title="Imprimir la Retención">
+                <i class="fa fa-print"></i>
+                Imprimir retención
+            </a>
+        </g:if>
+
+
+    %{--<g:link controller="reportes3" action="imprimirRetencion" class="btn btn-primary btnRetencion"--}%
+    %{--id="${proceso?.id}" params="[empresa: session.empresa.id]" style="margin-bottom: 10px;">--}%
+    %{--<i class="fa fa-print"></i>--}%
+    %{--Imprimir retención--}%
+    %{--</g:link>--}%
+
+    </div>
+
 </div>
 
 <div style="padding: 0.7em; margin-top:5px; display: none;" class="alert alert-danger ui-corner-all"
@@ -927,7 +950,7 @@
         $("#conceptoRenta").change();
         var concepto = $("#conceptoRenta option:selected").val();
         cargarRetencionRIR(concepto, 'B');
-       var conceptosr = $("#conceptoRentaSrvc option:selected").val();
+        var conceptosr = $("#conceptoRentaSrvc option:selected").val();
         cargarRetencionRIR(conceptosr, 'S');
         $("#baseRenta").change();
         $("#libretin").change();
@@ -938,6 +961,15 @@
     $("#comprobanteN").click(function () {
         location.href="${createLink(controller: 'proceso', action: 'comprobante')}/?proceso=" + '${proceso?.id}'
     })
+
+
+    $("#btnRetencion").click(function () {
+        var establecimiento = $("#numEstablecimiento").val();
+        var emision = $("#numEmision").val();
+        url = "${g.createLink(controller:'reportes3' , action: 'imprimirRetencion')}?id=" + '${proceso?.id}' + "Wempresa=${session.empresa.id}" + "Westablecimiento=" + establecimiento + "Wemision=" + emision;
+        location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=resultadoIntegral.pdf"
+    });
+
 
 </script>
 

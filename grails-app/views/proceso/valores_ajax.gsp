@@ -217,38 +217,38 @@
         </div>
     </div>
 
-    <g:if test="${tipo == '2'}">
-        <div class="row" style="font-size: 12px; margin-top: 20px">
-            <div class="col-xs-1 negrilla text-info" style="width: 120px;">
-                Documento de retención:
-            </div>
+    %{--<g:if test="${tipo == '2'}">--}%
+        %{--<div class="row" style="font-size: 12px; margin-top: 20px">--}%
+            %{--<div class="col-xs-1 negrilla text-info" style="width: 120px;">--}%
+                %{--Documento de retención:--}%
+            %{--</div>--}%
 
-            <div class="col-xs-3 negrilla" style="margin-left: -20px; width: 240px;">
-                <input type="text" name="retencionVenta" id="retencionVenta" value="${proceso?.retencionVenta}"
-                       class="form-control" ${proceso?.estado == 'R' ? 'readonly':''} />
-            </div>
+            %{--<div class="col-xs-3 negrilla" style="margin-left: -20px; width: 240px;">--}%
+                %{--<input type="text" name="retencionVenta" id="retencionVenta" value="${proceso?.retencionVenta}"--}%
+                       %{--class="form-control" ${proceso?.estado == 'R' ? 'readonly':''} />--}%
+            %{--</div>--}%
 
-        <div class="col-xs-2 negrilla text-info">
-            Valor retenido del IVA:
-        </div>
+        %{--<div class="col-xs-2 negrilla text-info">--}%
+            %{--Valor retenido del IVA:--}%
+        %{--</div>--}%
 
-        <div class="col-xs-2 negrilla" style="margin-left: -20px">
-            <input type="text" name="retenidoIva" id="retenidoIva" value="${proceso?.retenidoIva ?: 0.00}"
-                   class="required number form-control validacionNumero valor"
-                   validate="required number"  ${proceso?.estado == 'R' ? 'readonly':''} />
-        </div>
+        %{--<div class="col-xs-2 negrilla" style="margin-left: -20px">--}%
+            %{--<input type="text" name="retenidoIva" id="retenidoIva" value="${proceso?.retenidoIva ?: 0.00}"--}%
+                   %{--class="required number form-control validacionNumero valor"--}%
+                   %{--validate="required number"  ${proceso?.estado == 'R' ? 'readonly':''} />--}%
+        %{--</div>--}%
 
-        <div class="col-xs-2 negrilla text-info">
-            Valor retenido del Impuesto a la Renta:
-        </div>
+        %{--<div class="col-xs-2 negrilla text-info">--}%
+            %{--Valor retenido del Impuesto a la Renta:--}%
+        %{--</div>--}%
 
-        <div class="col-xs-2 negrilla" style="margin-left: 0px">
-            <input type="text" name="retenidoRenta" id="retenidoRenta" value="${proceso?.retenidoRenta ?: 0.00}"
-                   class="required number form-control validacionNumero valor"
-                   validate="required number"  ${proceso?.estado == 'R' ? 'readonly' : ''}  />
-        </div>
-        </div>
-    </g:if>
+        %{--<div class="col-xs-2 negrilla" style="margin-left: 0px">--}%
+            %{--<input type="text" name="retenidoRenta" id="retenidoRenta" value="${proceso?.retenidoRenta ?: 0.00}"--}%
+                   %{--class="required number form-control validacionNumero valor"--}%
+                   %{--validate="required number"  ${proceso?.estado == 'R' ? 'readonly' : ''}  />--}%
+        %{--</div>--}%
+        %{--</div>--}%
+    %{--</g:if>--}%
 
 </g:elseif>
 

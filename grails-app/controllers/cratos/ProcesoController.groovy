@@ -938,6 +938,7 @@ class ProcesoController extends cratos.seguridad.Shield {
 //        println "libretin: $sql"
         def libretin = cn.rows(sql.toString())
 
+
         [proceso: proceso, libreta: libretin, retencion: retencion, base: baseImponible, crirBienes: crirBienes,
          crirServicios: crirServicios, pcivBien: pcivBien, pcivSrvc: pcivSrvc]
 

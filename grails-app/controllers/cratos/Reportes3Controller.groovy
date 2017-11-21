@@ -457,13 +457,13 @@ class Reportes3Controller {
     }
 
     def imprimirRetencion() {
+//        println("params " + params)
         def empresa = Empresa.get(params.empresa)
         def proceso = Proceso.get(params.id)
         def retencion = Retencion.findByProceso(proceso)
-
         def meses = ["", "enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"]
 
-        [empresa: empresa, retencion: retencion, meses: meses, proceso: proceso]
+        return [empresa: empresa, retencion: retencion, meses: meses, proceso: proceso, establecimiento: params.establecimiento, emision: params.emision]
     }
 
 

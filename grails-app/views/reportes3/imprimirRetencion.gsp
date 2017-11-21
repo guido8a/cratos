@@ -72,17 +72,20 @@
 
                     <div class="info">Teléfonos: ${empresa.telefono}</div>
 
-                    <div class="info">${empresa.canton.nombre} - Ecuador</div>
+                    <div class="info">${empresa?.canton?.nombre ?: ' '}  Ecuador</div>
 
                     <div class="info">R.U.C.: ${empresa.ruc}</div>
                 </div>
 
                 <div class="right" style="margin-top: 20px;">
-                    <div class="info"><strong>Autorización del S.R.I.:</strong> ${retencion.numeroAutorizacionComprobante}</div>
+                    %{--<div class="info"><strong>Autorización del S.R.I.:</strong> ${retencion.numeroAutorizacionComprobante}</div>--}%
+                    <div class="info"><strong>Autorización del S.R.I.:</strong> ${proceso?.autorizacion ?: ''}</div>
 
-                    <div class="info"><strong>COMPROBANTE DE RETENCIÓN</strong> ${retencion.numeroEstablecimiento}-${retencion.numeroPuntoEmision}</div>
+                    %{--<div class="info"><strong>COMPROBANTE DE RETENCIÓN</strong> ${retencion.numeroEstablecimiento}-${retencion.numeroPuntoEmision}</div>--}%
+                    <div class="info"><strong>COMPROBANTE DE RETENCIÓN</strong> ${establecimiento}-${emision}</div>
 
-                    <h3>N. ${retencion.numeroSecuencial}</h3>
+                    %{--<h3>N. ${retencion.numeroSecuencial}</h3>--}%
+                    <h3>N. ${retencion?.numero ?: 0}</h3>
                 </div>
             </div>
 
@@ -100,11 +103,13 @@
                 <div class="right">
                     <div class="info"><strong>Lugar y fecha de emisión:</strong> Quito, ${retencion.fecha.format("dd")} de ${meses[retencion.fecha.format("MM").toInteger()]} del ${retencion.fecha.format("yyyy")}</div>
 
-                    <div class="info"><strong>Tipo de comprobante de venta:</strong> ${proceso.tipoComprobanteSri.descripcion}</div>
+                    <div class="info"><strong>Tipo de comprobante de venta:</strong> ${proceso.tipoCmprSustento?.tipoComprobanteSri?.descripcion}</div>
 
-                    <div class="info"><strong>No. de comprobante de venta:</strong> ${proceso.facturaEstablecimiento}-${proceso.facturaPuntoEmision}-${proceso.facturaSecuencial}</div>
+                    %{--<div class="info"><strong>No. de comprobante de venta:</strong> ${proceso.facturaEstablecimiento}-${proceso.facturaPuntoEmision}-${proceso.facturaSecuencial}</div>--}%
+                    <div class="info"><strong>No. de comprobante de venta:</strong> ${proceso?.documento}</div>
 
-                    <div class="info"><strong>Ejercicio fiscal:</strong> ${retencion.contabilidad.fechaInicio.format("yyyy")}</div>
+                    %{--<div class="info"><strong>Ejercicio fiscal:</strong> ${retencion.contabilidad.fechaInicio.format("yyyy")}</div>--}%
+                    <div class="info"><strong>Ejercicio fiscal:</strong> ${proceso?.contabilidad?.fechaInicio?.format("yyyy")}</div>
                 </div>
             </div>
 
