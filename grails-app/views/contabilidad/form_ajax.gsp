@@ -83,7 +83,7 @@
                 </label>
 
                 <div class="col-md-6">
-                    <g:select name="creditoIva" from="${cuentas}" optionValue="descripcion" optionKey="id" class="form-control" value="${contabilidadInstance?.creditoTributarioIva?.id}"/>
+                    <g:select name="creditoIva" from="${cntacr}" optionValue="descripcion" optionKey="id" class="form-control" value="${contabilidadInstance?.creditoTributarioIva?.id}"/>
                 </div>
                 *
             </span>
@@ -96,7 +96,7 @@
                 </label>
 
                 <div class="col-md-6">
-                    <g:select name="creditoRenta" from="${cuentas}" optionValue="descripcion" optionKey="id" class="form-control" value="${contabilidadInstance?.creditoTributarioRenta?.id}"/>
+                    <g:select name="creditoRenta" from="${cntacr}" optionValue="descripcion" optionKey="id" class="form-control" value="${contabilidadInstance?.creditoTributarioRenta?.id}"/>
                 </div>
                 *
             </span>
@@ -109,7 +109,7 @@
                 </label>
 
                 <div class="col-md-6">
-                    <g:select name="retencionIva" from="${cuentas}" optionValue="descripcion" optionKey="id" class="form-control" value="${contabilidadInstance?.retencionCompraIva?.id}"/>
+                    <g:select name="retencionIva" from="${cntart}" optionValue="descripcion" optionKey="id" class="form-control" value="${contabilidadInstance?.retencionCompraIva?.id}"/>
                 </div>
                 *
             </span>
@@ -122,7 +122,7 @@
                 </label>
 
                 <div class="col-md-6">
-                    <g:select name="retencionRenta" from="${cuentas}" optionValue="descripcion" optionKey="id" class="form-control" value="${contabilidadInstance?.retencionCompraRenta?.id}"/>
+                    <g:select name="retencionRenta" from="${cntart}" optionValue="descripcion" optionKey="id" class="form-control" value="${contabilidadInstance?.retencionCompraRenta?.id}"/>
                 </div>
                 *
             </span>
