@@ -110,7 +110,7 @@
             <div class="col-xs-2 text-info" style="margin-top: -20px">
                 Base Imponible:
                 <input type="text" name="baseImponible" class="form-control " id="baseImponible" readonly
-                       value="${proceso?.baseImponibleIva}" title="Base Imponible"
+                       value="${proceso?.baseImponibleIva + proceso?.flete}" title="Base Imponible"
                        style="width: 120px; text-align: right"/>
             </div>
             <div class="col-xs-1 text-info" style="margin-top: -20px">
@@ -130,7 +130,7 @@
 
             <div class="col-xs-2">
                 <elm:datepicker name="fechaEmision_name" class="datepicker required form-control fechaEmision"
-                                value="${retencion?.fechaEmision ?: proceso.fechaIngresoSistema}" minDate="${proceso.fechaRegistro}"/>
+                                value="${retencion?.fechaEmision ?: proceso.fechaIngresoSistema}"/>
             </div>
 
             <div class="col-xs-2 negrilla">
@@ -181,7 +181,7 @@
                 <label>Base Imponible</label>
                 <g:textField class="form-control number baseB" title="La base imponible del IR."
                              style="text-align: right" name="baseRenta"
-                             value="${retencion?.baseRenta ?: proceso?.baseImponibleIva}"/>
+                             value="${retencion?.baseRenta ?: proceso?.baseImponibleIva + proceso?.flete}"/>
                 <p class="help-block ui-helper-hidden"></p>
             </div>
 

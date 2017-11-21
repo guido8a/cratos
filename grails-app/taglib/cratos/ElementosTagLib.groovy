@@ -197,6 +197,7 @@ class ElementosTagLib {
         def todayHighlight = attrs.todayHighlight ?: true
 
         def beforeShowDay = attrs.beforeShowDay ?: false
+//        def beforeShowDay = attrs.beforeShowDay ?: true
         def onChangeDate = attrs.onChangeDate ?: false
 
         def daysOfWeekDisabled = attrs.daysOfWeekDisabled ?: false

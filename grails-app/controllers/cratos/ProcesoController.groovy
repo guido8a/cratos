@@ -1867,8 +1867,8 @@ class ProcesoController extends cratos.seguridad.Shield {
         retencion.fecha = new Date()
         retencion.fechaEmision = new Date().parse("dd-MM-yyyy",params.fechaEmision)
 
-        println "${retencion.fechaEmision} >=  ${proceso.fechaRegistro}"
-        if(retencion.fechaEmision < proceso.fechaRegistro) {
+        println "${retencion.fechaEmision} >=  ${proceso.fechaIngresoSistema}"
+        if(retencion.fechaEmision < proceso.fechaIngresoSistema) {
             mnsj = "La fecha de la retención es anterior a la emisión del comprobante: ${proceso.fechaRegistro.format('dd-MM-yyyy')}"
             render mnsj
             return
