@@ -1625,7 +1625,7 @@ class ProcesoController extends cratos.seguridad.Shield {
                     "prcs.fcdt__id = ${libretin[0]?.id} and prcsfcsc between fcdtdsde and fcdthsta and " +
                     "fcdtnmes = '${params.nmes}'"
 //            println "sql nmro: $sql"
-            nmro = cn.rows(sql.toString())[0]?.mxmo
+            nmro = cn.rows(sql.toString())[0]?.mxmo ?: 0
             nmro = nmro == 0 ? libretin[0]?.numeroDesde : nmro + 1
 //            println "valor de nmro: $nmro, ${libretin[0]?.numeroDesde}"
 
