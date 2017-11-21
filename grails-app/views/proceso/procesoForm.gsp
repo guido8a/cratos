@@ -64,7 +64,7 @@
     <div class="btn-group">
         <g:link class="btn btn-info" action="buscarPrcs">
             <i class="fa fa-chevron-left"></i>
-            Lista de Procesos
+            Lista Procesos
         </g:link>
     </div>
 
