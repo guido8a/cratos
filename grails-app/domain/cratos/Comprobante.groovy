@@ -9,6 +9,7 @@ class Comprobante implements Serializable {
     TipoComprobante tipo
     String registrado
     String factura
+    Contabilidad contabilidad
 
     static auditable = true
     static mapping = {
@@ -26,6 +27,7 @@ class Comprobante implements Serializable {
             registrado column: 'cmprrgst'
             prefijo column: 'cmprprfj'
             factura column: 'cmprfctr'
+            contabilidad column: 'cont__id'
         }
     }
     static constraints = {
@@ -37,5 +39,6 @@ class Comprobante implements Serializable {
         registrado(blank: false, maxSize: 1, attributes: [title: 'registrado'])
         prefijo(blank: true,nullable: true,size: 1..20)
         factura(blank: true,nullable: true)
+        contabilidad(blank: false, nullable: false)
     }
 }

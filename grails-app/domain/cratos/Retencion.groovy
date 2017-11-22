@@ -32,6 +32,7 @@ class Retencion implements Serializable {
     double renta = 0
     double baseRentaServicios = 0
     double rentaServicios = 0
+    String estado = 'N'
 
 
     static mapping = {
@@ -69,6 +70,7 @@ class Retencion implements Serializable {
             renta column: 'rtcnrnta'
             baseRentaServicios column: 'rtcnbrsr'
             rentaServicios column: 'rtcnrnsr'
+            estado column: 'rtcnetdo'
         }
     }
 
@@ -98,5 +100,21 @@ class Retencion implements Serializable {
         baseRentaServicios(blank: true, nullable: true)
         rentaServicios(blank: true, nullable: true)
 
+        estado(blank: false, nullable: false)
+
     }
+
+    def getTotal() {
+        this.renta + this.rentaServicios + this.ivaBienes + this.ivaServicios
+    }
+
+    def getHayIva() {
+        (this.ivaBienes + this.ivaServicios) > 0
+    }
+
+    def getHayRenta() {
+
+        (this.renta + this.rentaServicios) > 0
+    }
+
 }

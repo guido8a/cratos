@@ -54,11 +54,21 @@
     </div>
 
     <div class="btn-group" style="margin-right: 20px; margin-left: 10px">
-        <a href="#" class="btn btn-info" id="registrarR" title="Registrar Retención">
-            <i class="fa fa-check"></i>
-            Registrar
-        </a>
-        <g:if test="${cratos.Retencion.findByProceso(proceso)}">
+        <g:if test="${retencion?.id}">
+            <g:if test="${retencion?.estado == 'S'}">
+                <a href="#" class="btn btn-warning registrar" title="Desregistrar la Retención">
+                    <i class="fa fa-check"></i>
+                    Desregistrar
+                </a>
+            </g:if>
+            <g:else>
+                <g:if test="${retencion?.total > 0}">
+                    <a href="#" class="btn btn-info registrar" title="Registrar la Retención">
+                        <i class="fa fa-check"></i>
+                        Registrar
+                    </a>
+                </g:if>
+            </g:else>
             <a href="#" class="btn btn-primary" id="btnRetencion" title="Imprimir la Retención">
                 <i class="fa fa-print"></i>
                 Imprimir retención
@@ -609,6 +619,19 @@
             $("#baseIvaServicios").val(0)
         }
         cargarPciv(id, 'S')
+    });
+
+    $(".registrar").click(function() {
+        $.ajax({
+            type: 'POST',
+            url: "${createLink(controller: 'retencion', action: 'registrar')}",
+            data: {
+                id: "${retencion.id}"
+            },
+            success: function (msg) {
+                location.reload()
+            }
+        });
     });
 
     function cargarPciv(id, tipo) {
