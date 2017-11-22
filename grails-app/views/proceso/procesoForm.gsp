@@ -453,7 +453,7 @@
                                             type: 'POST',
                                             url: "${createLink(controller: 'retencion', action: 'registrarRetVentas')}",
                                             data: {
-                                                id: ""
+                                                id: "${proceso?.id}"
                                             },
                                             success: function (msg) {
                                                 location.reload()
