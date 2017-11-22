@@ -622,14 +622,20 @@
     });
 
     $(".registrar").click(function() {
-        $.ajax({
-            type: 'POST',
-            url: "${createLink(controller: 'retencion', action: 'registrar')}",
-            data: {
-                id: "${retencion.id}"
-            },
-            success: function (msg) {
-                location.reload()
+        bootbox.confirm("<i class='fa fa-exclamation-circle fa-3x pull-left text-warning text-shadow'>" +
+            "</i> Esta seguro de registrar esta retención?. Esta acción no se puede deshacer!", function (result) {
+            if (result) {
+
+                $.ajax({
+                    type: 'POST',
+                    url: "${createLink(controller: 'retencion', action: 'registrar')}",
+                    data: {
+                        id: "${retencion?.id}"
+                    },
+                    success: function (msg) {
+                        location.reload()
+                    }
+                });
             }
         });
     });

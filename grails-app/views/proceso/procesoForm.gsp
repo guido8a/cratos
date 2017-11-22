@@ -418,6 +418,9 @@
 <script type="text/javascript">
 
 
+
+
+
     $("#btnDocRetencion").click(function () {
         $.ajax({
             type: 'POST',
@@ -443,6 +446,21 @@
                             label: "<i class='fa fa-check'></i> Registrar",
                             className: "btn-info",
                             callback: function () {
+                                bootbox.confirm("<i class='fa fa-exclamation-circle fa-3x pull-left text-warning text-shadow'>" +
+                                    "</i> Esta seguro de registrar esta retención?. Esta acción no se puede deshacer!", function (result) {
+                                    if (result) {
+                                        $.ajax({
+                                            type: 'POST',
+                                            url: "${createLink(controller: 'retencion', action: 'registrarRetVentas')}",
+                                            data: {
+                                                id: ""
+                                            },
+                                            success: function (msg) {
+                                                location.reload()
+                                            }
+                                        });
+                                    }
+                                })
                             }
                         },
                         aceptar:{

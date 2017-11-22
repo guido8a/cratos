@@ -57,4 +57,8 @@ class RetencionController {
         asnt.numero = nmro
         asnt.save(flush: true)
     }
+
+    def registrarRetVentas () {
+
+    }
 }
