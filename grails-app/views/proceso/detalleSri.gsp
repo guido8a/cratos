@@ -993,9 +993,10 @@
 
 
     $("#btnRetencion").click(function () {
-        var establecimiento = $("#numEstablecimiento").val();
-        var emision = $("#numEmision").val();
-        url = "${g.createLink(controller:'reportes3' , action: 'imprimirRetencion')}?id=" + '${proceso?.id}' + "Wempresa=${session.empresa.id}" + "Westablecimiento=" + establecimiento + "Wemision=" + emision;
+//        var establecimiento = $("#numEstablecimiento").val();
+//        var emision = $("#numEmision").val();
+        %{--url = "${g.createLink(controller:'reportes3' , action: 'imprimirRetencion')}?id=" + '${proceso?.id}' + "Wempresa=${session.empresa.id}" + "Westablecimiento=" + establecimiento + "Wemision=" + emision;--}%
+        url = "${g.createLink(controller:'reportes3' , action: 'imprimirRetencion')}?id=" + '${proceso?.id}' + "Wempresa=${session.empresa.id}";
         location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=resultadoIntegral.pdf"
     });
 

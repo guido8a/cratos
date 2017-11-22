@@ -305,6 +305,17 @@ como máximo 30 <span style="margin-left: 40px; color: #0b2c89">Se ordena por fe
             }
         };
 
+
+        var imprimirRetencion = {
+            label: 'Imprimir Retención',
+            icon: 'fa fa-print',
+            action: function () {
+                url = "${g.createLink(controller:'reportes3' , action: 'imprimirRetencion')}?id=" + id + "Wempresa=${session.empresa.id}";
+                location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=retencion.pdf"
+            }
+        };
+
+
         items.editar = editar;
 
 //        if(tp == 'Compras' || tp == 'Ventas' || tp == 'Transferencias' || tp == 'Nota de crédito'){
@@ -314,6 +325,7 @@ como máximo 30 <span style="margin-left: 40px; color: #0b2c89">Se ordena por fe
 
         if(rtcn){
             items.retencion = retencion;
+            items.imprimirRetencion = imprimirRetencion;
         }
 
         if(tp == 'Compras' && cm == '41'){
