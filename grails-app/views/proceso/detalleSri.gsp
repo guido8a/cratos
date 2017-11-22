@@ -54,7 +54,7 @@
     </div>
 
     <div class="btn-group" style="margin-right: 20px; margin-left: 10px">
-        <g:if test="${retencion?.id}">
+        <g:if test="${retencion?.proceso?.estado =='R'}">
             <g:if test="${retencion?.estado == 'S'}">
                 <a href="#" class="btn btn-warning registrar" title="Desregistrar la Retención">
                     <i class="fa fa-check"></i>

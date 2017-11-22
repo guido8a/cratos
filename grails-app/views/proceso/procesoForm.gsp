@@ -422,6 +422,18 @@
 
 
     $("#btnDocRetencion").click(function () {
+        var titulo = ""
+        var clase = ""
+        var mnsj = ""
+        if("${proceso.retEstado == 'S'}") {
+            titulo = "Desregistrar";
+            clase = "btn-primary";
+            mnsj = "Esta seguro de desregistrar esta retención?";
+        } else {
+            titulo = "Registrar";
+            clase = "btn-info";
+            mnsj = "Esta seguro de registrar esta retención?";
+        }
         $.ajax({
             type: 'POST',
             url:'${createLink(controller: 'proceso', action: 'docRetencion_ajax')}',
@@ -443,11 +455,11 @@
                             }
                         },
                         registrar:{
-                            label: "<i class='fa fa-check'></i> Registrar",
-                            className: "btn-info",
+                            label: "<i class='fa fa-check'></i> " + titulo,
+                            className: clase,
                             callback: function () {
                                 bootbox.confirm("<i class='fa fa-exclamation-circle fa-3x pull-left text-warning text-shadow'>" +
-                                    "</i> Esta seguro de registrar esta retención?. Esta acción no se puede deshacer!", function (result) {
+                                    "</i>" + mnsj, function (result) {
                                     if (result) {
                                         $.ajax({
                                             type: 'POST',

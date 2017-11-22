@@ -9,9 +9,8 @@ class RetencionController {
         def cont = Contabilidad.get(session.contabilidad.id)
         def rtcn = Retencion.get(params.id)
         def compra = Comprobante.findByProceso(rtcn.proceso)
-        def cmpr = new Comprobante()
-        def sql = "select max(cmprnmro) mxmo from cmpr where cont__id = ${cont.id} and cmpr.tpcp__id = 3"
-        def nmro = cn.rows(sql.toString())[0].mxmo
+        def sql = "select max(cmprnmro) mxmo from cmpr where cont__id = ${cont.id} and cmpr.tpcp__id = 4"
+        def nmro = cn.rows(sql.toString())[0]?.mxmo ?: 0
 
         sql = "select asnt.cnta__id from asnt, cnta where asnt.cnta__id = cnta.cnta__id and " +
                 "cmpr__id = ${compra.id} and cntadscr ilike '%proveedo%'"
@@ -19,8 +18,9 @@ class RetencionController {
         def pxp = Cuenta.get(cuenta)
         def asiento = 1
 
-//        println "nmro: $nmro hayRenta: ${rtcn.hayRenta}, hay iva: ${rtcn.hayIva}"
+        println "nmro: $nmro hayRenta: ${rtcn.hayRenta}, hay iva: ${rtcn.hayIva}, total: ${rtcn.total}"
 
+        def cmpr = new Comprobante()
         cmpr.descripcion = "Retención en Compras"
         cmpr.tipo = TipoComprobante.findByCodigo('R')
         cmpr.proceso = rtcn.proceso
@@ -64,9 +64,8 @@ class RetencionController {
         def cont = Contabilidad.get(session.contabilidad.id)
         def prcs = Proceso.get(params.id)
         def venta = Comprobante.findByProceso(prcs)
-        def cmpr = new Comprobante()
-        def sql = "select max(cmprnmro) mxmo from cmpr where cont__id = ${cont.id} and cmpr.tpcp__id = 3"
-        def nmro = cn.rows(sql.toString())[0].mxmo
+        def sql = "select max(cmprnmro) mxmo from cmpr where cont__id = ${cont.id} and cmpr.tpcp__id = 4"
+        def nmro = cn.rows(sql.toString())[0]?.mxmo ?: 0
 
         sql = "select asnt.cnta__id from asnt, cnta where asnt.cnta__id = cnta.cnta__id and " +
                 "cmpr__id = ${venta.id} and cntadscr ilike '%cliente%'"
@@ -74,8 +73,9 @@ class RetencionController {
         def cxc = Cuenta.get(cuenta)
         def asiento = 1
 
-//        println "nmro: $nmro hayRenta: ${rtcn.hayRenta}, hay iva: ${rtcn.hayIva}"
+        println "nmro: $nmro Renta: ${prcs.retenidoRenta}, hay iva: ${prcs.retenidoIva}"
 
+        def cmpr = new Comprobante()
         cmpr.descripcion = "Retención en Ventas"
         cmpr.tipo = TipoComprobante.findByCodigo('R')
         cmpr.proceso = prcs
