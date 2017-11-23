@@ -1509,17 +1509,23 @@ class ProcesoController extends cratos.seguridad.Shield {
 
     def botonesMayo_ajax () {
         def comprobante = Comprobante.get(params.comprobante).refresh()
+        def proceso = Proceso.get(comprobante.proceso.id)
         def auxiliares = Auxiliar.findAllByComprobante(comprobante)
         def asientos = Asiento.findAllByComprobante(comprobante)
         def totalDebe = asientos.debe.sum()
         def totalHaber = asientos.haber.sum()
         def debe = Math.round(totalDebe*100)/100
         def haber = Math.round(totalHaber*100)/100
-        def valor = Math.round(comprobante.proceso.valor*100)/100
+        def valor
+        if(comprobante?.tipo?.codigo == 'R'){
+            valor = Math.round(cratos.Retencion.findByProceso(proceso).total * 100)/100
+        }else{
+            valor = Math.round(comprobante.proceso.valor*100)/100
+        }
         def band
         def gestor = comprobante.proceso.gestor
 
-        println "Mayorizar: debe: $debe, haber: $haber, valor: $valor"
+//        println "Mayorizar: debe: $debe, haber: $haber, valor: $valor"
 
         if(gestor.codigo == 'SLDO'){
             band = true
@@ -2010,7 +2016,7 @@ class ProcesoController extends cratos.seguridad.Shield {
         def asientoCentro
         params.valor = params.valor.replaceAll(',','')
         if(centroEspe){
-          asientoCentro = AsientoCentro.get(centroEspe.id)
+            asientoCentro = AsientoCentro.get(centroEspe.id)
             if(params.tipo == '1'){
                 asientoCentro.debe = params.valor.toDouble() + asientoCentro.debe.toDouble()
             }else{
@@ -2179,15 +2185,15 @@ class ProcesoController extends cratos.seguridad.Shield {
         def asientos = Asiento.findAllByComprobanteAndDebeAndHaber(comprobante,0.0,0.0)
         def errores = ''
 
-            asientos.each {
-                try{
-                    it.delete(flush: true)
-                }catch (e){
-                    errores += e
-                    println("error al borrar los asientos con 0 " + e)
-                }
-
+        asientos.each {
+            try{
+                it.delete(flush: true)
+            }catch (e){
+                errores += e
+                println("error al borrar los asientos con 0 " + e)
             }
+
+        }
 
         if(errores == ''){
             render "ok"
