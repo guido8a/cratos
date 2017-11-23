@@ -425,7 +425,7 @@
         var titulo = ""
         var clase = ""
         var mnsj = ""
-        if("${proceso.retEstado == 'S'}") {
+        if("${proceso?.retEstado == 'S'}") {
             titulo = "Desregistrar";
             clase = "btn-primary";
             mnsj = "Esta seguro de desregistrar esta retención?";
