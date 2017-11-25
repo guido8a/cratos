@@ -26,7 +26,7 @@ class SubgrupoItems implements Serializable {
     static constraints = {
         grupo(blank: false, attributes: [title: 'grupo'])
         codigo(size: 1..20, blank: false, attributes: [title: 'numero'])
-        descripcion(size: 1..63, blank: false, unique: true, attributes: [title: 'descripcion'])
+        descripcion(size: 1..63, blank: false, attributes: [title: 'descripcion'])
         empresa(blank: false, attributes: [title: 'empresa'])
     }
 }
