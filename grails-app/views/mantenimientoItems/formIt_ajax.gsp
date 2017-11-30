@@ -91,11 +91,14 @@
                 Marca
             </label>
 
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <g:select id="marca" name="marca.id" from="${cratos.inventario.Marca.findAllByEmpresa(session.empresa,[sort: 'descripcion'])}"
                           optionKey="id" optionValue="descripcion"
                           class="many-to-one " value="${itemInstance?.marca?.id}" noSelection="['': '']"/>
                 <p class="help-block ui-helper-hidden"></p>
+                <a href="#" id="btnMarca" class="btn btn-success btn-sm" title="Crear una nueva marca">
+                    <i class="fa fa-plus"></i>
+                </a>
             </div>
         </span>
     </div>
@@ -388,5 +391,78 @@
             $("#buscarDialog").bind("click", enviar)
         });
     });
+
+    $("#btnMarca").click(function () {
+        createEditRowMarca();
+    });
+
+    function submitFormMarca() {
+        var $form = $("#frmMarca");
+        var $btn = $("#dlgCreateEdit").find("#btnSave");
+        if ($form.valid()) {
+            $btn.replaceWith(spinner);
+            openLoader("Grabando");
+            $.ajax({
+                type    : "POST",
+                url     : $form.attr("action"),
+                data    : $form.serialize(),
+                success : function (msg) {
+                    var parts = msg.split("_");
+                    log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
+                    if (parts[0] == "OK") {
+//                        location.reload(true);
+                        bootbox.hideAll();
+                        closeLoader();
+                    } else {
+                        closeLoader();
+                        spinner.replaceWith($btn);
+                        return false;
+                    }
+                }
+            });
+        } else {
+            return false;
+        } //else
+    }
+
+    function createEditRowMarca(id) {
+        var title = id ? "Editar" : "Crear";
+        var data = id ? { id : id } : {};
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(controller: 'marca', action:'form_ajax')}",
+            data    : data,
+            success : function (msg) {
+                var b = bootbox.dialog({
+                    id      : "dlgCreateEdit",
+//                    class   : "long",
+                    title   : "Nueva Marca",
+                    message : msg,
+
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                return submitFormMarca();
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+                setTimeout(function () {
+                    b.find(".form-control").not(".datepicker").first().focus()
+                }, 500);
+            } //success
+        }); //ajax
+    } //createEdit
+
+
 
 </script>
