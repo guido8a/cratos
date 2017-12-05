@@ -976,23 +976,20 @@ class MantenimientoItemsController extends Shield {
 
 
     def clave2 () {
+        def path = servletContext.getRealPath("/") + "xml/42/"
+
         //load the XML doc to sign
         DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
 
-//        def file = new File("prueba")
-//        file.append("hola")
-//        file.write("2")
-//
-//        println("file " + file.readLines().size())
-//        println("creado archivo ")
-
-        FileInputStream fp = new FileInputStream("/home/gato/grails/cratos3/web-app/xml/42/AnexoTransaccional_01_2017.xml")
+//        FileInputStream fp = new FileInputStream("/home/gato/grails/cratos3/web-app/xml/42/AnexoTransaccional_01_2017.xml")
+        FileInputStream fp = new FileInputStream(path + "AnexoTransaccional_01_2017.xml")
         Document xmlDoc = docBuilder.parse(fp);
 
         //Load the keystore containing the keys
         KeyStore keystore = KeyStore.getInstance("PKCS12");
         char[] password = "FcoPaliz1959".toCharArray();
+//        keystore.load(new FileInputStream("/home/gato/grails/cratos3/web-app/xml/fp.p12"), password);
         keystore.load(new FileInputStream("/home/gato/grails/cratos3/web-app/xml/fp.p12"), password);
         KeyPair key =  getKeyPair(keystore, "serialnumber=0000240522+cn=francisco fabian paliz osorio,l=quito,ou=entidad de certificacion de informacion-ecibce,o=banco central del ecuador,c=ec decryption key", password);
 
@@ -1054,6 +1051,5 @@ class MantenimientoItemsController extends Shield {
         }
         return null;
     }
-
 
 }
