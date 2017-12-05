@@ -3,8 +3,71 @@ package cratos.inventario
 import cratos.Empresa
 import cratos.seguridad.Shield
 import org.springframework.dao.DataIntegrityViolationException
+import org.w3c.dom.Document
 
+import javax.swing.JFileChooser
+
+//import sun.plugin.javascript.navig.Document
+
+import javax.xml.crypto.*
+import javax.xml.crypto.dsig.*
+import javax.xml.crypto.dsig.dom.DOMSignContext
+import javax.xml.crypto.dsig.keyinfo.KeyInfo
+import javax.xml.crypto.dsig.keyinfo.KeyInfoFactory
+import javax.xml.crypto.dsig.keyinfo.KeyValue
+import javax.xml.crypto.dsig.keyinfo.X509Data
+import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec
+import javax.xml.crypto.dsig.spec.TransformParameterSpec
+import javax.xml.parsers.DocumentBuilder
+import javax.xml.parsers.DocumentBuilderFactory
+import javax.xml.transform.Transformer
+import javax.xml.transform.TransformerFactory
+import javax.xml.transform.dom.DOMSource
+import javax.xml.transform.stream.StreamResult
+import java.security.KeyPair
+import java.security.KeyPairGenerator
+import java.security.KeyStore
+import java.security.cert.Certificate
 import java.text.DecimalFormat
+
+
+
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.security.Key;
+import java.security.KeyPair;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.UnrecoverableKeyException;
+import java.security.cert.Certificate;
+import java.util.ArrayList;
+import java.util.Collections;
+
+import javax.xml.crypto.dsig.CanonicalizationMethod;
+import javax.xml.crypto.dsig.DigestMethod;
+import javax.xml.crypto.dsig.Reference;
+import javax.xml.crypto.dsig.SignatureMethod;
+import javax.xml.crypto.dsig.SignedInfo;
+import javax.xml.crypto.dsig.Transform;
+import javax.xml.crypto.dsig.XMLSignature;
+import javax.xml.crypto.dsig.XMLSignatureFactory;
+import javax.xml.crypto.dsig.dom.DOMSignContext;
+import javax.xml.crypto.dsig.keyinfo.KeyInfo;
+import javax.xml.crypto.dsig.keyinfo.KeyInfoFactory;
+import javax.xml.crypto.dsig.keyinfo.X509Data;
+import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
+import javax.xml.crypto.dsig.spec.TransformParameterSpec;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
 
 class MantenimientoItemsController extends Shield {
 
@@ -909,6 +972,87 @@ class MantenimientoItemsController extends Shield {
 
         }
         render oks + "_" + nos
+    }
+
+
+    def clave2 () {
+        //load the XML doc to sign
+        DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+
+//        def file = new File("prueba")
+//        file.append("hola")
+//        file.write("2")
+//
+//        println("file " + file.readLines().size())
+//        println("creado archivo ")
+
+        FileInputStream fp = new FileInputStream("/home/gato/grails/cratos3/web-app/xml/42/AnexoTransaccional_01_2017.xml")
+        Document xmlDoc = docBuilder.parse(fp);
+
+        //Load the keystore containing the keys
+        KeyStore keystore = KeyStore.getInstance("PKCS12");
+        char[] password = "FcoPaliz1959".toCharArray();
+        keystore.load(new FileInputStream("/home/gato/grails/cratos3/web-app/xml/fp.p12"), password);
+        KeyPair key =  getKeyPair(keystore, "serialnumber=0000240522+cn=francisco fabian paliz osorio,l=quito,ou=entidad de certificacion de informacion-ecibce,o=banco central del ecuador,c=ec decryption key", password);
+
+        //Create the signing context
+        DOMSignContext dsc = new DOMSignContext(key.getPrivate(), xmlDoc.getDocumentElement());
+
+        //Manufacture a signer object
+        XMLSignatureFactory fac = XMLSignatureFactory.getInstance("DOM");
+
+        //Specify the Reference attributes
+        Reference ref = fac.newReference("", fac.newDigestMethod(DigestMethod.SHA256, null),
+        Collections.singletonList
+                (fac.newTransform(Transform.ENVELOPED,
+                        (TransformParameterSpec) null)), null, null);
+
+        //Specify the SignedInfo attributes
+        SignedInfo si = fac.newSignedInfo(fac.newCanonicalizationMethod
+                (CanonicalizationMethod.INCLUSIVE,
+                        (C14NMethodParameterSpec) null),
+        fac.newSignatureMethod(SignatureMethod.RSA_SHA1, null),
+        Collections.singletonList(ref));
+
+        //Setup the KeyInfo attributes
+        KeyInfoFactory kif = fac.getKeyInfoFactory();
+        ArrayList<Certificate> certificateList = new ArrayList<Certificate>();
+        certificateList.add(keystore.getCertificate("serialnumber=0000240522+cn=francisco fabian paliz osorio,l=quito,ou=entidad de certificacion de informacion-ecibce,o=banco central del ecuador,c=ec decryption key"));
+        X509Data kv = kif.newX509Data(certificateList);
+        KeyInfo ki = kif.newKeyInfo(Collections.singletonList(kv));
+
+        //Sign the document
+        XMLSignature signature = fac.newXMLSignature(si, ki);
+        signature.sign(dsc);
+
+        //Save the new signed XML file
+        TransformerFactory tf = TransformerFactory.newInstance();
+        Transformer trans = tf.newTransformer();
+        trans.transform(new DOMSource(xmlDoc), new StreamResult(new FileOutputStream("/home/gato/grails/cratos3/web-app/xml/terminado.xml")));
+    }
+
+    public static KeyPair getKeyPair(KeyStore keystore, String alias, char[] password) {
+        try {
+            // Get private key
+            Key key = keystore.getKey(alias, password);
+            if (key instanceof PrivateKey) {
+                // Get certificate of public key
+                Certificate cert = keystore.getCertificate(alias);
+
+                // Get public key
+                PublicKey publicKey = cert.getPublicKey();
+
+                // Return a key pair
+                return new KeyPair(publicKey, (PrivateKey)key);
+            }
+        } catch (UnrecoverableKeyException e) {
+        } catch (NoSuchAlgorithmException e) {
+        } catch (KeyStoreException e) {
+            System.err.println("key error: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return null;
     }
 
 

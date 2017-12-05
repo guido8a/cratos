@@ -272,6 +272,13 @@
                                 <p>Concepto de Retención IR</p>
                             </div>
                         </li>
+
+                        %{--<li>--}%
+                            %{--<i class="fa-li ${iconGen}"></i>--}%
+                            %{--<span id="clave">--}%
+                                %{--<g:link controller="mantenimientoItems" action="clave2">Firmar</g:link>--}%
+                            %{--</span>--}%
+                        %{--</li>--}%
                     </ul>
                 </div>
 
