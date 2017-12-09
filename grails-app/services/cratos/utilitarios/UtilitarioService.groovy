@@ -1,5 +1,7 @@
 package cratos.utilitarios
 
+import java.text.NumberFormat
+
 class UtilitarioService {
 
     def getLastDayOfMonth(fecha) {
@@ -14,7 +16,18 @@ class UtilitarioService {
         return lastDayOfMonth
     }
 
-    def serviceMethod() {
-
+    def numero(nmro) {
+        NumberFormat nf = NumberFormat.getInstance(Locale.US);
+        nf.setGroupingUsed(false)
+        nf.setMinimumFractionDigits(2)
+        nf.format(nmro)
     }
+
+    def numero4(nmro) {
+        NumberFormat nf = NumberFormat.getInstance(Locale.US);
+        nf.setGroupingUsed(false)
+        nf.setMinimumFractionDigits(4)
+        nf.format(nmro)
+    }
+
 }

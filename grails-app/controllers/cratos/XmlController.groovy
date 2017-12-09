@@ -119,7 +119,7 @@ class XmlController extends cratos.seguridad.Shield {
                 Anio(prdo.fechaInicio.format("yyyy"))
                 Mes(prdo.fechaInicio.format("MM"))
                 numEstabRuc(num_estb)  //count(distinct prcsnmes)
-                totalVentas(numero(sumaVentas ?: 0))  /**  todo: total ventas ***/
+                totalVentas(utilitarioService.numero(sumaVentas ?: 0))  /**  todo: total ventas ***/
                 codigoOperativo("IVA")
                 println "inicia compras..."
                 compras() {
@@ -149,27 +149,27 @@ class XmlController extends cratos.seguridad.Shield {
                             fechaEmision(fechaConFormato(proceso.fechaEmision))
 
                             autorizacion(proceso?.autorizacion)
-                            baseNoGraIva(numero(proceso.baseImponibleNoIva))
-                            baseImponible(numero(proceso.baseImponibleIva0))
-                            baseImpGrav(numero(proceso.baseImponibleIva))
-                            baseImpExe(numero(proceso.excentoIva))   /* ??? crear campo */
+                            baseNoGraIva(utilitarioService.numero(proceso.baseImponibleNoIva))
+                            baseImponible(utilitarioService.numero(proceso.baseImponibleIva0))
+                            baseImpGrav(utilitarioService.numero(proceso.baseImponibleIva))
+                            baseImpExe(utilitarioService.numero(proceso.excentoIva))   /* ??? crear campo */
 
 //                                println "base: ${numero(proceso.baseImponibleIva)}  -- ${proceso.baseImponibleIva}"
 
-                            montoIce(numero(proceso?.iceGenerado))
-                            montoIva(numero(proceso?.ivaGenerado))
+                            montoIce(utilitarioService.numero(proceso?.iceGenerado))
+                            montoIva(utilitarioService.numero(proceso?.ivaGenerado))
 
-                            valRetBien10(numero(vlorRtcnIVA(proceso.id, 10)))
-                            valRetServ20(numero(vlorRtcnIVA(proceso.id, 20)))
-                            valorRetBienes(numero(vlorRtcnIVA(proceso.id, 30)))
-                            valRetServ50(numero(vlorRtcnIVA(proceso.id, 50)))
-                            valorRetServicios(numero(vlorRtcnIVA(proceso.id, 70)))
-                            valRetServ100(numero(vlorRtcnIVA(proceso.id, 100)))
+                            valRetBien10(utilitarioService.numero(vlorRtcnIVA(proceso.id, 10)))
+                            valRetServ20(utilitarioService.numero(vlorRtcnIVA(proceso.id, 20)))
+                            valorRetBienes(utilitarioService.numero(vlorRtcnIVA(proceso.id, 30)))
+                            valRetServ50(utilitarioService.numero(vlorRtcnIVA(proceso.id, 50)))
+                            valorRetServicios(utilitarioService.numero(vlorRtcnIVA(proceso.id, 70)))
+                            valRetServ100(utilitarioService.numero(vlorRtcnIVA(proceso.id, 100)))
 
                             if (remb) {
-                                totbasesImpReemb(numero(proceso?.baseImponibleIva))
+                                totbasesImpReemb(utilitarioService.numero(proceso?.baseImponibleIva))
                             } else {
-                                totbasesImpReemb(numero(0))
+                                totbasesImpReemb(utilitarioService.numero(0))
                             }
 
                             pagoExterior() {
@@ -201,15 +201,15 @@ class XmlController extends cratos.seguridad.Shield {
                                         detalleAir() {
                                             if (retencion?.baseRenta) {
                                                 codRetAir(retencion?.conceptoRIRBienes?.codigo)
-                                                baseImpAir(numero(retencion?.baseRenta))
-                                                porcentajeAir(numero(retencion?.conceptoRIRBienes?.porcentaje))
-                                                valRetAir(numero(retencion?.renta))
+                                                baseImpAir(utilitarioService.numero(retencion?.baseRenta))
+                                                porcentajeAir(utilitarioService.numero(retencion?.conceptoRIRBienes?.porcentaje))
+                                                valRetAir(utilitarioService.numero(retencion?.renta))
                                             }
                                             if (retencion?.baseRentaServicios) {
                                                 codRetAir(retencion?.conceptoRIRServicios?.codigo)
-                                                baseImpAir(numero(retencion?.baseRentaServicios))
-                                                porcentajeAir(numero(retencion?.conceptoRIRServicios?.porcentaje))
-                                                valRetAir(numero(retencion?.rentaServicios))
+                                                baseImpAir(utilitarioService.numero(retencion?.baseRentaServicios))
+                                                porcentajeAir(utilitarioService.numero(retencion?.conceptoRIRServicios?.porcentaje))
+                                                valRetAir(utilitarioService.numero(retencion?.rentaServicios))
                                             }
                                         }
                                     }
@@ -229,12 +229,12 @@ class XmlController extends cratos.seguridad.Shield {
                                             secuencialReemb(r?.reembolsoSecuencial)
                                             fechaEmisionReemb(fechaConFormato(r?.fecha))
                                             autorizacionReemb(r?.autorizacion)
-                                            baseImponibleReemb(numero(r?.baseImponibleIva0))
-                                            baseImpGravReemb(numero(r?.baseImponibleIva))
-                                            baseNoGraIvaReemb(numero(r?.baseImponibleNoIva))
-                                            baseImpExeReemb(numero(r?.excentoIva))
-                                            montoIceRemb(numero(r?.iceGenerado))
-                                            montoIvaRemb(numero(r?.ivaGenerado))
+                                            baseImponibleReemb(utilitarioService.numero(r?.baseImponibleIva0))
+                                            baseImpGravReemb(utilitarioService.numero(r?.baseImponibleIva))
+                                            baseNoGraIvaReemb(utilitarioService.numero(r?.baseImponibleNoIva))
+                                            baseImpExeReemb(utilitarioService.numero(r?.excentoIva))
+                                            montoIceRemb(utilitarioService.numero(r?.iceGenerado))
+                                            montoIvaRemb(utilitarioService.numero(r?.ivaGenerado))
                                         }
                                     }
                                 }
@@ -272,13 +272,13 @@ class XmlController extends cratos.seguridad.Shield {
                             tipoEmision(empr.emprtpem)
                             numeroComprobantes(vn.nmro)  /** numero de facturas **/
 
-                            baseNoGraIva(numero(vn.cero))
-                            baseImponible(numero(vn.no_iva))
-                            baseImpGrav(numero(vn.base))
-                            montoIva(numero(vn.iva))
-                            montoIce(numero(vn.ice))
-                            valorRetIva(numero(vn.rt_iva))
-                            valorRetRenta(numero(vn.rt_rnta))
+                            baseNoGraIva(utilitarioService.numero(vn.cero))
+                            baseImponible(utilitarioService.numero(vn.no_iva))
+                            baseImpGrav(utilitarioService.numero(vn.base))
+                            montoIva(utilitarioService.numero(vn.iva))
+                            montoIce(utilitarioService.numero(vn.ice))
+                            valorRetIva(utilitarioService.numero(vn.rt_iva))
+                            valorRetRenta(utilitarioService.numero(vn.rt_rnta))
 
                             /* tabla prfp --> ProcesoFormaDePago   ** vaor >= 1000 */
                             sql = "select distinct tppgcdgo from prcs, prfp, tppg " +
@@ -307,7 +307,7 @@ class XmlController extends cratos.seguridad.Shield {
                         ventaEst() {
                             codEstab(tv.prcsnmes)
                             ventasEstab(tv.totl)
-                            ivaComp(numero(0.0))
+                            ivaComp(utilitarioService.numero(0.0))
                         }
                     }
                 }
@@ -424,12 +424,7 @@ class XmlController extends cratos.seguridad.Shield {
         return fechaConFormato(fecha, "dd/MM/yyyy")
     }
 
-    def numero(nmro) {
-        NumberFormat nf = NumberFormat.getInstance(Locale.US);
-        nf.setGroupingUsed(false)
-        nf.setMinimumFractionDigits(2)
-        nf.format(nmro)
-    }
+
 
     def vlorRtcnIVA(prcs, pcnt) {
         def cn = dbConnectionService.getConnection()

@@ -314,6 +314,16 @@
                 </a>
             </div>
         </li>
+
+        <li class="hex">
+            <div class="hexIn">
+                <a class="hexLink" href="${createLink(controller: 'servicioSri', action: 'firmaSri')}">
+                    <img src="${resource(dir: 'images',file: 'reportes.jpeg')}" alt=""  style="width: 100%; height: 100%"/>
+                    <h1>Firmar</h1>
+                    <p>Firmar xml</p>
+                </a>
+            </div>
+        </li>
     </ul>
 
     </body>

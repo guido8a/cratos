@@ -4,11 +4,13 @@ import cratos.Empresa
 import cratos.seguridad.Shield
 import org.springframework.dao.DataIntegrityViolationException
 import org.w3c.dom.Document
+import sri.XAdESBESSignature
 
-import javax.swing.JFileChooser
+//import javax.swing.JFileChooser
 
 //import sun.plugin.javascript.navig.Document
 
+/*
 import javax.xml.crypto.*
 import javax.xml.crypto.dsig.*
 import javax.xml.crypto.dsig.dom.DOMSignContext
@@ -29,12 +31,13 @@ import java.security.KeyPairGenerator
 import java.security.KeyStore
 import java.security.cert.Certificate
 import java.text.DecimalFormat
+*/
 
 
 
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+//import java.io.FileInputStream;
+//import java.io.FileOutputStream;
 import java.security.Key;
 import java.security.KeyPair;
 import java.security.KeyStore;
@@ -44,8 +47,8 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.Certificate;
-import java.util.ArrayList;
-import java.util.Collections;
+//import java.util.ArrayList;
+//import java.util.Collections;
 
 import javax.xml.crypto.dsig.CanonicalizationMethod;
 import javax.xml.crypto.dsig.DigestMethod;
@@ -976,22 +979,23 @@ class MantenimientoItemsController extends Shield {
 
 
     def clave2 () {
-        def path = servletContext.getRealPath("/") + "xml/42/"
+        def path = servletContext.getRealPath("/")
 
         //load the XML doc to sign
         DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
 
 //        FileInputStream fp = new FileInputStream("/home/gato/grails/cratos3/web-app/xml/42/AnexoTransaccional_01_2017.xml")
-        FileInputStream fp = new FileInputStream(path + "AnexoTransaccional_01_2017.xml")
+        FileInputStream fp = new FileInputStream(path + "xml/42/AnexoTransaccional_01_2017.xml")
         Document xmlDoc = docBuilder.parse(fp);
 
         //Load the keystore containing the keys
         KeyStore keystore = KeyStore.getInstance("PKCS12");
         char[] password = "FcoPaliz1959".toCharArray();
 //        keystore.load(new FileInputStream("/home/gato/grails/cratos3/web-app/xml/fp.p12"), password);
-        keystore.load(new FileInputStream("/home/gato/grails/cratos3/web-app/xml/fp.p12"), password);
-        KeyPair key =  getKeyPair(keystore, "serialnumber=0000240522+cn=francisco fabian paliz osorio,l=quito,ou=entidad de certificacion de informacion-ecibce,o=banco central del ecuador,c=ec decryption key", password);
+        keystore.load(new FileInputStream(path + "xml/42/firma.p12"), password);
+        KeyPair key = getKeyPair(keystore, "serialnumber=0000240522+cn=francisco fabian paliz osorio,l=quito," +
+                "ou=entidad de certificacion de informacion-ecibce,o=banco central del ecuador,c=ec decryption key", password);
 
         //Create the signing context
         DOMSignContext dsc = new DOMSignContext(key.getPrivate(), xmlDoc.getDocumentElement());
@@ -1000,7 +1004,7 @@ class MantenimientoItemsController extends Shield {
         XMLSignatureFactory fac = XMLSignatureFactory.getInstance("DOM");
 
         //Specify the Reference attributes
-        Reference ref = fac.newReference("", fac.newDigestMethod(DigestMethod.SHA256, null),
+        Reference ref = fac.newReference("", fac.newDigestMethod(DigestMethod.SHA1, null),
         Collections.singletonList
                 (fac.newTransform(Transform.ENVELOPED,
                         (TransformParameterSpec) null)), null, null);
@@ -1015,7 +1019,8 @@ class MantenimientoItemsController extends Shield {
         //Setup the KeyInfo attributes
         KeyInfoFactory kif = fac.getKeyInfoFactory();
         ArrayList<Certificate> certificateList = new ArrayList<Certificate>();
-        certificateList.add(keystore.getCertificate("serialnumber=0000240522+cn=francisco fabian paliz osorio,l=quito,ou=entidad de certificacion de informacion-ecibce,o=banco central del ecuador,c=ec decryption key"));
+        certificateList.add(keystore.getCertificate("serialnumber=0000240522+cn=francisco fabian paliz osorio,l=quito," +
+                "ou=entidad de certificacion de informacion-ecibce,o=banco central del ecuador,c=ec decryption key"));
         X509Data kv = kif.newX509Data(certificateList);
         KeyInfo ki = kif.newKeyInfo(Collections.singletonList(kv));
 
@@ -1026,7 +1031,8 @@ class MantenimientoItemsController extends Shield {
         //Save the new signed XML file
         TransformerFactory tf = TransformerFactory.newInstance();
         Transformer trans = tf.newTransformer();
-        trans.transform(new DOMSource(xmlDoc), new StreamResult(new FileOutputStream("/home/gato/grails/cratos3/web-app/xml/terminado.xml")));
+        trans.transform(new DOMSource(xmlDoc), new StreamResult(new FileOutputStream(path + "xml/42/terminado.xml")));
+        render ("firmado<hr/>" + new File(path + "xml/42/terminado.xml").text)
     }
 
     public static KeyPair getKeyPair(KeyStore keystore, String alias, char[] password) {
@@ -1052,4 +1058,6 @@ class MantenimientoItemsController extends Shield {
         return null;
     }
 
+
 }
+

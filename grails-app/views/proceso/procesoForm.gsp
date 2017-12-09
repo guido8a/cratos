@@ -119,6 +119,14 @@
                         Anular Proceso
                     </a>
                 </g:form>
+
+                <g:if test="${proceso?.tipoProceso?.codigo?.trim() in ['V']}">
+                <a class="btn btn-info" href="${createLink(controller: 'servicioSri', action: 'facturaElectronica', id: proceso?.id)}">
+                    <i class="fa fa-file-o"></i>
+                    Factura
+                </a>
+                </g:if>
+
                 <g:if test="${proceso?.tipoProceso?.codigo?.trim() in ['P','I']}">
                     <a href="#" class="btn btn-info" id="btnConciliar">
                         <i class="fa fa-pencil-square-o"></i>
