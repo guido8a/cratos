@@ -2,6 +2,7 @@ package cratos
 
 import com.lowagie.text.Element
 import com.lowagie.text.Paragraph
+import cratos.inventario.DetalleFactura
 import org.apache.poi.ss.usermodel.Row
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 
@@ -598,6 +599,14 @@ class Reportes3Controller {
 //        println("data " + data)
 
         return[periodo: periodoFinal, empresa: empresa.id, cuentas: data]
+    }
+
+
+    def facturaElectronica () {
+        def proceso = Proceso.get(params.id)
+        def empresa = Empresa.get(params.emp)
+        def detalles = DetalleFactura.findAllByProceso(proceso).sort{it?.item?.codigo}
+        return[proceso: proceso, empresa: empresa, detalles: detalles]
     }
 
 }

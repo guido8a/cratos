@@ -70,9 +70,9 @@
 
     <div class="btn-group" style="margin-right: 10px">
 
-        <g:link class="btn btn-success" action="nuevoProceso">
-            <i class="fa fa-gear"></i> Nueva Transacción
-        </g:link>
+    %{--<g:link class="btn btn-success" action="nuevoProceso">--}%
+    %{--<i class="fa fa-gear"></i> Nueva Transacción--}%
+    %{--</g:link>--}%
         <g:if test="${proceso?.estado == 'R'}">
             <a href="#" class="btn btn-success" id="comprobanteN">
                 <i class="fa fa-calendar-o"></i>
@@ -121,12 +121,16 @@
                 </g:form>
 
                 <g:if test="${proceso?.tipoProceso?.codigo?.trim() in ['V']}">
-                <a class="btn btn-info" href="${createLink(controller: 'servicioSri', action: 'facturaElectronica', id: proceso?.id)}">
-                    <i class="fa fa-file-o"></i>
-                    Factura
-                </a>
+                    <a class="btn btn-info" href="${createLink(controller: 'servicioSri', action: 'facturaElectronica', id: proceso?.id)}">
+                        <i class="fa fa-file-o"></i>
+                        Factura
+                    </a>
+                    <g:if test="${proceso?.estado == 'R'}">
+                        <a href="#" class="btn btn-success" id="btnImprimirFactElect">
+                            <i class="fa fa-print"></i> Factura Electŕonica
+                        </a>
+                    </g:if>
                 </g:if>
-
                 <g:if test="${proceso?.tipoProceso?.codigo?.trim() in ['P','I']}">
                     <a href="#" class="btn btn-info" id="btnConciliar">
                         <i class="fa fa-pencil-square-o"></i>
@@ -134,13 +138,13 @@
                     </a>
                 </g:if>
             </g:if>
-            %{--<g:if test="${cratos.Retencion.findByProceso(proceso)}">--}%
-                %{--<g:link controller="reportes3" action="imprimirRetencion" class="btn btn-default btnRetencion"--}%
-                        %{--id="${proceso?.id}" params="[empresa: session.empresa.id]" style="margin-bottom: 10px;">--}%
-                    %{--<i class="fa fa-print"></i>--}%
-                    %{--Imprimir retención--}%
-                %{--</g:link>--}%
-            %{--</g:if>--}%
+        %{--<g:if test="${cratos.Retencion.findByProceso(proceso)}">--}%
+        %{--<g:link controller="reportes3" action="imprimirRetencion" class="btn btn-default btnRetencion"--}%
+        %{--id="${proceso?.id}" params="[empresa: session.empresa.id]" style="margin-bottom: 10px;">--}%
+        %{--<i class="fa fa-print"></i>--}%
+        %{--Imprimir retención--}%
+        %{--</g:link>--}%
+        %{--</g:if>--}%
             <g:if test="${proceso?.tipoProceso?.codigo?.trim() in ['C','V','T','NC']}">
                 <a href="#" class="btn btn-warning" id="btnDetalle" style="color: #0b0b0b">
                     <i class="fa fa-list"></i>
@@ -426,7 +430,10 @@
 <script type="text/javascript">
 
 
-
+    $("#btnImprimirFactElect").click(function () {
+        url = "${g.createLink(controller:'reportes3' , action: 'facturaElectronica')}?id=" + '${proceso?.id}' + "Wemp=${session.empresa.id}";
+        location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=facturaElectronica.pdf"
+    });
 
 
     $("#btnDocRetencion").click(function () {
@@ -491,10 +498,10 @@
                                     type: 'POST',
                                     url: '${createLink(controller: 'proceso', action: 'guardarDocRetencion_ajax')}',
                                     data:{
-                                           proceso :'${proceso?.id}',
-                                           documento: $("#retencionVenta2").val(),
-                                           retenido : $("#retenidoIva2").val(),
-                                           renta: $("#retenidoRenta2").val()
+                                        proceso :'${proceso?.id}',
+                                        documento: $("#retencionVenta2").val(),
+                                        retenido : $("#retenidoIva2").val(),
+                                        renta: $("#retenidoRenta2").val()
                                     },
                                     success: function (msg){
                                         if(msg == 'ok'){

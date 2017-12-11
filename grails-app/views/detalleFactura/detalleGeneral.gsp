@@ -160,18 +160,18 @@
 
     $("#btnImprimirDetalle").click(function () {
 
-        if(${empresa?.ruc}){
+        %{--if(${empresa?.ruc}){--}%
 
-        }
+        %{--}--}%
 
         switch (${empresa?.ruc}) {
             case 0992149892001:
                 url = "${g.createLink(controller:'reportes2' , action: 'factura')}?id=" + '${proceso?.id}' + "Wemp=${session.empresa.id}";
-                location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=compras.pdf"
+                location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=detalle.pdf"
                 break;
             case 1702155502101:
                 url = "${g.createLink(controller:'reportes2' , action: 'factura_E2')}?id=" + '${proceso?.id}' + "Wemp=${session.empresa.id}";
-                location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=compras.pdf"
+                location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=detalle.pdf"
                 break;
         }
     });
