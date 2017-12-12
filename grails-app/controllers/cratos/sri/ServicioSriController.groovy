@@ -101,7 +101,7 @@ class ServicioSriController {
         def clave = claveAcceso()
 
         def pathxml = servletContext.getRealPath("/") + "xml/" + empresa_id + "/"  //web-app/xml
-        def fileName = "fc_${prcs.id}.xml"
+        def fileName = "fc_${clave}.xml"
         def path = pathxml + fileName
         new File(pathxml).mkdirs()
         def file = new File(path)
@@ -224,8 +224,9 @@ class ServicioSriController {
             }   /* -- facura -- */
 
             file.write(writer.toString())
-            return fileName
         }
+
+        return fileName
     }
 
 
@@ -267,27 +268,65 @@ class ServicioSriController {
         connection.connect()
         println "...connect"
 
-        def soapResponse = connection.content.text
-        println soapResponse
-        def repuesta = """<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+        def respuesta = connection.content.text
+        def respuestaSri = new XmlSlurper().parseText(respuesta)
+        println respuestaSri
+/*
+        el SRI responde: respuesta = """<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
         <soap:Body><ns2:validarComprobanteResponse xmlns:ns2="http://ec.gob.sri.ws.recepcion">
         <RespuestaRecepcionComprobante>
           <estado>RECIBIDA</estado>
         <comprobantes/>
         </RespuestaRecepcionComprobante></ns2:validarComprobanteResponse></soap:Body></soap:Envelope>"""
-        //co esto se debe pedir el número de autorización
+*/
+
+        if(respuestaSri == "RECIBIDA") {
+            def para_autrizacion = """
+                <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ec="http://ec.gob.sri.ws.autorizacion">
+                <soapenv:Header/>
+                <soapenv:Body>
+                <ec:autorizacionComprobante>
+                <claveAccesoComprobante>${}</claveAccesoComprobante>
+                </ec:autorizacionComprobante>
+                </soapenv:Body>
+                </soapenv:Envelope>"""
+
+            //https://celcer.sri.gob.ec/comprobantes-electronicos-ws/AutorizacionComprobantesOffline?wsdl
+            def atrzUrl = new URL("https://celcer.sri.gob.ec/comprobantes-electronicos-ws/RecepcionComprobantesOffline?wsdl")
+//        def soapUrl = new URL("http://ec.gob.sri.ws.recepcion")
+            connection = atrzUrl.openConnection()
+            println "abre conexion --- atrz"
+            connection.setRequestMethod("POST" )
+            println "...post"
+            connection.setRequestProperty("Content-Type" ,"application/xml" )
+            println "...xml"
+            connection.doOutput = true
+            println "...do Output"
+
+            writer = new OutputStreamWriter(connection.outputStream)
+
+            writer.write(sobre_xml)
+//        writer.write(arch_xml)
+            println "...write"
+            writer.flush()
+            writer.close()
+            connection.connect()
+            println "...connect"
+
+            respuesta = connection.content.text
+            respuestaSri = new XmlSlurper().parseText(respuesta)
+
+            println respuestaSri
+
+            render "Factura electrónica generada correctamente en el SRI"
+
+        } else {
+            render "ha ocurrido un error al solicitar la autorización al SRI"
+        }
+        //con esto se debe pedir el número de autorización
         // --> https://www.jybaro.com/blog/xades-bes-con-javascript-en-el-navegador/
 
         /*** se usa **/
-        def para_autrizacion = """
-        <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ec="http://ec.gob.sri.ws.autorizacion">
-        <soapenv:Header/>
-        <soapenv:Body>
-        <ec:autorizacionComprobante>
-        <claveAccesoComprobante>AquiVaLaClaveDeAcceso</claveAccesoComprobante>
-        </ec:autorizacionComprobante>
-        </soapenv:Body>
-        </soapenv:Envelope>"""
     }
 
 }

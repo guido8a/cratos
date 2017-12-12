@@ -57,6 +57,7 @@ class Proceso implements Serializable {
     Pais pais
     String normaLegal
     String convenio
+    String claveAcceso
 
     String modificaSerie01
     String modificaSerie02
@@ -138,6 +139,7 @@ class Proceso implements Serializable {
             bodega column: 'bdga__id'
             bodegaRecibe column: 'bdgarcbe'
             retEstado column: 'prcsedrv'
+            claveAcceso column: 'prcsclve'
         }
     }
     static constraints = {
@@ -199,5 +201,6 @@ class Proceso implements Serializable {
         bodega(nullable: true,blank: true)
         bodegaRecibe(nullable: true,blank: true)
         retEstado(nullable: false, blank: false)
+        claveAcceso(nullable: true, blank: true)
     }
 }
