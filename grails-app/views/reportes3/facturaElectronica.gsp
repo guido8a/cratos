@@ -49,6 +49,9 @@
     .borde{
         border: 1px solid;
         border-radius: 5px !important;
+        /*-webkit-border-radius: 8px;*/
+        /*-moz-border-radius: 8px;*/
+        /*border-radius: 8px;*/
     }
 
     .borde2{
@@ -84,9 +87,13 @@
         width: 40%;
     }
 
-        .mar{
-            margin-top: 10px;
-        }
+    .mar{
+        margin-top: 10px;
+    }
+
+    .mar2{
+        margin-top: 9px;
+    }
 
     </style>
 </head>
@@ -95,16 +102,16 @@
 <div class="hoja">
     <div style="height: 250px; width: 300px;" class="right borde" >
         <div style="font-size: 12px; margin-left: 5px">
-            <div class="mar"><strong>R.U.C.:</strong> ${empresa?.ruc ?: ''}</div>
-            <div class="mar"><strong>FACTURA</strong></div>
-            <div class="mar"><strong>N°.</strong> ${proceso?.documento ?: ''}</div>
-            <div class="mar letra2"><strong>NÚMERO DE AUTORIZACIÓN:</strong></div>
-            <div class="mar letra3"><strong>1812201601208210000001507017908965449</strong></div>
-            <div class="mar letra2">FECHA Y HORA DE AUTORIZACIÓN: </div>
-            <div class="mar letra2"><strong>AMBIENTE :</strong> PRUEBAS</div>
-            <div class="mar letra2"><strong>EMISIÓN :</strong> NORMAL</div>
-            <div class="mar letra2">CLAVE DE ACCESO</div>
-            <div><g:img dir="reportes3" file="showBarcode?barcode=${'1812201601208210000001507017908965449'}" width="200" height="50"/></div>
+            <div class="mar2"><strong>R.U.C.:</strong> ${empresa?.ruc ?: ''}</div>
+            <div class="mar2"><strong>FACTURA</strong></div>
+            <div class="mar2"><strong>N°.</strong> ${proceso?.documento ?: ''}</div>
+            <div class="mar2 letra2"><strong>NÚMERO DE AUTORIZACIÓN:</strong></div>
+            <div class="mar2 letra3"><strong>1812201601208210000001507017908965449</strong></div>
+            <div class="mar2 letra2">FECHA Y HORA DE AUTORIZACIÓN: </div>
+            <div class="mar2 letra2"><strong>AMBIENTE :</strong> PRUEBAS</div>
+            <div class="mar2 letra2"><strong>EMISIÓN :</strong> NORMAL</div>
+            <div class="mar2 letra2">CLAVE DE ACCESO</div>
+            <div><g:img dir="reportes3" file="showBarcode?barcode=${'1812201601208210000001507017908965449'}" width="270" height="55"/></div>
         </div>
     </div>
 

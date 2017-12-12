@@ -120,16 +120,18 @@
                     </a>
                 </g:form>
 
-                <g:if test="${proceso?.tipoProceso?.codigo?.trim() in ['V']}">
-                    <a class="btn btn-info" href="${createLink(controller: 'servicioSri', action: 'facturaElectronica', id: proceso?.id)}">
-                        <i class="fa fa-file-o"></i>
-                        Factura
-                    </a>
-                    <g:if test="${proceso?.estado == 'R'}">
-                        <a href="#" class="btn btn-success" id="btnImprimirFactElect">
-                            <i class="fa fa-print"></i> Factura Electŕonica
+                <g:if test="${proceso?.tipoProceso?.codigo?.trim() in ['V'] && proceso?.estado == 'R'}">
+                        <g:if test="${proceso?.claveAcceso != null}">
+                            <a href="#" class="btn btn-success" id="btnImprimirFactElect">
+                                <i class="fa fa-print"></i> Factura Electŕonica
+                            </a>
+                        </g:if>
+                    <g:else>
+                        <a href="#" id="btnEnviarFactura" class="btn btn-info" title="Enviar factura al SRI">
+                            <i class="fa fa-plane"></i>
+                            Enviar Factura
                         </a>
-                    </g:if>
+                    </g:else>
                 </g:if>
                 <g:if test="${proceso?.tipoProceso?.codigo?.trim() in ['P','I']}">
                     <a href="#" class="btn btn-info" id="btnConciliar">
@@ -429,6 +431,35 @@
 
 <script type="text/javascript">
 
+    $("#btnEnviarFactura").click(function () {
+        bootbox.confirm("<i class='fa fa-warning fa-3x pull-left text-warning text-shadow'></i> Está seguro que desea enviar esta factura al SRI?", function (result) {
+            if (result) {
+                openLoader('Enviando al SRI...');
+                $.ajax({
+                   type: 'POST',
+                    url: '${createLink(controller: 'servicioSri', action: 'facturaElectronica')}',
+                    data:{
+                        id: '${proceso?.id}'
+                    },
+                    success: function (msg) {
+                        if(msg == 'ok'){
+                            closeLoader();
+                            log("Factura enviada al SRI correctamente!","success");
+                            setTimeout(function () {
+                                location.href="${createLink(controller: 'proceso', action: 'nuevoProceso')}/?id=" + '${proceso?.id}'
+                            }, 800);
+                        }else{
+                            closeLoader();
+                            log("Error al enviar la factura al SRI","error");
+                        }
+                    }
+                });
+
+
+            }
+        })
+
+    });
 
     $("#btnImprimirFactElect").click(function () {
         url = "${g.createLink(controller:'reportes3' , action: 'facturaElectronica')}?id=" + '${proceso?.id}' + "Wemp=${session.empresa.id}";
