@@ -2,6 +2,7 @@ package cratos
 
 import cratos.inventario.CentroCosto
 import org.krysalis.barcode4j.impl.code128.EAN128Bean
+import org.krysalis.barcode4j.impl.code39.Code39Bean
 import org.springframework.dao.DataIntegrityViolationException
 
 class OrdenCompraController extends cratos.seguridad.Shield {
@@ -277,16 +278,16 @@ class OrdenCompraController extends cratos.seguridad.Shield {
     }
 
     def bar () {
-//        def generator = new Code39Bean()
-        def generator = new EAN128Bean()
+        def generator = new Code39Bean()
+//        def generator = new EAN128Bean()
 
         generator.height = 6
         generator.fontSize = 2
         def barcodeValue = "09090201601176001321000110012220000000181234567814"
 //        def barcodeValue = "1603201701179174314800120010010000761780007617819"
 
-//        render  barcode4jService.png(generator, barcodeValue)
-        renderBarcodePng(generator, barcodeValue)
+        render  barcode4jService.png(generator, barcodeValue)
+//        renderBarcodePng(generator, barcodeValue)
     }
 
 //    def showBarcode(String barcode) {

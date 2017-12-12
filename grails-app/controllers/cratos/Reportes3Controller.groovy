@@ -5,12 +5,16 @@ import com.lowagie.text.Paragraph
 import cratos.inventario.DetalleFactura
 import org.apache.poi.ss.usermodel.Row
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
+import org.krysalis.barcode4j.impl.code128.Code128Bean
+import org.krysalis.barcode4j.impl.code128.EAN128Bean
+import org.krysalis.barcode4j.impl.code39.Code39Bean
 
 class Reportes3Controller {
 
     def dbConnectionService
     def cuentasService
     def buscadorService
+    def barcode4jService
 //    def kerberosoldService
 
     def reporteComprobante() {
@@ -606,7 +610,21 @@ class Reportes3Controller {
         def proceso = Proceso.get(params.id)
         def empresa = Empresa.get(params.emp)
         def detalles = DetalleFactura.findAllByProceso(proceso).sort{it?.item?.codigo}
+
+
         return[proceso: proceso, empresa: empresa, detalles: detalles]
+    }
+
+    def showBarcode(String barcode) {
+//        println("params " + barcode)
+//        def generator = new
+//        def generator = new Code39Bean()
+        def generator = new Code128Bean()
+//        def generator = new EAN128Bean()
+        generator.height = 6
+        generator.fontSize = 2
+//        render  barcode4jService.png(generator, barcode)
+        renderBarcodePng(generator, barcode)
     }
 
 }
