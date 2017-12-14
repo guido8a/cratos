@@ -9,6 +9,8 @@ import org.krysalis.barcode4j.impl.code128.Code128Bean
 import org.krysalis.barcode4j.impl.code128.EAN128Bean
 import org.krysalis.barcode4j.impl.code39.Code39Bean
 
+import org.krysalis.barcode4j.*
+
 class Reportes3Controller {
 
     def dbConnectionService
@@ -623,8 +625,34 @@ class Reportes3Controller {
 //        def generator = new EAN128Bean()
         generator.height = 6
         generator.fontSize = 2
-//        render  barcode4jService.png(generator, barcode)
+//        def imageMimeType = "image/png"
+//        barcode4jService.png(generator, barcode)
+//       barcode4jService.render(generator, barcode, imageMimeType)
+
+//        new File("barcode.png").withOutputStream { out ->
+//         barcode4jService.png(generator, barcode, out)
+//            render out
+//        }
+
         renderBarcodePng(generator, barcode)
+    }
+
+    def notaCreditoElectronica () {
+
+        def proceso = Proceso.get(params.id)
+        def empresa = Empresa.get(params.emp)
+        def detalles = DetalleFactura.findAllByProceso(proceso).sort{it?.item?.codigo}
+
+        return[proceso: proceso, empresa: empresa, detalles: detalles]
+    }
+
+    def notaDebitoElectronica () {
+
+        def proceso = Proceso.get(params.id)
+        def empresa = Empresa.get(params.emp)
+        def detalles = DetalleFactura.findAllByProceso(proceso).sort{it?.item?.codigo}
+
+        return[proceso: proceso, empresa: empresa, detalles: detalles]
     }
 
 }

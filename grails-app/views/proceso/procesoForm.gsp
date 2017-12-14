@@ -120,12 +120,24 @@
                     </a>
                 </g:form>
 
-                <g:if test="${proceso?.tipoProceso?.codigo?.trim() in ['V'] && proceso?.estado == 'R'}">
-                        <g:if test="${proceso?.claveAcceso != null}">
+                <g:if test="${proceso?.estado == 'R'}">
+                    <g:if test="${proceso?.claveAcceso != null}">
+                        <g:if test="${proceso?.tipoProceso?.codigo?.trim() in ['V']}">
                             <a href="#" class="btn btn-success" id="btnImprimirFactElect">
                                 <i class="fa fa-print"></i> Factura Electŕonica
                             </a>
                         </g:if>
+                        <g:if test="${proceso?.tipoProceso?.codigo?.trim() in ['NC']}">
+                            <a href="#" class="btn btn-success" id="btnImprimirNCElect">
+                                <i class="fa fa-print"></i> Nota Crédito Electŕonica
+                            </a>
+                        </g:if>
+                        <g:if test="${proceso?.tipoProceso?.codigo?.trim() in ['ND']}">
+                            <a href="#" class="btn btn-success" id="btnImprimirNDElect">
+                                <i class="fa fa-print"></i> Nota Débito Electŕonica
+                            </a>
+                        </g:if>
+                    </g:if>
                     <g:else>
                         <a href="#" id="btnEnviarFactura" class="btn btn-info" title="Enviar factura al SRI">
                             <i class="fa fa-plane"></i>
@@ -436,7 +448,7 @@
             if (result) {
                 openLoader('Enviando al SRI...');
                 $.ajax({
-                   type: 'POST',
+                    type: 'POST',
                     url: '${createLink(controller: 'servicioSri', action: 'facturaElectronica')}',
                     data:{
                         id: '${proceso?.id}'
@@ -466,6 +478,16 @@
         location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=facturaElectronica.pdf"
     });
 
+    $("#btnImprimirNCElect").click(function () {
+        url = "${g.createLink(controller:'reportes3' , action: 'notaCreditoElectronica')}?id=" + '${proceso?.id}' + "Wemp=${session.empresa.id}";
+        location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=notaCreditoElectronica.pdf"
+    });
+
+    $("#btnImprimirNDElect").click(function () {
+        url = "${g.createLink(controller:'reportes3' , action: 'notaDebitoElectronica')}?id=" + '${proceso?.id}' + "Wemp=${session.empresa.id}";
+        location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=notaDebitoElectronica.pdf"
+    });
+
 
     $("#btnDocRetencion").click(function () {
         var titulo = ""
@@ -473,7 +495,7 @@
         var mnsj = ""
         if("${proceso?.retEstado == 'S'}") {
             titulo = "Desregistrar";
-            clase = "btn-primary";
+            clase = "btn-info";
             mnsj = "Esta seguro de desregistrar esta retención?";
         } else {
             titulo = "Registrar";

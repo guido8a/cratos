@@ -1,3 +1,10 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: gato
+  Date: 14/12/17
+  Time: 11:01
+--%>
+
 <%@ page import="cratos.TipoPago; cratos.FormaDePago" %>
 <%--
   Created by IntelliJ IDEA.
@@ -105,13 +112,13 @@
 <div class="hoja">
 
     <div style="height: 100px; width: 330px;" class="left">
-            <div><g:img dir="images" file="logoEmp.jpg" width="220" height="100"/></div>
+        <div><g:img dir="images" file="logoEmp.jpg" width="220" height="100"/></div>
     </div>
 
     <div style="height: 250px; width: 300px;" class="right borde" >
         <div style="font-size: 12px; margin-left: 5px">
             <div class="mar2"><strong>R.U.C.:</strong> ${empresa?.ruc ?: ''}</div>
-            <div class="mar2"><strong>FACTURA</strong></div>
+            <div class="mar2"><strong>NOTA DE CRÉDITO</strong></div>
             <div class="mar2"><strong>N°.</strong> ${proceso?.documento ?: ''}</div>
             <div class="mar2 letra2"><strong>NÚMERO DE AUTORIZACIÓN:</strong></div>
             <div class="mar2 letra3"><strong>1812201601208210000001507017908965449</strong></div>
@@ -133,7 +140,7 @@
         </div>
     </div>
 
-    <div style="height: 105px; width: 640px; margin-top: 140px" class="borde2">
+    <div style="height: 200px; width: 640px; margin-top: 140px" class="borde2">
         <div class="left">
             <table style="margin-left: 5px; margin-top: 10px">
                 <thead style="width: 600px">
@@ -149,14 +156,41 @@
                 <tr class="" style="height: 10px; width: 600px">
                     <th class="tl letra3" style="width: 350px"><strong>Fecha de Emisión:</strong> <g:formatDate date="${proceso?.fechaEmision}" format="dd/MM/yyyy"/></th>
                     <th class="tl" style="width: 50px"></th>
-                    <th class="tl letra3" style="width: 200px"><strong>Guía de Remisión:</strong></th>
+                    <th class="tl letra3" style="width: 200px"></th>
+                </tr>
+                </thead>
+            </table>
+            <table style="margin-left: 5px; margin-top: 5px;">
+                <thead>
+                <tr class="" style="height: 10px; width: 600px">
+                    <th class="tl letra3" style="width: 50px"></th>
+                    <th class="tl" style="width: 450px"><strong>_____________________________________________________________________________________</strong></th>
+                    <th class="tl letra3" style="width: 100px"></th>
+                </tr>
+                </thead>
+            </table>
+            <table style="margin-left: 5px; margin-top: 10px;">
+                <thead>
+                <tr class="" style="height: 10px; width: 600px">
+                    <th class="tl letra3" style="width: 350px"><strong>Comprobante que se modifica </strong></th>
+                    <th class="tl" style="width: 50px"></th>
+                    <th class="tl" style="width: 200px"><strong></strong></th>
                 </tr>
                 </thead>
             </table>
             <table style="margin-left: 5px; margin-top: 20px;">
                 <thead>
                 <tr class="" style="height: 10px; width: 600px">
-                    <th class="tl letra3" style="width: 350px"><strong>Dirección: </strong>${proceso?.proveedor?.direccion ?: ''}</th>
+                    <th class="tl letra3" style="width: 350px"><strong>Fecha de Emisión (comprobante a modificar)</strong></th>
+                    <th class="tl" style="width: 50px"></th>
+                    <th class="tl" style="width: 200px"><strong></strong></th>
+                </tr>
+                </thead>
+            </table>
+            <table style="margin-left: 5px; margin-top: 20px;">
+                <thead>
+                <tr class="" style="height: 10px; width: 600px">
+                    <th class="tl letra3" style="width: 350px"><strong>Razón de modificación:</strong></th>
                     <th class="tl" style="width: 50px"></th>
                     <th class="tl" style="width: 200px"><strong></strong></th>
                 </tr>
@@ -165,20 +199,16 @@
         </div>
     </div>
 
+
     <div style="margin-top: 15px;">
         <table border="1" style="width:100%;">
             <thead>
             <tr>
-                <th class="tc letra">Cod. Principal</th>
-                <th class="tc letra">Cod. Auxiliar</th>
-                <th class="tc letra">Cant.</th>
+                <th class="tc letra">Código</th>
+                <th class="tc letra">Código Auxiliar</th>
+                <th class="tc letra">Cantidad</th>
                 <th class="tc letra">Descripción</th>
-                %{--<th class="tc letra">Detalle Adicional</th>--}%
-                %{--<th class="tc letra">Detalle Adicional</th>--}%
-                %{--<th class="tc letra">Detalle Adicional</th>--}%
                 <th class="tc letra">Precio Unitario</th>
-                %{--<th class="tc letra">Subsidio</th>--}%
-                %{--<th class="tc letra">Precio Sin Subsidio</th>--}%
                 <th class="tc letra">Descuento</th>
                 <th class="tc letra">Precio Total</th>
             </tr>
@@ -190,14 +220,8 @@
                     <td class="tl" style="width: 8.3%">${detalle?.item?.codigo ?: ''}</td>
                     <td class="tl" style="width: 6.3%"></td>
                     <td class="tc" style="width: 4.3%">${detalle?.cantidad?.toInteger() ?: 0}</td>
-                    %{--<td class="tl" style="width: 24.3%">${detalle?.item?.nombre ?: ''}</td>--}%
                     <td class="tl" style="width: 32.5%">${detalle?.item?.nombre ?: ''}</td>
-                    %{--<td class="tl" style="width: 6.3%"></td>--}%
-                    %{--<td class="tl" style="width: 6.3%"></td>--}%
-                    %{--<td class="tl" style="width: 6.3%"></td>--}%
                     <td class="tr" style="width: 8.3%"><g:formatNumber number="${detalle?.precioUnitario ?: 0}" maxFractionDigits="2" minFractionDigits="2"/></td>
-                    %{--<td class="tr" style="width: 6.3%"></td>--}%
-                    %{--<td class="tr" style="width: 7.3%"></td>--}%
                     <td class="tr" style="width: 6.3%"></td>
                     <td class="tr" style="width: 8.3%"><g:formatNumber number="${(detalle?.cantidad?.toInteger() ?: 0) * (detalle?.precioUnitario?.toDouble() ?: 0)}" maxFractionDigits="2" minFractionDigits="2"/></td>
                 </tr>
@@ -205,7 +229,6 @@
             </tbody>
         </table>
     </div>
-
 
     <div style="height: 175px; width: 400px; margin-top: 10px" class="left borde2" >
         <div style="margin-top: 10px; margin-left: 10px"><strong>Información Adicional</strong></div>
@@ -248,10 +271,6 @@
             <th class="tr"><g:formatNumber number="${proceso?.baseImponibleIva ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></th>
         </tr>
         <tr>
-            <th class="tl tam">DESCUENTOS</th>
-            <th class="tr"><g:formatNumber number="${0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></th>
-        </tr>
-        <tr>
             <th class="tl tam">ICE</th>
             <th class="tr"><g:formatNumber number="${proceso?.iceGenerado ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></th>
         </tr>
@@ -264,10 +283,6 @@
             <th class="tr"><g:formatNumber number="${0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></th>
         </tr>
         <tr>
-            <th class="tl tam">PROPINA</th>
-            <th class="tr"><g:formatNumber number="${0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></th>
-        </tr>
-        <tr>
             <th class="tl tam">VALOR TOTAL</th>
             <th class="tr"><g:formatNumber number="${proceso?.valor ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></th>
         </tr>
@@ -276,41 +291,6 @@
     </table>
 
 
-    <table border="1" style="height: 60px; width: 320px; margin-top: 10px" class="left borde2">
-        <thead>
-        <tr>
-            <th class="tc tam">Forma de Pago</th>
-            <th class="tc">Valor</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td class="tl tam letra2">${cratos.TipoPago.findByCodigo(proceso?.pago)?.descripcion?.toUpperCase() ?: ''}</td>
-            <td class="tc"><g:formatNumber number="${proceso?.valor ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
-        </tr>
-        </tbody>
-    </table>
-
-    %{--<div style="height: 60px; width: 230px;" class="right borde2">--}%
-        %{--<div>--}%
-            %{--<table>--}%
-                %{--<thead>--}%
-                %{--<tr class="letra2" style="height: 20px">--}%
-                    %{--<th class="tl tam2">VALOR TOTAL SIN SUBSIDIO</th>--}%
-                    %{--<th class="tr"><g:formatNumber number="${0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></th>--}%
-                %{--</tr>--}%
-                %{--<tr class="letra2" style="height: 10px">--}%
-                    %{--<th class="tl tam2">AHORRO POR SUBSIDIO</th>--}%
-                    %{--<th class="tr"><g:formatNumber number="${0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></th>--}%
-                %{--</tr>--}%
-                %{--<tr class="letra2">--}%
-                    %{--<th class="tl tam2" style="font-size: 9px">(Incluye IVA cuando corresponda)</th>--}%
-                    %{--<th class="tr"></th>--}%
-                %{--</tr>--}%
-                %{--</thead>--}%
-            %{--</table>--}%
-        %{--</div>--}%
-    %{--</div>--}%
 
 
 </div>
