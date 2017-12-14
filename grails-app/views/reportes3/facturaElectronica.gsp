@@ -9,7 +9,9 @@
 <html>
 <head>
     <title>Retención</title>
+
     <style type="text/css">
+
     @page {
         size   : 21cm 29.7cm;/*  width height*/
         margin : 1.5cm;
@@ -47,11 +49,9 @@
     }
 
     .borde{
-        border: 1px solid;
-        border-radius: 5px !important;
-        /*-webkit-border-radius: 8px;*/
-        /*-moz-border-radius: 8px;*/
-        /*border-radius: 8px;*/
+        border:1px solid black !important;
+        border-collapse: separate !important;
+        border-radius: 4px !important;
     }
 
     .borde2{
@@ -99,7 +99,15 @@
 </head>
 
 <body>
+
+
+
 <div class="hoja">
+
+    <div style="height: 100px; width: 330px;" class="left">
+            <div><g:img dir="images" file="logoEmp.jpg" width="220" height="100"/></div>
+    </div>
+
     <div style="height: 250px; width: 300px;" class="right borde" >
         <div style="font-size: 12px; margin-left: 5px">
             <div class="mar2"><strong>R.U.C.:</strong> ${empresa?.ruc ?: ''}</div>
