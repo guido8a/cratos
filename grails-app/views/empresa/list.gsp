@@ -31,26 +31,32 @@
             <table class="table table-condensed table-bordered table-striped table-hover">
                 <thead>
                     <tr>
-                        <g:sortableColumn property="nombre" title="Nombre"/>
-                        <g:sortableColumn property="email" title="Email"/>
-                        <g:sortableColumn property="fechaInicio" title="Fecha Inicio"/>
-                        <g:sortableColumn property="fechaFin" title="Fecha Fin"/>
-                        <g:sortableColumn property="direccion" title="Dirección"/>
-                        <g:sortableColumn property="telefono" title="Teléfono"/>
-                        <th width="110">Acciones</th>
+                        <th>Nombre</th>
+                        <th>Tipo</th>
+                        <th>Dirección</th>
+                        <th>Teléfono</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     <g:each in="${empresa}" status="i" var="empr">
-                        <tr data-id="${empr.id}">
-                            <td>${fieldValue(bean: empr, field: "nombre")}</td>
-                            <td>${fieldValue(bean: empr, field: "email")}</td>
-                            <td><g:formatDate date="${empr.fechaInicio}" format="dd-MM-yyyy"/></td>
-                            <td><g:formatDate date="${empr.fechaFin}" format="dd-MM-yyyy"/></td>
-                            <td>${fieldValue(bean: empr, field: "direccion")}</td>
-                            <td>${fieldValue(bean: empr, field: "telefono")}</td>
-                            <td>
-                                <a href="#" data-id="${empr.id}" class="btn btn-info btn-sm btn-show btn-ajax" title="Ver">
+                        <tr data-id="${empr.id}" style="width: 100%">
+                            <td style="width: 29%">${fieldValue(bean: empr, field: "nombre")}</td>
+                            <td style="width: 10%">${empr?.tipoEmpresa?.descripcion}</td>
+                            <td style="width: 30%">${fieldValue(bean: empr, field: "direccion")}</td>
+                            <td style="width: 13%">${fieldValue(bean: empr, field: "telefono")}</td>
+                            <td style="width: 18%">
+
+                                <g:if test="${empresaLogin?.id == empr?.id}">
+                                    <a href="#" data-id="${empr.id}" class="btn btn-primary btn-sm btn-firma btn-ajax" title="Firma Digital">
+                                        <i class="fa fa-credit-card"></i>
+                                    </a>
+                                </g:if>
+
+                                <a href="#" data-id="${empr.id}" class="btn btn-success btn-sm btn-sucursales btn-ajax" title="Sucursales">
+                                    <i class="fa fa-building-o"></i>
+                                </a>
+                                <a href="#" data-id="${empr.id}" class="btn btn-info btn-sm btn-show btn-ajax" title="Ver Empresa">
                                     <i class="fa fa-laptop"></i>
                                 </a>
                                 <a href="#" data-id="${empr.id}" class="btn btn-success btn-sm btn-edit btn-ajax" title="Editar">
@@ -83,7 +89,10 @@
                             var parts = msg.split("_");
                             log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
                             if (parts[0] == "OK") {
-                                location.reload(true);
+                                setTimeout(function () {
+                                    location.reload(true);
+                                }, 800);
+
                             } else {
                                 closeLoader();
                                 spinner.replaceWith($btn);
@@ -98,7 +107,7 @@
             function deleteRow(itemId) {
                 bootbox.dialog({
                     title   : "Alerta",
-                    message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea eliminar el Empresa seleccionado? Esta acción no se puede deshacer.</p>",
+                    message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea eliminar la Empresa seleccionada? Esta acción no se puede deshacer.</p>",
                     buttons : {
                         cancelar : {
                             label     : "Cancelar",
@@ -212,7 +221,90 @@
                     deleteRow(id);
                 });
 
+                $(".btn-firma").click(function () {
+                    var id = $(this).data("id");
+                    firma(id);
+                });
+
+                $(".btn-sucursales").click(function () {
+                    var id = $(this).data("id");
+                    sucursales(id);
+                });
+
             });
+
+            function firma(id) {
+                $.ajax({
+                   type: 'POST',
+                    url:'${createLink(controller: 'empresa', action: 'firma_ajax')}',
+                    data: {
+                        id: id
+                    },
+                    success: function (msg){
+                        bootbox.dialog({
+                            title   : "Archivo de Firma Digital",
+                            class   : "long",
+                            message : msg,
+                            buttons : {
+                                no : {
+                                    label     : "<i class='fa fa-times'></i> Cancelar",
+                                    className : "btn-primary",
+                                    callback  : function () {
+                                    }
+                                },
+                                ok : {
+                                    label     : "<i class='fa fa-save'></i> Guardar",
+                                    className : "btn-success",
+                                    callback  : function () {
+                                        openLoader("Guardando...")
+                                        $.ajax({
+                                           type: 'POST',
+                                            url: '${createLink(controller: 'empresa', action:'guardarFirma_ajax')}',
+                                            data:{
+                                                id: id,
+                                                clave: $("#claveFirma").val()
+                                            },
+                                            success: function (msg){
+                                                closeLoader();
+                                                if(msg == 'ok'){
+                                                    log("Clave guardada correctamente","success")
+                                                }else{
+                                                    log("Error al guardar la clave", "error")
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
+                             }
+                        });
+                    }
+                });
+            }
+
+            function sucursales (id) {
+                $.ajax({
+                    type: 'POST',
+                    url:'${createLink(controller: 'empresa', action: 'sucursales_ajax')}',
+                    data: {
+                        id: id
+                    },
+                    success: function (msg){
+                        bootbox.dialog({
+                            title   : "Sucursales",
+                            class   : "long",
+                            message : msg,
+                            buttons : {
+                                no : {
+                                    label     : "<i class='fa fa-times'></i> Cancelar",
+                                    className : "btn-primary",
+                                    callback  : function () {
+                                    }
+                                }
+                            }
+                        });
+                    }
+                });
+            }
         </script>
 
     </body>

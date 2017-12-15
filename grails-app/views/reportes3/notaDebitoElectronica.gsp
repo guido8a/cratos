@@ -130,7 +130,7 @@
             <div class="mar2 letra2"><strong>NÚMERO DE AUTORIZACIÓN:</strong></div>
             <div class="mar2 letra3"><strong>1812201601208210000001507017908965449</strong></div>
             <div class="mar2 letra2">FECHA Y HORA DE AUTORIZACIÓN: </div>
-            <div class="mar2 letra2"><strong>AMBIENTE :</strong> PRUEBAS</div>
+            <div class="mar2 letra2"><strong>AMBIENTE :</strong> ${empresa?.ambiente == '0' ? 'PRUEBAS' : 'PRODUCCIÓN'}</div>
             <div class="mar2 letra2"><strong>EMISIÓN :</strong> NORMAL</div>
             <div class="mar2 letra2">CLAVE DE ACCESO</div>
             <div><g:img dir="reportes3" file="showBarcode?barcode=${'1812201601208210000001507017908965449'}" width="270" height="55"/></div>
@@ -142,8 +142,8 @@
             <div class="mar" style="font-size: 13px !important;"><strong>${empresa?.nombre}</strong></div>
             <div class="mar"><strong>Dirección Matriz:</strong> ${empresa?.direccion ?: ''}</div>
             <div class="mar"><strong>Dirección Sucursal:</strong> ${empresa?.direccion ?: ''}</div>
-            <div class="mar"><strong>Contribuyente Especial N°:</strong></div>
-            <div class="mar"><strong>OBLIGADO A LLEVAR CONTABILIDAD: SI</strong></div>
+            <div class="mar"><strong>Contribuyente Especial N°:</strong> ${empresa?.contribuyenteEspecial ?: ''}</div>
+            <div class="mar"><strong>OBLIGADO A LLEVAR CONTABILIDAD:</strong> ${empresa?.obligadaContabilidad == '0' ? 'NO' : 'SI'}</div>
         </div>
     </div>
 

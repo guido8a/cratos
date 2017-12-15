@@ -36,7 +36,9 @@ class EmpresaController extends cratos.seguridad.Shield {
         println("empresa:" + empresa)
 
 
-        return [empresaInstanceList: empresaInstanceList, empresaInstanceCount: empresaInstanceCount, empresa: empresa]
+        def empresaLogin = Empresa.get(session.empresa.id)
+
+        return [empresaInstanceList: empresaInstanceList, empresaInstanceCount: empresaInstanceCount, empresa: empresa, empresaLogin: empresaLogin]
     } //list
 
     def show_ajax() {
@@ -134,6 +136,18 @@ class EmpresaController extends cratos.seguridad.Shield {
         params.numeroComprobanteIngreso = params.numeroComprobanteIngreso.toInteger()
         empresaInstance.properties = params
 
+        if(params.obligadaContabilidad_name){
+            empresaInstance.obligadaContabilidad = '1'
+        }else{
+            empresaInstance.obligadaContabilidad = '0'
+        }
+
+        if(params.ambiente_name){
+            empresaInstance.ambiente = '1'
+        }else{
+            empresaInstance.ambiente = '0'
+        }
+
         if (!empresaInstance.save(flush: true)) {
             def msg = "NO_No se pudo ${params.id ? 'actualizar' : 'crear'} Empresa."
             msg += renderErrors(bean: empresaInstance)
@@ -164,5 +178,74 @@ class EmpresaController extends cratos.seguridad.Shield {
     protected void notFound_ajax() {
         render "NO_No se encontró Empresa."
     } //notFound para ajax
+
+    def firma_ajax() {
+        def empresa = Empresa.get(params.id)
+        return [empresaInstance: empresa]
+    }
+
+    def guardarFirma_ajax () {
+//        println("params " + params)
+
+        def empresa = Empresa.get(params.id)
+        empresa.clave = params.clave
+
+        try{
+            empresa.save(flush: true)
+            render "ok"
+        }catch (e){
+            println("error al guardar la clave de la firma " + e)
+            render "no"
+        }
+    }
+
+    def sucursales_ajax () {
+        def empresa = Empresa.get(params.id)
+        return [empresa: empresa]
+    }
+
+    def tablaSucursales_ajax () {
+        def empresa = Empresa.get(params.id)
+        def sucursales = Establecimiento.findAllByEmpresa(empresa).sort{it.numero}
+        return[sucursales: sucursales]
+    }
+
+    def guardarSucursal_ajax () {
+//        println("params suc " + params)
+
+        def empresa = Empresa.get(params.id)
+        def sucursal
+
+        if(params.sucursal != ''){
+            sucursal = Establecimiento.get(params.sucursal)
+        }else{
+            sucursal = new Establecimiento()
+            sucursal.empresa = empresa
+        }
+
+        sucursal.direccion = params.direccion
+        sucursal.numero = params.numero
+        sucursal.nombre = params.nombre
+
+        try{
+            sucursal.save(flush: true)
+            render "ok"
+        }catch (e){
+            println("error al guardar la sucursal " + e)
+            render "no"
+        }
+    }
+
+    def borrarSucursal_ajax () {
+        def establecimiento = Establecimiento.get(params.id)
+
+        try{
+            establecimiento.delete(flush: true)
+            render "ok"
+        }catch (e){
+            println("error al borrar la sucursal")
+            render "no"
+        }
+    }
 
 }

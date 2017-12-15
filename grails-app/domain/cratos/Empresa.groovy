@@ -24,6 +24,15 @@ class Empresa implements Serializable {
     String establecimientos
     String tipoEmision
 
+    String contribuyenteEspecial
+    String obligadaContabilidad
+    String razonSocial
+    String ambiente
+
+    String firma
+    String clave
+
+
     static hasMany = [periodosContables: Contabilidad]
 
     static mapping = {
@@ -55,6 +64,13 @@ class Empresa implements Serializable {
 
             establecimientos column: 'emprestb'
             tipoEmision column: 'emprtpem'
+
+            obligadaContabilidad column: 'emprcont'
+            contribuyenteEspecial column: 'emprctes'
+            razonSocial column: 'emprrzsc'
+            ambiente column: 'emprambt'
+            firma column: 'emprfrma'
+            clave column: 'emprclve'
         }
     }
     static constraints = {
@@ -77,6 +93,12 @@ class Empresa implements Serializable {
         ordenCompra(blank: true, nullable: true, maxSize: 1)
         establecimientos(blank: false, nullable: false, maxSize: 63)
         tipoEmision(blank: false, nullable: false, maxSize: 1, inList: ['F', 'E'])
+        obligadaContabilidad(blank: true, nullable: true, maxSize: 1)
+        contribuyenteEspecial(blank: true, nullable: true)
+        razonSocial(blank: true, nullable: true)
+        ambiente(blank: true, nullable: true)
+        firma(blank: true, nullable: true)
+        clave(blank: true, nullable: true)
     }
 
     String toString() {
