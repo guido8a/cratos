@@ -22,24 +22,8 @@ class ServicioSriController {
         def pathxml = servletContext.getRealPath("/") + "xml/" + empresa_id + "/"  //web-app/xml
         def firma = pathxml + "firma.p12"
 
-//        def path = servletContext.getRealPath("/")
-
         //sri.firmar(input_file_path, key_store_path, key_store_password, output_path, out_file_name)
-//        sri.firmar(path + "xml/42/factura.xml", path + "xml/42/firma.p12", "FcoPaliz1959",
-//                path + "xml/42", "salida_sri.xml")
-
-//        println "xml:${archivo}, firma en: ${firma}, salida en: f${archivo}"
         sri.firmar(pathxml + archivo, firma, "FcoPaliz1959", pathxml, "f${archivo}")
-
-/*
-        def arch = new File(pathxml + "f${archivo}")
-        def html = "firmado<hr/>"
-        arch.readLines().each {
-            html += it.encodeAsHTML() + "<br/>"
-        }
-        render ("firmado<hr/>" + new File(path + "xml/42/salida_sri.xml").readLines().encodeAsHTML())
-*/
-        "archivo firmado"
     }
 
     /**
@@ -54,33 +38,43 @@ class ServicioSriController {
      *  Tipo de emisión 1:(48..48) tabla 2
      *  Dígito verificador: 1:(49..49) algoritmo módulo 11
      * **/
-    def claveAcceso() {
-        def prcs__id = 654  // debe usarse el id del proceso
+    def claveAccs(id) {
+        def prcs = Proceso.get(id) // debe usarse el id del proceso
         def fcha = new Date().format("ddMMyyyy")
         def tipoComprobante = "01"  // factura --> ver tabla 3
-        def ruc = "1705310330001"  //obtener de la empresa
+        def ruc = "1705310330001".enco  //obtener de la empresa
         def tipoAmbiente = 1  //Pruebas 1, Producción 2 --> poner esto en PAUX
         def serie = "001001"  // viene de prcsdcmt quitando los '-'
-        def numero = "000002101"  // viene de prcsdcmt quitando los '-'
-        def codigo = 99999999 - prcs__id // 99999999 - prcs__id
+        def numero = prcs.documento.split("-")[2]
+        def codigo = prcs.id //prcs__id
         def tipo = 1
-        def verificador = verificador(codigo)
+
 //        def clave = "$fcha|$tipoComprobante|$ruc|$tipoAmbiente|$serie|$numero|$codigo|$tipo|$verificador"
-        def clave = fcha + tipoComprobante + ruc + tipoAmbiente + serie + numero + codigo + tipo + verificador
+        def clave = fcha + tipoComprobante + ruc + tipoAmbiente + serie + numero + codigo + tipo
 //        def linea = "12345678|91|1234567892123|4|567893|123456789|41234567|8|9<br/>"
 //        render linea + clave
+
+        def verificador = verificador(clave)
+        println "clave: ${clave}, verificador: ${verificador} "
+        clave += verificador
         return clave
     }
 
     def verificador(nmro) {
-        def dg = nmro.toString().toList()
-        def coef = [3,2,7,6,5,4,3,2]
+        def dg = nmro.toList()
+        def coef = [7,6,5,4,3,2,7,6,5,4,3,2,7,6,5,4,3,2,7,6,5,4,3,2,7,6,5,4,3,2,7,6,5,4,3,2,7,6,5,4,3,2,7,6,5,4,3,2]
         def suma = 0
-        8.times{i ->
+        48.times{i ->
             suma += dg[i].toInteger() * coef[i]
         }
-        println "retorna: ${11 - suma%11}"
-        return 11 - suma%11
+        def retorna = 11 - suma%11
+
+        if(retorna > 9) {
+            retorna = 11 - retorna
+        }
+
+        println "retorna: ${retorna}"
+        retorna
     }
 
     def facturaElectronica(){
@@ -90,7 +84,7 @@ class ServicioSriController {
         println "finaliza xml de facura en --> ${archivo}"
         firmaSri(archivo)
         println "finaliza firma..."
-        render "archivo firmado"
+        render "ok"
     }
 
     def facturaXml(id) {
@@ -98,7 +92,7 @@ class ServicioSriController {
         def cn = dbConnectionService.getConnection()
         def sql = " "
         def empresa_id = session.empresa.id
-        def clave = claveAcceso()
+        def clave = claveAccs(prcs.id)
 
         def pathxml = servletContext.getRealPath("/") + "xml/" + empresa_id + "/"  //web-app/xml
         def fileName = "fc_${clave}.xml"
@@ -151,10 +145,13 @@ class ServicioSriController {
                     dirEstablecimiento("Dirección establecimiento")   //+++ crear tabla establecimeintos ++dirección
                     contribuyenteEspecial("000")   //++ agregar en empresa
                     obligadoContabilidad("SI")  //++ registrar en Empresa
-                    tipoIdentificacionComprador("05")   // desde PRVE
+                    tipoIdentificacionComprador("05")   // Usar dato desde TITT
+//                    tipoIdentificacionComprador(prcs.proveedor.tipoIdentificacion.codigoSri)   // desde PRVE
                     razonSocialComprador(prcs.proveedor.nombre)
                     identificacionComprador(prcs.proveedor.ruc.trim())
-                    totalSinImpuestos(utilitarioService.numero(prcs.baseImponibleNoIva + prcs.baseImponibleIva0))
+                    totalSinImpuestos(utilitarioService.numero(prcs.baseImponibleNoIva + prcs.baseImponibleIva0 +
+                    prcs.baseImponibleIva))
+//                    totalSinImpuestos(utilitarioService.numero(prcs.baseImponibleIva))
                     totalDescuento(utilitarioService.numero(0))   //+++ agregar total descuentos en prcs
 
                     /** total con impuestos IVA 0 y 12 **/
@@ -226,24 +223,24 @@ class ServicioSriController {
             file.write(writer.toString())
         }
 
+        prcs.claveAcceso = clave
+        prcs.save(flush: true)
+
         return fileName
     }
 
 
     def enviar() {
+        println "enviar: $params"
         def path = servletContext.getRealPath("/")
-        def arch_xml = new File(path + "xml/46/ffc_667.xml").text.encodeAsBase64()
+        def prcs = Proceso.get(params.id)
 //        def arch_xml = new File(path + "xml/46/enviar.xml").text
+        def arch_xml = new File(path + "xml/46/ffc_${prcs.claveAcceso}.xml").text.encodeAsBase64()
 
-        def sobre_xml = """
-        <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ec="http://ec.gob.sri.ws.recepcion">
-        <soapenv:Header/>
-        <soapenv:Body>
-        <ec:validarComprobante>
-        <xml>${arch_xml}</xml>
-        </ec:validarComprobante>
-        </soapenv:Body>
-        </soapenv:Envelope>"""
+        def sobre_xml = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" " +
+           "xmlns:ec=\"http://ec.gob.sri.ws.recepcion\"><soapenv:Header/><soapenv:Body>" +
+           "<ec:validarComprobante><xml>${arch_xml}</xml>" +
+           "</ec:validarComprobante></soapenv:Body></soapenv:Envelope>"
 
 
         //https://celcer.sri.gob.ec/comprobantes-electronicos-ws/RecepcionComprobantesOffline?wsdl
@@ -280,21 +277,22 @@ class ServicioSriController {
         </RespuestaRecepcionComprobante></ns2:validarComprobanteResponse></soap:Body></soap:Envelope>"""
 */
 
+
+
         if(respuestaSri == "RECIBIDA") {
-            def para_autrizacion = """
-                <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ec="http://ec.gob.sri.ws.autorizacion">
+            def para_autorizacion = """<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ec="http://ec.gob.sri.ws.autorizacion">
                 <soapenv:Header/>
                 <soapenv:Body>
                 <ec:autorizacionComprobante>
-                <claveAccesoComprobante>${}</claveAccesoComprobante>
+                <claveAccesoComprobante>${prcs.claveAcceso}</claveAccesoComprobante>
                 </ec:autorizacionComprobante>
                 </soapenv:Body>
                 </soapenv:Envelope>"""
 
+            println "----\n ${para_autorizacion}\n----"
             //https://celcer.sri.gob.ec/comprobantes-electronicos-ws/AutorizacionComprobantesOffline?wsdl
-            def atrzUrl = new URL("https://celcer.sri.gob.ec/comprobantes-electronicos-ws/RecepcionComprobantesOffline?wsdl")
-//        def soapUrl = new URL("http://ec.gob.sri.ws.recepcion")
-            connection = atrzUrl.openConnection()
+            soapUrl = new URL("https://celcer.sri.gob.ec/comprobantes-electronicos-ws/AutorizacionComprobantesOffline?wsdl")
+            connection = soapUrl.openConnection()
             println "abre conexion --- atrz"
             connection.setRequestMethod("POST" )
             println "...post"
@@ -305,15 +303,16 @@ class ServicioSriController {
 
             writer = new OutputStreamWriter(connection.outputStream)
 
-            writer.write(sobre_xml)
-//        writer.write(arch_xml)
+            writer.write(para_autorizacion)
             println "...write"
             writer.flush()
             writer.close()
             connection.connect()
-            println "...connect"
+            println "...connect atz... "
 
             respuesta = connection.content.text
+            def guardar = new File(path + "xml/46/salida.xml")
+            guardar.write(respuesta)
             respuestaSri = new XmlSlurper().parseText(respuesta)
 
             println respuestaSri
