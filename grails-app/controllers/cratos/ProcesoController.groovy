@@ -2249,5 +2249,36 @@ class ProcesoController extends cratos.seguridad.Shield {
         return[auxiliar: auxiliar, comprobante: comprobante]
     }
 
+    def formaPago_ajax () {
+        def proceso = Proceso.get(params.id)
+        return [proceso: proceso]
+    }
+
+    def tablaFormaPago_ajax () {
+        def proceso = Proceso.get(params.proceso)
+        def formasPago = ProcesoFormaDePago.findAllByProceso(proceso)
+        return[formasPago: formasPago]
+    }
+
+    def guardarFormaPago_ajax () {
+
+        println("params " + params)
+
+        def proceso = Proceso.get(params.id)
+        def tipoPago = TipoPago.get(params.tipo)
+        def formaPago = new ProcesoFormaDePago()
+
+        formaPago.proceso = proceso
+        formaPago.tipoPago = tipoPago
+        formaPago.plazo = params.plazo.toInteger()
+
+        try{
+            formaPago.save(flush: true)
+            render "ok"
+        }catch (e){
+            println("error al agregar una forma de pago")
+            render "no"
+        }
+    }
 }
 

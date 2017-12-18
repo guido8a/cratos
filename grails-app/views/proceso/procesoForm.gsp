@@ -165,17 +165,20 @@
                     Detalle
                 </a>
             </g:if>
-            <g:if test="${proceso?.tipoProceso?.codigo?.trim() == 'V' || proceso?.estado == 'R'}">
+            <g:if test="${proceso?.tipoProceso?.codigo?.trim() == 'V' && proceso?.estado == 'R'}">
                 <a href="#" class="btn btn-info" id="btnDocRetencion" style="color: #0b0b0b">
                     <i class="fa fa-clipboard"></i>
                     Retención en Ventas
                 </a>
             </g:if>
         </g:if>
-        <a href="#" class="btn btn-primary hidden" style="cursor: default; margin-right: 20px" id="abrir-fp">
-            <i class="fa fa-usd"></i>
-            Forma de Pago
-        </a>
+        <g:if test="${proceso?.tipoProceso?.codigo?.trim() in ['C','V']}">
+        %{--<a href="#" class="btn btn-primary hidden" style="cursor: default; margin-right: 20px" id="abrir-fp">--}%
+            <a href="#" class="btn btn-primary" style="cursor: default; margin-right: 20px" id="btnFormaPago">
+                <i class="fa fa-usd"></i>
+                Forma de Pago
+            </a>
+        </g:if>
     </div>
 </div>
 
@@ -442,6 +445,37 @@
 
 
 <script type="text/javascript">
+
+
+    $("#btnFormaPago").click(function () {
+       $.ajax({
+           type: 'POST',
+           url: '${createLink(controller: 'proceso', action: 'formaPago_ajax')}',
+           data:{
+            id: '${proceso?.id}'
+           },
+           success: function (msg){
+               var b = bootbox.dialog({
+                   id: "dlgFP",
+                   title: "Formas de Pago",
+                   class: "long",
+//                   align: 'right',
+                   message: msg,
+                   buttons: {
+                       cancelar: {
+                           label: "<i class='fa fa-times'></i> Cancelar",
+                           className: "btn-primary",
+                           callback: function () {
+                           }
+                       }
+                   }
+               });
+           }
+       });
+    });
+
+
+
 
     $("#btnEnviarFactura").click(function () {
         bootbox.confirm("<i class='fa fa-warning fa-3x pull-left text-warning text-shadow'></i> Está seguro que desea enviar esta factura al SRI?", function (result) {
