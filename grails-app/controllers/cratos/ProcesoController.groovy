@@ -2270,7 +2270,13 @@ class ProcesoController extends cratos.seguridad.Shield {
 
         formaPago.proceso = proceso
         formaPago.tipoPago = tipoPago
-        formaPago.plazo = params.plazo.toInteger()
+
+        if(params.plazo){
+            formaPago.plazo = params.plazo.toInteger()
+        }else{
+            formaPago.plazo = 0
+        }
+
 
         try{
             formaPago.save(flush: true)
