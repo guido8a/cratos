@@ -2262,8 +2262,7 @@ class ProcesoController extends cratos.seguridad.Shield {
 
     def guardarFormaPago_ajax () {
 
-        println("params " + params)
-
+//        println("params " + params)
         def proceso = Proceso.get(params.id)
         def tipoPago = TipoPago.get(params.tipo)
         def formaPago = new ProcesoFormaDePago()
@@ -2276,7 +2275,6 @@ class ProcesoController extends cratos.seguridad.Shield {
         }else{
             formaPago.plazo = 0
         }
-
 
         try{
             formaPago.save(flush: true)

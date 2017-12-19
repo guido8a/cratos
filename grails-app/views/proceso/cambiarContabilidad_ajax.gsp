@@ -53,7 +53,15 @@
 </div>
 
 <script type="text/javascript">
+
     $("#btnSave").click(function () {
-        $("#frmContabilidad").submit();
+        var cont = $("#contabilidad option:selected").val();
+
+        if(cont == null){
+            bootbox.alert("<i class='fa fa-warning fa-3x pull-left text-danger text-shadow'></i> No existe ninguna contabilidad seleccionada")
+        }else{
+            $("#frmContabilidad").submit();
+        }
     });
+
 </script>
