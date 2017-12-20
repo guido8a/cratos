@@ -551,8 +551,6 @@ class Reportes2Controller {
 
         }
 
-        println("res " + res)
-
         return[res: res, empresa: params.emp, desde: desde, hasta: hasta]
     }
 
