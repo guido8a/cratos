@@ -6,12 +6,14 @@
 --%>
 
 <div class="row">
+%{--
     <div class="col-xs-3 negrilla text-info">
         Empresa
     </div>
+--}%
 
-    <div class="col-xs-5">
-        <g:textField name="empresa_name" value="${empresa?.nombre}" readonly="" class="form-control" style="text-align: center"/>
+    <div class="col-xs-12">
+        <g:textField name="empresa_name" value="Empresa: ${empresa?.nombre}" readonly="" class="form-control" style="text-align: center"/>
     </div>
 </div>
 

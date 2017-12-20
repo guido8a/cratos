@@ -13,35 +13,33 @@
     %{--<div class="keeptogether">--}%
         <div class="form-group keeptogether ${hasErrors(bean: empresaInstance, field: 'nombre', 'error')} required">
             <span class="grupo">
-                <label for="nombre" class="col-xs-3 control-label text-info">
+                <label for="nombre" class="col-xs-4 control-label text-info">
                     Nombre Comercial
                 </label>
 
-                <div class="col-xs-6">
+                <div class="col-xs-8">
                     <g:textField name="nombre" maxlength="63" required="" class="form-control required" value="${empresaInstance?.nombre}"/>
                 </div>
-                *
             </span>
         </div>
         <div class="form-group keeptogether ${hasErrors(bean: empresaInstance, field: 'ruc', 'error')} required">
             <span class="grupo">
-                <label for="ruc" class="col-xs-3 control-label text-info">
+                <label for="ruc" class="col-xs-4 control-label text-info">
                     R.U.C.
                 </label>
 
-                <div class="col-xs-6">
+                <div class="col-xs-4">
                     <g:textField name="ruc" maxlength="13" required="" class="form-control validaLista required" value="${empresaInstance?.ruc}"/>
                 </div>
-                *
             </span>
         </div>
 
         <div class="form-group keeptogether ${hasErrors(bean: empresaInstance, field: 'contribuyenteEspecial', 'error')} ">
             <span class="grupo">
-                <label for="contribuyenteEspecial" class="col-xs-3 control-label text-info">
+                <label for="contribuyenteEspecial" class="col-xs-4 control-label text-info">
                     Contribuyente Especial
                 </label>
-                <div class="col-xs-6">
+                <div class="col-xs-4">
                     <g:textField name="contribuyenteEspecial" maxlength="13" class="form-control validaLista" value="${empresaInstance?.contribuyenteEspecial}"/>
                 </div>
             </span>
@@ -49,11 +47,11 @@
 
         <div class="form-group keeptogether ${hasErrors(bean: empresaInstance, field: 'razonSocial', 'error')} ">
             <span class="grupo">
-                <label for="razonSocial" class="col-xs-3 control-label text-info">
+                <label for="razonSocial" class="col-xs-4 control-label text-info">
                     Razón Social
                 </label>
 
-                <div class="col-xs-6">
+                <div class="col-xs-8">
                     <g:textField name="razonSocial" maxlength="255" class="form-control" value="${empresaInstance?.razonSocial}"/>
                 </div>
             </span>
@@ -61,11 +59,11 @@
 
         <div class="form-group keeptogether ${hasErrors(bean: empresaInstance, field: 'tipoEmpresa', 'error')} required">
             <span class="grupo">
-                <label for="tipoEmpresa" class="col-xs-3 control-label text-info">
+                <label for="tipoEmpresa" class="col-xs-4 control-label text-info">
                     Tipo Empresa
                 </label>
 
-                <div class="col-xs-6">
+                <div class="col-xs-5">
                     <g:select id="tipoEmpresa" name="tipoEmpresa.id" from="${cratos.TipoEmpresa.list()}" optionKey="id" value="${empresaInstance?.tipoEmpresa?.id}" class="many-to-one form-control required"/>
                 </div>
 
@@ -74,20 +72,19 @@
 
         <div class="form-group keeptogether ${hasErrors(bean: empresaInstance, field: 'direccion', 'error')} required">
             <span class="grupo">
-                <label for="direccion" class="col-xs-3 control-label text-info">
-                    Dirección
+                <label for="direccion" class="col-xs-4 control-label text-info">
+                    Dirección de la matriz:
                 </label>
 
-                <div class="col-xs-6">
+                <div class="col-xs-8">
                     <g:textArea name="direccion" style="resize: none" maxlength="127" required="" class="form-control required" value="${empresaInstance?.direccion}"/>
                 </div>
-                *
             </span>
         </div>
 
         <div class="form-group keeptogether ${hasErrors(bean: empresaInstance, field: 'telefono', 'error')} required ">
             <span class="grupo">
-                <label for="telefono" class="col-xs-3 control-label text-info">
+                <label for="telefono" class="col-xs-4 control-label text-info">
                     Teléfono
                 </label>
 
@@ -97,7 +94,6 @@
                         <g:textField name="telefono" maxlength="63" class="form-control required" value="${empresaInstance?.telefono}"/>
                     </div>
                 </div>
-                *
             </span>
         </div>
 
@@ -271,7 +267,7 @@
                 </label>
 
                 <div class="col-xs-6">
-                    <g:checkBox name="ambiente_name" id="ambiente" class="form-control" data-on-Label="Producción" data-off-Label="Pruebas" checked="${empresaInstance?.ambiente == '1' ?: false}"/>
+                    <g:checkBox name="ambiente_name" id="ambiente" class="form-control" data-on-Label="Producción" data-off-Label="Pruebas" checked="${empresaInstance?.ambiente == '2' ?: false}"/>
                 </div>
 
             </span>

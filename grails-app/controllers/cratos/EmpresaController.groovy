@@ -143,9 +143,9 @@ class EmpresaController extends cratos.seguridad.Shield {
         }
 
         if(params.ambiente_name){
-            empresaInstance.ambiente = '1'
+            empresaInstance.ambiente = '2'
         }else{
-            empresaInstance.ambiente = '0'
+            empresaInstance.ambiente = '1'
         }
 
         if (!empresaInstance.save(flush: true)) {

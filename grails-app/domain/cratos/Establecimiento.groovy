@@ -23,7 +23,7 @@ class Establecimiento implements Serializable {
     }
 
     static constraints = {
-        numero(blank: true, nullable: true)
+        numero(blank: false, nullable: false)
         nombre(blank: false, nullable: false)
         direccion(blank: false, nullable: false)
     }

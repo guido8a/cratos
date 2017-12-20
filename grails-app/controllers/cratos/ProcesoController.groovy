@@ -37,19 +37,24 @@ class ProcesoController extends cratos.seguridad.Shield {
 //        def libreta = DocumentoEmpresa.findAllByEmpresaAndFechaInicioLessThanEqualsAndFechaFinGreaterThanEqualsAndTipo(empresa,
 //                new Date(), new Date(),'F', [sort: 'fechaAutorizacion'])
         def estb = Empresa.get(session.empresa.id).establecimientos.tokenize(',')
+
         def mp = [:]
         estb.each {
             mp[it] = it
         }
+
+        def sucursal = Establecimiento.findAllByEmpresa(Empresa.get(session.empresa.id))
 
         if (params.id) {
             def proceso = Proceso.get(params.id).refresh()
 //            def registro = (Comprobante.findAllByProceso(proceso)?.size() == 0) ? false : true
             def fps = ProcesoFormaDePago.findAllByProceso(proceso)
 
-            render(view: "procesoForm", model: [proceso: proceso, fps: fps, estb: mp])
+//            render(view: "procesoForm", model: [proceso: proceso, fps: fps, estb: mp])
+            render(view: "procesoForm", model: [proceso: proceso, fps: fps, estb: sucursal])
         } else
-            render(view: "procesoForm", model: [proceso: null, estb: mp])
+//            render(view: "procesoForm", model: [proceso: null, estb: mp])
+            render(view: "procesoForm", model: [proceso: null, estb: sucursal])
     }
 
     /** actualiza los valores de proceso a los totales de detalle **/

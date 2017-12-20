@@ -237,9 +237,15 @@
             </div>
 
             <div class="col-xs-1 negrilla">
+%{--
                 <g:select class="form-control required cmbRequired" name="establecimiento" id="establecimiento"
                           from="${estb}" label="Proceso tipo: " value="${proceso?.establecimiento}" optionKey="key"
                           optionValue="value" title="Establecimientos" disabled="${proceso?.estado == 'R' ?: false}"
+                          style="margin-left: 0; width: 70px" />
+--}%
+                <g:select class="form-control required cmbRequired" name="establecimiento" id="establecimiento"
+                          from="${estb}" label="Proceso tipo: " value="${proceso?.establecimiento}" optionKey="id"
+                          optionValue="numero" title="Establecimientos" disabled="${proceso?.estado == 'R' ?: false}"
                           style="margin-left: 0; width: 70px" />
             </div>
 

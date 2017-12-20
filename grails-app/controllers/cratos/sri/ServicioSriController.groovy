@@ -38,21 +38,23 @@ class ServicioSriController {
      *  Tipo de emisión 1:(48..48) tabla 2
      *  Dígito verificador: 1:(49..49) algoritmo módulo 11
      * **/
-    def claveAccs(id) {
-        def prcs = Proceso.get(id) // debe usarse el id del proceso
+    def claveAccs(prcs) {
+//        def prcs = Proceso.get(id) // debe usarse el id del proceso
         def fcha = new Date().format("ddMMyyyy")
         def tipoComprobante = "01"  // factura --> ver tabla 3
-        def ruc = "1705310330001".enco  //obtener de la empresa
+        def ruc = "1705310330001"  //obtener de la empresa
         def tipoAmbiente = 1  //Pruebas 1, Producción 2 --> poner esto en PAUX
         def serie = "001001"  // viene de prcsdcmt quitando los '-'
         def numero = prcs.documento.split("-")[2]
-        def codigo = prcs.id //prcs__id
+        def codigo = 99999999 - prcs.id // 99999999 - prcs__id
         def tipo = 1
 
 //        def clave = "$fcha|$tipoComprobante|$ruc|$tipoAmbiente|$serie|$numero|$codigo|$tipo|$verificador"
         def clave = fcha + tipoComprobante + ruc + tipoAmbiente + serie + numero + codigo + tipo
 //        def linea = "12345678|91|1234567892123|4|567893|123456789|41234567|8|9<br/>"
-//        render linea + clave
+        def linea = "1234567890123456789012345678901234567890123456789"
+        println "$linea"
+        println "$clave"
 
         def verificador = verificador(clave)
         println "clave: ${clave}, verificador: ${verificador} "
@@ -79,20 +81,29 @@ class ServicioSriController {
 
     def facturaElectronica(){
         println "facturaElectrónica: $params"   // debe enviarse prcs__id de la factura
-        def archivo = facturaXml(params.id)
+        def prcs = Proceso.get(params.id)
+        def archivo = facturaXml(prcs)
 //        def archivo = "fc_667.xml"
         println "finaliza xml de facura en --> ${archivo}"
         firmaSri(archivo)
         println "finaliza firma..."
+        //se envía al SRI y si todo va bien se pone TipoEmision = 1, caso contrario 2
+
+
+        //        prcs.claveAcceso = clave
+//        prcs.tipoEmision = '1'  // si contesta el SRI
+//        prcs.save(flush: true)
+
+
         render "ok"
     }
 
-    def facturaXml(id) {
-        def prcs = Proceso.get(id)
+    def facturaXml(prcs) {
         def cn = dbConnectionService.getConnection()
         def sql = " "
         def empresa_id = session.empresa.id
-        def clave = claveAccs(prcs.id)
+        def clave = claveAccs(prcs)
+        def cddc = CodigoDocumento.findByDescripcionIlike('factura')
 
         def pathxml = servletContext.getRealPath("/") + "xml/" + empresa_id + "/"  //web-app/xml
         def fileName = "fc_${clave}.xml"
@@ -101,8 +112,8 @@ class ServicioSriController {
         def file = new File(path)
 
         if (!file.exists()) {
-
-            sql = "select tpidcdgo, emprnmbr, empr_ruc, emprtpem, emprdire from empr, tpid " +
+            sql = "select tpidcdgo, emprnmbr, empr_ruc, emprtpem, emprdire, emprambt, emprrzsc, emprnmbr " +
+                    "from empr, tpid " +
                     "where tpid.tpid__id = empr.tpid__id and empr__id = ${empresa_id}"
             def empr = cn.rows(sql.toString()).first()
 
@@ -123,27 +134,23 @@ class ServicioSriController {
             xml.factura(id: "comprobante", version: "1.1.0") {
                 println "inicia factura..."
                 infoTributaria() {
-                    ambiente(1)   //pruebas 1, Producción: 2
-                    tipoEmision(1)
-//                    razonSocial(empr.emprnmbr)
-                    razonSocial("FRANCISCO FABIAN PALIZ OSORIO")
-//                    nombreComercial(empr.emprnmbr)  //++ crear campo nombre comercial y Razón Social en Empresa
-                    nombreComercial("FRANCISCO FABIAN PALIZ OSORIO")  //++ crear campo nombre comercial y Razón Social en Empresa
-//                    ruc(empr.empr_ruc)
-                    ruc("1705310330001")
+                    ambiente(empr.emprambt)   //pruebas 1, Producción: 2
+                    tipoEmision(1) //aplica solo a empresas de emisión "E" si no contesta SRI se pone 2.--> Reenvío???
+                    razonSocial(empr.emprrzsc)  //Razón Social en Empresa
+                    nombreComercial(empr.emprnmbr)  //nombre comercial
+                    ruc(empr.empr_ruc)
                     claveAcceso(clave)
-                    codDoc("01")
+                    codDoc(cddc.codigo)
                     estab(prcs.facturaEstablecimiento)
                     ptoEmi(prcs.facturaPuntoEmision)
                     secuencial(prcs.documento.split("-")[2])
-//                    secuencial(prcs.documento)
                     dirMatriz(empr.emprdire)
                 }  /* -- infoTributaria -- */
+
                 infoFactura() {
-//                    fechaEmision(prcs.fechaIngresoSistema.format('dd/MM/yyyy'))
                     fechaEmision(new Date().format('dd/MM/yyyy'))
                     dirEstablecimiento("Dirección establecimiento")   //+++ crear tabla establecimeintos ++dirección
-                    contribuyenteEspecial("000")   //++ agregar en empresa
+                    contribuyenteEspecial(empr.emprctes?:'000')   //++ agregar en empresa
                     obligadoContabilidad("SI")  //++ registrar en Empresa
                     tipoIdentificacionComprador("05")   // Usar dato desde TITT
 //                    tipoIdentificacionComprador(prcs.proveedor.tipoIdentificacion.codigoSri)   // desde PRVE
@@ -188,7 +195,8 @@ class ServicioSriController {
 
                 /** detalle **/
                 dtfc.each {dt ->
-                    def parcial = Math.round(dt.dtfccntd * (dt.dtfcpcun - dtfc.dtfcdsct) *100)/100
+                    println "parcial: ${dt.dtfccntd}, ${dt.dtfcpcun}, ${dt.dtfcdsct}"
+                    def parcial = Math.round(dt.dtfccntd * (dt.dtfcpcun - dt.dtfcdsct) *100)/100
                     detalles() {
                         detalle() {
                             codigoPrincipal(dt.itemcdgo)
@@ -222,9 +230,6 @@ class ServicioSriController {
 
             file.write(writer.toString())
         }
-
-        prcs.claveAcceso = clave
-        prcs.save(flush: true)
 
         return fileName
     }

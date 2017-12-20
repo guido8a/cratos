@@ -24,7 +24,7 @@ class Kardex {
             item column: 'item__id'
             proceso column: 'prcs__id'
             bodega column: 'bdga__id'
-            cantidad column: 'exstcntd'
+            cantidad column: 'krdxcntd'
             precioUnitario column: 'krdxpcun'
             fecha column: 'krdxfcha'
             existencias column: 'krdxexst'
