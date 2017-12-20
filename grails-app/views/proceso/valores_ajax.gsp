@@ -7,7 +7,8 @@
 <script type="text/javascript" src="${resource(dir: 'js', file: 'ui.js')}"></script>
 
 
-<g:if test="${tipo == '4' || tipo == '5' || tipo == '8'}">
+%{--<g:if test="${tipo == '4' || tipo == '5' || tipo == '8'}">--}%
+<g:if test="${tipo in ['3', '4', '5', '8']}">
     <div class="row" style="font-size: 12px">
         <div class="col-xs-2 negrilla" style="width: 120px">
             Valor:
@@ -15,12 +16,13 @@
 
         <div class="col-xs-2 negrilla">
             <g:textField name="valorPago" id="valorPago" class="form-control required number validacionNumero"
-                         value="${proceso?.baseImponibleIva ?: 0}" disabled="${proceso?.estado == 'R' ? true : false}"/>
+                         value="${proceso?.valor ?: 0}" disabled="${proceso?.estado == 'R' ? true : false}"/>
         </div>
     </div>
 </g:if>
 
-<g:elseif test="${tipo == '1' || tipo == '2' || tipo == '3' || tipo == '6' || tipo == '7'}">
+%{--<g:elseif test="${tipo == '1' || tipo == '2' || tipo == '3' || tipo == '6' || tipo == '7'}">--}%
+<g:elseif test="${tipo in ['1', '2', '3', '6', '7']}">
     %{--<g:set var="iva" value="${cratos.ParametrosAuxiliares.list().first().iva}"/>--}%
 
     <g:if test="${tipo == '1'}">
@@ -204,7 +206,7 @@
         <div class="col-xs-2 negrilla" style="margin-left: -20px">
             <input type="text" name="flete" id="flete" value="${proceso?.flete ?: 0.00}"
                    class="required number form-control validacionNumero valor"
-                   validate="required number"  ${proceso?.estado == 'R' ? 'readonly' : ( band ? 'readonly' : '')}  />
+                   validate="required number"  ${proceso?.estado == 'R' ? 'readonly' : ''}  />
         </div>
 
         <div class="col-xs-1 negrilla text-info" style="width: 100px">

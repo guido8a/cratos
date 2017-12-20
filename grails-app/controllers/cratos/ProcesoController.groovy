@@ -223,7 +223,7 @@ class ProcesoController extends cratos.seguridad.Shield {
                 proveedor = Proveedor.get(params."proveedor.id")
                 proceso.proveedor = proveedor
                 proceso.comprobante = Comprobante.get(params.comprobanteSel_name)
-                proceso.baseImponibleIva = params.valorPago.toDouble()
+//                proceso.baseImponibleIva = params.valorPago.toDouble()
                 proceso.valor = params.valorPago.toDouble()
                 break
 
@@ -233,13 +233,13 @@ class ProcesoController extends cratos.seguridad.Shield {
                 proveedor = Proveedor.get(params."proveedor.id")
                 proceso.proveedor = proveedor
                 proceso.comprobante = Comprobante.get(params.comprobanteSel_name)
-                proceso.baseImponibleIva = params.valorPago.toDouble()
+//                proceso.baseImponibleIva = params.valorPago.toDouble()
                 proceso.valor = params.valorPago.toDouble()
                 break
             case '8':  //Transferencias
                 poneNulos(proceso)
                 proceso.proveedor = null
-                proceso.baseImponibleIva = params.valorPago.toDouble()
+//                proceso.baseImponibleIva = params.valorPago.toDouble()
                 def bodega1 = Bodega.get(params.bodega)
                 def bodega2 = Bodega.get(params.bodegaRecibe)
                 proceso.bodega = bodega1

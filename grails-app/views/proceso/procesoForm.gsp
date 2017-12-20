@@ -120,31 +120,33 @@
                     </a>
                 </g:form>
 
-                <g:if test="${proceso?.estado == 'R'}">
-                    <g:if test="${proceso?.claveAcceso != null}">
-                        <g:if test="${proceso?.tipoProceso?.codigo?.trim() in ['V']}">
-                            <a href="#" class="btn btn-success" id="btnImprimirFactElect">
-                                <i class="fa fa-print"></i> Factura Electŕonica
-                            </a>
+                %{--<g:if test="${proceso?.estado == 'R'}">--}%
+                    <g:if test="${proceso?.tipoProceso.codigo.trim() in ['V', 'NC', 'ND']}">
+                        <g:if test="${proceso?.claveAcceso != null}">
+                            <g:if test="${proceso?.tipoProceso?.codigo?.trim() in ['V']}">
+                                <a href="#" class="btn btn-success" id="btnImprimirFactElect">
+                                    <i class="fa fa-print"></i> Factura Electŕonica
+                                </a>
+                            </g:if>
+                            <g:if test="${proceso?.tipoProceso?.codigo?.trim() in ['NC']}">
+                                <a href="#" class="btn btn-success" id="btnImprimirNCElect">
+                                    <i class="fa fa-print"></i> Nota Crédito Electŕonica
+                                </a>
+                            </g:if>
+                            <g:if test="${proceso?.tipoProceso?.codigo?.trim() in ['ND']}">
+                                <a href="#" class="btn btn-success" id="btnImprimirNDElect">
+                                    <i class="fa fa-print"></i> Nota Débito Electŕonica
+                                </a>
+                            </g:if>
                         </g:if>
-                        <g:if test="${proceso?.tipoProceso?.codigo?.trim() in ['NC']}">
-                            <a href="#" class="btn btn-success" id="btnImprimirNCElect">
-                                <i class="fa fa-print"></i> Nota Crédito Electŕonica
+                        <g:else>
+                            <a href="#" id="btnEnviarFactura" class="btn btn-info" title="Enviar factura al SRI">
+                                <i class="fa fa-plane"></i>
+                                Enviar Factura
                             </a>
-                        </g:if>
-                        <g:if test="${proceso?.tipoProceso?.codigo?.trim() in ['ND']}">
-                            <a href="#" class="btn btn-success" id="btnImprimirNDElect">
-                                <i class="fa fa-print"></i> Nota Débito Electŕonica
-                            </a>
-                        </g:if>
+                        </g:else>
                     </g:if>
-                    <g:else>
-                        <a href="#" id="btnEnviarFactura" class="btn btn-info" title="Enviar factura al SRI">
-                            <i class="fa fa-plane"></i>
-                            Enviar Factura
-                        </a>
-                    </g:else>
-                </g:if>
+                %{--</g:if>--}%
                 <g:if test="${proceso?.tipoProceso?.codigo?.trim() in ['P','I']}">
                     <a href="#" class="btn btn-info" id="btnConciliar">
                         <i class="fa fa-pencil-square-o"></i>
