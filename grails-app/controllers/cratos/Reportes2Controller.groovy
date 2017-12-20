@@ -654,7 +654,7 @@ class Reportes2Controller {
     }
 
     def kardex2 () {
-        println("params " + params)
+//        println("params " + params)
         def desde = new Date().parse("dd-MM-yyyy", params.desde)
         def hasta = new Date().parse("dd-MM-yyyy", params.hasta)
         def contabilidad = Contabilidad.get(params.cont)
@@ -666,7 +666,7 @@ class Reportes2Controller {
         def cn = dbConnectionService.getConnection()
         def res = cn.rows("select * from rp_kardex('${contabilidad?.id}','${bodega?.id}','${item?.id}', '${d}', '${h}')")
 
-        return[res: res, empresa: params.emp, desde: desde, hasta: hasta]
+        return[res: res, empresa: params.emp, desde: desde, hasta: hasta, item: item]
     }
 
     def modalKardex2_ajax () {

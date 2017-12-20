@@ -77,7 +77,8 @@
 <rep:headerFooter title="${'Kardex por item'}" subtitulo="${'Datos'}" empresa="${empresa}"/>
 
 <h1>
-   ITEM: ${res?.first()?.itemcdgo + " - " + res?.first()?.itemnmbr}
+   %{--ITEM: ${(res != [] ? res?.first()?.itemcdgo : '') + " - " + (res != [] ? res?.first()?.itemnmbr : '')}--}%
+   ITEM: ${item?.codigo + " - " + item?.nombre}
 </h1>
 
 <h2>
