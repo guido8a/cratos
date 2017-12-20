@@ -52,6 +52,9 @@
         border:1px solid black !important;
         border-collapse: separate !important;
         border-radius: 4px !important;
+        perspective: 1px;
+        /*-moz-border-radius: 4px !important;*/
+        /*-webkit-border-radius: 4px !important;*/
     }
 
     .borde2{
@@ -99,7 +102,6 @@
 </head>
 
 <body>
-
 
 
 <div class="hoja">
@@ -173,6 +175,7 @@
                 <th class="tc letra">Cod. Auxiliar</th>
                 <th class="tc letra">Cant.</th>
                 <th class="tc letra">Descripción</th>
+
                 %{--<th class="tc letra">Detalle Adicional</th>--}%
                 %{--<th class="tc letra">Detalle Adicional</th>--}%
                 %{--<th class="tc letra">Detalle Adicional</th>--}%

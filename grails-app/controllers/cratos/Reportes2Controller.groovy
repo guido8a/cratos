@@ -525,7 +525,8 @@ class Reportes2Controller {
         return[retenciones: retenciones, empresa: params.emp, desde: desde, hasta: hasta]
     }
 
-    def kardex () {
+    def kardexGeneral () {
+//        println("---> " + params)
         def desde = new Date().parse("dd-MM-yyyy", params.desde)
         def hasta = new Date().parse("dd-MM-yyyy", params.hasta)
         def contabilidad = Contabilidad.get(params.cont)
@@ -549,6 +550,9 @@ class Reportes2Controller {
             }
 
         }
+
+        println("res " + res)
+
         return[res: res, empresa: params.emp, desde: desde, hasta: hasta]
     }
 

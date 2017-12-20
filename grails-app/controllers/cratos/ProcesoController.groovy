@@ -1119,7 +1119,7 @@ class ProcesoController extends cratos.seguridad.Shield {
 
     def comprobante_ajax () {
         def proceso = Proceso.get(params.proceso)
-        def comprobantes = Comprobante.findAllByProceso(proceso).sort{it.tipo.descripcion}
+        def comprobantes = Comprobante.findAllByProceso(proceso).sort{it.numero}
         return [comprobantes: comprobantes, proceso: proceso]
     }
 
@@ -2170,7 +2170,7 @@ class ProcesoController extends cratos.seguridad.Shield {
     }
 
     def revisarFecha_ajax() {
-        println("params " + params)
+        println("params revisar fecha " + params)
         if(params.desde && params.hasta){
             def desde = new Date().parse("dd-MM-yyyy", params.desde)
             def hasta = new Date().parse("dd-MM-yyyy", params.hasta)
