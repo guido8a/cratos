@@ -78,7 +78,8 @@ class MenuTagLib {
 //        html += '<p  class="navbar-text navbar-right" id="countdown">20</p>'
         html += '<p  class="navbar-text navbar-right" id="countdown"></p>'
         html += '<ul class="nav navbar-nav navbar-right">'
-        html += '<p  class="navbar-text">' + (session.empresa?.nombre.size() > 10 ? session.empresa?.nombre[0..8]+ '..' : session.empresa?.nombre) + '</p>'
+//        html += '<p  class="navbar-text">' + (session.empresa?.nombre.size() > 10 ? session.empresa?.nombre[0..8]+ '..' : session.empresa?.nombre) + '</p>'
+        html += '<p  class="navbar-text" style="color:#0042B3">' + (session.usuario?.login.size() > 10 ? session.usuario?.login[0..8]+ '..' : session.usuario?.login) + '</p>'
         html += '<li><a href="' + g.createLink(controller: 'login', action: 'logout') + '"><i class="fa fa-power-off"></i> Salir</a></li>'
 
 //        html += '<li class="dropdown">'

@@ -10,7 +10,8 @@
         padding: 0;
     }
     body {
-        background: rgb(123, 158, 158);
+        /*background: rgb(123, 158, 158);*/
+        background: rgb(195, 145, 60);
     }
     #hexGrid {
         display: flex;
@@ -19,6 +20,7 @@
         margin: 0 auto;
         overflow: hidden;
         font-family: 'Raleway', sans-serif;
+        /*font-family: 'Tulpen One', cursive;*/
         font-size: 15px;
         list-style-type: none;
     }
@@ -84,6 +86,8 @@
         font-weight: 300;
         -webkit-transition:  -webkit-transform .2s ease-out, opacity .1s ease-out;
         transition:          transform .2s ease-out, opacity .1s ease-out;
+        font-family: 'Tulpen One', cursive;
+        font-size: 28px;
     }
     .hex h1 {
         bottom: 50%;
@@ -180,7 +184,9 @@
 
 <body>
 
-<h1 style="text-align: center">${session.empresa.nombre}</h1>
+%{--<h1 style="text-align: center; font-family: 'Tulpen One', cursive">${session.empresa.nombre}</h1>--}%
+
+<p style="text-align: center; font-family: 'Tulpen One', cursive; font-size: 60px">${session.empresa.nombre}</p>
 
 <ul id="hexGrid">
 
