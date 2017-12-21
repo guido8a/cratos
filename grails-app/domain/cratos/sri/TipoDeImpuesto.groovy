@@ -7,7 +7,7 @@ class TipoDeImpuesto implements Serializable {
     static mapping = {
         table 'tpim'
         cache usage: 'read-write', include: 'non-lazy'
-        id column: 'cddc__id'
+        id column: 'tpim__id'
         id generator: 'identity'
         version false
         columns {

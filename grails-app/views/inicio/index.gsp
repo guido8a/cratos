@@ -10,8 +10,8 @@
         padding: 0;
     }
     body {
-        /*background: rgb(123, 158, 158);*/
-        background: rgb(195, 145, 60);
+        background: rgb(123, 158, 158);
+        /*background: rgb(195, 145, 60);*/
     }
     #hexGrid {
         display: flex;

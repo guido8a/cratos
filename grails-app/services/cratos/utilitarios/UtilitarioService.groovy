@@ -4,6 +4,8 @@ import java.text.NumberFormat
 
 class UtilitarioService {
 
+    def dbConnectionService
+
     def getLastDayOfMonth(fecha) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(fecha);
@@ -29,5 +31,15 @@ class UtilitarioService {
         nf.setMinimumFractionDigits(4)
         nf.format(nmro)
     }
+
+    def valorIva(fcha) {
+        def cn = dbConnectionService.getConnection()
+        def sql = "select paux_iva from paux where '${fcha}' between pauxfcin and " +
+                "coalesce(pauxfcfn, now())"
+        println "sqlIva: $sql"
+        return cn.rows(sql.toString())[0]?.paux_iva
+    }
+
+
 
 }

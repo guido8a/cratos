@@ -8,7 +8,7 @@ class TarifaIVA implements Serializable {
     static mapping = {
         table 'triv'
         cache usage: 'read-write', include: 'non-lazy'
-        id column: 'cddc__id'
+        id column: 'triv__id'
         id generator: 'identity'
         version false
         columns {

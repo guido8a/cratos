@@ -104,6 +104,8 @@ class ServicioSriController {
         def empresa_id = session.empresa.id
         def clave = claveAccs(prcs)
         def cddc = CodigoDocumento.findByDescripcionIlike('factura')
+        def hoy = new Date().format('yyyy-MM-dd')
+        def valorIva = utilitarioService.valorIva(hoy)
 
         def pathxml = servletContext.getRealPath("/") + "xml/" + empresa_id + "/"  //web-app/xml
         def fileName = "fc_${clave}.xml"
@@ -163,32 +165,41 @@ class ServicioSriController {
 
                     /** total con impuestos IVA 0 y 12 **/
                     totalConImpuestos() {
-                        totalImpuesto() {
-                            codigo(TipoDeImpuesto.findByDescripcion('IVA').codigo)   // TPIM
-                            codigoPorcentaje(0)   // TRIV
-                            baseImponible(utilitarioService.numero(prcs.baseImponibleIva0))   // +++ código % del IVA
-                            tarifa(utilitarioService.numero(0))   // +++ código % del IVA
-                            valor(utilitarioService.numero(0))   // +++ código % del IVA
+                        if(prcs.baseImponibleIva0){
+                            totalImpuesto() {
+                                codigo(TipoDeImpuesto.findByDescripcion('IVA').codigo)   // TPIM
+                                codigoPorcentaje(TarifaIVA.findByValor(0).codigo)   // TRIV
+                                baseImponible(utilitarioService.numero(prcs.baseImponibleIva0))   // +++ código % del IVA
+                                tarifa(utilitarioService.numero(0))   // +++ código % del IVA
+                                valor(utilitarioService.numero(0))   // +++ código % del IVA
+                            }
                         }
-                        totalImpuesto() {
-                            codigo(2)   // +++ código del IVA
-                            codigoPorcentaje(2)   // +++ código % del IVA
-                            baseImponible(utilitarioService.numero(prcs.baseImponibleIva))   // +++ código % del IVA
-                            tarifa(12)   // +++ código % del IVA
-                            valor(utilitarioService.numero(prcs.ivaGenerado))   // +++ código % del IVA
+                        if(prcs.baseImponibleIva){
+                            totalImpuesto() {
+                                def trfa = TarifaIVA.findByValor(valorIva)
+                                codigo(TipoDeImpuesto.findByDescripcion('IVA').codigo)   // +++ código del IVA
+                                codigoPorcentaje(trfa.codigo)   // +++ código % del IVA
+                                baseImponible(utilitarioService.numero(prcs.baseImponibleIva))   // +++ código % del IVA
+                                tarifa(trfa.valor)   // +++ código % del IVA
+                                valor(utilitarioService.numero(prcs.ivaGenerado))   // +++ código % del IVA
+                            }
                         }
+                        /*** TODO: manejar impuestos del ICE: crear tablas de impuesto ICE y prcs.baseICE (prcsbsic) **/
                     }
-                    propina(utilitarioService.numero(0))  // +++ registrar propinas
+                    propina(utilitarioService.numero(0))  /*** todo: registrar propinas  **/
                     importeTotal(utilitarioService.numero(prcs.valor))
-                    moneda("DOLAR")
+                    moneda("DOLAR")    /*** todo: registrar monedas en PAUX  **/
 
                     /** para cada forma de pago **/
                     pagos() {
-                        pago() {
-                            formaPago(19)
-                            total(utilitarioService.numero(prcs.valor))
-                            plazo(0)
-                            unidadTiempo("DIAS")   // ++++ incluir forma de pago
+                        def prfp = ProcesoFormaDePago.findAllByProceso(prcs)
+                        prfp.each { fp ->
+                            pago() {
+                                formaPago(fp.tipoPago.codigo)
+                                total(utilitarioService.numero(prcs.valor))
+                                plazo(fp.plazo)
+                                unidadTiempo("DIAS")
+                            }
                         }
                     }
                 }  /* -- infoFactura -- */
