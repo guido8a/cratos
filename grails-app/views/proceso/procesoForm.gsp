@@ -1,4 +1,4 @@
-<%@ page import="cratos.inventario.Bodega; cratos.Asiento; cratos.sri.TipoComprobanteSri" %>
+<%@ page import="cratos.ProcesoFormaDePago; cratos.inventario.Bodega; cratos.Asiento; cratos.sri.TipoComprobanteSri" %>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -174,12 +174,16 @@
                 </a>
             </g:if>
         </g:if>
-        <a href="#" class="btn btn-primary hidden" style="cursor: default; margin-right: 20px" id="btnFormaPago">
-            <i class="fa fa-usd"></i>
-            Forma de Pago
-        </a>
-        <g:if test="${proceso?.tipoProceso?.codigo?.trim() in ['C','V']}">
+        %{--<a href="#" class="btn btn-primary" style="cursor: default; margin-right: 20px" id="btnFormaPago">--}%
+            %{--<i class="fa fa-usd"></i>--}%
+            %{--Forma de Pago--}%
+        %{--</a>--}%
+        <g:if test="${proceso && proceso?.tipoProceso?.codigo?.trim() in ['C','V']}">
         %{--<a href="#" class="btn btn-primary hidden" style="cursor: default; margin-right: 20px" id="abrir-fp">--}%
+            <a href="#" class="btn btn-primary" style="cursor: default; margin-right: 20px" id="btnFormaPago">
+                <i class="fa fa-usd"></i>
+                Forma de Pago
+            </a>
         </g:if>
     </div>
 </div>
@@ -672,24 +676,24 @@
         });
     });
 
-    cargarBotonFormasPago($("#tipoProceso").val())
-
-    $("#tipoProceso").change(function () {
-        var sel = $(this).val()
-        console.log('tipo:', sel);
-        cargarBotonFormasPago(sel)
-    });
-
-    function cargarBotonFormasPago (sel) {
-        console.log ('lega:', sel);
-        if(sel == 1 || sel == 2){
-            console.log('mostrar');
-            $("#btnFormaPago").removeClass('hidden')
-        }else{
-            console.log('esconder');
-            $("#btnFormaPago").addClass('hidden')
-        }
-    }
+//    cargarBotonFormasPago($("#tipoProceso").val())
+//
+//    $("#tipoProceso").change(function () {
+//        var sel = $(this).val()
+//        console.log('tipo:', sel);
+//        cargarBotonFormasPago(sel)
+//    });
+//
+//    function cargarBotonFormasPago (sel) {
+//        console.log ('lega:', sel);
+//        if(sel == 1 || sel == 2){
+//            console.log('mostrar');
+//            $("#btnFormaPago").removeClass('hidden')
+//        }else{
+//            console.log('esconder');
+//            $("#btnFormaPago").addClass('hidden')
+//        }
+//    }
 
     $("#btnDetalle").click(function () {
         location.href='${createLink(controller: 'detalleFactura', action: 'detalleGeneral')}/?id=' +
@@ -1106,14 +1110,21 @@
                     error += "<li>El número de autorización debe ser de 10, 37 o 49 dígitos</li>"
                 }
 
-                if($(".filaFP").size() <1){
-                    info+="No ha asignado formas de pago para la transacción contable";
-                    bandData=false
-                }
+                %{--if('${proceso}'){--}%
+                    %{--console.log("entro fp")--}%
+                    %{--info+="No ha asignado formas de pago para la transacción contable";--}%
+                    %{--bandData=false--}%
+                %{--}--}%
 
-                if(($(".filaFP").size() <1) && (parseFloat($("#total").val()) >= 1000)){
-                    error += "<li> El valor del proceso requiere que se registre la forma de pago <li>"
-                }
+
+//                if($(".filaFP").size() <1){
+//                    info+="No ha asignado formas de pago para la transacción contable";
+//                    bandData=false
+//                }
+
+//                if(($(".filaFP").size() <1) && (parseFloat($("#total").val()) >= 1000)){
+//                    error += "<li> El valor del proceso requiere que se registre la forma de pago <li>"
+//                }
 
                 if (bandData) {
                     var data = "";
@@ -1155,9 +1166,9 @@
                     error += "<li>Ingrese el libretin y el secuencial de la factura a emitir</li>"
                 }
 
-                if(($(".filaFP").size() <1)){
-                    error += "<li>El proceso requiere que se registre la forma de pago</li>"
-                }
+//                if(($(".filaFP").size() <1)){
+//                    error += "<li>El proceso requiere que se registre la forma de pago</li>"
+//                }
 
                 var ivaG = ($("#ivaGenerado").val()*100)/100
                 var retenido = ($("#retenidoIva").val()*100)/100
@@ -1309,6 +1320,7 @@
                 }
             });
         });
+
 
         $("#parametro").keyup(function (ev) {
             if (ev.keyCode == 13) {

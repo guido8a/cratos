@@ -261,52 +261,52 @@ class ProcesoController extends cratos.seguridad.Shield {
             }
             proceso.refresh()
 
-            if (proceso.errors.getErrorCount() == 0) {
-
-
-                def formasPago = ProcesoFormaDePago.findAllByProceso(proceso)
-
-                formasPago.each {
-                    it.delete(flush: true)
-                }
-
-
-
-                if (params.data != "") {
-                    def data = params.data.split(";")
-                    def fp
-                    def tppgLista = []
-                    // println "data "+data
-                    data.each {
-                        if (it != "") {
-                            println "porcesando... $it"
-                            def tppg = TipoPago.get(it)
-                            fp = ProcesoFormaDePago.findByProcesoAndTipoPago(proceso, tppg)
-                            if(!fp) {
-                                def psfp = new ProcesoFormaDePago()
-                                psfp.proceso = proceso
-                                psfp.tipoPago = tppg
-                                psfp.save(flush: true)
-                            }
-                            tppgLista.add(tppg)
-                        }
-                    }
-//                    println "existentes: $tppgLista"
-                    if(tppgLista) {
-                        fp = ProcesoFormaDePago.findAllByProcesoAndTipoPagoNotInList(proceso, tppgLista)
-                    } else {
-//                        println "borrar todo........."
-                    }
-
-//                    println "a borrar: $fp"
-                    fp.each {
-                        println "borrando: ${it}"
-                        it.delete(flush: true)
-                    }
-                }
-            } else {
-                println "errores: ${proceso.errors}"
-            }
+//            if (proceso.errors.getErrorCount() == 0) {
+//
+//
+//                def formasPago = ProcesoFormaDePago.findAllByProceso(proceso)
+//
+//                formasPago.each {
+//                    it.delete(flush: true)
+//                }
+//
+//
+//
+//                if (params.data != "") {
+//                    def data = params.data.split(";")
+//                    def fp
+//                    def tppgLista = []
+//                    // println "data "+data
+//                    data.each {
+//                        if (it != "") {
+//                            println "porcesando... $it"
+//                            def tppg = TipoPago.get(it)
+//                            fp = ProcesoFormaDePago.findByProcesoAndTipoPago(proceso, tppg)
+//                            if(!fp) {
+//                                def psfp = new ProcesoFormaDePago()
+//                                psfp.proceso = proceso
+//                                psfp.tipoPago = tppg
+//                                psfp.save(flush: true)
+//                            }
+//                            tppgLista.add(tppg)
+//                        }
+//                    }
+////                    println "existentes: $tppgLista"
+//                    if(tppgLista) {
+//                        fp = ProcesoFormaDePago.findAllByProcesoAndTipoPagoNotInList(proceso, tppgLista)
+//                    } else {
+////                        println "borrar todo........."
+//                    }
+//
+////                    println "a borrar: $fp"
+//                    fp.each {
+//                        println "borrando: ${it}"
+//                        it.delete(flush: true)
+//                    }
+//                }
+//            } else {
+//                println "errores: ${proceso.errors}"
+//            }
 
             redirect(action: 'nuevoProceso', id: proceso.id)
 
@@ -1077,6 +1077,7 @@ class ProcesoController extends cratos.seguridad.Shield {
     }
 
     def borrarFormaPago_ajax () {
+        println("params " + params)
         def formaPago = ProcesoFormaDePago.get(params.id)
 
         try{
@@ -2299,6 +2300,18 @@ class ProcesoController extends cratos.seguridad.Shield {
             println "error al agregar una forma de pago: $e"
             render "no"
         }
+    }
+
+    def revisarFormaPago_ajax () {
+        def proceso = Proceso.get(params.proceso)
+        def formasPago = ProcesoFormaDePago.findAllByProceso(proceso)
+
+        if(formasPago.size() > 0){
+            render "ok"
+        }else{
+            render "no"
+        }
+
     }
 }
 
