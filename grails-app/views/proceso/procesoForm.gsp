@@ -1110,12 +1110,44 @@
                     error += "<li>El número de autorización debe ser de 10, 37 o 49 dígitos</li>"
                 }
 
-                %{--if('${proceso}'){--}%
-                    %{--console.log("entro fp")--}%
-                    %{--info+="No ha asignado formas de pago para la transacción contable";--}%
-                    %{--bandData=false--}%
-                %{--}--}%
+                if('${proceso}'){
 
+                    if(parseFloat($("#total").val()) >= 1000){
+                        $.ajax({
+                            type: 'POST',
+                            async: false,
+                            url: '${createLink(controller: 'proceso', action: 'revisarFormaPago_ajax')}',
+                            data: {
+                                proceso : '${proceso?.id}'
+                            },
+                            success: function (msg){
+                                if(msg == 'no'){
+                                    info+="El valor del proceso requiere que se registre la forma de pago.";
+                                    bandData=false
+                                }else{
+
+                                }
+                            }
+                        })
+                    }else{
+                        $.ajax({
+                            type: 'POST',
+                            async: false,
+                            url: '${createLink(controller: 'proceso', action: 'revisarFormaPago_ajax')}',
+                            data: {
+                                proceso : '${proceso?.id}'
+                            },
+                            success: function (msg){
+                                if(msg == 'no'){
+                                    info+="No ha asignado formas de pago para la transacción contable.";
+                                    bandData=false
+                                }else{
+
+                                }
+                            }
+                        })
+                    }
+                 }
 
 //                if($(".filaFP").size() <1){
 //                    info+="No ha asignado formas de pago para la transacción contable";
@@ -1169,6 +1201,26 @@
 //                if(($(".filaFP").size() <1)){
 //                    error += "<li>El proceso requiere que se registre la forma de pago</li>"
 //                }
+
+                if('${proceso}'){
+                        $.ajax({
+                            type: 'POST',
+                            async: false,
+                            url: '${createLink(controller: 'proceso', action: 'revisarFormaPago_ajax')}',
+                            data: {
+                                proceso : '${proceso?.id}'
+                            },
+                            success: function (msg){
+                                if(msg == 'no'){
+                                    info+="No ha asignado formas de pago para la transacción contable ";
+                                    bandData=false
+                                }else{
+
+                                }
+                            }
+                        })
+
+                }
 
                 var ivaG = ($("#ivaGenerado").val()*100)/100
                 var retenido = ($("#retenidoIva").val()*100)/100
@@ -1271,6 +1323,9 @@
             if(!$("#establecimiento").val()){
                 error += "<li>Ingrese un número de establecimiento</li>"
             }
+
+
+
 
             if (error != "") {
                 $("#listaErrores").append(error)
