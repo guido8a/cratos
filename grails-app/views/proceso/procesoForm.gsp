@@ -174,12 +174,12 @@
                 </a>
             </g:if>
         </g:if>
+        <a href="#" class="btn btn-primary hidden" style="cursor: default; margin-right: 20px" id="btnFormaPago">
+            <i class="fa fa-usd"></i>
+            Forma de Pago
+        </a>
         <g:if test="${proceso?.tipoProceso?.codigo?.trim() in ['C','V']}">
         %{--<a href="#" class="btn btn-primary hidden" style="cursor: default; margin-right: 20px" id="abrir-fp">--}%
-            <a href="#" class="btn btn-primary" style="cursor: default; margin-right: 20px" id="btnFormaPago">
-                <i class="fa fa-usd"></i>
-                Forma de Pago
-            </a>
         </g:if>
     </div>
 </div>
@@ -467,7 +467,6 @@
                    id: "dlgFP",
                    title: "Formas de Pago",
                    class: "long",
-//                   align: 'right',
                    message: msg,
                    buttons: {
                        cancelar: {
@@ -677,14 +676,18 @@
 
     $("#tipoProceso").change(function () {
         var sel = $(this).val()
+        console.log('tipo:', sel);
         cargarBotonFormasPago(sel)
     });
 
     function cargarBotonFormasPago (sel) {
+        console.log ('lega:', sel);
         if(sel == 1 || sel == 2){
-            $("#abrir-fp").removeClass('hidden')
+            console.log('mostrar');
+            $("#btnFormaPago").removeClass('hidden')
         }else{
-            $("#abrir-fp").addClass('hidden')
+            console.log('esconder');
+            $("#btnFormaPago").addClass('hidden')
         }
     }
 
@@ -999,9 +1002,11 @@
             })
         });
 
-        $("#abrir-fp").click(function () {
+/*
+        $("#btnFormaPago").click(function () {
             $('#modal-formas-pago').modal('show')
         })
+*/
 
         $("#btn_buscar").click(function () {
 //            console.log("clickf1")

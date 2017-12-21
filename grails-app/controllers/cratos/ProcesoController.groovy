@@ -116,7 +116,7 @@ class ProcesoController extends cratos.seguridad.Shield {
 
 
         proceso.gestor = gestor
-        proceso.establecimiento = params.establecimiento
+        proceso.establecimiento = Establecimiento.get(params.establecimiento)
         proceso.valor = (params.baseImponibleIva0?:0).toDouble() + (params.baseImponibleIva?:0).toDouble() +
                 (params.baseImponibleNoIva?:0).toDouble() + (params.excentoIva?:0).toDouble() +
                 (params.ivaGenerado?:0).toDouble() + (params.iceGenerado?:0).toDouble() +
@@ -1589,8 +1589,9 @@ class ProcesoController extends cratos.seguridad.Shield {
 
 
     def numeracion_ajax () {
-//        println "numeracion_ajax: $params"
+        println "numeracion_ajax: $params"
         def cn = dbConnectionService.getConnection()
+        def empr = Empresa.get(session.empresa.id)
         def proceso
         if(params.proceso) {
             proceso = Proceso.get(params.proceso)
@@ -1631,17 +1632,27 @@ class ProcesoController extends cratos.seguridad.Shield {
                     "fcdttipo = '${tpdc}' and fcdtnmes = '${params.nmes}' and empr__id = ${session.empresa.id} order by fcdtfcin"
 //            println "libretin: $sql"
             def libretin = cn.rows(sql.toString())
+            def lb = DocumentoEmpresa.findAllByEmpresaAndTipo(empr, tpdc)
+
             sql = "select coalesce(max(prcsfcsc), 0) mxmo from prcs, fcdt " +
                     "where tpps__id = ${params.tpps} and fcdt.fcdt__id = prcs.fcdt__id and " +
-                    "prcs.fcdt__id = ${libretin[0]?.id} and prcsfcsc between fcdtdsde and fcdthsta and " +
-                    "fcdtnmes = '${params.nmes}'"
-//            println "sql nmro: $sql"
+//                    "prcs.fcdt__id = ${libretin[0]?.id} and prcsfcsc between fcdtdsde and fcdthsta and " +
+                    "prcs.fcdt__id = ${lb[0]?.id} and prcsfcsc between fcdtdsde and fcdthsta"
+            println "sql nmro: $sql"
+
+
+
             nmro = cn.rows(sql.toString())[0]?.mxmo ?: 0
             nmro = nmro == 0 ? libretin[0]?.numeroDesde : nmro + 1
 //            println "valor de nmro: $nmro, ${libretin[0]?.numeroDesde}"
 
-            if(libretin?.size() > 0) {
-                [libretin: libretin, estb: libretin[0].numeroEstablecimiento, emsn: libretin[0].numeroEmision, nmro: nmro,
+
+
+//            if(libretin?.size() > 0) {
+            if(lb.size() > 0) {
+//                [libretin: libretin, estb: libretin[0].numeroEstablecimiento, emsn: libretin[0].numeroEmision, nmro: nmro,
+//                 tipo: tipo, proceso: proceso]
+                [libretin: lb, estb: lb[0].numeroEstablecimiento, emsn: lb[0].numeroEmision, nmro: nmro,
                  tipo: tipo, proceso: proceso]
             } else {
                 [libretin: libretin, estb: 0, emsn: 0, nmro: 0, tipo: tipo, proceso: proceso]
@@ -2267,7 +2278,7 @@ class ProcesoController extends cratos.seguridad.Shield {
 
     def guardarFormaPago_ajax () {
 
-//        println("params " + params)
+        println "guardar FP: $params"
         def proceso = Proceso.get(params.id)
         def tipoPago = TipoPago.get(params.tipo)
         def formaPago = new ProcesoFormaDePago()
@@ -2285,7 +2296,7 @@ class ProcesoController extends cratos.seguridad.Shield {
             formaPago.save(flush: true)
             render "ok"
         }catch (e){
-            println("error al agregar una forma de pago")
+            println "error al agregar una forma de pago: $e"
             render "no"
         }
     }

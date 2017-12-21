@@ -112,8 +112,8 @@ class ServicioSriController {
         def file = new File(path)
 
         if (!file.exists()) {
-            sql = "select tpidcdgo, emprnmbr, empr_ruc, emprtpem, emprdire, emprambt, emprrzsc, emprnmbr " +
-                    "from empr, tpid " +
+            sql = "select tpidcdgo, emprnmbr, empr_ruc, emprtpem, emprdire, emprambt, emprrzsc, emprnmbr, " +
+                    "emprctes, emprcont from empr, tpid " +
                     "where tpid.tpid__id = empr.tpid__id and empr__id = ${empresa_id}"
             def empr = cn.rows(sql.toString()).first()
 
@@ -149,10 +149,10 @@ class ServicioSriController {
 
                 infoFactura() {
                     fechaEmision(new Date().format('dd/MM/yyyy'))
-                    dirEstablecimiento("Dirección establecimiento")   //+++ crear tabla establecimeintos ++dirección
+                    dirEstablecimiento(prcs.establecimiento.direccion)   //+++ crear tabla establecimeintos ++dirección
                     contribuyenteEspecial(empr.emprctes?:'000')   //++ agregar en empresa
-                    obligadoContabilidad("SI")  //++ registrar en Empresa
-                    tipoIdentificacionComprador("05")   // Usar dato desde TITT
+                    obligadoContabilidad(empr.emprcont)
+                    tipoIdentificacionComprador(tipoId(prcs.id))   // Usar dato desde TITT
 //                    tipoIdentificacionComprador(prcs.proveedor.tipoIdentificacion.codigoSri)   // desde PRVE
                     razonSocialComprador(prcs.proveedor.nombre)
                     identificacionComprador(prcs.proveedor.ruc.trim())
@@ -164,8 +164,8 @@ class ServicioSriController {
                     /** total con impuestos IVA 0 y 12 **/
                     totalConImpuestos() {
                         totalImpuesto() {
-                            codigo(2)   // +++ código del IVA
-                            codigoPorcentaje(0)   // +++ código % del IVA
+                            codigo(TipoDeImpuesto.findByDescripcion('IVA').codigo)   // TPIM
+                            codigoPorcentaje(0)   // TRIV
                             baseImponible(utilitarioService.numero(prcs.baseImponibleIva0))   // +++ código % del IVA
                             tarifa(utilitarioService.numero(0))   // +++ código % del IVA
                             valor(utilitarioService.numero(0))   // +++ código % del IVA
@@ -332,5 +332,30 @@ class ServicioSriController {
 
         /*** se usa **/
     }
+
+    def tipoId(id) {
+        def cn = dbConnectionService.getConnection()
+        def sql = "select tittcdgo from titt, tpid, prve, prcs " +
+                "where prcs__id = ${id} and prve.prve__id = prcs.prve__id and " +
+                "tpid.tpid__id = prve.tpid__id and titt.tpid__id = tpid.tpid__id and " +
+                "titt.tptr__id = prcs.tptr__id"
+        println sql
+        def tipo = cn.rows(sql.toString())[0].tittcdgo
+        println "---> $tipo"
+        tipo
+    }
+
+    def codigoIva() {
+        def cn = dbConnectionService.getConnection()
+        def sql = "select tittcdgo from titt, tpid, prve, prcs " +
+                "where prcs__id = ${id} and prve.prve__id = prcs.prve__id and " +
+                "tpid.tpid__id = prve.tpid__id and titt.tpid__id = tpid.tpid__id and " +
+                "titt.tptr__id = prcs.tptr__id"
+        println sql
+        def tipo = cn.rows(sql.toString())[0].tittcdgo
+        println "---> $tipo"
+        tipo
+    }
+
 
 }
