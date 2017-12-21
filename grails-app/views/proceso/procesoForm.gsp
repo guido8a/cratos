@@ -120,33 +120,33 @@
                     </a>
                 </g:form>
 
-                %{--<g:if test="${proceso?.estado == 'R'}">--}%
-                    <g:if test="${proceso?.tipoProceso.codigo.trim() in ['V', 'NC', 'ND']}">
-                        <g:if test="${proceso?.claveAcceso != null}">
-                            <g:if test="${proceso?.tipoProceso?.codigo?.trim() in ['V']}">
-                                <a href="#" class="btn btn-success" id="btnImprimirFactElect">
-                                    <i class="fa fa-print"></i> Factura Electŕonica
-                                </a>
-                            </g:if>
-                            <g:if test="${proceso?.tipoProceso?.codigo?.trim() in ['NC']}">
-                                <a href="#" class="btn btn-success" id="btnImprimirNCElect">
-                                    <i class="fa fa-print"></i> Nota Crédito Electŕonica
-                                </a>
-                            </g:if>
-                            <g:if test="${proceso?.tipoProceso?.codigo?.trim() in ['ND']}">
-                                <a href="#" class="btn btn-success" id="btnImprimirNDElect">
-                                    <i class="fa fa-print"></i> Nota Débito Electŕonica
-                                </a>
-                            </g:if>
-                        </g:if>
-                        <g:else>
-                            <a href="#" id="btnEnviarFactura" class="btn btn-info" title="Enviar factura al SRI">
-                                <i class="fa fa-plane"></i>
-                                Enviar Factura
+            %{--<g:if test="${proceso?.estado == 'R'}">--}%
+                <g:if test="${proceso?.tipoProceso.codigo.trim() in ['V', 'NC', 'ND']}">
+                    <g:if test="${proceso?.claveAcceso != null}">
+                        <g:if test="${proceso?.tipoProceso?.codigo?.trim() in ['V']}">
+                            <a href="#" class="btn btn-success" id="btnImprimirFactElect">
+                                <i class="fa fa-print"></i> Factura Electŕonica
                             </a>
-                        </g:else>
+                        </g:if>
+                        <g:if test="${proceso?.tipoProceso?.codigo?.trim() in ['NC']}">
+                            <a href="#" class="btn btn-success" id="btnImprimirNCElect">
+                                <i class="fa fa-print"></i> Nota Crédito Electŕonica
+                            </a>
+                        </g:if>
+                        <g:if test="${proceso?.tipoProceso?.codigo?.trim() in ['ND']}">
+                            <a href="#" class="btn btn-success" id="btnImprimirNDElect">
+                                <i class="fa fa-print"></i> Nota Débito Electŕonica
+                            </a>
+                        </g:if>
                     </g:if>
-                %{--</g:if>--}%
+                    <g:else>
+                        <a href="#" id="btnEnviarFactura" class="btn btn-info" title="Enviar factura al SRI">
+                            <i class="fa fa-plane"></i>
+                            Enviar Factura
+                        </a>
+                    </g:else>
+                </g:if>
+            %{--</g:if>--}%
                 <g:if test="${proceso?.tipoProceso?.codigo?.trim() in ['P','I']}">
                     <a href="#" class="btn btn-info" id="btnConciliar">
                         <i class="fa fa-pencil-square-o"></i>
@@ -174,10 +174,10 @@
                 </a>
             </g:if>
         </g:if>
-        %{--<a href="#" class="btn btn-primary" style="cursor: default; margin-right: 20px" id="btnFormaPago">--}%
-            %{--<i class="fa fa-usd"></i>--}%
-            %{--Forma de Pago--}%
-        %{--</a>--}%
+    %{--<a href="#" class="btn btn-primary" style="cursor: default; margin-right: 20px" id="btnFormaPago">--}%
+    %{--<i class="fa fa-usd"></i>--}%
+    %{--Forma de Pago--}%
+    %{--</a>--}%
         <g:if test="${proceso && proceso?.tipoProceso?.codigo?.trim() in ['C','V']}">
         %{--<a href="#" class="btn btn-primary hidden" style="cursor: default; margin-right: 20px" id="abrir-fp">--}%
             <a href="#" class="btn btn-primary" style="cursor: default; margin-right: 20px" id="btnFormaPago">
@@ -241,12 +241,12 @@
             </div>
 
             <div class="col-xs-1 negrilla">
-%{--
-                <g:select class="form-control required cmbRequired" name="establecimiento" id="establecimiento"
-                          from="${estb}" label="Proceso tipo: " value="${proceso?.establecimiento}" optionKey="key"
-                          optionValue="value" title="Establecimientos" disabled="${proceso?.estado == 'R' ?: false}"
-                          style="margin-left: 0; width: 70px" />
---}%
+                %{--
+                                <g:select class="form-control required cmbRequired" name="establecimiento" id="establecimiento"
+                                          from="${estb}" label="Proceso tipo: " value="${proceso?.establecimiento}" optionKey="key"
+                                          optionValue="value" title="Establecimientos" disabled="${proceso?.estado == 'R' ?: false}"
+                                          style="margin-left: 0; width: 70px" />
+                --}%
                 <g:select class="form-control required cmbRequired" name="establecimiento" id="establecimiento"
                           from="${estb}" label="Proceso tipo: " value="${proceso?.establecimiento}" optionKey="id"
                           optionValue="numero" title="Establecimientos" disabled="${proceso?.estado == 'R' ?: false}"
@@ -460,29 +460,29 @@
 
 
     $("#btnFormaPago").click(function () {
-       $.ajax({
-           type: 'POST',
-           url: '${createLink(controller: 'proceso', action: 'formaPago_ajax')}',
-           data:{
-            id: '${proceso?.id}'
-           },
-           success: function (msg){
-               var b = bootbox.dialog({
-                   id: "dlgFP",
-                   title: "Formas de Pago",
-                   class: "long",
-                   message: msg,
-                   buttons: {
-                       cancelar: {
-                           label: "<i class='fa fa-times'></i> Cancelar",
-                           className: "btn-primary",
-                           callback: function () {
-                           }
-                       }
-                   }
-               });
-           }
-       });
+        $.ajax({
+            type: 'POST',
+            url: '${createLink(controller: 'proceso', action: 'formaPago_ajax')}',
+            data:{
+                id: '${proceso?.id}'
+            },
+            success: function (msg){
+                var b = bootbox.dialog({
+                    id: "dlgFP",
+                    title: "Formas de Pago",
+                    class: "long",
+                    message: msg,
+                    buttons: {
+                        cancelar: {
+                            label: "<i class='fa fa-times'></i> Cancelar",
+                            className: "btn-primary",
+                            callback: function () {
+                            }
+                        }
+                    }
+                });
+            }
+        });
     });
 
 
@@ -676,24 +676,24 @@
         });
     });
 
-//    cargarBotonFormasPago($("#tipoProceso").val())
-//
-//    $("#tipoProceso").change(function () {
-//        var sel = $(this).val()
-//        console.log('tipo:', sel);
-//        cargarBotonFormasPago(sel)
-//    });
-//
-//    function cargarBotonFormasPago (sel) {
-//        console.log ('lega:', sel);
-//        if(sel == 1 || sel == 2){
-//            console.log('mostrar');
-//            $("#btnFormaPago").removeClass('hidden')
-//        }else{
-//            console.log('esconder');
-//            $("#btnFormaPago").addClass('hidden')
-//        }
-//    }
+    //    cargarBotonFormasPago($("#tipoProceso").val())
+    //
+    //    $("#tipoProceso").change(function () {
+    //        var sel = $(this).val()
+    //        console.log('tipo:', sel);
+    //        cargarBotonFormasPago(sel)
+    //    });
+    //
+    //    function cargarBotonFormasPago (sel) {
+    //        console.log ('lega:', sel);
+    //        if(sel == 1 || sel == 2){
+    //            console.log('mostrar');
+    //            $("#btnFormaPago").removeClass('hidden')
+    //        }else{
+    //            console.log('esconder');
+    //            $("#btnFormaPago").addClass('hidden')
+    //        }
+    //    }
 
     $("#btnDetalle").click(function () {
         location.href='${createLink(controller: 'detalleFactura', action: 'detalleGeneral')}/?id=' +
@@ -1006,11 +1006,11 @@
             })
         });
 
-/*
-        $("#btnFormaPago").click(function () {
-            $('#modal-formas-pago').modal('show')
-        })
-*/
+        /*
+         $("#btnFormaPago").click(function () {
+         $('#modal-formas-pago').modal('show')
+         })
+         */
 
         $("#btn_buscar").click(function () {
 //            console.log("clickf1")
@@ -1147,7 +1147,7 @@
                             }
                         })
                     }
-                 }
+                }
 
 //                if($(".filaFP").size() <1){
 //                    info+="No ha asignado formas de pago para la transacción contable";
@@ -1203,23 +1203,22 @@
 //                }
 
                 if('${proceso}'){
-                        $.ajax({
-                            type: 'POST',
-                            async: false,
-                            url: '${createLink(controller: 'proceso', action: 'revisarFormaPago_ajax')}',
-                            data: {
-                                proceso : '${proceso?.id}'
-                            },
-                            success: function (msg){
-                                if(msg == 'no'){
-                                    info+="No ha asignado formas de pago para la transacción contable ";
-                                    bandData=false
-                                }else{
+                    $.ajax({
+                        type: 'POST',
+                        async: false,
+                        url: '${createLink(controller: 'proceso', action: 'revisarFormaPago_ajax')}',
+                        data: {
+                            proceso : '${proceso?.id}'
+                        },
+                        success: function (msg){
+                            if(msg == 'no'){
+                                info+="No ha asignado formas de pago para la transacción contable ";
+                                bandData=false
+                            }else{
 
-                                }
                             }
-                        })
-
+                        }
+                    })
                 }
 
                 var ivaG = ($("#ivaGenerado").val()*100)/100
@@ -1384,22 +1383,55 @@
         });
 
         $("#registrarProceso").click(function () {
+            var tipoP = $(".tipoProcesoSel option:selected").val();
             bootbox.confirm("<i class='fa fa-exclamation-circle fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea registrar la transacción? </br> Una vez registrado, la información NO podrá ser cambiada.</p>", function (result) {
                 if (result) {
-                    openLoader("Registrando...");
-                    $.ajax({
-                        type: "POST",
-                        url: "${g.createLink(controller: 'proceso',action: 'registrar')}",
-                        data: "id=" + $("#idProceso").val(),
-                        success: function (msg) {
-                            // $("#registro").html(msg).show("slide");
-                            closeLoader()
-                            location.reload(true);
-                        },
-                        error: function () {
-                            bootbox.alert("Ha ocurrido un error. Por favor revise el gestor y los valores del proceso.")
-                        }
-                    });
+
+                   if(tipoP == 1 || tipoP == 2){
+                       $.ajax({
+                           type: 'POST',
+                           async: false,
+                           url: '${createLink(controller: 'proceso', action: 'revisarFormaPago_ajax')}',
+                           data: {
+                               proceso : '${proceso?.id}'
+                           },
+                           success: function (msg){
+                               if(msg == 'no'){
+                                   bootbox.alert("<i class='fa fa-exclamation-circle fa-3x pull-left text-danger text-shadow'></i>Debe asignar una forma de pago antes de registrar el proceso!")
+                               }else{
+                                   openLoader("Registrando...");
+                                   $.ajax({
+                                       type: "POST",
+                                       url: "${g.createLink(controller: 'proceso',action: 'registrar')}",
+                                       data: "id=" + $("#idProceso").val(),
+                                       success: function (msg) {
+                                           // $("#registro").html(msg).show("slide");
+                                           closeLoader()
+                                           location.reload(true);
+                                       },
+                                       error: function () {
+                                           bootbox.alert("Ha ocurrido un error. Por favor revise el gestor y los valores del proceso.")
+                                       }
+                                   });
+                               }
+                           }
+                       });
+                   }else{
+                       openLoader("Registrando...");
+                       $.ajax({
+                           type: "POST",
+                           url: "${g.createLink(controller: 'proceso',action: 'registrar')}",
+                           data: "id=" + $("#idProceso").val(),
+                           success: function (msg) {
+                               // $("#registro").html(msg).show("slide");
+                               closeLoader()
+                               location.reload(true);
+                           },
+                           error: function () {
+                               bootbox.alert("Ha ocurrido un error. Por favor revise el gestor y los valores del proceso.")
+                           }
+                       });
+                   }
                 }
 
             })
