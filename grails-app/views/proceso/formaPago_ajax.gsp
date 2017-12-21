@@ -5,26 +5,28 @@
   Time: 10:22
 --%>
 
+<g:if test="${proceso?.estado != 'R'}">
+    <div class="row">
+        <div class="col-xs-2 negrilla text-info">
+            Forma de Pago
+        </div>
 
-<div class="row">
-    <div class="col-xs-2 negrilla text-info">
-        Forma de Pago
+        <div class="col-xs-5">
+            <g:select name="formaPago_name" from="${cratos.TipoPago.list().sort{it.descripcion}}" optionKey="id" optionValue="descripcion" id="formaPago" class="form-control"/>
+        </div>
+
+        <div class="col-xs-1 negrilla text-info">
+            Plazo
+        </div>
+
+        <div class="col-xs-2">
+            <g:textField name="plazo_name" id="plazoFormaPago" class="form-control validaNumero" maxlength="3"/>
+        </div>
+
+        <a href="#" class="btn btn-success btnAgregarFormaPago" title="Agregar Forma de Pago"><i class="fa fa-plus"></i> Agregar</a>
+
     </div>
-
-    <div class="col-xs-5">
-        <g:select name="formaPago_name" from="${cratos.TipoPago.list().sort{it.descripcion}}" optionKey="id" optionValue="descripcion" id="formaPago" class="form-control"/>
-    </div>
-
-    <div class="col-xs-1 negrilla text-info">
-        Plazo
-    </div>
-
-    <div class="col-xs-2">
-        <g:textField name="plazo_name" id="plazoFormaPago" class="form-control validaNumero" maxlength="3"/>
-    </div>
-
-    <a href="#" class="btn btn-success btnAgregarFormaPago" title="Agregar Forma de Pago"><i class="fa fa-plus"></i> Agregar</a>
-</div>
+</g:if>
 
 <div style="margin-top: 10px" id="divTablaFormaPago">
 
@@ -37,10 +39,10 @@
         var tipo = $("#formaPago option:selected").val();
         var plazo = $("#plazoFormaPago").val();
         $.ajax({
-           type: 'POST',
+            type: 'POST',
             url: '${createLink(controller: 'proceso', action: 'guardarFormaPago_ajax')}',
             data:{
-               tipo: tipo,
+                tipo: tipo,
                 plazo: plazo,
                 id: '${proceso?.id}'
             },
@@ -60,7 +62,7 @@
 
     function cargarTablaFormaPago () {
         $.ajax({
-           type: 'POST',
+            type: 'POST',
             url: '${createLink(controller: 'proceso', action: 'tablaFormaPago_ajax')}',
             data:{
                 proceso: '${proceso?.id}'

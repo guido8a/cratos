@@ -2274,7 +2274,7 @@ class ProcesoController extends cratos.seguridad.Shield {
     def tablaFormaPago_ajax () {
         def proceso = Proceso.get(params.proceso)
         def formasPago = ProcesoFormaDePago.findAllByProceso(proceso)
-        return[formasPago: formasPago]
+        return[formasPago: formasPago, proceso: proceso]
     }
 
     def guardarFormaPago_ajax () {
