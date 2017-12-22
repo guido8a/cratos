@@ -716,6 +716,9 @@ class Reportes2Controller {
         def cn = dbConnectionService.getConnection()
         def res = cn.rows("select * from rp_existencias('${contabilidad?.id}','${departamento?.id}','${bodega?.id}')")
 
+
+//        println(" " + "select * from rp_existencias('${contabilidad?.id}','${departamento?.id}','${bodega?.id}')")
+
 //        return[items: res, empresa: params.emp, desde: desde, hasta: hasta, valor: params.valor]
         return[items: res, empresa: params.emp,valor: params.valor]
     }

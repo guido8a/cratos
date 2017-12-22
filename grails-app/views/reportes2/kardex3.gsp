@@ -101,10 +101,10 @@
             <tr style="width: 700px">
                 <td style="width: 80px">${item?.itemcdgo}</td>
                 <td style="width: 370px">${item?.itemnmbr}</td>
-                <td class="derecha" style="width: 50px"><g:formatNumber number="${item?.exst}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
+                <td class="derecha" style="width: 50px"><g:formatNumber number="${item?.exstcntd}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
                 <g:if test="${valor == 'true'}">
-                <td class="derecha" style="width: 100px">${item?.pcun}</td>
-                <td class="derecha" style="width: 100px">${item?.totl}</td>
+                <td class="derecha" style="width: 100px">${item?.exstpcun}</td>
+                <td class="derecha" style="width: 100px">${item?.exstvlor}</td>
                 </g:if>
             </tr>
         </g:each>
