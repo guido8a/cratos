@@ -1,5 +1,7 @@
 package cratos.inventario
 
+import cratos.sri.TarifaIVA
+
 class Item implements Serializable {
     Unidad unidad
     TipoItem tipoItem
@@ -17,7 +19,7 @@ class Item implements Serializable {
     double precioVenta
     double precioCosto
     Marca marca
-    TipoIVA tipoIVA
+    TarifaIVA tipoIVA
 
     double ice = 0 //porcentaje de ice q paga el item en decimal: 0.35 para 35%
 
@@ -50,7 +52,7 @@ class Item implements Serializable {
             precioVenta column: 'itempcvn'
             precioCosto column: 'itempccs'
             marca column: 'mrca__id'
-            tipoIVA column: 'tpiv__id'
+            tipoIVA column: 'triv__id'
             ice column: 'item_ice'
 
             observaciones column: 'itemobsr'

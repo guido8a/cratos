@@ -66,7 +66,7 @@
         <div class="form-group ${hasErrors(bean: contabilidadInstance, field: 'descripcion', 'error')} required">
             <span class="grupo">
                 <label for="descripcion" class="col-md-4 control-label text-info">
-                    Cuenta
+                    Cuenta de resultados
                 </label>
 
                 <div class="col-md-6">
@@ -123,6 +123,32 @@
 
                 <div class="col-md-6">
                     <g:select name="retencionRenta" from="${cntart}" optionValue="descripcion" optionKey="id" class="form-control" value="${contabilidadInstance?.retencionCompraRenta?.id}"/>
+                </div>
+                *
+            </span>
+        </div>
+
+        <div class="form-group ${hasErrors(bean: contabilidadInstance, field: 'retencionCompraRenta', 'error')} required">
+            <span class="grupo">
+                <label for="descripcion" class="col-md-4 control-label text-info">
+                    Costo de ventas
+                </label>
+
+                <div class="col-md-6">
+                    <g:select name="costoVentas" from="${cntart}" optionValue="descripcion" optionKey="id" class="form-control" value="${contabilidadInstance?.retencionCompraRenta?.id}"/>
+                </div>
+                *
+            </span>
+        </div>
+
+        <div class="form-group ${hasErrors(bean: contabilidadInstance, field: 'retencionCompraRenta', 'error')} required">
+            <span class="grupo">
+                <label for="descripcion" class="col-md-4 control-label text-info">
+                    Inventarios
+                </label>
+
+                <div class="col-md-6">
+                    <g:select name="inventarios" from="${cntart}" optionValue="descripcion" optionKey="id" class="form-control" value="${contabilidadInstance?.retencionCompraRenta?.id}"/>
                 </div>
                 *
             </span>

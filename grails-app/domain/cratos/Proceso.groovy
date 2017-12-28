@@ -14,6 +14,7 @@ class Proceso implements Serializable {
     DocumentoEmpresa documentoEmpresa
 
     Establecimiento establecimiento
+    String tipoEmision
 
 
     RolPagos rolPagos
@@ -103,6 +104,7 @@ class Proceso implements Serializable {
             descripcion column: 'prcsdscr'
             estado column: 'prcsetdo'
             establecimiento column: 'estb__id'
+            tipoEmision column: 'prcstpem'
 
             baseImponibleIva column: 'prcsbsnz'
             baseImponibleIva0 column: 'prcsbszr'
@@ -168,6 +170,7 @@ class Proceso implements Serializable {
         descripcion(size: 1..255, blank: true, nullable: true, attributes: [title: 'descripcion'])
         estado(blank: true, maxSize: 1, attributes: [title: 'estado'])
         establecimiento(blank: true, nullable: true, attributes: [title: 'Sucursal'])
+        tipoEmision(blank: true, nullable: true, attributes: [title: 'Tipo de emisión, F. electrónica'])
 
         baseImponibleIva(blank: true, nullable: true, attributes: [title: 'baseImponibleIva'])
         baseImponibleIva0(blank: true, nullable: true, attributes: [title: 'baseImponibleIva0'])

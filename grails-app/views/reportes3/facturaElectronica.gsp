@@ -51,8 +51,8 @@
     .borde{
         border:1px solid black !important;
         border-collapse: separate !important;
-        border-radius: 4px !important;
-        perspective: 1px;
+        border-radius: 8px !important;
+        /*perspective: 1px;*/
         /*-moz-border-radius: 4px !important;*/
         /*-webkit-border-radius: 4px !important;*/
     }

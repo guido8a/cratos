@@ -46,6 +46,10 @@ th, td {
                     ${dato.cmprnmro}
                 </td>
 
+                <td width="60px" class="text-info">
+                    ${dato.prcs__id}
+                </td>
+
                 <td width="80px" class="text-info" style="text-align: right">
                     ${dato.prcsvlor}
                 </td>
@@ -56,7 +60,7 @@ th, td {
                     ${dato.tpps}
                 </td>
 
-                <td width="250px" class="text-info">
+                <td width="190px" class="text-info">
                     ${dato.prve}
                 </td>
             </tr>

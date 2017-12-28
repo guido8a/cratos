@@ -80,20 +80,28 @@ class ServicioSriController {
     }
 
     def facturaElectronica(){
+        def empresa_id = session.empresa.id
+        def pathxml = servletContext.getRealPath("/") + "xml/" + empresa_id + "/"  //web-app/xml
         println "facturaElectrónica: $params"   // debe enviarse prcs__id de la factura
         def prcs = Proceso.get(params.id)
-        def archivo = facturaXml(prcs)
+        def clave = facturaXml(prcs)
+        def archivo = "fc_${clave}.xml"
+
+        println "archivo: $archivo"
 //        def archivo = "fc_667.xml"
         println "finaliza xml de facura en --> ${archivo}"
         firmaSri(archivo)
         println "finaliza firma..."
         //se envía al SRI y si todo va bien se pone TipoEmision = 1, caso contrario 2
 
+        prcs.claveAcceso = clave
+        prcs.tipoEmision = '1'  // si contesta el SRI
+        prcs.save(flush: true)
 
-        //        prcs.claveAcceso = clave
-//        prcs.tipoEmision = '1'  // si contesta el SRI
-//        prcs.save(flush: true)
+        def autorizacion = enviar(archivo, clave)
 
+        if(autorizacion)
+        println "enviado------"
 
         render "ok"
     }
@@ -108,8 +116,7 @@ class ServicioSriController {
         def valorIva = utilitarioService.valorIva(hoy)
 
         def pathxml = servletContext.getRealPath("/") + "xml/" + empresa_id + "/"  //web-app/xml
-        def fileName = "fc_${clave}.xml"
-        def path = pathxml + fileName
+        def path = pathxml + "fc_${clave}.xml"
         new File(pathxml).mkdirs()
         def file = new File(path)
 
@@ -122,7 +129,7 @@ class ServicioSriController {
             println "...empresa: $sql  --> ${empr}"
 
             /** detalle de la facura **/
-            sql = "select itemcdgo, itemnmbr, dtfccntd, dtfcpcun, dtfcdsct, tpiv__id " +
+            sql = "select itemcdgo, itemnmbr, dtfccntd, dtfcpcun, dtfcdsct, triv__id " +
                     "from dtfc, item where prcs__id = ${prcs.id} and item.item__id = dtfc.item__id " +
                     "order by tpiv__id, itemcdgo"
             def dtfc = cn.rows(sql.toString())
@@ -153,7 +160,7 @@ class ServicioSriController {
                     fechaEmision(new Date().format('dd/MM/yyyy'))
                     dirEstablecimiento(prcs.establecimiento.direccion)   //+++ crear tabla establecimeintos ++dirección
                     contribuyenteEspecial(empr.emprctes?:'000')   //++ agregar en empresa
-                    obligadoContabilidad(empr.emprcont)
+                    obligadoContabilidad(empr.emprcont == '1' ? 'SI' : 'NO' )
                     tipoIdentificacionComprador(tipoId(prcs.id))   // Usar dato desde TITT
 //                    tipoIdentificacionComprador(prcs.proveedor.tipoIdentificacion.codigoSri)   // desde PRVE
                     razonSocialComprador(prcs.proveedor.nombre)
@@ -196,7 +203,8 @@ class ServicioSriController {
                         prfp.each { fp ->
                             pago() {
                                 formaPago(fp.tipoPago.codigo)
-                                total(utilitarioService.numero(prcs.valor))
+//                                total(utilitarioService.numero(prcs.valor))
+                                total(utilitarioService.numero(fp.valor))
                                 plazo(fp.plazo)
                                 unidadTiempo("DIAS")
                             }
@@ -205,10 +213,15 @@ class ServicioSriController {
                 }  /* -- infoFactura -- */
 
                 /** detalle **/
-                dtfc.each {dt ->
-                    println "parcial: ${dt.dtfccntd}, ${dt.dtfcpcun}, ${dt.dtfcdsct}"
-                    def parcial = Math.round(dt.dtfccntd * (dt.dtfcpcun - dt.dtfcdsct) *100)/100
-                    detalles() {
+                detalles() {
+                    dtfc.each { dt ->
+                        def trfa = TarifaIVA.get(dt.triv__id)
+                        println "parcial: ${dt.dtfccntd}, ${dt.dtfcpcun}, ${dt.dtfcdsct}"
+                        def pcun = dt.dtfcpcun * (1 - dt.dtfcdsct / 100)
+                        def sbtt = dt.dtfccntd * pcun
+                        def parcial = Math.round(sbtt * 100) / 100
+                        def parcialIva = Math.round(sbtt * trfa.valor) / 100
+
                         detalle() {
                             codigoPrincipal(dt.itemcdgo)
                             codigoAuxiliar(dt.itemcdgo)
@@ -217,13 +230,13 @@ class ServicioSriController {
                             precioUnitario(utilitarioService.numero4(dt.dtfcpcun))
                             descuento(utilitarioService.numero(dt.dtfcdsct))
                             precioTotalSinImpuesto(utilitarioService.numero(parcial))
-                            impuestos(){
-                                impuesto(){
-                                    codigo(2)
-                                    codigoPorcentaje(2)
-                                    tarifa(12.00)
+                            impuestos() {
+                                impuesto() {
+                                    codigo(2)  /*** siempre IVA **/
+                                    codigoPorcentaje(trfa.codigo)
+                                    tarifa(trfa.valor)
                                     baseImponible(utilitarioService.numero(parcial))
-                                    valor(utilitarioService.numero(parcial*0.12))
+                                    valor(utilitarioService.numero(parcialIva))
                                 }
                             }
                         }
@@ -242,29 +255,30 @@ class ServicioSriController {
             file.write(writer.toString())
         }
 
-        return fileName
+        return clave
     }
 
-
-    def enviar() {
-        println "enviar: $params"
-        def path = servletContext.getRealPath("/")
-        def prcs = Proceso.get(params.id)
+    def enviar(archivo, clave) {
+//        def prcs = Proceso.get(params.id)
+        def empresa_id = session.empresa.id
+        def path = servletContext.getRealPath("/") + "xml/" + empresa_id
+        def pathxml = servletContext.getRealPath("/") + "xml/" + empresa_id + "/f${archivo}"
 //        def arch_xml = new File(path + "xml/46/enviar.xml").text
-        def arch_xml = new File(path + "xml/46/ffc_${prcs.claveAcceso}.xml").text.encodeAsBase64()
+        def arch_xml = new File(pathxml).text.encodeAsBase64()
 
         def sobre_xml = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" " +
            "xmlns:ec=\"http://ec.gob.sri.ws.recepcion\"><soapenv:Header/><soapenv:Body>" +
            "<ec:validarComprobante><xml>${arch_xml}</xml>" +
            "</ec:validarComprobante></soapenv:Body></soapenv:Envelope>"
 
-
         //https://celcer.sri.gob.ec/comprobantes-electronicos-ws/RecepcionComprobantesOffline?wsdl
         def soapUrl = new URL("https://celcer.sri.gob.ec/comprobantes-electronicos-ws/RecepcionComprobantesOffline?wsdl")
-//        def soapUrl = new URL("http://ec.gob.sri.ws.recepcion")
+//       def soapUrl = new URL("http://ec.gob.sri.ws.recepcion")
         def connection = soapUrl.openConnection()
         println "abre conexion"
         connection.setRequestMethod("POST" )
+        connection.setConnectTimeout(5000)
+        connection.setReadTimeout(5000)
         println "...post"
         connection.setRequestProperty("Content-Type" ,"application/xml" )
         println "...xml"
@@ -284,6 +298,7 @@ class ServicioSriController {
         def respuesta = connection.content.text
         def respuestaSri = new XmlSlurper().parseText(respuesta)
         println respuestaSri
+
 /*
         el SRI responde: respuesta = """<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
         <soap:Body><ns2:validarComprobanteResponse xmlns:ns2="http://ec.gob.sri.ws.recepcion">
@@ -300,7 +315,7 @@ class ServicioSriController {
                 <soapenv:Header/>
                 <soapenv:Body>
                 <ec:autorizacionComprobante>
-                <claveAccesoComprobante>${prcs.claveAcceso}</claveAccesoComprobante>
+                <claveAccesoComprobante>${clave}</claveAccesoComprobante>
                 </ec:autorizacionComprobante>
                 </soapenv:Body>
                 </soapenv:Envelope>"""
@@ -311,6 +326,8 @@ class ServicioSriController {
             connection = soapUrl.openConnection()
             println "abre conexion --- atrz"
             connection.setRequestMethod("POST" )
+            connection.setConnectTimeout(5000)
+            connection.setReadTimeout(5000)
             println "...post"
             connection.setRequestProperty("Content-Type" ,"application/xml" )
             println "...xml"
@@ -326,22 +343,20 @@ class ServicioSriController {
             connection.connect()
             println "...connect atz... "
 
-            respuesta = connection.content.text
-            def guardar = new File(path + "xml/46/salida.xml")
+            respuesta = connection.content.xml
+            def guardar = new File(path + "/sri${archivo}")
             guardar.write(respuesta)
-            respuestaSri = new XmlSlurper().parseText(respuesta)
 
-            println respuestaSri
+            def atrz = respuesta =~ /numeroAutorizacion.(\d+)/
 
-            render "Factura electrónica generada correctamente en el SRI"
+            return atrz[0][1]
 
         } else {
-            render "ha ocurrido un error al solicitar la autorización al SRI"
+            return "ha ocurrido un error al solicitar la autorización al SRI"
         }
         //con esto se debe pedir el número de autorización
         // --> https://www.jybaro.com/blog/xades-bes-con-javascript-en-el-navegador/
 
-        /*** se usa **/
     }
 
     def tipoId(id) {

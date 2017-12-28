@@ -125,10 +125,11 @@
             <th class="alinear" style="width: 280px">Descripción</th>
             <th class="alinear" style="width: 40px">R.</th>
             <th class="alinear" style="width: 160px">Documento</th>
+            <th class="alinear" style="width: 60px">Trans.</th>
             <th class="alinear" style="width: 80px">Valor</th>
             <th class="alinear" style="width: 70px">Ret.</th>
             <th class="alinear" style="width: 80px">Tipo</th>
-            <th class="alinear" style="width: 260px">Proveedor</th>
+            <th class="alinear" style="width: 200px">Proveedor</th>
         </tr>
         </thead>
     </table>

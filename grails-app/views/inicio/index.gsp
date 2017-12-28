@@ -86,8 +86,9 @@
         font-weight: 300;
         -webkit-transition:  -webkit-transform .2s ease-out, opacity .1s ease-out;
         transition:          transform .2s ease-out, opacity .1s ease-out;
-        font-family: 'Tulpen One', cursive;
-        font-size: 28px;
+        /*font-family: 'Tulpen One', cursive;*/
+        /*font-size: 28px;*/
+        font-size: 18px;
     }
     .hex h1 {
         bottom: 50%;
@@ -263,6 +264,7 @@
         </div>
     </li>
 
+%{--
     <li class="hex">
         <div class="hexIn">
             <a class="hexLink" href="${createLink(controller: 'servicioSri', action: 'firmaSri')}">
@@ -272,6 +274,7 @@
             </a>
         </div>
     </li>
+--}%
     <li class="hex">
         <div class="hexIn">
             <g:if test="${session.perfil.nombre == 'Administrador General'}">
