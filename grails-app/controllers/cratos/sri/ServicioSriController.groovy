@@ -129,7 +129,7 @@ class ServicioSriController {
             println "...empresa: $sql  --> ${empr}"
 
             /** detalle de la facura **/
-            sql = "select itemcdgo, itemnmbr, dtfccntd, dtfcpcun, dtfcdsct, triv__id " +
+            sql = "select itemcdgo, itemnmbr, dtfccntd, dtfcpcun, dtfcdsct, tpiv__id " +
                     "from dtfc, item where prcs__id = ${prcs.id} and item.item__id = dtfc.item__id " +
                     "order by tpiv__id, itemcdgo"
             def dtfc = cn.rows(sql.toString())
@@ -183,11 +183,13 @@ class ServicioSriController {
                         }
                         if(prcs.baseImponibleIva){
                             totalImpuesto() {
-                                def trfa = TarifaIVA.findByValor(valorIva)
+                                sql = "select trivcdgo, trivvlor from triv where trivvlor = ${valorIva}"
+                                def trfa = cn.rows(sql.toString())
+
                                 codigo(TipoDeImpuesto.findByDescripcion('IVA').codigo)   // +++ código del IVA
-                                codigoPorcentaje(trfa.codigo)   // +++ código % del IVA
+                                codigoPorcentaje(trfa.trivcdgo)   // +++ código % del IVA
                                 baseImponible(utilitarioService.numero(prcs.baseImponibleIva))   // +++ código % del IVA
-                                tarifa(trfa.valor)   // +++ código % del IVA
+                                tarifa(trfa.trivvlor)   // +++ código % del IVA
                                 valor(utilitarioService.numero(prcs.ivaGenerado))   // +++ código % del IVA
                             }
                         }
@@ -215,12 +217,21 @@ class ServicioSriController {
                 /** detalle **/
                 detalles() {
                     dtfc.each { dt ->
-                        def trfa = TarifaIVA.get(dt.triv__id)
+                        //def trfa = TarifaIVA.findByValor(valorIva)
+                        if(dtfc.tpiv__id == 2) {
+                            sql = "select trivcdgo, trivvlor from triv where tpiv__id = ${dtfc.tpiv__id} and " +
+                                    "trivvlor = ${valorIva}"
+                        } else {
+                            sql = "select trivcdgo, trivvlor from triv where tpiv__id = ${dtfc.tpiv__id}"
+                        }
+
+                        def trfa = cn.rows(sql.toString())
+
                         println "parcial: ${dt.dtfccntd}, ${dt.dtfcpcun}, ${dt.dtfcdsct}"
                         def pcun = dt.dtfcpcun * (1 - dt.dtfcdsct / 100)
                         def sbtt = dt.dtfccntd * pcun
                         def parcial = Math.round(sbtt * 100) / 100
-                        def parcialIva = Math.round(sbtt * trfa.valor) / 100
+                        def parcialIva = Math.round(sbtt * valorIva) / 100
 
                         detalle() {
                             codigoPrincipal(dt.itemcdgo)
@@ -233,8 +244,8 @@ class ServicioSriController {
                             impuestos() {
                                 impuesto() {
                                     codigo(2)  /*** siempre IVA **/
-                                    codigoPorcentaje(trfa.codigo)
-                                    tarifa(trfa.valor)
+                                    codigoPorcentaje(trfa.trivcdgo)
+                                    tarifa(trfa.trivvlor)
                                     baseImponible(utilitarioService.numero(parcial))
                                     valor(utilitarioService.numero(parcialIva))
                                 }

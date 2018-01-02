@@ -95,7 +95,7 @@
                     </div>
 
                     <div class="col-md-8">
-                        ${itemInstance?.tipoIVA}
+                        ${itemInstance?.tipoIVA.descripcion}
                     </div>
                 </div>
             </g:if>

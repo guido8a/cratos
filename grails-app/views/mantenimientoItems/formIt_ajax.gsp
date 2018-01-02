@@ -170,11 +170,28 @@
             <div class="col-md-9">
                 <g:select id="tipoIVA" name="tipoIVA.id" from="${cratos.inventario.TipoIVA.list([sort: 'descripcion'])}"
                           optionKey="id" optionValue="descripcion"
+                          class="many-to-one " value="${itemInstance?.tipoIVA?.id?:'2'}"/>
+                <p class="help-block ui-helper-hidden"></p>
+            </div>
+        </span>
+    </div>
+
+%{--
+    <div class="form-group ${hasErrors(bean: itemInstance, field: 'tarifaIVA', 'error')} ">
+        <span class="grupo">
+            <label class="col-md-3 control-label text-info">
+                Tarifa IVA:
+            </label>
+
+            <div class="col-md-9">
+                <g:select id="tarifaIVA" name="tarifaIVA.id" from="${cratos.sri.TarifaIVA.list([sort: 'descripcion'])}"
+                          optionKey="id" optionValue="descripcion"
                           class="many-to-one " value="${itemInstance?.tipoIVA?.id?:'2'}" noSelection="['': '']"/>
                 <p class="help-block ui-helper-hidden"></p>
             </div>
         </span>
     </div>
+--}%
 
 
     <div class="form-group ${hasErrors(bean: itemInstance, field: 'stockMinimo', 'error')} ">
