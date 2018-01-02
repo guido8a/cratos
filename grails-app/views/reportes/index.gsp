@@ -179,8 +179,12 @@
                 Kardex por item
             </a>
             <a href="#" class="link btn btn-success btn-ajax btnKardex3" data-toggle="modal">
-                <i class="fa fa-book fa-5x"></i><br/>
-                Reporte de existencias
+                <i class="fa fa-bar-chart-o fa-5x"></i><br/>
+                Existencias
+            </a>
+            <a href="#" class="link btn btn-success btn-ajax btnKardex4" data-toggle="modal">
+                <i class="fa fa-bar-chart-o fa-5x"></i><br/>
+                Existencias x Item
             </a>
             <a href="#" class="link btn btn-success btn-ajax btnCostoVentas" data-toggle="modal">
                 <i class="fa fa-usd fa-5x"></i><br/>
@@ -849,6 +853,33 @@
                 var b = bootbox.dialog({
                     id      : "dlgKardex3",
                     title   : "Existencias",
+                    class: "long",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "<i class='fa fa-times'></i> Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        }
+                    } //buttons
+                }); //dialog
+            }
+        });
+    });
+
+
+    $(".btnKardex4").click(function () {
+        $.ajax({
+            type: 'POST',
+            url:'${createLink(controller: 'reportes3', action: 'modalKardex4_ajax')}',
+            data:{
+
+            },
+            success: function (msg){
+                var b = bootbox.dialog({
+                    id      : "dlgKardex4",
+                    title   : "Existencias x Item",
                     class: "long",
                     message : msg,
                     buttons : {

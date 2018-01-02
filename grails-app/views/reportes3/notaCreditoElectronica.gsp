@@ -121,12 +121,17 @@
             <div class="mar2"><strong>NOTA DE CRÉDITO</strong></div>
             <div class="mar2"><strong>N°.</strong> ${proceso?.documento ?: ''}</div>
             <div class="mar2 letra2"><strong>NÚMERO DE AUTORIZACIÓN:</strong></div>
-            <div class="mar2 letra3"><strong>1812201601208210000001507017908965449</strong></div>
+            <div class="mar2 letra3"><strong>${proceso?.claveAcceso ?: ''}</strong></div>
             <div class="mar2 letra2">FECHA Y HORA DE AUTORIZACIÓN: </div>
             <div class="mar2 letra2"><strong>AMBIENTE :</strong> ${empresa?.ambiente == '0' ? 'PRUEBAS' : 'PRODUCCIÓN'}</div>
             <div class="mar2 letra2"><strong>EMISIÓN :</strong> NORMAL</div>
             <div class="mar2 letra2">CLAVE DE ACCESO</div>
-            <div><g:img dir="reportes3" file="showBarcode?barcode=${'1812201601208210000001507017908965449'}" width="270" height="55"/></div>
+            <g:if test="${proceso?.claveAcceso}">
+                <div><g:img dir="reportes3" file="showBarcode?barcode=${proceso?.claveAcceso}" width="270" height="55"/></div>
+            </g:if>
+            <g:else>
+                <div>No tiene clave de acceso</div>
+            </g:else>
         </div>
     </div>
 

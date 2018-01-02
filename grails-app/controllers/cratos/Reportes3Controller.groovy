@@ -2,7 +2,9 @@ package cratos
 
 import com.lowagie.text.Element
 import com.lowagie.text.Paragraph
+import cratos.inventario.Bodega
 import cratos.inventario.DetalleFactura
+import cratos.inventario.Item
 import org.apache.poi.ss.usermodel.Row
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.krysalis.barcode4j.impl.code128.Code128Bean
@@ -653,6 +655,26 @@ class Reportes3Controller {
         def detalles = DetalleFactura.findAllByProceso(proceso).sort{it?.item?.codigo}
 
         return[proceso: proceso, empresa: empresa, detalles: detalles]
+    }
+
+    def modalKardex4_ajax () {
+
+    }
+
+    def kardex4 (){
+        println("params " + params)
+        def desde = new Date().parse("dd-MM-yyyy", params.desde)
+        def hasta = new Date().parse("dd-MM-yyyy", params.hasta)
+        def contabilidad = Contabilidad.get(params.cont)
+        def bodega = Bodega.get(params.bodega)
+        def item = Item.get(params.item)
+        def d = desde.format("dd-MM-yyyy")
+        def h = hasta.format("dd-MM-yyyy")
+
+        def cn = dbConnectionService.getConnection()
+        def res = cn.rows("select * from rp_kardex('${contabilidad?.id}','${bodega?.id}','${item?.id}', '${d}', '${h}')")
+
+        return[res: res, empresa: params.emp, desde: desde, hasta: hasta, item: item]
     }
 
 }

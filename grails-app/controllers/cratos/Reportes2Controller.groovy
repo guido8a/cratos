@@ -689,6 +689,7 @@ class Reportes2Controller {
     }
 
     def tablaItems_ajax () {
+        println("params " + params)
         def departamento = DepartamentoItem.get(params.departamento)
         def items = Item.withCriteria {
             if(params.departamento != '-1'){
