@@ -147,7 +147,7 @@
                     </g:else>
                 </g:if>
             %{--</g:if>--}%
-                <g:if test="${proceso?.tipoProceso?.codigo?.trim() in ['P','I']}">
+                <g:if test="${proceso?.tipoProceso?.codigo?.trim() in ['P','I', 'A']}">
                     <a href="#" class="btn btn-info" id="btnConciliar">
                         <i class="fa fa-pencil-square-o"></i>
                         Conciliar Total
@@ -474,7 +474,7 @@
                     message: msg,
                     buttons: {
                         cancelar: {
-                            label: "<i class='fa fa-times'></i> Cancelar",
+                            label: "<i class='fa fa-times'></i> Salir",
                             className: "btn-primary",
                             callback: function () {
                             }
@@ -1384,9 +1384,11 @@
 
         $("#registrarProceso").click(function () {
             var tipoP = $(".tipoProcesoSel option:selected").val();
-            bootbox.confirm("<i class='fa fa-exclamation-circle fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea registrar la transacción? </br> Una vez registrado, la información NO podrá ser cambiada.</p>", function (result) {
+            bootbox.confirm("<i class='fa fa-exclamation-circle fa-3x pull-left text-danger text-shadow'></i><p>¿Está " +
+                    "seguro que desea registrar la transacción? </br> Una vez registrado, la información NO podrá ser " +
+                    "cambiada.</p>", function (result) {
                 if (result) {
-
+                   console.log("registrando...", tipoP);
                    if(tipoP == 1 || tipoP == 2){
                        $.ajax({
                            type: 'POST',
@@ -1397,7 +1399,8 @@
                            },
                            success: function (msg){
                                if(msg == 'no'){
-                                   bootbox.alert("<i class='fa fa-exclamation-circle fa-3x pull-left text-danger text-shadow'></i>Debe asignar una forma de pago antes de registrar el proceso!")
+                                   bootbox.alert("<i class='fa fa-exclamation-circle fa-3x pull-left text-danger text-shadow'>" +
+                                           "</i>Revise el valor del proceso o el registro de la forma de pago")
                                }else{
                                    openLoader("Registrando...");
                                    $.ajax({

@@ -64,8 +64,22 @@ class ServicioSriController {
 
     def verificador(nmro) {
         def dg = nmro.toList()
-        def coef = [7,6,5,4,3,2,7,6,5,4,3,2,7,6,5,4,3,2,7,6,5,4,3,2,7,6,5,4,3,2,7,6,5,4,3,2,7,6,5,4,3,2,7,6,5,4,3,2]
+        def longitud = nmro.size()
+//        def coef = [7,6,5,4,3,2,7,6,5,4,3,2,7,6,5,4,3,2,7,6,5,4,3,2,7,6,5,4,3,2,7,6,5,4,3,2,7,6,5,4,3,2,7,6,5,4,3,2]
         def suma = 0
+        def factor = 2
+        while (longitud > 0) {
+            longitud--
+            suma += dg[longitud].toInteger() * factor
+            factor++
+            if(factor > 7) factor = 2
+        }
+        def respuesta = 11 - suma%11
+        if(respuesta > 9) {
+            respuesta = 11 - respuesta
+        }
+
+/*
         48.times{i ->
             suma += dg[i].toInteger() * coef[i]
         }
@@ -77,6 +91,9 @@ class ServicioSriController {
 
         println "retorna: ${retorna}"
         retorna
+*/
+//        println "verificador: ${respuesta}"
+        respuesta
     }
 
     def facturaElectronica(){
@@ -94,14 +111,25 @@ class ServicioSriController {
         println "finaliza firma..."
         //se envía al SRI y si todo va bien se pone TipoEmision = 1, caso contrario 2
 
+/*
         prcs.claveAcceso = clave
         prcs.tipoEmision = '1'  // si contesta el SRI
         prcs.save(flush: true)
+*/
 
         def autorizacion = enviar(archivo, clave)
 
-        if(autorizacion)
-        println "enviado------"
+        if(autorizacion) {
+            prcs.claveAcceso = clave
+            prcs.autorizacion = autorizacion
+            prcs.tipoEmision = '1'  // si contesta el SRI
+        } else {
+            prcs.claveAcceso = clave
+            prcs.tipoEmision = '2'  // si no contesta el SRI hay que hacer otro envío de los "2"
+        }
+        prcs.save(flush: true)
+
+        println "retorna autorización: $autorizacion"
 
         render "ok"
     }
@@ -184,7 +212,7 @@ class ServicioSriController {
                         if(prcs.baseImponibleIva){
                             totalImpuesto() {
                                 sql = "select trivcdgo, trivvlor from triv where trivvlor = ${valorIva}"
-                                def trfa = cn.rows(sql.toString())
+                                def trfa = cn.rows(sql.toString())[0]
 
                                 codigo(TipoDeImpuesto.findByDescripcion('IVA').codigo)   // +++ código del IVA
                                 codigoPorcentaje(trfa.trivcdgo)   // +++ código % del IVA
@@ -218,14 +246,16 @@ class ServicioSriController {
                 detalles() {
                     dtfc.each { dt ->
                         //def trfa = TarifaIVA.findByValor(valorIva)
-                        if(dtfc.tpiv__id == 2) {
-                            sql = "select trivcdgo, trivvlor from triv where tpiv__id = ${dtfc.tpiv__id} and " +
+                        if(dt.tpiv__id == 2) {
+                            sql = "select trivcdgo, trivvlor from triv where tpiv__id = ${dt.tpiv__id} and " +
                                     "trivvlor = ${valorIva}"
                         } else {
-                            sql = "select trivcdgo, trivvlor from triv where tpiv__id = ${dtfc.tpiv__id}"
+                            sql = "select trivcdgo, trivvlor from triv where tpiv__id = ${dt.tpiv__id}"
                         }
 
-                        def trfa = cn.rows(sql.toString())
+                        println "trfa---> $sql"
+
+                        def trfa = cn.rows(sql.toString()) [0]
 
                         println "parcial: ${dt.dtfccntd}, ${dt.dtfcpcun}, ${dt.dtfcdsct}"
                         def pcun = dt.dtfcpcun * (1 - dt.dtfcdsct / 100)
@@ -354,7 +384,7 @@ class ServicioSriController {
             connection.connect()
             println "...connect atz... "
 
-            respuesta = connection.content.xml
+            respuesta = connection.content.text
             def guardar = new File(path + "/sri${archivo}")
             guardar.write(respuesta)
 

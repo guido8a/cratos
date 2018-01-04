@@ -79,11 +79,13 @@ class ProcesoController extends cratos.seguridad.Shield {
                     proceso.baseImponibleNoIva = d.basenoiv
                     proceso.ivaGenerado = d.iva
                     proceso.iceGenerado = d.ice
+/*
                     if(proceso.gestor.tipo == 'I')
                         proceso.flete = d.flte
                     else {
                         proceso.flete = 0
                     }
+*/
                 }
                 println "...graba datos de detalle --> ${proceso.gestor}"
                 proceso.save(flush: true)
@@ -868,35 +870,32 @@ class ProcesoController extends cratos.seguridad.Shield {
         }
         if (comprobante) {
             if (comprobante.registrado == 'N') {
-//                def msn = kerberosoldService.ejecutarProcedure("mayorizar", [comprobante.id, -1])
-                println "LOG: desmayorizando  comprobante borrar proceso ${comprobante.id} " + msn["mayorizar"]
+                println "LOG: anulando el comprobante ${comprobante.id} "
                 try {
                     def log = new LogMayorizacion()
                     log.usuario = cratos.seguridad.Persona.get(session.usuario.id)
                     log.comprobante = comprobante
                     log.tipo = "B"
-//                    log.resultado = msn["mayorizar"].toString()
                     log.save(flush: true)
                 } catch (e) {
-//                    println "LOG: error del login de mayorizar " + msn["mayorizar"].toString()
                     println "LOG: error del login de mayorizar " + e
                 }
                 proceso.estado = "B"
                 proceso.save(flush: true)
                 comprobante.registrado = "B"
                 comprobante.save(flush: true)
-                flash.message = "Proceso Borrado!"
-                redirect(action: 'lsta')
+                flash.message = "Proceso Anulado!"
+                redirect(action: 'buscarPrcs')
             } else {
-                flash.message = "No se puede borrar el proceso!!"
-                redirect(action: 'lsta')
+                flash.message = "No se puede anular el proceso!!"
+                redirect(action: 'buscarPrcs')
             }
 
         } else {
             proceso.estado = "B"
             proceso.save(flush: true)
             flash.message = "Proceso Borrado!"
-            redirect(action: 'lsta')
+            redirect(action: 'buscarPrcs')
         }
     }
 
@@ -939,7 +938,7 @@ class ProcesoController extends cratos.seguridad.Shield {
         sql = "select fcdt__id id, fcdtdsde numeroDesde, fcdthsta numeroHasta, fcdtfcat fechaAutorizacion, " +
                 "fcdtnmes numeroEstablecimiento, fcdtnmpe numeroEmision " +
                 "from fcdt where '${proceso.fechaIngresoSistema}' between fcdtfcin and fcdtfcfn and " +
-                "fcdttipo = 'R' and fcdtnmes = '${proceso.establecimiento}' order by fcdtfcin"
+                "fcdttipo = 'R' and estb__id = '${proceso.establecimiento.id}' order by fcdtfcin"
 //        println "libretin: $sql"
         def libretin = cn.rows(sql.toString())
 
@@ -1623,38 +1622,39 @@ class ProcesoController extends cratos.seguridad.Shield {
             sql = "select coalesce(max(prcsfcsc), 0) mxmo from prcs, fcdt " +
                     "where tpps__id = ${params.tpps} and fcdt.fcdt__id = prcs.fcdt__id and " +
                     "prcs.fcdt__id = ${params.libretin} and prcsfcsc between fcdtdsde and fcdthsta and " +
-                    "fcdtnmes = '${params.nmes}' and empr__id = ${session.empresa.id}"
+                    "estb__id = '${params.nmes}' and empr__id = ${session.empresa.id}"
             nmro = cn.rows(sql.toString())[0]?.mxmo + 1
             render "${fcdt.numeroEstablecimiento}_${fcdt.numeroEmision}_${nmro}"
         } else {
             sql = "select fcdt__id id, fcdtdsde numeroDesde, fcdthsta numeroHasta, fcdtfcat fechaAutorizacion, " +
-                    "fcdtnmes numeroEstablecimiento, fcdtnmpe numeroEmision " +
+                    "estb__id numeroEstablecimiento, fcdtnmpe numeroEmision " +
                     "from fcdt where to_date('${params.fcha}', 'DD-MM-YYYY') between fcdtfcin and fcdtfcfn and " +
-                    "fcdttipo = '${tpdc}' and fcdtnmes = '${params.nmes}' and empr__id = ${session.empresa.id} order by fcdtfcin"
-//            println "libretin: $sql"
+                    "fcdttipo = '${tpdc}' and estb__id = '${params.nmes}' and empr__id = ${session.empresa.id} order by fcdtfcin"
+            println "libretin: $sql"
             def libretin = cn.rows(sql.toString())
-            def lb = DocumentoEmpresa.findAllByEmpresaAndTipo(empr, tpdc)
+//            def lb = DocumentoEmpresa.findAllByEmpresaAndTipo(empr, tpdc)
 
             sql = "select coalesce(max(prcsfcsc), 0) mxmo from prcs, fcdt " +
                     "where tpps__id = ${params.tpps} and fcdt.fcdt__id = prcs.fcdt__id and " +
 //                    "prcs.fcdt__id = ${libretin[0]?.id} and prcsfcsc between fcdtdsde and fcdthsta and " +
-                    "prcs.fcdt__id = ${lb[0]?.id} and prcsfcsc between fcdtdsde and fcdthsta"
+                    "prcs.fcdt__id = ${libretin[0]?.id} and prcsfcsc between fcdtdsde and fcdthsta"
             println "sql nmro: $sql"
 
 
 
             nmro = cn.rows(sql.toString())[0]?.mxmo ?: 0
             nmro = nmro == 0 ? libretin[0]?.numeroDesde : nmro + 1
-//            println "valor de nmro: $nmro, ${libretin[0]?.numeroDesde}"
+
+            println "valor de nmro: $nmro, ${libretin[0]?.numeroDesde} , libretin: $libretin"
 
 
 
-//            if(libretin?.size() > 0) {
-            if(lb.size() > 0) {
-//                [libretin: libretin, estb: libretin[0].numeroEstablecimiento, emsn: libretin[0].numeroEmision, nmro: nmro,
-//                 tipo: tipo, proceso: proceso]
-                [libretin: lb, estb: lb[0].numeroEstablecimiento, emsn: lb[0].numeroEmision, nmro: nmro,
+            if(libretin?.size() > 0) {
+//            if(lb.size() > 0) {
+                [libretin: libretin, estb: libretin[0].numeroEstablecimiento, emsn: libretin[0].numeroEmision, nmro: nmro,
                  tipo: tipo, proceso: proceso]
+//                [libretin: lb, estb: lb[0].numeroEstablecimiento, emsn: lb[0].numeroEmision, nmro: nmro,
+//                 tipo: tipo, proceso: proceso]
             } else {
                 [libretin: libretin, estb: 0, emsn: 0, nmro: 0, tipo: tipo, proceso: proceso]
             }
@@ -1678,7 +1678,7 @@ class ProcesoController extends cratos.seguridad.Shield {
             sql = "select coalesce(max(rtcnnmro), 0) mxmo from rtcn, fcdt " +
                     "where fcdt.fcdt__id = rtcn.fcdt__id and " +
                     "rtcn.fcdt__id = ${params.libretin} and rtcnnmro between fcdtdsde and fcdthsta and " +
-                    "fcdtnmes = '${proceso.establecimiento}'"
+                    "estb__id = ${proceso.establecimiento.id}"
             def mxmo = cn.rows(sql.toString())[0]?.mxmo
             nmro = (mxmo > 0)? mxmo + 1 : fcdt.numeroDesde
 
@@ -2303,15 +2303,37 @@ class ProcesoController extends cratos.seguridad.Shield {
     }
 
     def revisarFormaPago_ajax () {
+        println "revisarFormaPago_ajax $params"
         def proceso = Proceso.get(params.proceso)
         def formasPago = ProcesoFormaDePago.findAllByProceso(proceso)
 
-        if(formasPago.size() > 0){
-            render "ok"
-        }else{
+        println "valor: ${proceso.valor}"
+
+        if(proceso.valor <= 0.0) {
             render "no"
+            return
         }
 
+        println "... no es cero"
+        if(proceso.tipoProceso.codigo.trim() == 'C') {
+            println "compra con: ${formasPago.size()} registro de pago, valor: ${proceso.valor} "
+            if((formasPago.size() < 1) && (proceso.valor >= 1000)) {
+                render "no"
+                return
+            }
+            else {
+                render "ok"
+                return
+            }
+        } else if(proceso.tipoProceso.codigo.trim() == 'V') {
+            if(formasPago.size() > 0){
+                render "ok"
+                return
+            }else{
+                render "no"
+                return
+            }
+        }
     }
 }
 

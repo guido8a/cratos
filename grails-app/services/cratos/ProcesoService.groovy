@@ -270,7 +270,7 @@ class ProcesoService {
         def lista = [true]
         def cn = dbConnectionService.getConnection()
         def cmpr
-        def anst
+        def asnt
 
         try {
             cn.execute("select * from generar($proceso.id)".toString())
