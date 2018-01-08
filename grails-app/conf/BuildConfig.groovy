@@ -68,6 +68,7 @@ grails.project.dependency.resolution = {
         runtime ":database-migration:1.4.0"
         runtime ":jquery:1.11.1"
         compile "org.grails.plugins:barcode4j:0.3"
+        compile ":mail:1.0.7"
 
 //        compile "org.grails.plugins:audit-logging:1.1.3"
 

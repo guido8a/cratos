@@ -1,10 +1,18 @@
 package cratos
 
+import com.lowagie.text.Document
 import com.lowagie.text.Element
+import com.lowagie.text.Font
+import com.lowagie.text.PageSize
 import com.lowagie.text.Paragraph
+import com.lowagie.text.pdf.BaseFont
+import com.lowagie.text.pdf.PdfContentByte
+import com.lowagie.text.pdf.PdfPTable
+import com.lowagie.text.pdf.PdfWriter
 import cratos.inventario.Bodega
 import cratos.inventario.DetalleFactura
 import cratos.inventario.Item
+import cratos.pdf.PdfService
 import org.apache.poi.ss.usermodel.Row
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.krysalis.barcode4j.impl.code128.Code128Bean
@@ -13,12 +21,16 @@ import org.krysalis.barcode4j.impl.code39.Code39Bean
 
 import org.krysalis.barcode4j.*
 
+import java.awt.Color
+
 class Reportes3Controller {
 
     def dbConnectionService
     def cuentasService
     def buscadorService
     def barcode4jService
+    def mailService
+    PdfService pdfService
 //    def kerberosoldService
 
     def reporteComprobante() {
@@ -466,7 +478,7 @@ class Reportes3Controller {
     }
 
     def imprimirRetencion() {
-        println("params " + params)
+//        println("params " + params)
         def empresa = Empresa.get(params.empresa)
         def proceso = Proceso.get(params.id)
         def retencion = Retencion.findByProceso(proceso)
@@ -675,6 +687,221 @@ class Reportes3Controller {
         def res = cn.rows("select * from rp_kardex('${contabilidad?.id}','${bodega?.id}','${item?.id}', '${d}', '${h}')")
 
         return[res: res, empresa: params.emp, desde: desde, hasta: hasta, item: item]
+    }
+
+
+/*    def facturaE () {
+//        println("params " + params)
+
+        def proceso = Proceso.get(params.id)
+        def empresa = Empresa.get(params.emp)
+        def detalles = DetalleFactura.findAllByProceso(proceso).sort{it?.item?.codigo}
+
+        def baos = new ByteArrayOutputStream()
+
+        def name = "facturaElectronica_" + new Date().format("ddMMyyyy_hhmm") + ".pdf";
+
+        Font catFont2 = new Font(Font.TIMES_ROMAN, 14, Font.BOLD);
+        Font catFont3 = new Font(Font.TIMES_ROMAN, 16, Font.BOLD);
+        Font info = new Font(Font.TIMES_ROMAN, 8, Font.NORMAL)
+        Font fontTh = new Font(Font.TIMES_ROMAN, 8, Font.BOLD);
+        Font fontTd = new Font(Font.TIMES_ROMAN, 8, Font.NORMAL);
+        Font times8bold = new Font(Font.TIMES_ROMAN, 8, Font.BOLD);
+        Font times10bold = new Font(Font.TIMES_ROMAN, 10, Font.BOLD);
+        def prmsHeaderHoja = [border: Color.WHITE]
+
+        Document document
+        document = new Document(PageSize.A4);
+        def pdfw = PdfWriter.getInstance(document, baos);
+//        HeaderFooter footer1 = new HeaderFooter(new Phrase('prueba', fontTd), true);
+//        footer1.setBorder(com.lowagie.text.Rectangle.NO_BORDER);
+//        footer1.setAlignment(Element.ALIGN_CENTER);
+//        document.setFooter(footer1);
+        document.open();
+        PdfContentByte cb = pdfw.getDirectContent();
+        document.addTitle("Factura Electrónica");
+        document.addSubject("Generado por el sistema de contabilidad Cratos");
+        document.addAuthor("Cratos");
+        document.addCreator("Tedein SA");
+
+        Paragraph preface = new Paragraph();
+        preface.setAlignment(Element.ALIGN_CENTER);
+
+//        preface.add(new Paragraph("FACTURA ELECTRÓNICA", catFont3));
+//        preface.add(new Paragraph("......................", catFont2));
+        Paragraph preface2 = new Paragraph();
+        document.add(preface);
+        document.add(preface2);
+
+        def celdaTitulo = [border: Color.BLACK, bg: Color.LIGHT_GRAY, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
+        def celdaDatoIzq = [border: Color.BLACK, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE]
+        def celdaDatoDer = [border: Color.BLACK, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE]
+        def celdaDatoCen = [border: Color.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
+
+        //imagen LOGO
+
+        cb.setFontAndSize(BaseFont.createFont(BaseFont.HELVETICA, BaseFont.WINANSI, false), 24);
+        cb.roundRectangle(250,150,250,150,5)
+        cb.stroke();
+
+        def imagen = servletContext.getRealPath("/") + "images/logoEmp.jpg"
+
+        com.lowagie.text.Image img1 = com.lowagie.text.Image.getInstance(imagen);
+        img1.scalePercent(30,40)
+
+        com.lowagie.text.Rectangle r = new com.lowagie.text.Rectangle(50,50,50,50)
+        document.add(r)
+
+
+        //tabla valores
+
+        def tams = [8, 7, 4, 29, 8, 8, 8]
+
+        PdfPTable tabla = new PdfPTable(7);
+        tabla.setWidthPercentage(100);
+        tabla.setWidths(arregloEnteros(tams))
+        tabla.setWidthPercentage(100);
+
+
+        addCellTabla(tabla, new Paragraph("Cod. Principal", fontTh), celdaTitulo)
+        addCellTabla(tabla, new Paragraph("Cod. Auxiliar", fontTh), celdaTitulo)
+        addCellTabla(tabla, new Paragraph("Cant.", fontTh), celdaTitulo)
+        addCellTabla(tabla, new Paragraph("Descripción", fontTh), celdaTitulo)
+        addCellTabla(tabla, new Paragraph("Precio Unitario", fontTh), celdaTitulo)
+        addCellTabla(tabla, new Paragraph("Descuento", fontTh), celdaTitulo)
+        addCellTabla(tabla, new Paragraph("Precio Total", fontTh), celdaTitulo)
+
+        detalles.each {dt->
+            addCellTabla(tabla, new Paragraph(dt?.item?.codigo ?: '', fontTd), celdaDatoIzq)
+            addCellTabla(tabla, new Paragraph('', fontTd), celdaDatoIzq)
+            addCellTabla(tabla, new Paragraph(numero(dt?.cantidad ?: 0, 0), fontTd), celdaDatoDer)
+            addCellTabla(tabla, new Paragraph(dt?.item?.nombre ?: '', fontTd), celdaDatoIzq)
+            addCellTabla(tabla, new Paragraph(numero(dt?.precioUnitario ?: 0, 2), fontTd), celdaDatoDer)
+            addCellTabla(tabla, new Paragraph(numero(0, 2), fontTd), celdaDatoDer)
+            addCellTabla(tabla, new Paragraph(numero((dt?.cantidad ?: 0)*(dt?.precioUnitario ?: 0), 2), fontTd), celdaDatoDer)
+        }
+
+
+        document.add(img1)
+
+        document.add(tabla)
+
+        document.close();
+
+        pdfw.close()
+        byte[] b = baos.toByteArray();
+
+        //Comentar esto
+        response.setContentType("application/pdf")
+        response.setHeader("Content-disposition", "attachment; filename=" + name)
+        response.setContentLength(b.length)
+        response.getOutputStream().write(b)
+
+    }
+*/
+
+    def _correo () {
+
+    }
+
+    def pdfLink2 (urlOriginal) {
+        try{
+            byte[] b
+            def baseUri = request.scheme + "://" + request.serverName + ":" + request.serverPort
+            // def baseUri = g.createLink(uri:"/", absolute:"true").toString()
+            // TODO: get this working...
+            //if(params.template){
+            //println "Template: $params.template"
+            //def content = g.render(template:params.template, model:[pdf:params])
+            //b = pdfService.buildPdfFromString(content.readAsString(), baseUri)
+            //}
+            urlOriginal=urlOriginal.replaceAll("W","&")
+            if(params.pdfController){
+                def content = g.include(controller:params.pdfController, action:params.pdfAction, id:params.pdfId)
+                b = pdfService.buildPdfFromString(content.readAsString(), baseUri)
+            }
+            else{
+                println "sin plugin --> params url "+urlOriginal
+                def url = baseUri + urlOriginal
+                println "url pdf "+url
+                b = pdfService.buildPdf(url)
+            }
+//            response.setContentType("application/pdf")
+//            response.setHeader("Content-disposition", "attachment; filename=" + (params.filename ?: "document.pdf"))
+//            response.setContentLength(b.length)
+//            response.getOutputStream().write(b)
+        }
+        catch (Throwable e) {
+            println "there was a problem with PDF generation 2 ${e}"
+            //if(params.template) render(template:params.template)
+            if(params.pdfController){
+                println "no"
+                redirect(controller:params.pdfController, action:params.pdfAction, params:params)
+            }else{
+                redirect(action: "index",controller: "reportes",params: [msn:"Hubo un error en la genración del reporte. Si este error vuelve a ocurrir comuniquelo al administrador del sistema."])
+            }
+        }
+    }
+
+    def enviarMail () {
+
+        def para = "fegrijalva2501@hotmail.com"
+        def xml = servletContext.getRealPath("/") + "xml/46/"
+        def completo = xml + 'fc_667.xml'
+
+//        def x = pdfPrueba()
+
+//        try {
+//            def mail = para
+//            if (mail) {
+//                mailService.sendMail {
+//                    multipart true
+//                    to mail
+//                    subject "Correo de prueba"
+//                    html g.render(template:'/reportes3/correo', model:[name:'TEDEIN'])
+//                    body "Prueba body "
+//                    attachBytes "documentoSri.xml", " application/xml", new File(completo).bytes
+//                    attachBytes "facturaElectronica.pdf", "application/pdf", facturaE()
+//                }
+//            } else {
+//                println "El usuario no tiene email"
+//            }
+//        } catch (e) {
+//            println "error email " + e.printStackTrace()
+//        }
+    }
+
+    def enviarMail2 () {
+
+//        println("params " + params)
+
+        def para = "fegrijalva2501@hotmail.com"
+        def xml = servletContext.getRealPath("/") + "xml/46/"
+        def completo = xml + 'fc_667.xml'
+
+        //        def x = pdfPrueba()
+
+        try {
+            def mail = para
+            if (mail) {
+                mailService.sendMail {
+                    multipart true
+                    to mail
+                    subject "Factura Electrónica"
+                    html g.render(template:'/reportes3/correo', model:[name:'TEDEIN'])
+                    body "Prueba body "
+                    attachBytes "documentoSri.xml", " application/xml", new File(completo).bytes
+                    attachBytes "facturaElectronica.pdf", "application/pdf", pdfLink2(params.url)
+                }
+
+                redirect(controller:'proceso', action:'buscarPrcs')
+
+            } else {
+                println "El usuario no tiene email"
+            }
+        } catch (e) {
+            println "error email " + e.printStackTrace()
+        }
     }
 
 }

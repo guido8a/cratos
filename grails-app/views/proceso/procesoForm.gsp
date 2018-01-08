@@ -127,6 +127,9 @@
                             <a href="#" class="btn btn-success" id="btnImprimirFactElect">
                                 <i class="fa fa-print"></i> Factura Electŕonica
                             </a>
+                            <a href="#" class="btn btn-primary" id="btnEnviarFactElect">
+                                <i class="fa fa-envelope"></i> Enviar Factura
+                            </a>
                         </g:if>
                         <g:if test="${proceso?.tipoProceso?.codigo?.trim() in ['NC']}">
                             <a href="#" class="btn btn-success" id="btnImprimirNCElect">
@@ -162,7 +165,7 @@
         %{--</g:link>--}%
         %{--</g:if>--}%
             <g:if test="${proceso?.tipoProceso?.codigo?.trim() in ['C','V','T','NC']}">
-                <a href="#" class="btn btn-warning" id="btnDetalle" style="color: #0b0b0b">
+                <a href="#" class="btn btn-success" id="btnDetalle" style="color: #0b0b0b">
                     <i class="fa fa-list"></i>
                     Detalle
                 </a>
@@ -521,6 +524,10 @@
     $("#btnImprimirFactElect").click(function () {
         url = "${g.createLink(controller:'reportes3' , action: 'facturaElectronica')}?id=" + '${proceso?.id}' + "Wemp=${session.empresa.id}";
         location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=facturaElectronica.pdf"
+
+        %{--location.href =  "${g.createLink(controller:'reportes3' , action: 'facturaE')}?id=" + '${proceso?.id}' + "&emp=${session.empresa.id}";--}%
+        %{--location.href =  "${g.createLink(controller:'reportes3' , action: 'enviarMail2')}?id=" + '${proceso?.id}' + "&emp=${session.empresa.id}" + "&url=" + url;--}%
+
     });
 
     $("#btnImprimirNCElect").click(function () {
@@ -531,6 +538,10 @@
     $("#btnImprimirNDElect").click(function () {
         url = "${g.createLink(controller:'reportes3' , action: 'notaDebitoElectronica')}?id=" + '${proceso?.id}' + "Wemp=${session.empresa.id}";
         location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=notaDebitoElectronica.pdf"
+    });
+
+    $("#btnEnviarFactElect").click(function () {
+
     });
 
 

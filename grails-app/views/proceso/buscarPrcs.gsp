@@ -316,6 +316,16 @@ como máximo 30 <span style="margin-left: 40px; color: #0b2c89">Se ordena por fe
             }
         };
 
+        var enviarMail = {
+            label: 'Enviar Factura Electrónica',
+            icon: 'fa fa-envelope',
+            action: function () {
+                openLoader("Enviando...");
+                url = "${g.createLink(controller:'reportes3' , action: 'facturaElectronica')}?id=" + id + "Wemp=${session.empresa.id}";
+                location.href =  "${g.createLink(controller:'reportes3' , action: 'enviarMail2')}?id=" + id + "&emp=${session.empresa.id}" + "&url=" + url;
+            }
+        };
+
 
         items.editar = editar;
 
@@ -336,6 +346,9 @@ como máximo 30 <span style="margin-left: 40px; color: #0b2c89">Se ordena por fe
         if(etdo == 'R') {
             items.comprobante = comprobante;
             items.imprimir = imprimir;
+            if(tp == 'Ventas'){
+                items.enviarMail = enviarMail
+            }
         }
 
         return items

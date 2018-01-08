@@ -5,7 +5,7 @@
   Time: 1:32 PM
 --%>
 
-%{--<%@ page import="cratos.DetalleRetencion" contentType="text/html;charset=UTF-8" %>--}%
+
 <html>
 <head>
     <title>Retención</title>
@@ -23,8 +23,6 @@
 
     .hoja {
         width      : 17cm;
-        /*background : #d8f0fa;*/
-
     }
 
     .left {
@@ -69,57 +67,41 @@
             </h1>
 
             <div class="info">Dirección: ${empresa.direccion}</div>
-
             <div class="info">Teléfonos: ${empresa.telefono}</div>
-
             <div class="info">${empresa?.canton?.nombre ?: ' '}  Ecuador</div>
-
             <div class="info">R.U.C.: ${empresa.ruc}</div>
         </div>
 
         <div class="right" style="margin-top: 20px;">
-            %{--<div class="info"><strong>Autorización del S.R.I.:</strong> ${retencion.numeroAutorizacionComprobante}</div>--}%
             <div class="info"><strong>Autorización del S.R.I.:</strong> ${proceso?.autorizacion ?: ''}</div>
-
             <div class="info"><strong>COMPROBANTE DE RETENCIÓN</strong> ${retencion?.documentoEmpresa?.numeroEstablecimiento}-${retencion.documentoEmpresa?.numeroEmision}</div>
-            %{--<div class="info"><strong>COMPROBANTE DE RETENCIÓN</strong> ${establecimiento}-${emision}</div>--}%
-
-            %{--<h3>N. ${retencion.numeroSecuencial}</h3>--}%
             <h3>N. ${retencion?.numero ?: 0}</h3>
         </div>
     </div>
 
-    <div style="height: 90px;">
+    <div style="height: 200px; margin-top: 15px">
         <div class="left">
             <div class="info"><strong>Sres.:</strong> ${proceso.proveedor.nombre}</div>
-
             <div class="info"><strong>R.U.C.:</strong> ${proceso.proveedor.ruc}</div>
-
             <div class="info"><strong>Dirección:</strong> ${proceso.proveedor.direccion}</div>
-
             <div class="info"><strong>Teléfono:</strong> ${proceso.proveedor.telefono}</div>
         </div>
 
         <div class="right">
             <div class="info"><strong>Lugar y fecha de emisión:</strong> Quito, ${retencion.fecha.format("dd")} de ${meses[retencion.fecha.format("MM").toInteger()]} del ${retencion.fecha.format("yyyy")}</div>
-
             <div class="info"><strong>Tipo de comprobante de venta:</strong> ${proceso.tipoCmprSustento?.tipoComprobanteSri?.descripcion}</div>
-
-            %{--<div class="info"><strong>No. de comprobante de venta:</strong> ${proceso.facturaEstablecimiento}-${proceso.facturaPuntoEmision}-${proceso.facturaSecuencial}</div>--}%
             <div class="info"><strong>No. de comprobante de venta:</strong> ${proceso?.documento}</div>
-
-            %{--<div class="info"><strong>Ejercicio fiscal:</strong> ${retencion.contabilidad.fechaInicio.format("yyyy")}</div>--}%
             <div class="info"><strong>Ejercicio fiscal:</strong> ${proceso?.contabilidad?.fechaInicio?.format("yyyy")}</div>
         </div>
     </div>
 
-    <div style="margin-top: 10px;">
+    <div style="margin-top: 15px;">
         <table border="1" style="width:100%;" cellpadding="4">
             <thead>
             <tr>
-                <th class="tl">Documento</th>
-                <th class="tr" style="padding-right: 20px;">Base Imponible</th>
-                <th class="tl">Impuesto</th>
+                <th class="tc">Documento</th>
+                <th class="tc">Base Imponible</th>
+                <th class="tc">Impuesto</th>
                 <th class="tc">Cod Ret</th>
                 <th class="tr">% Ret</th>
                 <th class="tr">Valor Retenido</th>
@@ -128,7 +110,7 @@
             <tbody>
             <g:set value="${0}" var="total"/>
 
-            <tr>
+            <tr style="font-size: 10px !important;">
                 <td>
                     ${proceso.tipoCmprSustento?.tipoComprobanteSri?.descripcion + " " + proceso?.documento}
                 </td>
