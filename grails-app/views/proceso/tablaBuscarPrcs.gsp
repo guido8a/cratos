@@ -39,7 +39,7 @@ th, td {
                 </td>
 
                 <td width="40px" class="${dato.prcsetdo == 'R' ? 'Registrado' : 'NoReg'}">
-                    ${dato.prcsetdo == 'R' ? 'R' : 'N'}
+                    ${dato.prcsetdo}
                 </td>
 
                 <td width="160px" class="text-info">
