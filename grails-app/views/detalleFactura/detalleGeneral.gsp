@@ -74,7 +74,7 @@
     </div>
     <g:hiddenField name="idItem_name" id="idItem" value=""/>
     <g:hiddenField name="idDetalle_name" id="idDetalle" value=""/>
-
+    <g:hiddenField name="cantiOriginal_name" id="cantiOriginal" value=""/>
 
     <div class="col-xs-2" style="text-align: center">
         <b>Código</b>
@@ -363,6 +363,7 @@
     });
 
     $(".canti").keyup(function () {
+        verificarExistencia();
         calcularTotal();
     });
 
@@ -391,6 +392,20 @@
         }
 
         $(".tot").val(to.toFixed(2))
+
+
+
+    }
+
+    function verificarExistencia () {
+        var cantidad = $(".canti").val()
+        var item = $("#idItem").val()
+        var original = $("#cantiOriginal").val()
+
+
+        if(cantidad > original){
+            $(".canti").val(original)
+        }
     }
 
 
@@ -407,10 +422,10 @@
         $("#codigoItem").val('');
         $("#nombreItem").val('');
         $("#precioItem").val('');
-        $("#cantidadItem").val('');
+        $("#cantidadItem").val('').attr('readonly', false);
         $("#descuentoItem").val('');
         $("#idItem").val('');
-        $("#totalItem").val('');
+        $("#totalItem").val('').attr('readonly', false);
     }
 
 

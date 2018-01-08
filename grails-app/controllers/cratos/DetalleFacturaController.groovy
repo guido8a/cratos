@@ -131,7 +131,7 @@ class DetalleFacturaController extends cratos.seguridad.Shield  {
     }
 
     def tablaItems_ajax () {
-        println("params " + params)
+//        println("params " + params)
         def proceso = Proceso.get(params.proceso)
         def bodega = Bodega.get(params.bodega)
 
@@ -148,7 +148,7 @@ class DetalleFacturaController extends cratos.seguridad.Shield  {
         }
         def res = cn.rows(sql.toString())
 //        println("res " + res)
-        println "sql $sql"
+//        println "sql $sql"
         return[items: res, proceso: proceso]
     }
 

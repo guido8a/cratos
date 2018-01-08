@@ -541,7 +541,23 @@
     });
 
     $("#btnEnviarFactElect").click(function () {
-
+            bootbox.confirm("<i class='fa fa-exclamation-circle fa-3x pull-left text-warning text-shadow'></i><p>¿Está " +
+                "Está seguro de enviar la factura electrónica a </br> ${proceso?.proveedor?.nombre} " +
+                ".</p>", function (result) {
+                $.ajax({
+                    type: 'POST',
+                    url: "${createLink(controller: 'reportes3', action: 'enviar Mail2')}",
+                    data: {
+                        id: "${proceso?.id}",
+                        emp: '${session.empresa.id}',
+                        url: "${g.createLink(controller:'reportes3' , action: 'facturaElectronica')}?id=" + '${proceso?.id}' + "Wemp=${session.empresa.id}"
+                    },
+                    success: function (msg) {
+                        location.reload()
+                    }
+                });
+//            }
+        })
     });
 
 
@@ -1396,56 +1412,56 @@
         $("#registrarProceso").click(function () {
             var tipoP = $(".tipoProcesoSel option:selected").val();
             bootbox.confirm("<i class='fa fa-exclamation-circle fa-3x pull-left text-danger text-shadow'></i><p>¿Está " +
-                    "seguro que desea registrar la transacción? </br> Una vez registrado, la información NO podrá ser " +
-                    "cambiada.</p>", function (result) {
+                "seguro que desea registrar la transacción? </br> Una vez registrado, la información NO podrá ser " +
+                "cambiada.</p>", function (result) {
                 if (result) {
-                   console.log("registrando...", tipoP);
-                   if(tipoP == 1 || tipoP == 2){
-                       $.ajax({
-                           type: 'POST',
-                           async: false,
-                           url: '${createLink(controller: 'proceso', action: 'revisarFormaPago_ajax')}',
-                           data: {
-                               proceso : '${proceso?.id}'
-                           },
-                           success: function (msg){
-                               if(msg == 'no'){
-                                   bootbox.alert("<i class='fa fa-exclamation-circle fa-3x pull-left text-danger text-shadow'>" +
-                                           "</i>Revise el valor del proceso o el registro de la forma de pago")
-                               }else{
-                                   openLoader("Registrando...");
-                                   $.ajax({
-                                       type: "POST",
-                                       url: "${g.createLink(controller: 'proceso',action: 'registrar')}",
-                                       data: "id=" + $("#idProceso").val(),
-                                       success: function (msg) {
-                                           // $("#registro").html(msg).show("slide");
-                                           closeLoader()
-                                           location.reload(true);
-                                       },
-                                       error: function () {
-                                           bootbox.alert("Ha ocurrido un error. Por favor revise el gestor y los valores del proceso.")
-                                       }
-                                   });
-                               }
-                           }
-                       });
-                   }else{
-                       openLoader("Registrando...");
-                       $.ajax({
-                           type: "POST",
-                           url: "${g.createLink(controller: 'proceso',action: 'registrar')}",
-                           data: "id=" + $("#idProceso").val(),
-                           success: function (msg) {
-                               // $("#registro").html(msg).show("slide");
-                               closeLoader()
-                               location.reload(true);
-                           },
-                           error: function () {
-                               bootbox.alert("Ha ocurrido un error. Por favor revise el gestor y los valores del proceso.")
-                           }
-                       });
-                   }
+                    console.log("registrando...", tipoP);
+                    if(tipoP == 1 || tipoP == 2){
+                        $.ajax({
+                            type: 'POST',
+                            async: false,
+                            url: '${createLink(controller: 'proceso', action: 'revisarFormaPago_ajax')}',
+                            data: {
+                                proceso : '${proceso?.id}'
+                            },
+                            success: function (msg){
+                                if(msg == 'no'){
+                                    bootbox.alert("<i class='fa fa-exclamation-circle fa-3x pull-left text-danger text-shadow'>" +
+                                        "</i>Revise el valor del proceso o el registro de la forma de pago")
+                                }else{
+                                    openLoader("Registrando...");
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "${g.createLink(controller: 'proceso',action: 'registrar')}",
+                                        data: "id=" + $("#idProceso").val(),
+                                        success: function (msg) {
+                                            // $("#registro").html(msg).show("slide");
+                                            closeLoader()
+                                            location.reload(true);
+                                        },
+                                        error: function () {
+                                            bootbox.alert("Ha ocurrido un error. Por favor revise el gestor y los valores del proceso.")
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                    }else{
+                        openLoader("Registrando...");
+                        $.ajax({
+                            type: "POST",
+                            url: "${g.createLink(controller: 'proceso',action: 'registrar')}",
+                            data: "id=" + $("#idProceso").val(),
+                            success: function (msg) {
+                                // $("#registro").html(msg).show("slide");
+                                closeLoader()
+                                location.reload(true);
+                            },
+                            error: function () {
+                                bootbox.alert("Ha ocurrido un error. Por favor revise el gestor y los valores del proceso.")
+                            }
+                        });
+                    }
                 }
 
             })

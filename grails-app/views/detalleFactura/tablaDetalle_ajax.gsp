@@ -84,12 +84,12 @@
                 $("#codigoItem").val(parts[1]);
                 $("#nombreItem").val(parts[2]);
                 $("#precioItem").val(parts[3]);
-                $("#cantidadItem").val(parts[4]);
+                $("#cantidadItem").val(parts[4]).attr('readonly', true);
                 $("#descuentoItem").val(parts[5]);
                 $("#bodegas").val(parts[6]);
                 $("#centros").val(parts[7]);
                 $("#idItem").val(parts[8]);
-                $("#totalItem").val((parts[3] * parts[4]).toFixed(2));
+                $("#totalItem").val((parts[3] * parts[4]).toFixed(2)).attr('readonly',true);
                 $("#btnBuscar").addClass('hidden');
                 $("#btnAgregar").addClass('hidden');
                 $("#btnGuardar").removeClass('hidden');

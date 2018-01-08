@@ -25,13 +25,13 @@
 
 <table class="table table-bordered table-hover table-condensed">
     <thead>
-    <tr>
-        <th style="width: 80px">Código</th>
-        <th style="width: 180px">Nombre</th>
-        <th style="width: 80px">Precio</th>
-        <th style="width: 70px">Existencias</th>
-        <th style="width: 80px">Fecha</th>
-        <th style="width: 55px"><i class="fa fa-plus"></i> </th>
+    <tr style="width: 100%">
+        <th style="width: 19%">Código</th>
+        <th style="width: 47%">Nombre</th>
+        <th style="width: 14%">Precio</th>
+        <th style="width: 9%">Existencias</th>
+        %{--<th style="width: 80px">Fecha</th>--}%
+        <th style="width: 7%"><i class="fa fa-plus"></i> </th>
     </tr>
     </thead>
 </table>
