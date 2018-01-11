@@ -343,7 +343,8 @@ como máximo 30 <span style="margin-left: 40px; color: #0b2c89">Se ordena por fe
             items.reembolso = reembolso
         }
 
-        if(etdo == 'R') {
+//        console.log('estado:', etdo[0]);
+        if(etdo[0] == 'R') {
             items.comprobante = comprobante;
             items.imprimir = imprimir;
             if(tp == 'Ventas'){

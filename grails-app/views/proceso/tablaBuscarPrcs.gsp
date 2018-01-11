@@ -13,10 +13,14 @@ th, td {
 
 .registrado {
     font-weight: bold;
-    color: #225f8b;
+    color: #df960b;
+}
+.reg {
+    color: #286e9f;
 }
 .noReg {
-    color: #666;
+    font-weight: bold;
+    color: #aa6;
 }
 </style>
 
@@ -38,7 +42,7 @@ th, td {
                     ${dato?.prcsdscr}
                 </td>
 
-                <td width="40px" class="${dato.prcsetdo == 'R' ? 'Registrado' : 'NoReg'}">
+                <td width="40px" class="${dato.prcsetdo == 'R-S' ? 'registrado' : dato.prcsetdo == 'R' ? 'reg' : 'noReg'}">
                     ${dato.prcsetdo}
                 </td>
 
