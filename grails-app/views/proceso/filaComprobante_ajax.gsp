@@ -25,13 +25,12 @@
         </a>
     </g:if>
 </div>
-<div class="col-xs-2" style="margin-left: 0px">
-        <a href="#" id="btnBuscarSaldos" class="btn btn-info ${proceso?.id ? '' : 'hidden'}">
-        %{--<a href="#" id="btnBuscarComp" class="btn btn-info" >--}%
-            <i class="fa fa-search"></i>
-            Saldos CxC y CxP
-        </a>
-</div>
+%{--<div class="col-xs-2" style="margin-left: 0px">--}%
+        %{--<a href="#" id="btnBuscarSaldos" class="btn btn-info ${proceso?.id ? '' : 'hidden'}">--}%
+            %{--<i class="fa fa-search"></i>--}%
+            %{--Saldos CxC y CxP--}%
+        %{--</a>--}%
+%{--</div>--}%
 <g:hiddenField name="comprobanteSel_name" id="comprobanteSel" value="${proceso?.comprobante?.id}"/>
 <g:hiddenField name="comprobanteSaldo_name" id="comprobanteSaldo1" value="${saldo}"/>
 

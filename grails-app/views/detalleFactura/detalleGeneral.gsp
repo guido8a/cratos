@@ -402,8 +402,7 @@
         var item = $("#idItem").val()
         var original = $("#cantiOriginal").val()
 
-
-        if(cantidad > original){
+        if(Math.round(cantidad*100)/100 > Math.round(original*100)/100){
             $(".canti").val(original)
         }
     }

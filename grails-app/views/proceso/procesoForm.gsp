@@ -1137,6 +1137,10 @@
                     error += "<li>El número de autorización debe ser de 10, 37 o 49 dígitos</li>"
                 }
 
+                if (!$("#gestor").val()) {
+                    error += "<li>Seleccione el Gestor contable</li>"
+                }
+
                 if('${proceso}'){
 
                     if(parseFloat($("#total").val()) >= 1000){
@@ -1210,6 +1214,10 @@
 
                 if ($("#tipoComprobante").val() == '-1' || $("#tipoComprobante").val() == null) {
                     error += "<li>Seleccione el comprobante</li>"
+                }
+
+                if (!$("#gestor").val()) {
+                    error += "<li>Seleccione el Gestor contable</li>"
                 }
 
                 /*
@@ -1289,9 +1297,32 @@
                     }
                 }
 
+                if ($("#valorPago").val() == 0) {
+                    error += "<li>Ingrese el valor del ajuste</li>"
+                }
+
+                if (!$("#gestor").val()) {
+                    error += "<li>Seleccione el Gestor contable</li>"
+                }
+
             }
 
-            if(tipoP == '5'){
+
+            if (tipoP == '4') {   /* Pagos */
+                if ($("#descripcion").val().length < 1) {
+                    error += "<li>Llene el campo Descripción</li>"
+                }
+
+                if ($("#valorPago").val() == 0) {
+                    error += "<li>Ingrese el valor del pago</li>"
+                }
+
+                if (!$("#gestor").val()) {
+                    error += "<li>Seleccione el Gestor contable</li>"
+                }
+            }
+
+            if(tipoP == '5'){ /*Ajuste*/
                 if ($("#descripcion").val().length < 1) {
                     error += "<li>Llene el campo Descripción</li>"
                 }
@@ -1305,9 +1336,13 @@
                 if(!$("#comprobanteSel").val()){
                     error += "<li>Seleccione el comprobante</li>"
                 }
+
+                if (!$("#gestor").val()) {
+                    error += "<li>Seleccione el Gestor contable</li>"
+                }
             }
 
-            if (tipoP == '6' || tipoP == '7') {   /* Nota de crédito y débito */
+            if (tipoP == '6') {   /* Nota de crédito */
 
                 if ($("#iva12").val() == 0 && $("#iva0").val() == 0 && $("#noIva").val() == 0) {
                     error += "<li>Ingrese valores en la base imponible</li>"
@@ -1315,7 +1350,7 @@
                 if ((parseFloat($("#iva12").val()) + parseFloat($("#iva0").val()) + parseFloat($("#noIva").val()) +
                     parseFloat($("#ivaGenerado").val()) + parseFloat($("#iceGenerado").val()) +
                     parseFloat($("#flete").val())) > parseFloat($("#comprobanteSaldo").val()) ) {
-                    error += "<li>Revise el valores de base imponible e impuestos generados</li>"
+                    error += "<li>Revise los valores de base imponible e impuestos generados</li>"
                 }
 
                 if ($("#serie").hasClass('error')){
@@ -1329,9 +1364,23 @@
                 if(!$("#comprobanteSel").val()){
                     error += "<li>Seleccione el comprobante</li>"
                 }
+
+                if (!$("#gestor").val()) {
+                    error += "<li>Seleccione el Gestor contable</li>"
+                }
             }
 
             if (tipoP == '7') {   /* Nota de débito */
+
+                if ($("#iva12").val() == 0 && $("#iva0").val() == 0 && $("#noIva").val() == 0) {
+                    error += "<li>Ingrese valores en la base imponible</li>"
+                }
+                if ((parseFloat($("#iva12").val()) + parseFloat($("#iva0").val()) + parseFloat($("#noIva").val()) +
+                    parseFloat($("#ivaGenerado").val()) + parseFloat($("#iceGenerado").val()) +
+                    parseFloat($("#flete").val())) > parseFloat($("#comprobanteSaldo").val()) ) {
+                    error += "<li>Revise los valores de base imponible e impuestos generados</li>"
+                }
+
                 if (isNaN(parseFloat($("#comprobanteSaldo").val()))) {
                     error += "<li>No hay comprobante, seleccione uno</li>"
                 }
@@ -1344,10 +1393,32 @@
                 if ($("#serie").hasClass('error')){
                     error += "<li>Revise el número de de la Nota de Crédito</li>"
                 }
+
+                if(!$("#comprobanteSel").val()){
+                    error += "<li>Seleccione el comprobante</li>"
+                }
+
+                if ($("#descripcion").val().length < 1) {
+                    error += "<li>Llene el campo Descripción</li>"
+                }
+
+                if (!$("#gestor").val()) {
+                    error += "<li>Seleccione el Gestor contable</li>"
+                }
             }
 
-            if(!$("#establecimiento").val()){
-                error += "<li>Ingrese un número de establecimiento</li>"
+            if (tipoP == '8') {   /* Transferencias */
+                if ($("#descripcion").val().length < 1) {
+                    error += "<li>Llene el campo Descripción</li>"
+                }
+
+                if ($("#valorPago").val() == 0) {
+                    error += "<li>Ingrese el valor de la transferencia</li>"
+                }
+
+                if (!$("#gestor").val()) {
+                    error += "<li>Seleccione el Gestor contable</li>"
+                }
             }
 
 
