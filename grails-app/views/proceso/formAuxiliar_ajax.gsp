@@ -37,7 +37,6 @@
             <label>Factura: </label>
         </div>
         <div class="col-md-10">
-            %{--<g:select name="factura_name" id="facturaAuxiliar" from="${res}" optionKey="${{it.dcmt}}" optionValue="${{it?.dcmt + ' - ' +  it.dscr + ' - $ ' + it.sldo}}" class="form-control" value="${auxiliar?.factura}"/>--}%
             <g:select name="factura_name" id="facturaAuxiliar" from="${res}" optionKey="${{it.axlr__id}}"
                       optionValue="${{it?.dcmt + ' - ' +  it?.dscr + ' - $ ' + it?.sldo}}" class="form-control porPagar"
                       value="${auxiliar?.afecta?.id}"/>

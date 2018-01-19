@@ -1304,7 +1304,7 @@ class ProcesoController extends cratos.seguridad.Shield {
 //            println("maximoHaber " + maximoHaber)
             band = asiento?.comprobante?.proceso?.tipoProceso?.codigo?.trim() == 'A' && asiento?.comprobante?.proceso?.gestor?.codigo == 'SLDO'
             band2 = asiento?.comprobante?.proceso?.tipoProceso?.codigo?.trim() in ['P', 'I', 'NC', 'ND']
-            band3 = auxiliar?.asiento?.comprobante?.proceso?.tipoProceso?.codigo?.trim() in ['P', 'I', 'NC']
+            band3 = asiento?.comprobante?.proceso?.tipoProceso?.codigo?.trim() in ['P', 'I', 'NC']
             sql = "select * from ${funcion}(${asiento?.comprobante?.proceso?.proveedor?.id})"
             res = cn.rows(sql.toString())
             println("res " + sql)
@@ -2310,28 +2310,25 @@ class ProcesoController extends cratos.seguridad.Shield {
         println "valor: ${proceso.valor}"
 
         if(proceso.valor <= 0.0) {
-            render "no"
-            return
+            render "no_Revise el valor ingresado"
         }
 
         println "... no es cero"
         if(proceso.tipoProceso.codigo.trim() == 'C') {
             println "compra con: ${formasPago.size()} registro de pago, valor: ${proceso.valor} "
             if((formasPago.size() < 1) && (proceso.valor >= 1000)) {
-                render "no"
-                return
+                render "no_Ingrese una forma de pago!"
             }
             else {
                 render "ok"
-                return
             }
-        } else if(proceso.tipoProceso.codigo.trim() == 'V') {
+        }
+
+        if(proceso.tipoProceso.codigo.trim() == 'V') {
             if(formasPago.size() > 0){
                 render "ok"
-                return
             }else{
-                render "no"
-                return
+                render "no_Ingrese una forma de pago!"
             }
         }
     }

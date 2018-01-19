@@ -109,7 +109,7 @@
             <g:set var="totalDebe1" value="${totalDebe1 += cuenta.slmsdebe.toDouble()}"/>
             <g:set var="totalHaber1" value="${totalHaber1 += cuenta.slmshber.toDouble()}"/>
 
-            <g:set var="saldo" value="${cuenta.slmsdebe.toDouble() + cuenta.slmshber.toDouble()}"/>
+            <g:set var="saldo" value="${cuenta.slmsdebe.toDouble() - cuenta.slmshber.toDouble()}"/>
             <g:set var="mayor" value="${cuenta.slmsdebe.toDouble() > cuenta.slmshber.toDouble()}"/>
 
             <g:set var="totalDebe2" value="${mayor ? (totalDebe2 += saldo.toDouble()) : (totalDebe2 += 0) }"/>

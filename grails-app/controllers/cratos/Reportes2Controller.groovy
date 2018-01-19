@@ -559,6 +559,8 @@ class Reportes2Controller {
         def hasta = new Date().parse("dd-MM-yyyy", params.hasta)
         def contabilidad = Contabilidad.get(params.cont)
 
+        def listaIR = ConceptoRetencionImpuestoRenta.list().sort{it.codigo}
+
         def retenciones = Retencion.withCriteria {
 
             proceso{
@@ -569,8 +571,14 @@ class Reportes2Controller {
                 ge("fechaEmision", desde)
                 le("fechaEmision", hasta)
             }
+
+
+            conceptoRIRBienes{
+                order("codigo", 'asc')
+            }
+
         }
-        return[retenciones: retenciones, empresa: params.emp, desde: desde, hasta: hasta]
+        return[retenciones: retenciones, empresa: params.emp, desde: desde, hasta: hasta, lista: listaIR]
     }
 
     def compras () {

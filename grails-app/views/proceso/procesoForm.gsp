@@ -1482,11 +1482,11 @@
 
         $("#registrarProceso").click(function () {
             var tipoP = $(".tipoProcesoSel option:selected").val();
-            bootbox.confirm("<i class='fa fa-exclamation-circle fa-3x pull-left text-danger text-shadow'></i><p>¿Está " +
-                "seguro que desea registrar la transacción? </br> Una vez registrado, la información NO podrá ser " +
+            bootbox.confirm("<i class='fa fa-exclamation-circle fa-3x pull-left text-warning text-shadow'></i><p>¿Está " +
+                "seguro que desea registrar la transacción? </br> Una vez registrado, la información <b>NO</b> podrá ser " +
                 "cambiada.</p>", function (result) {
                 if (result) {
-                    console.log("registrando...", tipoP);
+//                    console.log("registrando...", tipoP);
                     if(tipoP == 1 || tipoP == 2){
                         $.ajax({
                             type: 'POST',
@@ -1496,9 +1496,9 @@
                                 proceso : '${proceso?.id}'
                             },
                             success: function (msg){
-                                if(msg == 'no'){
-                                    bootbox.alert("<i class='fa fa-exclamation-circle fa-3x pull-left text-danger text-shadow'>" +
-                                        "</i>Revise el valor del proceso o el registro de la forma de pago")
+                                var parts = msg.split("_");
+                                if(parts[0] == 'no'){
+                                    bootbox.alert("<i class='fa fa-exclamation-circle fa-3x pull-left text-danger text-shadow'></i>" + parts[1])
                                 }else{
                                     openLoader("Registrando...");
                                     $.ajax({
@@ -1506,8 +1506,7 @@
                                         url: "${g.createLink(controller: 'proceso',action: 'registrar')}",
                                         data: "id=" + $("#idProceso").val(),
                                         success: function (msg) {
-                                            // $("#registro").html(msg).show("slide");
-                                            closeLoader()
+                                            closeLoader();
                                             location.reload(true);
                                         },
                                         error: function () {
@@ -1524,8 +1523,7 @@
                             url: "${g.createLink(controller: 'proceso',action: 'registrar')}",
                             data: "id=" + $("#idProceso").val(),
                             success: function (msg) {
-                                // $("#registro").html(msg).show("slide");
-                                closeLoader()
+                                closeLoader();
                                 location.reload(true);
                             },
                             error: function () {

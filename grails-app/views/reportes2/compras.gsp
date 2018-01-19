@@ -92,6 +92,10 @@
         </thead>
 
         <tbody>
+
+        <g:set var="totales" value="${0}"/>
+        <g:set var="totales2" value="${0}"/>
+
         <g:each in="${procesos}" var="proceso" status="j">
             <g:set var="retencion" value="${cratos.Retencion.findByProceso(proceso)}"/>
             <tr style="width: 2100px">
@@ -108,8 +112,17 @@
                 <td class="derecha" style="width: 100px"><g:formatNumber number="${( (retencion?.ivaBienes?.toDouble() ?: 0) + (retencion?.ivaServicios?.toDouble() ?: 0)) ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
                 <td class="derecha" style="width: 100px"><g:formatNumber number="${( (retencion?.renta?.toDouble() ?: 0) + (retencion?.rentaServicios?.toDouble() ?: 0)) ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
                 <td class="derecha" style="width: 100px"><g:formatNumber number="${( (retencion?.ivaBienes?.toDouble() ?: 0) + (retencion?.ivaServicios?.toDouble() ?: 0) ?: 0) + ((retencion?.renta?.toDouble() ?: 0) + (retencion?.rentaServicios?.toDouble() ?: 0) ?: 0)}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
+                <g:set var="totales" value="${totales += ( (retencion?.ivaBienes?.toDouble() ?: 0) + (retencion?.ivaServicios?.toDouble() ?: 0) ?: 0) + ((retencion?.renta?.toDouble() ?: 0) + (retencion?.rentaServicios?.toDouble() ?: 0) ?: 0)}"/>
+                <g:set var="totales2" value="${totales2 += (proceso?.valor ?: 0)}"/>
             </tr>
         </g:each>
+
+        <tr style="width: 100%">
+            <td colspan="8" class="derecha" style="background: #bbb"><b>TOTAL:</b></td>
+          <td class="derecha"><g:formatNumber number="${totales2 ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
+          <td class="derecha" colspan="3" style="background: #bbb"></td>
+          <td class="derecha"><g:formatNumber number="${totales ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
+        </tr>
         </tbody>
     </table>
 </div>

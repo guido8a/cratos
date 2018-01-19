@@ -94,7 +94,7 @@ class LoginController {
         }
 
         if (user.size() == 0) {
-            flash.message = "No se ha encontrado el usuario"
+            flash.message = "Usuario o password incorrectos!"
             flash.tipo = "error"
             render "error_"+flash.message
             return
