@@ -208,16 +208,16 @@
             <table class="table table-bordered table-hover table-condensed" width="1060">
                 <thead>
                 <tr>
-                    <th style="width: 340px;" class="letraP">Código (Cuenta)</th>
-                    <th style="width: 80px" class="letraP">% B. Imponible</th>
-                    <th style="width: 80px" class="letraP">% B.I. Sin IVA</th>
-                    <th style="width: 80px" class="letraP">Impuestos</th>
-                    <th style="width: 80px" class="letraP">ICE</th>
-                    <th style="width: 80px" class="letraP">Flete</th>
-                    <th style="width: 80px" class="letraP">Ret. Iva</th>
-                    <th style="width: 80px" class="letraP">Ret. Renta</th>
-                    <th style="width: 60px" class="letraP">D / H</th>
-                    <th style="width: 100px" class="letraP"><i class="fa fa-pencil"></i></th>
+                    <th style="width: 420px;" class="letraP">Código (Cuenta)</th>
+                    <th style="width: 90px" class="letraP">% B. Imponible</th>
+                    <th style="width: 90px" class="letraP">% B.I. Sin IVA</th>
+                    <th style="width: 90px" class="letraP">Impuestos</th>
+                    <th style="width: 90px" class="letraP">ICE</th>
+                    <th style="width: 90px" class="letraP">Flete</th>
+                    <th style="width: 80px" class="letraP">Valor</th>
+                    %{--<th style="width: 80px" class="letraP">Ret. Renta</th>--}%
+                    <th style="width: 50px" class="letraP">D / H</th>
+                    <th style="width: 110px" class="letraP"><i class="fa fa-pencil"></i></th>
                 </tr>
                 </thead>
             </table>

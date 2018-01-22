@@ -349,16 +349,16 @@ class GestorContableController extends cratos.seguridad.Shield {
     }
 
     def guardarValores_ajax () {
-//        println "guardarValores_ajax " + params
+        println "guardarValores_ajax " + params
         def genera = Genera.get(params.genera)
-        genera.valor = params.valor.toDouble()
+        genera.ice = params.ice.toDouble()
         genera.porcentajeImpuestos = params.impuesto.toDouble()
         genera.porcentaje = params.porcentaje.toDouble()
         genera.baseSinIva = params.sinIva.toDouble()
         genera.flete = params.flete.toDouble()
         genera.debeHaber = params.debeHaber
-        genera.retIva = params.retIva.toDouble()
-        genera.retRenta = params.retRenta.toDouble()
+        genera.valor = params.valor.toDouble()
+//        genera.retRenta = params.retRenta.toDouble()
 
         try{
             genera.save(flush: true)

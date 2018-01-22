@@ -1,13 +1,13 @@
 package cratos
 
 class Genera implements Serializable {
-    double valor
-    double porcentajeImpuestos
-    double porcentaje
-    double baseSinIva
-    double flete
-    double retIva
-    double retRenta
+    double ice = 0
+    double porcentajeImpuestos = 0
+    double porcentaje = 0
+    double baseSinIva = 0
+    double flete = 0
+    double valor = 0
+//    double retRenta
     TipoComprobante tipoComprobante
     Cuenta cuenta
     Gestor gestor
@@ -22,7 +22,7 @@ class Genera implements Serializable {
         id generator: 'identity'
         version false
         columns {
-            valor column: 'gnravlor'
+            ice column: 'gnra_ice'
             porcentajeImpuestos column: 'gnrapcim'
             porcentaje column: 'gnrapcnt'
             tipoComprobante column: 'tpcp__id'
@@ -31,19 +31,14 @@ class Genera implements Serializable {
             debeHaber column: 'gnradbhb'
             baseSinIva column: 'gnrapcbz'
             flete column: 'gnraflte'
-            retIva column: 'gnrartiv'
-            retRenta column: 'gnrartrn'
+            valor column: 'gnravlor'
+//            retRenta column: 'gnrartrn'
         }
     }
     static constraints = {
-        valor(blank: true, nullable: true, attributes: [title: 'valor'])
-        porcentajeImpuestos(blank: true, nullable: true, attributes: [title: 'porcentajeImpuestos'])
-        porcentaje(blank: true, nullable: true, attributes: [title: 'porcentaje'])
         tipoComprobante(blank: false, attributes: [title: 'tipoProveedor'])
         cuenta(blank: true, nullable: true, attributes: [title: 'cuenta'])
         gestor(blank: false, nullable: false, attributes: [title: 'gestor'])
         debeHaber(blank: false, maxSize: 1, attributes: [title: 'debe o haber'])
-        baseSinIva(blank: true, nullable: true)
-        flete(blank: true, nullable: true)
     }
 }
