@@ -591,6 +591,7 @@ class Reportes3Controller {
 
             proceso{
                 eq("empresa",empresa)
+                eq("estado",'R')
             }
 
             and{
