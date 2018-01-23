@@ -24,7 +24,7 @@
 
     html {
         font-family: Verdana, Arial, sans-serif;
-        font-size: 15px;
+        /*font-size: 15px;*/
     }
 
     .hoja {
@@ -55,6 +55,10 @@
 
     .centro{
         text-align: center;
+    }
+
+    .tam{
+        font-size: 9px;
     }
 
     </style>
@@ -97,22 +101,37 @@
         </thead>
 
         <tbody>
+
+        <g:set var="totales" value="${0}"/>
+        <g:set var="totales2" value="${0}"/>
+
         <g:each in="${ventas}" var="venta" status="j">
-            <tr style="width: 2100px">
+            <tr style="width: 2100px;" class="tam">
                 <td style="width: 40px">${j+1}</td>
                 <td style="width: 70px"><g:formatDate date="${venta?.fechaIngresoSistema}" format="dd-MM-yyyy"/></td>
-                <td class="centro" style="width: 150px">${venta?.facturaEstablecimiento + " " + venta?.facturaPuntoEmision + " " + venta?.facturaSecuencial}</td>
-                <td class="centro" style="width: 320px">${venta?.proveedor?.nombre}</td>
+                <td class="izquierda" style="width: 150px">${venta?.facturaEstablecimiento + " " + venta?.facturaPuntoEmision + " " + venta?.facturaSecuencial}</td>
+                <td class="izquierda tam" style="width: 320px">${venta?.proveedor?.nombre}</td>
                 <td class="derecha" style="width: 100px"><g:formatNumber number="${venta?.excentoIva ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
                 <td class="derecha" style="width: 100px"><g:formatNumber number="${venta?.baseImponibleIva ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
                 <td class="derecha" style="width: 100px"><g:formatNumber number="${venta?.ivaGenerado ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
                 <td class="derecha" style="width: 100px"><g:formatNumber number="${venta?.valor ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
-                <td class="derecha" style="width: 100px">${venta?.retencionVenta}</td>
+                <td class="centro tam" style="width: 100px">${venta?.retencionVenta}</td>
                 <td class="derecha" style="width: 100px"><g:formatNumber number="${venta?.retenidoIva ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
                 <td class="derecha" style="width: 100px"><g:formatNumber number="${venta?.retenidoRenta ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
                 <td class="derecha" style="width: 100px"><g:formatNumber number="${((venta?.retenidoIva?.toDouble() + venta?.retenidoRenta?.toDouble()) ?: 0)}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
+
+                <g:set var="totales" value="${totales += (venta?.valor ?: 0)}"/>
+                <g:set var="totales2" value="${totales2 += ((venta?.retenidoIva?.toDouble() + venta?.retenidoRenta?.toDouble()) ?: 0)}"/>
             </tr>
         </g:each>
+
+        <tr style="width: 100%">
+            <td colspan="7" class="derecha" style="background: #bbb"><b>TOTAL:</b></td>
+            <td class="derecha"><g:formatNumber number="${totales}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
+            <td class="derecha" colspan="3" style="background: #bbb"></td>
+            <td class="derecha"><g:formatNumber number="${totales2}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
+        </tr>
+
         </tbody>
     </table>
 </div>
