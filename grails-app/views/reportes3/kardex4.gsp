@@ -95,8 +95,8 @@
                 <td class="izquierda" style="width: 7%"><g:formatDate date="${kardex?.krdxfcha}" format="dd-MM-yyyy"/></td>
                 <td class="izquierda" style="width: 13%">${kardex?.prcsdcmt}</td>
                 <td class="izquierda" style="width: 24%; font-size: 10px">${kardex?.prcsdscr}</td>
-                <td class="derecha" style="width: 8%;">${kardex?.ingrvlor != 0 ? kardex?.ingrcntd : kardex?.egrscntd}</td>
-                <td class="derecha" style="width: 8%;">${kardex?.exstpcun}</td>
+                <td class="derecha" style="width: 6%;">${kardex?.ingrvlor != 0 ? kardex?.ingrcntd : kardex?.egrscntd}</td>
+                <td class="derecha" style="width: 6%;">${kardex?.exstpcun}</td>
                 <td class="derecha" style="width: 8%">${kardex?.ingrvlor}</td>
                 <td class="derecha" style="width: 8%">${kardex?.ingrvlor == 0 ? Math.round((kardex?.exstpcun * kardex?.egrscntd)*100)/100 : 0}</td>
                 <g:if test="${kardex?.ingrvlor}">
