@@ -12,7 +12,7 @@
     </div>
     <div class="col-md-4">
         <label>Valor</label>
-        <g:textField name="vlorCentro_name" id="vlorCentro" class="form-control number vlor" value="${formatNumber(number: (valor ? valor : 0), format: '##,##0', maxFractionDigits: 2, minFractionDigits: 2)}"/>
+        <g:textField name="vlorCentro_name" id="vlorCentro" class="form-control number vlor" value="${(valor ? valor : 0)}"/>
     </div>
     <div class="col-md-1" style="margin-top: 25px">
         <a href="#" id="agregarCost" class="btn btn-success ${valor == 0 ? 'hidden' : ''}">

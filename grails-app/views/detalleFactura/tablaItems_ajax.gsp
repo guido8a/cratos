@@ -20,14 +20,21 @@
             <td style="width: 10%; text-align: center">${item.exst.toInteger()}</td>
            %{--<td style="width: 90px"><g:formatDate date="${item.fcha}" format="dd-MM-yyyy HH:mm"/> </td>--}%
 
-            <g:if test="${item.exst.toInteger() > 0}">
+            <g:if test="${proceso?.tipoProceso?.codigo?.trim() == 'C'}">
                 <td style="width: 5%; text-align: center">
                     <a href="#" class="btn btn-success btnAgregarItem"
                        title="Agregar Item" codigo="${item.itemcdgo}" nombre="${item.itemnmbr}" precio="${item.itempcun}" exis="${item.exst}"  idI="${item.item__id}" costo="${item.itempccs}"><i class="fa fa-check"></i></a> </td>
             </g:if>
             <g:else>
-                <td style="width: 5%; text-align: center">
-                </td>
+                <g:if test="${item.exst.toInteger() > 0}">
+                    <td style="width: 5%; text-align: center">
+                        <a href="#" class="btn btn-success btnAgregarItem"
+                           title="Agregar Item" codigo="${item.itemcdgo}" nombre="${item.itemnmbr}" precio="${item.itempcun}" exis="${item.exst}"  idI="${item.item__id}" costo="${item.itempccs}"><i class="fa fa-check"></i></a> </td>
+                </g:if>
+                <g:else>
+                    <td style="width: 5%; text-align: center">
+                    </td>
+                </g:else>
             </g:else>
         </tr>
     </g:each>

@@ -160,10 +160,6 @@
 
     $("#btnImprimirDetalle").click(function () {
 
-        %{--if(${empresa?.ruc}){--}%
-
-        %{--}--}%
-
         switch (${empresa?.ruc}) {
             case 0992149892001:
                 url = "${g.createLink(controller:'reportes2' , action: 'factura')}?id=" + '${proceso?.id}' + "Wemp=${session.empresa.id}";
@@ -362,9 +358,18 @@
         calcularTotal();
     });
 
-    $(".canti").keyup(function () {
-        verificarExistencia();
-        calcularTotal();
+
+    $( document ).ready(function() {
+        if(${proceso?.tipoProceso?.codigo?.trim() == 'C'}){
+            $(".canti").keyup(function () {
+                calcularTotal();
+            });
+        }else{
+            $(".canti").keyup(function () {
+                verificarExistencia();
+                calcularTotal();
+            });
+        }
     });
 
     $(".desc").keyup(function () {

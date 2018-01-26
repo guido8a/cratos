@@ -105,7 +105,7 @@
                     <td class="derecha"><g:formatNumber number="${cuenta.slmshber.toDouble()}" locale="en_US" format="##,##0" minFractionDigits="2" maxFractionDigits="2"/> </td>
                 </g:else>
                 %{--<td class="derecha">${j == 0 ? '' :cuenta.slmshber}</td>--}%
-                <td class="derecha"><g:formatNumber number="${cuenta.slmssldo.toDouble()}" locale="en_US" format="##,##0" minFractionDigits="2" maxFractionDigits="2"/></td>
+                <td class="derecha"><g:formatNumber number="${cuenta?.slmssldo?.toDouble() ?: 0}" locale="en_US" format="##,##0" minFractionDigits="2" maxFractionDigits="2"/></td>
                 %{--<td class="derecha"><g:formatNumber number="${cuenta.slmsdebe.toDouble() - cuenta.slmshber.toDouble()}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>--}%
             </tr>
         </g:each>
@@ -117,7 +117,7 @@
             <th style="width: 480px" class="derecha">Total: </th>
             <th style="width: 90px" class="derecha"><g:formatNumber number="${totalDebe}" maxFractionDigits="2" minFractionDigits="2" format="##,##0" locale="en_US"/></th>
             <th style="width: 90px" class="derecha"><g:formatNumber number="${totalHasta}" maxFractionDigits="2" minFractionDigits="2" format="##,##0" locale="en_US"/></th>
-            <th style="width: 90px" class="derecha"><g:formatNumber number="${res.last().slmssldo}" maxFractionDigits="2" minFractionDigits="2" format="##,##0" locale="en_US"/></th>
+            <th style="width: 90px" class="derecha"><g:formatNumber number="${res?.last()?.slmssldo ?: 0}" maxFractionDigits="2" minFractionDigits="2" format="##,##0" locale="en_US"/></th>
         </tr>
         </thead>
     </table>

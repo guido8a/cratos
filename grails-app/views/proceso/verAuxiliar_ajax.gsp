@@ -41,7 +41,7 @@
         <label>Factura: </label>
     </div>
     <div class="col-md-10">
-        ${auxiliar?.afecta?.asiento?.comprobante?.descripcion}. <strong>Documento:</strong> ${auxiliar?.afecta.factura}
+        ${auxiliar?.afecta?.asiento?.comprobante?.descripcion} <strong>Documento:</strong> ${auxiliar?.afecta?.factura ?: ''}
     </div>
 </div>
 
