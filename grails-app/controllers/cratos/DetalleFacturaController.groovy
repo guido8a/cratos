@@ -168,7 +168,7 @@ class DetalleFacturaController extends cratos.seguridad.Shield  {
         def cn = dbConnectionService.getConnection()
         def sql = "select * from lsta_item('${proceso?.id}','${bodega?.id}')"
         def res = cn.rows(sql.toString())
-        def original
+        def original = 0
 
         if(params.original){
             original = params.original.toInteger()
