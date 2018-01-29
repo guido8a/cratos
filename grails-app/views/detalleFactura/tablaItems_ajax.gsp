@@ -62,7 +62,7 @@
         $("#cantidadItem").val(ex);
         $("#descuentoItem").val(0);
         $("#totalItem").val(precio);
-        $("#cantiOriginal").val(ex)
+        $("#cantiOriginal").val(ex);
         bootbox.hideAll();
      });
 

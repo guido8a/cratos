@@ -84,7 +84,8 @@
                 $("#codigoItem").val(parts[1]);
                 $("#nombreItem").val(parts[2]);
                 $("#precioItem").val(parts[3]);
-                $("#cantidadItem").val(parts[4]).attr('readonly', true);
+//                $("#cantidadItem").val(parts[4]).attr('readonly', true);
+                $("#cantidadItem").val(parts[4]);
                 $("#descuentoItem").val(parts[5]);
                 $("#bodegas").val(parts[6]);
                 $("#centros").val(parts[7]);

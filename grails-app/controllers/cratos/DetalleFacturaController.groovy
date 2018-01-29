@@ -154,6 +154,7 @@ class DetalleFacturaController extends cratos.seguridad.Shield  {
 
     def guardarDetalle_ajax () {
 //        println("params " + params)
+
         def proceso = Proceso.get(params.proceso)
         def item = Item.get(params.item)
         def bodega = Bodega.get(params.bodega)
@@ -164,56 +165,79 @@ class DetalleFacturaController extends cratos.seguridad.Shield  {
             params.descuento = 0
         }
 
-        if(params.id){
-            detalle = DetalleFactura.get(params.id)
-//            detalle.descuento = params.descuento.toDouble()
-            detalle.precioUnitario = params.precio.toDouble()
-            detalle.centroCosto = centroCostos
-            detalle.bodega = bodega
-            detalle.cantidad = params.cantidad.toDouble()
-        }else{
-            if(especifico){
-                detalle = DetalleFactura.get(especifico.id)
-                detalle.cantidad = detalle.cantidad.toDouble() + params.cantidad.toDouble()
-//                detalle.descuento = params.descuento.toDouble()
-                detalle.precioUnitario = params.precio.toDouble()
+        def cn = dbConnectionService.getConnection()
+        def sql = "select * from lsta_item('${proceso?.id}','${bodega?.id}')"
+        def res = cn.rows(sql.toString())
+        def original
 
-            }else{
-                detalle = new DetalleFactura()
-                detalle.proceso = proceso
-                detalle.item = item
-//                detalle.descuento = params.descuento.toDouble()
+        if(params.original){
+            original = params.original.toInteger()
+        }else{
+            res.each { im->
+                if(item.codigo == im.itemcdgo){
+                    original = im.exst.toInteger()
+                }
+            }
+        }
+
+//        println("original " + original)
+
+        if(params.cantidad.toInteger() > original && proceso.tipoProceso.codigo.trim() != 'C'){
+            render "no_La cantidad ingresada es mayor a la cantidad en existencia"
+        }else{
+            if(params.id){
+                detalle = DetalleFactura.get(params.id)
                 detalle.precioUnitario = params.precio.toDouble()
                 detalle.centroCosto = centroCostos
                 detalle.bodega = bodega
                 detalle.cantidad = params.cantidad.toDouble()
+            }else{
+                if(especifico){
+                    detalle = DetalleFactura.get(especifico.id)
+                    if(detalle.cantidad.toDouble() + params.cantidad.toDouble() > original && proceso.tipoProceso.codigo.trim() != 'C'){
+                        render "no_La cantidad ingresada es mayor a la cantidad en existencia"
+                    }else{
+                        detalle.cantidad = detalle.cantidad.toDouble() + params.cantidad.toDouble()
+                        detalle.precioUnitario = params.precio.toDouble()
+                    }
+                }else{
+                    detalle = new DetalleFactura()
+                    detalle.proceso = proceso
+                    detalle.item = item
+                    detalle.precioUnitario = params.precio.toDouble()
+                    detalle.centroCosto = centroCostos
+                    detalle.bodega = bodega
+                    detalle.cantidad = params.cantidad.toDouble()
+                }
             }
-        }
 
 //        println("tipo " + proceso.tipoProceso.codigo)
 
-        switch (proceso.tipoProceso.codigo.trim()){
-            case 'C':
-                detalle.descuento = params.descuento.toDouble()
-                break
-            case 'V':
-                detalle.descuento = params.descuento.toDouble()
-                break
-            case "T":
-                detalle.descuento = 0
-                break
-            case 'NC':
-                detalle.descuento = params.descuento.toDouble()
-                break
+            switch (proceso.tipoProceso.codigo.trim()){
+                case 'C':
+                    detalle.descuento = params.descuento.toDouble()
+                    break
+                case 'V':
+                    detalle.descuento = params.descuento.toDouble()
+                    break
+                case "T":
+                    detalle.descuento = 0
+                    break
+                case 'NC':
+                    detalle.descuento = params.descuento.toDouble()
+                    break
+            }
+
+            try{
+                detalle.save(flush: true)
+                render "ok_Detalle guardado correctamente"
+            }catch (e){
+                println("error al grabar item " + e)
+                render "no_Error al guardar el detalle"
+            }
         }
 
-        try{
-            detalle.save(flush: true)
-            render "ok"
-        }catch (e){
-            println("error al grabar item " + e)
-            render "no"
-        }
+
 
     }
 
@@ -240,10 +264,10 @@ class DetalleFacturaController extends cratos.seguridad.Shield  {
         def detalle = DetalleFactura.get(params.detalle)
 
         try{
-           detalle.delete(flush: true)
+            detalle.delete(flush: true)
             render "ok"
         }catch (e){
-           println("error al borrar el detalle " + e)
+            println("error al borrar el detalle " + e)
             render "no"
         }
     }

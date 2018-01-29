@@ -243,10 +243,10 @@
     $("#btnGuardar").click(function () {
         var idDet = $("#idDetalle").val();
         guardarDetalle(idDet)
-        $("#btnBuscar").removeClass('hidden');
-        $("#btnAgregar").removeClass('hidden');
-        $("#btnGuardar").addClass('hidden');
-        $("#btnCancelar").addClass('hidden');
+//        $("#btnBuscar").removeClass('hidden');
+//        $("#btnAgregar").removeClass('hidden');
+//        $("#btnGuardar").addClass('hidden');
+//        $("#btnCancelar").addClass('hidden');
     });
 
     function guardarDetalle(id) {
@@ -256,6 +256,7 @@
         var descuento = $("#descuentoItem").val();
         var bodega = $("#bodegas").val();
         var centro = $("#centros").val();
+        var original = $("#cantiOriginal").val();
         if (!item) {
             log("Debe seleccionar un item!", 'error')
         } else {
@@ -270,16 +271,18 @@
                     bodega: bodega,
                     centro: centro,
                     proceso: '${proceso?.id}',
-                    id: id
-
+                    id: id,
+                    original: original
                 },
                 success: function (msg) {
-                    if (msg == 'ok') {
-                        log("Item guardado correctamente!", "success");
+                    var parts = msg.split("_");
+                    if (parts[0] == 'ok') {
+                        log(parts[1], "success");
                         cargarTablaDetalle();
                         cancelar();
+                        ocultar();
                     } else {
-                        log("Error al agregar el item al detalle", "error");
+                        log(parts[1], "error");
                     }
                 }
             });
@@ -309,6 +312,8 @@
         if (isNaN($(this).val()))
             $(this).val("1")
         if ($(this).val() == "")
+            $(this).val("1")
+        if ($(this).val() == 0)
             $(this).val("1")
     });
 
@@ -359,18 +364,18 @@
     });
 
 
-    $( document ).ready(function() {
-        if(${proceso?.tipoProceso?.codigo?.trim() == 'C'}){
-            $(".canti").keyup(function () {
-                calcularTotal();
-            });
-        }else{
-            $(".canti").keyup(function () {
-                verificarExistencia();
-                calcularTotal();
-            });
-        }
-    });
+    %{--$( document ).ready(function() {--}%
+        %{--if(${proceso?.tipoProceso?.codigo?.trim() == 'C'}){--}%
+            %{--$(".canti").keyup(function () {--}%
+                %{--calcularTotal();--}%
+            %{--});--}%
+        %{--}else{--}%
+            %{--$(".canti").keyup(function () {--}%
+                %{--verificarExistencia();--}%
+                %{--calcularTotal();--}%
+            %{--});--}%
+        %{--}--}%
+    %{--});--}%
 
     $(".desc").keyup(function () {
         calcularTotal();
@@ -402,23 +407,20 @@
 
     }
 
-    function verificarExistencia () {
-        var cantidad = $(".canti").val()
-        var item = $("#idItem").val()
-        var original = $("#cantiOriginal").val()
-
-        if(Math.round(cantidad*100)/100 > Math.round(original*100)/100){
-            $(".canti").val(original)
-        }
-    }
+//    function verificarExistencia () {
+//        var cantidad = $(".canti").val()
+//        var item = $("#idItem").val()
+//        var original = $("#cantiOriginal").val()
+//
+//        if(Math.round(cantidad*100)/100 > Math.round(original*100)/100){
+//            $(".canti").val(original)
+//        }
+//    }
 
 
     $("#btnCancelar").click(function () {
         cancelar();
-        $("#btnBuscar").removeClass('hidden');
-        $("#btnAgregar").removeClass('hidden');
-        $("#btnGuardar").addClass('hidden');
-        $("#btnCancelar").addClass('hidden');
+        ocultar();
     });
 
     function cancelar() {
@@ -430,6 +432,14 @@
         $("#descuentoItem").val('');
         $("#idItem").val('');
         $("#totalItem").val('').attr('readonly', false);
+        $("#cantiOriginal").val('')
+    }
+
+    function ocultar() {
+        $("#btnBuscar").removeClass('hidden');
+        $("#btnAgregar").removeClass('hidden');
+        $("#btnGuardar").addClass('hidden');
+        $("#btnCancelar").addClass('hidden');
     }
 
 
