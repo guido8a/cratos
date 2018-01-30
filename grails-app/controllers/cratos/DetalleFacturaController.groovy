@@ -237,8 +237,6 @@ class DetalleFacturaController extends cratos.seguridad.Shield  {
             }
         }
 
-
-
     }
 
     def tablaDetalle_ajax() {
