@@ -975,7 +975,7 @@
     function cargarCompPago() {
 //        var idComprobante = $("#comprobanteSel").val();
         var idProveedor = $("#prve_id").val();
-        console.log('buca prve...');
+//        console.log('buca prve...');
         $.ajax({
             type: 'POST',
             async: 'true',

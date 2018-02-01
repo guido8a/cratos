@@ -12,7 +12,7 @@
 </div>
 <div class="col-xs-5">
     <g:textField name="numEstablecimiento" id="numEstablecimiento" readonly="true"  style="width: 50px"
-                 title="Número de Establecimento" value="${proceso?.facturaEstablecimiento?:estb}"/> -
+                 title="Número de Establecimento" value="${proceso?.facturaEstablecimiento ? (proceso?.facturaEstablecimiento?.length() >= 3 ?  proceso?.facturaEstablecimiento :  (proceso?.facturaEstablecimiento?.length() == 2 ? "0" + proceso?.facturaEstablecimiento : "00" + proceso?.facturaEstablecimiento)) : (String.valueOf(estb).length() >= 3 ? estb : (String.valueOf(estb).length() == 2 ? "0" + estb : "00" + estb ))}"/> -
     <g:textField name="numeroEmision" id="numEmision" readonly="true" style="width: 50px"
                  title="Numeración Emisión" value="${proceso?.facturaPuntoEmision?:emsn}"/>
 

@@ -1651,6 +1651,7 @@ class ProcesoController extends cratos.seguridad.Shield {
 
             if(libretin?.size() > 0) {
 //            if(lb.size() > 0) {
+
                 [libretin: libretin, estb: libretin[0].numeroEstablecimiento, emsn: libretin[0].numeroEmision, nmro: nmro,
                  tipo: tipo, proceso: proceso]
 //                [libretin: lb, estb: lb[0].numeroEstablecimiento, emsn: lb[0].numeroEmision, nmro: nmro,
