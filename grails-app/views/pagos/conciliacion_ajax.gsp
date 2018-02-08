@@ -75,14 +75,14 @@ td{
                             <g:each in="${res}" var="con">
                                 <g:if test="${con?.tpps == 'P'}">
                                     <tr style="width: 100%">
-                                        <td style="width: 14%"></td>
+                                        <td style="width: 14%">${con.refe}</td>
                                         <td style="width: 10%">${con.dcmt}</td>
                                         <td style="width: 20%">${con.axlrdscr}</td>
                                         <td style="width: 15%">${con.prve}</td>
                                         <td style="width: 12%"><g:formatDate date="${con.axlrfcpg}" format="dd-MM-yyyy"/></td>
                                         <td class="derecha" style="width: 10%">${con.axlrdebe}</td>
                                         <td class="derecha" style="width: 10%">${con.axlrhber}</td>
-                                        <td style="width: 9%"> <g:checkBox name="valores_name" id="valores" class="form-control valo" data-on-Label="Si"/></td>
+                                        <td style="width: 9%"> <g:checkBox name="valores_name" id="valores" data-id="${con?.axlr__id}" class="form-control valo" data-on-Label="Si" value="${cratos.Auxiliar.get(con?.axlr__id).pagado == 'S'}"/></td>
                                     </tr>
                                 </g:if>
                             </g:each>
@@ -139,7 +139,8 @@ td{
                                         <td style="width: 12%"><g:formatDate date="${con.axlrfcpg}" format="dd-MM-yyyy"/></td>
                                         <td class="derecha" style="width: 10%">${con.axlrdebe}</td>
                                         <td class="derecha" style="width: 10%">${con.axlrhber}</td>
-                                        <td style="width: 9%"> <g:checkBox name="valores2_name" id="valores2" class="form-control valo2" data-on-Label="Si"/></td>
+                                        %{--<td style="width: 9%"> <g:checkBox name="valores2_name" id="valores2" class="form-control valo2" data-on-Label="Si"/></td>--}%
+                                        <td style="width: 9%"> <g:checkBox name="valores_name" id="valores" data-id="${con?.axlr__id}" class="form-control valo" data-on-Label="Si" value="${cratos.Auxiliar.get(con?.axlr__id).pagado == 'S'}"/></td>
                                     </tr>
                                 </g:if>
                             </g:each>
@@ -196,7 +197,9 @@ td{
                                         <td style="width: 12%"><g:formatDate date="${con.axlrfcpg}" format="dd-MM-yyyy"/></td>
                                         <td class="derecha" style="width: 10%">${con.axlrdebe}</td>
                                         <td class="derecha" style="width: 10%">${con.axlrhber}</td>
-                                        <td style="width: 9%"> <g:checkBox name="valores3_name" id="valores3" class="form-control valo3" data-on-Label="Si"/></td>
+                                        %{--<td style="width: 9%"> <g:checkBox name="valores3_name" id="valores3" class="form-control valo3" data-on-Label="Si"/></td>--}%
+                                        <td style="width: 9%"> <g:checkBox name="valores_name" id="valores" data-id="${con?.axlr__id}" class="form-control valo" data-on-Label="Si" value="${cratos.Auxiliar.get(con?.axlr__id).pagado == 'S'}"/></td>
+
                                     </tr>
                                 </g:if>
                             </g:each>
@@ -252,7 +255,9 @@ td{
                                         <td style="width: 12%"><g:formatDate date="${con.axlrfcpg}" format="dd-MM-yyyy"/></td>
                                         <td class="derecha" style="width: 10%">${con.axlrdebe}</td>
                                         <td class="derecha" style="width: 10%">${con.axlrhber}</td>
-                                        <td style="width: 9%"> <g:checkBox name="valores4_name" id="valores4" class="form-control valo4" data-on-Label="Si"/></td>
+                                        %{--<td style="width: 9%"> <g:checkBox name="valores4_name" id="valores4" class="form-control valo4" data-on-Label="Si"/></td>--}%
+                                        <td style="width: 9%"> <g:checkBox name="valores_name" id="valores" data-id="${con?.axlr__id}" class="form-control valo" data-on-Label="Si" value="${cratos.Auxiliar.get(con?.axlr__id).pagado == 'S'}"/></td>
+
                                     </tr>
                                 </g:if>
                             </g:each>
@@ -310,7 +315,7 @@ td{
 
         $('#accordion').on('hide.bs.collapse', toggleChevron);
         $('#accordion').on('show.bs.collapse', toggleChevron);
-    })
+    });
 
 
     $(function() {
@@ -319,8 +324,31 @@ td{
     });
 
 
+    $(".valo").change(function () {
+        openLoader("Guardando...");
+        var valores = $(this).prop('checked');
+        var auxiliar = $(this).data("id");
+        $.ajax({
+            type:'POST',
+            url:'${createLink(controller: 'pagos', action: 'guardarConciliacion_ajax')}',
+            data:{
+                valor: valores,
+                aux: auxiliar
+            },
+            success: function (msg){
+                closeLoader();
+                if(msg == 'ok'){
+                    log("Guardado correctamente!", "success")
+                }else{
+                    log("Error al guardar", "error")
+                }
+            }
+        });
+    });
+
+
 </script>
 
 
-</body>
-</html>
+%{--</body>--}%
+%{--</html>--}%

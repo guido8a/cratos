@@ -13,6 +13,8 @@ class Auxiliar implements Serializable {
     String factura
     String documento
     Auxiliar afecta
+    Date fechaRecepcionPago
+    String pagado = 'N'
 
     static auditable = true
 
@@ -35,6 +37,8 @@ class Auxiliar implements Serializable {
             factura column: 'axlrfctr'
             documento column: 'axlrrefe'
             afecta column: 'axlrpdre'
+            fechaRecepcionPago column: 'axlrfcrp'
+            pagado column: 'axlrpgdo'
         }
     }
     static constraints = {
@@ -49,6 +53,8 @@ class Auxiliar implements Serializable {
         factura (blank: true, nullable: true)
         documento (blank: true, nullable: true)
         afecta (blank: true, nullable: true)
+        fechaRecepcionPago (blank: true, nullable: true)
+        pagado(blank: true, nullable: true)
     }
 
 }

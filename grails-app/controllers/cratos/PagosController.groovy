@@ -42,5 +42,29 @@ class PagosController extends cratos.seguridad.Shield {
         return[res: res, pago: cp, transferencia: ct, credito: cnc, debito: cnd]
     }
 
+    def guardarConciliacion_ajax () {
+//        println("params " + params)
+
+        def auxiliar = Auxiliar.get(params.aux)
+        def fechaRegistro = new Date();
+
+        if(params.valor == 'true'){
+            auxiliar.fechaRecepcionPago = fechaRegistro
+            auxiliar.pagado = 'S'
+        }else{
+            auxiliar.fechaRecepcionPago = null
+            auxiliar.pagado = 'N'
+        }
+
+        try{
+            auxiliar.save(flush: true)
+            render "ok"
+        }catch (e){
+            println("error al marcar el pago en conciliacion bancaria")
+            render "no"
+        }
+
+    }
+
 
 }
