@@ -152,69 +152,73 @@
                 var $node = $("#" + nodeStrId);
                 var nodeId = nodeStrId.split("_")[1];
                 var nodeLvl = $node.attr("level");
+                var nodeType = $node.data("jstree").type;
 
-                var parentStrId = node.parent;
-                var $parent = $("#" + parentStrId);
-                var parentId = parentStrId.split("_")[1];
+//                var parentStrId = node.parent;
+//                var $parent = $("#" + parentStrId);
+//                var parentId = parentStrId.split("_")[1];
 
                 var nodeHasChildren = $node.hasClass("hasChildren");
                 var nodeOcupado = $node.hasClass("ocupado");
                 var nodeConGestores = $node.hasClass("conGestores");
                 var nodeConAsientos = $node.hasClass("conAsientos");
 
-                var items = {
-                    crear  : {
-                        label  : "Nueva cuenta hija",
-                        icon   : "fa fa-plus-circle text-success",
-                        action : function (obj) {
-                            createEditRow(nodeId, nodeLvl, "Crear");
+                if (nodeType == "root") {
+                    var items = {
+                        crear    : {
+                            label  : "Nuevo cuenta hija",
+                            icon   : "fa fa-plus-circle text-success",
+                            action : function (obj) {
+                                createEditRow(nodeId, 0,"Crear");
+                            }
                         }
-                    },
-                    editar : {
-                        label  : "Editar cuenta",
-                        icon   : "fa fa-pencil text-info",
-                        action : function (obj) {
-                            createEditRow(nodeId, nodeLvl, "Editar");
-                        }
-                    },
-                    ver    : {
-                        label  : "Ver cuenta",
-                        icon   : "fa fa-laptop text-info",
-                        action : function (obj) {
-                            $.ajax({
-                                type    : "POST",
-                                url     : "${createLink(action:'show_ajax')}",
-                                data    : {
-                                    id : nodeId
-                                },
-                                success : function (msg) {
-                                    bootbox.dialog({
-                                        title   : "Ver Cuenta",
-                                        message : msg,
-                                        buttons : {
-                                            ok : {
-                                                label     : "Aceptar",
-                                                className : "btn-primary",
-                                                callback  : function () {
+                    };
+                }else{
+
+                    items = {
+                        crear  : {
+                            label  : "Nueva cuenta hija",
+                            icon   : "fa fa-plus-circle text-success",
+                            action : function (obj) {
+                                createEditRow(nodeId, nodeLvl, "Crear");
+                            }
+                        },
+                        editar : {
+                            label  : "Editar cuenta",
+                            icon   : "fa fa-pencil text-info",
+                            action : function (obj) {
+                                createEditRow(nodeId, nodeLvl, "Editar");
+                            }
+                        },
+                        ver    : {
+                            label  : "Ver cuenta",
+                            icon   : "fa fa-laptop text-info",
+                            action : function (obj) {
+                                $.ajax({
+                                    type    : "POST",
+                                    url     : "${createLink(action:'show_ajax')}",
+                                    data    : {
+                                        id : nodeId
+                                    },
+                                    success : function (msg) {
+                                        bootbox.dialog({
+                                            title   : "Ver Cuenta",
+                                            message : msg,
+                                            buttons : {
+                                                ok : {
+                                                    label     : "Aceptar",
+                                                    className : "btn-primary",
+                                                    callback  : function () {
+                                                    }
                                                 }
                                             }
-                                        }
-                                    });
-                                }
-                            });
+                                        });
+                                    }
+                                });
+                            }
                         }
-                    }
-                };
-
-//                if (!nodeHasChildren){
-//                    items.mover =  {
-//                        label  : "Cambiar de padre",
-//                        icon   : "fa fa-refresh text-danger",
-//                        action : function (obj) {
-//                            cambiarPadre(nodeId, nodeLvl);
-//                        }
-//                    }
-//                }
+                    };
+                }
 
                 if (!nodeHasChildren && !nodeOcupado) {
                     items.eliminar = {

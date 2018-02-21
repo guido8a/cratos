@@ -170,6 +170,7 @@ class CuentaController extends cratos.seguridad.Shield {
         Cuenta[] hijos
 
         if (id == "#") {
+            println("aqui ")
             //root
             def hh = Cuenta.countByNivelAndEmpresa(Nivel.get(1), session.empresa, [sort: "numero"])
             if (hh > 0) {
@@ -569,7 +570,6 @@ class CuentaController extends cratos.seguridad.Shield {
     } //show para cargar con ajax en un dialog
 
     def form_ajax() {
-//        println("---> " + params)
         def cuentaInstance = new Cuenta(params)
         def hijos = 0
         if (params.id) {

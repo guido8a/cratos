@@ -56,8 +56,8 @@ td{
                 <table class="table table-bordered table-hover table-condensed" style="margin-top: 10px">
                     <thead>
                     <tr style="width: 100%">
-                        <th style="width: 14%"># Cheque</th>
-                        <th style="width: 10%">Documento</th>
+                        <th style="width: 14%">Documento</th>
+                        <th style="width: 12%">Factura</th>
                         <th style="width: 20%">Descripción</th>
                         <th style="width: 15%">Beneficiario</th>
                         <th style="width: 12%">Fecha</th>
@@ -113,8 +113,8 @@ td{
                 <table class="table table-bordered table-hover table-condensed" style="margin-top: 10px">
                     <thead>
                     <tr style="width: 100%">
-                        <th style="width: 14%"># Cheque</th>
-                        <th style="width: 10%">Documento</th>
+                        <th style="width: 14%">Documento</th>
+                        <th style="width: 12%">Factura</th>
                         <th style="width: 20%">Descripción</th>
                         <th style="width: 15%">Beneficiario</th>
                         <th style="width: 12%">Fecha</th>
@@ -171,8 +171,8 @@ td{
                 <table class="table table-bordered table-hover table-condensed" style="margin-top: 10px">
                     <thead>
                     <tr style="width: 100%">
-                        <th style="width: 14%"># Cheque</th>
-                        <th style="width: 10%">Documento</th>
+                        <th style="width: 14%">Documento</th>
+                        <th style="width: 12%">Factura</th>
                         <th style="width: 20%">Descripción</th>
                         <th style="width: 15%">Beneficiario</th>
                         <th style="width: 12%">Fecha</th>
@@ -230,8 +230,8 @@ td{
                 <table class="table table-bordered table-hover table-condensed" style="margin-top: 10px">
                     <thead>
                     <tr style="width: 100%">
-                        <th style="width: 14%"># Cheque</th>
-                        <th style="width: 10%">Documento</th>
+                        <th style="width: 14%">Documento</th>
+                        <th style="width: 12%">Factura</th>
                         <th style="width: 20%">Descripción</th>
                         <th style="width: 15%">Beneficiario</th>
                         <th style="width: 12%">Fecha</th>

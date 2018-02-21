@@ -737,7 +737,7 @@ class Reportes2Controller {
     }
 
     def costoVentas () {
-        //        println("params " + params)
+                println("params cv" + params)
         def bodega = Bodega.get(params.bodega)
         def departamento = DepartamentoItem.get(params.departamento)
         def desde = new Date().parse("dd-MM-yyyy", params.desde)
