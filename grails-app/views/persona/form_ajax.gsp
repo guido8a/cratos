@@ -18,7 +18,7 @@
 
                     <div class="col-md-6">
                         <g:select id="empresa" name="empresa.id" from="${cratos.Empresa.list()}" optionKey="id"
-                            disabled="${session.usuario.login == 'admin' ? 'true' : 'false'}"
+                            disabled="${session.perfil.id == 1 ? false : true}"
                                   value="${session.empresa.id}" optionValue="nombre" class="many-to-one form-control text-info"
                                   noSelection="['null': 'Seleccione...']"/>
 
