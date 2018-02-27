@@ -14,6 +14,8 @@ class DocumentoEmpresa implements Serializable {
     Date fechaInicio
     Date fechaFin
 
+    Establecimiento establecimiento
+
     static mapping = {
         table 'fcdt'
         cache usage: 'read-write', include: 'non-lazy'
@@ -33,6 +35,7 @@ class DocumentoEmpresa implements Serializable {
             digitosEnSecuencial column: 'fcdtdgto'
             fechaInicio column: 'fcdtfcin'
             fechaFin column: 'fcdtfcfn'
+            establecimiento column: 'estb__id'
         }
     }
     static constraints = {
@@ -43,7 +46,7 @@ class DocumentoEmpresa implements Serializable {
         numeroHasta(blank: false, nullable: false)
         fechaAutorizacion(blank: false, nullable: false)
         tipo(inList: ['F' , 'R', 'NC', 'ND'], blank: false, nullable: false)
-        numeroEstablecimiento(blank: false, nullable: false)
+        numeroEstablecimiento(blank: true, nullable: true)
         numeroEmision(blank: false, nullable: false)
         digitosEnSecuencial(blank: false, nullable: false)
         fechaInicio(blank: false, nullable: false)

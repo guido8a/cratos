@@ -37,7 +37,6 @@
                 </div>
             </div>
 
-
             <div class="col2">
                 <div class="form-group ${hasErrors(bean: documentoEmpresaInstance, field: 'autorizacion', 'error')} ">
                     <span class="grupo">
@@ -59,8 +58,8 @@
                         </label>
                         <div class="col-md-4">
                             <g:select class="form-control required cmbRequired" name="numeroEstablecimiento" id="numeroEstablecimiento"
-                                      from="${establecimientos}" label="Proceso tipo: " value="${documentoEmpresaInstance?.numeroEstablecimiento}" optionKey="key"
-                                      optionValue="value" title="Establecimientos" />
+                                      from="${establecimientos}" label="Proceso tipo: " value="${documentoEmpresaInstance?.numeroEstablecimiento}" optionKey="id"
+                                      optionValue="numero" title="Establecimientos" />
                         </div>
                     </span>
                 </div>

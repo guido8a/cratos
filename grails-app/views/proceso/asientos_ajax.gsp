@@ -88,26 +88,26 @@
                         class="derecha">${asiento.haber ? g.formatNumber(number: asiento.haber, format: '##,##0', minFractionDigits: 2, maxFractionDigits: 2) : 0.00}</td>
                     <td width="130px" style="text-align: center">
                         <div class="btn-group">
-                        <g:if test="${asiento?.comprobante?.registrado != 'S'}">
+                            <g:if test="${asiento?.comprobante?.registrado != 'S'}">
                                 <a href="#" class="btn btn-success btn-sm btnEditarAsiento" idAs="${asiento?.id}"
                                    title="Editar asiento">
                                     <i class="fa fa-pencil"></i>
                                 </a>
-                        </g:if>
-                        <a href="#" class="btn btn-azul btn-sm btnCentroCostos" idAs="${asiento?.id}" nomAs="${asiento?.cuenta?.descripcion}"
-                           title="Centro de Costos">
-                            <i class="fa fa-dollar"></i>
-                        </a>
-                        <g:if test="${asiento?.comprobante?.registrado != 'S'}">
-                            <a href="#" class="btn btn-warning btn-sm btnAgregarAuxiliar" idAs="${asiento?.id}"
-                               title="Agregar auxiliar">
-                                <i class="fa fa-plus"></i>
+                            </g:if>
+                            <a href="#" class="btn btn-azul btn-sm btnCentroCostos" idAs="${asiento?.id}" nomAs="${asiento?.cuenta?.descripcion}"
+                               title="Centro de Costos">
+                                <i class="fa fa-dollar"></i>
                             </a>
-                            <a href="#" class="btn btn-danger btn-sm btnEliminarAsiento" idAs="${asiento?.id}"
-                               title="Eliminar asiento">
-                                <i class="fa fa-times"></i>
-                            </a>
-                        </g:if>
+                            <g:if test="${asiento?.comprobante?.registrado != 'S'}">
+                                <a href="#" class="btn btn-warning btn-sm btnAgregarAuxiliar" idAs="${asiento?.id}"
+                                   title="Agregar auxiliar">
+                                    <i class="fa fa-plus"></i>
+                                </a>
+                                <a href="#" class="btn btn-danger btn-sm btnEliminarAsiento" idAs="${asiento?.id}"
+                                   title="Eliminar asiento">
+                                    <i class="fa fa-times"></i>
+                                </a>
+                            </g:if>
                         </div>
                     </td>
                 </tr>
@@ -176,7 +176,7 @@
     $(".btnVerAuxiliar").click(function () {
         var aux = $(this).attr('idAuxi');
         $.ajax({
-           type :'POST',
+            type :'POST',
             url: '${createLink(controller: 'proceso', action: 'verAuxiliar_ajax')}',
             data:{
                 auxiliar: aux,

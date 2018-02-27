@@ -49,7 +49,7 @@
                 <g:each in="${documentoEmpresaInstanceList}" status="i" var="documentoEmpresaInstance">
                     <g:if test="${documentoEmpresaInstance.empresa.id == session.empresa.id}">
                         <tr data-id="${documentoEmpresaInstance.id}" data-usado="${cratos.Proceso.findByDocumentoEmpresa(documentoEmpresaInstance)?.id > 0}">
-                            <td>${documentoEmpresaInstance?.id} ${documentoEmpresaInstance?.tipo == 'F'? 'Factura' : (documentoEmpresaInstance?.tipo == 'R'? 'Retención' : (documentoEmpresaInstance?.tipo == 'ND'? 'Nota de Débito' : 'Nota de Cŕedito'))}</td>
+                            <td>${documentoEmpresaInstance?.tipo == 'F'? 'Factura' : (documentoEmpresaInstance?.tipo == 'R'? 'Retención' : (documentoEmpresaInstance?.tipo == 'ND'? 'Nota de Débito' : 'Nota de Cŕedito'))}</td>
                             <td>${fieldValue(bean: documentoEmpresaInstance, field: "autorizacion")}</td>
                             <td class="derecha">${fieldValue(bean: documentoEmpresaInstance, field: "numeroEstablecimiento")}</td>
                             <td class="derecha">${fieldValue(bean: documentoEmpresaInstance, field: "numeroEmision")}</td>

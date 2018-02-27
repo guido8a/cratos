@@ -35,16 +35,18 @@ class DocumentoEmpresaController extends cratos.seguridad.Shield {
         } //es edit
 
 
-        def estb = Empresa.get(session.empresa.id).establecimientos.tokenize(',')
-        def mp = [:]
-        estb.each {
-            mp[it] = it
-        }
+//        def estb = Empresa.get(session.empresa.id).establecimientos.tokenize(',')
+//        def mp = [:]
+//        estb.each {
+//            mp[it] = it
+//        }
+        def empresa = Empresa.get(session.empresa.id)
+        def establecimientos = Establecimiento.findAllByEmpresa(empresa)
 
 
         def lista = ['F':'Factura', "R": 'Retención', "ND": 'Nota de Débito', "NC": 'Nota de Crédito']
 
-        return [documentoEmpresaInstance: documentoEmpresaInstance, lista: lista, establecimientos: mp]
+        return [documentoEmpresaInstance: documentoEmpresaInstance, lista: lista, establecimientos: establecimientos]
     } //form_ajax
 
     def save() {
@@ -125,9 +127,9 @@ class DocumentoEmpresaController extends cratos.seguridad.Shield {
         println("params " + params)
         def documentoEmpresa
         def empresa = Empresa.get(session.empresa.id)
+        def establecimiento = Establecimiento.get(params.numeroEstablecimiento)
         def fechaFin = new Date().parse("dd-MM-yyyy",params."fechaFin_input")
         def fechaInicio = new Date().parse("dd-MM-yyyy",params."fechaAutorizacion_input")
-//        def fechaAutorizacion = new Date().parse("dd-MM-yyyy",params."fechaAutorizacion_input")
         def cn = dbConnectionService.getConnection()
         def st = ''
 
@@ -160,6 +162,8 @@ class DocumentoEmpresaController extends cratos.seguridad.Shield {
         documentoEmpresa.fechaInicio = fechaInicio
         documentoEmpresa.fechaFin = fechaFin
         documentoEmpresa.empresa = empresa
+        documentoEmpresa.establecimiento = establecimiento
+        documentoEmpresa.numeroEstablecimiento = establecimiento.numero
 
         try {
             documentoEmpresa.save(flush: true)
