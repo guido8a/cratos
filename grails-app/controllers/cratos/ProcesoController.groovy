@@ -1627,7 +1627,7 @@ class ProcesoController extends cratos.seguridad.Shield {
             render "${fcdt.numeroEstablecimiento}_${fcdt.numeroEmision}_${nmro}"
         } else {
             sql = "select fcdt__id id, fcdtdsde numeroDesde, fcdthsta numeroHasta, fcdtfcat fechaAutorizacion, " +
-                    "estb__id numeroEstablecimiento, fcdtnmpe numeroEmision " +
+                    "fcdtnmes numeroEstablecimiento, fcdtnmpe numeroEmision " +
                     "from fcdt where to_date('${params.fcha}', 'DD-MM-YYYY') between fcdtfcin and fcdtfcfn and " +
                     "fcdttipo = '${tpdc}' and estb__id = '${params.nmes}' and empr__id = ${session.empresa.id} order by fcdtfcin"
             println "libretin: $sql"
