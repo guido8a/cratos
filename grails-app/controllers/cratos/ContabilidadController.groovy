@@ -84,16 +84,27 @@ class ContabilidadController extends cratos.seguridad.Shield {
             order("descripcion","asc")
         }
         def cntaCredito = Cuenta.withCriteria {
-            ilike("numero", '102%')
+            ilike("numero", '1%')
             eq("empresa", empresa)
             order("descripcion","asc")
         }
         def cntaRetencion = Cuenta.withCriteria {
-            ilike("numero", '201%')
+            ilike("numero", '2%')
             eq("empresa", empresa)
             order("descripcion","asc")
         }
-        return [contabilidadInstance: contabilidadInstance, cuentas: cuentas, cntacr: cntaCredito, cntart: cntaRetencion]
+        def cntaCosto = Cuenta.withCriteria {
+            ilike("numero", '5%')
+            eq("empresa", empresa)
+            order("descripcion","asc")
+        }
+        def cntaInvt = Cuenta.withCriteria {
+            ilike("numero", '1%')
+            eq("empresa", empresa)
+            order("descripcion","asc")
+        }
+        return [contabilidadInstance: contabilidadInstance, cuentas: cuentas, cntacr: cntaCredito, cntart: cntaRetencion,
+            cntacsto: cntaCosto, cntainvt: cntaInvt]
     } //form para cargar con ajax en un dialog
 
     def save_ajax() {

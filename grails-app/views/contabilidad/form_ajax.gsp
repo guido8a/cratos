@@ -128,27 +128,29 @@
             </span>
         </div>
 
-        <div class="form-group ${hasErrors(bean: contabilidadInstance, field: 'retencionCompraRenta', 'error')} required">
+        <div class="form-group ${hasErrors(bean: contabilidadInstance, field: 'costos', 'error')} required">
             <span class="grupo">
-                <label for="descripcion" class="col-md-4 control-label text-info">
+                <label for="costos" class="col-md-4 control-label text-info">
                     Costo de ventas
                 </label>
 
                 <div class="col-md-6">
-                    <g:select name="costoVentas" from="${cntart}" optionValue="descripcion" optionKey="id" class="form-control" value="${contabilidadInstance?.retencionCompraRenta?.id}"/>
+                    <g:select name="costos" from="${cntacsto}" optionValue="descripcion" optionKey="id" class="form-control"
+                              value="${contabilidadInstance?.costos?.id}"/>
                 </div>
                 *
             </span>
         </div>
 
-        <div class="form-group ${hasErrors(bean: contabilidadInstance, field: 'retencionCompraRenta', 'error')} required">
+        <div class="form-group ${hasErrors(bean: contabilidadInstance, field: 'inventario', 'error')} required">
             <span class="grupo">
-                <label for="descripcion" class="col-md-4 control-label text-info">
+                <label for="inventario" class="col-md-4 control-label text-info">
                     Inventarios
                 </label>
 
                 <div class="col-md-6">
-                    <g:select name="inventarios" from="${cntart}" optionValue="descripcion" optionKey="id" class="form-control" value="${contabilidadInstance?.retencionCompraRenta?.id}"/>
+                    <g:select name="inventario" from="${cntainvt}" optionValue="descripcion" optionKey="id"
+                              class="form-control" value="${contabilidadInstance?.inventario?.id}"/>
                 </div>
                 *
             </span>
