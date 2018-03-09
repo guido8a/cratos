@@ -193,9 +193,13 @@
                                   optionValue="descripcion" style="margin-left: 80px; font-weight: bold"/>
                     </span>
                 </div>
-                <span class="col-md-3">
+                <span class="col-md-1">
 
                 </span>
+
+                <g:if test="${gestorInstance}">
+                 Genera comprobantes de:  ${tieneAsientos?.sort{it?.tipoComprobante?.descripcion}?.tipoComprobante?.descripcion?.unique() ?: ''}
+                </g:if>
 
                 <g:if test="${(gestorInstance?.estado != 'R') && band}">
                     <div class="btn-group col-md-3">
