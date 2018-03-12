@@ -1033,22 +1033,14 @@
             })
         });
 
-        /*
-         $("#btnFormaPago").click(function () {
-         $('#modal-formas-pago').modal('show')
-         })
-         */
 
         $("#btn_buscar").click(function () {
-//            console.log("clickf1")
             $('#modal-proveedor').modal('show')
         });
 
         $("#prve").dblclick(function () {
-//            console.log("clickfff")
             $("#btn_buscar").click()
         });
-
 
         $("#agregarFP").click(function(){
             var band = true

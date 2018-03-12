@@ -74,16 +74,7 @@
                 Imprimir retención
             </a>
         </g:if>
-
-
-    %{--<g:link controller="reportes3" action="imprimirRetencion" class="btn btn-primary btnRetencion"--}%
-    %{--id="${proceso?.id}" params="[empresa: session.empresa.id]" style="margin-bottom: 10px;">--}%
-    %{--<i class="fa fa-print"></i>--}%
-    %{--Imprimir retención--}%
-    %{--</g:link>--}%
-
     </div>
-
 </div>
 
 <div style="padding: 0.7em; margin-top:5px; display: none;" class="alert alert-danger ui-corner-all"
@@ -180,11 +171,11 @@
         <div class="linea"></div>
         <div class="fila" style="margin-top: 30px">
             <div class="col-xs-7">
-                <label>Retención Impuesto a la Renta Bienes </label>
+                <label>Retención Impuesto a la Renta Bienes</label>
                 <g:select class="form-control" name="conceptoRenta"
                           from="${crirBienes}"
                           optionKey="id" optionValue="${{ it.codigo + ' : ' + it.porcentaje + '% ' + it.descripcion }}"
-                          value="${retencion?.conceptoRIRBienes?.id?:6}" noSelection="${['-1': 'Seleccione...']}"/>
+                          value="${retencion?.conceptoRIRBienes?.id ?: -1}" noSelection="${['-1': 'Seleccione...']}"/>
             </div>
 
             <div class="col-xs-2">
@@ -216,7 +207,7 @@
                 <g:select class="form-control" name="conceptoRentaSrvc"
                           from="${crirServicios}"
                           optionKey="id" optionValue="${{ it.codigo + ' - ' + it.descripcion }}"
-                          value="${retencion?.conceptoRIRServicios?.id?:-1}" noSelection="${['-1': 'Seleccione...']}"/>
+                          value="${retencion?.conceptoRIRServicios?.id ?: -1}" noSelection="${['-1': 'Seleccione...']}"/>
             </div>
 
             <div class="col-xs-2">
@@ -708,18 +699,19 @@
             }
         } else {
             if (concepto != '23') {
-                if( parseFloat($("#baseImponible").val()) != parseFloat($("#sumaRenta").val()) ) {
+                if( (parseFloat($("#baseImponible").val()) + parseFloat($("#baseRentaSrvc").val())) != parseFloat($("#sumaRenta").val()) ) {
+//                    console.log(parseFloat($('#baseImponible').val()) + parseFloat($("#baseRentaSrvc").val()));
+//                    console.log(parseFloat($('#sumaRenta').val()));
                     error += "<li>Revise los valores de base imponible Renta</li>"
                 }
                 if((pcivB != 7) || (pcivS != 7)) {
-//                    if( parseFloat($("#baseImponible").val()) != parseFloat($("#sumaIva").val()) ) {
                     if( parseFloat($("#ivaGenerado").val()) != parseFloat($("#sumaIva").val()) ) {
                         error += "<li>Revise los valores de base imponible IVA</li>"
                     }
                 }
             }
         }
-//        console.log('procesando...')
+
         if (error == '') {
             $("#divErroresDetalle").hide();
             openLoader("Guardando..");

@@ -887,8 +887,9 @@ class ProcesoController extends cratos.seguridad.Shield {
                 flash.message = "Proceso Anulado!"
                 redirect(action: 'buscarPrcs')
             } else {
-                flash.message = "No se puede anular el proceso!!"
-                redirect(action: 'buscarPrcs')
+                flash.message = "No se puede anular el proceso, el proceso ya se encuentra registrado!"
+                flash.tipo = "error"
+                redirect(action: 'nuevoProceso', id: proceso.id)
             }
 
         } else {
@@ -1840,7 +1841,7 @@ class ProcesoController extends cratos.seguridad.Shield {
 
     def cargaCrir_ajax () {
         def concepto = ConceptoRetencionImpuestoRenta.get(params.id)
-        println "cargaCrir_ajax params: $params --> porcentaje: ${concepto?.porcentaje}"
+//        println "cargaCrir_ajax params: $params --> porcentaje: ${concepto?.porcentaje}"
         render concepto?.porcentaje?:0
     }
 
@@ -1898,6 +1899,7 @@ class ProcesoController extends cratos.seguridad.Shield {
             return
         }
 
+
         if(params.conceptoRIRBienes != '-1') {
             retencion.conceptoRIRBienes = ConceptoRetencionImpuestoRenta.get(params.conceptoRIRBienes)
             retencion.baseRenta = params.baseRenta.toDouble()
@@ -1927,8 +1929,6 @@ class ProcesoController extends cratos.seguridad.Shield {
         } else {
             retencion.numero = 0
             retencion.numeroComprobante = null
-
-//            retencion.baseRenta = 0
             retencion.renta = 0
             retencion.baseRentaServicios = 0
             retencion.rentaServicios = 0
