@@ -1523,8 +1523,9 @@ class ProcesoController extends cratos.seguridad.Shield {
         def debe = Math.round(totalDebe*100)/100
         def haber = Math.round(totalHaber*100)/100
         def valor
+        def retencion = Retencion.findByProceso(proceso)
         if(comprobante?.tipo?.codigo == 'R'){
-            valor = Math.round(cratos.Retencion.findByProceso(proceso).total * 100)/100
+            valor = (retencion ?  Math.round(retencion?.total * 100)/100 : 0)
         }else{
             valor = Math.round(comprobante.proceso.valor*100)/100
         }
@@ -1773,7 +1774,9 @@ class ProcesoController extends cratos.seguridad.Shield {
         def fcdt = DocumentoEmpresa.get(params.fcdt)
         def nmro = params.serie.toInteger()
         def sql = ""
+
 //        println "nmro:; $nmro"
+//        println ("fcdt " + fcdt)
 
         if(nmro) {
             if(nmro >= fcdt?.numeroDesde && nmro <= fcdt?.numeroHasta) {

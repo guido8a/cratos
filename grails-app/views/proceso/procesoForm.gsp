@@ -541,39 +541,101 @@
     });
 
     $("#btnEnviarFactElect").click(function () {
-            bootbox.confirm("<i class='fa fa-exclamation-circle fa-3x pull-left text-warning text-shadow'></i><p>¿Está " +
-                "Está seguro de enviar la factura electrónica a </br> ${proceso?.proveedor?.nombre} " +
-                ".</p>", function (result) {
-                $.ajax({
-                    type: 'POST',
-                    url: "${createLink(controller: 'reportes3', action: 'enviar Mail2')}",
-                    data: {
-                        id: "${proceso?.id}",
-                        emp: '${session.empresa.id}',
-                        url: "${g.createLink(controller:'reportes3' , action: 'facturaElectronica')}?id=" + '${proceso?.id}' + "Wemp=${session.empresa.id}"
-                    },
-                    success: function (msg) {
-                        location.reload()
-                    }
-                });
+        bootbox.confirm("<i class='fa fa-exclamation-circle fa-3x pull-left text-warning text-shadow'></i><p>¿Está " +
+            "Está seguro de enviar la factura electrónica a </br> ${proceso?.proveedor?.nombre} " +
+            ".</p>", function (result) {
+            $.ajax({
+                type: 'POST',
+                url: "${createLink(controller: 'reportes3', action: 'enviar Mail2')}",
+                data: {
+                    id: "${proceso?.id}",
+                    emp: '${session.empresa.id}',
+                    url: "${g.createLink(controller:'reportes3' , action: 'facturaElectronica')}?id=" + '${proceso?.id}' + "Wemp=${session.empresa.id}"
+                },
+                success: function (msg) {
+                    location.reload()
+                }
+            });
 //            }
         })
     });
 
 
     $("#btnDocRetencion").click(function () {
-        var titulo = ""
-        var clase = ""
-        var mnsj = ""
-        if("${proceso?.retEstado == 'S'}") {
+        var titulo = "";
+        var clase = "";
+        var mnsj = "";
+
+        if(${proceso?.retEstado == 'S'}) {
             titulo = "Desregistrar";
-            clase = "btn-info";
+            clase = "btn-warning";
             mnsj = "Esta seguro de desregistrar esta retención?";
         } else {
             titulo = "Registrar";
             clase = "btn-info";
             mnsj = "Esta seguro de registrar esta retención?";
         }
+
+        var botones = {
+            cancelar: {
+                label: "<i class='fa fa-times'></i> Cancelar",
+                className: "btn-primary",
+                callback: function () {
+                }
+            },
+            aceptar:{
+                label: "<i class='fa fa-save'></i> Guardar",
+                className: "btn-success",
+                callback: function () {
+                    $.ajax({
+                        type: 'POST',
+                        url: '${createLink(controller: 'proceso', action: 'guardarDocRetencion_ajax')}',
+                        data:{
+                            proceso :'${proceso?.id}',
+                            documento: $("#retencionVenta2").val(),
+                            retenido : $("#retenidoIva2").val(),
+                            renta: $("#retenidoRenta2").val()
+                        },
+                        success: function (msg){
+                            if(msg == 'ok'){
+                                log("Documento de retención guardado correctamente","success");
+                                setTimeout(function () {
+                                    location.href="${createLink(controller: 'proceso', action: 'nuevoProceso')}/?id=" + '${proceso?.id}'
+                                }, 800);
+                            }else{
+                                log("Error al guardar el documento de retención","error")
+                            }
+                        }
+                    });
+                }
+            },
+        };
+
+        if(${proceso?.retEstado == 'N'}){
+            botones.registrar = {
+                label: "<i class='fa fa-check'></i> " + titulo,
+                className: clase,
+                callback: function () {
+                    bootbox.confirm("<i class='fa fa-exclamation-circle fa-3x pull-left text-warning text-shadow'>" +
+                        "</i>" + mnsj, function (result) {
+                        if (result) {
+                            $.ajax({
+                                type: 'POST',
+                                url: "${createLink(controller: 'retencion', action: 'registrarRetVentas')}",
+                                data: {
+                                    id: "${proceso?.id}"
+                                },
+                                success: function (msg) {
+                                    location.reload()
+                                }
+                            });
+                        }
+                    })
+                }
+            }
+        }
+
+
         $.ajax({
             type: 'POST',
             url:'${createLink(controller: 'proceso', action: 'docRetencion_ajax')}',
@@ -587,61 +649,62 @@
                     class: "long",
                     align: 'right',
                     message: msg,
-                    buttons: {
-                        cancelar: {
-                            label: "<i class='fa fa-times'></i> Cancelar",
-                            className: "btn-primary",
-                            callback: function () {
-                            }
-                        },
-                        registrar:{
-                            label: "<i class='fa fa-check'></i> " + titulo,
-                            className: clase,
-                            callback: function () {
-                                bootbox.confirm("<i class='fa fa-exclamation-circle fa-3x pull-left text-warning text-shadow'>" +
-                                    "</i>" + mnsj, function (result) {
-                                    if (result) {
-                                        $.ajax({
-                                            type: 'POST',
-                                            url: "${createLink(controller: 'retencion', action: 'registrarRetVentas')}",
-                                            data: {
-                                                id: "${proceso?.id}"
-                                            },
-                                            success: function (msg) {
-                                                location.reload()
-                                            }
-                                        });
-                                    }
-                                })
-                            }
-                        },
-                        aceptar:{
-                            label: "<i class='fa fa-save'></i> Guardar",
-                            className: "btn-success",
-                            callback: function () {
-                                $.ajax({
-                                    type: 'POST',
-                                    url: '${createLink(controller: 'proceso', action: 'guardarDocRetencion_ajax')}',
-                                    data:{
-                                        proceso :'${proceso?.id}',
-                                        documento: $("#retencionVenta2").val(),
-                                        retenido : $("#retenidoIva2").val(),
-                                        renta: $("#retenidoRenta2").val()
-                                    },
-                                    success: function (msg){
-                                        if(msg == 'ok'){
-                                            log("Documento de retención guardado correctamente","success");
-                                            setTimeout(function () {
-                                                location.href="${createLink(controller: 'proceso', action: 'nuevoProceso')}/?id=" + '${proceso?.id}'
-                                            }, 800);
-                                        }else{
-                                            log("Error al guardar el documento de retención","error")
-                                        }
-                                    }
-                                });
-                            }
-                        }
-                    }
+                    buttons : botones
+                    %{--buttons: {--}%
+                    %{--cancelar: {--}%
+                    %{--label: "<i class='fa fa-times'></i> Cancelar",--}%
+                    %{--className: "btn-primary",--}%
+                    %{--callback: function () {--}%
+                    %{--}--}%
+                    %{--},--}%
+                    %{--registrar:{--}%
+                    %{--label: "<i class='fa fa-check'></i> " + titulo,--}%
+                    %{--className: clase,--}%
+                    %{--callback: function () {--}%
+                    %{--bootbox.confirm("<i class='fa fa-exclamation-circle fa-3x pull-left text-warning text-shadow'>" +--}%
+                    %{--"</i>" + mnsj, function (result) {--}%
+                    %{--if (result) {--}%
+                    %{--$.ajax({--}%
+                    %{--type: 'POST',--}%
+                    %{--url: "${createLink(controller: 'retencion', action: 'registrarRetVentas')}",--}%
+                    %{--data: {--}%
+                    %{--id: "${proceso?.id}"--}%
+                    %{--},--}%
+                    %{--success: function (msg) {--}%
+                    %{--location.reload()--}%
+                    %{--}--}%
+                    %{--});--}%
+                    %{--}--}%
+                    %{--})--}%
+                    %{--}--}%
+                    %{--},--}%
+                    %{--aceptar:{--}%
+                    %{--label: "<i class='fa fa-save'></i> Guardar",--}%
+                    %{--className: "btn-success",--}%
+                    %{--callback: function () {--}%
+                    %{--$.ajax({--}%
+                    %{--type: 'POST',--}%
+                    %{--url: '${createLink(controller: 'proceso', action: 'guardarDocRetencion_ajax')}',--}%
+                    %{--data:{--}%
+                    %{--proceso :'${proceso?.id}',--}%
+                    %{--documento: $("#retencionVenta2").val(),--}%
+                    %{--retenido : $("#retenidoIva2").val(),--}%
+                    %{--renta: $("#retenidoRenta2").val()--}%
+                    %{--},--}%
+                    %{--success: function (msg){--}%
+                    %{--if(msg == 'ok'){--}%
+                    %{--log("Documento de retención guardado correctamente","success");--}%
+                    %{--setTimeout(function () {--}%
+                    %{--location.href="${createLink(controller: 'proceso', action: 'nuevoProceso')}/?id=" + '${proceso?.id}'--}%
+                    %{--}, 800);--}%
+                    %{--}else{--}%
+                    %{--log("Error al guardar el documento de retención","error")--}%
+                    %{--}--}%
+                    %{--}--}%
+                    %{--});--}%
+                    %{--}--}%
+                    %{--}--}%
+                    %{--}--}%
                 });
             }
         })

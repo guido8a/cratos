@@ -151,7 +151,7 @@
                 <g:textField name="numeroEmision" id="numEmision" readonly="true" style="width: 50px"
                              title="Numeración Emisión"/>
 
-                <g:textField name="serie" id="serie" value="${retencion?.numero?:nmro}" maxlength="10"
+                <g:textField name="serie" id="serie" value="${retencion?.numero?: ''}" maxlength="10"
                              class="form-control required validacionNumero"  style="width: 100px; display: inline"/>
             </div>
 
@@ -391,20 +391,29 @@
 
     $("#conceptoRenta").change(function () {
         var concepto = $("#conceptoRenta option:selected").val();
-//        console.log('cambia CRIR:', concepto)
         if (concepto == '23') {
             $("#conceptoRIRServicios").addClass('esconder');
             $("#divIVA").addClass('esconder');
             $("#serie").val(0);
             $("#serie").attr('readonly', true);
             $("#baseRenta").val(${proceso?.baseImponibleIva});
-            $("#baseRentaSrvc").val(0);
+            $("#baseRentaSrvc").val(0).attr('readonly', false);
         } else {
-            $("#conceptoRIRServicios").removeClass('esconder');
-            $("#divIVA").removeClass('esconder');
-            $("#serie").attr('readonly', false);
-//            $("#serie").val('')
+
+            if(concepto == '-1'){
+                $("#conceptoRIRServicios").removeClass('esconder');
+                $("#divIVA").removeClass('esconder');
+                $("#baseRenta").val(0).attr('readonly', true);
+                $("#baseRentaSrvc").val(${retencion?.baseRentaServicios ?: 0});
+            }else{
+                $("#conceptoRIRServicios").removeClass('esconder');
+                $("#divIVA").removeClass('esconder');
+                $("#serie").attr('readonly', false);
+                $("#baseRenta").val(${retencion?.baseRenta ?: 0}).attr('readonly', false);
+                $("#baseRentaSrvc").val(${retencion?.baseRentaServicios ?: 0});
+            }
         }
+
         cargarRetencionRIR(concepto, 'B');
     });
 
@@ -699,7 +708,7 @@
             }
         } else {
             if (concepto != '23') {
-                if( (parseFloat($("#baseImponible").val()) + parseFloat($("#baseRentaSrvc").val())) != parseFloat($("#sumaRenta").val()) ) {
+                if( (parseFloat($("#baseImponible").val())) != parseFloat($("#sumaRenta").val()) ) {
 //                    console.log(parseFloat($('#baseImponible').val()) + parseFloat($("#baseRentaSrvc").val()));
 //                    console.log(parseFloat($('#sumaRenta').val()));
                     error += "<li>Revise los valores de base imponible Renta</li>"

@@ -41,7 +41,7 @@
 <div class="col-xs-6 etiqueta"><label>Comprobante:</label> ${comprobante?.descripcion}</div>
 <div class="col-xs-2 etiqueta"><label>Tipo:</label> ${comprobante?.proceso?.tipoProceso?.descripcion}</div>
 <div class="col-xs-2 etiqueta"><label>Número:</label> ${comprobante?.prefijo}${comprobante?.numero}</div>
-<div class="col-xs-2 etiqueta"><label>Valor:</label> <g:formatNumber number="${comprobante?.tipo?.codigo == 'R' ? cratos.Retencion.findByProceso(proceso).total : comprobante?.proceso?.valor}" maxFractionDigits="2" format="##,##0"/></div>
+<div class="col-xs-2 etiqueta"><label>Valor:</label> <g:formatNumber number="${comprobante?.tipo?.codigo == 'R' ? cratos.Retencion.findByProceso(proceso)?.total : comprobante?.proceso?.valor}" maxFractionDigits="2" format="##,##0"/></div>
 
 <g:if test="${comprobante?.registrado != 'S'}">
     <div class="btn-group" style="float: right; margin-top: -90px">
@@ -161,8 +161,8 @@
             </g:each>
             <tr class="colorAsiento">
                 <td colspan="3" class="total derecha">Totales del asiento</td>
-                <td class="total derecha ${Math.round(sumadebe*100)/100 != (comprobante?.tipo?.codigo == 'R' ? cratos.Retencion.findByProceso(proceso).total : proceso?.valor) ? 'rojo' : ''}"><g:formatNumber number="${Math.round(sumadebe*100)/100}" format="##,##0" maxFractionDigits="2" minFractionDigits="2"/> </td>
-                <td class="total derecha ${Math.round(sumahber*100)/100 != (comprobante?.tipo?.codigo == 'R' ? cratos.Retencion.findByProceso(proceso).total : proceso?.valor) ? 'rojo' : ''}"><g:formatNumber number="${Math.round(sumahber*100)/100}" format="##,##0" maxFractionDigits="2" minFractionDigits="2"/> </td>
+                <td class="total derecha ${Math.round(sumadebe*100)/100 != (comprobante?.tipo?.codigo == 'R' ? cratos.Retencion.findByProceso(proceso)?.total : proceso?.valor) ? 'rojo' : ''}"><g:formatNumber number="${Math.round(sumadebe*100)/100}" format="##,##0" maxFractionDigits="2" minFractionDigits="2"/> </td>
+                <td class="total derecha ${Math.round(sumahber*100)/100 != (comprobante?.tipo?.codigo == 'R' ? cratos.Retencion.findByProceso(proceso)?.total : proceso?.valor) ? 'rojo' : ''}"><g:formatNumber number="${Math.round(sumahber*100)/100}" format="##,##0" maxFractionDigits="2" minFractionDigits="2"/> </td>
                 <td class="total derecha" ${Math.round((sumadebe - sumahber)*100)/100 != 0 ? 'rojo' : ''}>Dif: ${Math.round((sumadebe - sumahber)*100)/100}</td>
             </tr>
             </tbody>
