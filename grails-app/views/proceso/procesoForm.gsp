@@ -1,4 +1,4 @@
-<%@ page import="cratos.ProcesoFormaDePago; cratos.inventario.Bodega; cratos.Asiento; cratos.sri.TipoComprobanteSri" %>
+<%@ page import="cratos.Contabilidad; cratos.ProcesoFormaDePago; cratos.inventario.Bodega; cratos.Asiento; cratos.sri.TipoComprobanteSri" %>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -69,10 +69,6 @@
     </div>
 
     <div class="btn-group" style="margin-right: 10px">
-
-    %{--<g:link class="btn btn-success" action="nuevoProceso">--}%
-    %{--<i class="fa fa-gear"></i> Nueva Transacción--}%
-    %{--</g:link>--}%
         <g:if test="${proceso?.estado == 'R'}">
             <a href="#" class="btn btn-success" id="comprobanteN">
                 <i class="fa fa-calendar-o"></i>
@@ -218,7 +214,9 @@
                 <g:else>
                     <elm:datepicker name="fecha" title="Fecha de emisión del comprobante"
                                     class="datepicker form-control required col-xs-3 fechaE"
-                                    value="${proceso?.fechaEmision?: new Date().format('dd-MM-yyyy')}" maxDate="new Date()"
+                                    value="${proceso?.fechaEmision?: cratos.Contabilidad.get(session.contabilidad.id).fechaCierre}"
+                                    minDate="${cratos.Contabilidad.get(session.contabilidad.id).fechaInicio.format("dd-MM-yyyy")}"
+                                    maxDate="${cratos.Contabilidad.get(session.contabilidad.id).fechaCierre.format("dd-MM-yyyy")}"
                                     style="width: 80px; margin-left: 5px"/>
                 </g:else>
             </div>
@@ -234,7 +232,9 @@
                 <g:else>
                     <elm:datepicker name="fechaingreso" title="Fecha de registro en el sistema"
                                     class="datepicker form-control required col-xs-3"
-                                    value="${proceso?.fechaIngresoSistema?: new Date().format('dd-MM-yyyy')}" maxDate="new Date()"
+                                    value="${proceso?.fechaIngresoSistema?: cratos.Contabilidad.get(session.contabilidad.id).fechaCierre}"
+                                    minDate="${cratos.Contabilidad.get(session.contabilidad.id).fechaInicio.format("dd-MM-yyyy")}"
+                                    maxDate="${cratos.Contabilidad.get(session.contabilidad.id).fechaCierre.format("dd-MM-yyyy")}"
                                     style="width: 80px; margin-left: 5px"/>
                 </g:else>
             </div>
