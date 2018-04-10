@@ -32,7 +32,7 @@ th, td {
 
             <tr id="${dato.prcs__id}" data-id="${dato.prcs__id}" data-ed="${dato.prcsetdo}" data-tipo="${dato?.tpps}"
                 data-cm='${cratos.Proceso.get(dato.prcs__id).tipoCmprSustento?.tipoComprobanteSri?.codigo?.trim()}'
-                data-dtll='${dato.dtll}' data-rtcn='${dato.rtcn}'
+                data-dtll='${dato.dtll}' data-rtcn='${dato.rtcn}' data-rtvn='${dato.rtvn}'
                 class="${clase}">
                 <td width="100px">
                     ${dato?.prcsfcha.format("dd-MM-yyyy")}

@@ -257,6 +257,7 @@ como máximo 30 <span style="margin-left: 40px; color: #0b2c89">Se ordena por fe
         var cm = $tr.data("cm");
         var dtll = $tr.data("dtll");
         var rtcn = $tr.data("rtcn");
+        var rtvn = $tr.data("rtvn");
 
         var editar = {
             label: " Ir al proceso",
@@ -271,6 +272,14 @@ como máximo 30 <span style="margin-left: 40px; color: #0b2c89">Se ordena por fe
             icon: "fa fa-money",
             action: function () {
                 location.href = '${createLink(controller: "proceso", action: "detalleSri")}?id=' + id;
+            }
+        };
+
+        var rtcnVentas = {
+            label: " Retenciones en Ventas",
+            icon: "fa fa-money",
+            action: function () {
+                location.href = '${createLink(controller: "proceso", action: "nuevoProceso")}?id=' + id;
             }
         };
 
@@ -337,6 +346,10 @@ como máximo 30 <span style="margin-left: 40px; color: #0b2c89">Se ordena por fe
         if(rtcn){
             items.retencion = retencion;
             items.imprimirRetencion = imprimirRetencion;
+        }
+
+        if(rtvn){
+            items.retencion = rtcnVentas;
         }
 
         if(tp == 'Compras' && cm == '41'){
