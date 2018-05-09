@@ -31,8 +31,8 @@
         </tr>
         </thead>
         <tbody>
-        <g:set var="totMonto" value="${0}"></g:set>
-        <g:set var="totCant" value="${0}"></g:set>
+        <g:set var="totMonto" value="${0}"/>
+        <g:set var="totCant" value="${0}"/>
         <g:each in="${ventas}" var="v">
 
             <g:each in="${cratos.inventario.DetalleFactura.findAllByFactura(v)}" var="dt">
@@ -42,8 +42,8 @@
                     <td>${dt.item.nombre}</td>
                     <td style="text-align: right">${dt.cantidad*dt.precioUnitario}</td>
                     <td style="text-align: right">${dt.cantidad}</td>
-                    <g:set var="totMonto" value="${totMonto.toDouble()+(dt.cantidad+dt.precioUnitario)}"></g:set>
-                    <g:set var="totCant" value="${totCant.toDouble()+dt.cantidad}"></g:set>
+                    <g:set var="totMonto" value="${totMonto.toDouble()+(dt.cantidad+dt.precioUnitario)}"/>
+                    <g:set var="totCant" value="${totCant.toDouble()+dt.cantidad}"/>
                 </tr>
             </g:each>
 

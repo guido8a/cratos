@@ -104,6 +104,11 @@
 
         <g:set var="totales" value="${0}"/>
         <g:set var="totales2" value="${0}"/>
+        <g:set var="totalExcento" value="${0}"/>
+        <g:set var="totalGravado" value="${0}"/>
+        <g:set var="totalIva" value="${0}"/>
+        <g:set var="totalIva2" value="${0}"/>
+        <g:set var="totalRenta" value="${0}"/>
 
         <g:each in="${ventas}" var="venta" status="j">
             <tr style="width: 2100px;" class="tam">
@@ -122,14 +127,24 @@
 
                 <g:set var="totales" value="${totales += (venta?.valor ?: 0)}"/>
                 <g:set var="totales2" value="${totales2 += ((venta?.retenidoIva?.toDouble() + venta?.retenidoRenta?.toDouble()) ?: 0)}"/>
+                <g:set var="totalExcento" value="${totalExcento += (venta?.excentoIva ?: 0)}"/>
+                <g:set var="totalGravado" value="${totalGravado += (venta?.baseImponibleIva ?: 0)}"/>
+                <g:set var="totalIva" value="${totalIva += (venta?.ivaGenerado ?: 0)}"/>
+                <g:set var="totalIva2" value="${totalIva2 += (venta?.retenidoIva ?: 0)}"/>
+                <g:set var="totalRenta" value="${totalRenta += (venta?.retenidoRenta ?: 0)}"/>
             </tr>
         </g:each>
 
         <tr style="width: 100%">
-            <td colspan="7" class="derecha" style="background: #bbb"><b>TOTAL:</b></td>
-            <td class="derecha"><g:formatNumber number="${totales}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
-            <td class="derecha" colspan="3" style="background: #bbb"></td>
-            <td class="derecha"><g:formatNumber number="${totales2}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
+            <td colspan="4" class="derecha" style="background: #bbb"><b>TOTALES:</b></td>
+            <td class="derecha"><g:formatNumber number="${totalExcento ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
+            <td class="derecha"><g:formatNumber number="${totalGravado ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
+            <td class="derecha"><g:formatNumber number="${totalIva ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
+            <td class="derecha"><g:formatNumber number="${totales ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
+            <td class="derecha" colspan="1" style="background: #bbb"><b>TOTALES:</b></td>
+            <td class="derecha"><g:formatNumber number="${totalIva2 ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
+            <td class="derecha"><g:formatNumber number="${totalRenta ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
+            <td class="derecha"><g:formatNumber number="${totales2 ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
         </tr>
 
         </tbody>
