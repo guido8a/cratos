@@ -116,7 +116,7 @@
                 <td style="width: 70px"><g:formatDate date="${venta?.fechaIngresoSistema}" format="dd-MM-yyyy"/></td>
                 <td class="izquierda" style="width: 150px">${venta?.facturaEstablecimiento + " " + venta?.facturaPuntoEmision + " " + venta?.facturaSecuencial}</td>
                 <td class="izquierda tam" style="width: 320px">${venta?.proveedor?.nombre}</td>
-                <td class="derecha" style="width: 100px"><g:formatNumber number="${venta?.excentoIva ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
+                <td class="derecha" style="width: 100px"><g:formatNumber number="${(venta?.excentoIva ?: 0) + (venta?.baseImponibleIva0 ?: 0) + (venta?.baseImponibleNoIva ?: 0)}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
                 <td class="derecha" style="width: 100px"><g:formatNumber number="${venta?.baseImponibleIva ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
                 <td class="derecha" style="width: 100px"><g:formatNumber number="${venta?.ivaGenerado ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
                 <td class="derecha" style="width: 100px"><g:formatNumber number="${venta?.valor ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
@@ -127,7 +127,7 @@
 
                 <g:set var="totales" value="${totales += (venta?.valor ?: 0)}"/>
                 <g:set var="totales2" value="${totales2 += ((venta?.retenidoIva?.toDouble() + venta?.retenidoRenta?.toDouble()) ?: 0)}"/>
-                <g:set var="totalExcento" value="${totalExcento += (venta?.excentoIva ?: 0)}"/>
+                <g:set var="totalExcento" value="${totalExcento += ((venta?.excentoIva ?: 0) + (venta?.baseImponibleIva0 ?: 0) + (venta?.baseImponibleNoIva ?: 0))}"/>
                 <g:set var="totalGravado" value="${totalGravado += (venta?.baseImponibleIva ?: 0)}"/>
                 <g:set var="totalIva" value="${totalIva += (venta?.ivaGenerado ?: 0)}"/>
                 <g:set var="totalIva2" value="${totalIva2 += (venta?.retenidoIva ?: 0)}"/>

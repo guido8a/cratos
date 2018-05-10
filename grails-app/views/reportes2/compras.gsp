@@ -102,7 +102,7 @@
                 <td class="centro" style="width: 100px">${cratos.Comprobante.findByProceso(proceso)?.numero}</td>
                 <td class="centro" style="width: 300px">${proceso?.proveedor?.nombre}</td>
                 <td class="derecha" style="width: 100px">${proceso?.documento}</td>
-                <td class="derecha" style="width: 100px"><g:formatNumber number="${proceso?.excentoIva ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
+                <td class="derecha" style="width: 100px"><g:formatNumber number="${(proceso?.excentoIva ?: 0) + (proceso?.baseImponibleIva0 ?: 0) + (proceso?.baseImponibleNoIva ?: 0)}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
                 <td class="derecha" style="width: 100px"><g:formatNumber number="${proceso?.baseImponibleIva ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
                 <td class="derecha" style="width: 100px"><g:formatNumber number="${proceso?.ivaGenerado ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
                 <td class="derecha" style="width: 100px"><g:formatNumber number="${proceso?.valor ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
@@ -114,7 +114,7 @@
                 <g:set var="totalRenta" value="${totalRenta += (((retencion?.renta?.toDouble() ?: 0) + (retencion?.rentaServicios?.toDouble() ?: 0)) ?: 0)}"/>
                 <g:set var="totales" value="${totales += ( (retencion?.ivaBienes?.toDouble() ?: 0) + (retencion?.ivaServicios?.toDouble() ?: 0) ?: 0) + ((retencion?.renta?.toDouble() ?: 0) + (retencion?.rentaServicios?.toDouble() ?: 0) ?: 0)}"/>
                 <g:set var="totales2" value="${totales2 += (proceso?.valor ?: 0)}"/>
-                <g:set var="totalExcento" value="${totalExcento += (proceso?.excentoIva ?: 0)}"/>
+                <g:set var="totalExcento" value="${totalExcento += ((proceso?.excentoIva ?: 0) + (proceso?.baseImponibleIva0 ?: 0) + (proceso?.baseImponibleNoIva ?: 0))}"/>
                 <g:set var="totalGravado" value="${totalGravado += (proceso?.baseImponibleIva ?: 0)}"/>
                 <g:set var="totalIva" value="${totalIva += (proceso?.ivaGenerado ?: 0)}"/>
             </tr>
