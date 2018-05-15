@@ -28,7 +28,7 @@ class PagosController extends cratos.seguridad.Shield {
 
         def cn = dbConnectionService.getConnection()
         def sql = "select * from conciliacion(${empresa?.id},${contabilidad?.id}, ${params.bancaria}, ${params.pago}, ${params.cobro}, '${params.desde}', '${params.hasta}')"
-//        println("sql " + sql)
+        println("sql " + sql)
         def res =  cn.rows(sql.toString())
         def cp = res.count{it.tpps == 'P'}
         def ct = res.count{it.tpps == 'T'}

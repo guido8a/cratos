@@ -34,7 +34,7 @@ td{
             Saldo Anterior :
         </div>
         <div class="col-md-4">
-            <g:textField name="saldo_name" value="${res[0].sldobnco}" class="form-control" readonly=""/>
+            <g:textField name="saldo_name" value="${res[0]?.sldobnco}" class="form-control" readonly=""/>
         </div>
     </div>
 </div>
@@ -281,7 +281,7 @@ td{
             Saldo en Libros :
         </div>
         <div class="col-md-3">
-            <g:textField name="saldoLibros_name" value="${res[0].sldolbro}" class="form-control" readonly=""/>
+            <g:textField name="saldoLibros_name" value="${res[0]?.sldolbro}" class="form-control" readonly=""/>
         </div>
     </div>
     <div class="row">

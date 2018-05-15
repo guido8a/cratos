@@ -36,7 +36,8 @@
             </h4>
         </div>
         <div id="collapseBuscar" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-            <div class="panel-body animated">
+            %{--<div class="panel-body animated">--}%
+            <div class="panel-body">
                 <div style="margin-top: 30px; min-height: 130px" class="vertical-container">
                     <p class="css-vertical-text">Buscar</p>
 
