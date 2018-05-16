@@ -308,9 +308,11 @@ class ContabilidadController extends cratos.seguridad.Shield {
         if (params.fechaCierre) {
             params.fechaCierre = new Date().parse("dd-MM-yyyy", params.fechaCierre)
         }
+/*
         if (params.presupuesto) {
             params.presupuesto = new Date().parse("dd-MM-yyyy", params.presupuesto)
         }
+*/
 
         def contabilidadInstance = new Contabilidad(params)
 

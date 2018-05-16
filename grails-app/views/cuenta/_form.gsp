@@ -114,6 +114,7 @@
         </div>
     </div>
 
+%{--
     <div class="span-9 ${hasErrors(bean: cuentaInstance, field: 'presupuesto', 'error')} ">
         <div class="span-3 ">
             <label for="presupuesto">
@@ -126,5 +127,6 @@
 
         </div>
     </div>
+--}%
 
 </div>

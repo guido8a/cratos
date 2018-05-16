@@ -140,6 +140,7 @@
                         </div>
                     </g:if>
                     
+%{--
                     <g:if test="${cuentaInstance?.presupuesto}">
                         <div class="span-24">
                             <div class="span-3 prepend-1">
@@ -153,7 +154,8 @@
                             </div>
                         </div>
                     </g:if>
-                    
+--}%
+
                     <g:if test="${cuentaInstance?.estado}">
                         <div class="span-24">
                             <div class="span-3 prepend-1">

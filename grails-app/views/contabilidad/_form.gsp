@@ -74,6 +74,7 @@
         </div>
     </div>
 
+%{--
     <div class="span-24 ${hasErrors(bean: contabilidadInstance, field: 'presupuesto', 'error')} required">
         <div class="span-3 prepend-1">
             <label for="presupuesto">
@@ -87,5 +88,6 @@
             <span class="required-indicator">*</span>
         </div>
     </div>
+--}%
 
 </div>

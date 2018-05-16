@@ -3,7 +3,7 @@ package cratos
 class ModificacionPresupuestaria implements Serializable {
     double monto
     int numero
-    AsignacionPresupuestaria asignacionPresupuestaria
+//    AsignacionPresupuestaria asignacionPresupuestaria
     ReformaPresupuestaria reformaPresupuestaria
     double dcrm
     static mapping = {
@@ -15,7 +15,7 @@ class ModificacionPresupuestaria implements Serializable {
         columns {
             monto column: 'mfprmnto'
             numero column: 'mfprnmro'
-            asignacionPresupuestaria column: 'asignacion'
+//            asignacionPresupuestaria column: 'asignacion'
             reformaPresupuestaria column: 'rfpr__id'
             dcrm column: 'mfprdcrm'
         }
@@ -23,7 +23,7 @@ class ModificacionPresupuestaria implements Serializable {
     static constraints = {
         monto(blank: false, attributes: [title: 'monto'])
         numero(blank: false, attributes: [title: 'numero'])
-        asignacionPresupuestaria(blank: true, nullable: true, attributes: [title: 'asignacionPresupuestaria'])
+//        asignacionPresupuestaria(blank: true, nullable: true, attributes: [title: 'asignacionPresupuestaria'])
         reformaPresupuestaria(blank: true, nullable: true, attributes: [title: 'reformaPresupuestaria'])
         dcrm(blank: false, attributes: [title: 'dcrm'])
     }

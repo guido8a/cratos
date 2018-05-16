@@ -26,9 +26,9 @@ class CuentasService {
     def getPresupuesto(contabilidadId, empresaId) {
         def empresa = Empresa.get(empresaId)
 
-        def presupuestos = Presupuesto.findAllByEmpresa(empresa, [sort: "padre"])
+//        def presupuestos = Presupuesto.findAllByEmpresa(empresa, [sort: "padre"])
 
-            return presupuestos
+//            return presupuestos
     } // getPresupuesto
 
      //asignaciones
