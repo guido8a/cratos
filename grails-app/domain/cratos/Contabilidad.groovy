@@ -6,7 +6,7 @@ class Contabilidad implements Serializable {
     String prefijo
     String descripcion
     Empresa institucion
-    Date presupuesto
+//    Date presupuesto
     Cuenta cuenta
     Cuenta creditoTributarioIva
     Cuenta creditoTributarioRenta
@@ -26,7 +26,7 @@ class Contabilidad implements Serializable {
             prefijo column: 'contpref'
             descripcion column: 'contdscr'
             institucion column: 'empr__id'
-            presupuesto column: 'contprsp'
+//            presupuesto column: 'contprsp'
             cuenta column: 'cntaesst'
             creditoTributarioIva column: 'cntactiv'
             creditoTributarioRenta column: 'cntactrt'
@@ -42,7 +42,7 @@ class Contabilidad implements Serializable {
         prefijo(size: 1..8, blank: true, nullable: true, attributes: [title: 'Prefijo del periodo para reportes'])
         descripcion(size: 1..63, blank: false, attributes: [title: 'Descripción del periodo contable'])
         institucion(blank: true, nullable: true, attributes: [title: 'Institución o empresa a la que pertenece el periodo contable'])
-        presupuesto(blank: false, attributes: [title: 'Fecha de aprobación del presupuesto'])
+//        presupuesto(blank: false, attributes: [title: 'Fecha de aprobación del presupuesto'])
         cuenta(blank: true, nullable: true)
         creditoTributarioIva(nullable: true)
         creditoTributarioRenta(nullable: true)

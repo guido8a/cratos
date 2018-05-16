@@ -144,7 +144,7 @@ class ContabilidadController extends cratos.seguridad.Shield {
             params.fechaCierre = new Date().parse("dd-MM-yyyy", params.fechaCierre_input)
             contabilidadInstance.fechaInicio = params.fechaInicio
             contabilidadInstance.fechaCierre = params.fechaCierre
-            contabilidadInstance.presupuesto = params.fechaInicio
+//            contabilidadInstance.presupuesto = params.fechaInicio
             contabilidadInstance.cuenta = cuenta
             contabilidadInstance.creditoTributarioIva = creditoIva
             contabilidadInstance.creditoTributarioRenta = creditoRenta
