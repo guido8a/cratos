@@ -140,22 +140,20 @@
                         </div>
                     </g:if>
                     
-%{--
-                    <g:if test="${cuentaInstance?.presupuesto}">
-                        <div class="span-24">
-                            <div class="span-3 prepend-1">
-                                Presupuesto
-                            </div>
+                    %{--<g:if test="${cuentaInstance?.presupuesto}">--}%
+                        %{--<div class="span-24">--}%
+                            %{--<div class="span-3 prepend-1">--}%
+                                %{--Presupuesto--}%
+                            %{--</div>--}%
 
-                            <div class="span-19">
-                                
-                                <g:link controller="presupuesto" action="show" id="${cuentaInstance?.presupuesto?.id}">${cuentaInstance?.presupuesto?.encodeAsHTML()}</g:link>
-                                
-                            </div>
-                        </div>
-                    </g:if>
---}%
-
+                            %{--<div class="span-19">--}%
+                                %{----}%
+                                %{--<g:link controller="presupuesto" action="show" id="${cuentaInstance?.presupuesto?.id}">${cuentaInstance?.presupuesto?.encodeAsHTML()}</g:link>--}%
+                                %{----}%
+                            %{--</div>--}%
+                        %{--</div>--}%
+                    %{--</g:if>--}%
+                    
                     <g:if test="${cuentaInstance?.estado}">
                         <div class="span-24">
                             <div class="span-3 prepend-1">

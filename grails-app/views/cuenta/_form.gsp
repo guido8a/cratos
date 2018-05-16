@@ -114,19 +114,16 @@
         </div>
     </div>
 
-%{--
-    <div class="span-9 ${hasErrors(bean: cuentaInstance, field: 'presupuesto', 'error')} ">
-        <div class="span-3 ">
-            <label for="presupuesto">
-                Presupuesto
-            </label>
-        </div>
+    %{--<div class="span-9 ${hasErrors(bean: cuentaInstance, field: 'presupuesto', 'error')} ">--}%
+        %{--<div class="span-3 ">--}%
+            %{--<label for="presupuesto">--}%
+                %{--Presupuesto--}%
+            %{--</label>--}%
+        %{--</div>--}%
 
-        <div class="span-5">
-            <g:select id="presupuesto" name="presupuesto.id" from="${cratos.Presupuesto.list()}" optionKey="id" value="${cuentaInstance?.presupuesto?.id}" class="field  many-to-one ui-corner-all" title="${Cuenta.constraints.presupuesto.attributes.title}" noSelection="['null': '']"/>
-
-        </div>
-    </div>
---}%
+        %{--<div class="span-5">--}%
+            %{--<g:select id="presupuesto" name="presupuesto.id" from="${cratos.Presupuesto.list()}" optionKey="id" value="${cuentaInstance?.presupuesto?.id}" class="field  many-to-one ui-corner-all" title="${Cuenta.constraints.presupuesto.attributes.title}" noSelection="['null': '']"/>--}%
+        %{--</div>--}%
+    %{--</div>--}%
 
 </div>
