@@ -224,7 +224,9 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Cancelar
                 </button>
-                <button type="button" class="btn btnAceptarPlan btn-success"><i class="fa fa-print"></i> Aceptar
+                <button type="button" class="btn btnAceptarPlanExcel btn-success"><i class="fa fa-print"></i> Excel
+                </button>
+                <button type="button" class="btn btnAceptarPlan btn-success"><i class="fa fa-print"></i> Imprimir
                 </button>
             </div>
         </div>
@@ -1125,7 +1127,11 @@
             var cont = $("#contCuentas").val()
             url = "${g.createLink(controller:'reportes' , action: 'planDeCuentas')}?cont=" + cont + "Wempresa=${session.empresa.id}";
             location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=planDeCuentas.pdf"
+        });
 
+        $(".btnAceptarPlanExcel").click(function () {
+            var cont = $("#contCuentas").val();
+            location.href = "${g.createLink(controller:'reportes3' , action: 'excelPlan')}?cont=" + cont + "&empresa=${session.empresa.id}";
         });
 
         $(".btnAceptarGestor").click(function () {

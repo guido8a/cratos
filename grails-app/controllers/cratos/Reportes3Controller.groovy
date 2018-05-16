@@ -691,115 +691,6 @@ class Reportes3Controller {
     }
 
 
-/*    def facturaE () {
-//        println("params " + params)
-
-        def proceso = Proceso.get(params.id)
-        def empresa = Empresa.get(params.emp)
-        def detalles = DetalleFactura.findAllByProceso(proceso).sort{it?.item?.codigo}
-
-        def baos = new ByteArrayOutputStream()
-
-        def name = "facturaElectronica_" + new Date().format("ddMMyyyy_hhmm") + ".pdf";
-
-        Font catFont2 = new Font(Font.TIMES_ROMAN, 14, Font.BOLD);
-        Font catFont3 = new Font(Font.TIMES_ROMAN, 16, Font.BOLD);
-        Font info = new Font(Font.TIMES_ROMAN, 8, Font.NORMAL)
-        Font fontTh = new Font(Font.TIMES_ROMAN, 8, Font.BOLD);
-        Font fontTd = new Font(Font.TIMES_ROMAN, 8, Font.NORMAL);
-        Font times8bold = new Font(Font.TIMES_ROMAN, 8, Font.BOLD);
-        Font times10bold = new Font(Font.TIMES_ROMAN, 10, Font.BOLD);
-        def prmsHeaderHoja = [border: Color.WHITE]
-
-        Document document
-        document = new Document(PageSize.A4);
-        def pdfw = PdfWriter.getInstance(document, baos);
-//        HeaderFooter footer1 = new HeaderFooter(new Phrase('prueba', fontTd), true);
-//        footer1.setBorder(com.lowagie.text.Rectangle.NO_BORDER);
-//        footer1.setAlignment(Element.ALIGN_CENTER);
-//        document.setFooter(footer1);
-        document.open();
-        PdfContentByte cb = pdfw.getDirectContent();
-        document.addTitle("Factura Electrónica");
-        document.addSubject("Generado por el sistema de contabilidad Cratos");
-        document.addAuthor("Cratos");
-        document.addCreator("Tedein SA");
-
-        Paragraph preface = new Paragraph();
-        preface.setAlignment(Element.ALIGN_CENTER);
-
-//        preface.add(new Paragraph("FACTURA ELECTRÓNICA", catFont3));
-//        preface.add(new Paragraph("......................", catFont2));
-        Paragraph preface2 = new Paragraph();
-        document.add(preface);
-        document.add(preface2);
-
-        def celdaTitulo = [border: Color.BLACK, bg: Color.LIGHT_GRAY, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
-        def celdaDatoIzq = [border: Color.BLACK, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE]
-        def celdaDatoDer = [border: Color.BLACK, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE]
-        def celdaDatoCen = [border: Color.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
-
-        //imagen LOGO
-
-        cb.setFontAndSize(BaseFont.createFont(BaseFont.HELVETICA, BaseFont.WINANSI, false), 24);
-        cb.roundRectangle(250,150,250,150,5)
-        cb.stroke();
-
-        def imagen = servletContext.getRealPath("/") + "images/logoEmp.jpg"
-
-        com.lowagie.text.Image img1 = com.lowagie.text.Image.getInstance(imagen);
-        img1.scalePercent(30,40)
-
-        com.lowagie.text.Rectangle r = new com.lowagie.text.Rectangle(50,50,50,50)
-        document.add(r)
-
-
-        //tabla valores
-
-        def tams = [8, 7, 4, 29, 8, 8, 8]
-
-        PdfPTable tabla = new PdfPTable(7);
-        tabla.setWidthPercentage(100);
-        tabla.setWidths(arregloEnteros(tams))
-        tabla.setWidthPercentage(100);
-
-
-        addCellTabla(tabla, new Paragraph("Cod. Principal", fontTh), celdaTitulo)
-        addCellTabla(tabla, new Paragraph("Cod. Auxiliar", fontTh), celdaTitulo)
-        addCellTabla(tabla, new Paragraph("Cant.", fontTh), celdaTitulo)
-        addCellTabla(tabla, new Paragraph("Descripción", fontTh), celdaTitulo)
-        addCellTabla(tabla, new Paragraph("Precio Unitario", fontTh), celdaTitulo)
-        addCellTabla(tabla, new Paragraph("Descuento", fontTh), celdaTitulo)
-        addCellTabla(tabla, new Paragraph("Precio Total", fontTh), celdaTitulo)
-
-        detalles.each {dt->
-            addCellTabla(tabla, new Paragraph(dt?.item?.codigo ?: '', fontTd), celdaDatoIzq)
-            addCellTabla(tabla, new Paragraph('', fontTd), celdaDatoIzq)
-            addCellTabla(tabla, new Paragraph(numero(dt?.cantidad ?: 0, 0), fontTd), celdaDatoDer)
-            addCellTabla(tabla, new Paragraph(dt?.item?.nombre ?: '', fontTd), celdaDatoIzq)
-            addCellTabla(tabla, new Paragraph(numero(dt?.precioUnitario ?: 0, 2), fontTd), celdaDatoDer)
-            addCellTabla(tabla, new Paragraph(numero(0, 2), fontTd), celdaDatoDer)
-            addCellTabla(tabla, new Paragraph(numero((dt?.cantidad ?: 0)*(dt?.precioUnitario ?: 0), 2), fontTd), celdaDatoDer)
-        }
-
-
-        document.add(img1)
-
-        document.add(tabla)
-
-        document.close();
-
-        pdfw.close()
-        byte[] b = baos.toByteArray();
-
-        //Comentar esto
-        response.setContentType("application/pdf")
-        response.setHeader("Content-disposition", "attachment; filename=" + name)
-        response.setContentLength(b.length)
-        response.getOutputStream().write(b)
-
-    }
-*/
 
     def _correo () {
 
@@ -903,6 +794,54 @@ class Reportes3Controller {
         } catch (e) {
             println "error email " + e.printStackTrace()
         }
+    }
+
+
+    def excelPlan() {
+
+        def empresa = Empresa.get(params.empresa)
+
+        XSSFWorkbook wb = new XSSFWorkbook()
+        org.apache.poi.ss.usermodel.Sheet sheet = wb.createSheet("PLAN")
+
+        Row row = sheet.createRow(0)
+        row.createCell(0).setCellValue("")
+
+        Row row0 = sheet.createRow(1)
+        row0.createCell(1).setCellValue(empresa.nombre)
+
+        Row rowT = sheet.createRow(2)
+        rowT.createCell(1).setCellValue("PLAN DE CUENTAS")
+
+        Row row1 = sheet.createRow(3)
+        row1.createCell(1).setCellValue("NÚMERO")
+        row1.createCell(2).setCellValue("PADRE")
+        row1.createCell(3).setCellValue("NIVEL")
+        row1.createCell(4).setCellValue("DESCRIPCIÓN")
+
+        def contabilidad = Contabilidad.get(params.cont.toDouble())
+        def cuentas = Cuenta.findAllByEmpresa(empresa, [sort: "numero"])
+
+        CuentaContable.findAllByContabilidad(contabilidad).each { cc ->
+            if (cuentas.contains(cc.antiguo)) {
+                cuentas.remove(cc.antiguo)
+            }
+        }
+
+        cuentas.eachWithIndex{cuenta, j->
+                    Row row2 = sheet.createRow(j+4)
+                    row2.createCell(1).setCellValue(cuenta.numero)
+                    row2.createCell(2).setCellValue(cuenta?.padre?.numero)
+                    row2.createCell(3).setCellValue(cuenta.nivel.id)
+                    row2.createCell(4).setCellValue(cuenta.descripcion)
+        }
+
+        def output = response.getOutputStream()
+        def header = "attachment; filename=" + "PlanCuentas.xlsx";
+        response.setContentType("application/octet-stream")
+        response.setHeader("Content-Disposition", header);
+        wb.write(output)
+
     }
 
 }
