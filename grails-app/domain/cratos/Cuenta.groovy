@@ -9,7 +9,7 @@ class Cuenta implements Serializable {
     Empresa empresa
     CuentaBanco cuentaBanco
     Nivel nivel
-    Presupuesto presupuesto
+//    Presupuesto presupuesto
     String estado
     String retencion    /*     S --> si    N--> no      */
     Impuesto impuesto
@@ -30,7 +30,7 @@ class Cuenta implements Serializable {
             empresa column: 'empr__id'
             cuentaBanco column: 'cnbn__id'
             nivel column: 'nvel__id'
-            presupuesto column: 'prsp__id'
+//            presupuesto column: 'prsp__id'
             estado column: 'cntaetdo'
             retencion column: 'cntartcn'
             impuesto column: 'impt__id'
@@ -47,7 +47,7 @@ class Cuenta implements Serializable {
         empresa(blank: true, nullable: true, attributes: [title: 'Empresa a la que pertenece la cuenta'])
         cuentaBanco(blank: true, nullable: true, attributes: [title: 'Cuenta Banco'])
         nivel(blank: false, attributes: [title: 'Nivel'])
-        presupuesto(blank: true, nullable: true, attributes: [title: 'Presupuesto'])
+//        presupuesto(blank: true, nullable: true, attributes: [title: 'Presupuesto'])
         estado(blank: false, maxSize: 1, attributes: [title: 'Estado'])
         retencion(blank: true, inList: ['S', 'N'], nullable: true, size: 0..1)
         impuesto(blank: true, nullable: true)
