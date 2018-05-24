@@ -98,7 +98,7 @@ class MantenimientoItemsController extends Shield {
         if (ids == "#") {
             //root
             def gr = params.tipo.split('_')[1].toInteger()
-            def grupo = ['Materiales', 'Mano de Obra', 'Equipos']
+            def grupo = ['Artículos de Inventario']
             clase = "hasChildren jstree-closed"
             tree = "<li id='root' class='root ${clase}' data-jstree='{\"type\":\"root\"}' level='0' ><a href='#' class='label_arbol'>${grupo[gr-1]}</a></li>"
         } else if (ids == "root") {

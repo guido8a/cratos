@@ -39,10 +39,13 @@
 
         <!-- botones -->
         <div class="span12 btn-group" data-toggle="buttons-radio">
+%{--
             <a href="#" id="item_1" class="btn btn-info toggle active">
                 <i class="icon-folder-open-alt"></i>
                 Materiales <!--grpo--><!--sbgr -> Grupo--><!--dprt -> Subgrupo--><!--item-->
             </a>
+--}%
+%{--
             <a href="#" id="item_2" class="btn btn-info toggle">
                 <i class="icon-user"></i>
                 Mano de obra
@@ -51,6 +54,7 @@
                 <i class="icon-truck"></i>
                 Equipos
             </a>
+--}%
             <input type="button" class="btn " value="Cerrar todo" onclick="$('#tree').jstree('close_all');">
 
             <form class="form-search" style="float: left; margin-left: 50px;">
