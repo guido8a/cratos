@@ -207,6 +207,12 @@
 //        console.log('padre:', padreId, 'id:', nodeId);
 
         switch (tipo) {
+            case "root":
+                url = "${createLink(action:'formSg_ajax')}";
+                urlHijo = "${createLink(action:'formDp_ajax')}";
+                nodo = "Grupo";
+                nodoHijo = "Subgrupo";
+                break;
             case "sg":
                 url = "${createLink(action:'formSg_ajax')}";
                 urlHijo = "${createLink(action:'formDp_ajax')}";
@@ -457,29 +463,31 @@
             var id = parts[1];
 //            console.log('nodo', nodoId, 'tipo', tipo, 'id', id);
 
-            switch (tipo) {
-                case "sg":
-                    url = "${createLink(action:'showSg_ajax')}";
-                    break;
-                case "dp":
-                    url = "${createLink(action:'showDp_ajax')}";
-                    break;
-                case "it":
-                    url = "${createLink(action:'showIt_ajax')}";
-                    break;
-            }
-            $.ajax({
-                type: "POST",
-                url: url,
-                data: {
-                    id: id
-                },
-                success: function (msg) {
-                    $("#info").html(msg);
+//            console.log("tipo " + tipo)
+            if(tipo != 'root'){
+                switch (tipo) {
+                    case "sg":
+                        url = "${createLink(action:'showSg_ajax')}";
+                        break;
+                    case "dp":
+                        url = "${createLink(action:'showDp_ajax')}";
+                        break;
+                    case "it":
+                        url = "${createLink(action:'showIt_ajax')}";
+                        break;
                 }
-            });
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: {
+                        id: id
+                    },
+                    success: function (msg) {
+                        $("#info").html(msg);
+                    }
+                });
+            }
         };
-
 
     });
 </script>

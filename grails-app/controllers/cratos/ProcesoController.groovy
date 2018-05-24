@@ -936,7 +936,7 @@ class ProcesoController extends cratos.seguridad.Shield {
                 "fcdtnmes numeroEstablecimiento, fcdtnmpe numeroEmision " +
                 "from fcdt where '${proceso.fechaIngresoSistema}' between fcdtfcin and fcdtfcfn and " +
                 "fcdttipo = 'R' and estb__id = '${proceso.establecimiento.id}' order by fcdtfcin"
-//        println "libretin: $sql"
+        println "libretin: $sql"
         def libretin = cn.rows(sql.toString())
 
 

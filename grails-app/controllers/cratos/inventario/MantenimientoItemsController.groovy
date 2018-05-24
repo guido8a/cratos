@@ -475,7 +475,8 @@ class MantenimientoItemsController extends Shield {
     def formSg_ajax() {
         println "formSg_ajax $params"
         def grpo__id = params.padre ?: params.id
-        def grupo = Grupo.get(SubgrupoItems.get(grpo__id).grupo.id)
+//        def grupo = Grupo.get(SubgrupoItems.get(grpo__id).grupo.id)
+        def grupo = Grupo.findById(1)
         def subgrupoItemsInstance = new SubgrupoItems()
         if (params.id) {
             subgrupoItemsInstance = SubgrupoItems.get(params.id)

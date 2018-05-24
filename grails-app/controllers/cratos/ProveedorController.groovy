@@ -268,10 +268,11 @@ class ProveedorController extends cratos.seguridad.Shield {
 
         try{
             proveedorInstance.save(flush: true)
-            def mnsj = "ok_${proveedorInstance.refresh().id}"
+//            def mnsj = "OK_${proveedorInstance.refresh().id}"
+            def mnsj = "OK_Proveedor creador correctamente"
             render mnsj
         }catch (e){
-            render "no_100"
+            render "NO_Error al crear el proveedor"
             println "error al guardar proveedor $e, $proveedorInstance.errors"
         }
     } //save para grabar desde ajax
