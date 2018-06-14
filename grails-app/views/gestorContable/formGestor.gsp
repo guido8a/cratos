@@ -159,16 +159,17 @@
                           optionValue="descripcion" title="Tipo de proceso o transacción"
                           disabled="${gestorInstance?.estado == 'R'  ? true : false}"/>
             </div>
-            <div class="col-xs-3 negrilla hidden" id="divS">
-                Gestor para saldos iniciales:
-            </div>
-            <div class="col-xs-2 negrilla hidden" id="divSI">
-                <g:checkBox name="saldoIni_name" id="saldoIni" class="form-control salIni" data-on-Label="Si" checked="${gestorInstance?.codigo == 'SLDO' ?: false}"/>
-            </div>
 
+            <g:if test="${!gestorInicial || gestorInicial.id == gestorInstance?.id}">
+                <div class="col-xs-3 negrilla hidden" id="divS">
+                    Gestor para saldos iniciales:
+                </div>
+                <div class="col-xs-2 negrilla hidden" id="divSI">
+                    <g:checkBox name="saldoIni_name" id="saldoIni" class="form-control salIni" data-on-Label="Si" checked="${gestorInstance?.codigo == 'SLDO' ?: false}"/>
+                </div>
+            </g:if>
         </div>
     </div>
-    %{--</g:form>--}%
 </div>
 
 <g:if test="${gestorInstance?.id}">
@@ -374,8 +375,6 @@
         });
 
     });
-
-
 
 
     $("#btnAgregarMovimiento").click(function () {

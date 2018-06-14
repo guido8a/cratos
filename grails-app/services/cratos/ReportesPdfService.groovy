@@ -360,4 +360,28 @@ class ReportesPdfService {
             paragraph.add(new Paragraph(" "));
         }
     }
+
+
+    def encabezado (titulo, subtitulo, fontTitulo, fontSub) {
+        Paragraph preface = new Paragraph();
+        preface.setAlignment(Element.ALIGN_CENTER);
+        preface.add(new Paragraph(titulo, fontTitulo));
+        preface.add(new Paragraph(subtitulo, fontSub));
+        return preface
+    }
+
+    def numeracion(x, y) {
+        PdfPTable table = new PdfPTable(2);
+        table.setTotalWidth(327);
+        table.setLockedWidth(true);
+        table.getDefaultCell().setFixedHeight(20);
+        table.getDefaultCell().setBorder(Rectangle.NO_BORDER);
+        table.addCell("");
+        table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_RIGHT);
+        table.addCell(String.format("Página %d de %d", x, y));
+        return table;
+    }
+
+
+
 }

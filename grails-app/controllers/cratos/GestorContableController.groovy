@@ -254,6 +254,7 @@ class GestorContableController extends cratos.seguridad.Shield {
 
     def formGestor () {
         def empresa = Empresa.get(session.empresa.id)
+        def gestorInicial = Gestor.findByEmpresaAndCodigo(empresa, 'SLDO')
         def titulo = "Nuevo Gestor"
         def tipo = ['G': 'Gasto', 'I':'Inventario', 'S': 'Servicios', 'C': 'Sin detalle']
         if(params.id){
@@ -261,9 +262,9 @@ class GestorContableController extends cratos.seguridad.Shield {
             def gestorInstance = Gestor.get(params.id)
             def band = (gestorInstance.empresa == empresa)
             def genera = Genera.findAllByGestor(gestorInstance)
-            return [gestorInstance: gestorInstance, verGestor: params.ver, titulo: titulo, tipo: tipo, band: band, tieneAsientos: genera]
+            return [gestorInstance: gestorInstance, verGestor: params.ver, titulo: titulo, tipo: tipo, band: band, tieneAsientos: genera, gestorInicial: gestorInicial]
         } else
-            return [verGestor: params.ver, titulo: titulo, tipo: tipo, band: true]
+            return [verGestor: params.ver, titulo: titulo, tipo: tipo, band: true, gestorInicial: gestorInicial]
     }
 
     def tablaGestor_ajax () {
@@ -405,11 +406,11 @@ class GestorContableController extends cratos.seguridad.Shield {
 
 
         try{
-           gestor.save(flush: true)
+            gestor.save(flush: true)
             render "ok_" + gestor?.id
         }catch (e){
             render "no"
-             println("error " + gestor.errors)
+            println("error " + gestor.errors)
         }
     }
 
@@ -476,7 +477,7 @@ class GestorContableController extends cratos.seguridad.Shield {
 //                println("totaleshaber " + totalesHaber)
 
                 if(totalesDebe == 0 && totalesHaber == 0){
-                   render "no_No se puede registrar el gestor contable, los valores se encuentran en 0, COMPROBANTE: (${tipo?.descripcion})"
+                    render "no_No se puede registrar el gestor contable, los valores se encuentran en 0, COMPROBANTE: (${tipo?.descripcion})"
                 }else{
                     if( (debeImpuesto.toDouble() != haberImpuesto.toDouble()) || (debeSinIvaD.toDouble() != debeSinIvaH.toDouble()) || (debePorcentaImpuesto.toDouble() != haberPorcentaImpuesto.toDouble()) || (debeValor.toDouble() != haberValor.toDouble()) || (fleteDebe.toDouble() != fleteHaber.toDouble() )){
                         render "no_No se puede registrar el gestor contable, los valores no cuadran entre DEBE y HABER, COMPROBANTE: (${tipo?.descripcion})"
@@ -542,7 +543,8 @@ class GestorContableController extends cratos.seguridad.Shield {
     def buscarGstr() {
 //        println "busqueda "
         def empresa = Empresa.get(session.empresa.id)
-        return[empresa: empresa]
+        def gestor = Gestor.findByEmpresaAndCodigo(empresa, 'SLDO')
+        return[empresa: empresa, gestorIniciales: gestor]
     }
 
     def tablaBuscarGstr() {
@@ -586,7 +588,7 @@ class GestorContableController extends cratos.seguridad.Shield {
         nuevo.observaciones = gestor.observaciones
 
         try {
-        nuevo.save(flush: true)
+            nuevo.save(flush: true)
             render "ok"
         }catch (e){
             render "no"
@@ -603,6 +605,113 @@ class GestorContableController extends cratos.seguridad.Shield {
         }else{
             render 'no'
         }
+    }
+
+    def crearGestorSaldoInicial_ajax () {
+
+        def empresa = Empresa.get(session.empresa.id)
+        def tipoProceso = TipoProceso.findByCodigo("A")
+        def fuente = Fuente.get(1)
+        def cn = dbConnectionService.getConnection()
+        def tipoComprobante = TipoComprobante.findByCodigo("D")
+
+        def cuentas1= "select cnta__id from cnta where cntanmro ILIKE '1%' and cntapdre is not null and empr__id = ${empresa?.id} and cnta__id not in (select cntapdre from cnta where empr__id = ${empresa?.id} and cntapdre is not null);"
+        def cuentas5= "select cnta__id from cnta where cntanmro ILIKE '5%' and cntapdre is not null and empr__id = ${empresa?.id} and cnta__id not in (select cntapdre from cnta where empr__id = ${empresa?.id} and cntapdre is not null);"
+        def cuentas6= "select cnta__id from cnta where cntanmro ILIKE '6%' and cntapdre is not null and empr__id = ${empresa?.id} and cnta__id not in (select cntapdre from cnta where empr__id = ${empresa?.id} and cntapdre is not null);"
+        def cuentas2= "select cnta__id from cnta where cntanmro ILIKE '2%' and cntapdre is not null and empr__id = ${empresa?.id} and cnta__id not in (select cntapdre from cnta where empr__id = ${empresa?.id} and cntapdre is not null);"
+        def cuentas3= "select cnta__id from cnta where cntanmro ILIKE '3%' and cntapdre is not null and empr__id = ${empresa?.id} and cnta__id not in (select cntapdre from cnta where empr__id = ${empresa?.id} and cntapdre is not null);"
+        def cuentas4= "select cnta__id from cnta where cntanmro ILIKE '4%' and cntapdre is not null and empr__id = ${empresa?.id} and cnta__id not in (select cntapdre from cnta where empr__id = ${empresa?.id} and cntapdre is not null);"
+
+        def cuentasDebe
+        def cuentasHaber
+
+        cuentasDebe =  cn.rows(cuentas1.toString()).cnta__id + cn.rows(cuentas5.toString()).cnta__id + cn.rows(cuentas6.toString()).cnta__id
+        cuentasHaber =  cn.rows(cuentas2.toString()).cnta__id + cn.rows(cuentas3.toString()).cnta__id + cn.rows(cuentas4.toString()).cnta__id
+
+//        println("cd " + cuentasDebe)
+//        println("ch " + cuentasHaber)
+
+
+
+        def errores = ''
+
+        def gestor = new Gestor()
+        gestor.nombre = "Saldos iniciales para apertura de contabilidad"
+        gestor.codigo = "SLDO"
+        gestor.empresa = empresa
+        gestor.estado = "A"
+        gestor.tipo = "G"
+        gestor.tipoProceso = tipoProceso
+        gestor.fuente = fuente
+        gestor.observaciones = "Saldos iniciales generados automáticamente"
+
+        try{
+            gestor.save(flush: true)
+        }catch (e){
+            println("error al crear el gestor de saldos iniciales " + e)
+            errores += e
+        }
+
+        if(errores == ''){
+
+        cuentasDebe.each{ debe->
+
+            def genera = new Genera()
+            genera.gestor = gestor
+            genera.cuenta = Cuenta.get(debe)
+            genera.tipoComprobante = tipoComprobante
+            genera.porcentaje = 0.000
+            genera.porcentajeImpuestos = 0.000
+            genera.valor = 0.00
+            genera.debeHaber = 'D'
+            genera.baseSinIva = 0.0
+            genera.flete = 0.0
+            genera.ice = 0.0
+
+
+            try{
+
+                genera.save(flush: true)
+
+            }catch (e){
+                println("error al crear los genera debe de los saldos iniciales")
+                errores += e
+            }
+
+        }
+
+            cuentasHaber.each{ haber->
+
+                def generaH = new Genera()
+                generaH.gestor = gestor
+                generaH.cuenta = Cuenta.get(haber)
+                generaH.tipoComprobante = tipoComprobante
+                generaH.porcentaje = 0.000
+                generaH.porcentajeImpuestos = 0.000
+                generaH.valor = 0.00
+                generaH.debeHaber = 'H'
+                generaH.baseSinIva = 0.0
+                generaH.flete = 0.0
+                generaH.ice = 0.0
+
+                try{
+                    generaH.save(flush: true)
+                }catch (e){
+                    println("error al crear los genera haber de los saldos iniciales")
+                    errores += e
+                }
+            }
+
+            if(errores == ''){
+                render "OK"
+            }else{
+                render "no"
+            }
+
+        }else{
+            render "no"
+        }
+
     }
 
 

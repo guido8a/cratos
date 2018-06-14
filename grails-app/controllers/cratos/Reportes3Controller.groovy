@@ -7,7 +7,9 @@ import com.lowagie.text.PageSize
 import com.lowagie.text.Paragraph
 import com.lowagie.text.pdf.BaseFont
 import com.lowagie.text.pdf.PdfContentByte
+import com.lowagie.text.pdf.PdfImportedPage
 import com.lowagie.text.pdf.PdfPTable
+import com.lowagie.text.pdf.PdfReader
 import com.lowagie.text.pdf.PdfWriter
 import cratos.inventario.Bodega
 import cratos.inventario.DetalleFactura
@@ -31,6 +33,7 @@ class Reportes3Controller {
     def barcode4jService
     def mailService
     PdfService pdfService
+    def reportesPdfService
 //    def kerberosoldService
 
     def reporteComprobante() {
@@ -737,7 +740,7 @@ class Reportes3Controller {
 
     def enviarMail () {
 
-        def para = "fegrijalva2501@hotmail.com"
+        def para = "correo@hotmail.com"
         def xml = servletContext.getRealPath("/") + "xml/46/"
         def completo = xml + 'fc_667.xml'
 
@@ -841,7 +844,43 @@ class Reportes3Controller {
         response.setContentType("application/octet-stream")
         response.setHeader("Content-Disposition", header);
         wb.write(output)
+    }
 
+
+
+    def encabezadoYnumeracion (f, tituloReporte, subtitulo, nombreReporte) {
+
+        def titulo = new Color(30, 140, 160)
+        Font fontTitulo = new Font(Font.TIMES_ROMAN, 12, Font.BOLD, titulo);
+        Font fontTitulo16 = new Font(Font.TIMES_ROMAN, 16, Font.BOLD, titulo);
+
+        def baos = new ByteArrayOutputStream()
+        Document document
+        document = new Document(PageSize.A4);
+
+        def pdfw = PdfWriter.getInstance(document, baos);
+        document.open();
+
+        PdfContentByte cb = pdfw.getDirectContent();
+
+        PdfReader reader = new PdfReader(f);
+        for (int i = 1; i <= reader.getNumberOfPages(); i++) {
+            document.newPage();
+            PdfImportedPage page = pdfw.getImportedPage(reader, i);
+            cb.addTemplate(page, 0, 0);
+            def en = reportesPdfService.encabezado(tituloReporte, subtitulo, fontTitulo16, fontTitulo)
+            reportesPdfService.numeracion(i,reader.getNumberOfPages()).writeSelectedRows(0, -1, -1, 25, cb)
+
+            document.add(en)
+        }
+
+        document.close();
+        byte[] b = baos.toByteArray();
+
+        response.setContentType("application/pdf")
+        response.setHeader("Content-disposition", "attachment; filename=" + nombreReporte)
+        response.setContentLength(b.length)
+        response.getOutputStream().write(b)
     }
 
 }

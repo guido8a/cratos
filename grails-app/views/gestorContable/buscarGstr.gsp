@@ -37,13 +37,13 @@
     <div class="linea45"></div>
 
     <div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <g:link class="btn btn-primary" action="formGestor">
                 <i class="fa fa-file-o"></i> Nuevo Gestor
             </g:link>
         </div>
 
-        <div class="col-md-7" style="margin-left: 20px;">
+        <div class="col-md-6" style="margin-left: 20px;">
             Buscar por:
             <div class="btn-group">
                 <input id="buscar" type="search" class="form-control" value="${session.buscar}">
@@ -53,6 +53,14 @@
             <a href="#" name="busqueda" class="btn btn-azul btnBusqueda btn-ajax"><i
                     class="fa fa-check-square-o"></i> Buscar</a>
         </div>
+
+        <g:if test="${!gestorIniciales}">
+            <div class="col-md-3">
+                <a href="#" class="btn btn-info" id="btnInicial">
+                    <i class="fa fa-check"></i> Crear gestor de saldos iniciales
+                </a>
+            </div>
+        </g:if>
     </div>
 </div>
 
@@ -109,6 +117,33 @@ como máximo 20 <span style="margin-left: 40px; color: #0b2c89">Se ordena por pr
 </script>
 
 <script type="text/javascript">
+
+    $("#btnInicial").click(function () {
+
+        bootbox.confirm("<i class='fa fa-check fa-3x pull-left text-warning text-shadow'></i> Está seguro de crear un gestor de saldos iniciales?", function (result) {
+            if (result) {
+                openLoader("Creando...");
+                $.ajax({
+                    type: 'POST',
+                    url:'${createLink(controller: 'gestorContable', action: 'crearGestorSaldoInicial_ajax')}',
+                    data:{
+
+                    },
+                    success: function (msg){
+                        closeLoader();
+                        if(msg == 'OK'){
+                            log("Gestor de Saldos Iniciales creado correctamente", "success");
+                            setTimeout(function () {
+                                location.reload(true);
+                            }, 1500);
+                        }else{
+                            log("Error al crear el gestor de saldos iniciales", "error");
+                        }
+                    }
+                });
+            }
+        });
+    });
 
     cargarBusqueda();
 
