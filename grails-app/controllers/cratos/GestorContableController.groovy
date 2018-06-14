@@ -476,7 +476,7 @@ class GestorContableController extends cratos.seguridad.Shield {
 //                println("totalesdebe " + totalesDebe)
 //                println("totaleshaber " + totalesHaber)
 
-                if(totalesDebe == 0 && totalesHaber == 0){
+                if(totalesDebe == 0 && totalesHaber == 0 && gestor.codigo != 'SLDO'){
                     render "no_No se puede registrar el gestor contable, los valores se encuentran en 0, COMPROBANTE: (${tipo?.descripcion})"
                 }else{
                     if( (debeImpuesto.toDouble() != haberImpuesto.toDouble()) || (debeSinIvaD.toDouble() != debeSinIvaH.toDouble()) || (debePorcentaImpuesto.toDouble() != haberPorcentaImpuesto.toDouble()) || (debeValor.toDouble() != haberValor.toDouble()) || (fleteDebe.toDouble() != fleteHaber.toDouble() )){
