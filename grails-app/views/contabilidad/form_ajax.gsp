@@ -70,7 +70,7 @@
                 </label>
 
                 <div class="col-md-6">
-                    <g:select name="cuenta" from="${cuentas}" optionValue="descripcion" optionKey="id" class="form-control" value="${contabilidadInstance?.cuenta?.id}"/>
+                    <g:select name="cuenta" from="${cuentas}" optionValue="${{it.numero + " - " + it.descripcion}}" optionKey="id" class="form-control" value="${contabilidadInstance?.cuenta?.id}"/>
                 </div>
                 *
             </span>
@@ -83,7 +83,7 @@
                 </label>
 
                 <div class="col-md-6">
-                    <g:select name="creditoIva" from="${cntacr}" optionValue="descripcion" optionKey="id" class="form-control" value="${contabilidadInstance?.creditoTributarioIva?.id}"/>
+                    <g:select name="creditoIva" from="${cntacr}" optionValue="${{it.numero + " - " + it.descripcion}}" optionKey="id" class="form-control" value="${contabilidadInstance?.creditoTributarioIva?.id}"/>
                 </div>
                 *
             </span>
@@ -96,7 +96,7 @@
                 </label>
 
                 <div class="col-md-6">
-                    <g:select name="creditoRenta" from="${cntacr}" optionValue="descripcion" optionKey="id" class="form-control" value="${contabilidadInstance?.creditoTributarioRenta?.id}"/>
+                    <g:select name="creditoRenta" from="${cntacr}" optionValue="${{it.numero + " - " + it.descripcion}}" optionKey="id" class="form-control" value="${contabilidadInstance?.creditoTributarioRenta?.id}"/>
                 </div>
                 *
             </span>
@@ -109,7 +109,7 @@
                 </label>
 
                 <div class="col-md-6">
-                    <g:select name="retencionIva" from="${cntart}" optionValue="descripcion" optionKey="id" class="form-control" value="${contabilidadInstance?.retencionCompraIva?.id}"/>
+                    <g:select name="retencionIva" from="${cntart}" optionValue="${{it.numero + " - " + it.descripcion}}" optionKey="id" class="form-control" value="${contabilidadInstance?.retencionCompraIva?.id}"/>
                 </div>
                 *
             </span>
@@ -122,7 +122,7 @@
                 </label>
 
                 <div class="col-md-6">
-                    <g:select name="retencionRenta" from="${cntart}" optionValue="descripcion" optionKey="id" class="form-control" value="${contabilidadInstance?.retencionCompraRenta?.id}"/>
+                    <g:select name="retencionRenta" from="${cntart}" optionValue="${{it.numero + " - " + it.descripcion}}" optionKey="id" class="form-control" value="${contabilidadInstance?.retencionCompraRenta?.id}"/>
                 </div>
                 *
             </span>
@@ -135,7 +135,7 @@
                 </label>
 
                 <div class="col-md-6">
-                    <g:select name="costos" from="${cntacsto}" optionValue="descripcion" optionKey="id" class="form-control"
+                    <g:select name="costos" from="${cntacsto}" optionValue="${{it.numero + " - " + it.descripcion}}" optionKey="id" class="form-control"
                               value="${contabilidadInstance?.costos?.id}"/>
                 </div>
                 *
@@ -149,7 +149,7 @@
                 </label>
 
                 <div class="col-md-6">
-                    <g:select name="inventario" from="${cntainvt}" optionValue="descripcion" optionKey="id"
+                    <g:select name="inventario" from="${cntainvt}" optionValue="${{it.numero + " - " + it.descripcion}}" optionKey="id"
                               class="form-control" value="${contabilidadInstance?.inventario?.id}"/>
                 </div>
                 *

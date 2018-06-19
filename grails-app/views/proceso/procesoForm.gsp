@@ -1352,9 +1352,9 @@
                     }
                 }
 
-                if ($("#valorPago").val() == 0) {
-                    error += "<li>Ingrese el valor del ajuste</li>"
-                }
+//                if ($("#valorPago").val() == 0) {
+//                    error += "<li>Ingrese el valor del ajuste</li>"
+//                }
 
                 if (!$("#gestor").val()) {
                     error += "<li>Seleccione el Gestor contable</li>"

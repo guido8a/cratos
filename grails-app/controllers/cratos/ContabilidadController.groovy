@@ -81,27 +81,27 @@ class ContabilidadController extends cratos.seguridad.Shield {
         def cuentas = Cuenta.withCriteria {
             ilike("numero", '3%')
             eq("empresa", empresa)
-            order("descripcion","asc")
+            order("numero","asc")
         }
         def cntaCredito = Cuenta.withCriteria {
             ilike("numero", '1%')
             eq("empresa", empresa)
-            order("descripcion","asc")
+            order("numero","asc")
         }
         def cntaRetencion = Cuenta.withCriteria {
             ilike("numero", '2%')
             eq("empresa", empresa)
-            order("descripcion","asc")
+            order("numero","asc")
         }
         def cntaCosto = Cuenta.withCriteria {
             ilike("numero", '5%')
             eq("empresa", empresa)
-            order("descripcion","asc")
+            order("numero","asc")
         }
         def cntaInvt = Cuenta.withCriteria {
             ilike("numero", '1%')
             eq("empresa", empresa)
-            order("descripcion","asc")
+            order("numero","asc")
         }
         return [contabilidadInstance: contabilidadInstance, cuentas: cuentas, cntacr: cntaCredito, cntart: cntaRetencion,
             cntacsto: cntaCosto, cntainvt: cntaInvt]
