@@ -135,6 +135,7 @@ class ServicioSriController {
     }
 
     def facturaXml(prcs) {
+        println "---> facturaXml"
         def cn = dbConnectionService.getConnection()
         def sql = " "
         def empresa_id = session.empresa.id
@@ -152,6 +153,7 @@ class ServicioSriController {
             sql = "select tpidcdgo, emprnmbr, empr_ruc, emprtpem, emprdire, emprambt, emprrzsc, emprnmbr, " +
                     "emprctes, emprcont from empr, tpid " +
                     "where tpid.tpid__id = empr.tpid__id and empr__id = ${empresa_id}"
+            println "empresa: $sql"
             def empr = cn.rows(sql.toString()).first()
 
             println "...empresa: $sql  --> ${empr}"

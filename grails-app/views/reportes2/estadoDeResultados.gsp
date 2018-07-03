@@ -159,12 +159,45 @@
                 </tbody>
             </table>
 
+            <table border="1" style="width: 630px !important;margin-top: 20px;">
+                <thead>
+                    <tr>
+                        <td colspan="3">GASTOS</td>
+                    </tr>
+                    <tr>
+                        <td style="font-size: 12px; font-weight: bold; text-align: center">Cuenta</td>
+                        <td style="font-size: 12px; font-weight: bold; text-align: center">Nombre de la Cuenta</td>
+                        <td style="font-size: 12px; font-weight: bold; text-align: center">Saldo</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <g:each in="${cuenta6}" var="i">
+                        <tr>
+                            <td class="numero">
+                                ${i?.numero}
+                            </td>
+                            <td class="nombre">
+                                %{--${i?.descripcion}--}%
+                                <util:clean str="${i.descripcion}"/>
+                            </td>
+                            <td class="${i.nivel.descripcion} numero">
+                                <g:formatNumber number="${saldo6[i.id.toString()]}" type="number" minFractionDigits="2" maxFractionDigits="2"/>
+                            </td>
+                        </tr>
+                    </g:each>
+                    <tr>
+                        <td style="font-weight: bolder">TOTAL GASTOS</td>
+                        <td colspan="2" class="numero"><g:formatNumber number="${total6}" type="number" minFractionDigits="2" maxFractionDigits="2"/></td>
+                    </tr>
+                </tbody>
+            </table>
+
             <div style="margin-top: 30px">
                 <g:if test="${(total4 + total5) > 0}">
-                    Resultado del ejercicio:  <b>DEFICIT <g:formatNumber number="${Math.abs(total4 + total5)}" type="number" minFractionDigits="2" maxFractionDigits="2"/></b>
+                    Resultado del ejercicio:  <b>DEFICIT <g:formatNumber number="${Math.abs(total4 + total5 + total6)}" type="number" minFractionDigits="2" maxFractionDigits="2"/></b>
                 </g:if>
                 <g:else>
-                    Resultado del ejercicio:  <b>SUPERAVIT <g:formatNumber number="${Math.abs(total4 + total5)}" type="number" minFractionDigits="2" maxFractionDigits="2"/></b>
+                    Resultado del ejercicio:  <b>SUPERAVIT <g:formatNumber number="${Math.abs(total4 + total5 + total6)}" type="number" minFractionDigits="2" maxFractionDigits="2"/></b>
                 </g:else>
 
             </div>

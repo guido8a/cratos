@@ -416,10 +416,13 @@ class Reportes2Controller {
 
         def cuenta4 = Cuenta.findAllByNumeroIlikeAndEmpresa("4%", empresa, [sort: "numero"])
         def cuenta5 = Cuenta.findAllByNumeroIlikeAndEmpresa("5%", empresa, [sort: "numero"])
+        def cuenta6 = Cuenta.findAllByNumeroIlikeAndEmpresa("6%", empresa, [sort: "numero"])
         def saldo4 = [:]
         def saldo5 = [:]
+        def saldo6 = [:]
         def total4 = 0
         def total5 = 0
+        def total6 = 0
         def maxLvl = 1
 
 
@@ -455,8 +458,25 @@ class Reportes2Controller {
             }
 
         }
+
+        if (cuenta6) {
+            cuenta6.eachWithIndex { i, j ->
+                def saldo = SaldoMensual.findByCuentaAndPeriodo(i, periodo)
+                if (saldo) {
+                    saldo = SaldoMensual.findByCuentaAndPeriodo(i, periodo).refresh()
+                    saldo6.put(i.id.toString(), saldo.saldoInicial + saldo.debe - saldo.haber)
+                } else
+                    saldo6.put(i.id.toString(), 0)
+                if (j == 0)
+                    total6 = saldo6[i.id.toString()]
+                if (i.nivel.id > maxLvl)
+                    maxLvl = i.nivel.id
+            }
+
+        }
         //println "saldo4 "+cuenta4
-        return [periodo: periodo, empresa: empresa, cuenta4: cuenta4, cuenta5: cuenta5, saldo4: saldo4, saldo5: saldo5, total4: total4, total5: total5, maxLvl: maxLvl]
+        return [periodo: periodo, empresa: empresa, cuenta4: cuenta4, cuenta5: cuenta5, cuenta6: cuenta6, saldo4: saldo4,
+                saldo5: saldo5, saldo6: saldo6, total4: total4, total5: total5, total6: total6, maxLvl: maxLvl]
     }
 
 
@@ -498,8 +518,10 @@ class Reportes2Controller {
 //        println("params " + params)
         def periodo = Periodo.get(params.periodo);
         def cn = dbConnectionService.getConnection()
-        def sql = "select cntanmro, cntadscr, slmsslin, slmsdebe, slmshber, cntamvmt from cnta, slms where prdo__id = ${periodo?.id} and slms.cnta__id = cnta.cnta__id and cntamvmt = '1' order by cntanmro"
-//        println("sql " + sql)
+        def sql = "select cntanmro, cntadscr, slmsslin, slmsdebe, slmshber, cntamvmt from cnta, slms " +
+                "where prdo__id = ${periodo?.id} and slms.cnta__id = cnta.cnta__id and cntamvmt = '1' " +
+                "order by cntanmro"
+        println("sql " + sql)
         def res =  cn.rows(sql.toString())
 
         return[cuentas: res, empresa: params.emp, periodo: periodo]

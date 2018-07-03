@@ -616,7 +616,8 @@ class Reportes3Controller {
 
         def cn = dbConnectionService.getConnection()
         def sql = "select * from estado_st(${params.periodo},${params.nivel})"
-//        println("sql " + sql)
+//        def sql = "select * from estado_st(${params.periodo},${params.nivel}) where slin + debe + hber > 0"
+        println("sql " + sql)
         def data = cn.rows(sql.toString())
         cn.close()
 

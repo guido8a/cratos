@@ -1,5 +1,3 @@
-<%@ page import="cratos.Unidad2" %>
-
 <g:if test="${!unidadInstance}">
     <elm:notFound elem="Unidad" genero="o"/>
 </g:if>
