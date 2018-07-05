@@ -884,4 +884,79 @@ class Reportes3Controller {
         response.getOutputStream().write(b)
     }
 
+    def reporteResultadoIntegral () {
+
+        println("params " + params)
+
+        def periodo = Periodo.get(params.per);
+        def empresa = Empresa.get(params.empresa)
+
+        def cuenta4 = Cuenta.findAllByNumeroIlikeAndEmpresa("4%", empresa, [sort: "numero"])
+        def cuenta5 = Cuenta.findAllByNumeroIlikeAndEmpresa("5%", empresa, [sort: "numero"])
+        def cuenta6 = Cuenta.findAllByNumeroIlikeAndEmpresa("6%", empresa, [sort: "numero"])
+        def saldo4 = [:]
+        def saldo5 = [:]
+        def saldo6 = [:]
+        def total4 = 0
+        def total5 = 0
+        def total6 = 0
+        def maxLvl = 1
+
+
+        if (cuenta4) {
+            cuenta4.eachWithIndex { i, j ->
+                def saldo = SaldoMensual.findByCuentaAndPeriodo(i, periodo)
+
+                if (saldo) {
+                    saldo = SaldoMensual.findByCuentaAndPeriodo(i, periodo).refresh()
+                    saldo4.put(i.id.toString(), saldo.saldoInicial + saldo.debe - saldo.haber)
+                } else
+                    saldo4.put(i.id.toString(), 0)
+                if (j == 0)
+                    total4 = saldo4[i.id.toString()]
+                if (i.nivel.id > maxLvl)
+                    maxLvl = i.nivel.id
+            }
+        }
+        if (cuenta5) {
+            cuenta5.eachWithIndex { i, j ->
+                def saldo = SaldoMensual.findByCuentaAndPeriodo(i, periodo)
+                if (saldo) {
+                    saldo = SaldoMensual.findByCuentaAndPeriodo(i, periodo).refresh()
+                    saldo5.put(i.id.toString(), saldo.saldoInicial + saldo.debe - saldo.haber)
+                } else
+                    saldo5.put(i.id.toString(), 0)
+                if (j == 0)
+                    total5 = saldo5[i.id.toString()]
+                if (i.nivel.id > maxLvl)
+                    maxLvl = i.nivel.id
+            }
+
+        }
+
+        if (cuenta6) {
+            cuenta6.eachWithIndex { i, j ->
+                def saldo = SaldoMensual.findByCuentaAndPeriodo(i, periodo)
+                if (saldo) {
+                    saldo = SaldoMensual.findByCuentaAndPeriodo(i, periodo).refresh()
+                    saldo6.put(i.id.toString(), saldo.saldoInicial + saldo.debe - saldo.haber)
+                } else
+                    saldo6.put(i.id.toString(), 0)
+                if (j == 0)
+                    total6 = saldo6[i.id.toString()]
+                if (i.nivel.id > maxLvl)
+                    maxLvl = i.nivel.id
+            }
+
+        }
+
+        println("cuenta 4 " + cuenta4)
+
+
+        return [periodo: periodo, empresa: empresa, cuenta4: cuenta4, cuenta5: cuenta5, cuenta6: cuenta6, saldo4: saldo4,
+                saldo5: saldo5, saldo6: saldo6, total4: total4, total5: total5, total6: total6, maxLvl: maxLvl]
+
+
+    }
+
 }

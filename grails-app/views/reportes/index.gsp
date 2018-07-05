@@ -1217,7 +1217,8 @@
             if (cont == '-1') {
                 bootbox.alert("Debe elegir una contabilidad!")
             } else {
-                url = "${g.createLink(controller:'reportes2' , action: 'estadoDeResultados')}?cont=" + cont + "Wempresa=${session.empresa.id}" + "Wper=" + per;
+                %{--url = "${g.createLink(controller:'reportes2' , action: 'estadoDeResultados')}?cont=" + cont + "Wempresa=${session.empresa.id}" + "Wper=" + per;--}%
+                url = "${g.createLink(controller:'reportes3' , action: 'reporteResultadoIntegral')}?cont=" + cont + "Wempresa=${session.empresa.id}" + "Wper=" + per;
                 location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=resultadoIntegral.pdf"
             }
         });

@@ -215,7 +215,7 @@
                     <elm:datepicker name="fecha" title="Fecha de emisión del comprobante"
                                     class="datepicker form-control required col-xs-3 fechaE"
                                     value="${proceso?.fechaEmision?: cratos.Contabilidad.get(session.contabilidad.id).fechaCierre}"
-                                    minDate="${cratos.Contabilidad.get(session.contabilidad.id).fechaInicio.format("dd-MM-yyyy")}"
+                                    minDate="${(cratos.Contabilidad.get(session.contabilidad.id).fechaInicio - 30).format("dd-MM-yyyy")}"
                                     maxDate="${cratos.Contabilidad.get(session.contabilidad.id).fechaCierre.format("dd-MM-yyyy")}"
                                     style="width: 80px; margin-left: 5px"/>
                 </g:else>
