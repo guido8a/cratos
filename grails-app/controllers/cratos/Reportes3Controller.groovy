@@ -886,7 +886,7 @@ class Reportes3Controller {
 
     def reporteResultadoIntegral () {
 
-        println("params " + params)
+//        println("params " + params)
 
         def periodo = Periodo.get(params.per);
         def empresa = Empresa.get(params.empresa)
@@ -901,6 +901,8 @@ class Reportes3Controller {
         def total5 = 0
         def total6 = 0
         def maxLvl = 1
+        def saldo41
+
 
 
         if (cuenta4) {
@@ -950,11 +952,12 @@ class Reportes3Controller {
 
         }
 
-        println("cuenta 4 " + cuenta4)
+//        println("cuenta 4 " + cuenta4)
+//        println("saldo 4 " + saldo4.values())
 
 
-        return [periodo: periodo, empresa: empresa, cuenta4: cuenta4, cuenta5: cuenta5, cuenta6: cuenta6, saldo4: saldo4,
-                saldo5: saldo5, saldo6: saldo6, total4: total4, total5: total5, total6: total6, maxLvl: maxLvl]
+        return [periodo: periodo, empresa: empresa, cuenta4: cuenta4, cuenta5: cuenta5, cuenta6: cuenta6, saldo4: saldo4.values(),
+                saldo5: saldo5.values(), saldo6: saldo6.values(), total4: total4, total5: total5, total6: total6, maxLvl: maxLvl]
 
 
     }
