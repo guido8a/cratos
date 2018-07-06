@@ -1152,10 +1152,11 @@ class ProcesoController extends cratos.seguridad.Shield {
         def res
 
         if(params.nombre == "" && params.codigo == ""){
-            res = Cuenta.findAllByEmpresa(empresa).sort{it.numero}
+            res = Cuenta.findAllByEmpresaAndMovimiento(empresa,"1").sort{it.numero}
         }else{
             res = Cuenta.withCriteria {
                 eq("empresa", empresa)
+                eq("movimiento", "1")
 
                 and{
                     ilike("descripcion", '%' + params.nombre + '%')
