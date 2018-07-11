@@ -1,5 +1,7 @@
 package cratos
 
+import cratos.sri.TipoIdentificacion
+
 class Empresa implements Serializable {
     String email
     Date fechaFin
@@ -31,6 +33,7 @@ class Empresa implements Serializable {
 
     String firma
     String clave
+    TipoIdentificacion tipoIdentificacion
 
 
     static hasMany = [periodosContables: Contabilidad]
@@ -71,6 +74,7 @@ class Empresa implements Serializable {
             ambiente column: 'emprambt'
             firma column: 'emprfrma'
             clave column: 'emprclve'
+            tipoIdentificacion column: 'tpid__id'
         }
     }
     static constraints = {
