@@ -8,9 +8,9 @@
     <elm:notFound elem="Empresa" genero="o"/>
 </g:if>
 <g:else>
+
     <g:form class="form-horizontal" name="frmEmpresa" role="form" action="save_ajax" method="POST">
         <g:hiddenField name="id" value="${empresaInstance?.id}"/>
-    %{--<div class="keeptogether">--}%
         <div class="form-group keeptogether ${hasErrors(bean: empresaInstance, field: 'nombre', 'error')} required">
             <span class="grupo">
                 <label for="nombre" class="col-xs-4 control-label text-info">
@@ -57,6 +57,18 @@
             </span>
         </div>
 
+        <div class="form-group keeptogether ${hasErrors(bean: empresaInstance, field: 'tipoIdentificacion', 'error')} required">
+            <span class="grupo">
+                <label for="tipoIdentificacion" class="col-xs-4 control-label text-info">
+                    Tipo de Identificación
+                </label>
+
+                <div class="col-xs-6">
+                    <g:select id="tipoIdentificacion" name="tipoIdentificacion.id" from="${cratos.sri.TipoIdentificacion.list()}" optionValue="descripcion" optionKey="id" value="${empresaInstance?.tipoIdentificacion?.id}" class="many-to-one form-control required"/>
+                </div>
+            </span>
+        </div>
+
         <div class="form-group keeptogether ${hasErrors(bean: empresaInstance, field: 'tipoEmpresa', 'error')} required">
             <span class="grupo">
                 <label for="tipoEmpresa" class="col-xs-4 control-label text-info">
@@ -99,7 +111,7 @@
 
         <div class="form-group keeptogether ${hasErrors(bean: empresaInstance, field: 'email', 'error')} ">
             <span class="grupo">
-                <label for="email" class="col-xs-3 control-label text-info">
+                <label for="email" class="col-xs-4 control-label text-info">
                     E-mail
                 </label>
 
@@ -218,23 +230,23 @@
             </span>
         </div>
 
+        %{--<div class="form-group keeptogether ${hasErrors(bean: empresaInstance, field: 'establecimientos', 'error')} ">--}%
+            %{--<span class="grupo">--}%
+                %{--<label for="establecimientos" class="col-xs-6 control-label text-info">--}%
+                    %{--Establecimientos habilitados, ejemplo: 001,002,003 Sin espacios--}%
+                %{--</label>--}%
+
+                %{--<div class="col-xs-6">--}%
+                    %{--<g:textField name="establecimientos" maxlength="20" class="form-control validaLista"--}%
+                                 %{--value="${empresaInstance?.establecimientos}"/>--}%
+                %{--</div>--}%
+
+            %{--</span>--}%
+        %{--</div>--}%
+
         <div class="form-group keeptogether ${hasErrors(bean: empresaInstance, field: 'establecimientos', 'error')} ">
             <span class="grupo">
-                <label for="establecimientos" class="col-xs-6 control-label text-info">
-                    Establecimientos habilitados, ejemplo: 001,002,003 Sin espacios
-                </label>
-
-                <div class="col-xs-6">
-                    <g:textField name="establecimientos" maxlength="20" class="form-control validaLista"
-                                 value="${empresaInstance?.establecimientos}"/>
-                </div>
-
-            </span>
-        </div>
-
-        <div class="form-group keeptogether ${hasErrors(bean: empresaInstance, field: 'establecimientos', 'error')} ">
-            <span class="grupo">
-                <label for="establecimientos" class="col-xs-6 control-label text-info">
+                <label for="tipoEmision" class="col-xs-6 control-label text-info">
                     Emisión Física o Electrónica
                 </label>
 

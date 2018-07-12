@@ -232,19 +232,19 @@
                             </div>
                         </li>
 
-                        <li>
-                            <i class="fa-li ${iconGen}"></i>
-                            <span id="tipoSoporte">
-                                <g:link controller="tipoSoporte" action="list">Tipo de Sustento Tributario</g:link> como contribuyentes
-                                normales, especiales y el estado.
-                            </span>
+                        %{--<li>--}%
+                            %{--<i class="fa-li ${iconGen}"></i>--}%
+                            %{--<span id="tipoSoporte">--}%
+                                %{--<g:link controller="tipoSoporte" action="list">Tipo de Sustento Tributario</g:link> como contribuyentes--}%
+                                %{--normales, especiales y el estado.--}%
+                            %{--</span>--}%
 
-                            <div class="descripcion hide">
-                                <h4>Tipo de Sustento Tributario</h4>
+                            %{--<div class="descripcion hide">--}%
+                                %{--<h4>Tipo de Sustento Tributario</h4>--}%
 
-                                <p>Tipo de sustento tributario que se ha se adjuntar a los anexos tributarios que se entregan al SRI.</p>
-                            </div>
-                        </li>
+                                %{--<p>Tipo de sustento tributario que se ha se adjuntar a los anexos tributarios que se entregan al SRI.</p>--}%
+                            %{--</div>--}%
+                        %{--</li>--}%
                         <li>
                             <i class="fa-li ${iconGen}"></i>
                             <span id="paramsAux">
