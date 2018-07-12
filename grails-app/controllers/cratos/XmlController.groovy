@@ -89,6 +89,7 @@ class XmlController extends cratos.seguridad.Shield {
         } else {
             sql = "select tpidcdgo, emprnmbr, empr_ruc, emprtpem from empr, tpid " +
                     "where tpid.tpid__id = empr.tpid__id and empr__id = ${empresa_id}"
+            println "sql: $sql"
             def empr = cn.rows(sql.toString()).first()
 
             println "...empresa: $sql  --> ${empr}"
