@@ -64,7 +64,8 @@
                 </label>
 
                 <div class="col-xs-6">
-                    <g:select id="tipoIdentificacion" name="tipoIdentificacion.id" from="${cratos.sri.TipoIdentificacion.list()}" optionValue="descripcion" optionKey="id" value="${empresaInstance?.tipoIdentificacion?.id}" class="many-to-one form-control required"/>
+                    %{--<g:select id="tipoIdentificacion" name="tipoIdentificacion.id" from="${cratos.sri.TipoIdentificacion.list()}" optionValue="descripcion" optionKey="id" value="${empresaInstance?.tipoIdentificacion?.id}" class="many-to-one form-control required"/>--}%
+                    <g:select id="tipoIdentificacion" name="tipoIdentificacion.id" from="${['1':'Registro Único Contribuyente']}" optionValue="value" optionKey="key" value="${empresaInstance?.tipoIdentificacion?.id}" class="many-to-one form-control required"/>
                 </div>
             </span>
         </div>
