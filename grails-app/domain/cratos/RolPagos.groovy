@@ -8,7 +8,7 @@ class RolPagos {
     Date fecha
     double pagado
     String estado
-//    Empresa empresa
+    Empresa empresa
 
     static mapping = {
         table 'rlpg'
@@ -23,7 +23,7 @@ class RolPagos {
             fecha column: 'rlpgfcha'
             pagado column: 'rlpgpgdo'
             estado column: 'rlpgetdo'
-//            empresa column: 'empr__id'
+            empresa column: 'empr__id'
         }
     }
 
@@ -36,7 +36,7 @@ class RolPagos {
         fecha(blank: true, nullable: true, attributes: [title: 'fecha'])
         pagado(blank: true, nullable: true, attributes: [title: 'pagado'])
         estado(blank: true, nullable: true, size: 1..1, attributes: [title: 'estado'])
-//        empresa(blank:false,nullable: false)
+        empresa(blank:false,nullable: false)
 
     }
 }

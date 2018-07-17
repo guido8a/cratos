@@ -19,7 +19,7 @@ class RubroTipoContrato implements Serializable {
         version false
         columns {
             id column: 'rbtc__id'
-            valor column: 'rbtcrovlor'
+            valor column: 'rbtcvlor'
             porcentaje column: 'rbtcpcnt'
             editable column: 'rbtcedit'
             decimo column: 'rbtcdcmo'
