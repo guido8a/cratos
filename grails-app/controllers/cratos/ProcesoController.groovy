@@ -1515,6 +1515,7 @@ class ProcesoController extends cratos.seguridad.Shield {
         def proceso = Proceso.get(comprobante.proceso.id)
         def auxiliares = Auxiliar.findAllByComprobante(comprobante)
         def asientos = Asiento.findAllByComprobante(comprobante)
+        println "asientos: $asientos, cmpr: ${comprobante.id}"
         def totalDebe = asientos.debe.sum()
         def totalHaber = asientos.haber.sum()
         def debe = Math.round(totalDebe*100)/100
@@ -1531,7 +1532,7 @@ class ProcesoController extends cratos.seguridad.Shield {
 
 //        println "Mayorizar: debe: $debe, haber: $haber, valor: $valor"
 
-        if(gestor.codigo == 'SLDO'){
+        if((gestor.codigo == 'SLDO' || comprobante.tipo.codigo == 'R') && Math.abs(debe - haber) < 0.001){
             band = true
         }else{
             if(( debe - haber) == 0 && debe == valor && haber == valor){
