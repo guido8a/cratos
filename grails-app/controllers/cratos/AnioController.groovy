@@ -11,7 +11,7 @@ class AnioController extends cratos.seguridad.Shield {
     } //index
 
     def list() {
-        [anioInstanceList: Anio.list(params), params: params]
+        [anioInstanceList: Anio.list(params), params: params, anioInstanceCount: Anio.count()]
     } //list
 
     def form_ajax() {
@@ -29,47 +29,25 @@ class AnioController extends cratos.seguridad.Shield {
     } //form_ajax
 
     def save() {
-        def anioInstance
-        if(params.id) {
-            anioInstance = Anio.get(params.id)
-            if(!anioInstance) {
-                flash.clase = "alert-error"
-                flash.message = "No se encontró Anio con id " + params.id
-                redirect(action: 'list')
-                return
-            }//no existe el objeto
-            anioInstance.properties = params
-        }//es edit
-        else {
-            anioInstance = new Anio(params)
-        } //es create
-        if (!anioInstance.save(flush: true)) {
-            flash.clase = "alert-error"
-            def str = "<h4>No se pudo guardar Anio " + (anioInstance.id ? anioInstance.id : "") + "</h4>"
-
-            str += "<ul>"
-            anioInstance.errors.allErrors.each { err ->
-                def msg = err.defaultMessage
-                err.arguments.eachWithIndex {  arg, i ->
-                    msg = msg.replaceAll("\\{" + i + "}", arg.toString())
-                }
-                str += "<li>" + msg + "</li>"
-            }
-            str += "</ul>"
-
-            flash.message = str
-            redirect(action: 'list')
-            return
+//        println("params " + params)
+        def anio
+        def texto = ''
+        if(params.id){
+            anio = Anio.get(params.id)
+            anio.anio = params.anio
+            texto = "Año actualizado correctamente"
+        }else{
+            anio = new Anio()
+            anio.anio = params.anio
+            texto = "Año creado correctamente"
         }
 
-        if(params.id) {
-            flash.clase = "alert-success"
-            flash.message = "Se ha actualizado correctamente Anio " + anioInstance.id
-        } else {
-            flash.clase = "alert-success"
-            flash.message = "Se ha creado correctamente Anio " + anioInstance.id
+        if(!anio.save(flush: true)){
+            render "NO_Error al guardar el año"
+        }else{
+            render "OK_" + texto
         }
-        redirect(action: 'list')
+
     } //save
 
     def show_ajax() {
@@ -85,23 +63,15 @@ class AnioController extends cratos.seguridad.Shield {
 
     def delete() {
         def anioInstance = Anio.get(params.id)
-        if (!anioInstance) {
-            flash.clase = "alert-error"
-            flash.message =  "No se encontró Anio con id " + params.id
-            redirect(action: "list")
-            return
+        def texto = ''
+
+        try{
+            anioInstance.delete(flush: true)
+            texto = "OK"
+        }catch (e){
+            texto = "NO"
         }
 
-        try {
-            anioInstance.delete(flush: true)
-            flash.clase = "alert-success"
-            flash.message =  "Se ha eliminado correctamente Anio " + anioInstance.id
-            redirect(action: "list")
-        }
-        catch (DataIntegrityViolationException e) {
-            flash.clase = "alert-error"
-            flash.message =  "No se pudo eliminar Anio " + (anioInstance.id ? anioInstance.id : "")
-            redirect(action: "list")
-        }
+        render texto
     } //delete
 } //fin controller

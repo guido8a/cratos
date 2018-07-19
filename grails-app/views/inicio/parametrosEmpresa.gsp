@@ -237,6 +237,19 @@
                     <p>Se de be crear un "Sin Marca" para aquellos bienes que no tienen marca</p>
                 </div>
             </li>
+            <li>
+                <i class="fa-li ${iconEmpr}"></i>
+                <span id="rolPagos">
+                    <g:link controller="rolPagos" action="list">Rol de Pagos</g:link>
+
+                </span>
+
+                <div class="descripcion hide">
+                    <h4>Rol de Pagos</h4>
+
+                    <p>Rol de Pagos</p>
+                </div>
+            </li>
         </ul>
     </div>
 

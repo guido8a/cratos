@@ -1,10 +1,18 @@
 
-<%@ page import="cratos.RubroTipoContrato" %>
+<%@ page import="cratos.ValorAnual" %>
 <!DOCTYPE html>
 <html>
     <head>
         <meta name="layout" content="main">
-        <title>Lista de Rubros por Tipo de Contrato</title>
+        <title>Lista de Valores Anuales</title>
+
+        <style>
+
+            .derecha{
+                text-align: right;
+            }
+
+        </style>
     </head>
     <body>
 
@@ -22,41 +30,33 @@
         <table class="table table-condensed table-bordered table-striped">
             <thead>
                 <tr>
-                    <th>Tipo de Contrato</th>
-                    <th>Rubro</th>
+                    <th>Año</th>
+                    <th>Exceso Hasta</th>
+                    <th>Fracción Básica</th>
+                    <th>Impuesto</th>
                     <th>Porcentaje</th>
-                    <th>Editable</th>
-                    <th>Décimo</th>
-                    <th>Iess</th>
                 </tr>
             </thead>
             <tbody>
-                <g:each in="${rubroTipoContratoInstanceList}" status="i" var="rubroTipoContratoInstance">
-                    <tr data-id="${rubroTipoContratoInstance.id}">
-                        
-                        <td>${rubroTipoContratoInstance?.tipoContrato?.descripcion}</td>
-                        
-                        <td>${fieldValue(bean: rubroTipoContratoInstance, field: "rubro")}</td>
-                        
-                        <td>${fieldValue(bean: rubroTipoContratoInstance, field: "porcentaje")}</td>
-                        
-                        <td>${rubroTipoContratoInstance?.editable == '1' ? 'SI' : 'NO'}</td>
-                        
-                        <td>${rubroTipoContratoInstance?.decimo == '1' ? 'SI' : 'NO'}</td>
-                        
-                        <td>${rubroTipoContratoInstance?.iess == '1' ? 'SI' : 'NO'}</td>
+                <g:each in="${valorAnualInstanceList}" status="i" var="valorAnualInstance">
+                    <tr data-id="${valorAnualInstance.id}">
+                        <td style="text-align: center">${valorAnualInstance?.anio?.anio}</td>
+                        <td class="derecha">${valorAnualInstance?.excesoHasta}</td>
+                        <td class="derecha">${valorAnualInstance?.fraccionBasica}</td>
+                        <td class="derecha">${valorAnualInstance?.impuesto}</td>
+                        <td class="derecha">${valorAnualInstance?.porcentaje}</td>
                         
                     </tr>
                 </g:each>
             </tbody>
         </table>
 
-        <elm:pagination total="${rubroTipoContratoInstanceCount}" params="${params}"/>
+        <elm:pagination total="${valorAnualInstanceCount}" params="${params}"/>
 
         <script type="text/javascript">
             var id = null;
             function submitForm() {
-                var $form = $("#frmRubroTipoContrato");
+                var $form = $("#frmValorAnual");
                 var $btn = $("#dlgCreateEdit").find("#btnSave");
                 if ($form.valid()) {
                 $btn.replaceWith(spinner);
@@ -66,12 +66,13 @@
                         data    : $form.serialize(),
                             success : function (msg) {
                         var parts = msg.split("_");
-                        log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
                         if (parts[0] == "OK") {
-                            location.reload(true);
+                            log(parts[1], "success");
+                            setTimeout(function () {
+                                location.reload(true);
+                            }, 800);
                         } else {
-                            spinner.replaceWith($btn);
-                            return false;
+                            log("Error al crear el valor anual", "error");
                         }
                     }
                 });
@@ -82,7 +83,7 @@
             function deleteRow(itemId) {
                 bootbox.dialog({
                     title   : "Alerta",
-                    message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea eliminar el Rubro seleccionado? Esta acción no se puede deshacer.</p>",
+                    message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea eliminar el Valor Anual seleccionado? Esta acción no se puede deshacer.</p>",
                     buttons : {
                         cancelar : {
                             label     : "Cancelar",
@@ -101,10 +102,13 @@
                                         id : itemId
                                     },
                                     success : function (msg) {
-                                        var parts = msg.split("_");
-                                        log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
-                                        if (parts[0] == "OK") {
-                                            location.reload(true);
+                                        if (msg == "OK") {
+                                            log("Valor Anual borrado correctamente", "success");
+                                            setTimeout(function () {
+                                                location.reload(true);
+                                            }, 800);
+                                        }else{
+                                            log("Error al borrar el valor anual", "error")
                                         }
                                     }
                                 });
@@ -123,7 +127,7 @@
                     success : function (msg) {
                         var b = bootbox.dialog({
                             id      : "dlgCreateEdit",
-                            title   : title + " Rubro por Tipo de Contrato",
+                            title   : title + " Valor Anual",
                             message : msg,
                             buttons : {
                                 cancelar : {
@@ -182,7 +186,7 @@
                                 },
                                 success : function (msg) {
                                     bootbox.dialog({
-                                        title   : "Ver Rubro por Tipo de Contrato",
+                                        title   : "Ver Valor Anual",
                                         message : msg,
                                         buttons : {
                                             ok : {

@@ -4,7 +4,7 @@ class RolPagos {
 
 
     Mes mess
-    Periodo periodo
+    Anio anio
     Date fecha
     double pagado
     String estado
@@ -19,7 +19,7 @@ class RolPagos {
         columns {
             id column: 'rlpg__id'
             mess column: 'mess__id'
-            periodo column: 'prdo__id'
+            anio column: 'anio__id'
             fecha column: 'rlpgfcha'
             pagado column: 'rlpgpgdo'
             estado column: 'rlpgetdo'
@@ -32,7 +32,7 @@ class RolPagos {
 
 
         mess(blank: true, nullable: true, attributes: [title: 'mess'])
-        periodo(blank: true, nullable: true, attributes: [title: 'período'])
+        anio(blank: true, nullable: true, attributes: [title: 'período'])
         fecha(blank: true, nullable: true, attributes: [title: 'fecha'])
         pagado(blank: true, nullable: true, attributes: [title: 'pagado'])
         estado(blank: true, nullable: true, size: 1..1, attributes: [title: 'estado'])

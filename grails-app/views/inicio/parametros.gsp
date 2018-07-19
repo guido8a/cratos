@@ -232,19 +232,6 @@
                             </div>
                         </li>
 
-                        %{--<li>--}%
-                            %{--<i class="fa-li ${iconGen}"></i>--}%
-                            %{--<span id="tipoSoporte">--}%
-                                %{--<g:link controller="tipoSoporte" action="list">Tipo de Sustento Tributario</g:link> como contribuyentes--}%
-                                %{--normales, especiales y el estado.--}%
-                            %{--</span>--}%
-
-                            %{--<div class="descripcion hide">--}%
-                                %{--<h4>Tipo de Sustento Tributario</h4>--}%
-
-                                %{--<p>Tipo de sustento tributario que se ha se adjuntar a los anexos tributarios que se entregan al SRI.</p>--}%
-                            %{--</div>--}%
-                        %{--</li>--}%
                         <li>
                             <i class="fa-li ${iconGen}"></i>
                             <span id="paramsAux">
@@ -262,7 +249,6 @@
                         <li>
                             <i class="fa-li ${iconGen}"></i>
                             <span id="conceptoIR">
-                                %{--<g:link controller="conceptoRetencionImpuestoRenta" action="list">Concepto de Retención IR</g:link>--}%
                                 <a href="#" id="btnCR">Concepto de Retención IR</a>
                             </span>
 
@@ -273,12 +259,48 @@
                             </div>
                         </li>
 
-                        %{--<li>--}%
-                            %{--<i class="fa-li ${iconGen}"></i>--}%
-                            %{--<span id="clave">--}%
-                                %{--<g:link controller="mantenimientoItems" action="clave2">Firmar</g:link>--}%
-                            %{--</span>--}%
-                        %{--</li>--}%
+                        <li>
+                            <i class="fa-li ${iconGen}"></i>
+                            <span id="anio">
+                                <g:link controller="anio" action="list">Año</g:link>
+
+                            </span>
+
+                            <div class="descripcion hide">
+                                <h4>Año</h4>
+
+                                <p>Año</p>
+                            </div>
+                        </li>
+
+                        <li>
+                            <i class="fa-li ${iconGen}"></i>
+                            <span id="valorAnual">
+                                <g:link controller="valorAnual" action="list">Valor Anual</g:link>
+
+                            </span>
+
+                            <div class="descripcion hide">
+                                <h4>Valor Anual</h4>
+
+                                <p>Valor Anual</p>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fa-li ${iconGen}"></i>
+                            <span id="rolPagos">
+                                <g:link controller="rolPagos" action="list">Rol de Pagos</g:link>
+
+                            </span>
+
+                            <div class="descripcion hide">
+                                <h4>Rol de Pagos</h4>
+
+                                <p>Rol de Pagos</p>
+                            </div>
+                        </li>
+
+
                     </ul>
                 </div>
 

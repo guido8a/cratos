@@ -14,7 +14,7 @@
                     Código
                 </label>
                 <div class="col-md-2">
-                    <g:textField name="codigo" maxlength="1" class="allCaps form-control" value="${tipoRubroInstance?.codigo}"/>
+                    <g:textField name="codigo" maxlength="1" class="allCaps form-control required" value="${tipoRubroInstance?.codigo}"/>
                 </div>
                 
             </span>
@@ -26,7 +26,7 @@
                     Descripción
                 </label>
                 <div class="col-md-6">
-                    <g:textField name="descripcion" maxlength="31" class="allCaps form-control" value="${tipoRubroInstance?.descripcion}"/>
+                    <g:textField name="descripcion" maxlength="31" class="allCaps form-control required" value="${tipoRubroInstance?.descripcion}"/>
                 </div>
                 
             </span>

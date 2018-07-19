@@ -1,10 +1,10 @@
 
-<%@ page import="cratos.RubroTipoContrato" %>
+<%@ page import="cratos.RolPagos" %>
 <!DOCTYPE html>
 <html>
     <head>
         <meta name="layout" content="main">
-        <title>Lista de Rubros por Tipo de Contrato</title>
+        <title>Lista de Rol de Pagos</title>
     </head>
     <body>
 
@@ -22,41 +22,34 @@
         <table class="table table-condensed table-bordered table-striped">
             <thead>
                 <tr>
-                    <th>Tipo de Contrato</th>
-                    <th>Rubro</th>
-                    <th>Porcentaje</th>
-                    <th>Editable</th>
-                    <th>Décimo</th>
-                    <th>Iess</th>
+                    <th>Año</th>
+                    <th>Mes</th>
+                    <th>Fecha</th>
+                    <th>Pagado</th>
+                    <th>Estado</th>
+                    <th>Empresa</th>
                 </tr>
             </thead>
             <tbody>
-                <g:each in="${rubroTipoContratoInstanceList}" status="i" var="rubroTipoContratoInstance">
-                    <tr data-id="${rubroTipoContratoInstance.id}">
-                        
-                        <td>${rubroTipoContratoInstance?.tipoContrato?.descripcion}</td>
-                        
-                        <td>${fieldValue(bean: rubroTipoContratoInstance, field: "rubro")}</td>
-                        
-                        <td>${fieldValue(bean: rubroTipoContratoInstance, field: "porcentaje")}</td>
-                        
-                        <td>${rubroTipoContratoInstance?.editable == '1' ? 'SI' : 'NO'}</td>
-                        
-                        <td>${rubroTipoContratoInstance?.decimo == '1' ? 'SI' : 'NO'}</td>
-                        
-                        <td>${rubroTipoContratoInstance?.iess == '1' ? 'SI' : 'NO'}</td>
-                        
+                <g:each in="${rolPagosInstanceList}" status="i" var="rolPagosInstance">
+                    <tr data-id="${rolPagosInstance.id}">
+                        <td>${rolPagosInstance?.anio?.anio}</td>
+                        <td>${rolPagosInstance?.mess?.descripcion}</td>
+                        <td><g:formatDate date="${rolPagosInstance.fecha}" format="dd-MM-yyyy" /></td>
+                        <td style="text-align: right">${rolPagosInstance?.pagado}</td>
+                        <td style="text-align: center">${rolPagosInstance?.estado == 'N' ? 'No Aprobado' : 'Aprobado'}</td>
+                        <td>${rolPagosInstance?.empresa}</td>
                     </tr>
                 </g:each>
             </tbody>
         </table>
 
-        <elm:pagination total="${rubroTipoContratoInstanceCount}" params="${params}"/>
+        <elm:pagination total="${rolPagosInstanceCount}" params="${params}"/>
 
         <script type="text/javascript">
             var id = null;
             function submitForm() {
-                var $form = $("#frmRubroTipoContrato");
+                var $form = $("#frmRolPagos");
                 var $btn = $("#dlgCreateEdit").find("#btnSave");
                 if ($form.valid()) {
                 $btn.replaceWith(spinner);
@@ -66,12 +59,13 @@
                         data    : $form.serialize(),
                             success : function (msg) {
                         var parts = msg.split("_");
-                        log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
                         if (parts[0] == "OK") {
-                            location.reload(true);
+                            log(parts[1],"success")
+                            setTimeout(function () {
+                                location.reload(true);
+                            }, 800);
                         } else {
-                            spinner.replaceWith($btn);
-                            return false;
+                            log("Error al guardar el Rol de Pagos","error")
                         }
                     }
                 });
@@ -82,7 +76,7 @@
             function deleteRow(itemId) {
                 bootbox.dialog({
                     title   : "Alerta",
-                    message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea eliminar el Rubro seleccionado? Esta acción no se puede deshacer.</p>",
+                    message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea eliminar el Rol de Pagos seleccionado? Esta acción no se puede deshacer.</p>",
                     buttons : {
                         cancelar : {
                             label     : "Cancelar",
@@ -101,10 +95,13 @@
                                         id : itemId
                                     },
                                     success : function (msg) {
-                                        var parts = msg.split("_");
-                                        log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
-                                        if (parts[0] == "OK") {
-                                            location.reload(true);
+                                        if (msg == "OK") {
+                                            log("Rol de Pagos borrado correctamente", "success");
+                                            setTimeout(function () {
+                                                location.reload(true);
+                                            }, 800);
+                                        }else{
+                                            log("Error al borrar el rol de pagos", "error")
                                         }
                                     }
                                 });
@@ -123,7 +120,7 @@
                     success : function (msg) {
                         var b = bootbox.dialog({
                             id      : "dlgCreateEdit",
-                            title   : title + " Rubro por Tipo de Contrato",
+                            title   : title + " Rol de Pagos",
                             message : msg,
                             buttons : {
                                 cancelar : {
@@ -182,7 +179,7 @@
                                 },
                                 success : function (msg) {
                                     bootbox.dialog({
-                                        title   : "Ver Rubro por Tipo de Contrato",
+                                        title   : "Ver Rol de Pagos",
                                         message : msg,
                                         buttons : {
                                             ok : {

@@ -11,15 +11,13 @@
         <div class="form-group ${hasErrors(bean: anioInstance, field: 'anio', 'error')} ">
             <span class="grupo">
                 <label for="anio" class="col-md-2 control-label text-info">
-                    Anio
+                    Año
                 </label>
-                <div class="col-md-6">
-                    <g:textField name="anio" required="" class="allCaps form-control required" value="${anioInstance?.anio}"/>
+                <div class="col-md-4">
+                    <g:textField name="anio" required="" maxlength="4" minlength="4" class="digits allCaps form-control required" value="${anioInstance?.anio}"/>
                 </div>
-                
             </span>
         </div>
-        
     </g:form>
 
     <script type="text/javascript">

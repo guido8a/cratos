@@ -2,7 +2,7 @@ package cratos
 
 class ValorAnual implements Serializable{
 
-    Periodo periodo
+    Anio anio
     int fraccionBasica
     int excesoHasta
     double impuesto
@@ -16,7 +16,7 @@ class ValorAnual implements Serializable{
         version false
         columns {
             id column: 'vlan__id'
-            periodo column: 'prdo__id'
+            anio column: 'anio__id'
             fraccionBasica column: 'vlanfrbs'
             excesoHasta column: 'vlanexcs'
             impuesto column: 'vlanimps'

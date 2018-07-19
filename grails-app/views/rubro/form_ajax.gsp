@@ -43,7 +43,7 @@
                 </label>
 
                 <div class="col-md-5">
-                    <g:field name="valor" type="number" value="${fieldValue(bean: rubroInstance, field: 'valor')}"
+                    <g:textField name="valor" value="${rubroInstance?.valor}"
                              class="number form-control  required" required=""/>
                 </div>
                 *
@@ -57,8 +57,8 @@
                 </label>
 
                 <div class="col-md-5">
-                    <g:field name="porcentaje" type="number"
-                             value="${fieldValue(bean: rubroInstance, field: 'porcentaje')}"
+                    <g:textField name="porcentaje"
+                             value="${rubroInstance?.porcentaje}"
                              class="number form-control  required" required=""/>
                 </div>
                 *
