@@ -4,22 +4,21 @@ import cratos.seguridad.Persona
 
 class Empleado implements Serializable {
     Persona persona
-
-    double porcentajeComision
-    byte[] foto
-    String estado
+    TipoContrato tipoContrato
+    Departamento departamento
+    String numero
+    String iess
+    int hijo
+    String telefono
+    String mail
+    String cuenta
+    double sueldo
     Date fechaFin
     Date fechaInicio
-    double sueldo
-    String cuenta
-    int hijo
-    String iess
-    String numero
-    TipoContrato tipoContrato
-    Cargo cargo
-    Canton canton
-//    String crgo
-
+    String estado
+    byte[] foto
+    double porcentajeComision
+    String cargo
     String observaciones
 
     static mapping = {
@@ -30,23 +29,23 @@ class Empleado implements Serializable {
         version false
         columns {
             id column: 'empl__id'
-            porcentajeComision column: 'emplpccm'
-            foto column: 'emplfoto'
-            estado column: 'empletdo'
+            persona column: 'prsn__id'
+            tipoContrato column: 'tpct__id'
+            departamento column: 'dpto__id'
+            numero column: 'emplnmro'
+            iess column: 'empliess'
+            hijo column: 'emplhijo'
+            telefono column: 'empltlfn'
+            mail column: 'emplmail'
+            cuenta column: 'emplcnta'
+            sueldo column: 'emplsldo'
             fechaFin column: 'emplfcfn'
             fechaInicio column: 'emplfcin'
-            sueldo column: 'emplsldo'
-            cuenta column: 'emplcnta'
-            hijo column: 'emplhijo'
-            iess column: 'empliess'
-            numero column: 'emplnmro'
-            tipoContrato column: 'tpct__id'
-            cargo column: 'crgo__id'
-            persona column: 'prsn__id'
-            canton column: 'cntn__id'
-//            crgo column: 'emplcrgo'
-
-            observaciones column: 'emplobsv'
+            estado column: 'empletdo'
+            foto column: 'emplfoto'
+            porcentajeComision column: 'emplpccm'
+            cargo column: 'emplcrgo'
+            observaciones column: 'emplobsr'
         }
     }
     static constraints = {
@@ -57,16 +56,13 @@ class Empleado implements Serializable {
         fechaInicio(blank: true, nullable: true, attributes: [title: 'fechaInicio'])
         sueldo(blank: true, nullable: true, attributes: [title: 'sueldo'])
         cuenta(size: 1..12, blank: true, nullable: true, attributes: [title: 'cuenta'])
-//        email(size: 1..63, blank: true, nullable: true, attributes: [title: 'email'])
-//        telefono(size: 1..63, blank: true, nullable: true, attributes: [title: 'telefono'])
+        mail(size: 1..63, blank: true, nullable: true, attributes: [title: 'email'])
+        telefono(size: 1..63, blank: true, nullable: true, attributes: [title: 'telefono'])
         hijo(blank: true, nullable: true, attributes: [title: 'hijo'])
         iess(size: 1..13, blank: true, nullable: true, attributes: [title: 'iess'])
         numero(size: 1..10, blank: true, nullable: true, attributes: [title: 'numero'])
         tipoContrato(blank: true, nullable: true, attributes: [title: 'tipoContrato'])
-        cargo(blank: true, nullable: true, attributes: [title: 'cargo'])
-        persona(blank: true, nullable: true, attributes: [title: 'persona'])
-        canton(blank: true, nullable: true, attributes: [title: 'canton'])
-//        crgo(blank: true, nullable: true, size: 1..127, attributes: [title: 'crgo'])
+        cargo(blank: true, nullable: true, size: 1..127, attributes: [title: 'crgo'])
         observaciones(blank: true, nullable: true, size: 1..127, attributes: [title: 'observaciones'])
     }
 }

@@ -199,7 +199,7 @@
 
                     <div class="col-md-6">
                         <g:select id="persona.estadoCivil" name="persona.estadoCivil.id" from="${cratos.EstadoCivil.list()}" optionKey="id" optionValue="descripcion"
-                                  value="${empleadoInstance.persona?.estadoCivil?.id}" class="persona many-to-one form-control" noSelection="['': '']"/>
+                                  value="${empleadoInstance.persona?.estadoCivil?.id}" class="persona many-to-one form-control" />
                     </div>
 
                 </span>
@@ -210,12 +210,26 @@
 
             <div class="form-group keeptogether ${hasErrors(bean: empleadoInstance, field: 'estado', 'error')} ">
                 <span class="grupo">
+                    <label for="empleado.departamento.id" class="col-md-4 control-label text-info">
+                        Departamento
+                    </label>
+
+                    <div class="col-md-6">
+                        <g:select name="empleado.departamento.id" class="form-control"
+                                  from="${cratos.Departamento.findAllByEmpresa(session.empresa)}" optionKey="id" optionValue="descripcion" value="${empleadoInstance?.departamento?.id}"/>
+                    </div>
+
+                </span>
+            </div>
+
+            <div class="form-group keeptogether ${hasErrors(bean: empleadoInstance, field: 'estado', 'error')} ">
+                <span class="grupo">
                     <label for="empleado.estado" class="col-md-4 control-label text-info">
                         Estado
                     </label>
 
                     <div class="col-md-6">
-                        <g:select name="empleado.estado" maxlength="1" class="allCaps form-control"
+                        <g:select name="empleado.estado" class="form-control"
                                   from="['A': 'ACTIVO', 'I': 'INACTIVO']" optionKey="key" optionValue="value" value="${empleadoInstance?.estado}"/>
                     </div>
 
@@ -310,7 +324,8 @@
                     </label>
 
                     <div class="col-md-3">
-                        <g:field name="empleado.hijo" type="number" value="${empleadoInstance.hijo}" class="digits form-control required" required="" maxlength="2"/>
+                        <g:textField name="empleado.hijo" value="${empleadoInstance.hijo}" class="digits form-control required" required="" maxlength="2"/>
+
                     </div>
 
                     <div class="col-md-3">
@@ -352,7 +367,7 @@
 
                     <div class="col-md-6">
                         <g:select id="empleado.tipoContrato" name="empleado.tipoContrato.id" from="${cratos.TipoContrato.list()}" optionKey="id" optionValue="descripcion"
-                                  value="${empleadoInstance?.tipoContrato?.id}" class="many-to-one form-control" noSelection="['': '']"/>
+                                  value="${empleadoInstance?.tipoContrato?.id}" class="many-to-one form-control" />
                     </div>
 
                 </span>
@@ -365,8 +380,9 @@
                     </label>
 
                     <div class="col-md-6">
-                        <g:select id="cargo" name="empleado.cargo.id" from="${cratos.Cargo.list()}" optionKey="id" value="${empleadoInstance?.cargo?.id}"
-                                  class="many-to-one form-control" noSelection="['': '']"/>
+                        %{--<g:select id="cargo" name="empleado.cargo.id" from="${cratos.Cargo.list()}" optionKey="id" value="${empleadoInstance?.cargo?.id}"--}%
+                                  %{--class="many-to-one form-control" noSelection="['': '']"/>--}%
+                        <g:textField name="empleado.cargo.id" class="form-control" value="${empleadoInstance?.cargo}"/>
                     </div>
 
                 </span>
