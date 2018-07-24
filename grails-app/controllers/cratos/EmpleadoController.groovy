@@ -220,15 +220,17 @@ class EmpleadoController extends cratos.seguridad.Shield {
     } //show para cargar con ajax en un dialog
 
     def form_ajax() {
-        def empleadoInstance = new Empleado(params)
-        if (params.id) {
-            empleadoInstance = Empleado.get(params.id)
-            if (!empleadoInstance) {
-                notFound_ajax()
-                return
-            }
-        }
-        return [empleadoInstance: empleadoInstance]
+        def persona = Persona.get(params.id)
+        def empleadoInstance = Empleado.findByPersona(persona)
+//        def empleadoInstance = new Empleado(params)
+//        if (params.id) {
+//            empleadoInstance = Empleado.get(params.id)
+//            if (!empleadoInstance) {
+//                notFound_ajax()
+//                return
+//            }
+//        }
+        return [empleadoInstance: empleadoInstance, persona: persona]
     } //form para cargar con ajax en un dialog
 
     def loadPersona() {
@@ -310,55 +312,59 @@ class EmpleadoController extends cratos.seguridad.Shield {
 
     def save_ajax() {
 
-//        params.each { k, v ->
-//            if (v != "date.struct" && v instanceof java.lang.String) {
-//                params[k] = v.toUpperCase()
-//            }
-//        }
+//        println("empl " + params)
 
-        def personaInstance = new Persona()
-        if (params.persona.id) {
-            personaInstance = Persona.get(params.persona.id)
-            if (!personaInstance) {
-                notFound_ajax()
-                return
-            }
-        } //update persona
+        def empleadoInstance
+        def errores = ''
+        def texto = ''
 
-        personaInstance.properties = params.persona
-
-        if (!params.persona.id) {
-            personaInstance.empresa = session.empresa
-            personaInstance.login = "empleado_${personaInstance.cedula}"
-            personaInstance.password = personaInstance.cedula
-            personaInstance.autorizacion = personaInstance.cedula
+        if(params."empleado.id"){
+            println("entro 1")
+            empleadoInstance = Empleado.get(params."empleado.id");
+            texto = "Empleado actualizado correctamente"
+        }else{
+            println("entro 2")
+            empleadoInstance = new Empleado ()
+            texto = "Empleado creado correctamente"
         }
 
-        if (!personaInstance.save(flush: true)) {
-            def msg = "NO_No se pudo ${params.id ? 'actualizar' : 'crear'} Persona."
-            msg += renderErrors(bean: personaInstance)
-            render msg
-            return
+        empleadoInstance.persona = Persona.get(params."persona.id")
+        empleadoInstance.departamento = Departamento.get(params."empleado.departamento.id")
+        empleadoInstance.tipoContrato = TipoContrato.get(params."empleado.tipoContrato.id")
+        empleadoInstance.estado = params."empleado.estado"
+
+        if(params."empleado.fechaInicio_input"){
+            empleadoInstance.fechaInicio = new Date().parse("dd-MM-yyyy", params."empleado.fechaInicio_input")
+        }
+        if(params."empleado.fechaFin_input"){
+            empleadoInstance.fechaFin = new Date().parse("dd-MM-yyyy", params."empleado.fechaFin_input")
         }
 
-        def empleadoInstance = new Empleado()
-        if (params.empleado.id) {
-            empleadoInstance = Empleado.get(params.empleado.id)
-            if (!empleadoInstance) {
-                notFound_ajax()
-                return
-            }
-        } //update
+        empleadoInstance.sueldo = params."empleado.sueldo".toDouble()
+        empleadoInstance.porcentajeComision = params."empleado.porcentajeComision".toDouble()
+        empleadoInstance.hijo = params."empleado.hijo".toInteger()
+        empleadoInstance.cuenta = params."empleado.cuenta"
+        empleadoInstance.iess = params."empleado.iess"
+        empleadoInstance.numero = params."empleado.numero"
+        empleadoInstance.cargo = params."empleado.cargo"
+        empleadoInstance.telefono = params."empleado.telefono"
+        empleadoInstance.mail = params."empleado.mail"
+        empleadoInstance.observaciones = params."empleado.observaciones"
 
-        empleadoInstance.properties = params.empleado
-        empleadoInstance.persona = personaInstance
-        if (!empleadoInstance.save(flush: true)) {
-            def msg = "NO_No se pudo ${params.id ? 'actualizar' : 'crear'} Empleado."
-            msg += renderErrors(bean: empleadoInstance)
-            render msg
-            return
+        try{
+            empleadoInstance.save(flush: true)
+        }catch (e){
+            errores += e
         }
-        render "OK_${params.id ? 'Actualización' : 'Creación'} de Empleado exitosa."
+
+
+        if(errores == ''){
+            render "OK_" + texto
+        }else{
+            render "NO"
+        }
+
+
     } //save para grabar desde ajax
 
     def delete_ajax() {
