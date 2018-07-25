@@ -66,12 +66,13 @@
                         data    : $form.serialize(),
                             success : function (msg) {
                         var parts = msg.split("_");
-                        log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
                         if (parts[0] == "OK") {
-                            location.reload(true);
+                            log(parts[1],"success");
+                            setTimeout(function () {
+                                location.reload(true);
+                            }, 800);
                         } else {
-                            spinner.replaceWith($btn);
-                            return false;
+                            log("Error al guardar el Rubro del Tipo de Contrato")
                         }
                     }
                 });

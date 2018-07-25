@@ -88,25 +88,49 @@
                 <h4 class="modal-title" id="myModalLabel">Rolo de pago</h4>
             </div>
             <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-xs-2 negrilla" style="width: 140px">
+                        Año:
+                    </div>
+                    <div class="col-xs-7 negrilla" style="margin-left: -20px" >
+                        <g:select name="anio" class="form-control" from="${cratos.Anio.list()}" id="anio" optionKey="id" optionValue="anio" />
+                    </div>
+
+                </div>
+
+
                 <div class="row">
                     <div class="col-xs-2 negrilla" style="width: 140px">
                         Mes:
                     </div>
                     <div class="col-xs-7 negrilla" style="margin-left: -20px" >
-                        <g:select name="mes" class="form-control" from="${mes}" optionKey="id" optionValue="descripcion"></g:select>
+                        <g:select name="mes" class="form-control" from="${mes}" optionKey="id" optionValue="descripcion"/>
                     </div>
 
                 </div>
+
+
                 <div class="row">
                     <div class="col-xs-2 negrilla" style="width: 140px">
-                        Periodo:
+                        Fecha:
                     </div>
                     <div class="col-xs-7 negrilla" style="margin-left: -20px" >
-                        <g:select name="periodo" class="form-control" from="${periodos}" id="periodos" optionKey="id" ></g:select>
-                    </div>
 
+                        <elm:datepicker name="fecha" title="Fecha" id="fechaD" class="datepicker form-control fechaDe"
+                                        maxDate="new Date()" value="${new java.util.Date()}"/>
+                    </div>
                 </div>
 
+                %{--<div class="row">--}%
+                    %{--<div class="col-xs-2 negrilla" style="width: 140px">--}%
+                        %{--Periodo:--}%
+                    %{--</div>--}%
+                    %{--<div class="col-xs-7 negrilla" style="margin-left: -20px" >--}%
+                        %{--<g:select name="periodo" class="form-control" from="${periodos}" id="periodos" optionKey="id" ></g:select>--}%
+                    %{--</div>--}%
+
+                %{--</div>--}%
             </div>
             <div class="modal-footer">
                 <a href="#" id="generar" class="btn btn-success">Generar</a>
@@ -218,18 +242,17 @@
 
         $("#generar_rol").click(function(){
             $("#dlg-rol").modal("show")
-        })
+        });
 
         $("#generar").click(function(){
-            bootbox.confirm("Está a punto de generar el rol del pago para el mes de <span style='color:red'>"+$("#mes :selected").text()+" </span> en el periodo contable: <span style='color:red'>"+$("#periodos :selected").text()+"</span>. Estos datos son correctos?",function(result){
+            bootbox.confirm("Está a punto de generar el rol del pago para el mes de <span style='color:red'>"+$("#mes :selected").text()+" </span> en el año : <span style='color:red'>"+$("#anio :selected").text()+"</span>. Estos datos son correctos?",function(result){
                 if(result){
-                    openLoader()
+                    openLoader();
                     $.ajax({
                         type    : "POST",
                         url     : "${g.createLink(controller: 'rubro',action: 'generarRol')}",
                         data    : "mes="+$("#mes").val()+"&periodo="+$("#periodos").val(),
                         success : function (msg) {
-                            console.log("msg")
                             if(msg=="ok"){
                                 location.href="${g.createLink(controller: 'rubro',action: 'verRol')}/?mes="+$("#mes").val()+"&periodo="+$("#periodos").val()
                             }else{
@@ -240,7 +263,7 @@
                 }
             })
 
-        })
+        });
 
         $(".btnCrear").click(function () {
             createEditRow();

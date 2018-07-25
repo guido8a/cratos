@@ -16,6 +16,8 @@ class RubroTipoContratoController extends cratos.seguridad.Shield {
 
     def form_ajax() {
         def rubroTipoContratoInstance = new RubroTipoContrato(params)
+        def empresa = Empresa.get(session.empresa.id)
+        def tipoContrato = TipoContrato.findAllByEmpresa(empresa)
         if(params.id) {
             rubroTipoContratoInstance = RubroTipoContrato.get(params.id)
             if(!rubroTipoContratoInstance) {
@@ -25,51 +27,35 @@ class RubroTipoContratoController extends cratos.seguridad.Shield {
                 return
             } //no existe el objeto
         } //es edit
-        return [rubroTipoContratoInstance: rubroTipoContratoInstance]
+        return [rubroTipoContratoInstance: rubroTipoContratoInstance, tipoContrato: tipoContrato]
     } //form_ajax
 
     def save() {
+
+        def errores = ''
+        def texto = ''
         def rubroTipoContratoInstance
-        if(params.id) {
+
+        if(params.id){
             rubroTipoContratoInstance = RubroTipoContrato.get(params.id)
-            if(!rubroTipoContratoInstance) {
-                flash.clase = "alert-error"
-                flash.message = "No se encontró Rubro Tipo Contrato con id " + params.id
-                redirect(action: 'list')
-                return
-            }//no existe el objeto
-            rubroTipoContratoInstance.properties = params
-        }//es edit
-        else {
-            rubroTipoContratoInstance = new RubroTipoContrato(params)
-        } //es create
-        if (!rubroTipoContratoInstance.save(flush: true)) {
-            flash.clase = "alert-error"
-            def str = "<h4>No se pudo guardar Rubro Tipo Contrato " + (rubroTipoContratoInstance.id ? rubroTipoContratoInstance.id : "") + "</h4>"
-
-            str += "<ul>"
-            rubroTipoContratoInstance.errors.allErrors.each { err ->
-                def msg = err.defaultMessage
-                err.arguments.eachWithIndex {  arg, i ->
-                    msg = msg.replaceAll("\\{" + i + "}", arg.toString())
-                }
-                str += "<li>" + msg + "</li>"
-            }
-            str += "</ul>"
-
-            flash.message = str
-            redirect(action: 'list')
-            return
+        }else{
+            rubroTipoContratoInstance = new RubroTipoContrato()
         }
 
-        if(params.id) {
-            flash.clase = "alert-success"
-            flash.message = "Se ha actualizado correctamente Rubro Tipo Contrato " + rubroTipoContratoInstance.id
-        } else {
-            flash.clase = "alert-success"
-            flash.message = "Se ha creado correctamente Rubro Tipo Contrato " + rubroTipoContratoInstance.id
+        rubroTipoContratoInstance.properties = params
+
+        try{
+            rubroTipoContratoInstance.save(flush: true)
+        }catch (e){
+           errores += e
         }
-        redirect(action: 'list')
+
+        if(errores == ''){
+            render "OK_" + texto
+        }else{
+            render "NO"
+        }
+
     } //save
 
     def show_ajax() {

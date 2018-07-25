@@ -190,98 +190,101 @@ class RubroController extends cratos.seguridad.Shield {
     def generarRol(){
         println "rol de pagos "+params
         def mes = Mes.get(params.mes)
-        def periodo = Periodo.get(params.periodo)
+//        def periodo = Periodo.get(params.periodo)
+        def anio = Anio.get(params.anio)
         def empresa = Empresa.get(session.empresa.id)
-        def rol = RolPagos.findByMessAndPeriodo(mes,periodo)
-        println "rol??  "+rol
+//        def rol = RolPagos.findByMessAndPeriodo(mes,periodo)
+        def rol = RolPagos.findByMessAndAnio(mes,anio)
+        println "existe rol " + rol
         def msg =""
         if(!rol){
-            rol = new RolPagos()
-            rol.estado="N"
-            rol.fecha=new Date()
-            rol.mess=mes
-            rol.pagado=0
-            rol.periodo=periodo
-            rol.empresa=session.empresa
-            if(!rol.save(flush: true)){
-                println "error save rol "+rol.errors
-            }
-
-            def empleados = Empleado.withCriteria {
-                persona {
-                    eq("empresa", empresa)
-                    order("apellido","asc")
-                }
-                eq("estado","A")
-                lt("fechaInicio",periodo.fechaFin)
-                or{
-                    isNull("fechaFin")
-                    gt("fechaFin",periodo.fechaInicio)
-                }
-                isNotNull("tipoContrato")
-
-            }
-//            println "empleados  "+empleados.persona.nombre
-            def total = 0
-            empleados.each {emp->
-//                println "_________________________________________________"
-//                println "emp "+emp.persona.nombre+"  contra "+emp.tipoContrato.descripcion
-                def sueldo = emp.sueldo
-                if(emp.fechaInicio>periodo.fechaInicio && emp.fechaInicio<periodo.fechaFin){
-                    println "porcentaje sueldo "
-                    sueldo=(emp.sueldo/30*(periodo.fechaFin.day-emp.fechaInicio.day).toInteger()).toDouble().round(2)
-                }
-                def detalle = DetallePago.findAll("from DetallePago where rolPagos = ${rol.id} and rubroTipoContrato is null and empleado=${emp.id}")
-//                println "detalle ?? "+detalle
-                if(detalle.size()==0){
-                    detalle=new DetallePago()
-                    detalle.empleado=emp
-                    detalle.rolPagos=rol
-                    detalle.rubroTipoContrato=null
-                    detalle.valor=sueldo.toDouble().round(2)
-                    if(!detalle.save(flush: true))
-                        println "error save detalle pago sueldo "+detalle.errors
-
-                }
-                total+=sueldo
-//                println "total "+total+" sueldo "  +sueldo
-
-                def rubros = RubroTipoContrato.findAllByTipoContratoAndEmpresa(emp.tipoContrato,session.empresa)
-//                println "rubros ==> "+rubros.rubro.descripcion+"  "+rubros.rubro.valor+"  "+rubros.rubro.porcentaje
-//                def rubrosEsp = RubroTipoContrato.findAllByEmpleado(emp)
-                rubros.each {r->
-                    detalle = DetallePago.findAll("from DetallePago where rubroTipoContrato=${r.id} and rolPagos=${rol.id} and empleado=${emp.id}")
-
-//                    println "detalle rubros ? "+detalle
-                    if(detalle.size()==0){
-                        detalle=new DetallePago()
-                        detalle.empleado=emp
-                        detalle.rolPagos=rol
-                        detalle.rubroTipoContrato=r
-                        def valor = 0
-                        def signo = -1
-                        if(r.rubro.tipoRubro.codigo=="I")
-                            signo=1
-                        if(r.valor!=0){
-                            valor=r.valor*signo
-                        }else{
-                            valor=sueldo*(r.porcentaje/100)*signo
-                        }
-                        detalle.valor=valor.toDouble().round(2)
-                        if(!detalle.save(flush: true))
-                            println "error save detalle pago "+detalle.errors
-                        total+=valor
-                    }
-
-                }
-
-            }
-
-            rol.pagado=total.toDouble().round(2)
-            rol.empresa=session.empresa
-            rol.save(flush: true)
-            println "done"
-            render "ok"
+//            rol = new RolPagos()
+//            rol.estado="N"
+//            rol.fecha=new Date()
+//            rol.mess=mes
+//            rol.pagado=0
+////            rol.periodo=periodo
+//            rol.anio=anio
+//            rol.empresa=session.empresa
+//            if(!rol.save(flush: true)){
+//                println "error save rol "+rol.errors
+//            }
+//
+//            def empleados = Empleado.withCriteria {
+//                persona {
+//                    eq("empresa", empresa)
+//                    order("apellido","asc")
+//                }
+//                eq("estado","A")
+//                lt("fechaInicio",periodo.fechaFin)
+//                or{
+//                    isNull("fechaFin")
+//                    gt("fechaFin",periodo.fechaInicio)
+//                }
+//                isNotNull("tipoContrato")
+//
+//            }
+////            println "empleados  "+empleados.persona.nombre
+//            def total = 0
+//            empleados.each {emp->
+////                println "_________________________________________________"
+////                println "emp "+emp.persona.nombre+"  contra "+emp.tipoContrato.descripcion
+//                def sueldo = emp.sueldo
+//                if(emp.fechaInicio>periodo.fechaInicio && emp.fechaInicio<periodo.fechaFin){
+//                    println "porcentaje sueldo "
+//                    sueldo=(emp.sueldo/30*(periodo.fechaFin.day-emp.fechaInicio.day).toInteger()).toDouble().round(2)
+//                }
+//                def detalle = DetallePago.findAll("from DetallePago where rolPagos = ${rol.id} and rubroTipoContrato is null and empleado=${emp.id}")
+////                println "detalle ?? "+detalle
+//                if(detalle.size()==0){
+//                    detalle=new DetallePago()
+//                    detalle.empleado=emp
+//                    detalle.rolPagos=rol
+//                    detalle.rubroTipoContrato=null
+//                    detalle.valor=sueldo.toDouble().round(2)
+//                    if(!detalle.save(flush: true))
+//                        println "error save detalle pago sueldo "+detalle.errors
+//
+//                }
+//                total+=sueldo
+////                println "total "+total+" sueldo "  +sueldo
+//
+//                def rubros = RubroTipoContrato.findAllByTipoContratoAndEmpresa(emp.tipoContrato,session.empresa)
+////                println "rubros ==> "+rubros.rubro.descripcion+"  "+rubros.rubro.valor+"  "+rubros.rubro.porcentaje
+////                def rubrosEsp = RubroTipoContrato.findAllByEmpleado(emp)
+//                rubros.each {r->
+//                    detalle = DetallePago.findAll("from DetallePago where rubroTipoContrato=${r.id} and rolPagos=${rol.id} and empleado=${emp.id}")
+//
+////                    println "detalle rubros ? "+detalle
+//                    if(detalle.size()==0){
+//                        detalle=new DetallePago()
+//                        detalle.empleado=emp
+//                        detalle.rolPagos=rol
+//                        detalle.rubroTipoContrato=r
+//                        def valor = 0
+//                        def signo = -1
+//                        if(r.rubro.tipoRubro.codigo=="I")
+//                            signo=1
+//                        if(r.valor!=0){
+//                            valor=r.valor*signo
+//                        }else{
+//                            valor=sueldo*(r.porcentaje/100)*signo
+//                        }
+//                        detalle.valor=valor.toDouble().round(2)
+//                        if(!detalle.save(flush: true))
+//                            println "error save detalle pago "+detalle.errors
+//                        total+=valor
+//                    }
+//
+//                }
+//
+//            }
+//
+//            rol.pagado=total.toDouble().round(2)
+//            rol.empresa=session.empresa
+//            rol.save(flush: true)
+//            println "done"
+//            render "ok"
 
 
         }else{

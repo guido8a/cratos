@@ -14,7 +14,7 @@
                     Tipo de Contrato
                 </label>
                 <div class="col-md-6">
-                    <g:select id="tipoContrato" name="tipoContrato.id" from="${cratos.TipoContrato.list()}" optionKey="id" optionValue="descripcion" required="" value="${rubroTipoContratoInstance?.tipoContrato?.id}" class="many-to-one form-control"/>
+                    <g:select id="tipoContrato" name="tipoContrato.id" from="${tipoContrato}" optionKey="id" optionValue="descripcion" required="" value="${rubroTipoContratoInstance?.tipoContrato?.id}" class="many-to-one form-control"/>
                 </div>
                 
             </span>

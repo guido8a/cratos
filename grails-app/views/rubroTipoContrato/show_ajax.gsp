@@ -8,12 +8,12 @@
 
     <g:if test="${rubroTipoContratoInstance?.tipoContrato}">
         <div class="row">
-            <div class="col-md-2 text-info">
+            <div class="col-md-3 text-info">
                 Tipo Contrato
             </div>
             
-            <div class="col-md-3">
-                ${rubroTipoContratoInstance?.tipoContrato?.encodeAsHTML()}
+            <div class="col-md-6">
+                ${rubroTipoContratoInstance?.tipoContrato?.descripcion?.encodeAsHTML()}
             </div>
             
         </div>
@@ -21,12 +21,12 @@
     
     <g:if test="${rubroTipoContratoInstance?.rubro}">
         <div class="row">
-            <div class="col-md-2 text-info">
+            <div class="col-md-3 text-info">
                 Rubro
             </div>
             
-            <div class="col-md-3">
-                ${rubroTipoContratoInstance?.rubro?.encodeAsHTML()}
+            <div class="col-md-6">
+                ${rubroTipoContratoInstance?.rubro?.descripcion?.encodeAsHTML()}
             </div>
             
         </div>
@@ -34,11 +34,11 @@
     
     <g:if test="${rubroTipoContratoInstance?.porcentaje}">
         <div class="row">
-            <div class="col-md-2 text-info">
+            <div class="col-md-3 text-info">
                 Porcentaje
             </div>
             
-            <div class="col-md-3">
+            <div class="col-md-6">
                 <g:fieldValue bean="${rubroTipoContratoInstance}" field="porcentaje"/>
             </div>
             
@@ -47,12 +47,12 @@
     
     <g:if test="${rubroTipoContratoInstance?.editable}">
         <div class="row">
-            <div class="col-md-2 text-info">
+            <div class="col-md-3 text-info">
                 Editable
             </div>
             
             <div class="col-md-3">
-                <g:fieldValue bean="${rubroTipoContratoInstance}" field="editable"/>
+                ${rubroTipoContratoInstance?.editable == '1' ? 'SI' : 'NO'}
             </div>
             
         </div>
@@ -60,12 +60,12 @@
     
     <g:if test="${rubroTipoContratoInstance?.decimo}">
         <div class="row">
-            <div class="col-md-2 text-info">
-                Decimo
+            <div class="col-md-3 text-info">
+                Décimo
             </div>
             
             <div class="col-md-3">
-                <g:fieldValue bean="${rubroTipoContratoInstance}" field="decimo"/>
+                ${rubroTipoContratoInstance?.decimo == '1' ? 'SI' : 'NO'}
             </div>
             
         </div>
@@ -73,12 +73,12 @@
     
     <g:if test="${rubroTipoContratoInstance?.iess}">
         <div class="row">
-            <div class="col-md-2 text-info">
+            <div class="col-md-3 text-info">
                 Iess
             </div>
             
             <div class="col-md-3">
-                <g:fieldValue bean="${rubroTipoContratoInstance}" field="iess"/>
+                ${rubroTipoContratoInstance?.iess == '1' ? 'SI' : 'NO'}
             </div>
             
         </div>
@@ -86,12 +86,12 @@
     
     <g:if test="${rubroTipoContratoInstance?.gravable}">
         <div class="row">
-            <div class="col-md-2 text-info">
+            <div class="col-md-3 text-info">
                 Gravable
             </div>
             
             <div class="col-md-3">
-                <g:fieldValue bean="${rubroTipoContratoInstance}" field="gravable"/>
+                ${rubroTipoContratoInstance?.gravable == '1' ? 'SI' : 'NO'}
             </div>
             
         </div>
@@ -99,7 +99,7 @@
     
     <g:if test="${rubroTipoContratoInstance?.valor}">
         <div class="row">
-            <div class="col-md-2 text-info">
+            <div class="col-md-3 text-info">
                 Valor
             </div>
             
@@ -112,7 +112,7 @@
     
     <g:if test="${rubroTipoContratoInstance?.observaciones}">
         <div class="row">
-            <div class="col-md-2 text-info">
+            <div class="col-md-3 text-info">
                 Observaciones
             </div>
             
