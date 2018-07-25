@@ -69,193 +69,219 @@
 <g:set var="iconEmpr" value="fa fa-building-o"/>
 
 <ul class="nav nav-tabs">
-    <li class="active"><a href="#parametros" data-toggle="tab">Parámetros</a></li>
+    <li class="active"><a href="#empresa" data-toggle="tab">Parámetros</a></li>
+    <li><a href="#nomina" data-toggle="tab">Nómina</a></li>
 </ul>
 
 
 
 
 <div class="tab-content ui-corner-bottom">
-<div class="tab-pane active" id="empresa">
-    <div class="left pull-left">
-        <ul class="fa-ul">
-            <li>
-                <i class="fa-li ${iconEmpr}"></i>
-                <span id="paramsEmp">
-                    <g:link action="form" class="btnEmpresa">Parámetros de la Empresa</g:link> datos pertenecientes a la empresa.
-                </span>
+    <div class="tab-pane active" id="empresa">
+        <div class="left pull-left">
+            <ul class="fa-ul">
+                <li>
+                    <i class="fa-li ${iconEmpr}"></i>
+                    <span id="paramsEmp">
+                        <g:link action="form" class="btnEmpresa">Parámetros de la Empresa</g:link> datos pertenecientes a la empresa.
+                    </span>
 
-                <div class="descripcion hide">
-                    <h4>Parámetros de la Empresa</h4>
+                    <div class="descripcion hide">
+                        <h4>Parámetros de la Empresa</h4>
 
-                    <p>Parámetros de funcionamiento de la contabilidad, control de costos y valores del IVA, en la Empresa,</p>
-                </div>
-            </li>
-            <li>
-                <i class="fa-li ${iconEmpr}"></i>
-                <span id="centroCostos">
-                    <g:link controller="centroCosto" action="list">Centro de Costos</g:link> de la empresa de acuerdo a
-                    los cuales se llevará el control de bodegas, inventarios y existencias.
-                </span>
+                        <p>Parámetros de funcionamiento de la contabilidad, control de costos y valores del IVA, en la Empresa,</p>
+                    </div>
+                </li>
+                <li>
+                    <i class="fa-li ${iconEmpr}"></i>
+                    <span id="centroCostos">
+                        <g:link controller="centroCosto" action="list">Centro de Costos</g:link> de la empresa de acuerdo a
+                        los cuales se llevará el control de bodegas, inventarios y existencias.
+                    </span>
 
-                <div class="descripcion hide">
-                    <h4>Centro de Costos</h4>
+                    <div class="descripcion hide">
+                        <h4>Centro de Costos</h4>
 
-                    <p>Centro de costos para el control de adquisiciones, ventas, inventario y bodegas.</p>
+                        <p>Centro de costos para el control de adquisiciones, ventas, inventario y bodegas.</p>
 
-                    <p>Si la empresa no lleva el control de varios centros de costos, se debe definir uno general a la
-                    cual pretenecerán todas las bodegas.</p>
-                </div>
-            </li>
-            <li>
-                <i class="fa-li ${iconEmpr}"></i>
-                <span id="banco">
-                    <g:link controller="banco" action="list">Bancos</g:link> en los cuales posee cuentas asociadas a la
-                    contabilidad
-                </span>
+                        <p>Si la empresa no lleva el control de varios centros de costos, se debe definir uno general a la
+                        cual pretenecerán todas las bodegas.</p>
+                    </div>
+                </li>
+                <li>
+                    <i class="fa-li ${iconEmpr}"></i>
+                    <span id="banco">
+                        <g:link controller="banco" action="list">Bancos</g:link> en los cuales posee cuentas asociadas a la
+                        contabilidad
+                    </span>
 
-                <div class="descripcion hide">
-                    <h4>Bancos</h4>
+                    <div class="descripcion hide">
+                        <h4>Bancos</h4>
 
-                    <p>Registro de los bancos relacionados con la empresa, ya sea por cuentas de ahorro o corrientes.</p>
-                </div>
-            </li>
-            <li>
-                <i class="fa-li ${iconEmpr}"></i>
-                <span id="departamento">
-                    <g:link controller="departamento" action="list">Departamento</g:link> de la empresa que poseen
-                    personal
-                </span>
+                        <p>Registro de los bancos relacionados con la empresa, ya sea por cuentas de ahorro o corrientes.</p>
+                    </div>
+                </li>
+                <li>
+                    <i class="fa-li ${iconEmpr}"></i>
+                    <span id="departamento">
+                        <g:link controller="departamento" action="list">Departamento</g:link> de la empresa que poseen
+                        personal
+                    </span>
 
-                <div class="descripcion hide">
-                    <h4>Departamentos de Personal</h4>
+                    <div class="descripcion hide">
+                        <h4>Departamentos de Personal</h4>
 
-                    <p>Departamentos de personal de la empresa para el control de la nómina. Cada empleado será vinculado a un
-                    departamento y un cargo.</p>
-                </div>
-            </li>
-            <li>
-                <i class="fa-li ${iconEmpr}"></i>
-                <span id="libretin">
-                    <g:link controller="documentoEmpresa" action="list">Libretínes de Facturas, Retenciones, NC y otros</g:link>
-                    documentos autorizados por el SRI
-                </span>
-                <div class="descripcion hide">
-                    <h4>Libretínes de Facturas, Retenciones, NC y otros</h4>
-                    <p>Todos los libretines de facturas para ser usados digitalmente.</p>
-                </div>
-            </li>
-            <li>
-                <i class="fa-li ${iconEmpr}"></i>
-                <span id="subgrupoItems">
-                    <g:link controller="subgrupoItems" action="list" data="123">Subgrupo de Items</g:link> de la empresa
-                </span>
-                <div class="descripcion hide">
-                    <h4>Subgrupo de Items</h4>
-                    <p>Subgrupos.</p>
-                </div>
-            </li>
-            <li>
-                <i class="fa-li ${iconEmpr}"></i>
-                <span id="proveedores">
-                    <g:link controller="proveedor" action="list">Proveedores</g:link> de la empresa
-                </span>
-                <div class="descripcion hide">
-                    <h4>Proveedores</h4>
-                    <p>Proveedores.</p>
-                </div>
-            </li>
-            <li>
-                <i class="fa-li ${iconEmpr}"></i>
-                <span id="reporteContable">
-                    <g:link controller="reporteCuenta" action="list">Reportes Contables</g:link> Reportes contables
-                    especiales del sistema conforme a las normas NIIF
-                </span>
+                        <p>Departamentos de personal de la empresa para el control de la nómina. Cada empleado será vinculado a un
+                        departamento y un cargo.</p>
+                    </div>
+                </li>
+                <li>
+                    <i class="fa-li ${iconEmpr}"></i>
+                    <span id="libretin">
+                        <g:link controller="documentoEmpresa" action="list">Libretínes de Facturas, Retenciones, NC y otros</g:link>
+                        documentos autorizados por el SRI
+                    </span>
+                    <div class="descripcion hide">
+                        <h4>Libretínes de Facturas, Retenciones, NC y otros</h4>
+                        <p>Todos los libretines de facturas para ser usados digitalmente.</p>
+                    </div>
+                </li>
+                <li>
+                    <i class="fa-li ${iconEmpr}"></i>
+                    <span id="subgrupoItems">
+                        <g:link controller="subgrupoItems" action="list" data="123">Subgrupo de Items</g:link> de la empresa
+                    </span>
+                    <div class="descripcion hide">
+                        <h4>Subgrupo de Items</h4>
+                        <p>Subgrupos.</p>
+                    </div>
+                </li>
+                <li>
+                    <i class="fa-li ${iconEmpr}"></i>
+                    <span id="proveedores">
+                        <g:link controller="proveedor" action="list">Proveedores</g:link> de la empresa
+                    </span>
+                    <div class="descripcion hide">
+                        <h4>Proveedores</h4>
+                        <p>Proveedores.</p>
+                    </div>
+                </li>
+                <li>
+                    <i class="fa-li ${iconEmpr}"></i>
+                    <span id="reporteContable">
+                        <g:link controller="reporteCuenta" action="list">Reportes Contables</g:link> Reportes contables
+                        especiales del sistema conforme a las normas NIIF
+                    </span>
 
-                <div class="descripcion hide">
-                    <h4>Reportes de la Contabilidad</h4>
+                    <div class="descripcion hide">
+                        <h4>Reportes de la Contabilidad</h4>
 
-                    <p>Sirve para definir reportes especiales por empresa.</p>
+                        <p>Sirve para definir reportes especiales por empresa.</p>
 
-                    <p>Por lo general siempre se definirán los mismo reportes para cada empresa, conforme las normas NIIF.</p>
-                </div>
-            </li>
-            <li>
-                <i class="fa-li ${iconEmpr}"></i>
-                <span id="bodegas">
-                    <g:link controller="bodega" action="list">Bodegas</g:link> para el control de existencias e inventarios
-                    por centros de costos o en forma general.
-                </span>
+                        <p>Por lo general siempre se definirán los mismo reportes para cada empresa, conforme las normas NIIF.</p>
+                    </div>
+                </li>
+                <li>
+                    <i class="fa-li ${iconEmpr}"></i>
+                    <span id="bodegas">
+                        <g:link controller="bodega" action="list">Bodegas</g:link> para el control de existencias e inventarios
+                        por centros de costos o en forma general.
+                    </span>
 
-                <div class="descripcion hide">
-                    <h4>Bodegas</h4>
+                    <div class="descripcion hide">
+                        <h4>Bodegas</h4>
 
-                    <p>Son los sitios donde se almacenan los artículos de inventario.</p>
+                        <p>Son los sitios donde se almacenan los artículos de inventario.</p>
 
-                    <p>Cada bodega debe estar relacionada a un centro de costos, pudiendo haber varias bodegas dentro de un
-                    mismo centro de costos.</p>
-                </div>
-            </li>
-            <li>
-                <i class="fa-li ${iconEmpr}"></i>
-                <span id="canton">
-                    <g:link controller="canton" action="list">Cantón</g:link>
-                </span>
+                        <p>Cada bodega debe estar relacionada a un centro de costos, pudiendo haber varias bodegas dentro de un
+                        mismo centro de costos.</p>
+                    </div>
+                </li>
+                <li>
+                    <i class="fa-li ${iconEmpr}"></i>
+                    <span id="canton">
+                        <g:link controller="canton" action="list">Cantón</g:link>
+                    </span>
 
-                <div class="descripcion hide">
-                    <h4>Cantón</h4>
+                    <div class="descripcion hide">
+                        <h4>Cantón</h4>
 
-                    <p>Cantón</p>
-                </div>
-            </li>
-            <li>
-                <i class="fa-li ${iconEmpr}"></i>
-                <span id="Unidad">
-                    <g:link controller="unidad" action="list">Unidad</g:link> de conteo o control de los los items.
-                </span>
+                        <p>Cantón</p>
+                    </div>
+                </li>
+                <li>
+                    <i class="fa-li ${iconEmpr}"></i>
+                    <span id="Unidad">
+                        <g:link controller="unidad" action="list">Unidad</g:link> de conteo o control de los los items.
+                    </span>
 
-                <div class="descripcion hide">
-                    <h4>Unidad de Medida</h4>
+                    <div class="descripcion hide">
+                        <h4>Unidad de Medida</h4>
 
-                    <p>Unidad de control o conteo de obras para el plan anual de adquisiciones (PAC) y para fijar las metas.</p>
+                        <p>Unidad de control o conteo de obras para el plan anual de adquisiciones (PAC) y para fijar las metas.</p>
 
-                    <p>Pueden ser: kil&oacute;metros, metros, escuelas, unidades, etc.</p>
-                </div>
-            </li>
-            <li>
-                <i class="fa-li ${iconEmpr}"></i>
-                <span id="Marca">
-                    <g:link controller="marca" action="list">Marca</g:link> de los distintos items que se posee como
-                    inventarios o como activos fijos.
-                </span>
+                        <p>Pueden ser: kil&oacute;metros, metros, escuelas, unidades, etc.</p>
+                    </div>
+                </li>
+                <li>
+                    <i class="fa-li ${iconEmpr}"></i>
+                    <span id="Marca">
+                        <g:link controller="marca" action="list">Marca</g:link> de los distintos items que se posee como
+                        inventarios o como activos fijos.
+                    </span>
 
-                <div class="descripcion hide">
-                    <h4>Marcas</h4>
+                    <div class="descripcion hide">
+                        <h4>Marcas</h4>
 
-                    <p>Marca de los artículos d einventario y de los activos fijos de la Empresa.</p>
+                        <p>Marca de los artículos d einventario y de los activos fijos de la Empresa.</p>
 
-                    <p>Se de be crear un "Sin Marca" para aquellos bienes que no tienen marca</p>
-                </div>
-            </li>
-            <li>
-                <i class="fa-li ${iconEmpr}"></i>
-                <span id="rolPagos">
-                    <g:link controller="rolPagos" action="list">Rol de Pagos</g:link>
+                        <p>Se de be crear un "Sin Marca" para aquellos bienes que no tienen marca</p>
+                    </div>
+                </li>
+                <li>
+                    <i class="fa-li ${iconEmpr}"></i>
+                    <span id="rolPagos">
+                        <g:link controller="rolPagos" action="list">Rol de Pagos</g:link>
 
-                </span>
+                    </span>
 
-                <div class="descripcion hide">
-                    <h4>Rol de Pagos</h4>
+                    <div class="descripcion hide">
+                        <h4>Rol de Pagos</h4>
 
-                    <p>Rol de Pagos</p>
-                </div>
-            </li>
-        </ul>
+                        <p>Rol de Pagos</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="empresa right pull-right">
+        </div>
     </div>
 
-    <div class="empresa right pull-right">
+    <div class="tab-pane" id="nomina">
+        <div class="left pull-left">
+            <ul class="fa-ul">
+                <li>
+                    <i class="fa-li ${iconEmpr}"></i>
+                    <span id="tipoContrato">
+                        <g:link controller="tipoContrato" action="list">Tipos de contrato</g:link> que se aplican a sus
+                        empleados para la generación de la nómina
+                    </span>
+
+                    <div class="descripcion hide">
+                        <h4>Tipo de Contrato</h4>
+
+                        <p>Tipos de contrato para el cálculo de la nómina de cada empleado. Cada tiṕo de contrato posee
+                        un conjunto específico de rubros de ingresos, egresos y provisiones</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="nomina right pull-right">
+        </div>
     </div>
-</div>
+
 </div>
 
 <script type="text/javascript">
@@ -310,7 +336,7 @@
                                 if(comas == -1){
                                     return submitForm();
                                 }else{
-                                   bootbox.alert("<i class='fa fa-warning fa-3x pull-left text-warning text-shadow'></i> Error al ingresar el número de establecimiento <br> Doble Coma (,,)")
+                                    bootbox.alert("<i class='fa fa-warning fa-3x pull-left text-warning text-shadow'></i> Error al ingresar el número de establecimiento <br> Doble Coma (,,)")
                                     return false;
                                 }
 

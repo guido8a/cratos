@@ -33,7 +33,7 @@
                     </label>
 
                     <div class="col-md-6">
-                        <g:textField name="cedula" maxlength="10" cedula="true" required="" class="form-control required" value="${personaInstance?.cedula}"/>
+                        <g:textField name="cedula" maxlength="10" minlength="10" required="" class="form-control required" value="${personaInstance?.cedula}"/>
                     </div>
                     *
                 </span>
@@ -263,9 +263,8 @@
                     </label>
 
                     <div class="col-md-6">
-                        <g:textField name="login" maxlength="15" required="" class="form-control required" value="${personaInstance?.login}"/>
+                        <g:textField name="login" maxlength="15"  class="form-control" value="${personaInstance?.login}"/>
                     </div>
-                    *
                 </span>
             </div>
 
@@ -307,10 +306,10 @@
 
                     <div class="col-md-3">
                         %{--<g:field name="activo" type="number" value="${personaInstance.activo}" class="digits form-control required" required=""/>--}%
-                        <g:select name="activo" from="[1: 'SI', 0: 'NO']" optionKey="key" optionValue="value"
+                        <g:select name="activo" from="[0: 'NO', 1: 'SI']" optionKey="key" optionValue="value"
                                   class="form-control" value="${personaInstance?.activo ?: 'S'}"/>
                     </div>
-                    *
+                    <p class="col-md-3" style="font-weight: bold">Si el usuario ha ser creado será un empleado, su estado Activo debe ser "NO"</p>
                 </span>
             </div>
 

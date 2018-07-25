@@ -405,8 +405,11 @@ class PersonaController extends cratos.seguridad.Shield {
         } //update
         else {
             //create: pone la cedula en el pass y validacion y pone fecha de cambio de pass en ahora
-            params.password = params.cedula.toString().encodeAsMD5()
-            params.autorizacion = params.cedula.toString().encodeAsMD5()
+            if(params.login){
+                params.password = params.cedula.toString().encodeAsMD5()
+                params.autorizacion = params.cedula.toString().encodeAsMD5()
+            }
+
             params.fechaPass = new Date()
             params.empresa = session.empresa
         }

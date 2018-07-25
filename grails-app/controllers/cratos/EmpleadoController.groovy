@@ -364,7 +364,6 @@ class EmpleadoController extends cratos.seguridad.Shield {
             render "NO"
         }
 
-
     } //save para grabar desde ajax
 
     def delete_ajax() {

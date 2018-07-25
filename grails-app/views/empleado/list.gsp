@@ -13,12 +13,16 @@
 <!-- botones -->
 <div class="btn-toolbar toolbar">
     <div class="btn-group">
-        <g:link action="form" class="btn btn-default btnCrear">
-            <i class="fa fa-file-o"></i> Nuevo empleado
-        </g:link>
+        %{--<g:link action="form" class="btn btn-default btnCrear">--}%
+            %{--<i class="fa fa-file-o"></i> Nuevo empleado--}%
+        %{--</g:link>--}%
         <a href="#" id="generar_rol" class="btn btn-azul ">
             <i class="fa fa-bars"></i>
             Generar rol de pagos
+        </a>
+        <a href="#" id="btnEditarRol" class="btn btn-success">
+            <i class="fa fa-pencil"></i>
+            Editar rol de pagos
         </a>
     </div>
 
@@ -47,7 +51,7 @@
             <th>Contrato</th>
             <g:sortableColumn property="estado" title="Estado"/>
             <g:sortableColumn property="sueldo" title="Sueldo"/>
-            <th width="110">Acciones</th>
+            %{--<th width="110">Acciones</th>--}%
         </tr>
         </thead>
         <tbody>
@@ -60,17 +64,17 @@
                 <td><g:formatBoolean boolean="${empleadoInstance.estado == 'A'}" true="Activo" false="Inactivo"/></td>
 
                 <td>${fieldValue(bean: empleadoInstance, field: "sueldo")}</td>
-                <td>
-                    <a href="#" data-id="${empleadoInstance.id}" class="btn btn-info btn-sm btn-show btn-ajax" title="Ver">
-                        <i class="fa fa-laptop"></i>
-                    </a>
-                    <a href="#" data-id="${empleadoInstance.id}" class="btn btn-success btn-sm btn-edit btn-ajax" title="Editar">
-                        <i class="fa fa-pencil"></i>
-                    </a>
-                    <a href="#" data-id="${empleadoInstance.id}" class="btn btn-danger btn-sm btn-delete btn-ajax" title="Eliminar">
-                        <i class="fa fa-trash-o"></i>
-                    </a>
-                </td>
+                %{--<td>--}%
+                    %{--<a href="#" data-id="${empleadoInstance.id}" class="btn btn-info btn-sm btn-show btn-ajax" title="Ver">--}%
+                        %{--<i class="fa fa-laptop"></i>--}%
+                    %{--</a>--}%
+                    %{--<a href="#" data-id="${empleadoInstance.id}" class="btn btn-success btn-sm btn-edit btn-ajax" title="Editar">--}%
+                        %{--<i class="fa fa-pencil"></i>--}%
+                    %{--</a>--}%
+                    %{--<a href="#" data-id="${empleadoInstance.id}" class="btn btn-danger btn-sm btn-delete btn-ajax" title="Eliminar">--}%
+                        %{--<i class="fa fa-trash-o"></i>--}%
+                    %{--</a>--}%
+                %{--</td>--}%
             </tr>
         </g:each>
         </tbody>

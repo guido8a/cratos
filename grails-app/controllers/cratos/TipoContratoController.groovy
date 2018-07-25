@@ -94,11 +94,13 @@ def delete() {
     def list() {
         params.max = Math.min(params.max ? params.max.toInteger() : 10, 100)
         def tipoContratoInstanceList = TipoContrato.list(params)
+        def empresa = Empresa.get(session.empresa.id)
         def tipoContratoInstanceCount = TipoContrato.count()
         if (tipoContratoInstanceList.size() == 0 && params.offset && params.max) {
             params.offset = params.offset - params.max
         }
-        tipoContratoInstanceList = TipoContrato.list(params)
+        tipoContratoInstanceList = TipoContrato.findAllByEmpresa(empresa)
+
         return [tipoContratoInstanceList: tipoContratoInstanceList, tipoContratoInstanceCount: tipoContratoInstanceCount]
     } //list
 
@@ -143,9 +145,7 @@ def delete() {
 
         def persona
 
-        params.descripcion = params.descripcion.toUpperCase()
-//        params.codigo = params.codigo.toUpperCase()
-
+        params.descripcion = params.descripcion
 
         //original
         def tipoContratoInstance = new TipoContrato()
@@ -157,13 +157,9 @@ def delete() {
                 return
             }
         }else {
-
             tipoContratoInstance = new TipoContrato()
             tipoContratoInstance.properties = params
-//            tipocontratoInstance.estado = '1'
-//            tipoContratoInstance.empresa = session.empresa
-
-
+            tipoContratoInstance.empresa = session.empresa
         } //update
 
 

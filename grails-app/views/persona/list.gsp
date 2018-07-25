@@ -297,7 +297,7 @@
 
                         bootbox.dialog({
                             title   : "Alerta",
-                            message : "<i class='fa fa-warning fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea reiniciar el password del usuario?<br/>El password será el número de cédula y no se puede deshacer.</p>",
+                            message : "<i class='fa fa-warning fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea reiniciar el password del usuario?<br/>El password será el número de <strong>CÉDULA</strong> y no se puede deshacer.</p>",
                             buttons : {
                                 cancelar : {
                                     label     : "Cancelar",

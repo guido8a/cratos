@@ -15,7 +15,7 @@
                 </label>
 
                 <div class="col-md-8">
-                    <g:textField name="descripcion" maxlength="31" class="allCaps form-control required"
+                    <g:textField name="descripcion" maxlength="31" class="form-control required"
                                  value="${tipoContratoInstance?.descripcion}"/>
                 </div>
                     *

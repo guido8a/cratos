@@ -79,7 +79,7 @@ class Persona {
         profesion(blank: true, nullable: true, attributes: [title: 'Profesión'])
         estadoCivil(blank: true, nullable: true, attributes: [title: 'Estado Civil'])
         observaciones(size: 1..127, blank: true, nullable: true, attributes: [title: 'Observaciones'])
-        login(size: 1..25, blank: false, nullable: false, unique: true, attributes: [title: 'Nombre de usuario'])
+        login(size: 1..25, blank: true, nullable: true, unique: true, attributes: [title: 'Nombre de usuario'])
         password(size: 1..64, blank: false, nullable: false, password: true, attributes: [title: 'Contraseña para el ingreso al sistema'])
         autorizacion(size: 1..255, blank: false, nullable: false, password: true, attributes: [title: 'Contraseña para autorizaciones'])
         sigla(size: 1..8, blank: false, nullable: false, attributes: [title: 'Sigla del usuario'])

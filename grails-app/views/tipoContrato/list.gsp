@@ -13,9 +13,17 @@
     <!-- botones -->
         <div class="btn-toolbar toolbar">
             <div class="btn-group">
-                <g:link controller="inicio" action="parametros" class="btn btn-warning btnRegresar">
-                    <i class="fa fa-chevron-left"></i> Parámetros
-                </g:link>
+                <g:if test="${session.perfil.nombre == 'Administrador General'}">
+                    <g:link controller="inicio" action="parametros" class="btn btn-warning btnRegresar">
+                        <i class="fa fa-chevron-left"></i> Parámetros
+                    </g:link>
+                </g:if>
+                <g:else>
+                    <g:link controller="inicio" action="parametrosEmpresa" class="btn btn-warning btnRegresar">
+                        <i class="fa fa-chevron-left"></i> Parámetros
+                    </g:link>
+                </g:else>
+
                 <g:link action="form" class="btn btn-info btnCrear">
                     <i class="fa fa-file-o"></i> Crear
                 </g:link>
