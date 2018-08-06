@@ -14,6 +14,11 @@ class Contabilidad implements Serializable {
     Cuenta retencionCompraRenta
     Cuenta costos
     Cuenta inventario
+
+    Cuenta banco
+    Cuenta porPagar
+    Cuenta porCobrar
+
     static mapping = {
         table 'cont'
         cache usage: 'read-write', include: 'non-lazy'
@@ -34,6 +39,9 @@ class Contabilidad implements Serializable {
             retencionCompraRenta column: 'cntartrt'
             costos column: 'cntacsto'
             inventario column: 'cntainvt'
+            banco column: 'cntabnco'
+            porPagar column: 'cntactxp'
+            porCobrar column: 'cntactxc'
         }
     }
     static constraints = {
@@ -50,6 +58,9 @@ class Contabilidad implements Serializable {
         retencionCompraRenta(nullable: true)
         costos(nullable: true)
         inventario(nullable: true)
+        banco(blank: true, nullable: true)
+        porPagar(blank: true, nullable: true)
+        porCobrar(blank: true, nullable: true)
     }
 
     String toString() {

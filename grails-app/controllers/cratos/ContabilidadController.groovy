@@ -103,8 +103,29 @@ class ContabilidadController extends cratos.seguridad.Shield {
             eq("empresa", empresa)
             order("numero","asc")
         }
+
+        def cntaBanco = Cuenta.withCriteria {
+            ilike("numero", '1%')
+            eq("empresa", empresa)
+            order("numero","asc")
+        }
+
+        def cntaPorPagar = Cuenta.withCriteria {
+            ilike("numero", '2%')
+            eq("empresa", empresa)
+            order("numero","asc")
+        }
+
+        def cntaPorCobrar = Cuenta.withCriteria {
+            ilike("numero", '1%')
+            eq("empresa", empresa)
+            order("numero","asc")
+        }
+
+
+
         return [contabilidadInstance: contabilidadInstance, cuentas: cuentas, cntacr: cntaCredito, cntart: cntaRetencion,
-            cntacsto: cntaCosto, cntainvt: cntaInvt]
+            cntacsto: cntaCosto, cntainvt: cntaInvt, banco: cntaBanco, pagar: cntaPorPagar, cobrar: cntaPorCobrar]
     } //form para cargar con ajax en un dialog
 
     def save_ajax() {
@@ -117,6 +138,9 @@ class ContabilidadController extends cratos.seguridad.Shield {
         def creditoRenta = Cuenta.get(params.creditoRenta)
         def retencionIva = Cuenta.get(params.retencionIva)
         def retencionRenta = Cuenta.get(params.retencionRenta)
+        def banco = Cuenta.get(params.banco)
+        def porPagar = Cuenta.get(params.porPagar)
+        def porCobrar = Cuenta.get(params.porCobrar)
 
         if(params.id){
             contabilidadInstance =  Contabilidad.get(params.id)
@@ -127,6 +151,9 @@ class ContabilidadController extends cratos.seguridad.Shield {
             contabilidadInstance.creditoTributarioRenta = creditoRenta
             contabilidadInstance.retencionCompraIva = retencionIva
             contabilidadInstance.retencionCompraRenta = retencionRenta
+            contabilidadInstance.banco = banco
+            contabilidadInstance.porPagar = porPagar
+            contabilidadInstance.porCobrar = porCobrar
 
             if (!contabilidadInstance.save(flush: true)) {
                 render "NO_Error al guardar los datos de la contabilidad"
@@ -150,6 +177,9 @@ class ContabilidadController extends cratos.seguridad.Shield {
             contabilidadInstance.creditoTributarioRenta = creditoRenta
             contabilidadInstance.retencionCompraIva = retencionIva
             contabilidadInstance.retencionCompraRenta = retencionRenta
+            contabilidadInstance.banco = banco
+            contabilidadInstance.porPagar = porPagar
+            contabilidadInstance.porCobrar = porCobrar
 
             if (!contabilidadInstance.save(flush: true)) {
                 render "NO_Error al crear la contabilidad"

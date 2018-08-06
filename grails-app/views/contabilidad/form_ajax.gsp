@@ -156,6 +156,60 @@
             </span>
         </div>
 
+    %{--Conciliación Bancaria--}%
+
+        <div class="row">
+            <span class="grupo">
+                <div class="col-md-4" style="margin-left: 400px">
+                   <label>Conciliación Bancaria</label>
+                </div>
+            </span>
+        </div>
+
+
+        <div class="form-group ${hasErrors(bean: contabilidadInstance, field: 'banco', 'error')} required">
+            <span class="grupo">
+                <label for="banco" class="col-md-4 control-label text-info">
+                    Bancos
+                </label>
+
+                <div class="col-md-6">
+                    <g:select name="banco" from="${banco}" optionValue="${{it.numero + " - " + it.descripcion}}" optionKey="id"
+                              class="form-control" value="${contabilidadInstance?.banco?.id}"/>
+                </div>
+                *
+            </span>
+        </div>
+
+        <div class="form-group ${hasErrors(bean: contabilidadInstance, field: 'porPagar', 'error')} required">
+            <span class="grupo">
+                <label for="porPagar" class="col-md-4 control-label text-info">
+                    Pagos
+                </label>
+
+                <div class="col-md-6">
+                    <g:select name="porPagar" from="${pagar}" optionValue="${{it.numero + " - " + it.descripcion}}" optionKey="id"
+                              class="form-control" value="${contabilidadInstance?.porPagar?.id}"/>
+                </div>
+                *
+            </span>
+        </div>
+
+        <div class="form-group ${hasErrors(bean: contabilidadInstance, field: 'porCobrar', 'error')} required">
+            <span class="grupo">
+                <label for="porCobrar" class="col-md-4 control-label text-info">
+                    Cobros
+                </label>
+
+                <div class="col-md-6">
+                    <g:select name="porCobrar" from="${cobrar}" optionValue="${{it.numero + " - " + it.descripcion}}" optionKey="id"
+                              class="form-control" value="${contabilidadInstance?.porCobrar?.id}"/>
+                </div>
+                *
+            </span>
+        </div>
+
+
     </g:form>
 
     <script type="text/javascript">
