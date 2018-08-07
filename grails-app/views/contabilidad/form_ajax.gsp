@@ -170,7 +170,7 @@
         <div class="form-group ${hasErrors(bean: contabilidadInstance, field: 'bancos', 'error')} required">
             <span class="grupo">
                 <label for="banco" class="col-md-4 control-label text-info">
-                    Cuentas Bancos
+                    Cuenta de Bancos
                 </label>
 
                 <div class="col-md-6">
