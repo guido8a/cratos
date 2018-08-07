@@ -170,7 +170,7 @@
         <div class="form-group ${hasErrors(bean: contabilidadInstance, field: 'bancos', 'error')} required">
             <span class="grupo">
                 <label for="banco" class="col-md-4 control-label text-info">
-                    Bancos
+                    Cuentas Bancos
                 </label>
 
                 <div class="col-md-6">
@@ -184,7 +184,7 @@
         <div class="form-group ${hasErrors(bean: contabilidadInstance, field: 'porPagar', 'error')} required">
             <span class="grupo">
                 <label for="porPagar" class="col-md-4 control-label text-info">
-                    Pagos
+                    Cuentas por Pagar
                 </label>
 
                 <div class="col-md-6">
@@ -198,7 +198,7 @@
         <div class="form-group ${hasErrors(bean: contabilidadInstance, field: 'porCobrar', 'error')} required">
             <span class="grupo">
                 <label for="porCobrar" class="col-md-4 control-label text-info">
-                    Cobros
+                   Cuentas por Cobrar
                 </label>
 
                 <div class="col-md-6">

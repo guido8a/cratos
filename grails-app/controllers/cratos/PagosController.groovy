@@ -5,13 +5,16 @@ class PagosController extends cratos.seguridad.Shield {
     def dbConnectionService
 
     def conciliacionBancaria() {
-        def padreBancos = Cuenta.get(5018)
-        def padrePagos = Cuenta.get(5026)
-        def padreCobros = Cuenta.get(4984)
         def empresa = Empresa.get(session.empresa.id)
-        def cuentasBancos = Cuenta.findAllByEmpresaAndPadre(empresa,padreBancos).sort{it.descripcion}
-        def cuentasPagar = Cuenta.findAllByEmpresaAndPadre(empresa, padrePagos).sort{it.descripcion}
-        def cuentasCobrar = Cuenta.findAllByEmpresaAndPadre(empresa, padreCobros).sort{it.descripcion}
+        def contabilidad = Contabilidad.get(session.contabilidad.id)
+
+        def padreBancos = Cuenta.get(contabilidad?.bancos?.id)
+        def padrePagos = Cuenta.get(contabilidad?.porPagar?.id)
+        def padreCobros = Cuenta.get(contabilidad?.porCobrar?.id)
+
+        def cuentasBancos = padreBancos ? Cuenta.findAllByEmpresaAndPadre(empresa,padreBancos).sort{it.descripcion} : ''
+        def cuentasPagar = padrePagos ? Cuenta.findAllByEmpresaAndPadre(empresa, padrePagos).sort{it.descripcion} : ''
+        def cuentasCobrar = padreCobros ? Cuenta.findAllByEmpresaAndPadre(empresa, padreCobros).sort{it.descripcion} : ''
 
         return [bancos: cuentasBancos, pagos: cuentasPagar, cobros: cuentasCobrar]
     }
