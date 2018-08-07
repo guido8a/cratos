@@ -151,7 +151,7 @@ class ContabilidadController extends cratos.seguridad.Shield {
             contabilidadInstance.creditoTributarioRenta = creditoRenta
             contabilidadInstance.retencionCompraIva = retencionIva
             contabilidadInstance.retencionCompraRenta = retencionRenta
-            contabilidadInstance.banco = banco
+            contabilidadInstance.bancos = banco
             contabilidadInstance.porPagar = porPagar
             contabilidadInstance.porCobrar = porCobrar
 
@@ -177,7 +177,7 @@ class ContabilidadController extends cratos.seguridad.Shield {
             contabilidadInstance.creditoTributarioRenta = creditoRenta
             contabilidadInstance.retencionCompraIva = retencionIva
             contabilidadInstance.retencionCompraRenta = retencionRenta
-            contabilidadInstance.banco = banco
+            contabilidadInstance.bancos = banco
             contabilidadInstance.porPagar = porPagar
             contabilidadInstance.porCobrar = porCobrar
 

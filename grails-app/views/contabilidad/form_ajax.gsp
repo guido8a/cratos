@@ -167,7 +167,7 @@
         </div>
 
 
-        <div class="form-group ${hasErrors(bean: contabilidadInstance, field: 'banco', 'error')} required">
+        <div class="form-group ${hasErrors(bean: contabilidadInstance, field: 'bancos', 'error')} required">
             <span class="grupo">
                 <label for="banco" class="col-md-4 control-label text-info">
                     Bancos
@@ -175,7 +175,7 @@
 
                 <div class="col-md-6">
                     <g:select name="banco" from="${banco}" optionValue="${{it.numero + " - " + it.descripcion}}" optionKey="id"
-                              class="form-control" value="${contabilidadInstance?.banco?.id}"/>
+                              class="form-control" value="${contabilidadInstance?.bancos?.id}"/>
                 </div>
                 *
             </span>

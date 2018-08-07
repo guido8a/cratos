@@ -15,7 +15,7 @@ class Contabilidad implements Serializable {
     Cuenta costos
     Cuenta inventario
 
-    Cuenta banco
+    Cuenta bancos
     Cuenta porPagar
     Cuenta porCobrar
 
@@ -39,11 +39,12 @@ class Contabilidad implements Serializable {
             retencionCompraRenta column: 'cntartrt'
             costos column: 'cntacsto'
             inventario column: 'cntainvt'
-            banco column: 'cntabnco'
+            bancos column: 'cntabnco'
             porPagar column: 'cntactxp'
             porCobrar column: 'cntactxc'
         }
     }
+
     static constraints = {
         fechaCierre(blank: true, nullable: true, attributes: [title: 'Fecha de cierre del periodo comtable'])
         fechaInicio(blank: false, attributes: [title: 'Fecha de inicio del periodo comtable'])
@@ -58,7 +59,7 @@ class Contabilidad implements Serializable {
         retencionCompraRenta(nullable: true)
         costos(nullable: true)
         inventario(nullable: true)
-        banco(blank: true, nullable: true)
+        bancos(blank: true, nullable: true)
         porPagar(blank: true, nullable: true)
         porCobrar(blank: true, nullable: true)
     }

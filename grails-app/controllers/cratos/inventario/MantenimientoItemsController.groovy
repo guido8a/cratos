@@ -996,7 +996,7 @@ class MantenimientoItemsController extends Shield {
 //        keystore.load(new FileInputStream("/home/gato/grails/cratos3/web-app/xml/fp.p12"), password);
         keystore.load(new FileInputStream(path + "xml/42/firma.p12"), password);
         KeyPair key = getKeyPair(keystore, "serialnumber=0000240522+cn=francisco fabian paliz osorio,l=quito," +
-                "ou=entidad de certificacion de informacion-ecibce,o=banco central del ecuador,c=ec decryption key", password);
+                "ou=entidad de certificacion de informacion-ecibce,o=bancos central del ecuador,c=ec decryption key", password);
 
         //Create the signing context
         DOMSignContext dsc = new DOMSignContext(key.getPrivate(), xmlDoc.getDocumentElement());
@@ -1021,7 +1021,7 @@ class MantenimientoItemsController extends Shield {
         KeyInfoFactory kif = fac.getKeyInfoFactory();
         ArrayList<Certificate> certificateList = new ArrayList<Certificate>();
         certificateList.add(keystore.getCertificate("serialnumber=0000240522+cn=francisco fabian paliz osorio,l=quito," +
-                "ou=entidad de certificacion de informacion-ecibce,o=banco central del ecuador,c=ec decryption key"));
+                "ou=entidad de certificacion de informacion-ecibce,o=bancos central del ecuador,c=ec decryption key"));
         X509Data kv = kif.newX509Data(certificateList);
         KeyInfo ki = kif.newKeyInfo(Collections.singletonList(kv));
 

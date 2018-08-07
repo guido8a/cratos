@@ -27,7 +27,7 @@ class CuentaBanco implements Serializable {
         fechaInicio(blank: true, nullable: true, attributes: [title: 'fechaInicio'])
         numero(size: 1..15, blank: false, attributes: [title: 'numero'])
         tipoCuenta(blank: true, nullable: true, attributes: [title: 'tipoCuenta'])
-        banco(blank: true, nullable: true, attributes: [title: 'banco'])
+        banco(blank: true, nullable: true, attributes: [title: 'bancos'])
         observaciones(blank: true, maxSize: 127, attributes: [title: 'observaciones'])
     }
 }
