@@ -12,11 +12,11 @@ class PagosController extends cratos.seguridad.Shield {
         def padrePagos = Cuenta.get(contabilidad?.porPagar?.id)
         def padreCobros = Cuenta.get(contabilidad?.porCobrar?.id)
 
-        def cuentasBancos = padreBancos ? Cuenta.findAllByEmpresaAndPadre(empresa,padreBancos).sort{it.descripcion} : ''
-        def cuentasPagar = padrePagos ? Cuenta.findAllByEmpresaAndPadre(empresa, padrePagos).sort{it.descripcion} : ''
-        def cuentasCobrar = padreCobros ? Cuenta.findAllByEmpresaAndPadre(empresa, padreCobros).sort{it.descripcion} : ''
+        def cuentasBancos = Cuenta.findAllByEmpresaAndPadre(empresa,padreBancos).sort{it.descripcion}
+        def cuentasPagar =  Cuenta.findAllByEmpresaAndPadre(empresa, padrePagos).sort{it.descripcion}
+        def cuentasCobrar = Cuenta.findAllByEmpresaAndPadre(empresa, padreCobros).sort{it.descripcion}
 
-        return [bancos: cuentasBancos, pagos: cuentasPagar, cobros: cuentasCobrar]
+        return [bancos: cuentasBancos, pagos: cuentasPagar, cobros: cuentasCobrar, pb: padreBancos, pp: padrePagos, pc: padreCobros]
     }
 
     def conciliacion_ajax () {

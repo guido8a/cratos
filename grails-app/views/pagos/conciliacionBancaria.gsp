@@ -48,10 +48,19 @@
                             <label class="letra">Cuenta por pagar: </label>
                         </div>
                         <div class="col-md-4">
-                            <g:select name="grupo_name" id="cuentaPagos"
-                                      from="${pagos}"
-                                      optionKey="id" optionValue="descripcion" noSelection="['-1': 'Seleccione la cuenta por pagar...']"
-                                      class="form-control" style="color: #cf0e21"/>
+                            <g:if test="${pp}">
+                                <g:select name="grupo_name" id="cuentaPagos"
+                                          from="${pagos}"
+                                          optionKey="id" optionValue="${{it.numero + " - " + it.descripcion}}" noSelection="['-1': 'Seleccione la cuenta por pagar...']"
+                                          class="form-control" style="color: #cf0e21"/>
+                            </g:if>
+                            <g:else>
+                                <g:select name="grupo_name" id="cuentaPagos"
+                                          from="${""}"
+                                          optionKey="id" optionValue="${{it.numero + " - " + it.descripcion}}" noSelection="['-1': 'Seleccione la cuenta por pagar...']"
+                                          class="form-control" style="color: #cf0e21"/>
+                            </g:else>
+
                         </div>
 
 
@@ -59,10 +68,19 @@
                             <label class="letra">Cuenta por cobrar: </label>
                         </div>
                         <div class="col-md-4">
-                            <g:select name="grupo_name" id="cuentaCobros"
-                                      from="${cobros}"
-                                      optionKey="id" optionValue="descripcion" noSelection="['-1': 'Seleccione la cuenta por cobrar...']"
-                                      class="form-control" style="color: #42a151"/>
+                            <g:if test="${pc}">
+                                <g:select name="grupo_name" id="cuentaCobros"
+                                          from="${cobros}"
+                                          optionKey="id" optionValue="${{it.numero + " - " + it.descripcion}}" noSelection="['-1': 'Seleccione la cuenta por cobrar...']"
+                                          class="form-control" style="color: #42a151"/>
+                            </g:if>
+                            <g:else>
+                                <g:select name="grupo_name" id="cuentaCobros"
+                                          from="${""}"
+                                          optionKey="id" optionValue="${{it.numero + " - " + it.descripcion}}" noSelection="['-1': 'Seleccione la cuenta por cobrar...']"
+                                          class="form-control" style="color: #42a151"/>
+                            </g:else>
+
                         </div>
                     </div>
 
@@ -71,10 +89,19 @@
                             <label class="letra" style="text-align: center">Cuenta Bancaria: </label>
                         </div>
                         <div class="col-md-4">
-                            <g:select name="grupo_name" id="cuentaBancaria"
-                                      from="${bancos}"
-                                      optionKey="id" optionValue="descripcion" noSelection="['-1': 'Seleccione la cuenta bancaria...']"
-                                      class="form-control"/>
+                            <g:if test="${pb}">
+                                <g:select name="grupo_name" id="cuentaBancaria"
+                                          from="${bancos}"
+                                          optionKey="id" optionValue="${{it.numero + " - " + it.descripcion}}" noSelection="['-1': 'Seleccione la cuenta bancaria...']"
+                                          class="form-control"/>
+                            </g:if>
+                            <g:else>
+                                <g:select name="grupo_name" id="cuentaBancaria"
+                                          from="${""}"
+                                          optionKey="id" optionValue="${{it.numero + " - " + it.descripcion}}" noSelection="['-1': 'Seleccione la cuenta bancaria...']"
+                                          class="form-control"/>
+                            </g:else>
+
                         </div>
 
 
