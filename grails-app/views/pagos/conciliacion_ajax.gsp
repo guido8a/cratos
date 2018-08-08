@@ -71,7 +71,6 @@ td{
                 <div style="width: 99.7%;height: ${pago == 0 ? 100 : 300}px;overflow-y: auto;float: right;" id="divTablaDetalle">
                     <table class="table table-bordered table-hover table-condensed" style="margin-top: 3px">
                         <tbody>
-
                             <g:each in="${res}" var="con">
                                 <g:if test="${con?.tpps == 'P'}">
                                     <tr style="width: 100%">
@@ -289,7 +288,7 @@ td{
             Cheques girados y no cobrados :
         </div>
         <div class="col-md-3">
-            <g:textField name="noCobrados_name" value="" class="form-control" readonly=""/>
+            <g:textField name="noCobrados_name" value="${girados ?: 0.0}" class="form-control" readonly=""/>
         </div>
     </div>
     <div class="row">
@@ -297,7 +296,7 @@ td{
             Saldo de estado de cuenta :
         </div>
         <div class="col-md-3">
-            <g:textField name="saldoEstado_name" value="" class="form-control" readonly=""/>
+            <g:textField name="saldoEstado_name" value="${suma ?: 0.0}" class="form-control" readonly=""/>
         </div>
     </div>
 </div>

@@ -31,7 +31,7 @@ class PagosController extends cratos.seguridad.Shield {
 
         def cn = dbConnectionService.getConnection()
         def sql = "select * from conciliacion(${empresa?.id},${contabilidad?.id}, ${params.bancaria}, ${params.pago}, ${params.cobro}, '${params.desde}', '${params.hasta}')"
-        println("sql " + sql)
+//        println("sql " + sql)
         def res =  cn.rows(sql.toString())
         def cp = res.count{it.tpps == 'P'}
         def ct = res.count{it.tpps == 'T'}
@@ -42,7 +42,18 @@ class PagosController extends cratos.seguridad.Shield {
 //        println("cnc " + cnc)
 //        println("cnd " + cnd)
 
-        return[res: res, pago: cp, transferencia: ct, credito: cnc, debito: cnd]
+        def girados = 0
+        def estadoCuenta = 0
+        def suma = 0
+
+        res.each {
+            girados += it.sldopndt
+            estadoCuenta += it.sldobnco
+        }
+
+        suma = girados + estadoCuenta
+
+        return[res: res, pago: cp, transferencia: ct, credito: cnc, debito: cnd, girados: girados, suma: suma]
     }
 
     def guardarConciliacion_ajax () {
