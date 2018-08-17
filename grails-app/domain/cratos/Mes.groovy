@@ -3,6 +3,7 @@ package cratos
 class Mes implements Serializable {
 
     String descripcion
+    String numero
 
     static mapping = {
         table 'mess'
@@ -13,9 +14,11 @@ class Mes implements Serializable {
         columns {
             id column: 'mess__id'
             descripcion column: 'messdscr'
+            numero column: 'messnmro'
         }
     }
     static constraints = {
-        descripcion(blank: true, nullable: true, size: 1..15, attributes: [title: 'descripción'])
+        descripcion(blank: false, nullable: false, size: 1..15, attributes: [title: 'descripción'])
+        numero(blank: false, nullable: false, size: 2..2, attributes: [title: 'número'])
     }
 }

@@ -4,7 +4,7 @@
 <html>
     <head>
         <meta name="layout" content="main">
-        <title>Lista de Rubros por Tipo de Contrato</title>
+        <title>Rubros por Contrato</title>
     </head>
     <body>
 

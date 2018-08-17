@@ -47,11 +47,11 @@
     <div class="btn-group" style="float: right; margin-top: -90px">
         <a href="#" class="btn btn-success btnAgregarAsiento" comp="${comprobante?.id}"
            title="Agregar asiento contable">
-            <i class="fa fa-plus"> Agregar Asiento</i>
+            <i class="fa fa-plus"> Agregar Cuenta</i>
         </a>
         <a href="#" class="btn btn-danger btnBorrarAsientos" comp="${comprobante?.id}"
            title="Borrar los asientos con valores en 0 al debe y al haber">
-            <i class="fa fa-minus"> Borrar Asientos con 0</i>
+            <i class="fa fa-minus"> Borrar Cuentas con 0</i>
         </a>
     </div>
 </g:if>

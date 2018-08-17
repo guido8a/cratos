@@ -85,15 +85,15 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">Rolo de pago</h4>
+                <h4 class="modal-title" id="myModalLabel">Rol de Pagos</h4>
             </div>
             <div class="modal-body">
 
                 <div class="row">
-                    <div class="col-xs-2 negrilla" style="width: 140px">
+                    <div class="col-xs-5" style="text-align: right">
                         Año:
                     </div>
-                    <div class="col-xs-7 negrilla" style="margin-left: -20px" >
+                    <div class="col-xs-3 negrilla">
                         <g:select name="anio" class="form-control" from="${cratos.Anio.list()}" id="anio" optionKey="id" optionValue="anio" />
                     </div>
 
@@ -101,10 +101,10 @@
 
 
                 <div class="row">
-                    <div class="col-xs-2 negrilla" style="width: 140px">
+                    <div class="col-xs-5" style="text-align: right">
                         Mes:
                     </div>
-                    <div class="col-xs-7 negrilla" style="margin-left: -20px" >
+                    <div class="col-xs-5 negrilla">
                         <g:select name="mes" class="form-control" from="${mes}" optionKey="id" optionValue="descripcion"/>
                     </div>
 
@@ -112,25 +112,16 @@
 
 
                 <div class="row">
-                    <div class="col-xs-2 negrilla" style="width: 140px">
+                    <div class="col-xs-5" style="text-align: right">
                         Fecha:
                     </div>
-                    <div class="col-xs-7 negrilla" style="margin-left: -20px" >
+                    <div class="col-xs-5 negrilla">
 
-                        <elm:datepicker name="fecha" title="Fecha" id="fechaD" class="datepicker form-control fechaDe"
+                        <elm:datepicker name="fecha" title="Fecha" id="fecha" class="datepicker form-control"
                                         maxDate="new Date()" value="${new java.util.Date()}"/>
                     </div>
                 </div>
 
-                %{--<div class="row">--}%
-                    %{--<div class="col-xs-2 negrilla" style="width: 140px">--}%
-                        %{--Periodo:--}%
-                    %{--</div>--}%
-                    %{--<div class="col-xs-7 negrilla" style="margin-left: -20px" >--}%
-                        %{--<g:select name="periodo" class="form-control" from="${periodos}" id="periodos" optionKey="id" ></g:select>--}%
-                    %{--</div>--}%
-
-                %{--</div>--}%
             </div>
             <div class="modal-footer">
                 <a href="#" id="generar" class="btn btn-success">Generar</a>
@@ -170,7 +161,8 @@
     function deleteRow(itemId) {
         bootbox.dialog({
             title   : "Alerta",
-            message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea eliminar el Empleado seleccionado? Esta acción no se puede deshacer.</p>",
+            message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>" +
+                "¿Está seguro que desea eliminar el Empleado seleccionado? Esta acción no se puede deshacer.</p>",
             buttons : {
                 cancelar : {
                     label     : "Cancelar",
@@ -201,6 +193,7 @@
             }
         });
     }
+
     function createEditRow(id) {
         var title = id ? "Editar" : "Crear";
         var data = id ? { id : id } : {};
@@ -245,13 +238,17 @@
         });
 
         $("#generar").click(function(){
-            bootbox.confirm("Está a punto de generar el rol del pago para el mes de <span style='color:red'>"+$("#mes :selected").text()+" </span> en el año : <span style='color:red'>"+$("#anio :selected").text()+"</span>. Estos datos son correctos?",function(result){
+            bootbox.confirm("Está a punto de generar el rol del pago para el mes de <span style='color:blue'>"+
+                    $("#mes :selected").text()+" </span> del año <span style='color:blue'>"+
+                    $("#anio :selected").text()+".</span><br><br>Si es correcto, presione Aceptar para generar el rol",function(result){
                 if(result){
                     openLoader();
                     $.ajax({
                         type    : "POST",
-                        url     : "${g.createLink(controller: 'rubro',action: 'generarRol')}",
-                        data    : "mes="+$("#mes").val()+"&periodo="+$("#periodos").val(),
+                        url     : "${g.createLink(controller:'rubro', action:'generarRol')}",
+                        data    : "mes="+$("#mes").val()+
+                            "&anio="+$("#anio").val() +
+                            "&fecha="+$("#fecha_input").val(),
                         success : function (msg) {
                             if(msg=="ok"){
                                 location.href="${g.createLink(controller: 'rubro',action: 'verRol')}/?mes="+$("#mes").val()+"&periodo="+$("#periodos").val()
