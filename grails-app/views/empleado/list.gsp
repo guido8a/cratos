@@ -13,9 +13,6 @@
 <!-- botones -->
 <div class="btn-toolbar toolbar">
     <div class="btn-group">
-        %{--<g:link action="form" class="btn btn-default btnCrear">--}%
-            %{--<i class="fa fa-file-o"></i> Nuevo empleado--}%
-        %{--</g:link>--}%
         <a href="#" id="generar_rol" class="btn btn-azul ">
             <i class="fa fa-bars"></i>
             Generar rol de pagos
@@ -51,30 +48,18 @@
             <th>Contrato</th>
             <g:sortableColumn property="estado" title="Estado"/>
             <g:sortableColumn property="sueldo" title="Sueldo"/>
-            %{--<th width="110">Acciones</th>--}%
         </tr>
         </thead>
         <tbody>
         <g:each in="${empleadoInstanceList}" status="i" var="empleadoInstance">
-            <tr data-id="${empleadoInstance.id}">
+            <tr data-id="${empleadoInstance.id}" data-act="${empleadoInstance.estado}">
                 <td>${empleadoInstance.persona?.cedula}</td>
                 <td>${empleadoInstance.persona?.apellido} ${empleadoInstance.persona?.nombre}</td>
                 <td>${empleadoInstance.cargo}</td>
                 <td>${empleadoInstance.tipoContrato?.descripcion}</td>
-                <td><g:formatBoolean boolean="${empleadoInstance.estado == 'A'}" true="Activo" false="Inactivo"/></td>
+                <td style="text-align: center; color: ${empleadoInstance?.estado == 'A' ? 'rgba(83,207,109,0.9)' : 'rgba(112,27,25,0.9)'}"><g:formatBoolean boolean="${empleadoInstance.estado == 'A'}" true="Activo" false="Inactivo"/></td>
+                <td><g:formatNumber number="${empleadoInstance?.sueldo}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
 
-                <td>${fieldValue(bean: empleadoInstance, field: "sueldo")}</td>
-                %{--<td>--}%
-                    %{--<a href="#" data-id="${empleadoInstance.id}" class="btn btn-info btn-sm btn-show btn-ajax" title="Ver">--}%
-                        %{--<i class="fa fa-laptop"></i>--}%
-                    %{--</a>--}%
-                    %{--<a href="#" data-id="${empleadoInstance.id}" class="btn btn-success btn-sm btn-edit btn-ajax" title="Editar">--}%
-                        %{--<i class="fa fa-pencil"></i>--}%
-                    %{--</a>--}%
-                    %{--<a href="#" data-id="${empleadoInstance.id}" class="btn btn-danger btn-sm btn-delete btn-ajax" title="Eliminar">--}%
-                        %{--<i class="fa fa-trash-o"></i>--}%
-                    %{--</a>--}%
-                %{--</td>--}%
             </tr>
         </g:each>
         </tbody>
@@ -85,15 +70,15 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">Rol de Pagos</h4>
+                <h4 class="modal-title" id="myModalLabel">Rolo de pago</h4>
             </div>
             <div class="modal-body">
 
                 <div class="row">
-                    <div class="col-xs-5" style="text-align: right">
+                    <div class="col-xs-2 negrilla" style="width: 140px">
                         Año:
                     </div>
-                    <div class="col-xs-3 negrilla">
+                    <div class="col-xs-7 negrilla" style="margin-left: -20px" >
                         <g:select name="anio" class="form-control" from="${cratos.Anio.list()}" id="anio" optionKey="id" optionValue="anio" />
                     </div>
 
@@ -101,10 +86,10 @@
 
 
                 <div class="row">
-                    <div class="col-xs-5" style="text-align: right">
+                    <div class="col-xs-2 negrilla" style="width: 140px">
                         Mes:
                     </div>
-                    <div class="col-xs-5 negrilla">
+                    <div class="col-xs-7 negrilla" style="margin-left: -20px" >
                         <g:select name="mes" class="form-control" from="${mes}" optionKey="id" optionValue="descripcion"/>
                     </div>
 
@@ -112,16 +97,15 @@
 
 
                 <div class="row">
-                    <div class="col-xs-5" style="text-align: right">
+                    <div class="col-xs-2 negrilla" style="width: 140px">
                         Fecha:
                     </div>
-                    <div class="col-xs-5 negrilla">
+                    <div class="col-xs-7 negrilla" style="margin-left: -20px" >
 
-                        <elm:datepicker name="fecha" title="Fecha" id="fecha" class="datepicker form-control"
+                        <elm:datepicker name="fecha" title="Fecha" id="fechaD" class="datepicker form-control fechaDe"
                                         maxDate="new Date()" value="${new java.util.Date()}"/>
                     </div>
                 </div>
-
             </div>
             <div class="modal-footer">
                 <a href="#" id="generar" class="btn btn-success">Generar</a>
@@ -133,6 +117,145 @@
 <elm:pagination total="${empleadoInstanceCount}" params="${params}"/>
 
 <script type="text/javascript">
+
+
+
+
+    function createContextMenu(node) {
+        var $tr = $(node);
+//        var $tr = $(e.target).parent();
+        $tr.addClass("success");
+        id = $tr.data("id");
+        var activo = $tr.data("act");
+
+        var items = {
+            header: {
+                label: "Acciones",
+                header: true
+            }
+        };
+
+        var editar = {
+            label  : 'Editar',
+            icon   : "fa fa-search",
+            action : function (e) {
+                createEditRow(id);
+            }
+        };
+
+        var ver = {
+            label  : 'Ver',
+            icon   : "fa fa-pencil",
+            action : function (e) {
+                $.ajax({
+                    type    : "POST",
+                    url     : "${createLink(action:'show_ajax')}",
+                    data    : {
+                        id : id
+                    },
+                    success : function (msg) {
+                        bootbox.dialog({
+                            title   : "Ver Empleado",
+                            message : msg,
+                            buttons : {
+                                ok : {
+                                    label     : "Aceptar",
+                                    className : "btn-primary",
+                                    callback  : function () {
+                                    }
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        };
+
+        var desactivar = {
+            label  : 'Desactivar',
+            icon   : "fa fa-times",
+            action : function (e) {
+                desactivarUsuario(id, 'D')
+            }
+        };
+
+        var activar = {
+            label  : 'Activar',
+            icon   : "fa fa-check",
+            action : function (e) {
+                desactivarUsuario(id, 'A')
+            }
+        };
+
+        items.ver = ver;
+        items.editar = editar;
+
+       if(activo == 'A'){
+           items.desactivar = desactivar;
+       }else{
+           items.activar = activar;
+       }
+
+
+        return items
+    }
+
+
+    $(function () {
+        $("tr").contextMenu({
+            items  : createContextMenu,
+            onShow : function ($element) {
+                $element.addClass("trHighlight");
+            },
+            onHide : function ($element) {
+                $(".trHighlight").removeClass("trHighlight");
+            }
+        });
+    });
+
+
+    function desactivarUsuario(id, tipo) {
+        bootbox.dialog({
+            title   : "Alerta",
+            message :  (tipo == 'D' ? "<i class='fa fa-warning fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea <b style='color: rgba(112,27,25,0.9)'>desactivar</b> al usuario?</p>" : "<i class='fa fa-warning fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea <b style='color: rgba(83,207,109,0.9)'>activar</b> al usuario?</p>"),
+            buttons : {
+                cancelar : {
+                    label     : "Cancelar",
+                    className : "btn-primary",
+                    callback  : function () {
+                    }
+                },
+                cambiar  : {
+                    label     : "<i class='fa fa-refresh'></i> Aceptar",
+                    className : "btn-success",
+                    callback  : function () {
+                        openLoader("Desactivando...");
+                        $.ajax({
+                            type    : "POST",
+                            url     : '${createLink(controller: 'empleado', action:'cambiarEstado_ajax')}',
+                            data    : {
+                                id : id,
+                                tipo: tipo
+                            },
+                            success : function (msg) {
+                                closeLoader();
+                                var parts = msg.split("_");
+                                if (parts[0] == "OK") {
+                                    log(parts[1], "success");
+                                    setTimeout(function () {
+                                        location.reload(true);
+                                    }, 800);
+                                } else {
+                                    log("Error al cambiar el estado del empleado","error");
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        });
+    }
+
     var id = null;
     function submitForm() {
         var $form = $("#frmEmpleado");
@@ -161,8 +284,7 @@
     function deleteRow(itemId) {
         bootbox.dialog({
             title   : "Alerta",
-            message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>" +
-                "¿Está seguro que desea eliminar el Empleado seleccionado? Esta acción no se puede deshacer.</p>",
+            message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea eliminar el Empleado seleccionado? Esta acción no se puede deshacer.</p>",
             buttons : {
                 cancelar : {
                     label     : "Cancelar",
@@ -193,14 +315,16 @@
             }
         });
     }
-
     function createEditRow(id) {
         var title = id ? "Editar" : "Crear";
-        var data = id ? { id : id } : {};
+//        var data = id ? { id : id } : {};
         $.ajax({
             type    : "POST",
             url     : "${createLink(action:'form_ajax')}",
-            data    : data,
+            data    : {
+                id: id,
+                tipo : 1
+            },
             success : function (msg) {
                 var b = bootbox.dialog({
                     id      : "dlgCreateEdit",
@@ -238,17 +362,13 @@
         });
 
         $("#generar").click(function(){
-            bootbox.confirm("Está a punto de generar el rol del pago para el mes de <span style='color:blue'>"+
-                    $("#mes :selected").text()+" </span> del año <span style='color:blue'>"+
-                    $("#anio :selected").text()+".</span><br><br>Si es correcto, presione Aceptar para generar el rol",function(result){
+            bootbox.confirm("Está a punto de generar el rol del pago para el mes de <span style='color:red'>"+$("#mes :selected").text()+" </span> en el año : <span style='color:red'>"+$("#anio :selected").text()+"</span>. Estos datos son correctos?",function(result){
                 if(result){
                     openLoader();
                     $.ajax({
                         type    : "POST",
-                        url     : "${g.createLink(controller:'rubro', action:'generarRol')}",
-                        data    : "mes="+$("#mes").val()+
-                            "&anio="+$("#anio").val() +
-                            "&fecha="+$("#fecha_input").val(),
+                        url     : "${g.createLink(controller: 'rubro',action: 'generarRol')}",
+                        data    : "mes="+$("#mes").val()+"&periodo="+$("#periodos").val(),
                         success : function (msg) {
                             if(msg=="ok"){
                                 location.href="${g.createLink(controller: 'rubro',action: 'verRol')}/?mes="+$("#mes").val()+"&periodo="+$("#periodos").val()
@@ -299,6 +419,8 @@
             var id = $(this).data("id");
             deleteRow(id);
         });
+
+
 
     });
 </script>

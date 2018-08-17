@@ -69,11 +69,9 @@
 <g:set var="iconEmpr" value="fa fa-building-o"/>
 
 <ul class="nav nav-tabs">
-    <li class="active"><a href="#empresa" data-toggle="tab">Parámetros</a></li>
+    <li class="active"><a href="#empresa" data-toggle="tab">Generales</a></li>
     <li><a href="#nomina" data-toggle="tab">Nómina</a></li>
 </ul>
-
-
 
 
 <div class="tab-content ui-corner-bottom">
@@ -238,19 +236,19 @@
                         <p>Se de be crear un "Sin Marca" para aquellos bienes que no tienen marca</p>
                     </div>
                 </li>
-                <li>
-                    <i class="fa-li ${iconEmpr}"></i>
-                    <span id="rolPagos">
-                        <g:link controller="rolPagos" action="list">Rol de Pagos</g:link>
+                %{--<li>--}%
+                    %{--<i class="fa-li ${iconEmpr}"></i>--}%
+                    %{--<span id="rolPagos">--}%
+                        %{--<g:link controller="rolPagos" action="list">Rol de Pagos</g:link>--}%
 
-                    </span>
+                    %{--</span>--}%
 
-                    <div class="descripcion hide">
-                        <h4>Rol de Pagos</h4>
+                    %{--<div class="descripcion hide">--}%
+                        %{--<h4>Rol de Pagos</h4>--}%
 
-                        <p>Rol de Pagos</p>
-                    </div>
-                </li>
+                        %{--<p>Rol de Pagos</p>--}%
+                    %{--</div>--}%
+                %{--</li>--}%
             </ul>
         </div>
 

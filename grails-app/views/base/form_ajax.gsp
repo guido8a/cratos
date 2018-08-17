@@ -29,9 +29,10 @@
                 </label>
 
                 <div class="col-md-6">
-                    <g:field name="fraccionBasica" type="number"
-                             value="${fieldValue(bean: baseInstance, field: 'fraccionBasica')}"
+                    <g:textField name="fraccionBasica"
+                             value="${baseInstance?.fraccionBasica}"
                              class="number form-control  required" required=""/>
+
                 </div>
                 *
             </span>
@@ -44,8 +45,8 @@
                 </label>
 
                 <div class="col-md-6">
-                    <g:field name="excesoHasta" type="number"
-                             value="${fieldValue(bean: baseInstance, field: 'excesoHasta')}"
+                    <g:textField name="excesoHasta"
+                             value="${baseInstance?.excesoHasta}"
                              class="number form-control  required" required=""/>
                 </div>
                 *
@@ -59,8 +60,8 @@
                 </label>
 
                 <div class="col-md-6">
-                    <g:field name="impuestosFraccion" type="number"
-                             value="${fieldValue(bean: baseInstance, field: 'impuestosFraccion')}"
+                    <g:textField name="impuestosFraccion"
+                             value="${baseInstance?.impuestosFraccion}"
                              class="number form-control  required" required=""/>
                 </div>
                 *
@@ -74,8 +75,8 @@
                 </label>
 
                 <div class="col-md-6">
-                    <g:field name="porcentaje" type="number"
-                             value="${fieldValue(bean: baseInstance, field: 'porcentaje')}"
+                    <g:textField name="porcentaje"
+                             value="${baseInstance?.porcentaje}"
                              class="number form-control  required" required=""/>
                 </div>
                 *

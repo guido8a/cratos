@@ -48,15 +48,11 @@
                     <g:each in="${baseInstanceList}" status="i" var="baseInstance">
                         <tr data-id="${baseInstance.id}">
                             
-                            <td>${fieldValue(bean: baseInstance, field: "periodo")}</td>
-                            
-                            <td>${fieldValue(bean: baseInstance, field: "fraccionBasica")}</td>
-                            
-                            <td>${fieldValue(bean: baseInstance, field: "excesoHasta")}</td>
-                            
-                            <td>${fieldValue(bean: baseInstance, field: "impuestosFraccion")}</td>
-                            
-                            <td>${fieldValue(bean: baseInstance, field: "porcentaje")}</td>
+                            <td>${baseInstance?.periodo}</td>
+                            <td><g:formatNumber number="${baseInstance?.fraccionBasica}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
+                            <td><g:formatNumber number="${baseInstance?.excesoHasta}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
+                            <td><g:formatNumber number="${baseInstance?.impuestosFraccion}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
+                            <td>${baseInstance?.porcentaje}</td>
                             
                             <td>
                                 <a href="#" data-id="${baseInstance.id}" class="btn btn-info btn-sm btn-show btn-ajax" title="Ver">

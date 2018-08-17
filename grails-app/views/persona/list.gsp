@@ -194,11 +194,15 @@
 
             function createEditEmpleado(id) {
                 var title = id ? "Editar" : "Crear";
-                var data = id ? { id : id } : {};
+//                var data = id ? { id : id } : {};
                 $.ajax({
                     type    : "POST",
                     url     : "${createLink(controller: 'empleado', action:'form_ajax')}",
-                    data    : data,
+//                    data    : data,
+                    data    : {
+                        id: id,
+                        tipo: 2
+                    },
                     success : function (msg) {
                         var b = bootbox.dialog({
                             id      : "dlgCreateEdit",

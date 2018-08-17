@@ -484,20 +484,20 @@
                                 se ingrese mes a mes.</p>
                             </div>
                         </li>
-                        <li>
-                            <i class="fa-li ${iconNom}"></i>
-                            <span id="cargo">
-                                <g:link controller="cargo" action="list">Cargos</g:link> que puede tener un empleado.
-                            </span>
+                        %{--<li>--}%
+                            %{--<i class="fa-li ${iconNom}"></i>--}%
+                            %{--<span id="cargo">--}%
+                                %{--<g:link controller="cargo" action="list">Cargos</g:link> que puede tener un empleado.--}%
+                            %{--</span>--}%
 
-                            <div class="descripcion hide">
-                                <h4>Cargos de la Empresa</h4>
+                            %{--<div class="descripcion hide">--}%
+                                %{--<h4>Cargos de la Empresa</h4>--}%
 
-                                <p>Cargos que existen en la Empresa.</p>
+                                %{--<p>Cargos que existen en la Empresa.</p>--}%
 
-                                <p>Cada empleado de la Empresa será asociado a un cargo.</p>
-                            </div>
-                        </li>
+                                %{--<p>Cada empleado de la Empresa será asociado a un cargo.</p>--}%
+                            %{--</div>--}%
+                        %{--</li>--}%
                         <li>
                             <i class="fa-li ${iconNom}"></i>
                             <span id="estadoCivil">
@@ -513,7 +513,7 @@
                         <li>
                             <i class="fa-li ${iconNom}"></i>
                             <span id="profesion">
-                                <g:link controller="profesion" action="list">Profesión</g:link> del empelado, o título académico
+                                <g:link controller="profesion" action="list">Profesión</g:link> del empleado, o título académico
                                 principal.
                             </span>
 

@@ -25,7 +25,7 @@
             </div>
 
             <div class="col-md-8">
-                <g:fieldValue bean="${baseInstance}" field="fraccionBasica"/>
+                <td><g:formatNumber number="${baseInstance?.fraccionBasica}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
             </div>
 
         </div>
@@ -38,7 +38,7 @@
             </div>
 
             <div class="col-md-8">
-                <g:fieldValue bean="${baseInstance}" field="excesoHasta"/>
+                <td><g:formatNumber number="${baseInstance?.excesoHasta}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
             </div>
 
         </div>
@@ -51,9 +51,8 @@
             </div>
 
             <div class="col-md-8">
-                <g:fieldValue bean="${baseInstance}" field="impuestosFraccion"/>
+                <td><g:formatNumber number="${baseInstance?.impuestosFraccion}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
             </div>
-
         </div>
     </g:if>
 

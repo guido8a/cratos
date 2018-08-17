@@ -220,16 +220,17 @@ class EmpleadoController extends cratos.seguridad.Shield {
     } //show para cargar con ajax en un dialog
 
     def form_ajax() {
-        def persona = Persona.get(params.id)
-        def empleadoInstance = Empleado.findByPersona(persona)
-//        def empleadoInstance = new Empleado(params)
-//        if (params.id) {
-//            empleadoInstance = Empleado.get(params.id)
-//            if (!empleadoInstance) {
-//                notFound_ajax()
-//                return
-//            }
-//        }
+        def persona
+        def empleadoInstance
+
+        if(params.tipo == '1'){
+            empleadoInstance = Empleado.get(params.id)
+            persona = empleadoInstance.persona
+        }else{
+            persona = Persona.get(params.id)
+            empleadoInstance = Empleado.findByPersona(persona)
+        }
+
         return [empleadoInstance: empleadoInstance, persona: persona]
     } //form para cargar con ajax en un dialog
 
@@ -387,4 +388,28 @@ class EmpleadoController extends cratos.seguridad.Shield {
     protected void notFound_ajax() {
         render "NO_No se encontró Empleado."
     } //notFound para ajax
+
+
+    def cambiarEstado_ajax () {
+        def empleado = Empleado.get(params.id)
+        def texto = ''
+
+        if(params.tipo == 'D'){
+            empleado.estado = 'I'
+            texto = "Empleado desactivado correctamente"
+        }else{
+            empleado.estado = 'A'
+            texto = "Empleado activado correctamente"
+        }
+
+        try{
+            empleado.save(flush: true)
+            render "OK_" + texto
+        }catch (e){
+            println("error al cambiar de estado al empleado " + e)
+            render "no"
+        }
+
+
+    }
 }
