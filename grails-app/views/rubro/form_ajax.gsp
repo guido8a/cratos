@@ -29,7 +29,7 @@
                 </label>
 
                 <div class="col-md-6">
-                    <g:textField name="descripcion" maxlength="63" required="" class="allCaps form-control required"
+                    <g:textField name="descripcion" maxlength="63" required="" class="form-control required"
                                  value="${rubroInstance?.descripcion}"/>
                 </div>
                 *

@@ -73,8 +73,6 @@ class RubroController extends cratos.seguridad.Shield {
         def tiposRubro = TipoRubro.list([sort: "descripcion"])
         def rubros = Rubro.findAllByTipoRubroAndEmpresa(tiposRubro[0], session.empresa)
 
-
-
         [tipos: tipos, tiposRubro: tiposRubro, rubros: rubros]
     }
 
@@ -516,6 +514,7 @@ class RubroController extends cratos.seguridad.Shield {
         if (rubroInstanceList.size() == 0 && params.offset && params.max) {
             params.offset = params.offset - params.max
         }
+        params.sort = 'tipoRubro'
         rubroInstanceList = Rubro.list(params)
         return [rubroInstanceList: rubroInstanceList, rubroInstanceCount: rubroInstanceCount]
     } //list
