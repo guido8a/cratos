@@ -118,7 +118,9 @@
 
 <script type="text/javascript">
 
-
+    $("#btnEditarRol").click(function () {
+       location.href="${createLink(controller: 'rolPagos', action: 'list')}";
+    });
 
 
     function createContextMenu(node) {

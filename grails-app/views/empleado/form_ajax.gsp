@@ -74,9 +74,9 @@
                 </label>
 
                 <div class="col-md-4">
-                    <elm:datepicker id="fechaFin" name="empleado.fechaFin" title="fechaFin" class="datepicker form-control" value="${empleadoInstance?.fechaFin}"/>
+                    <elm:datepicker id="fechaFin"  name="empleado.fechaFin" title="fechaFin" class="ffin datepicker form-control" value="${empleadoInstance?.fechaFin}"/>
                 </div>
-
+                <a href="#" class="btn btn-info" id="borrarFecha" title="Borrar Fecha"><i class="fa fa-eraser"></i></a>
             </span>
         </div>
 
@@ -158,8 +158,6 @@
             </span>
         </div>
 
-
-
         <div class="form-group keeptogether ${hasErrors(bean: empleadoInstance, field: 'cargo', 'error')} ">
             <span class="grupo">
                 <label for="empleado.cargo" class="col-md-4 control-label text-info">
@@ -216,63 +214,12 @@
 </g:form>
 
 <script type="text/javascript">
-    %{--var validator = $("#frmEmpleado").validate({--}%
-    %{--errorClass     : "help-block",--}%
-    %{--errorPlacement : function (error, element) {--}%
-    %{--if (element.parent().hasClass("input-group")) {--}%
-    %{--error.insertAfter(element.parent());--}%
-    %{--} else {--}%
-    %{--error.insertAfter(element);--}%
-    %{--}--}%
-    %{--element.parents(".grupo").addClass('has-error');--}%
-    %{--},--}%
-    %{--success        : function (label) {--}%
-    %{--label.parents(".grupo").removeClass('has-error');--}%
-    %{--},--}%
-    %{--rules          : {--}%
-    %{--"persona.cedula" : {--}%
-    %{--remote : {--}%
-    %{--url  : "${createLink(action: 'validarCedula_ajax')}",--}%
-    %{--type : "post",--}%
-    %{--data : {--}%
-    %{--id : "${empleadoInstance.id}"--}%
-    %{--}--}%
-    %{--}--}%
-    %{--}--}%
-    %{--},--}%
-    %{--messages       : {--}%
-    %{--"persona.cedula" : {--}%
-    %{--remote : "Cédula ya ingresada"--}%
-    %{--}--}%
-    %{--}--}%
-    %{--});--}%
 
-    %{--$("#persona\\.cedula").blur(function () {--}%
-    %{--var ci = $(this).val();--}%
-    %{--setTimeout(function () {--}%
-    %{--if (validator.element("#persona\\.cedula")) {--}%
-    %{--$.ajax({--}%
-    %{--type     : "POST",--}%
-    %{--dataType : "json",--}%
-    %{--url      : "${createLink(action: 'loadPersona')}",--}%
-    %{--data     : {--}%
-    %{--ci : ci--}%
-    %{--},--}%
-    %{--success  : function (msg) {--}%
-    %{--if ($.isEmptyObject(msg)) {--}%
-    %{--$(".persona").not("#persona\\.cedula").val("");--}%
-    %{--} else {--}%
-    %{--$.each(msg, function (i, obj) {--}%
-    %{--$("#persona\\." + i).val(obj);--}%
-    %{--});--}%
-    %{--$("#empleado\\.porcentajeComision").focus();--}%
-    %{--}--}%
-    %{--}--}%
-    %{--});--}%
-    %{--}--}%
-    %{--}, 500);--}%
 
-    %{--});--}%
+    $("#borrarFecha").click(function () {
+        $(".ffin").val('')
+    });
+
 
     $(".form-control").keydown(function (ev) {
         if (ev.keyCode == 13) {

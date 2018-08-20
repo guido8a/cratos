@@ -103,4 +103,54 @@ class RolPagosController extends cratos.seguridad.Shield {
         render texto
 
     } //delete
+
+
+    def cambiarEstado_ajax() {
+        def rolPagos = RolPagos.get(params.id)
+
+        if(rolPagos.estado == 'N'){
+            rolPagos.estado = 'A'
+        }else{
+            rolPagos.estado = 'N'
+        }
+
+        try{
+            rolPagos.save(flush: true)
+            render "ok"
+        }catch (e){
+            println("error al cambiar el estado del rolPagos " + e)
+            render "no"
+        }
+    }
+
+    def rubros_ajax () {
+        def empresa = Empresa.get(session.empresa.id)
+        def rolPago = RolPagos.get(params.id)
+
+        def detalles = DetallePago.findAllByRolPagos(rolPago)
+        def rubros = detalles.rubroTipoContrato.rubro
+
+        return[rubros: rubros]
+    }
+
+    def rubros () {
+        println("params " + params)
+    }
+
+    def empleados () {
+        println("params " + params)
+        def rolPagos = RolPagos.get(params.id)
+        return [rol: rolPagos.id]
+    }
+
+    def tablaEmpleados_ajax () {
+        def rolPagos = RolPagos.get(params.id)
+        def detallePagos = DetallePago.findAllByRolPagos(rolPagos)
+
+        def personas = detallePagos.empleado
+
+        return [detalles: detallePagos]
+    }
+
+
 } //fin controller

@@ -551,24 +551,21 @@ class RubroController extends cratos.seguridad.Shield {
 //        println("params:" + params)
 
         //original
-        def rubroInstance = new Rubro()
+        def rubroInstance
         if (params.id) {
             rubroInstance = Rubro.get(params.id)
-            rubroInstance.properties = params
-            if (!rubroInstance) {
-                notFound_ajax()
-                return
-            }
         } else {
-
             rubroInstance = new Rubro()
-            rubroInstance.properties = params
-//            rubroInstance.estado = '1'
-//            rubroInstance.empresa = session.empresa
-
-
         } //update
 
+        rubroInstance.tipoRubro = TipoRubro.get(params."tipoRubro.id")
+        rubroInstance.descripcion = params.descripcion
+        rubroInstance.decimo = params.decimo
+        rubroInstance.iess = params.iess
+        rubroInstance.gravable = params.gravable
+        rubroInstance.editable = params.editable
+        rubroInstance.porcentaje = params.porcentaje.toDouble()
+        rubroInstance.valor = params.valor.toDouble()
 
         if (!rubroInstance.save(flush: true)) {
             def msg = "NO_No se pudo ${params.id ? 'actualizar' : 'crear'} Rubro."
