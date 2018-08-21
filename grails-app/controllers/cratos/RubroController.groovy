@@ -230,8 +230,7 @@ class RubroController extends cratos.seguridad.Shield {
         def total = 0
 
         empleados.each { emp ->
-            println "_________________________________________________"
-            println "emp " + emp.persona.nombre + "  contra " + emp.tipoContrato.descripcion
+            println "Empl: ${emp.persona.nombre} contrato: ${emp.tipoContrato.descripcion}"
             def sueldo = emp.sueldo
             if (emp.fechaInicio > fcin) dias = (finDeMes - emp.fechaInicio).toInteger()
 //            print "...1"

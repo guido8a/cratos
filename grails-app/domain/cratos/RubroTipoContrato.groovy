@@ -10,6 +10,7 @@ class RubroTipoContrato implements Serializable {
     TipoContrato tipoContrato
     Rubro rubro
     String observaciones
+    String descripcion
 //    Empresa empresa
     static mapping = {
         table 'rbtc'
@@ -28,6 +29,7 @@ class RubroTipoContrato implements Serializable {
             tipoContrato column: 'tpct__id'
             rubro column: 'rbro__id'
             observaciones column: 'rbtcobsr'
+            descripcion column: 'rbtcdscr'
 //            empresa column: 'empr__id'
         }
     }
@@ -41,6 +43,7 @@ class RubroTipoContrato implements Serializable {
         gravable(size: 1..1, blank: false, nullable: false, attributes: [title: 'grabable'])
         valor(blank: true, nullable: true, attributes: [title: 'valor'])
         observaciones(blank: true, nullable: true, size: 1..127, attributes: [title: 'observaciones'])
+        descripcion(blank: false, nullable: false, size: 1..127, attributes: [title: 'descripción'])
 //        empresa(nullable: false,blank:false)
     }
 }

@@ -26,9 +26,21 @@
                     Rubro
                 </label>
                 <div class="col-md-6">
-                    <g:select id="rubro" name="rubro.id" from="${cratos.Rubro.list()}" optionKey="id" required="" value="${rubroTipoContratoInstance?.rubro?.id}" class="many-to-one form-control"/>
+                    <g:select id="rubro" name="rubro.id" from="${cratos.Rubro.list()}" optionKey="id" required=""
+                              optionValue="descripcion" value="${rubroTipoContratoInstance?.rubro?.id}" class="many-to-one form-control"/>
                 </div>
-                
+            </span>
+        </div>
+
+        <div class="form-group ${hasErrors(bean: rubroTipoContratoInstance, field: 'rubro', 'error')} ">
+            <span class="grupo">
+                <label for="descripcion" class="col-md-3 control-label text-info">
+                    Descripćión
+                </label>
+                <div class="col-md-6">
+                    <g:textField name="descripcion" maxlength="127" class="form-control"
+                                 value="${rubroTipoContratoInstance?.descripcion}"/>
+                </div>
             </span>
         </div>
 
@@ -111,7 +123,7 @@
                     Observaciones
                 </label>
                 <div class="col-md-6">
-                    <g:textField name="observaciones" maxlength="127" class="allCaps form-control" value="${rubroTipoContratoInstance?.observaciones}"/>
+                    <g:textField name="observaciones" maxlength="127" class="form-control" value="${rubroTipoContratoInstance?.observaciones}"/>
                 </div>
             </span>
         </div>
