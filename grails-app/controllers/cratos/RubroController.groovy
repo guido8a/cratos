@@ -193,24 +193,26 @@ class RubroController extends cratos.seguridad.Shield {
         def finDeMes = utilitarioService.getLastDayOfMonth(fcin)
         def dias = finDeMes - fcin + 1
         def rol = RolPagos.findByMessAndAnioAndEmpresa(mes, anio, empresa)
-        println "existe rol " + rol
+        def total = 0
         def msg = ""
 
+        println "existe rol " + rol
         if (!rol) {
             rol = new RolPagos()
-            rol.estado = "N"
-            rol.fecha = new Date().parse("dd-MM-yyyy", params.fecha)
-            rol.mess = mes
-            rol.pagado = 0
-            rol.anio = anio
-            rol.empresa = session.empresa
-            if (!rol.save(flush: true)) {
-                println "error save rol " + rol.errors
-            }
             flash.message = "Rol de pagos creado correctamente"
         } else {
             flash.message = "Rol de pagos actualizado correctamente"
         }
+        rol.estado = "N"
+        rol.fecha = new Date().parse("dd-MM-yyyy", params.fecha)
+        rol.mess = mes
+        rol.pagado = 0
+        rol.anio = anio
+        rol.empresa = session.empresa
+        if (!rol.save(flush: true)) {
+            println "error save rol " + rol.errors
+        }
+
         flash.tipo = "success"
         println "empr: ${empresa.id}, fcin: ${fcin}, fm: ${finDeMes}"
 
@@ -229,7 +231,7 @@ class RubroController extends cratos.seguridad.Shield {
         }
         println "empleados ${empleados.persona.nombre}"
 
-        def total = 0
+
 
         /* TODO: Para el contrato por horas haer una pantalla para el registro de las horas
         * por ahora se usa 10 horas */
@@ -239,78 +241,82 @@ class RubroController extends cratos.seguridad.Shield {
             def rbrotpct = RubroTipoContrato.findByRubroAndTipoContrato(sldo, emp.tipoContrato)
             def sueldo = emp.sueldo
 
-            println "rubro: ${rbrotpct}, ${emp.tipoContrato.descripcion}"
-            if(!rbrotpct) {
+//            println "rubro: ${rbrotpct}, ${emp.tipoContrato.descripcion}"
+            if (!rbrotpct) {
                 flash.message = "Error: No se ha definido sueldo para el empleado ${emp.persona}"
                 flash.tipo = "crit"
             }
 
-            if(emp.tipoContrato.descripcion == 'Por Horas'){
-                print "...hhhh: ${rbrotpct.valor}"
+            if (emp.tipoContrato.descripcion == 'Por Horas') {
+//                print "...hhhh: ${rbrotpct.valor}"
                 sueldo = 10 * rbrotpct.valor
             } else {
                 if (emp.fechaInicio > fcin) dias = (finDeMes - emp.fechaInicio).toInteger()
-            print "...1"
-                if(emp.fechaFin) {
+//                print "...1"
+                if (emp.fechaFin) {
                     if (emp.fechaFin < finDeMes) dias = dias - (finDeMes - emp.fechaFin).toInteger()
                 }
-            print "...2"
+                if ((emp.fechaInicio <= fcin) && (emp.fechaFin ?: new Date() > finDeMes))
+                    dias = (finDeMes - fcin + 1).toInteger()
+
+//                print "...2 dias: $dias, total: ${(finDeMes - fcin + 1)}"
                 sueldo = (emp.sueldo * dias / (finDeMes - fcin + 1).toInteger()).toDouble().round(2)
+                sueldo = Math.round(sueldo * 100)/100
             }
-            println "sueldo: $sueldo"
+//            println "sueldo: $sueldo"
 
             def detalle = DetallePago.find("from DetallePago where rolPagos = ${rol.id} and " +
                     "rubroTipoContrato = ${rbrotpct.id} and empleado = ${emp.id}")
-            println "detalle: ${detalle?.id}"
+//            println "detalle: ${detalle?.id}"
             if (!detalle) {
+//                println "crea dtpg"
                 detalle = new DetallePago()
-            } else {
-                println "edita detalle a sueldo: ${sueldo.toDouble().round(2)}"
-                detalle.empleado = emp
-                detalle.rolPagos = rol
-                detalle.rubroTipoContrato = rbrotpct
-                detalle.valor = sueldo.toDouble().round(2)
-                if (!detalle.save(flush: true))
-                    println "error save detalle pago sueldo " + detalle.errors
             }
+//            println "edita dtpg ---- "
+            detalle.empleado = emp
+            detalle.rolPagos = rol
+            detalle.rubroTipoContrato = rbrotpct
+            detalle.valor = sueldo
+            if (!detalle.save(flush: true))
+                println "error save detalle pago sueldo " + detalle.errors
             total += sueldo
             println "total $total, sueldo $sueldo"
 
             def rubros = RubroTipoContrato.findAllByTipoContratoAndRubroNotInList(emp.tipoContrato, [sldo])
-            println "rubros ==> ${rubros.rubro.descripcion} valor: ${rubros.rubro.valor} pc: ${rubros.rubro.porcentaje}"
+//            println "rubros ==> ${rubros.rubro.descripcion} valor: ${rubros.rubro.valor} pc: ${rubros.rubro.porcentaje}"
             rubros.each { r ->
                 detalle = DetallePago.find("from DetallePago where rubroTipoContrato = ${r.id} and " +
                         "rolPagos = ${rol.id} and empleado = ${emp.id}")
 
-                println "detalle rubros: $detalle"
+//                println "detalle rubros: $detalle"
                 if (!detalle) {
                     detalle = new DetallePago()
-                } else {
-                    detalle.empleado = emp
-                    detalle.rolPagos = rol
-                    detalle.rubroTipoContrato = r
-                    def valor = 0
-                    def signo = -1
-                    if (r.rubro.tipoRubro.codigo == "I")
-                        signo = 1
-                    if (r.valor != 0) {
-                        valor = r.valor * signo
-                    } else {
-                        valor = sueldo * (r.porcentaje / 100) * signo
-                    }
-                    detalle.valor = valor.toDouble().round(2)
-                    if (!detalle.save(flush: true))
-                        println "error save detalle pago " + detalle.errors
-                    total += valor
                 }
-
+                detalle.empleado = emp
+                detalle.rolPagos = rol
+                detalle.rubroTipoContrato = r
+                def valor = 0
+                def signo = -1
+                if (r.rubro.tipoRubro.codigo == "I")
+                    signo = 1
+                if (r.valor != 0) {
+                    valor = r.valor * signo
+                } else {
+                    valor = sueldo * (r.porcentaje / 100) * signo
+                }
+                valor = Math.round(valor * 100)/100
+                detalle.valor = valor
+                if (!detalle.save(flush: true))
+                    println "error save detalle pago " + detalle.errors
+                total += valor
             }
 
         }
 
-        rol.pagado = total.toDouble().round(2)
+        rol.pagado = total
         rol.empresa = session.empresa
         rol.save(flush: true)
+        println "total nómina: $total"
 //        println "done"
         render "ok"
     }
