@@ -44,7 +44,16 @@ class RubroTipoContratoController extends cratos.seguridad.Shield {
             rubroTipoContratoInstance = new RubroTipoContrato()
         }
 
-        rubroTipoContratoInstance.properties = params
+        rubroTipoContratoInstance.tipoContrato = TipoContrato.get(params."tipoContrato.id")
+        rubroTipoContratoInstance.rubro = Rubro.get(params."rubro.id")
+        rubroTipoContratoInstance.descripcion = params.descripcion
+        rubroTipoContratoInstance.editable = params.editable
+        rubroTipoContratoInstance.decimo = params.decimo
+        rubroTipoContratoInstance.iess = params.iess
+        rubroTipoContratoInstance.gravable = params.gravable
+        rubroTipoContratoInstance.valor = params.valor.toDouble()
+        rubroTipoContratoInstance.porcentaje = params.porcentaje.toDouble()
+        rubroTipoContratoInstance.observaciones = params.observaciones
 
         try{
             rubroTipoContratoInstance.save(flush: true)

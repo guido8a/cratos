@@ -35,6 +35,8 @@
 
             <g:sortableColumn property="descripcion" title="Descripcion"/>
 
+            <th>Valor</th>
+
             <g:sortableColumn property="porcentaje" title="Porcentaje"/>
 
             <g:sortableColumn property="editable" title="Editable"/>
@@ -51,10 +53,9 @@
             <tr data-id="${rubroInstance.id}">
 
                 <td>${fieldValue(bean: rubroInstance, field: "tipoRubro")}</td>
-
                 <td>${fieldValue(bean: rubroInstance, field: "descripcion")}</td>
-
-                <td>${fieldValue(bean: rubroInstance, field: "porcentaje")}</td>
+                <td><g:formatNumber number="${rubroInstance?.valor}" format="##,##0" maxFractionDigits="2" minFractionDigits="2" locale="en_US"/></td>
+                <td><g:formatNumber number="${rubroInstance?.porcentaje}" format="##,##0" maxFractionDigits="2" minFractionDigits="2" locale="en_US"/></td>
 
                 <g:if test="${rubroInstance?.editable == '1'}">
                   <td>${'SI'}</td>
