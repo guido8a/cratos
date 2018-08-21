@@ -219,7 +219,10 @@
     function desactivarUsuario(id, tipo) {
         bootbox.dialog({
             title   : "Alerta",
-            message :  (tipo == 'D' ? "<i class='fa fa-warning fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea <b style='color: rgba(112,27,25,0.9)'>desactivar</b> al usuario?</p>" : "<i class='fa fa-warning fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea <b style='color: rgba(83,207,109,0.9)'>activar</b> al usuario?</p>"),
+            message :  (tipo == 'D' ? "<i class='fa fa-warning fa-3x pull-left text-danger text-shadow'></i><p>" +
+            "¿Está seguro que desea <b style='color: rgba(112,27,25,0.9)'>desactivar</b> al usuario?</p>" :
+                    "<i class='fa fa-warning fa-3x pull-left text-danger text-shadow'></i><p>" +
+                    "¿Está seguro que desea <b style='color: rgba(83,207,109,0.9)'>activar</b> al usuario?</p>"),
             buttons : {
                 cancelar : {
                     label     : "Cancelar",
@@ -283,6 +286,7 @@
             return false;
         } //else
     }
+
     function deleteRow(itemId) {
         bootbox.dialog({
             title   : "Alerta",
@@ -318,6 +322,7 @@
             }
         });
     }
+
     function createEditRow(id) {
         var title = id ? "Editar" : "Crear";
 //        var data = id ? { id : id } : {};
@@ -367,7 +372,8 @@
         $("#generar").click(function(){
             bootbox.confirm("Está a punto de generar el rol del pago para el mes de <span style='color:blue'>"+
                     $("#mes :selected").text()+" </span> del año <span style='color:blue'>"+
-                    $("#anio :selected").text()+".</span><br><br>Si es correcto, presione Aceptar para generar el rol",function(result){
+                    $("#anio :selected").text()+".</span><br><br>Si es correcto, presione Aceptar para generar el rol",
+                    function(result){
                 if(result){
                     openLoader();
                     $.ajax({

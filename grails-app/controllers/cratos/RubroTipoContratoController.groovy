@@ -12,6 +12,7 @@ class RubroTipoContratoController extends cratos.seguridad.Shield {
 
     def list() {
         params.sort = 'tipoContrato'
+        params.max = 15
         [rubroTipoContratoInstanceList: RubroTipoContrato.list(params), params: params,
          rubroTipoContratoInstanceCount: RubroTipoContrato.count() ]
     } //list
