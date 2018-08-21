@@ -207,11 +207,13 @@ class RubroController extends cratos.seguridad.Shield {
             if (!rol.save(flush: true)) {
                 println "error save rol " + rol.errors
             }
+            flash.message = "Rol de pagos creado correctamente"
         } else {
-            rol = RolPagos.findByEmpresaAndAnioAndMess(empresa, anio, mes)
+            flash.message = "Rol de pagos actualizado correctamente"
         }
-
+        flash.tipo = "success"
         println "empr: ${empresa.id}, fcin: ${fcin}, fm: ${finDeMes}"
+
         def empleados = Empleado.withCriteria {
             persona {
                 eq("empresa", empresa)
@@ -229,24 +231,44 @@ class RubroController extends cratos.seguridad.Shield {
 
         def total = 0
 
+        /* TODO: Para el contrato por horas haer una pantalla para el registro de las horas
+        * por ahora se usa 10 horas */
         empleados.each { emp ->
-            println "Empl: ${emp.persona.nombre} contrato: ${emp.tipoContrato.descripcion}"
+            println "Empl: ${emp.persona.nombre} --> contrato: ${emp.tipoContrato.descripcion}"
+            def sldo = Rubro.findByCodigo('SLDO')
+            def rbrotpct = RubroTipoContrato.findByRubroAndTipoContrato(sldo, emp.tipoContrato)
             def sueldo = emp.sueldo
-            if (emp.fechaInicio > fcin) dias = (finDeMes - emp.fechaInicio).toInteger()
-//            print "...1"
-            if(emp.fechaFin) {
-                if (emp.fechaFin < finDeMes) dias = dias - (finDeMes - emp.fechaFin).toInteger()
+
+            println "rubro: ${rbrotpct}, ${emp.tipoContrato.descripcion}"
+            if(!rbrotpct) {
+                flash.message = "Error: No se ha definido sueldo para el empleado ${emp.persona}"
+                flash.tipo = "crit"
             }
-//            print "...2"
-            sueldo = (emp.sueldo * dias / (finDeMes - fcin + 1).toInteger()).toDouble().round(2)
-            def detalle = DetallePago.findAll("from DetallePago where rolPagos = ${rol.id} and " +
-                    "rubroTipoContrato is null and empleado = ${emp.id}")
-            println "detalle ?? ${detalle?.size()}"
-            if (detalle?.size() == 0) {
+
+            if(emp.tipoContrato.descripcion == 'Por Horas'){
+                print "...hhhh: ${rbrotpct.valor}"
+                sueldo = 10 * rbrotpct.valor
+            } else {
+                if (emp.fechaInicio > fcin) dias = (finDeMes - emp.fechaInicio).toInteger()
+            print "...1"
+                if(emp.fechaFin) {
+                    if (emp.fechaFin < finDeMes) dias = dias - (finDeMes - emp.fechaFin).toInteger()
+                }
+            print "...2"
+                sueldo = (emp.sueldo * dias / (finDeMes - fcin + 1).toInteger()).toDouble().round(2)
+            }
+            println "sueldo: $sueldo"
+
+            def detalle = DetallePago.find("from DetallePago where rolPagos = ${rol.id} and " +
+                    "rubroTipoContrato = ${rbrotpct.id} and empleado = ${emp.id}")
+            println "detalle: ${detalle?.id}"
+            if (!detalle) {
                 detalle = new DetallePago()
+            } else {
+                println "edita detalle a sueldo: ${sueldo.toDouble().round(2)}"
                 detalle.empleado = emp
                 detalle.rolPagos = rol
-                detalle.rubroTipoContrato = null
+                detalle.rubroTipoContrato = rbrotpct
                 detalle.valor = sueldo.toDouble().round(2)
                 if (!detalle.save(flush: true))
                     println "error save detalle pago sueldo " + detalle.errors
@@ -254,16 +276,16 @@ class RubroController extends cratos.seguridad.Shield {
             total += sueldo
             println "total $total, sueldo $sueldo"
 
-            def rubros = RubroTipoContrato.findAllByTipoContratoAndEmpresa(emp.tipoContrato, session.empresa)
+            def rubros = RubroTipoContrato.findAllByTipoContratoAndRubroNotInList(emp.tipoContrato, [sldo])
             println "rubros ==> ${rubros.rubro.descripcion} valor: ${rubros.rubro.valor} pc: ${rubros.rubro.porcentaje}"
-            def rubrosEsp = RubroTipoContrato.findAllByTipoContrato(emp.tipoContrato)
             rubros.each { r ->
-                detalle = DetallePago.findAll("from DetallePago where rubroTipoContrato = ${r.id} and " +
+                detalle = DetallePago.find("from DetallePago where rubroTipoContrato = ${r.id} and " +
                         "rolPagos = ${rol.id} and empleado = ${emp.id}")
 
                 println "detalle rubros: $detalle"
-                if (detalle.size() == 0) {
+                if (!detalle) {
                     detalle = new DetallePago()
+                } else {
                     detalle.empleado = emp
                     detalle.rolPagos = rol
                     detalle.rubroTipoContrato = r
@@ -289,11 +311,8 @@ class RubroController extends cratos.seguridad.Shield {
         rol.pagado = total.toDouble().round(2)
         rol.empresa = session.empresa
         rol.save(flush: true)
-        println "done"
+//        println "done"
         render "ok"
-
-        msg = "Error: Ya ha sido generado un rol de pagos para el mes seleccionado"
-        render msg
     }
 
     def verRol() {

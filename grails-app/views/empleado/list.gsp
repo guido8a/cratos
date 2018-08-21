@@ -383,11 +383,7 @@
                             "&anio="+$("#anio").val() +
                             "&fecha="+$("#fecha_input").val(),
                         success : function (msg) {
-                            if(msg=="ok"){
-                                location.href="${g.createLink(controller: 'rubro',action: 'verRol')}/?mes="+$("#mes").val()+"&periodo="+$("#periodos").val()
-                            }else{
-                                alert(msg)
-                            }
+                            location.reload()
                         }
                     });
                 }
