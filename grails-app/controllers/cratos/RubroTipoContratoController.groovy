@@ -11,7 +11,9 @@ class RubroTipoContratoController extends cratos.seguridad.Shield {
     } //index
 
     def list() {
-        [rubroTipoContratoInstanceList: RubroTipoContrato.list(params), params: params, rubroTipoContratoInstanceCount: RubroTipoContrato.count() ]
+        params.sort = 'tipoContrato'
+        [rubroTipoContratoInstanceList: RubroTipoContrato.list(params), params: params,
+         rubroTipoContratoInstanceCount: RubroTipoContrato.count() ]
     } //list
 
     def form_ajax() {

@@ -23,11 +23,14 @@
             <thead>
                 <tr>
                     <th>Tipo de Contrato</th>
+                    <th>Tipo</th>
                     <th>Rubro</th>
+                    <th>Valor</th>
                     <th>Porcentaje</th>
                     <th>Editable</th>
                     <th>Décimo</th>
-                    <th>Iess</th>
+                    <th>IESS</th>
+                    <th>Gravable</th>
                 </tr>
             </thead>
             <tbody>
@@ -35,17 +38,20 @@
                     <tr data-id="${rubroTipoContratoInstance.id}">
                         
                         <td>${rubroTipoContratoInstance?.tipoContrato?.descripcion}</td>
-                        
-                        <td>${fieldValue(bean: rubroTipoContratoInstance, field: "rubro")}</td>
-                        
+                        <td>${rubroTipoContratoInstance?.rubro.tipoRubro.descripcion}</td>
+
+                        <td>${fieldValue(bean: rubroTipoContratoInstance, field: "descripcion")}</td>
+
+                        <td>${fieldValue(bean: rubroTipoContratoInstance, field: "valor")}</td>
                         <td>${fieldValue(bean: rubroTipoContratoInstance, field: "porcentaje")}</td>
-                        
+
                         <td>${rubroTipoContratoInstance?.editable == '1' ? 'SI' : 'NO'}</td>
                         
                         <td>${rubroTipoContratoInstance?.decimo == '1' ? 'SI' : 'NO'}</td>
                         
                         <td>${rubroTipoContratoInstance?.iess == '1' ? 'SI' : 'NO'}</td>
-                        
+                        <td>${rubroTipoContratoInstance?.gravable == '1' ? 'SI' : 'NO'}</td>
+
                     </tr>
                 </g:each>
             </tbody>
