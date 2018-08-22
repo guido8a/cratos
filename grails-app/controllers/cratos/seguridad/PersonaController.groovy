@@ -137,6 +137,23 @@ class PersonaController extends cratos.seguridad.Shield {
         }
     }
 
+    def validarLogin_ajax() {
+        params.login = params.login.toString().trim()
+        if (params.id) {
+            def prsn = Persona.get(params.id)
+            if (prsn.login == params.login) {
+                render true
+                return
+            } else {
+                render Persona.countByLogin(params.login) == 0
+                return
+            }
+        } else {
+            render Persona.countByLogin(params.login) == 0
+            return
+        }
+    }
+
     def reset_pass_ajax() {
         def prsn = Persona.get(params.id)
         prsn.password = prsn.cedula.encodeAsMD5()
@@ -385,11 +402,6 @@ class PersonaController extends cratos.seguridad.Shield {
 
     def save_ajax() {
 
-//        params.each { k, v ->
-//            if (v != "date.struct" && v instanceof java.lang.String) {
-//                params[k] = v.toUpperCase()
-//            }
-//        }
 
 
         def personaInstance = new Persona()

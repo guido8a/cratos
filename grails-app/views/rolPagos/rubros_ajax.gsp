@@ -5,4 +5,4 @@
   Time: 12:16
 --%>
 
-<g:select name="rubro.name" from="${rubros}" id="rubroSel" class="form-control" optionValue="descripcion" optionKey="id"/>
+<g:select name="rubro.name" from="${rubros}" id="rubroSel" class="form-control" optionValue="${{it.descripcion + "  - TIPO: " + it?.tipoContrato?.descripcion}}" optionKey="id"/>

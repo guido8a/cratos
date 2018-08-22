@@ -127,29 +127,89 @@ class RolPagosController extends cratos.seguridad.Shield {
         def empresa = Empresa.get(session.empresa.id)
         def rolPago = RolPagos.get(params.id)
 
-        def detalles = DetallePago.findAllByRolPagos(rolPago)
-        def rubros = detalles.rubroTipoContrato.rubro
+       def detalles = DetallePago.withCriteria {
 
+            eq("rolPagos", rolPago)
+
+            rubroTipoContrato{
+
+                tipoContrato{
+                    eq("empresa",empresa)
+                }
+            }
+        }
+
+
+        def rubros = detalles.rubroTipoContrato.unique().sort{it.descripcion}
         return[rubros: rubros]
     }
 
     def rubros () {
-        println("params " + params)
+        def rubroTipoContrato = RubroTipoContrato.get(params.rubro)
+        def rolPago = RolPagos.get(params.id)
+        return[rubro: rubroTipoContrato, rol: rolPago]
     }
 
     def empleados () {
-        println("params " + params)
         def rolPagos = RolPagos.get(params.id)
         return [rol: rolPagos.id]
     }
 
     def tablaEmpleados_ajax () {
         def rolPagos = RolPagos.get(params.id)
-        def detallePagos = DetallePago.findAllByRolPagos(rolPagos)
+        def detallePagos = DetallePago.findAllByRolPagos(rolPagos).sort{it.empleado.persona.id}
 
-        def personas = detallePagos.empleado
+        def ingresos = 0
+        def descuentos = 0
+        def arreglo = [:]
+        def arregloDes = [:]
 
-        return [detalles: detallePagos]
+
+        def personas = detallePagos.empleado.unique().sort{it.persona.id}
+
+        personas.each { p->
+
+            ingresos = 0
+            descuentos = 0
+
+            detallePagos.each{ f->
+
+                if(p.id == f.empleado.id){
+
+                    if(f.rubroTipoContrato.rubro.tipoRubro.codigo == 'I'){
+                        ingresos += f.valor
+                    }
+
+                    if(f.rubroTipoContrato.rubro.tipoRubro.codigo == 'D'){
+                        descuentos += f.valor
+                    }
+                }
+                arreglo.put(p,ingresos)
+                arregloDes.put(p,descuentos)
+            }
+        }
+
+//        println("arreglo " + arreglo)
+//        println("des " + arregloDes)
+
+        return [detalles: detallePagos, ingresos: arreglo, descuentos: arregloDes, rolPagos: rolPagos]
+    }
+
+    def tablaRubros_ajax () {
+        def rubroTipoContrato = RubroTipoContrato.get(params.id)
+        def rolPago = RolPagos.get(params.rol)
+        def detallePagos = DetallePago.findAllByRubroTipoContratoAndRolPagos(rubroTipoContrato, rolPago)
+
+        return[detalles: detallePagos]
+    }
+
+    def desglose () {
+
+        def rol = RolPagos.get(params.rol)
+        def empleado = Empleado.get(params.id)
+        def detalles = DetallePago.findAllByRolPagosAndEmpleadoAndValorNotEqual(rol,empleado, 0.00,[sort: 'rubroTipoContrato.rubro.tipoRubro', order: 'asc'])
+
+        return[detalles: detalles, rol: rol, empleado: empleado]
     }
 
 

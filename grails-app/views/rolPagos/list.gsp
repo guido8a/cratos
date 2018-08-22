@@ -19,14 +19,13 @@
 
         <elm:flashMessage tipo="${flash.tipo}" clase="${flash.clase}">${flash.message}</elm:flashMessage>
 
-    <!-- botones -->
-        %{--<div class="btn-toolbar toolbar">--}%
-            %{--<div class="btn-group">--}%
-                %{--<g:link action="form" class="btn btn-info btnCrear">--}%
-                    %{--<i class="fa fa-file-o"></i> Nuevo--}%
-                %{--</g:link>--}%
-            %{--</div>--}%
-        %{--</div>--}%
+    <div class="btn-toolbar toolbar">
+        <div class="btn-group">
+            <g:link controller="empleado" action="list" class="btn btn-warning btnRegresar">
+                <i class="fa fa-chevron-left"></i> Regresar
+            </g:link>
+        </div>
+    </div>
 
         <table class="table table-condensed table-bordered table-striped">
             <thead>
@@ -45,7 +44,7 @@
                         <td class="centrado">${rolPagosInstance?.anio?.anio}</td>
                         <td class="centrado">${rolPagosInstance?.mess?.descripcion}</td>
                         <td class="centrado"><g:formatDate date="${rolPagosInstance.fecha}" format="dd-MM-yyyy" /></td>
-                        <td style="text-align: right">${rolPagosInstance?.pagado}</td>
+                        <td style="text-align: right"><g:formatNumber number="${rolPagosInstance?.pagado}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="en_US"/></td>
                         <td class="centrado">${rolPagosInstance?.empresa}</td>
                         <td class="centrado" style="text-align: center; color: ${rolPagosInstance?.estado == 'N' ? 'rgba(112,27,25,0.9)': 'rgba(83,207,109,0.9)'}">${rolPagosInstance?.estado == 'N' ? 'No Aprobado' : 'Aprobado'}</td>
                     </tr>

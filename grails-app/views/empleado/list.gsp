@@ -18,8 +18,8 @@
             Generar rol de pagos
         </a>
         <a href="#" id="btnEditarRol" class="btn btn-success">
-            <i class="fa fa-pencil"></i>
-            Editar rol de pagos
+            <i class="fa fa-book"></i>
+            Rol de pagos
         </a>
     </div>
 

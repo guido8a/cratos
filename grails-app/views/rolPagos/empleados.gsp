@@ -19,18 +19,31 @@
         text-align: center;
     }
 
+    .izquierda{
+        text-align: left;
+    }
+
     </style>
 </head>
 <body>
 
 <elm:flashMessage tipo="${flash.tipo}" clase="${flash.clase}">${flash.message}</elm:flashMessage>
 
+<div class="btn-toolbar toolbar">
+    <div class="btn-group">
+        <g:link controller="rolPagos" action="list" class="btn btn-warning btnRegresar">
+            <i class="fa fa-chevron-left"></i> Regresar
+        </g:link>
+    </div>
+</div>
+
 <table class="table table-condensed table-bordered table-striped">
     <thead>
     <tr>
-        <th style="width: 50%">Empleado</th>
-        <th style="width: 25%">Rubro</th>
-        <th style="width: 25%">Valor</th>
+        <th style="width: 55%">Empleado</th>
+        <th style="width: 15%">Ingresos</th>
+        <th style="width: 15%">Descuentos</th>
+        <th style="width: 15%">Total</th>
     </tr>
     </thead>
 </table>
@@ -48,7 +61,7 @@
     function cargarTablaEmpleados (rol) {
 
         $.ajax({
-           type: 'POST',
+            type: 'POST',
             url: '${createLink(controller: 'rolPagos', action: 'tablaEmpleados_ajax')}',
             data:{
                 id: rol
@@ -58,6 +71,44 @@
             }
         });
 
+    }
+
+
+    function createContextMenu(node) {
+        var $tr = $(node);
+//        var $tr = $(e.target).parent();
+        $tr.addClass("success");
+        var id = $tr.data("id");
+        var rol = $tr.data("rol");
+
+        var items = {
+            header: {
+                label: "Acciones",
+                header: true
+            }
+        };
+
+        var ver = {
+            label  : 'Ver',
+            icon   : "fa fa-pencil",
+            action : function (e) {
+                location.href="${createLink(controller: 'rolPagos', action: 'desglose')}/?id=" + id + "&rol=" + rol
+            }
+        };
+
+        var imprimir = {
+            label  : 'Imprimir',
+            icon   : "fa fa-print",
+            action : function (e) {
+
+            }
+        };
+
+        items.ver = ver;
+        items.imprimir = imprimir;
+
+
+        return items
     }
 
 

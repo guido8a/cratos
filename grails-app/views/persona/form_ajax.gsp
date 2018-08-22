@@ -263,7 +263,7 @@
                     </label>
 
                     <div class="col-md-6">
-                        <g:textField name="login" maxlength="15"  class="form-control" value="${personaInstance?.login}"/>
+                        <g:textField name="login" maxlength="15" required="" class="form-control required" value="${personaInstance?.login}"/>
                     </div>
                 </span>
             </div>
@@ -352,11 +352,23 @@
                                 id : "${personaInstance.id}"
                             }
                         }
+                    },
+                    login : {
+                        remote : {
+                            url  : "${createLink(action: 'validarLogin_ajax')}",
+                            type : "post",
+                            data : {
+                                id : "${personaInstance.id}"
+                            }
+                        }
                     }
                 },
                 messages       : {
                     cedula : {
                         remote : "Cédula ya ingresada"
+                    },
+                    login : {
+                        remote : "Login ya ingresado"
                     }
                 }
             });
@@ -368,13 +380,13 @@
                 return true;
             });
 
-            $("#apellido, #nombre").blur(function () {
-                var nombre = $("#nombre").val();
-                var apellido = $("#apellido").val();
-                var sigla = (nombre + " " + apellido).acronym().toUpperCase();
-                var user = (nombre.acronym().toUpperCase() + (apellido.split(" ")[0])).toLowerCase();
-                $("#sigla").val(sigla);
-                $("#login").val(user);
-            });
+//            $("#apellido, #nombre").blur(function () {
+//                var nombre = $("#nombre").val();
+//                var apellido = $("#apellido").val();
+//                var sigla = (nombre + " " + apellido).acronym().toUpperCase();
+//                var user = (nombre.acronym().toUpperCase() + (apellido.split(" ")[0])).toLowerCase();
+//                $("#sigla").val(sigla);
+//                $("#login").val(user);
+//            });
         </script>
 
