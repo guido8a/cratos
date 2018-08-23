@@ -100,7 +100,7 @@
             label  : 'Imprimir',
             icon   : "fa fa-print",
             action : function (e) {
-
+                location.href="${createLink(controller: 'reportes3', action: 'reporteDetallePagoEmpleado')}/?id=" + id + "&rol=" + rol
             }
         };
 

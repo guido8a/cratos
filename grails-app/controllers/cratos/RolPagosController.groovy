@@ -176,11 +176,11 @@ class RolPagosController extends cratos.seguridad.Shield {
 
                 if(p.id == f.empleado.id){
 
-                    if(f.rubroTipoContrato.rubro.tipoRubro.codigo == 'I'){
+                    if(f?.rubroTipoContrato?.rubro?.tipoRubro?.codigo == 'I'){
                         ingresos += f.valor
                     }
 
-                    if(f.rubroTipoContrato.rubro.tipoRubro.codigo == 'D'){
+                    if(f?.rubroTipoContrato?.rubro?.tipoRubro?.codigo == 'D'){
                         descuentos += f.valor
                     }
                 }

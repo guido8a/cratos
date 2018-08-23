@@ -30,7 +30,6 @@ class RolPagos {
 
     static constraints = {
 
-
         mess(blank: true, nullable: true, attributes: [title: 'mess'])
         anio(blank: true, nullable: true, attributes: [title: 'período'])
         fecha(blank: true, nullable: true, attributes: [title: 'fecha'])

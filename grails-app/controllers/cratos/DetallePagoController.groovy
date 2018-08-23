@@ -69,9 +69,18 @@ class DetallePagoController extends cratos.seguridad.Shield {
             detallePagoInstance.save(flush: true)
             render "ok"
         }catch (e){
-            println("error a guardar el detalle de pago " + e)
+            println("error a guardar el detalle de pago " + e + detallePagoInstance.errors)
             render "no"
         }
+
+
+//        if(!detallePagoInstance.save(flush: true)){
+//            println("error a guardar el detalle de pago " + detallePagoInstance.errors)
+//            render "no"
+//        }else{
+//            render "ok"
+//        }
+
 
     } //save
 

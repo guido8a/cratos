@@ -17,7 +17,7 @@
                     <g:select id="rubroTipoContrato" name="rubroTipoContrato.id"
                               from="${rubroTipoContrato.sort{it.descripcion}}" optionKey="id" optionValue="descripcion"
                               value="${detallePagoInstance?.rubroTipoContrato?.id}"
-                              class="many-to-one form-control"/>
+                              class="many-to-one form-control" />
                 </div>
             </span>
         </div>
@@ -28,7 +28,6 @@
                     Empleado
                 </label>
                 <div class="col-md-6">
-                    %{--<g:select id="empleado" name="empleado.id" from="${cratos.Empleado.list()}" optionKey="id" value="${detallePagoInstance?.empleado?.id}" class="many-to-one form-control" noSelection="['null': '']"/>--}%
                     <g:select id="empleado" name="empleado.id"
                               from="${empleados}" optionKey="id" optionValue="${{it?.persona?.apellido +  " " + it?.persona?.nombre}}"
                               value="${detallePagoInstance?.empleado?.id}"
@@ -77,6 +76,13 @@
     </g:form>
 
     <script type="text/javascript">
+
+
+        $('#rubroTipoContrato option:not(:selected)').attr('disabled', true);
+        $('#empleado option:not(:selected)').attr('disabled', true);
+        $('#rolPagos option:not(:selected)').attr('disabled', true);
+
+
         var validator = $("#frmDetallePago").validate({
             errorClass     : "help-block",
             errorPlacement : function (error, element) {
