@@ -347,10 +347,19 @@
                 }
             };
 
+            var imprimir = {
+                label  : 'Imprimir Rol de Pagos',
+                icon   : "fa fa-print",
+                action : function (e) {
+                    location.href="${createLink(controller: 'reportes3', action: 'reporteRolPagosGeneral')}/?id=" + id
+                }
+            };
+
             items.ver = ver;
             items.ce = ce;
             items.dpr = dpr;
             items.dpe = dpe;
+            items.imprimir = imprimir;
             if(est == 'N'){
                 items.generar = generar;
             }

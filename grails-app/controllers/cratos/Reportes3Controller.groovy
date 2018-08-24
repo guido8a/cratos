@@ -557,7 +557,7 @@ class Reportes3Controller {
             def val = item.value
             val.items.eachWithIndex { i, j ->
                 if (i.debe + i.haber > 0) {
-                 Row row2 = sheet.createRow(j+3)
+                    Row row2 = sheet.createRow(j+3)
                     row2.createCell(1).setCellValue(i.cuenta)
                     row2.createCell(2).setCellValue(i.descripcion)
                     row2.createCell(3).setCellValue(i.debe)
@@ -841,11 +841,11 @@ class Reportes3Controller {
         }
 
         cuentas.eachWithIndex{cuenta, j->
-                    Row row2 = sheet.createRow(j+4)
-                    row2.createCell(1).setCellValue(cuenta.numero)
-                    row2.createCell(2).setCellValue(cuenta?.padre?.numero)
-                    row2.createCell(3).setCellValue(cuenta.nivel.id)
-                    row2.createCell(4).setCellValue(cuenta.descripcion)
+            Row row2 = sheet.createRow(j+4)
+            row2.createCell(1).setCellValue(cuenta.numero)
+            row2.createCell(2).setCellValue(cuenta?.padre?.numero)
+            row2.createCell(3).setCellValue(cuenta.nivel.id)
+            row2.createCell(4).setCellValue(cuenta.descripcion)
         }
 
         def output = response.getOutputStream()
@@ -1221,6 +1221,159 @@ class Reportes3Controller {
         byte[] b = baos.toByteArray();
         response.setContentType("application/pdf")
         response.setHeader("Content-disposition", "attachment; filename=" + 'detallePagoEmpleado')
+        response.setContentLength(b.length)
+        response.getOutputStream().write(b)
+
+    }
+
+    def reporteRolPagosGeneral () {
+        def empresa = Empresa.get(session.empresa.id)
+        def rol = RolPagos.get(params.id)
+
+        def baos = new ByteArrayOutputStream()
+        com.itextpdf.text.Font fontTitulo = new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.TIMES_ROMAN, 12, com.itextpdf.text.Font.NORMAL);
+        com.itextpdf.text.Font fontTitulo2 = new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.TIMES_ROMAN, 10, com.itextpdf.text.Font.BOLD);
+        fontTitulo2.setColor(255,255,255)
+        com.itextpdf.text.Font fontThUsar = new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.TIMES_ROMAN, 10, com.itextpdf.text.Font.NORMAL);
+        com.itextpdf.text.Font font2 = new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.TIMES_ROMAN, 10, com.itextpdf.text.Font.BOLD);
+        com.itextpdf.text.Font font3 = new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.TIMES_ROMAN, 12, com.itextpdf.text.Font.BOLD);
+        com.itextpdf.text.Font font4 = new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.TIMES_ROMAN, 16, com.itextpdf.text.Font.NORMAL);
+
+        BaseColor colorAzul = new BaseColor(50, 96, 144)
+
+        def prmsTdNoBorder = [border: BaseColor.BLACK, align: com.itextpdf.text.Element.ALIGN_LEFT, valign: com.itextpdf.text.Element.ALIGN_MIDDLE]
+        def prmsTdBorder = [border: BaseColor.WHITE, align: com.itextpdf.text.Element.ALIGN_LEFT, valign: com.itextpdf.text.Element.ALIGN_MIDDLE]
+        def prmsNmBorder = [border: BaseColor.BLACK, align: com.itextpdf.text.Element.ALIGN_RIGHT, valign: com.itextpdf.text.Element.ALIGN_MIDDLE]
+        def prmsCrBorder = [border: BaseColor.BLACK, align: com.itextpdf.text.Element.ALIGN_CENTER, valign: com.itextpdf.text.Element.ALIGN_MIDDLE]
+        def prmsCrBorderAzul = [border: BaseColor.BLACK, align: com.itextpdf.text.Element.ALIGN_CENTER, valign: com.itextpdf.text.Element.ALIGN_MIDDLE, color: colorAzul]
+
+        com.itextpdf.text.Document document
+        document = new com.itextpdf.text.Document(com.itextpdf.text.PageSize.A4);
+        document.setMargins(50f,50f,50f,50f)
+        def pdfw = com.itextpdf.text.pdf.PdfWriter.getInstance(document, baos);
+
+        document.open();
+        com.itextpdf.text.pdf.PdfContentByte cb = pdfw.getDirectContent();
+        document.addTitle("Reporte Rol de Pagos General");
+        document.addSubject("Generado por el sistema Cratos");
+        document.addKeywords("reporte, empleados");
+        document.addAuthor("Cratos");
+        document.addCreator("Tedein SA");
+
+        com.itextpdf.text.Paragraph preface = new com.itextpdf.text.Paragraph();
+        preface.add(new com.itextpdf.text.Paragraph("Reporte", fontTitulo));
+
+        com.itextpdf.text.Paragraph parrafo1 = new com.itextpdf.text.Paragraph(empresa.nombre.toUpperCase(), font4)
+        parrafo1.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+        com.itextpdf.text.Paragraph lineaVacia = new com.itextpdf.text.Paragraph(" ", fontTitulo)
+
+        document.add(parrafo1)
+        document.add(lineaVacia)
+
+        com.itextpdf.text.pdf.PdfPTable tablaA = new com.itextpdf.text.pdf.PdfPTable(4);
+        tablaA.setWidthPercentage(100);
+        tablaA.setSpacingBefore(4f)
+        tablaA.setWidths(arregloEnteros([35, 10, 20, 30]))
+
+        addCellTabla(tablaA, new com.itextpdf.text.Paragraph("", font3), prmsTdBorder)
+        addCellTabla(tablaA, new com.itextpdf.text.Paragraph("Mes: ", fontTitulo), prmsTdBorder)
+        addCellTabla(tablaA, new com.itextpdf.text.Paragraph(rol?.mess?.descripcion, fontTitulo), prmsTdBorder)
+        addCellTabla(tablaA, new com.itextpdf.text.Paragraph("", font3), prmsTdBorder)
+
+        addCellTabla(tablaA, new com.itextpdf.text.Paragraph("", font3), prmsTdBorder)
+        addCellTabla(tablaA, new com.itextpdf.text.Paragraph("Año: ", fontTitulo), prmsTdBorder)
+        addCellTabla(tablaA, new com.itextpdf.text.Paragraph(rol?.anio?.anio, fontTitulo), prmsTdBorder)
+        addCellTabla(tablaA, new com.itextpdf.text.Paragraph("", font3), prmsTdBorder)
+
+        addCellTabla(tablaA, new com.itextpdf.text.Paragraph("", font3), prmsTdBorder)
+        addCellTabla(tablaA, new com.itextpdf.text.Paragraph("Fecha: ", fontTitulo), prmsTdBorder)
+        addCellTabla(tablaA, new com.itextpdf.text.Paragraph(rol?.fecha?.format("dd-MM-yyyy"), fontTitulo), prmsTdBorder)
+        addCellTabla(tablaA, new com.itextpdf.text.Paragraph("", font3), prmsTdBorder)
+
+        Locale loc = new Locale("en_US")
+        NumberFormat nf = NumberFormat.getNumberInstance(loc);
+        DecimalFormat df = (DecimalFormat)nf;
+        df.applyPattern("\$##,###.##");
+
+        com.itextpdf.text.pdf.PdfPTable tablaC = new com.itextpdf.text.pdf.PdfPTable(5);
+        tablaC.setWidthPercentage(100);
+        tablaC.setSpacingBefore(4f)
+        tablaC.setWidths(arregloEnteros([40, 15, 15, 15, 15]))
+
+        addCellTabla(tablaC, new com.itextpdf.text.Paragraph("Empleado", fontTitulo2), prmsCrBorderAzul)
+        addCellTabla(tablaC, new com.itextpdf.text.Paragraph("Sueldo", fontTitulo2), prmsCrBorderAzul)
+        addCellTabla(tablaC, new com.itextpdf.text.Paragraph("Otros Ingresos", fontTitulo2), prmsCrBorderAzul)
+        addCellTabla(tablaC, new com.itextpdf.text.Paragraph("Descuentos", fontTitulo2), prmsCrBorderAzul)
+        addCellTabla(tablaC, new com.itextpdf.text.Paragraph("A Pagar", fontTitulo2), prmsCrBorderAzul)
+
+        def detallePagos = DetallePago.findAllByRolPagos(rol).sort{it.empleado.persona.id}
+
+        def ingresos = 0
+        def descuentos = 0
+        def sueldo = 0
+
+        def personas = detallePagos.empleado.unique().sort{it.persona.id}
+
+        personas.each { p->
+
+            ingresos = 0
+            descuentos = 0
+
+            detallePagos.each{ f->
+
+                if(p.id == f.empleado.id){
+
+                    if(f?.rubroTipoContrato?.rubro?.tipoRubro?.codigo == 'I'){
+                        ingresos += f.valor
+                    }
+
+                    if(f?.rubroTipoContrato?.rubro?.tipoRubro?.codigo == 'D'){
+                        descuentos += f.valor
+                    }
+
+                    if(f?.rubroTipoContrato?.rubro?.codigo == 'SLDO'){
+                        sueldo = (f.valor ?: 0)
+                    }
+
+                }
+            }
+
+            def desc = Math.abs(descuentos)
+            ingresos = Math.abs(sueldo - ingresos)
+            def total = sueldo + ingresos + descuentos
+
+            addCellTabla(tablaC, new com.itextpdf.text.Paragraph(p?.persona?.nombre + " " + p?.persona?.apellido, fontThUsar), prmsNmBorder)
+            addCellTabla(tablaC, new com.itextpdf.text.Paragraph("" + df.format(sueldo), fontThUsar), prmsNmBorder)
+            addCellTabla(tablaC, new com.itextpdf.text.Paragraph("" + df.format(ingresos), fontThUsar), prmsNmBorder)
+            addCellTabla(tablaC, new com.itextpdf.text.Paragraph("" + df.format(desc), fontThUsar), prmsNmBorder)
+            addCellTabla(tablaC, new com.itextpdf.text.Paragraph("" + df.format(total),  fontThUsar), prmsNmBorder)
+
+        }
+
+
+//        com.itextpdf.text.pdf.PdfPTable tablaF = new com.itextpdf.text.pdf.PdfPTable(3);
+//        tablaF.setWidthPercentage(100);
+//        tablaF.setSpacingBefore(4f)
+//        tablaF.setWidths(arregloEnteros([20, 40, 20]))
+//
+//        addCellTabla(tablaF, new com.itextpdf.text.Paragraph("", font3), prmsCrBorder)
+//        addCellTabla(tablaF, new com.itextpdf.text.Paragraph("__________________________________", fontTitulo), prmsCrBorder)
+//        addCellTabla(tablaF, new com.itextpdf.text.Paragraph("", font3), prmsCrBorder)
+//
+//        addCellTabla(tablaF, new com.itextpdf.text.Paragraph("", font3), prmsCrBorder)
+//        addCellTabla(tablaF, new com.itextpdf.text.Paragraph("Firma del Empleado", fontTitulo), prmsCrBorder)
+//        addCellTabla(tablaF, new com.itextpdf.text.Paragraph("", font3), prmsCrBorder)
+
+        document.add(tablaA);
+        document.add(lineaVacia)
+        document.add(tablaC)
+//        document.add(tablaF)
+//        document.add(tablaF)
+        document.close()
+        pdfw.close()
+        byte[] b = baos.toByteArray();
+        response.setContentType("application/pdf")
+        response.setHeader("Content-disposition", "attachment; filename=" + 'rolPagos')
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
 
