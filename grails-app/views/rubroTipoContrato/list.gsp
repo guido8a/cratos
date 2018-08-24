@@ -37,13 +37,14 @@
                 <g:each in="${rubroTipoContratoInstanceList}" status="i" var="rubroTipoContratoInstance">
                     <tr data-id="${rubroTipoContratoInstance.id}">
                         
-                        <td>${rubroTipoContratoInstance?.tipoContrato?.descripcion}</td>
-                        <td>${rubroTipoContratoInstance?.rubro.tipoRubro.descripcion}</td>
+                        %{--<td>${rubroTipoContratoInstance?.tipoContrato?.descripcion}</td>--}%
+                        <td>${rubroTipoContratoInstance?.tipoContrato}</td>
+                        <td>${rubroTipoContratoInstance?.tipoRubro}</td>
 
-                        <td>${fieldValue(bean: rubroTipoContratoInstance, field: "descripcion")}</td>
+                        <td>${rubroTipoContratoInstance.descripcion}</td>
 
-                        <td>${fieldValue(bean: rubroTipoContratoInstance, field: "valor")}</td>
-                        <td>${fieldValue(bean: rubroTipoContratoInstance, field: "porcentaje")}</td>
+                        <td>${rubroTipoContratoInstance.valor}</td>
+                        <td>${rubroTipoContratoInstance.porcentaje}</td>
 
                         <td>${rubroTipoContratoInstance?.editable == '1' ? 'SI' : 'NO'}</td>
                         

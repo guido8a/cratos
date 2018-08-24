@@ -96,6 +96,7 @@
                 </div>
 
 
+%{--
                 <div class="row">
                     <div class="col-xs-5" style="text-align: right">
                         Fecha:
@@ -106,6 +107,7 @@
                                         maxDate="new Date()" value="${new java.util.Date()}"/>
                     </div>
                 </div>
+--}%
             </div>
             <div class="modal-footer">
                 <a href="#" id="generar" class="btn btn-success">Generar</a>
@@ -380,8 +382,8 @@
                         type    : "POST",
                         url     : "${g.createLink(controller:'rubro', action:'generarRol')}",
                         data    : "mes="+$("#mes").val()+
-                            "&anio="+$("#anio").val() +
-                            "&fecha="+$("#fecha_input").val(),
+                            "&anio="+$("#anio").val(), //+
+//                            "&fecha="+$("#fecha_input").val(),
                         success : function (msg) {
                             location.reload()
                         }

@@ -199,16 +199,18 @@ class RubroController extends cratos.seguridad.Shield {
         println "existe rol " + rol
         if (!rol) {
             rol = new RolPagos()
+            rol.estado = "N"
+            rol.fecha = new Date()
+            rol.mess = mes
+            rol.pagado = 0
+            rol.anio = anio
+            rol.empresa = session.empresa
             flash.message = "Rol de pagos creado correctamente"
         } else {
             flash.message = "Rol de pagos actualizado correctamente"
+            rol.fechaModificacion = new Date()
         }
-        rol.estado = "N"
-        rol.fecha = new Date().parse("dd-MM-yyyy", params.fecha)
-        rol.mess = mes
-        rol.pagado = 0
-        rol.anio = anio
-        rol.empresa = session.empresa
+
         if (!rol.save(flush: true)) {
             println "error save rol " + rol.errors
         }

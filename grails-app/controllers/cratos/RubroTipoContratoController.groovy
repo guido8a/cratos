@@ -4,6 +4,8 @@ import org.springframework.dao.DataIntegrityViolationException
 
 class RubroTipoContratoController extends cratos.seguridad.Shield {
 
+    def dbConnectionService
+
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def index() {
@@ -11,10 +13,29 @@ class RubroTipoContratoController extends cratos.seguridad.Shield {
     } //index
 
     def list() {
-        params.sort = 'tipoContrato'
+        def cn = dbConnectionService.getConnection()
+//        params.sort = 'tipoContrato'
         params.max = 15
-        [rubroTipoContratoInstanceList: RubroTipoContrato.list(params), params: params,
-         rubroTipoContratoInstanceCount: RubroTipoContrato.count() ]
+//        [rubroTipoContratoInstanceList: RubroTipoContrato.list(params), params: params,
+//         rubroTipoContratoInstanceCount: RubroTipoContrato.count() ]
+
+        def sqlSelect = "select rbtc__id id, rbtcvlor valor, rbtcpcnt porcentaje, rbtcedit editable, " +
+                "rbtcdcmo decimo, rbtciess iess, rbtcgrvb gravable, tpctdscr tipoContrato, rbrodscr rubro, " +
+                "rbtcdscr descripcion, tprbdscr tipoRubro "
+        def sqlWhere = "from rbtc, tpct, rbro, tprb " +
+                "where tpct.tpct__id = rbtc.tpct__id and rbro.rbro__id = rbtc.rbro__id and " +
+                "tprb.tprb__id = rbro.tprb__id "
+        def sqlOrder = "order by rbtc.tpct__id, tprbdscr desc, rbtcdscr "
+        def sqlLimit = "offset ${params.offset} limit ${params.max}"
+        def sqlCount = "select count(*) cnta "
+//        println "--- ${sqlSelect + sqlWhere + sqlOrder + sqlLimit}"
+        def data = cn.rows((sqlSelect + sqlWhere + sqlOrder + sqlLimit).toString())
+//        println "--- ${sqlCount + sqlWhere}"
+        def cnta = cn.rows((sqlCount + sqlWhere).toString())[0].cnta
+//        println "${data.size()}, cnta: $cnta"
+        [rubroTipoContratoInstanceList: data, params: params,
+         rubroTipoContratoInstanceCount: cnta]
+
     } //list
 
     def form_ajax() {
