@@ -19,7 +19,7 @@ class RolPagosController extends cratos.seguridad.Shield {
 //        [rubroTipoContratoInstanceList: RubroTipoContrato.list(params), params: params,
 //         rubroTipoContratoInstanceCount: RubroTipoContrato.count() ]
 
-        def sqlSelect = "select rlpg__id id, messdscr mess, anioanio anio, rlpgfcha fecha, " +
+        def sqlSelect = "select rlpg__id id, messdscr mess, anioanio anio, rlpg.mess__id mess__id, rlpg.anio__id anio__id, rlpgfcha fecha, " +
                 "rlpgfcmd fechaModificacion, rlpgpgdo pagado, rlpgetdo estado "
         def sqlWhere = "from rlpg, mess, anio " +
                 "where empr__id = ${empresa} and mess.mess__id = rlpg.mess__id and " +
@@ -27,7 +27,7 @@ class RolPagosController extends cratos.seguridad.Shield {
         def sqlOrder = "order by rlpg.anio__id, rlpg.mess__id "
         def sqlLimit = "offset ${params.offset} limit ${params.max}"
         def sqlCount = "select count(*) cnta "
-        println "--- ${sqlSelect + sqlWhere + sqlOrder + sqlLimit}"
+//        println "--- ${sqlSelect + sqlWhere + sqlOrder + sqlLimit}"
         def data = cn.rows((sqlSelect + sqlWhere + sqlOrder + sqlLimit).toString())
 //        println "--- ${sqlCount + sqlWhere}"
         def cnta = cn.rows((sqlCount + sqlWhere).toString())[0].cnta
