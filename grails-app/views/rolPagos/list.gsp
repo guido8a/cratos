@@ -33,19 +33,21 @@
                     <th>Año</th>
                     <th>Mes</th>
                     <th>Fecha</th>
+                    <th>Modificación</th>
                     <th>Pagado</th>
-                    <th>Empresa</th>
+                    %{--<th>Empresa</th>--}%
                     <th>Estado</th>
                 </tr>
             </thead>
             <tbody>
                 <g:each in="${rolPagosInstanceList}" status="i" var="rolPagosInstance">
                     <tr data-id="${rolPagosInstance.id}">
-                        <td class="centrado">${rolPagosInstance?.anio?.anio}</td>
-                        <td class="centrado">${rolPagosInstance?.mess?.descripcion}</td>
+                        <td class="centrado">${rolPagosInstance?.anio}</td>
+                        <td class="centrado">${rolPagosInstance?.mess}</td>
                         <td class="centrado"><g:formatDate date="${rolPagosInstance.fecha}" format="dd-MM-yyyy" /></td>
+                        <td class="centrado"><g:formatDate date="${rolPagosInstance.fechaModificacion}" format="dd-MM-yyyy" /></td>
                         <td style="text-align: right"><g:formatNumber number="${rolPagosInstance?.pagado}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="en_US"/></td>
-                        <td class="centrado">${rolPagosInstance?.empresa}</td>
+                        %{--<td class="centrado">${rolPagosInstance?.empresa}</td>--}%
                         <td class="centrado" style="text-align: center; color: ${rolPagosInstance?.estado == 'N' ? 'rgba(112,27,25,0.9)': 'rgba(83,207,109,0.9)'}">${rolPagosInstance?.estado == 'N' ? 'No Aprobado' : 'Aprobado'}</td>
                     </tr>
                 </g:each>

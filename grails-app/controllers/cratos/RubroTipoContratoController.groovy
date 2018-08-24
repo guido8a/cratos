@@ -13,8 +13,8 @@ class RubroTipoContratoController extends cratos.seguridad.Shield {
     } //index
 
     def list() {
+        def empresa = session.empresa.id
         def cn = dbConnectionService.getConnection()
-//        params.sort = 'tipoContrato'
         params.max = 15
 //        [rubroTipoContratoInstanceList: RubroTipoContrato.list(params), params: params,
 //         rubroTipoContratoInstanceCount: RubroTipoContrato.count() ]
@@ -24,18 +24,17 @@ class RubroTipoContratoController extends cratos.seguridad.Shield {
                 "rbtcdscr descripcion, tprbdscr tipoRubro "
         def sqlWhere = "from rbtc, tpct, rbro, tprb " +
                 "where tpct.tpct__id = rbtc.tpct__id and rbro.rbro__id = rbtc.rbro__id and " +
-                "tprb.tprb__id = rbro.tprb__id "
+                "tprb.tprb__id = rbro.tprb__id and empr__id = ${empresa} "
         def sqlOrder = "order by rbtc.tpct__id, tprbdscr desc, rbtcdscr "
         def sqlLimit = "offset ${params.offset} limit ${params.max}"
         def sqlCount = "select count(*) cnta "
-//        println "--- ${sqlSelect + sqlWhere + sqlOrder + sqlLimit}"
+        println "--- ${sqlSelect + sqlWhere + sqlOrder + sqlLimit}"
         def data = cn.rows((sqlSelect + sqlWhere + sqlOrder + sqlLimit).toString())
 //        println "--- ${sqlCount + sqlWhere}"
         def cnta = cn.rows((sqlCount + sqlWhere).toString())[0].cnta
 //        println "${data.size()}, cnta: $cnta"
         [rubroTipoContratoInstanceList: data, params: params,
          rubroTipoContratoInstanceCount: cnta]
-
     } //list
 
     def form_ajax() {

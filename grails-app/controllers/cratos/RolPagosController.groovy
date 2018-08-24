@@ -4,6 +4,8 @@ import org.springframework.dao.DataIntegrityViolationException
 
 class RolPagosController extends cratos.seguridad.Shield {
 
+    def dbConnectionService
+
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def index() {
@@ -11,15 +13,27 @@ class RolPagosController extends cratos.seguridad.Shield {
     } //index
 
     def list() {
-        def empresa = Empresa.get(session.empresa.id)
+        def empresa =session.empresa.id
+        def cn = dbConnectionService.getConnection()
+        params.max = 15
+//        [rubroTipoContratoInstanceList: RubroTipoContrato.list(params), params: params,
+//         rubroTipoContratoInstanceCount: RubroTipoContrato.count() ]
 
-        if(session.perfil.nombre == 'Administrador General'){
-            [rolPagosInstanceList: RolPagos.list(params), params: params, rolPagosInstanceCount: RolPagos.count()]
-        }else{
-            if(session.perfil.nombre == 'Administrador'){
-                [rolPagosInstanceList: RolPagos.findAllByEmpresa(empresa), params: params, rolPagosInstanceCount: RolPagos.findAllByEmpresa(empresa).size()]
-            }
-        }
+        def sqlSelect = "select rlpg__id id, messdscr mess, anioanio anio, rlpgfcha fecha, " +
+                "rlpgfcmd fechaModificacion, rlpgpgdo pagado, rlpgetdo estado "
+        def sqlWhere = "from rlpg, mess, anio " +
+                "where empr__id = ${empresa} and mess.mess__id = rlpg.mess__id and " +
+                "anio.anio__id = rlpg.anio__id "
+        def sqlOrder = "order by rlpg.anio__id, rlpg.mess__id "
+        def sqlLimit = "offset ${params.offset} limit ${params.max}"
+        def sqlCount = "select count(*) cnta "
+        println "--- ${sqlSelect + sqlWhere + sqlOrder + sqlLimit}"
+        def data = cn.rows((sqlSelect + sqlWhere + sqlOrder + sqlLimit).toString())
+//        println "--- ${sqlCount + sqlWhere}"
+        def cnta = cn.rows((sqlCount + sqlWhere).toString())[0].cnta
+//        println "${data.size()}, cnta: $cnta"
+        [rolPagosInstanceList: data, params: params, rolPagosInstanceCount: cnta, params: params]
+//        [rolPagosInstanceList: RolPagos.findAllByEmpresa(empresa), params: params, rolPagosInstanceCount: RolPagos.findAllByEmpresa(empresa).size()]
 
     } //list
 

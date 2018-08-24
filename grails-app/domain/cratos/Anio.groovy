@@ -12,7 +12,7 @@ class Anio implements Serializable{
         version false
         columns {
             id column: 'anio__id'
-            anio column: 'prdonmro'
+            anio column: 'anioanio'
         }
     }
     static constraints = {
