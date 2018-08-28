@@ -13,10 +13,10 @@
 <!-- botones -->
 <div class="btn-toolbar toolbar">
     <div class="btn-group">
-        <a href="#" id="generar_rol" class="btn btn-azul ">
-            <i class="fa fa-bars"></i>
-            Generar rol de pagos
-        </a>
+        %{--<a href="#" id="generar_rol" class="btn btn-azul ">--}%
+            %{--<i class="fa fa-bars"></i>--}%
+            %{--Generar rol de pagos--}%
+        %{--</a>--}%
         <a href="#" id="btnEditarRol" class="btn btn-success">
             <i class="fa fa-book"></i>
             Rol de pagos

@@ -24,64 +24,211 @@
         <g:link controller="empleado" action="list" class="btn btn-warning btnRegresar">
             <i class="fa fa-chevron-left"></i> Regresar
         </g:link>
+        <a href="#" id="generar_rol" class="btn btn-azul ">
+            <i class="fa fa-bars"></i>
+            Generar rol de pagos
+        </a>
     </div>
 </div>
 
-        <table class="table table-condensed table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th>Año</th>
-                    <th>Mes</th>
-                    <th>Fecha</th>
-                    <th>Modificación</th>
-                    <th>Pagado</th>
-                    %{--<th>Empresa</th>--}%
-                    <th>Estado</th>
-                </tr>
-            </thead>
-            <tbody>
-                <g:each in="${rolPagosInstanceList}" status="i" var="rolPagosInstance">
-                    <tr data-id="${rolPagosInstance.id}" data-estado="${rolPagosInstance?.estado}" data-mes="${rolPagosInstance?.mess__id}" data-anio="${rolPagosInstance?.anio__id}" data-mes1="${rolPagosInstance?.mess}" data-anio2="${rolPagosInstance?.anio}">
-                        <td class="centrado">${rolPagosInstance?.anio}</td>
-                        <td class="centrado">${rolPagosInstance?.mess}</td>
-                        <td class="centrado"><g:formatDate date="${rolPagosInstance.fecha}" format="dd-MM-yyyy" /></td>
-                        <td class="centrado"><g:formatDate date="${rolPagosInstance.fechaModificacion}" format="dd-MM-yyyy" /></td>
-                        <td style="text-align: right"><g:formatNumber number="${rolPagosInstance?.pagado}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="en_US"/></td>
-                        %{--<td class="centrado">${rolPagosInstance?.empresa}</td>--}%
-                        <td class="centrado" style="text-align: center; color: ${rolPagosInstance?.estado == 'N' ? 'rgba(112,27,25,0.9)': 'rgba(83,207,109,0.9)'}">${rolPagosInstance?.estado == 'N' ? 'No Aprobado' : 'Aprobado'}</td>
-                    </tr>
-                </g:each>
-            </tbody>
-        </table>
-%{--<table class="table table-condensed table-bordered table-striped">--}%
-    %{--<thead>--}%
-    %{--<tr>--}%
-        %{--<th>Año</th>--}%
-        %{--<th>Mes</th>--}%
-        %{--<th>Fecha</th>--}%
-        %{--<th>Pagado</th>--}%
-        %{--<th>Empresa</th>--}%
-        %{--<th>Estado</th>--}%
-    %{--</tr>--}%
-    %{--</thead>--}%
+
+<div style="margin-top: 15px;" class="vertical-container">
+    <p class="css-icono" style="margin-bottom: -15px"><i class="fa fa-folder-open-o"></i></p>
+
+    <div class="linea45"></div>
+
+    <div class="row" style="margin-bottom: 10px;">
+
+        <div class="row-fluid">
+            <div style="margin-left: 20px;">
+
+                <div class="col-xs-2" style="margin-left: -20px; width: 160px;">
+                    Año:
+                    <g:select from="${cratos.Anio.list([sort: 'anio'])}" optionValue="anio" optionKey="id" name="anioB_name" noSelection="${['null': 'Seleccione...']}" class="form-control"/>
+                </div>
+
+                <div class="col-xs-2" style="margin-left: -20px; width: 160px;">
+                    Mes:
+                    <g:select from="${cratos.Mes.list(sort: 'numero')}" optionValue="descripcion" optionKey="id" name="mesB_name" noSelection="${['null': 'Seleccione...']}" class="form-control"/>
+                </div>
+
+                <div class="col-xs-2" style="margin-left: -20px;">
+                    Desde:
+                    <elm:datepicker name="fechaDesde" title="Fecha desde" id="fd" class="datepicker form-control fechaD"
+                                    maxDate="new Date()"/>
+                </div>
+
+                <div class="col-xs-2" style="margin-left: -20px;">
+                    Hasta:
+                    <elm:datepicker name="fechaHasta" title="Fecha hasta" class="datepicker form-control fechaH"
+                                    maxDate="new Date()"/>
+                </div>
+
+                <div class="col-xs-2" style="margin-left: -20px; width: 160px;">
+                    Estado:
+                    <g:select from="${['A': 'Aprobado', 'N' : 'No Aprobado']}" optionValue="value" optionKey="key" name="estado_name" class="form-control" noSelection="${['null': 'Seleccione...']}"/>
+                </div>
+
+                <div class="btn-group col-xs-4" style="margin-top: 20px; width: 210px;">
+
+                    <a href="#" name="busqueda" class="btn btn-info" id="btnBusqueda" title="Buscar"
+                       style="height: 34px; padding: 9px; width: 86px">
+                        <i class="fa fa-search"></i> Buscar</a>
+
+                    <a href="#" name="limpiar" class="btn btn-warning" id="btnLimpiarBusqueda"
+                       title="Borrar criterios" style="height: 34px; padding: 9px; width: 34px">
+                        <i class="fa fa-eraser"></i></a>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<table class="table table-condensed table-bordered table-striped">
+    <thead>
+    <tr>
+        <th style="width: 15%">Año</th>
+        <th style="width: 15%">Mes</th>
+        <th style="width: 15%">Fecha</th>
+        <th style="width: 20%">Modificación</th>
+        <th style="width: 20%">Pagado</th>
+        <th style="width: 15%">Estado</th>
+    </tr>
+    </thead>
     %{--<tbody>--}%
     %{--<g:each in="${rolPagosInstanceList}" status="i" var="rolPagosInstance">--}%
-        %{--<tr data-id="${rolPagosInstance.id}" data-estado="${rolPagosInstance?.estado}" data-mes="${rolPagosInstance?.mess__id}" data-anio="${rolPagosInstance?.anio__id}"--}%
-        %{--data-mesN="${rolPagosInstance?.mess}" data-anioN=""${rolPagosInstance?.anio}>--}%
-            %{--<td class="centrado">${rolPagosInstance?.anio}</td>--}%
-            %{--<td class="centrado">${rolPagosInstance?.mess}</td>--}%
-            %{--<td class="centrado"><g:formatDate date="${rolPagosInstance.fecha}" format="dd-MM-yyyy" /></td>--}%
-            %{--<td style="text-align: right"><g:formatNumber number="${rolPagosInstance?.pagado}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="en_US"/></td>--}%
-            %{--<td class="centrado">${rolPagosInstance?.empresa}</td>--}%
-            %{--<td class="centrado" style="text-align: center; color: ${rolPagosInstance?.estado == 'N' ? 'rgba(112,27,25,0.9)': 'rgba(83,207,109,0.9)'}">${rolPagosInstance?.estado == 'N' ? 'No Aprobado' : 'Aprobado'}</td>--}%
-        %{--</tr>--}%
+    %{--<tr data-id="${rolPagosInstance.id}" data-estado="${rolPagosInstance?.estado}" data-mes="${rolPagosInstance?.mess__id}" data-anio="${rolPagosInstance?.anio__id}" data-mes1="${rolPagosInstance?.mess}" data-anio2="${rolPagosInstance?.anio}">--}%
+    %{--<td class="centrado">${rolPagosInstance?.anio}</td>--}%
+    %{--<td class="centrado">${rolPagosInstance?.mess}</td>--}%
+    %{--<td class="centrado"><g:formatDate date="${rolPagosInstance.fecha}" format="dd-MM-yyyy" /></td>--}%
+    %{--<td class="centrado"><g:formatDate date="${rolPagosInstance.fechaModificacion}" format="dd-MM-yyyy" /></td>--}%
+    %{--<td style="text-align: right"><g:formatNumber number="${rolPagosInstance?.pagado}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="en_US"/></td>--}%
+    %{--<td class="centrado">${rolPagosInstance?.empresa}</td>--}%
+    %{--<td class="centrado" style="text-align: center; color: ${rolPagosInstance?.estado == 'N' ? 'rgba(112,27,25,0.9)': 'rgba(83,207,109,0.9)'}">${rolPagosInstance?.estado == 'N' ? 'No Aprobado' : 'Aprobado'}</td>--}%
+    %{--</tr>--}%
     %{--</g:each>--}%
     %{--</tbody>--}%
-%{--</table>--}%
+</table>
 
-<elm:pagination total="${rolPagosInstanceCount}" params="${params}"/>
+<div class="row-fluid"  style="width: 99.7%;height: 250px;overflow-y: auto;float: right;">
+    <div class="span12">
+        <div id="divTablaRol" style="width: 100%; height: 250px;"></div>
+    </div>
+</div>
+
+<div class="modal fade" id="dlg-rol" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Rol de Pagos</h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-xs-5" style="text-align: right">
+                        Año:
+                    </div>
+                    <div class="col-xs-3 negrilla">
+                        <g:select name="anio" class="form-control" from="${cratos.Anio.list()}" id="anio" optionKey="id" optionValue="anio" />
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-xs-5" style="text-align: right">
+                        Mes:
+                    </div>
+                    <div class="col-xs-5 negrilla">
+                        <g:select name="mes" class="form-control" from="${cratos.Mes.list(sort: 'numero')}" optionKey="id" optionValue="descripcion"/>
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="#" id="generar" class="btn btn-success">Generar</a>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+%{--<elm:pagination total="${rolPagosInstanceCount}" params="${params}"/>--}%
 
 <script type="text/javascript">
+
+    $("#btnLimpiarBusqueda").click(function () {
+        cargarTablaRol('1');
+        $("#anioB_name").val('');
+        $("#mesB_name").val('');
+        $(".fechaD").val('');
+        $(".fechaH").val('');
+        $("#estado_name").val('');
+    });
+
+    $("#btnBusqueda").click(function () {
+        cargarTablaRol('2');
+    });
+
+    cargarTablaRol('1');
+
+    function cargarTablaRol (tipo) {
+
+
+        var anioB = $("#anioB_name").val();
+        var mesB = $("#mesB_name").val();
+        var fechaD = $(".fechaD").val();
+        var fechaH = $(".fechaH").val();
+        var estado = $("#estado_name").val();
+
+
+        openLoader("Buscando");
+        $.ajax({
+            type: 'POST',
+            url:'${createLink(controller: 'rolPagos', action: 'tablaRolPagos_ajax')}',
+            data:{
+                anio: anioB,
+                mes: mesB,
+                desde: fechaD,
+                hasta: fechaH,
+                estado: estado,
+                tipo: tipo
+            },
+            success: function (msg) {
+                closeLoader();
+                $("#divTablaRol").html(msg)
+            }
+        })
+    }
+
+    $("#generar_rol").click(function(){
+        $("#dlg-rol").modal("show")
+    });
+
+    $("#generar").click(function(){
+        bootbox.confirm("Está a punto de generar el rol del pago para el mes de <span style='color:blue'>"+
+            $("#mes :selected").text()+" </span> del año <span style='color:blue'>"+
+            $("#anio :selected").text()+".</span><br><br>Si es correcto, presione Aceptar para generar el rol",
+            function(result){
+                if(result){
+                    openLoader();
+                    $.ajax({
+                        type    : "POST",
+                        url     : "${g.createLink(controller:'rubro', action:'generarRol')}",
+                        data    : "mes="+$("#mes").val()+
+                        "&anio="+$("#anio").val(), //+
+                        success : function (msg) {
+                            location.reload()
+                        }
+                    });
+                }
+            })
+
+    });
+
+
     var id = null;
     function submitForm() {
         var $form = $("#frmRolPagos");
@@ -183,8 +330,7 @@
 
 
 
-    function cambiarEstado (id) {
-        openLoader("Cambiando...");
+    function cambiarEstado (id, params) {
         $.ajax({
             type :'POST',
             url: '${createLink(controller: 'rolPagos', action: 'cambiarEstado_ajax')}',
@@ -192,12 +338,10 @@
                 id: id
             },
             success: function (msg){
-                closeLoader();
+//                closeLoader();
                 if(msg == 'ok'){
                     log("Estado cambiado correctamente","success");
-                    setTimeout(function () {
-                        location.reload(true)
-                    }, 800);
+                    cargarTablaRol('3', params);
                 }else{
                     log("Error al cambiar los estados", "error");
                 }
@@ -253,139 +397,139 @@
             return false;
         });
 
-        $(function () {
-            $("tr").contextMenu({
-                items  : createContextMenu,
-                onShow : function ($element) {
-                    $element.addClass("trHighlight");
-                },
-                onHide : function ($element) {
-                    $(".trHighlight").removeClass("trHighlight");
-                }
-            });
-        });
+//        $(function () {
+//            $("tr").contextMenu({
+//                items  : createContextMenu,
+//                onShow : function ($element) {
+//                    $element.addClass("trHighlight");
+//                },
+//                onHide : function ($element) {
+//                    $(".trHighlight").removeClass("trHighlight");
+//                }
+//            });
+//        });
 
 
-        function createContextMenu(node) {
-            var $tr = $(node);
-            $tr.addClass("success");
-            var id = $tr.data("id");
-            var est = $tr.data("estado");
-            var mes = $tr.data("mes");
-            var anio = $tr.data("anio");
-            var mesN = $tr.data("mes1");
-            var anioN = $tr.data("anio2");
+        %{--function createContextMenu(node) {--}%
+        %{--var $tr = $(node);--}%
+        %{--$tr.addClass("success");--}%
+        %{--var id = $tr.data("id");--}%
+        %{--var est = $tr.data("estado");--}%
+        %{--var mes = $tr.data("mes");--}%
+        %{--var anio = $tr.data("anio");--}%
+        %{--var mesN = $tr.data("mes1");--}%
+        %{--var anioN = $tr.data("anio2");--}%
 
-            var items = {
-                header: {
-                    label: "Acciones",
-                    header: true
-                }
-            };
+        %{--var items = {--}%
+        %{--header: {--}%
+        %{--label: "Acciones",--}%
+        %{--header: true--}%
+        %{--}--}%
+        %{--};--}%
 
-            var ver = {
-                label  : 'Ver',
-                icon   : "fa fa-search",
-                action : function (e) {
-                    $("tr.success").removeClass("success");
-//                    e.preventDefault();
-                    $.ajax({
-                        type    : "POST",
-                        url     : "${createLink(action:'show_ajax')}",
-                        data    : {
-                            id : id
-                        },
-                        success : function (msg) {
-                            bootbox.dialog({
-                                title   : "Ver Rol de Pagos",
-                                message : msg,
-                                buttons : {
-                                    ok : {
-                                        label     : "Aceptar",
-                                        className : "btn-primary",
-                                        callback  : function () {
-                                        }
-                                    }
-                                }
-                            });
-                        }
-                    });
-                }
-            };
+        %{--var ver = {--}%
+        %{--label  : 'Ver',--}%
+        %{--icon   : "fa fa-search",--}%
+        %{--action : function (e) {--}%
+        %{--$("tr.success").removeClass("success");--}%
+        %{--//                    e.preventDefault();--}%
+        %{--$.ajax({--}%
+        %{--type    : "POST",--}%
+        %{--url     : "${createLink(action:'show_ajax')}",--}%
+        %{--data    : {--}%
+        %{--id : id--}%
+        %{--},--}%
+        %{--success : function (msg) {--}%
+        %{--bootbox.dialog({--}%
+        %{--title   : "Ver Rol de Pagos",--}%
+        %{--message : msg,--}%
+        %{--buttons : {--}%
+        %{--ok : {--}%
+        %{--label     : "Aceptar",--}%
+        %{--className : "btn-primary",--}%
+        %{--callback  : function () {--}%
+        %{--}--}%
+        %{--}--}%
+        %{--}--}%
+        %{--});--}%
+        %{--}--}%
+        %{--});--}%
+        %{--}--}%
+        %{--};--}%
 
-            var ce = {
-                label  : 'Cambiar Estado',
-                icon   : "fa fa-undo",
-                action : function (e) {
-                    cambiarEstado(id)
-                }
-            };
-
-
-            var dpr = {
-                label  : 'Detalle de Pago por Rubro',
-                icon   : "fa fa-list-ol",
-                action : function (e) {
-                    rubros(id)
-                }
-            };
+        %{--var ce = {--}%
+        %{--label  : 'Cambiar Estado',--}%
+        %{--icon   : "fa fa-undo",--}%
+        %{--action : function (e) {--}%
+        %{--cambiarEstado(id)--}%
+        %{--}--}%
+        %{--};--}%
 
 
-            var dpe = {
-                label  : 'Detalle de Pago por Empleado',
-                icon   : "fa fa-users",
-                action : function (e) {
-                    cargarEmpleados(id)
-                }
-            };
+        %{--var dpr = {--}%
+        %{--label  : 'Detalle de Pago por Rubro',--}%
+        %{--icon   : "fa fa-list-ol",--}%
+        %{--action : function (e) {--}%
+        %{--rubros(id)--}%
+        %{--}--}%
+        %{--};--}%
 
-            var generar = {
-                label  : 'Generar Rol Nuevamente',
-                icon   : "fa fa-check-square",
-                action : function (e) {
-                    generarRol(mes, anio, mesN, anioN)
-                }
-            };
 
-            var imprimir = {
-                label  : 'Imprimir Rol de Pagos',
-                icon   : "fa fa-print",
-                action : function (e) {
-                    location.href="${createLink(controller: 'reportes3', action: 'reporteRolPagosGeneral')}/?id=" + id
-                }
-            };
+        %{--var dpe = {--}%
+        %{--label  : 'Detalle de Pago por Empleado',--}%
+        %{--icon   : "fa fa-users",--}%
+        %{--action : function (e) {--}%
+        %{--cargarEmpleados(id)--}%
+        %{--}--}%
+        %{--};--}%
 
-            items.ver = ver;
-            items.ce = ce;
-            items.dpr = dpr;
-            items.dpe = dpe;
-            items.imprimir = imprimir;
-            if(est == 'N'){
-                items.generar = generar;
-            }
+        %{--var generar = {--}%
+        %{--label  : 'Generar Rol Nuevamente',--}%
+        %{--icon   : "fa fa-check-square",--}%
+        %{--action : function (e) {--}%
+        %{--generarRol(mes, anio, mesN, anioN)--}%
+        %{--}--}%
+        %{--};--}%
 
-            return items
-        }
+        %{--var imprimir = {--}%
+        %{--label  : 'Imprimir Rol de Pagos',--}%
+        %{--icon   : "fa fa-print",--}%
+        %{--action : function (e) {--}%
+        %{--location.href="${createLink(controller: 'reportes3', action: 'reporteRolPagosGeneral')}/?id=" + id--}%
+        %{--}--}%
+        %{--};--}%
 
-        function generarRol (mes, anio, mesN, anioN) {
-            console.log(" - " + mesN + " - " + anioN)
-            bootbox.confirm("Está a punto de generar el rol del pago nuevamente para el mes de <span style='color:blue'>"+
-               mesN +" </span> del año <span style='color:blue'>"+
-                anioN +".</span><br><br>Si es correcto, presione Aceptar para generar el rol",
-                function(result){
-                    if(result){
-                        openLoader();
-                        $.ajax({
-                            type    : "POST",
-                            url     : "${g.createLink(controller:'rubro', action:'generarRol')}",
-                            data    : "mes="+ mes + "&anio="+ anio, //+
-                            success : function (msg) {
-                                location.reload()
-                            }
-                        });
-                    }
-                })
-        }
+        %{--items.ver = ver;--}%
+        %{--items.ce = ce;--}%
+        %{--items.dpr = dpr;--}%
+        %{--items.dpe = dpe;--}%
+        %{--items.imprimir = imprimir;--}%
+        %{--if(est == 'N'){--}%
+        %{--items.generar = generar;--}%
+        %{--}--}%
+
+        %{--return items--}%
+        %{--}--}%
+
+        %{--function generarRol (mes, anio, mesN, anioN) {--}%
+        %{--console.log(" - " + mesN + " - " + anioN)--}%
+        %{--bootbox.confirm("Está a punto de generar el rol del pago nuevamente para el mes de <span style='color:blue'>"+--}%
+        %{--mesN +" </span> del año <span style='color:blue'>"+--}%
+        %{--anioN +".</span><br><br>Si es correcto, presione Aceptar para generar el rol",--}%
+        %{--function(result){--}%
+        %{--if(result){--}%
+        %{--openLoader();--}%
+        %{--$.ajax({--}%
+        %{--type    : "POST",--}%
+        %{--url     : "${g.createLink(controller:'rubro', action:'generarRol')}",--}%
+        %{--data    : "mes="+ mes + "&anio="+ anio, //+--}%
+        %{--success : function (msg) {--}%
+        %{--location.reload()--}%
+        %{--}--}%
+        %{--});--}%
+        %{--}--}%
+        %{--})--}%
+        %{--}--}%
 
 
 

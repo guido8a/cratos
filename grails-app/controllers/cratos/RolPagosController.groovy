@@ -141,7 +141,7 @@ class RolPagosController extends cratos.seguridad.Shield {
         def empresa = Empresa.get(session.empresa.id)
         def rolPago = RolPagos.get(params.id)
 
-       def detalles = DetallePago.withCriteria {
+        def detalles = DetallePago.withCriteria {
 
             eq("rolPagos", rolPago)
 
@@ -224,6 +224,68 @@ class RolPagosController extends cratos.seguridad.Shield {
         def detalles = DetallePago.findAllByRolPagosAndEmpleadoAndValorNotEqual(rol,empleado, 0.00,[sort: 'rubroTipoContrato.rubro.tipoRubro', order: 'asc'])
 
         return[detalles: detalles, rol: rol, empleado: empleado]
+    }
+
+    def tablaRolPagos_ajax() {
+
+//        println("params trp" + params)
+
+        def empresa = Empresa.get(session.empresa.id)
+
+        if(params.tipo == '1'){
+
+            def cn = dbConnectionService.getConnection()
+
+            def sqlSelect = "select rlpg__id id, messdscr mess, anioanio anio, rlpg.mess__id mess__id, rlpg.anio__id anio__id, rlpgfcha fecha, " +
+                    "rlpgfcmd fechaModificacion, rlpgpgdo pagado, rlpgetdo estado "
+            def sqlWhere = "from rlpg, mess, anio " +
+                    "where empr__id = ${empresa?.id} and mess.mess__id = rlpg.mess__id and " +
+                    "anio.anio__id = rlpg.anio__id "
+            def sqlOrder = "order by rlpg.anio__id, rlpg.mess__id "
+
+            def data = cn.rows((sqlSelect + sqlWhere + sqlOrder).toString())
+
+            [rolPagosInstanceList: data, tipo: params.tipo, parametros: params]
+
+        }else{
+
+            def roles = RolPagos.withCriteria {
+
+                eq("empresa",empresa)
+
+                and{
+
+                    if(params.anio && params.anio != 'null'){
+                        def anio = Anio.get(params.anio)
+                            eq("anio", anio)
+                    }
+
+                    if(params.mes && params.mes != 'null'){
+                        def mes = Mes.get(params.mes)
+                            eq("mess",mes)
+                    }
+
+                    if(params.estado && params.estado != 'null'){
+                            eq("estado",params.estado)
+                    }
+
+                    if (params.desde){
+                        def d = new Date().parse("dd-MM-yyy", params.desde)
+                            ge("fecha",d)
+                    }
+
+                    if(params.hasta){
+                        def h = new Date().parse("dd-MM-yyy", params.hasta)
+                            le("fecha", h)
+                    }
+                }
+
+                order("mess","asc")
+
+            }
+
+            return [roles: roles, tipo: params.tipo, parametros: params]
+        }
     }
 
 
