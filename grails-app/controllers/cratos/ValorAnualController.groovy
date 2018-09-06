@@ -11,7 +11,7 @@ class ValorAnualController extends cratos.seguridad.Shield {
     } //index
 
     def list() {
-        [valorAnualInstanceList: ValorAnual.list(params), params: params, valorAnualInstanceCount: ValorAnual.count()]
+        [valorAnualInstanceList: ValorAnual.list(params).sort{it.porcentaje}, params: params, valorAnualInstanceCount: ValorAnual.count()]
     } //list
 
     def form_ajax() {

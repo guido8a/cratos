@@ -19,7 +19,18 @@
                 
             </span>
         </div>
-        
+
+        <div class="form-group ${hasErrors(bean: valorAnualInstance, field: 'fraccionBasica', 'error')} ">
+            <span class="grupo">
+                <label for="fraccionBasica" class="col-md-3 control-label text-info">
+                    Fracción Básica
+                </label>
+                <div class="col-md-5">
+                    <g:textField name="fraccionBasica" value="${valorAnualInstance.fraccionBasica}" class="digits form-control required" required=""/>
+                </div>
+
+            </span>
+        </div>
         <div class="form-group ${hasErrors(bean: valorAnualInstance, field: 'excesoHasta', 'error')} ">
             <span class="grupo">
                 <label for="excesoHasta" class="col-md-3 control-label text-info">
@@ -31,26 +42,13 @@
                 
             </span>
         </div>
-        
-        <div class="form-group ${hasErrors(bean: valorAnualInstance, field: 'fraccionBasica', 'error')} ">
-            <span class="grupo">
-                <label for="fraccionBasica" class="col-md-3 control-label text-info">
-                    Fracción Básica
-                </label>
-                <div class="col-md-5">
-                    <g:textField name="fraccionBasica" value="${valorAnualInstance.fraccionBasica}" class="digits form-control required" required=""/>
-                </div>
-                
-            </span>
-        </div>
-        
         <div class="form-group ${hasErrors(bean: valorAnualInstance, field: 'impuesto', 'error')} ">
             <span class="grupo">
                 <label for="impuesto" class="col-md-3 control-label text-info">
                     Impuesto
                 </label>
                 <div class="col-md-5">
-                    <g:textField name="impuesto" value="${fieldValue(bean: valorAnualInstance, field: 'impuesto')}" class="number form-control  required" required=""/>
+                    <g:textField name="impuesto" value="${valorAnualInstance.impuesto}" class="number form-control  required" required=""/>
                 </div>
                 
             </span>

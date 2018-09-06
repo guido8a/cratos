@@ -31,8 +31,8 @@
             <thead>
                 <tr>
                     <th>Año</th>
-                    <th>Exceso Hasta</th>
                     <th>Fracción Básica</th>
+                    <th>Exceso Hasta</th>
                     <th>Impuesto</th>
                     <th>Porcentaje</th>
                 </tr>
@@ -41,9 +41,9 @@
                 <g:each in="${valorAnualInstanceList}" status="i" var="valorAnualInstance">
                     <tr data-id="${valorAnualInstance.id}">
                         <td style="text-align: center">${valorAnualInstance?.anio?.anio}</td>
-                        <td class="derecha">${valorAnualInstance?.excesoHasta}</td>
-                        <td class="derecha">${valorAnualInstance?.fraccionBasica}</td>
-                        <td class="derecha">${valorAnualInstance?.impuesto}</td>
+                        <td class="derecha"><g:formatNumber number="${valorAnualInstance?.fraccionBasica}" format="##,##0" locale="en_US"/></td>
+                        <td class="derecha"><g:formatNumber number="${valorAnualInstance?.excesoHasta}" format="##,##0" locale="en_US"/></td>
+                        <td class="derecha"><g:formatNumber number="${valorAnualInstance?.impuesto}" format="##,##0" locale="en_US"/></td>
                         <td class="derecha">${valorAnualInstance?.porcentaje}</td>
                         
                     </tr>
