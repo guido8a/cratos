@@ -28,7 +28,7 @@ class RubroTipoContratoController extends cratos.seguridad.Shield {
         def sqlOrder = "order by rbtc.tpct__id, tprb.tprb__id, rbtcdscr "
         def sqlLimit = "offset ${params.offset} limit ${params.max}"
         def sqlCount = "select count(*) cnta "
-        println "--- ${sqlSelect + sqlWhere + sqlOrder + sqlLimit}"
+//        println "--- ${sqlSelect + sqlWhere + sqlOrder + sqlLimit}"
         def data = cn.rows((sqlSelect + sqlWhere + sqlOrder + sqlLimit).toString())
 //        println "--- ${sqlCount + sqlWhere}"
         def cnta = cn.rows((sqlCount + sqlWhere).toString())[0].cnta
@@ -112,14 +112,11 @@ class RubroTipoContratoController extends cratos.seguridad.Shield {
 
         try {
             rubroTipoContratoInstance.delete(flush: true)
-            flash.clase = "alert-success"
-            flash.message =  "Se ha eliminado correctamente Rubro Tipo Contrato " + rubroTipoContratoInstance.id
-            redirect(action: "list")
+            render "ok"
         }
         catch (DataIntegrityViolationException e) {
-            flash.clase = "alert-error"
-            flash.message =  "No se pudo eliminar Rubro Tipo Contrato " + (rubroTipoContratoInstance.id ? rubroTipoContratoInstance.id : "")
-            redirect(action: "list")
+            println("error al borrar el rubro del contrato " + e + rubroTipoContratoInstance.errors)
+            render "no"
         }
     } //delete
 } //fin controller

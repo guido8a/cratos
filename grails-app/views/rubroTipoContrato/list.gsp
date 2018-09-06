@@ -109,10 +109,13 @@
                                         id : itemId
                                     },
                                     success : function (msg) {
-                                        var parts = msg.split("_");
-                                        log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
-                                        if (parts[0] == "OK") {
-                                            location.reload(true);
+                                        if(msg == 'ok'){
+                                            log("Rubro borrado correctamente","success");
+                                            setTimeout(function () {
+                                                location.reload(true);
+                                            }, 800);
+                                        }else{
+                                            log("Error al borrar el rubro", "error");
                                         }
                                     }
                                 });

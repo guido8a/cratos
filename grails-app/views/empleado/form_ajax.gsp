@@ -35,11 +35,9 @@
                 </label>
 
                 <div class="col-md-8">
-                    %{--todo: el tipo de contrato debe referirse a la empresa respectiva --}%
-                    <g:select id="empleado.tipoContrato" name="empleado.tipoContrato.id" from="${cratos.TipoContrato.list()}" optionKey="id" optionValue="descripcion"
+                    <g:select id="empleado.tipoContrato" name="empleado.tipoContrato.id" from="${cratos.TipoContrato.findAllByEmpresa(session.empresa).sort{it.descripcion}}" optionKey="id" optionValue="descripcion"
                               value="${empleadoInstance?.tipoContrato?.id}" class="many-to-one form-control" />
                 </div>
-
             </span>
         </div>
 

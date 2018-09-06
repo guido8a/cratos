@@ -8,7 +8,7 @@
 
     <g:if test="${anioInstance?.anio}">
         <div class="row">
-            <div class="col-md-2 text-info">
+            <div class="col-md-3 text-info">
                 Año
             </div>
             
@@ -16,6 +16,19 @@
                 <g:fieldValue bean="${anioInstance}" field="anio"/>
             </div>
             
+        </div>
+    </g:if>
+
+    <g:if test="${anioInstance?.anio}">
+        <div class="row">
+            <div class="col-md-3 text-info">
+                Sueldo Básico
+            </div>
+
+            <div class="col-md-3">
+                <g:formatNumber number="${anioInstance?.sueldoBasico}" format="##,##0" locale="en_US" minFractionDigits="2" maxFractionDigits="2"/>
+            </div>
+
         </div>
     </g:if>
     

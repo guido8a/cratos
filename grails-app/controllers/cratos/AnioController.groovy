@@ -29,18 +29,18 @@ class AnioController extends cratos.seguridad.Shield {
     } //form_ajax
 
     def save() {
-//        println("params " + params)
+        println("params " + params)
         def anio
         def texto = ''
         if(params.id){
             anio = Anio.get(params.id)
-            anio.anio = params.anio
             texto = "Año actualizado correctamente"
         }else{
             anio = new Anio()
-            anio.anio = params.anio
             texto = "Año creado correctamente"
         }
+        anio.anio = params.anio
+        anio.sueldoBasico = params.sueldoBasico.toDouble()
 
         if(!anio.save(flush: true)){
             render "NO_Error al guardar el año"

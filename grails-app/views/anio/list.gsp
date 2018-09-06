@@ -32,17 +32,15 @@
 <table class="table table-condensed table-bordered table-striped">
     <thead>
     <tr>
-
         <g:sortableColumn property="anio" title="Año" />
-
+        <th>Sueldo</th>
     </tr>
     </thead>
     <tbody>
     <g:each in="${anioInstanceList}" status="i" var="anioInstance">
         <tr data-id="${anioInstance.id}" style="text-align: center">
-
             <td>${fieldValue(bean: anioInstance, field: "anio")}</td>
-
+            <td><g:formatNumber number="${anioInstance?.sueldoBasico}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
         </tr>
     </g:each>
     </tbody>
@@ -125,7 +123,7 @@
             success : function (msg) {
                 var b = bootbox.dialog({
                     id      : "dlgCreateEdit",
-                    title   : title + " Anio",
+                    title   : title + " Año",
                     message : msg,
                     buttons : {
                         cancelar : {
@@ -184,7 +182,7 @@
                         },
                         success : function (msg) {
                             bootbox.dialog({
-                                title   : "Ver Anio",
+                                title   : "Ver Año",
                                 message : msg,
                                 buttons : {
                                     ok : {
