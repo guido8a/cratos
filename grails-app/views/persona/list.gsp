@@ -3,7 +3,7 @@
 <html>
     <head>
         <meta name="layout" content="main">
-        <title>Usuarios</title>
+        <title>Personas</title>
     </head>
 
     <body>
@@ -14,7 +14,7 @@
         <div class="btn-toolbar toolbar">
             <div class="btn-group">
                 <g:link action="form" class="btn btn-info btnCrear">
-                    <i class="fa fa-file-o"></i> Nuevo Usuario
+                    <i class="fa fa-file-o"></i> Nueva Persona
                 </g:link>
             </div>
 

@@ -25,7 +25,7 @@ class RubroTipoContratoController extends cratos.seguridad.Shield {
         def sqlWhere = "from rbtc, tpct, rbro, tprb " +
                 "where tpct.tpct__id = rbtc.tpct__id and rbro.rbro__id = rbtc.rbro__id and " +
                 "tprb.tprb__id = rbro.tprb__id and empr__id = ${empresa} "
-        def sqlOrder = "order by rbtc.tpct__id, tprbdscr desc, rbtcdscr "
+        def sqlOrder = "order by rbtc.tpct__id, tprb.tprb__id, rbtcdscr "
         def sqlLimit = "offset ${params.offset} limit ${params.max}"
         def sqlCount = "select count(*) cnta "
         println "--- ${sqlSelect + sqlWhere + sqlOrder + sqlLimit}"

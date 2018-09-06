@@ -17,8 +17,8 @@ environments {
     development {
         dataSource {
             dbCreate = "update"
-            url = "jdbc:postgresql://192.168.100.9:5432/cratos"
-//            url = "jdbc:postgresql://192.168.100.9:5432/cratos_prba"
+//            url = "jdbc:postgresql://192.168.100.9:5432/cratos"
+            url = "jdbc:postgresql://192.168.100.9:5432/cratos_prba2"
 //            url = "jdbc:postgresql://192.168.100.9:5432/cratos_brre1"   //pruebas fpaliz
             username = "postgres"
             password = "postgres"

@@ -71,7 +71,7 @@
                         Sigla
                     </label>
 
-                    <div class="col-md-6">
+                    <div class="col-md-2">
                         <g:textField name="sigla" maxlength="8" required="" class="form-control required" value="${personaInstance?.sigla}"/>
                     </div>
                     *
@@ -301,7 +301,7 @@
             <div class="form-group keeptogether  ${hasErrors(bean: personaInstance, field: 'activo', 'error')} required">
                 <span class="grupo">
                     <label for="activo" class="col-md-3 control-label text-info">
-                        Activo
+                        Es usuario
                     </label>
 
                     <div class="col-md-3">
@@ -309,7 +309,7 @@
                         <g:select name="activo" from="[0: 'NO', 1: 'SI']" optionKey="key" optionValue="value"
                                   class="form-control" value="${personaInstance?.activo ?: 'S'}"/>
                     </div>
-                    <p class="col-md-3" style="font-weight: bold">Si el usuario ha ser creado será un empleado, su estado Activo debe ser "NO"</p>
+                    <p class="col-md-4" style="font-weight: bold">Si el usuario debe tener un login</p>
                 </span>
             </div>
 

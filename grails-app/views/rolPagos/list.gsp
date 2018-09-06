@@ -28,6 +28,11 @@
             <i class="fa fa-bars"></i>
             Generar rol de pagos
         </a>
+
+        <a href="#" id="generar_rol" class="btn btn-azul ">
+            <i class="fa fa-bars"></i>
+            Generar 13° sueldo
+        </a>
     </div>
 </div>
 

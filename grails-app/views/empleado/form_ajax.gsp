@@ -35,6 +35,7 @@
                 </label>
 
                 <div class="col-md-8">
+                    %{--todo: el tipo de contrato debe referirse a la empresa respectiva --}%
                     <g:select id="empleado.tipoContrato" name="empleado.tipoContrato.id" from="${cratos.TipoContrato.list()}" optionKey="id" optionValue="descripcion"
                               value="${empleadoInstance?.tipoContrato?.id}" class="many-to-one form-control" />
                 </div>
@@ -135,7 +136,7 @@
         <div class="form-group keeptogether ${hasErrors(bean: empleadoInstance, field: 'iess', 'error')} ">
             <span class="grupo">
                 <label for="empleado.iess" class="col-md-4 control-label text-info">
-                    IESS
+                    No. IESS
                 </label>
 
                 <div class="col-md-8">
@@ -148,7 +149,7 @@
         <div class="form-group keeptogether ${hasErrors(bean: empleadoInstance, field: 'numero', 'error')} ">
             <span class="grupo">
                 <label for="empleado.numero" class="col-md-4 control-label text-info">
-                    Número Empleado
+                    Número anterior de Empleado
                 </label>
 
                 <div class="col-md-8">

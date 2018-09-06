@@ -235,12 +235,16 @@ class RubroController extends cratos.seguridad.Shield {
 
 
 
-        /* TODO: Para el contrato por horas haer una pantalla para el registro de las horas
+        /* TODO: Para el contrato por horas hacer una pantalla para el registro de las horas
         * por ahora se usa 10 horas */
         empleados.each { emp ->
             println "Empl: ${emp.persona.nombre} --> contrato: ${emp.tipoContrato.descripcion}"
             def sldo = Rubro.findByCodigo('SLDO')
+            def dc14 = Rubro.findByCodigo('DC14')
+            def dc13 = Rubro.findByCodigo('DC13')
             def rbrotpct = RubroTipoContrato.findByRubroAndTipoContrato(sldo, emp.tipoContrato)
+            def dcmo13   = RubroTipoContrato.findByRubroAndTipoContrato(dc13, emp.tipoContrato)
+            def dcmo14   = RubroTipoContrato.findByRubroAndTipoContrato(dc14, emp.tipoContrato)
             def sueldo = emp.sueldo
 
 //            println "rubro: ${rbrotpct}, ${emp.tipoContrato.descripcion}"
@@ -282,9 +286,29 @@ class RubroController extends cratos.seguridad.Shield {
             if (!detalle.save(flush: true))
                 println "error save detalle pago sueldo " + detalle.errors
             total += sueldo
-            println "total $total, sueldo $sueldo"
+            println "total $total, sueldo $sueldo, dcmo14: $dcmo14"
 
-            def rubros = RubroTipoContrato.findAllByTipoContratoAndRubroNotInList(emp.tipoContrato, [sldo])
+            if(dcmo14) {
+                if(dcmo14.porcentaje > 0) { /* se paga el 14° mensual */
+                    println "calcula fracción de 14 --> ${dcmo14.porcentaje}"
+                    def dt14 = DetallePago.findByRubroTipoContratoAndEmpleado(dcmo14, emp)
+                    if (dt14) {
+                        if (Math.abs(dt14.valor - anio.sueldoBasico / 12) > 0.01) {
+                            dt14.valor = anio.sueldoBasico / 12
+                            dt14.save(flush: true)
+                        }
+                    } else {
+                        dt14 = new DetallePago()
+                        dt14.empleado = emp
+                        dt14.rolPagos = rol
+                        dt14.rubroTipoContrato = dcmo14
+                        dt14.valor = anio.sueldoBasico / 12
+                        dt14.save(flush: true)
+                    }
+                }
+            }
+
+            def rubros = RubroTipoContrato.findAllByTipoContratoAndRubroNotInList(emp.tipoContrato, [sldo, dc14, dc13])
 //            println "rubros ==> ${rubros.rubro.descripcion} valor: ${rubros.rubro.valor} pc: ${rubros.rubro.porcentaje}"
             rubros.each { r ->
                 detalle = DetallePago.find("from DetallePago where rubroTipoContrato = ${r.id} and " +
@@ -299,7 +323,7 @@ class RubroController extends cratos.seguridad.Shield {
                 detalle.rubroTipoContrato = r
                 def valor = 0
                 def signo = -1
-                if (r.rubro.tipoRubro.codigo == "I")
+                if (r.rubro.tipoRubro.codigo in ["I", "P", "G"])
                     signo = 1
                 if (r.valor != 0) {
                     valor = r.valor * signo
