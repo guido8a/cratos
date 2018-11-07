@@ -409,7 +409,47 @@ class EmpleadoController extends cratos.seguridad.Shield {
             println("error al cambiar de estado al empleado " + e)
             render "no"
         }
+    }
+
+    def empleado_ajax () {
+
+        def personaInstance = new Persona(params)
+        if (params.id) {
+            personaInstance = Persona.get(params.id)
+            if (!personaInstance) {
+                notFound_ajax()
+                return
+            }
+        }
+        return [personaInstance: personaInstance]
+    }
+
+
+    def crearEmpleado_ajax () {
+
+        def persona = Persona.get(params.id)
+        def existe = Empleado.findByPersona(persona)
+
+        if(!existe){
+            def empleado = new Empleado()
+
+            empleado.persona = persona
+            empleado.sueldo = 0
+            empleado.porcentajeComision = 0
+            empleado.hijo = 0
+            empleado.estado = 'A'
+
+            if(!empleado.save(flush: true)){
+                println("error al generar el empleado desde crear persona "  + empleado.errors)
+                render "no"
+            }else{
+                render "ok"
+            }
+        }else{
+            render "no"
+        }
 
 
     }
+
 }

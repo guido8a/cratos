@@ -13,13 +13,13 @@
 <!-- botones -->
 <div class="btn-toolbar toolbar">
     <div class="btn-group">
-        %{--<a href="#" id="generar_rol" class="btn btn-azul ">--}%
-            %{--<i class="fa fa-bars"></i>--}%
-            %{--Generar rol de pagos--}%
-        %{--</a>--}%
         <a href="#" id="btnEditarRol" class="btn btn-success">
             <i class="fa fa-book"></i>
             Rol de pagos
+        </a>
+        <a href="#" id="btnCrearEmpleado" class="btn btn-info">
+            <i class="fa fa-user"></i>
+            Nuevo Empleado
         </a>
     </div>
 
@@ -119,6 +119,78 @@
 <elm:pagination total="${empleadoInstanceCount}" params="${params}"/>
 
 <script type="text/javascript">
+
+
+    $("#btnCrearEmpleado").click(function () {
+        createEditPersona();
+        return false;
+    });
+
+    function submitFormPersona() {
+        var $form = $("#frmPersona");
+        var $btn = $("#dlgCreateEdit").find("#btnSave");
+        if ($form.valid()) {
+            $btn.replaceWith(spinner);
+            openLoader("Grabando");
+            $.ajax({
+                type    : "POST",
+                url     : $form.attr("action"),
+                data    : $form.serialize(),
+                success : function (msg) {
+                    closeLoader();
+                     if (msg == 'ok') {
+                         log("Empleado guardado correctamente", "success");
+                         setTimeout(function () {
+                             location.reload(true);
+                         }, 800);
+                    } else {
+                         log("Error al guardar empleado", "error")
+                    }
+                }
+            });
+        } else {
+            return false;
+        } //else
+    }
+    function createEditPersona(id) {
+        var title = id ? "Editar" : "Crear";
+        var data = id ? { id : id } : {};
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(action:'empleado_ajax')}",
+            data    : data,
+            success : function (msg) {
+                var b = bootbox.dialog({
+                    id      : "dlgCreateEdit",
+                    class   : "long",
+                    title   : title + " Usuario",
+                    message : msg,
+
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                return submitFormPersona();
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+                setTimeout(function () {
+                    b.find(".form-control").not(".datepicker").first().focus()
+                }, 500);
+            } //success
+        }); //ajax
+    } //createEdit
+
+
 
     $("#btnEditarRol").click(function () {
        location.href="${createLink(controller: 'rolPagos', action: 'list')}";
@@ -222,7 +294,7 @@
         bootbox.dialog({
             title   : "Alerta",
             message :  (tipo == 'D' ? "<i class='fa fa-warning fa-3x pull-left text-danger text-shadow'></i><p>" +
-            "¿Está seguro que desea <b style='color: rgba(112,27,25,0.9)'>desactivar</b> al usuario?</p>" :
+            "¿Está seguro que desea <b style='color: rgba(112,27,25,0.9)'>desactivar</b> al empleado?</p>" :
                     "<i class='fa fa-warning fa-3x pull-left text-danger text-shadow'></i><p>" +
                     "¿Está seguro que desea <b style='color: rgba(83,207,109,0.9)'>activar</b> al usuario?</p>"),
             buttons : {

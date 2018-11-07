@@ -1,5 +1,7 @@
 package cratos.seguridad
 
+import cratos.Empleado
+
 
 class PersonaController extends cratos.seguridad.Shield {
     def dbConnectionService
@@ -184,7 +186,7 @@ class PersonaController extends cratos.seguridad.Shield {
         def ordena = params.sort?: "nombre"
         def campos = [cedula: 'prsncdla', nombre: 'prsnnmbr', apellido: 'prsnapll', login: 'prsnlogn', activo: 'prsnactv' ]
         def ordenaCampo = campos[ordena]
-        println "--> $ordenaCampo"
+//        println "--> $ordenaCampo"
         def sql = "select prsn__id id, prsncdla cedula, prsnnmbr nombre, prsnapll apellido, " +
                 "prsnactv activo, emprnmbr empresa, prsnlogn login from prsn, empr where prsn.empr__Id = empr.empr__id " +
                 "order by emprnmbr, ${ordenaCampo} limit ${params.max} offset ${params.offset}"
@@ -402,13 +404,14 @@ class PersonaController extends cratos.seguridad.Shield {
 
     def save_ajax() {
 
-
+//        println("params " + params)
 
         def personaInstance = new Persona()
         if (params.id) {
             personaInstance = Persona.get(params.id)
             if (!personaInstance) {
                 notFound_ajax()
+                render "no"
                 return
             }
             if (!personaInstance.empresa) {
@@ -429,12 +432,30 @@ class PersonaController extends cratos.seguridad.Shield {
         personaInstance.properties = params
 
         if (!personaInstance.save(flush: true)) {
-            def msg = "NO_No se pudo ${params.id ? 'actualizar' : 'crear'} Persona."
-            msg += renderErrors(bean: personaInstance)
-            render msg
+            render "no"
             return
+        }else{
+            if(params.tipo == '2'){
+
+                def existe = Empleado.findByPersona(personaInstance)
+
+                if(!existe){
+                    def empleado = new Empleado()
+                    empleado.persona = personaInstance
+                    empleado.sueldo = 0
+                    empleado.porcentajeComision = 0
+                    empleado.hijo = 0
+                    empleado.estado = 'A'
+
+                    if(!empleado.save(flush: true)){
+                        println("error al generar el empleado desde crear persona "  + empleado.errors)
+
+                    }
+                }
+            }
         }
-        render "OK_${params.id ? 'Actualización' : 'Creación'} de Persona exitosa."
+
+        render "ok"
     } //save para grabar desde ajax
 
     def delete_ajax() {

@@ -64,5 +64,6 @@ class Empleado implements Serializable {
         tipoContrato(blank: true, nullable: true, attributes: [title: 'tipoContrato'])
         cargo(blank: true, nullable: true, size: 1..127, attributes: [title: 'crgo'])
         observaciones(blank: true, nullable: true, size: 1..127, attributes: [title: 'observaciones'])
+        departamento(blank:true, nullable: true)
     }
 }

@@ -1,3 +1,10 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: gato
+  Date: 06/11/18
+  Time: 9:44
+--%>
+
 <%@ page import="cratos.seguridad.Persona" %>
 
 <script type="text/javascript" src="${resource(dir: 'js', file: 'ui.js')}"></script>
@@ -7,33 +14,24 @@
         <elm:notFound elem="Persona" genero="a"/>
     </g:if>
     <g:else>
-        <g:form class="form-horizontal" name="frmPersona" role="form" action="save_ajax" method="POST">
+        <g:form class="form-horizontal" name="frmPersona" role="form" controller="persona" action="save_ajax" method="POST">
             <g:hiddenField name="id" value="${personaInstance?.id}"/>
-            <g:hiddenField name="tipo" value="${1}"/>
+            <g:hiddenField name="tipo" value="${2}"/>
 
-                <div class="form-group keeptogether  ${hasErrors(bean: personaInstance, field: 'empresa', 'error')} required">
+            <div class="form-group keeptogether  ${hasErrors(bean: personaInstance, field: 'empresa', 'error')} required">
                 <span class="grupo">
                     <label for="cedula" class="col-md-3 control-label text-info">
                         Empresa
                     </label>
 
                     <div class="col-md-6">
-                        <g:if test="${session.perfil.id == 1}">
-                            <g:select id="empresa" name="empresa.id" from="${cratos.Empresa.list()}" optionKey="id"
-                                      disabled="${session.perfil.id != 1}"
-                                      value="${personaInstance?.empresa?.id}" optionValue="nombre" class="many-to-one form-control text-info"
-                                      noSelection="['null': 'Seleccione...']"/>
+                        <g:select id="empresa" name="empresa.id" from="${cratos.Empresa.list()}" optionKey="id"
+                                  disabled="${session.perfil.id != 1}"
+                                  value="${session.empresa.id}" optionValue="nombre" class="many-to-one form-control text-info"/>
 
-                        </g:if>
-                        <g:else>
-                            <g:select id="empresa" name="empresa.id" from="${cratos.seguridad.Persona.get(session.usuario.id).empresa}" optionKey="id"
-                                      disabled="${session.perfil.id != 1}"
-                                      value="${session.empresa.id}" optionValue="nombre" class="many-to-one form-control text-info"
-                                      noSelection="['null': 'Seleccione...']"/>
-                        </g:else>
                     </div>
                 </span>
-                </div>
+            </div>
 
             <div class="form-group keeptogether  ${hasErrors(bean: personaInstance, field: 'cedula', 'error')} required">
                 <span class="grupo">
@@ -169,20 +167,6 @@
                     </div>
 
                 </span>
-            </div>
-
-            %{--<div class="form-group keeptogether  ${hasErrors(bean: personaInstance, field: 'empresa', 'error')} ">--}%
-                %{--<span class="grupo">--}%
-                    %{--<label for="empresa" class="col-md-3 control-label text-info">--}%
-                        %{--Empresa--}%
-                    %{--</label>--}%
-
-                    %{--<div class="col-md-6">--}%
-                        %{--<g:select id="empresa" name="empresa.id" from="${cratos.Empresa.list()}" optionKey="id" value="${personaInstance?.empresa?.id}" class="many-to-one form-control" noSelection="['null': '']"/>--}%
-                    %{--</div>--}%
-
-                %{--</span>--}%
-            %{--</div>--}%
 
             <div class="form-group keeptogether  ${hasErrors(bean: personaInstance, field: 'discapacitado', 'error')} ">
                 <span class="grupo">
@@ -265,149 +249,86 @@
                 </span>
             </div>
 
-            <div class="form-group keeptogether  ${hasErrors(bean: personaInstance, field: 'login', 'error')}">
-                <span class="grupo">
-                    <label for="login" class="col-md-3 control-label text-info">
-                        Login
-                    </label>
+            <g:hiddenField name="login" value="${null}"/>
+            <g:hiddenField name="activo" value="${0}"/>
 
-                    <div class="col-md-6">
-                        <g:textField name="login" maxlength="15" class="form-control" disabled="${personaInstance?.activo == 0}" value="${personaInstance?.login}"/>
-                    </div>
-                </span>
-            </div>
+            %{--<div class="form-group keeptogether  ${hasErrors(bean: personaInstance, field: 'login', 'error')} required">--}%
+                %{--<span class="grupo">--}%
+                    %{--<label for="login" class="col-md-3 control-label text-info">--}%
+                        %{--Login--}%
+                    %{--</label>--}%
 
-        %{--<div class="form-group keeptogether  ${hasErrors(bean: personaInstance, field: 'password', 'error')} required">--}%
-        %{--<span class="grupo">--}%
-        %{--<label for="password" class="col-md-3 control-label text-info">--}%
-        %{--Password--}%
-        %{--</label>--}%
+                    %{--<div class="col-md-6">--}%
+                        %{--<g:textField name="login" maxlength="15" required="" class="form-control required" value="${personaInstance?.login}"/>--}%
+                    %{--</div>--}%
+                %{--</span>--}%
+            %{--</div>--}%
 
-        %{--<div class="col-md-6">--}%
-        %{--<div class="input-group"><span class="input-group-addon"><i class="fa fa-lock"></i>--}%
-        %{--</span><g:field type="password" name="password" maxlength="64" required="" class="form-control required" value="${personaInstance?.password}"/>--}%
-        %{--</div>--}%
-        %{--</div>--}%
-        %{--*--}%
-        %{--</span>--}%
-        %{--</div>--}%
+            %{--<div class="form-group keeptogether  ${hasErrors(bean: personaInstance, field: 'activo', 'error')} required">--}%
+                %{--<span class="grupo">--}%
+                    %{--<label for="activo" class="col-md-3 control-label text-info">--}%
+                        %{--Es usuario--}%
+                    %{--</label>--}%
 
-        %{--<div class="form-group keeptogether  ${hasErrors(bean: personaInstance, field: 'autorizacion', 'error')} required">--}%
-        %{--<span class="grupo">--}%
-        %{--<label for="autorizacion" class="col-md-3 control-label text-info">--}%
-        %{--Autorizacion--}%
-        %{--</label>--}%
-
-        %{--<div class="col-md-6">--}%
-        %{--<div class="input-group"><span class="input-group-addon"><i class="fa fa-lock"></i>--}%
-        %{--</span><g:field type="password" name="autorizacion" maxlength="255" required="" class="form-control required" value="${personaInstance?.autorizacion}"/>--}%
-        %{--</div>--}%
-        %{--</div>--}%
-        %{--*--}%
-        %{--</span>--}%
-        %{--</div>--}%
-
-            <div class="form-group keeptogether  ${hasErrors(bean: personaInstance, field: 'activo', 'error')} required">
-                <span class="grupo">
-                    <label for="activo" class="col-md-3 control-label text-info">
-                        Es usuario
-                    </label>
-
-                    <div class="col-md-3">
-                        %{--<g:field name="activo" type="number" value="${personaInstance.activo}" class="digits form-control required" required=""/>--}%
-                        <g:select name="activo" from="[0: 'NO', 1: 'SI']" optionKey="key" optionValue="value"
-                                  class="form-control" value="${personaInstance?.activo ?: 'S'}"/>
-                    </div>
-                    <p class="col-md-4" style="font-weight: bold">Si el usuario debe tener un login</p>
-                </span>
-            </div>
-
-        %{--<div class="form-group keeptogether  ${hasErrors(bean: personaInstance, field: 'fechaPass', 'error')} ">--}%
-        %{--<span class="grupo">--}%
-        %{--<label for="fechaPass" class="col-md-3 control-label text-info">--}%
-        %{--Fecha Pass--}%
-        %{--</label>--}%
-
-        %{--<div class="col-md-4">--}%
-        %{--<elm:datepicker name="fechaPass" title="Fecha de cambio de contraseña" class="datepicker form-control" value="${personaInstance?.fechaPass}" default="none" noSelection="['': '']"/>--}%
-        %{--</div>--}%
-
-        %{--</span>--}%
-        %{--</div>--}%
-
+                    %{--<div class="col-md-3">--}%
+                        %{--<g:select name="activo" from="[0: 'NO', 1: 'SI']" optionKey="key" optionValue="value"--}%
+                                  %{--class="form-control" value="${personaInstance?.activo ?: 'S'}"/>--}%
+                    %{--</div>--}%
+                    %{--<p class="col-md-4" style="font-weight: bold">Si el usuario debe tener un login</p>--}%
+                %{--</span>--}%
+            %{--</div>--}%
         </g:form>
     </g:else>
 </div>
-        <script type="text/javascript">
-
-
-            $("#activo").change(function () {
-               var t = $("#activo option:selected").val();
-               if(t == 1){
-                   $("#login").prop('disabled', false)
-               }else{
-                   $("#login").prop('disabled', true)
-               }
-            });
-
-
-            var validator = $("#frmPersona").validate({
-                errorClass     : "help-block",
-                errorPlacement : function (error, element) {
-                    if (element.parent().hasClass("input-group")) {
-                        error.insertAfter(element.parent());
-                    } else {
-                        error.insertAfter(element);
-                    }
-                    element.parents(".grupo").addClass('has-error');
-                },
-                success        : function (label) {
-                    label.parents(".grupo").removeClass('has-error');
-                },
-                rules          : {
-                    cedula : {
-                        remote : {
-                            url  : "${createLink(action: 'validarCedula_ajax')}",
-                            type : "post",
-                            data : {
-                                id : "${personaInstance.id}"
-                            }
-                        }
-                    },
-                    login : {
-                        remote : {
-                            url  : "${createLink(action: 'validarLogin_ajax')}",
-                            type : "post",
-                            data : {
-                                id : "${personaInstance.id}"
-                            }
-                        }
-                    }
-                },
-                messages       : {
-                    cedula : {
-                        remote : "Cédula ya ingresada"
-                    },
-                    login : {
-                        remote : "Login ya ingresado"
+<script type="text/javascript">
+    var validator = $("#frmPersona").validate({
+        errorClass     : "help-block",
+        errorPlacement : function (error, element) {
+            if (element.parent().hasClass("input-group")) {
+                error.insertAfter(element.parent());
+            } else {
+                error.insertAfter(element);
+            }
+            element.parents(".grupo").addClass('has-error');
+        },
+        success        : function (label) {
+            label.parents(".grupo").removeClass('has-error');
+        },
+        rules          : {
+            cedula : {
+                remote : {
+                    url  : "${createLink(controller: 'persona',  action: 'validarCedula_ajax')}",
+                    type : "post",
+                    data : {
+                        id : "${personaInstance.id}"
                     }
                 }
-            });
-            $(".form-control").keydown(function (ev) {
-                if (ev.keyCode == 13) {
-                    submitForm();
-                    return false;
+            },
+            login : {
+                remote : {
+                    url  : "${createLink(controller: 'persona', action: 'validarLogin_ajax')}",
+                    type : "post",
+                    data : {
+                        id : "${personaInstance.id}"
+                    }
                 }
-                return true;
-            });
-
-//            $("#apellido, #nombre").blur(function () {
-//                var nombre = $("#nombre").val();
-//                var apellido = $("#apellido").val();
-//                var sigla = (nombre + " " + apellido).acronym().toUpperCase();
-//                var user = (nombre.acronym().toUpperCase() + (apellido.split(" ")[0])).toLowerCase();
-//                $("#sigla").val(sigla);
-//                $("#login").val(user);
-//            });
-        </script>
+            }
+        },
+        messages       : {
+            cedula : {
+                remote : "Cédula ya ingresada"
+            },
+            login : {
+                remote : "Login ya ingresado"
+            }
+        }
+    });
+    $(".form-control").keydown(function (ev) {
+        if (ev.keyCode == 13) {
+            submitForm();
+            return false;
+        }
+        return true;
+    });
+</script>
 

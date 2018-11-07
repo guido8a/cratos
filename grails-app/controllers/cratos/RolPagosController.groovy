@@ -228,7 +228,7 @@ class RolPagosController extends cratos.seguridad.Shield {
 
     def tablaRolPagos_ajax() {
 
-//        println("params trp" + params)
+        println("params trp" + params)
 
         def empresa = Empresa.get(session.empresa.id)
 
@@ -244,6 +244,8 @@ class RolPagosController extends cratos.seguridad.Shield {
             def sqlOrder = "order by rlpg.anio__id, rlpg.mess__id "
 
             def data = cn.rows((sqlSelect + sqlWhere + sqlOrder).toString())
+
+            println("data " + data)
 
             [rolPagosInstanceList: data, tipo: params.tipo, parametros: params]
 
@@ -283,6 +285,8 @@ class RolPagosController extends cratos.seguridad.Shield {
                 order("mess","asc")
 
             }
+
+            println("roles " + roles)
 
             return [roles: roles, tipo: params.tipo, parametros: params]
         }
