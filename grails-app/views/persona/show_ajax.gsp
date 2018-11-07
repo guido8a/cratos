@@ -6,8 +6,8 @@
     <g:else>
         <g:if test="${personaInstance?.cedula}">
             <div class="row">
-                <div class="col-md-3 text-info">
-                    Cédula vvv
+                <div class="col-md-4 text-info">
+                    Cédula
                 </div>
 
                 <div class="col-md-4">
@@ -19,7 +19,7 @@
 
         <g:if test="${personaInstance?.nombre}">
             <div class="row">
-                <div class="col-md-3 text-info">
+                <div class="col-md-4 text-info">
                     Nombre
                 </div>
 
@@ -32,7 +32,7 @@
 
         <g:if test="${personaInstance?.apellido}">
             <div class="row">
-                <div class="col-md-3 text-info">
+                <div class="col-md-4 text-info">
                     Apellido
                 </div>
 
@@ -45,7 +45,7 @@
 
         <g:if test="${personaInstance?.sigla}">
             <div class="row">
-                <div class="col-md-3 text-info">
+                <div class="col-md-4 text-info">
                     Sigla
                 </div>
 
@@ -58,7 +58,7 @@
 
         <g:if test="${personaInstance?.fechaNacimiento}">
             <div class="row">
-                <div class="col-md-3 text-info">
+                <div class="col-md-4 text-info">
                     Fecha Nacimiento
                 </div>
 
@@ -71,7 +71,7 @@
 
         <g:if test="${personaInstance?.email}">
             <div class="row">
-                <div class="col-md-3 text-info">
+                <div class="col-md-4 text-info">
                     E-mail
                 </div>
 
@@ -84,7 +84,7 @@
 
         <g:if test="${personaInstance?.telefono}">
             <div class="row">
-                <div class="col-md-3 text-info">
+                <div class="col-md-4 text-info">
                     Teléfono
                 </div>
 
@@ -97,7 +97,7 @@
 
         <g:if test="${personaInstance?.direccion}">
             <div class="row">
-                <div class="col-md-3 text-info">
+                <div class="col-md-4 text-info">
                     Dirección
                 </div>
 
@@ -110,7 +110,7 @@
 
         <g:if test="${personaInstance?.direccionReferencia}">
             <div class="row">
-                <div class="col-md-3 text-info">
+                <div class="col-md-4 text-info">
                     Referencias dirección
                 </div>
 
@@ -123,7 +123,7 @@
 
         <g:if test="${personaInstance?.barrio}">
             <div class="row">
-                <div class="col-md-3 text-info">
+                <div class="col-md-4 text-info">
                     Barrio
                 </div>
 
@@ -136,7 +136,7 @@
 
         <g:if test="${personaInstance?.discapacitado}">
             <div class="row">
-                <div class="col-md-3 text-info">
+                <div class="col-md-4 text-info">
                     Discapacitado
                 </div>
 
@@ -149,7 +149,7 @@
 
         <g:if test="${personaInstance?.sexo}">
             <div class="row">
-                <div class="col-md-3 text-info">
+                <div class="col-md-4 text-info">
                     Sexo
                 </div>
 
@@ -162,7 +162,7 @@
 
         <g:if test="${personaInstance?.nacionalidad}">
             <div class="row">
-                <div class="col-md-3 text-info">
+                <div class="col-md-4 text-info">
                     Nacionalidad
                 </div>
 
@@ -175,7 +175,7 @@
 
         <g:if test="${personaInstance?.profesion}">
             <div class="row">
-                <div class="col-md-3 text-info">
+                <div class="col-md-4 text-info">
                     Profesión
                 </div>
 
@@ -188,7 +188,7 @@
 
         <g:if test="${personaInstance?.estadoCivil}">
             <div class="row">
-                <div class="col-md-3 text-info">
+                <div class="col-md-4 text-info">
                     Estado Civil
                 </div>
 
@@ -201,7 +201,7 @@
 
         <g:if test="${personaInstance?.observaciones}">
             <div class="row">
-                <div class="col-md-3 text-info">
+                <div class="col-md-4 text-info">
                     Observaciones
                 </div>
 
@@ -214,7 +214,7 @@
 
         <g:if test="${personaInstance?.login}">
             <div class="row">
-                <div class="col-md-3 text-info">
+                <div class="col-md-4 text-info">
                     Login
                 </div>
 
@@ -226,16 +226,16 @@
         </g:if>
 
     %{--<g:if test="${personaInstance?.activo}">--}%
-        <div class="row">
-            <div class="col-md-3 text-info">
-                Activo
-            </div>
+        %{--<div class="row">--}%
+            %{--<div class="col-md-3 text-info">--}%
+                %{--Activo--}%
+            %{--</div>--}%
 
-            <div class="col-md-4">
-                <g:formatBoolean boolean="${personaInstance.activo == 1}" true="SI" false="NO"/>
-            </div>
+            %{--<div class="col-md-4">--}%
+                %{--<g:formatBoolean boolean="${personaInstance.activo == 1}" true="SI" false="NO"/>--}%
+            %{--</div>--}%
 
-        </div>
+        %{--</div>--}%
     %{--</g:if>--}%
 
         <div class="row">

@@ -153,7 +153,7 @@
         } //else
     }
     function createEditPersona(id) {
-        var title = id ? "Editar" : "Crear";
+        var title = id ? "Editar" : "Nuevo";
         var data = id ? { id : id } : {};
         $.ajax({
             type    : "POST",
@@ -163,7 +163,7 @@
                 var b = bootbox.dialog({
                     id      : "dlgCreateEdit",
                     class   : "long",
-                    title   : title + " Usuario",
+                    title   : title + " Empleado",
                     message : msg,
 
                     buttons : {

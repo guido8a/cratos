@@ -167,6 +167,7 @@
                     </div>
 
                 </span>
+            </div>
 
             <div class="form-group keeptogether  ${hasErrors(bean: personaInstance, field: 'discapacitado', 'error')} ">
                 <span class="grupo">
