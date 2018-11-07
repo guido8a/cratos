@@ -183,7 +183,7 @@ class PrflController extends cratos.seguridad.Shield {
     * **/
 
     def grabar = {
-      println "parametros grabar: ${params}"
+        println "parametros grabar: ${params}"
         def ids = params.ids
         def modulo = params.menu
         def prfl = params.prfl
@@ -202,7 +202,7 @@ class PrflController extends cratos.seguridad.Shield {
                 "from accn where mdlo__id = " + modulo + " and  " +
                 "accn__id in (${ids})) and prfl__id = ${prfl} and tpac__id = ${tpac}"
 //
-      println "grabar SQL: ${tx}"
+        println "grabar SQL: ${tx}"
         cn.eachRow(tx.toString()) { d ->
             try {
                 Prms.get(d.prms__id).delete(flush: true)

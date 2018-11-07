@@ -286,7 +286,7 @@ class RubroController extends cratos.seguridad.Shield {
             if (!detalle.save(flush: true))
                 println "error save detalle pago sueldo " + detalle.errors
             total += sueldo
-            println "total $total, sueldo $sueldo, dcmo14: $dcmo14"
+//            println "total $total, sueldo $sueldo, dcmo14: $dcmo14"
 
             if(dcmo14) {
                 if(dcmo14.porcentaje > 0) { /* se paga el 14° mensual */
@@ -308,6 +308,7 @@ class RubroController extends cratos.seguridad.Shield {
                 }
             }
 
+            /* otros rubros */
             def rubros = RubroTipoContrato.findAllByTipoContratoAndRubroNotInList(emp.tipoContrato, [sldo, dc14, dc13])
 //            println "rubros ==> ${rubros.rubro.descripcion} valor: ${rubros.rubro.valor} pc: ${rubros.rubro.porcentaje}"
             rubros.each { r ->

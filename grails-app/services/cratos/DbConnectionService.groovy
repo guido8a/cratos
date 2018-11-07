@@ -20,10 +20,6 @@ class DbConnectionService {
         Sql sql = new Sql(dataSource)
         return sql
     }
-    def getConnectionOferentes(){
-        Sql sql = new Sql(dataSource_oferentes)
-        return sql
-    }
 
     def ejecutarProcedure(nombre, parametros,condiciones) {
 
