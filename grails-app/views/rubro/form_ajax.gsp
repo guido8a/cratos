@@ -36,6 +36,20 @@
             </span>
         </div>
 
+        <div class="form-group ${hasErrors(bean: rubroInstance, field: 'codigo', 'error')} required">
+            <span class="grupo">
+                <label for="descripcion" class="col-md-3 control-label text-info">
+                    Código
+                </label>
+
+                <div class="col-md-3">
+                    <g:textField name="codigo" maxlength="4" required="" class="form-control required"
+                                 value="${rubroInstance?.codigo}"/>
+                </div>
+                *
+            </span>
+        </div>
+
         <div class="form-group ${hasErrors(bean: rubroInstance, field: 'valor', 'error')} required">
             <span class="grupo">
                 <label for="valor" class="col-md-3 control-label text-info">

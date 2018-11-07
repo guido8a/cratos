@@ -616,6 +616,7 @@ class RubroController extends cratos.seguridad.Shield {
         rubroInstance.editable = params.editable
         rubroInstance.porcentaje = params.porcentaje.toDouble()
         rubroInstance.valor = params.valor.toDouble()
+        rubroInstance.codigo = params.codigo
 
         if (!rubroInstance.save(flush: true)) {
             def msg = "NO_No se pudo ${params.id ? 'actualizar' : 'crear'} Rubro."

@@ -39,7 +39,7 @@ class Rubro implements Serializable {
         iess(size: 1..1, blank: false, nullable: false, attributes: [title: 'iess'])
         gravable(size: 1..1, blank: false, nullable: false, attributes: [title: 'grabable'])
         valor(blank: true, nullable: true, attributes: [title: 'valor predefinido'])
-        codigo(blank: true, nullable: true, attributes: [title: 'codigo'])
+        codigo(blank: false, nullable: false, attributes: [title: 'codigo'])
     }
     String toString() {
         "${tipoRubro}: ${descripcion}"
