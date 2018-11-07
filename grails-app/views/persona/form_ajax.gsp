@@ -35,6 +35,7 @@
                 </span>
                 </div>
 
+
             <div class="form-group keeptogether  ${hasErrors(bean: personaInstance, field: 'cedula', 'error')} required">
                 <span class="grupo">
                     <label for="cedula" class="col-md-3 control-label text-info">
