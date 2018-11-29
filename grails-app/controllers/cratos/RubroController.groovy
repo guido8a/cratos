@@ -309,13 +309,13 @@ class RubroController extends cratos.seguridad.Shield {
             }
 
             /* otros rubros */
-            def rubros = RubroTipoContrato.findAllByTipoContratoAndRubroNotInList(emp.tipoContrato, [sldo, dc14, dc13])
+            def rubros = RubroTipoContrato.findAllByTipoContratoAndRubroNotInListAndActivo(emp.tipoContrato, [sldo, dc14, dc13], '1')
 //            println "rubros ==> ${rubros.rubro.descripcion} valor: ${rubros.rubro.valor} pc: ${rubros.rubro.porcentaje}"
             rubros.each { r ->
                 detalle = DetallePago.find("from DetallePago where rubroTipoContrato = ${r.id} and " +
                         "rolPagos = ${rol.id} and empleado = ${emp.id}")
 
-//                println "detalle rubros: $detalle"
+                println "detalle rubros: $detalle"
                 if (!detalle) {
                     detalle = new DetallePago()
                 }
@@ -338,6 +338,13 @@ class RubroController extends cratos.seguridad.Shield {
                 total += valor
             }
 
+            def rubrosNo = RubroTipoContrato.findAllByTipoContratoAndRubroNotInListAndActivo(emp.tipoContrato, [sldo, dc14, dc13], '0')
+//            println "rubros ==> ${rubros.rubro.descripcion} valor: ${rubros.rubro.valor} pc: ${rubros.rubro.porcentaje}"
+            rubrosNo.each { r ->
+                detalle = DetallePago.find("from DetallePago where rubroTipoContrato = ${r.id} and " +
+                        "rolPagos = ${rol.id} and empleado = ${emp.id}")
+                detalle.delete(flush: true)
+            }
         }
 
         rol.pagado = total

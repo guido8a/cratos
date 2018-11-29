@@ -11,6 +11,7 @@ class RubroTipoContrato implements Serializable {
     Rubro rubro
     String observaciones
     String descripcion
+    String activo = '1'
 //    Empresa empresa
     static mapping = {
         table 'rbtc'
@@ -30,7 +31,7 @@ class RubroTipoContrato implements Serializable {
             rubro column: 'rbro__id'
             observaciones column: 'rbtcobsr'
             descripcion column: 'rbtcdscr'
-//            empresa column: 'empr__id'
+            activo column: 'rbtcactv'
         }
     }
     static constraints = {
