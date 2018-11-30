@@ -43,8 +43,9 @@ class RubroTipoContrato implements Serializable {
         iess(size: 1..1, blank: false, nullable: false, attributes: [title: 'iess'])
         gravable(size: 1..1, blank: false, nullable: false, attributes: [title: 'grabable'])
         valor(blank: true, nullable: true, attributes: [title: 'valor'])
-        observaciones(blank: true, nullable: true, size: 1..127, attributes: [title: 'observaciones'])
+        observaciones(blank: true, nullable: true, attributes: [title: 'observaciones'])
         descripcion(blank: false, nullable: false, size: 1..127, attributes: [title: 'descripción'])
+        activo(blank:true, nullable: true, size: 1..1)
 //        empresa(nullable: false,blank:false)
     }
 }

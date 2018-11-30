@@ -20,7 +20,7 @@ class RubroTipoContratoController extends cratos.seguridad.Shield {
 //         rubroTipoContratoInstanceCount: RubroTipoContrato.count() ]
 
         def sqlSelect = "select rbtc__id id, rbtcvlor valor, rbtcpcnt porcentaje, rbtcedit editable, " +
-                "rbtcdcmo decimo, rbtciess iess, rbtcgrvb gravable, tpctdscr tipoContrato, rbrodscr rubro, " +
+                "rbtcdcmo decimo, rbtciess iess, rbtcgrvb gravable, rbtcactv activo, tpctdscr tipoContrato, rbrodscr rubro, " +
                 "rbtcdscr descripcion, tprbdscr tipoRubro "
         def sqlWhere = "from rbtc, tpct, rbro, tprb " +
                 "where tpct.tpct__id = rbtc.tpct__id and rbro.rbro__id = rbtc.rbro__id and " +
@@ -119,4 +119,25 @@ class RubroTipoContratoController extends cratos.seguridad.Shield {
             render "no"
         }
     } //delete
+
+
+    def cambiarEstado_ajax () {
+
+        def rubroTipoContrato = RubroTipoContrato.get(params.id)
+
+        if(params.tipo == '2'){
+            rubroTipoContrato.activo = '0'
+        }else{
+            rubroTipoContrato.activo = '1'
+        }
+
+        try{
+            rubroTipoContrato.save(flush: true)
+            render "ok"
+        }catch (e){
+            println("error al cambiar el estado del tipo de rubro contrato " + e + rubroTipoContrato.errors)
+            render "no"
+        }
+
+    }
 } //fin controller
