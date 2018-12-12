@@ -35,17 +35,17 @@ class RolPagosController extends cratos.seguridad.Shield {
 
         /*MES*/
 
-        def mesesAprobados = []
+//        def mesesAprobados = []
+//
+//        data.each {
+//            if(it.estado == 'A'){
+//                mesesAprobados += it.mess__id
+//            }
+//        }
+//
+//        def meses = Mes.findAllByIdNotInList(mesesAprobados)
 
-        data.each {
-            if(it.estado == 'A'){
-                mesesAprobados += it.mess__id
-            }
-        }
-
-        def meses = Mes.findAllByIdNotInList(mesesAprobados)
-
-        [rolPagosInstanceList: data, params: params, rolPagosInstanceCount: cnta, params: params, meses: meses]
+        [rolPagosInstanceList: data, params: params, rolPagosInstanceCount: cnta, params: params]
 //        [rolPagosInstanceList: RolPagos.findAllByEmpresa(empresa), params: params, rolPagosInstanceCount: RolPagos.findAllByEmpresa(empresa).size()]
 
     } //list
