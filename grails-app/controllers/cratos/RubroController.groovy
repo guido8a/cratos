@@ -265,11 +265,11 @@ class RubroController extends cratos.seguridad.Shield {
                 if ((emp.fechaInicio <= fcin) && (emp.fechaFin ?: new Date() > finDeMes))
                     dias = (finDeMes - fcin + 1).toInteger()
 
-//                print "...2 dias: $dias, total: ${(finDeMes - fcin + 1)}"
+                print "...2 dias: $dias, total: ${(finDeMes - fcin + 1)}"
                 sueldo = (emp.sueldo * dias / (finDeMes - fcin + 1).toInteger()).toDouble().round(2)
                 sueldo = Math.round(sueldo * 100)/100
             }
-//            println "sueldo: $sueldo"
+            println "sueldo: $sueldo"
 
             def detalle = DetallePago.find("from DetallePago where rolPagos = ${rol.id} and " +
                     "rubroTipoContrato = ${rbrotpct.id} and empleado = ${emp.id}")
@@ -278,7 +278,7 @@ class RubroController extends cratos.seguridad.Shield {
 //                println "crea dtpg"
                 detalle = new DetallePago()
             }
-//            println "edita dtpg ---- "
+            println "edita dtpg ---- "
             detalle.empleado = emp
             detalle.rolPagos = rol
             detalle.rubroTipoContrato = rbrotpct
@@ -343,7 +343,9 @@ class RubroController extends cratos.seguridad.Shield {
             rubrosNo.each { r ->
                 detalle = DetallePago.find("from DetallePago where rubroTipoContrato = ${r.id} and " +
                         "rolPagos = ${rol.id} and empleado = ${emp.id}")
-                detalle.delete(flush: true)
+                if(detalle){
+                    detalle.delete(flush: true)
+                }
             }
         }
 
