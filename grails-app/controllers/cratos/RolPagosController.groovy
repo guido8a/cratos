@@ -32,7 +32,20 @@ class RolPagosController extends cratos.seguridad.Shield {
 //        println "--- ${sqlCount + sqlWhere}"
         def cnta = cn.rows((sqlCount + sqlWhere).toString())[0].cnta
 //        println "${data.size()}, cnta: $cnta"
-        [rolPagosInstanceList: data, params: params, rolPagosInstanceCount: cnta, params: params]
+
+        /*MES*/
+
+        def mesesAprobados = []
+
+        data.each {
+            if(it.estado == 'A'){
+                mesesAprobados += it.mess__id
+            }
+        }
+
+        def meses = Mes.findAllByIdNotInList(mesesAprobados)
+
+        [rolPagosInstanceList: data, params: params, rolPagosInstanceCount: cnta, params: params, meses: meses]
 //        [rolPagosInstanceList: RolPagos.findAllByEmpresa(empresa), params: params, rolPagosInstanceCount: RolPagos.findAllByEmpresa(empresa).size()]
 
     } //list
@@ -228,7 +241,7 @@ class RolPagosController extends cratos.seguridad.Shield {
 
     def tablaRolPagos_ajax() {
 
-        println("params trp" + params)
+//        println("params trp" + params)
 
         def empresa = Empresa.get(session.empresa.id)
 
@@ -245,7 +258,7 @@ class RolPagosController extends cratos.seguridad.Shield {
 
             def data = cn.rows((sqlSelect + sqlWhere + sqlOrder).toString())
 
-            println("data " + data)
+//            println("data " + data)
 
             [rolPagosInstanceList: data, tipo: params.tipo, parametros: params]
 
@@ -286,10 +299,43 @@ class RolPagosController extends cratos.seguridad.Shield {
 
             }
 
-            println("roles " + roles)
+//            println("roles " + roles)
 
             return [roles: roles, tipo: params.tipo, parametros: params]
         }
+    }
+
+
+    def meses_ajax () {
+
+        def empresa =session.empresa.id
+        def cn = dbConnectionService.getConnection()
+        params.max = 15
+
+        def sqlSelect = "select rlpg__id id, messdscr mess, anioanio anio, rlpg.mess__id mess__id, rlpg.anio__id anio__id, rlpgfcha fecha, " +
+                "rlpgfcmd fechaModificacion, rlpgpgdo pagado, rlpgetdo estado "
+        def sqlWhere = "from rlpg, mess, anio " +
+                "where empr__id = ${empresa} and mess.mess__id = rlpg.mess__id and " +
+                "anio.anio__id = rlpg.anio__id "
+        def sqlOrder = "order by rlpg.anio__id, rlpg.mess__id "
+        def sqlLimit = "offset ${params.offset} limit ${params.max}"
+        def sqlCount = "select count(*) cnta "
+        def data = cn.rows((sqlSelect + sqlWhere + sqlOrder + sqlLimit).toString())
+
+        /*MES*/
+
+        def mesesAprobados = []
+
+        data.each {
+            if(it.estado == 'A'){
+                mesesAprobados += it.mess__id
+            }
+        }
+
+        def meses = mesesAprobados ? Mes.findAllByIdNotInList(mesesAprobados) : Mes.list()
+
+        return [meses: meses]
+
     }
 
 

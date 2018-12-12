@@ -146,8 +146,8 @@
                     <div class="col-xs-5" style="text-align: right">
                         Mes:
                     </div>
-                    <div class="col-xs-5 negrilla">
-                        <g:select name="mes" class="form-control" from="${cratos.Mes.list(sort: 'numero')}" optionKey="id" optionValue="descripcion"/>
+                    <div class="col-xs-5 negrilla" id="divMeses">
+                        %{--<g:select name="mes" class="form-control" from="${cratos.Mes.list(sort: 'numero')}" optionKey="id" optionValue="descripcion"/>--}%
                     </div>
 
                 </div>
@@ -163,6 +163,21 @@
 %{--<elm:pagination total="${rolPagosInstanceCount}" params="${params}"/>--}%
 
 <script type="text/javascript">
+
+
+    function cargarMeses() {
+            $.ajax({
+                type: 'POST',
+                url: '${createLink(controller: 'rolPagos', action: 'meses_ajax')}',
+                data:{
+                 meses: '${meses}'
+                },
+                success: function (msg){
+                    $("#divMeses").html(msg)
+                }
+            })
+    }
+
 
     $("#btnLimpiarBusqueda").click(function () {
         cargarTablaRol('1');
@@ -209,6 +224,7 @@
     }
 
     $("#generar_rol").click(function(){
+        cargarMeses();
         $("#dlg-rol").modal("show")
     });
 
@@ -333,8 +349,6 @@
         }); //ajax
     } //createEdit
 
-
-
     function cambiarEstado (id, params) {
         $.ajax({
             type :'POST',
@@ -396,229 +410,10 @@
     }
 
     $(function () {
-
         $(".btnCrear").click(function() {
             createEditRow();
             return false;
         });
-
-//        $(function () {
-//            $("tr").contextMenu({
-//                items  : createContextMenu,
-//                onShow : function ($element) {
-//                    $element.addClass("trHighlight");
-//                },
-//                onHide : function ($element) {
-//                    $(".trHighlight").removeClass("trHighlight");
-//                }
-//            });
-//        });
-
-
-        %{--function createContextMenu(node) {--}%
-        %{--var $tr = $(node);--}%
-        %{--$tr.addClass("success");--}%
-        %{--var id = $tr.data("id");--}%
-        %{--var est = $tr.data("estado");--}%
-        %{--var mes = $tr.data("mes");--}%
-        %{--var anio = $tr.data("anio");--}%
-        %{--var mesN = $tr.data("mes1");--}%
-        %{--var anioN = $tr.data("anio2");--}%
-
-        %{--var items = {--}%
-        %{--header: {--}%
-        %{--label: "Acciones",--}%
-        %{--header: true--}%
-        %{--}--}%
-        %{--};--}%
-
-        %{--var ver = {--}%
-        %{--label  : 'Ver',--}%
-        %{--icon   : "fa fa-search",--}%
-        %{--action : function (e) {--}%
-        %{--$("tr.success").removeClass("success");--}%
-        %{--//                    e.preventDefault();--}%
-        %{--$.ajax({--}%
-        %{--type    : "POST",--}%
-        %{--url     : "${createLink(action:'show_ajax')}",--}%
-        %{--data    : {--}%
-        %{--id : id--}%
-        %{--},--}%
-        %{--success : function (msg) {--}%
-        %{--bootbox.dialog({--}%
-        %{--title   : "Ver Rol de Pagos",--}%
-        %{--message : msg,--}%
-        %{--buttons : {--}%
-        %{--ok : {--}%
-        %{--label     : "Aceptar",--}%
-        %{--className : "btn-primary",--}%
-        %{--callback  : function () {--}%
-        %{--}--}%
-        %{--}--}%
-        %{--}--}%
-        %{--});--}%
-        %{--}--}%
-        %{--});--}%
-        %{--}--}%
-        %{--};--}%
-
-        %{--var ce = {--}%
-        %{--label  : 'Cambiar Estado',--}%
-        %{--icon   : "fa fa-undo",--}%
-        %{--action : function (e) {--}%
-        %{--cambiarEstado(id)--}%
-        %{--}--}%
-        %{--};--}%
-
-
-        %{--var dpr = {--}%
-        %{--label  : 'Detalle de Pago por Rubro',--}%
-        %{--icon   : "fa fa-list-ol",--}%
-        %{--action : function (e) {--}%
-        %{--rubros(id)--}%
-        %{--}--}%
-        %{--};--}%
-
-
-        %{--var dpe = {--}%
-        %{--label  : 'Detalle de Pago por Empleado',--}%
-        %{--icon   : "fa fa-users",--}%
-        %{--action : function (e) {--}%
-        %{--cargarEmpleados(id)--}%
-        %{--}--}%
-        %{--};--}%
-
-        %{--var generar = {--}%
-        %{--label  : 'Generar Rol Nuevamente',--}%
-        %{--icon   : "fa fa-check-square",--}%
-        %{--action : function (e) {--}%
-        %{--generarRol(mes, anio, mesN, anioN)--}%
-        %{--}--}%
-        %{--};--}%
-
-        %{--var imprimir = {--}%
-        %{--label  : 'Imprimir Rol de Pagos',--}%
-        %{--icon   : "fa fa-print",--}%
-        %{--action : function (e) {--}%
-        %{--location.href="${createLink(controller: 'reportes3', action: 'reporteRolPagosGeneral')}/?id=" + id--}%
-        %{--}--}%
-        %{--};--}%
-
-        %{--items.ver = ver;--}%
-        %{--items.ce = ce;--}%
-        %{--items.dpr = dpr;--}%
-        %{--items.dpe = dpe;--}%
-        %{--items.imprimir = imprimir;--}%
-        %{--if(est == 'N'){--}%
-        %{--items.generar = generar;--}%
-        %{--}--}%
-
-        %{--return items--}%
-        %{--}--}%
-
-        %{--function generarRol (mes, anio, mesN, anioN) {--}%
-        %{--console.log(" - " + mesN + " - " + anioN)--}%
-        %{--bootbox.confirm("Está a punto de generar el rol del pago nuevamente para el mes de <span style='color:blue'>"+--}%
-        %{--mesN +" </span> del año <span style='color:blue'>"+--}%
-        %{--anioN +".</span><br><br>Si es correcto, presione Aceptar para generar el rol",--}%
-        %{--function(result){--}%
-        %{--if(result){--}%
-        %{--openLoader();--}%
-        %{--$.ajax({--}%
-        %{--type    : "POST",--}%
-        %{--url     : "${g.createLink(controller:'rubro', action:'generarRol')}",--}%
-        %{--data    : "mes="+ mes + "&anio="+ anio, //+--}%
-        %{--success : function (msg) {--}%
-        %{--location.reload()--}%
-        %{--}--}%
-        %{--});--}%
-        %{--}--}%
-        %{--})--}%
-        %{--}--}%
-
-
-
-
-//                context.settings({
-//                    onShow : function (e) {
-//                        $("tr.success").removeClass("success");
-//                        var $tr = $(e.target).parent();
-//                        $tr.addClass("success");
-//                        id = $tr.data("id");
-//                    }
-//                });
-        %{--context.attach('tbody>tr', [--}%
-        %{--{--}%
-        %{--header : 'Acciones'--}%
-        %{--},--}%
-        %{--{--}%
-        %{--text   : 'Ver',--}%
-        %{--icon   : "<i class='fa fa-search'></i>",--}%
-        %{--action : function (e) {--}%
-        %{--$("tr.success").removeClass("success");--}%
-        %{--e.preventDefault();--}%
-        %{--$.ajax({--}%
-        %{--type    : "POST",--}%
-        %{--url     : "${createLink(action:'show_ajax')}",--}%
-        %{--data    : {--}%
-        %{--id : id--}%
-        %{--},--}%
-        %{--success : function (msg) {--}%
-        %{--bootbox.dialog({--}%
-        %{--title   : "Ver Rol de Pagos",--}%
-        %{--message : msg,--}%
-        %{--buttons : {--}%
-        %{--ok : {--}%
-        %{--label     : "Aceptar",--}%
-        %{--className : "btn-primary",--}%
-        %{--callback  : function () {--}%
-        %{--}--}%
-        %{--}--}%
-        %{--}--}%
-        %{--});--}%
-        %{--}--}%
-        %{--});--}%
-        %{--}--}%
-        %{--},--}%
-        %{--{--}%
-        %{--text   : 'Cambiar estado',--}%
-        %{--icon   : "<i class='fa fa-undo'></i>",--}%
-        %{--action : function (e) {--}%
-        %{--$("tr.success").removeClass("success");--}%
-        %{--e.preventDefault();--}%
-        %{--cambiarEstado(id)--}%
-        %{--}--}%
-        %{--},--}%
-        %{--{divider : true},--}%
-        %{--{--}%
-        %{--text   : 'Detalle de Pago por Rubro',--}%
-        %{--icon   : "<i class='fa fa-list-ol'></i>",--}%
-        %{--action : function (e) {--}%
-        %{--$("tr.success").removeClass("success");--}%
-        %{--e.preventDefault();--}%
-        %{--rubros(id)--}%
-        %{--}--}%
-        %{--},--}%
-        %{--{--}%
-        %{--text   : 'Detalle de Pago por Empleado',--}%
-        %{--icon   : "<i class='fa fa-users'></i>",--}%
-        %{--action : function (e) {--}%
-        %{--$("tr.success").removeClass("success");--}%
-        %{--e.preventDefault();--}%
-        %{--cargarEmpleados(id)--}%
-        %{--}--}%
-        %{--},--}%
-        %{--{divider : true},--}%
-        %{--{--}%
-        %{--text   : 'Generar nuevamente',--}%
-        %{--icon   : "<i class='fa fa-check-square'></i>",--}%
-        %{--action : function (e) {--}%
-        %{--$("tr.success").removeClass("success");--}%
-        %{--e.preventDefault();--}%
-
-        %{--}--}%
-        %{--}--}%
-        %{--]);--}%
     });
 </script>
 
