@@ -103,6 +103,7 @@ class ServicioSriController {
         def prcs = Proceso.get(params.id)
         def clave = facturaXml(prcs)
         def archivo = "fc_${clave}.xml"
+//        def archivo = "hola.pdf"  //** no funcina con pdfs
 
         println "archivo: $archivo"
 //        def archivo = "fc_667.xml"
