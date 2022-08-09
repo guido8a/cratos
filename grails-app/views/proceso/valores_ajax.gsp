@@ -63,8 +63,10 @@
             <div class="col-xs-4 negrilla">
                 <input type="text" name="dcmtAutorizacion" id="dcmtAutorizacion" size="49" maxlength="49"
                        style="width: 360px;"
-                       value="${proceso?.autorizacion?: atrz}" class="digits form-control validacionNumero required"
+                       %{--value="${proceso?.autorizacion?: atrz}" class="digits form-control validacionNumero required"--}%
+                       value="${proceso?.autorizacion?: atrz}" class="form-control required"
                        title="El número autorización de la factura a registrar "
+                       %{--placeholder="Autorización" ${proceso?.estado == 'R' ? 'disabled' : ''}/>--}%
                        validate=" number" placeholder="Autorización" ${proceso?.estado == 'R' ? 'disabled' : ''}/>
 
 %{--
@@ -292,9 +294,9 @@
         calculaIva()
     });
 
-    $("#dcmtAutorizacion").bind('paste', function() {
-        $('span').text('paste behaviour detected!')
-    });
+//    $("#dcmtAutorizacion").bind('paste', function() {
+//        $('span').text('paste behaviour detected!')
+//    });
 
     function calculaIva() {
         var iva = ${valorIva ?: 0};

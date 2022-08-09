@@ -17,7 +17,7 @@ class ReportesController {
 
         contabilidad.each {
             sql = "select * from saldos(${it.id});"
-//            println("sql " + sql)
+            println("sql " + sql)
             cn.execute(sql.toString())
         }
 
