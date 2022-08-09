@@ -21,7 +21,6 @@
                 *
             </span>
         </div>
-
     </g:form>
 
     <script type="text/javascript">

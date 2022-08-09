@@ -12,52 +12,61 @@ class PeriodoController extends cratos.seguridad.Shield  {
 
     def list() {
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
-        [periodoInstanceList: Periodo.list(params), periodoInstanceTotal: Periodo.count()]
+        def contabilidad = Contabilidad.get(session.contabilidad.id)
+        def periodos = Periodo.findAllByContabilidad(contabilidad)
+//        [periodoInstanceList: Periodo.list(params), periodoInstanceTotal: Periodo.count()]
+        [periodoInstanceList: periodos, periodoInstanceTotal:periodos.size()]
+    }
+
+    def form_ajax() {
+        def contabilidad = Contabilidad.get(session.contabilidad.id)
+        def periodo
+
+        if(params.id){
+            periodo = Periodo.get(params.id)
+        }else{
+            periodo = new Periodo()
+        }
+
+        return [periodoInstance: periodo]
     }
 
     def create() {
         [periodoInstance: new Periodo(params)]
     }
 
-    def save() {
-        println "save epriodo "+params
-        if (params.fechaFin) {
-            params.fechaFin = new Date().parse("dd-MM-yyyy", params.fechaFin)
+    def save_ajax() {
+        println "save periodo " + params
+
+        def contabilidad = Contabilidad.get(session.contabilidad.id)
+        if (params.fechaCierre_input) {
+            params.fechaFin = new Date().parse("dd-MM-yyyy", params.fechaCierre_input)
 
         }
-        if (params.fechaInicio) {
-            params.fechaInicio = new Date().parse("dd-MM-yyyy", params.fechaInicio)
+        if (params.fechaInicio_input) {
+            params.fechaInicio = new Date().parse("dd-MM-yyyy", params.fechaInicio_input)
 
         }
-        def periodoInstance = new Periodo(params)
-
+        def periodoInstance
 
 
         if (params.id) {
             periodoInstance = Periodo.get(params.id)
-            periodoInstance.properties = params
+        }else{
+            periodoInstance = new Periodo(params)
+            periodoInstance.contabilidad = contabilidad
         }
+
+        periodoInstance.properties = params
+
 
         if (!periodoInstance.save(flush: true)) {
-            if (params.id) {
-                render(view: "edit", model: [periodoInstance: periodoInstance])
-            } else {
-                render(view: "create", model: [periodoInstance: periodoInstance])
-            }
-            return
+            render "no_Error al guardar el período"
+        }else{
+            render "ok_Período guardado correctamente"
         }
 
-        if (params.id) {
-            flash.message = "Periodo actualizado"
-            flash.tipo = "success"
-            flash.ico = "ss_accept"
-        } else {
-            flash.message = "Periodo creado"
-            flash.tipo = "success"
-            flash.ico = "ss_accept"
-        }
-        redirect(action: "show", id: periodoInstance.id)
-    }
+      }
 
     def show() {
         def periodoInstance = Periodo.get(params.id)

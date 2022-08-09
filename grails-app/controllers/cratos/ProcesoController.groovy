@@ -324,7 +324,7 @@ class ProcesoController extends cratos.seguridad.Shield {
 
     def registrar = {
         if (request.method == 'POST') {
-//            println "registrar " + params
+            println "registrar " + params
             def proceso = Proceso.get(params.id)
             if (proceso.estado == "R") {
                 render("El proceso ya ha sido registrado previamente")
