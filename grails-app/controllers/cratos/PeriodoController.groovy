@@ -68,54 +68,46 @@ class PeriodoController extends cratos.seguridad.Shield  {
 
       }
 
-    def show() {
+//    def show() {
+//        def periodoInstance = Periodo.get(params.id)
+//        if (!periodoInstance) {
+//            flash.message = "No se encontró Periodo con id " + params.id
+//            flash.tipo = "error"
+//            flash.ico = "ss_delete"
+//            redirect(action: "list")
+//            return
+//        }
+//
+//        [periodoInstance: periodoInstance]
+//    }
+//
+//    def edit() {
+//        def periodoInstance = Periodo.get(params.id)
+//        if (!periodoInstance) {
+//            flash.message = "No se encontró Periodo con id " + params.id
+//            flash.tipo = "error"
+//            flash.ico = "ss_delete"
+//            redirect(action: "list")
+//            return
+//        }
+//
+//        [periodoInstance: periodoInstance]
+//    }
+
+    def delete_ajax() {
         def periodoInstance = Periodo.get(params.id)
+
         if (!periodoInstance) {
-            flash.message = "No se encontró Periodo con id " + params.id
-            flash.tipo = "error"
-            flash.ico = "ss_delete"
-            redirect(action: "list")
-            return
-        }
-
-        [periodoInstance: periodoInstance]
-    }
-
-    def edit() {
-        def periodoInstance = Periodo.get(params.id)
-        if (!periodoInstance) {
-            flash.message = "No se encontró Periodo con id " + params.id
-            flash.tipo = "error"
-            flash.ico = "ss_delete"
-            redirect(action: "list")
-            return
-        }
-
-        [periodoInstance: periodoInstance]
-    }
-
-    def delete() {
-        def periodoInstance = Periodo.get(params.id)
-        if (!periodoInstance) {
-            flash.message = "No se encontró Periodo con id " + params.id
-            flash.tipo = "error"
-            flash.ico = "ss_delete"
-            redirect(action: "list")
-            return
+            return true
         }
 
         try {
             periodoInstance.delete(flush: true)
-            flash.message = "Periodo  con id " + params.id + " eliminado"
-            flash.tipo = "success"
-            flash.ico = "ss_accept"
-            redirect(action: "list")
+            render "ok_Período borrado correctamente"
         }
-        catch (DataIntegrityViolationException e) {
-            flash.message = "No se pudo eliminar Periodo con id " + params.id
-            flash.tipo = "error"
-            flash.ico = "ss_delete"
-            redirect(action: "show", id: params.id)
+        catch (e) {
+            println("error al borrar el periodo " + e)
+            render "no_Error al borrar el período "
         }
     }
 }

@@ -26,24 +26,24 @@
     <table class="table table-condensed table-bordered table-striped table-hover">
         <thead>
         <tr>
+            <g:sortableColumn property="prefijo" title="Número"/>
             <g:sortableColumn property="fechaInicio" title="Fecha Inicio"/>
             <g:sortableColumn property="fechaCierre" title="Fecha Fin"/>
-            <g:sortableColumn property="prefijo" title="Número"/>
-            <g:sortableColumn property="descripcion" title="Contabilidad"/>
+            %{--<g:sortableColumn property="descripcion" title="Contabilidad"/>--}%
             <th width="110">Acciones</th>
         </tr>
         </thead>
         <tbody>
         <g:each in="${periodoInstanceList}" status="i" var="periodoInstance">
             <tr data-id="${periodoInstance.id}">
+                <td>${periodoInstance?.numero}</td>
                 <td style="color: #2fd152; text-align: center"><g:formatDate date="${periodoInstance.fechaInicio}" format="dd-MM-yyyy"/></td>
                 <td style="text-align: center"><g:formatDate date="${periodoInstance.fechaFin}" format="dd-MM-yyyy"/></td>
-                <td>${periodoInstance?.numero}</td>
-                <td>${periodoInstance?.contabilidad?.descripcion}</td>
+                %{--<td>${periodoInstance?.contabilidad?.descripcion}</td>--}%
                 <td>
-                    <a href="#" data-id="${periodoInstance.id}" class="btn btn-info btn-sm btn-show btn-ajax" title="Ver">
-                        <i class="fa fa-laptop"></i>
-                    </a>
+                    %{--<a href="#" data-id="${periodoInstance.id}" class="btn btn-info btn-sm btn-show btn-ajax" title="Ver">--}%
+                        %{--<i class="fa fa-laptop"></i>--}%
+                    %{--</a>--}%
                     <a href="#" data-id="${periodoInstance.id}" class="btn btn-success btn-sm btn-edit btn-ajax" title="Editar">
                         <i class="fa fa-pencil"></i>
                     </a>
@@ -63,6 +63,16 @@
 
     $(".btnCrear").click(function () {
         createEditRow();
+    });
+
+    $(".btn-edit").click(function () {
+        var id = $(this).data("id");
+        createEditRow(id);
+    });
+
+    $(".btn-delete").click(function () {
+        var id = $(this).data("id");
+        deleteRow(id);
     });
 
     function submitForm() {
@@ -93,35 +103,48 @@
         } //else
     }
 
-    %{--var id = null;--}%
-    %{--function submitForm() {--}%
-    %{--var $form = $("#frmContabilidad");--}%
-    %{--var $btn = $("#dlgCreateEdit").find("#btnSave");--}%
-    %{--if ($form.valid()) {--}%
-    %{--$btn.replaceWith(spinner);--}%
-    %{--openLoader("Grabando");--}%
-    %{--$.ajax({--}%
-    %{--type    : "POST",--}%
-    %{--url     : $form.attr("action"),--}%
-    %{--data    : $form.serialize(),--}%
-    %{--success : function (msg) {--}%
-    %{--var parts = msg.split("_");--}%
-    %{--log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)--}%
-    %{--if (parts[0] == "OK") {--}%
-    %{--setTimeout(function () {--}%
-    %{--location.reload(true);--}%
-    %{--}, 1200);--}%
-    %{--} else {--}%
-    %{--closeLoader();--}%
-    %{--//                                spinner.replaceWith($btn);--}%
-    %{--return false;--}%
-    %{--}--}%
-    %{--}--}%
-    %{--});--}%
-    %{--} else {--}%
-    %{--return false;--}%
-    %{--} //else--}%
-    %{--}--}%
+    function deleteRow(itemId) {
+        bootbox.dialog({
+            title   : "Alerta",
+            message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea eliminar el período seleccionado? Esta acción no se puede deshacer.</p>",
+            buttons : {
+                cancelar : {
+                    label     : "<i class='fa fa-times'></i> Cancelar",
+                    className : "btn-primary",
+                    callback  : function () {
+                    }
+                },
+                eliminar : {
+                    label     : "<i class='fa fa-trash-o'></i> Eliminar",
+                    className : "btn-danger",
+                    callback  : function () {
+                        openLoader("Eliminando");
+                        $.ajax({
+                            type    : "POST",
+                            url     : '${createLink(action:'delete_ajax')}',
+                            data    : {
+                                id : itemId
+                            },
+                            success : function (msg) {
+                                closeLoader();
+                                var parts = msg.split("_");
+                                if(parts[0] == 'ok'){
+                                    log(parts[1], "success");
+                                    setTimeout(function () {
+                                        location.reload(true);
+                                    }, 1200);
+                                }else{
+                                    log(parts[1], "error");
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        });
+    }
+
+
     %{--function deleteRow(itemId) {--}%
     %{--bootbox.dialog({--}%
     %{--title   : "Alerta",--}%
@@ -283,69 +306,3 @@
 </html>
 
 
-
-%{--<%@ page import="cratos.Periodo" %>--}%
-%{--<!doctype html>--}%
-%{--<html>--}%
-%{--<head>--}%
-%{--<meta name="layout" content="main">--}%
-%{--<g:set var="entityName" value="${message(code: 'periodo.label', default: 'Periodo')}"/>--}%
-%{--<title>Lista de Periodo</title>--}%
-%{--</head>--}%
-
-%{--<body>--}%
-%{--<a href="#list-periodo" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>--}%
-
-%{--<div id="list-periodo" class="content scaffold-list" role="main">--}%
-%{--<div class="ui-widget-header ui-corner-all nav navegacion">--}%
-%{--<ul style="margin-bottom:0;">--}%
-%{--<li><g:link class="create linkButton" action="create">Crear Periodo</g:link></li>--}%
-%{--</ul>--}%
-%{--</div>--}%
-
-%{--<div class="contenedor">--}%
-%{--<h1>Lista de Periodo</h1>--}%
-%{--<g:if test="${flash.message}">--}%
-%{--<div class="message ${flash.clase}" role="status"><span class="ss_sprite ${flash.ico}">&nbsp;</span>${flash.message}--}%
-%{--</div>--}%
-%{--</g:if>--}%
-
-%{--<table>--}%
-%{--<thead>--}%
-%{--<tr>--}%
-%{----}%
-%{--<g:sortableColumn property="fechaFin" title="Fecha Fin"/>--}%
-%{----}%
-%{--<g:sortableColumn property="fechaInicio" title="Fecha Inicio"/>--}%
-%{----}%
-%{--<g:sortableColumn property="numero" title="Numero"/>--}%
-%{----}%
-%{--<th>Contabilidad</th>--}%
-%{----}%
-%{--</tr>--}%
-%{--</thead>--}%
-%{--<tbody>--}%
-%{--<g:each in="${periodoInstanceList}" status="i" var="periodoInstance">--}%
-%{--<tr>--}%
-%{----}%
-%{--<td><g:link action="show" id="${periodoInstance.id}">${fieldValue(bean: periodoInstance, field: "fechaFin")}</g:link></td>--}%
-%{----}%
-%{--<td><g:formatDate date="${periodoInstance.fechaInicio}"/></td>--}%
-%{----}%
-%{--<td>${fieldValue(bean: periodoInstance, field: "numero")}</td>--}%
-%{----}%
-%{--<td>${fieldValue(bean: periodoInstance, field: "contabilidad")}</td>--}%
-%{----}%
-%{--</tr>--}%
-%{--</g:each>--}%
-%{--</tbody>--}%
-%{--</table>--}%
-%{--</div>--}%
-
-%{--<div class="ui-widget-header pagination" style="padding: 5px;">--}%
-%{--<g:paginate total="${periodoInstanceTotal}" prev="Anterior" next="Siguiente" params="${params}"/>--}%
-%{--</div>--}%
-
-%{--</div>--}%
-%{--</body>--}%
-%{--</html>--}%
