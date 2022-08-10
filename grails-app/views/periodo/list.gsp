@@ -94,7 +94,13 @@
                             location.reload(true);
                         }, 1200);
                     }else{
-                        log(parts[1], "error");
+                        if(parts[0] == 'er'){
+                           bootbox.alert("<i class='fa fa-exclamation-circle fa-3x pull-left text-warning text-shadow'></i>" + parts[1]);
+                           return false;
+                        }else{
+                            log(parts[1], "error");
+                        }
+
                     }
                 }
             });
