@@ -14,13 +14,20 @@ class ReportesController {
         def sql
         def empresa = Empresa.get(session.empresa.id)
         def contabilidad = Contabilidad.findAllByInstitucion(empresa)
+        def mnsj = ""
 
         contabilidad.each {
             sql = "select * from saldos(${it.id});"
             println("sql " + sql)
-            cn.execute(sql.toString())
+            mnsj = cn.rows(sql.toString())[0].saldos
         }
 
+        println "---> mnsj: $mnsj"
+        if(mnsj) {
+            flash.message = mnsj
+            flash.title = "Aviso"
+            flash.tipo = "error"
+        }
 
         println session.contabilidad.id
         def camposCliente = ["nombre": ["Nombre", "string"], "ruc": ["Ruc", "string"]]

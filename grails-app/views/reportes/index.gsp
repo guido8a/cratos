@@ -111,6 +111,11 @@
 <body>
 
 
+<g:if test="${flash.message}">
+    <elm:flashMessage tipo="${flash.tipo}" icon="${flash.icon}" clase="${flash.clase}" title="${flash.title}">
+        ${flash.message}
+    </elm:flashMessage>
+</g:if>
 
 
 <div class="row">
