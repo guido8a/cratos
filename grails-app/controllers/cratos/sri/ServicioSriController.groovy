@@ -22,8 +22,9 @@ class ServicioSriController {
         def pathxml = servletContext.getRealPath("/") + "xml/" + empresa_id + "/"  //web-app/xml
         def firma = pathxml + "firma.p12"
 
-        //sri.firmar(input_file_path, key_store_path, key_store_password, output_path, out_file_name)
-        sri.firmar(pathxml + archivo, firma, "FcoPaliz1959", pathxml, "f${archivo}")
+        println "pathxml: $pathxml, firma en: $firma"
+        println "inicia firmar..."
+        sri.firmar(pathxml + archivo, firma, "Guido3d0cMo", pathxml, "f${archivo}")
     }
 
     /**
@@ -42,7 +43,8 @@ class ServicioSriController {
 //        def prcs = Proceso.get(id) // debe usarse el id del proceso
         def fcha = new Date().format("ddMMyyyy")
         def tipoComprobante = "01"  // factura --> ver tabla 3
-        def ruc = "1705310330001"  //obtener de la empresa
+//        def ruc = "1705310330001"  //obtener de la empresa
+        def ruc = prcs.empresa.ruc  //obtener de la empresa
         def tipoAmbiente = 1  //Pruebas 1, Producción 2 --> poner esto en PAUX
         def serie = "001001"  // viene de prcsdcmt quitando los '-'
         def numero = prcs.documento.split("-")[2]
@@ -103,6 +105,7 @@ class ServicioSriController {
         def prcs = Proceso.get(params.id)
         def clave = facturaXml(prcs)
         def archivo = "fc_${clave}.xml"
+        def retorna = ""
 //        def archivo = "hola.pdf"  //** no funcina con pdfs
 
         println "archivo: $archivo"
@@ -124,15 +127,17 @@ class ServicioSriController {
             prcs.claveAcceso = clave
             prcs.autorizacion = autorizacion
             prcs.tipoEmision = '1'  // si contesta el SRI
+            retorna = "ok_Autorización: ${autorizacion}"
         } else {
             prcs.claveAcceso = clave
             prcs.tipoEmision = '2'  // si no contesta el SRI hay que hacer otro envío de los "2"
+            retorna = "no_Ha ocurrido un error ${autorizacion}"
         }
         prcs.save(flush: true)
 
         println "retorna autorización: $autorizacion"
 
-        render "ok"
+        render retorna
     }
 
     def facturaXml(prcs) {
@@ -172,7 +177,8 @@ class ServicioSriController {
             xml.mkp.xmlDeclaration(version: "1.0", encoding: "UTF-8", standalone: "yes")
 
             xml.factura(id: "comprobante", version: "1.1.0") {
-                println "inicia factura..."
+                def pto = completaCeros(prcs.facturaPuntoEmision,3)
+                println "inicia factura... ${prcs.facturaPuntoEmision} --> ${pto}"
                 infoTributaria() {
                     ambiente(empr.emprambt)   //pruebas 1, Producción: 2
                     tipoEmision(1) //aplica solo a empresas de emisión "E" si no contesta SRI se pone 2.--> Reenvío???
@@ -190,7 +196,10 @@ class ServicioSriController {
                 infoFactura() {
                     fechaEmision(new Date().format('dd/MM/yyyy'))
                     dirEstablecimiento(prcs.establecimiento.direccion)   //+++ crear tabla establecimeintos ++dirección
-                    contribuyenteEspecial(empr.emprctes?:'000')   //++ agregar en empresa
+//                    contribuyenteEspecial(empr.emprctes?:'000')   //++ agregar en empresa
+                    if(empr.emprctes =='S'){
+                        contribuyenteEspecial('S')   //++ agregar en empresa
+                    }
                     obligadoContabilidad(empr.emprcont == '1' ? 'SI' : 'NO' )
                     tipoIdentificacionComprador(tipoId(prcs.id))   // Usar dato desde TITT
 //                    tipoIdentificacionComprador(prcs.proveedor.tipoIdentificacion.codigoSri)   // desde PRVE
@@ -287,12 +296,19 @@ class ServicioSriController {
                     }
                 }
 
-/*
+//                infoAdicional(){
+//                    campoAdicional(Dirección: "direccion","Direccion del Local")
+//                    campoAdicional(Email: "cliente@gmail.com")
+//                }
+
                 infoAdicional(){
-                    campoAdicional(Dirección: "direccion","Direccion del Local")
-                    campoAdicional(Email: "cliente@gmail.com")
+                    campoAdicional(nombre: 'cliente', prcs.proveedor.nombre )
+                    campoAdicional(nombre: 'identificacion', prcs.proveedor.ruc )
+                    campoAdicional(nombre: 'direccion', prcs.proveedor.direccion )
+                    campoAdicional(nombre: 'telefono', prcs.proveedor.telefono )
                 }
-*/
+
+
 
             }   /* -- facura -- */
 
@@ -392,9 +408,11 @@ class ServicioSriController {
             guardar.write(respuesta)
 
             def atrz = respuesta =~ /numeroAutorizacion.(\d+)/
+            println "---- autorizado $atrz"
 
             return atrz[0][1]
-
+//            return atrz[0]
+            
         } else {
             return "ha ocurrido un error al solicitar la autorización al SRI"
         }
@@ -427,5 +445,15 @@ class ServicioSriController {
         tipo
     }
 
+    def completaCeros(val, numero) {
+        def valor = val.toString().trim()
+        def longitud = valor.size()
+        println "llega val: $val, numero: $numero --> long: $longitud --> ${longitud.toInteger() < numero.toInteger()}"
+        def resp = ""
+        if(longitud.toInteger() < numero.toInteger()) {
+            resp = "0" * (numero - longitud) + "$valor"
+        }
+        return resp
+    }
 
 }

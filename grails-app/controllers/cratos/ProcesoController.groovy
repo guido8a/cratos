@@ -2286,8 +2286,10 @@ class ProcesoController extends cratos.seguridad.Shield {
         def tipoPago = TipoPago.get(params.tipo)
         def formaPago = new ProcesoFormaDePago()
 
+        println "forma de pago, tipo: ${tipoPago.id}, proceso: ${proceso.id}, valor: ${proceso.valor}"
         formaPago.proceso = proceso
         formaPago.tipoPago = tipoPago
+        formaPago.valor = proceso.valor
 
         if(params.plazo){
             formaPago.plazo = params.plazo.toInteger()
@@ -2295,12 +2297,19 @@ class ProcesoController extends cratos.seguridad.Shield {
             formaPago.plazo = 0
         }
 
-        try{
-            formaPago.save(flush: true)
+//        try{
+//            formaPago.save(flush: true)
+//            render "ok"
+//        }catch (e){
+//            println "error al agregar una forma de pago: $e"
+//            render "no"
+//        }
+        if(formaPago.save(flush: true)) {
+            println "graba formaPago"
             render "ok"
-        }catch (e){
-            println "error al agregar una forma de pago: $e"
-            render "no"
+        } else {
+            println("error al crear formaPago ${formaPago.errors}")
+            render "no_error al guardar la forma de pago"
         }
     }
 

@@ -15,7 +15,7 @@
 <table class="table table-bordered table-hover table-condensed">
     <tbody>
     <g:each in="${detalles}" var="detalle">
-        <tr style="color:${detalle.item.tipoIVA.id == 2? '#000000' : '#005060'}">
+        <tr style="color:${detalle.item?.tipoIVA.id == 2? '#000000' : '#005060'}">
             <td style="width: 90px;">${detalle?.item?.codigo}</td>
             <td style="width: 200px">${detalle?.item?.nombre}</td>
             <td style="width: 50px">${detalle?.bodega?.descripcion}</td>

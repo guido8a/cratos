@@ -16,7 +16,8 @@
     </p>
     <p style="text-align: center">
         <a href="#" id="btnCreate" class="btn btn-success"><i class="fa fa-file-o"></i> Crear cuenta</a>
-        <g:link controller="cuenta" action="copiarCuentas" class="btn btn-primary btnCopiar"><i class="fa fa-copy"></i> Crear automáticamente un plan de cuentas</g:link>
+        <g:link controller="cuenta" action="copiarCuentas" class="btn btn-primary btnCopiar">
+            <i class="fa fa-copy"></i> Crear automáticamente un plan de cuentas</g:link>
     </p>
 </div>
 

@@ -272,6 +272,7 @@ class ProcesoService {
         def cmpr
         def asnt
 
+        println "registrar proceso: ${proceso.id} --> select * from generar(${proceso.id})"
         try {
             cn.execute("select * from generar($proceso.id)".toString())
             cmpr = Comprobante.findAllByProceso(proceso)
