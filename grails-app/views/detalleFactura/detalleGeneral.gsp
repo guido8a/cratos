@@ -76,16 +76,21 @@
     <g:hiddenField name="idDetalle_name" id="idDetalle" value=""/>
     <g:hiddenField name="cantiOriginal_name" id="cantiOriginal" value=""/>
 
-    <div class="col-xs-2" style="text-align: center">
+    <div class="col-xs-2" style="text-align: center; margin-left: -25px;">
         <b>Código</b>
         <g:textField name="codigo_name" id="codigoItem" class="form-control" value="" readonly="true"/>
     </div>
 
-    <div class="col-xs-4 camposTexto" style="margin-left: -25px; width: 400px">
+    <div class="col-xs-10 camposTexto" style="margin-left: -25px;">
         <b>Nombre</b>
         <g:textField name="nombre_name" id="nombreItem" class="form-control" value="" readonly="true"/>
     </div>
 
+    <div class="col-xs-5 camposTexto">
+        <b>Observacines</b>
+        <g:textField name="cantidad_name" id="cantidadItem" class="form-control validacionNumeroSinPuntos canti" value=""
+                     style="text-align: right"/>
+    </div>
     <div class="col-xs-1" style="width: 140px;">
         <b>Precio</b>
         <g:textField name="precio_name" id="precioItem" class="form-control number pre" value=""

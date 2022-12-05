@@ -119,7 +119,7 @@
 <div class="hoja">
 
     <div style="height: 100px; width: 330px;" class="left">
-        <div><g:img dir="images" file="logoEmp.jpg" width="220" height="100"/></div>
+        <div><g:img dir="images" file="logoTedein.png" width="300" height="100"/></div>
     </div>
 
     <div style="height: 250px; width: 300px;" class="right borde" >

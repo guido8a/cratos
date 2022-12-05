@@ -118,10 +118,13 @@
 
             %{--<g:if test="${proceso?.estado == 'R'}">--}%
                 <g:if test="${proceso?.tipoProceso.codigo.trim() in ['V', 'NC', 'ND']}">
+                    <a href="#" class="btn btn-info" id="btnImprimirFactElect">
+                        <i class="fa fa-print"></i> Factura
+                    </a>
                     <g:if test="${proceso?.claveAcceso != null}">
                         <g:if test="${proceso?.tipoProceso?.codigo?.trim() in ['V']}">
                             <a href="#" class="btn btn-success" id="btnImprimirFactElect">
-                                <i class="fa fa-print"></i> Factura Electŕonica
+                                <i class="fa fa-print"></i> Fact. Elect.
                             </a>
                             <a href="#" class="btn btn-primary" id="btnEnviarFactElect">
                                 <i class="fa fa-envelope"></i> Enviar Factura
@@ -169,7 +172,7 @@
             <g:if test="${proceso?.tipoProceso?.codigo?.trim() == 'V' && proceso?.estado == 'R'}">
                 <a href="#" class="btn btn-info" id="btnDocRetencion" style="color: #0b0b0b">
                     <i class="fa fa-clipboard"></i>
-                    Retención en Ventas
+                    Ret. en Ventas
                 </a>
             </g:if>
         </g:if>

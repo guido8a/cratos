@@ -10,6 +10,8 @@ import cratos.Retencion
 import groovy.xml.MarkupBuilder
 import sri.XAdESBESSignature
 
+import javax.xml.soap.SOAPBody
+
 class ServicioSriController {
     def dbConnectionService
     def utilitarioService
@@ -403,6 +405,7 @@ class ServicioSriController {
             connection.connect()
             println "...connect atz... "
 
+//            respuesta = connection.content.text
             respuesta = connection.content.text
             def guardar = new File(path + "/sri${archivo}")
             guardar.write(respuesta)
