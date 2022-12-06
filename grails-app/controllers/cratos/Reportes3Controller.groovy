@@ -650,7 +650,7 @@ class Reportes3Controller {
 //        def generator = new Code39Bean()
         def generator = new Code128Bean()
 //        def generator = new EAN128Bean()
-        generator.height = 6
+        generator.height = 10
         generator.fontSize = 2
 //        def imageMimeType = "image/png"
 //        barcode4jService.png(generator, barcode)
