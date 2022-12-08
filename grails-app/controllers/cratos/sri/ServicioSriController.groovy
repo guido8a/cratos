@@ -124,20 +124,21 @@ class ServicioSriController {
 */
 
         def autorizacion = enviar(archivo, clave)
+        println "retorna de enviar: autorización ${autorizacion}"
 
         if(autorizacion) {
             prcs.claveAcceso = clave
             prcs.autorizacion = autorizacion
             prcs.tipoEmision = '1'  // si contesta el SRI
-            retorna = "ok_Autorización: ${autorizacion}"
+            retorna = "ok"
         } else {
             prcs.claveAcceso = clave
             prcs.tipoEmision = '2'  // si no contesta el SRI hay que hacer otro envío de los "2"
-            retorna = "no_Ha ocurrido un error ${autorizacion}"
+            retorna = "no"
         }
         prcs.save(flush: true)
 
-        println "retorna autorización: $autorizacion"
+        println "retorna >>> $retorna"
 
         render retorna
     }
@@ -360,6 +361,7 @@ class ServicioSriController {
         def respuesta = connection.content.text
         def respuestaSri = new XmlSlurper().parseText(respuesta)
         println respuestaSri
+        println "respuesta SRI: ****${respuestaSri}****"
 
 /*
         el SRI responde: respuesta = """<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -413,7 +415,19 @@ class ServicioSriController {
             def atrz = respuesta =~ /numeroAutorizacion.(\d+)/
             println "---- autorizado $atrz"
 
-            return atrz[0][1]
+            def autorizacionOk = false
+            try {
+                autorizacionOk = (atrz[0][1]?.size() > 0)
+                println "SRI: $autorizacionOk --> ${atrz[0][1]}"
+            } catch (e) {
+                println "SRI no retorna número de autorización"
+            }
+
+            if(autorizacionOk) {
+                return atrz[0][1]
+            } else {
+                return clave
+            }
 //            return atrz[0]
             
         } else {

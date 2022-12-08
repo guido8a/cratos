@@ -76,22 +76,17 @@
     <g:hiddenField name="idDetalle_name" id="idDetalle" value=""/>
     <g:hiddenField name="cantiOriginal_name" id="cantiOriginal" value=""/>
 
-    <div class="col-xs-2" style="text-align: center; margin-left: -25px;">
+    <div class="col-xs-2" style="text-align: center; margin-left: -25px; width: 130px">
         <b>Código</b>
         <g:textField name="codigo_name" id="codigoItem" class="form-control" value="" readonly="true"/>
     </div>
 
-    <div class="col-xs-10 camposTexto" style="margin-left: -25px;">
+    <div class="col-xs-4 camposTexto" style="margin-left: -25px; width: 520px;">
         <b>Nombre</b>
-        <g:textField name="nombre_name" id="nombreItem" class="form-control" value="" readonly="true"/>
+        <g:textArea name="nombre_name" id="nombreItem" class="form-control" value="" readonly="true" style="height: 80px"/>
     </div>
 
-    <div class="col-xs-5 camposTexto">
-        <b>Observacines</b>
-        <g:textField name="cantidad_name" id="cantidadItem" class="form-control validacionNumeroSinPuntos canti" value=""
-                     style="text-align: right"/>
-    </div>
-    <div class="col-xs-1" style="width: 140px;">
+    <div class="col-xs-1" style="margin-left: -25px; width: 130px;">
         <b>Precio</b>
         <g:textField name="precio_name" id="precioItem" class="form-control number pre" value=""
                      style="text-align: right;" readonly="${proceso?.tipoProceso?.codigo?.trim() == 'NC' }"/>
@@ -109,14 +104,13 @@
                          style="text-align: right"/>
         </div>
 
-        <div class="col-xs-1" style="margin-left: -25px; width: 140px;">
+        <div class="col-xs-1" style="margin-left: -25px; width: 130px;">
             <b>Total</b>
             <g:textField name="total_name" id="totalItem" class="form-control number tot" value=""
-                         style="text-align: right; width: 120px"
+                         style="text-align: right;"
                          readonly="${proceso?.tipoProceso?.codigo?.trim() == 'V'}"/>
         </div>
     </g:if>
-
 
     <div class="col-xs-2" style="margin-top: 25px; margin-bottom: 15px; margin-left: -10px; width: 110px">
         <a href="#" id="btnBuscar" class="btn btn-info" title="Buscar Item">

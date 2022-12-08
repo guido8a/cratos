@@ -65,9 +65,9 @@
             </label>
 
             <div class="col-md-9">
-                <g:textField name="nombre" class="form-control required"
-                             value="${itemInstance?.nombre}" maxlength="160"
-                             style="width: 400px;"/>
+                <g:textArea name="nombre" class="form-control required"
+                             value="${itemInstance?.nombre}" maxlength="255"
+                             style="width: 400px; height: 100px"/>
                 <p class="help-block ui-helper-hidden"></p>
             </div>
         </span>

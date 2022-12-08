@@ -59,7 +59,8 @@
         $("#precioItem").val(precio);
         </g:else>
         $("#idItem").val(idI);
-        $("#cantidadItem").val(ex);
+//        $("#cantidadItem").val(ex);
+        $("#cantidadItem").val(1);
         $("#descuentoItem").val(0);
         $("#totalItem").val(precio);
         $("#cantiOriginal").val(ex);

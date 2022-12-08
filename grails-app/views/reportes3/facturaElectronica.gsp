@@ -176,8 +176,8 @@
         <table>
             <thead>
             <tr>
-                <th class="tc letra borde">Cód. Principal</th>
-                <th class="tc letra borde">Cód. Auxiliar</th>
+                <th class="tc letra borde">Código</th>
+                %{--<th class="tc letra borde">Cód. Auxiliar</th>--}%
                 <th class="tc letra borde">Cant.</th>
                 <th class="tc letra borde">Descripción</th>
                 <th class="tc letra borde">Precio Unitario</th>
@@ -190,11 +190,11 @@
             <g:each in="${detalles}" var="detalle">
                 <tr class="tc letra" style="width: 100%">
                     <td class="borde tc tl" style="width: 10%">${detalle?.item?.codigo ?: ''}</td>
-                    <td class="borde tl" style="width: 6%"></td>
+                    %{--<td class="borde tl" style="width: 6%"></td>--}%
                     <td class="borde tc" style="width: 4%">${detalle?.cantidad?.toInteger() ?: 0}</td>
-                    <td class="borde tl" style="width: 50%">${detalle?.item?.nombre ?: ''} ${detalle?.item?.observaciones ?: ''}</td>
+                    <td class="borde tl" style="width: 56%">${detalle?.item?.nombre ?: ''}</td>
                     <td class="borde tr" style="width: 10%"><g:formatNumber number="${detalle?.precioUnitario ?: 0}" maxFractionDigits="2" minFractionDigits="2"/></td>
-                    <td class="borde tr" style="width: 10%"></td>
+                    <td class="borde tr" style="width: 10%"><g:formatNumber number="${detalle?.descuento ?: 0}" maxFractionDigits="2" minFractionDigits="2"/></td>
                     <td class="borde tr" style="width: 10%"><g:formatNumber number="${(detalle?.cantidad?.toInteger() ?: 0) * (detalle?.precioUnitario?.toDouble() ?: 0)}" maxFractionDigits="2" minFractionDigits="2"/></td>
                 </tr>
             </g:each>
@@ -221,68 +221,70 @@
         %{--</div>--}%
     </div>
 
-    <table border="1" style="width: 230px; margin-top: 20px;" class="right borde2">
+    %{--<table border="1" style="width: 230px; margin-top: 20px;" class="right borde2">--}%
+    <table style="width: 230px; margin-top: 20px;" class="right">
         <thead>
         <tr>
-            <td class="tl tam">SUBTOTAL 12%</td>
-            <td class="tr tam"><g:formatNumber number="${proceso?.baseImponibleIva ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
+            <td class="tr tam borde" style="width: 73%">SUBTOTAL IVA 12%</td>
+            <td class="tr tam borde" style="width: 28%"><g:formatNumber number="${proceso?.baseImponibleIva ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
         </tr>
         <tr>
-            <td class="tl tam">SUBTOTAL IVA 0%</td>
-            <td class="tr tam"><g:formatNumber number="${proceso?.baseImponibleIva0 ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
+            <td class="tr tam borde">SUBTOTAL IVA 0%</td>
+            <td class="tr tam borde"><g:formatNumber number="${proceso?.baseImponibleIva0 ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
         </tr>
         <tr>
-            <td class="tl tam">SUBTOTAL NO OBJETO IVA</td>
-            <td class="tr tam"><g:formatNumber number="${proceso?.baseImponibleNoIva ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
+            <td class="tr tam borde">SUBTOTAL NO OBJETO IVA</td>
+            <td class="tr tam borde"><g:formatNumber number="${proceso?.baseImponibleNoIva ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
         </tr>
         <tr>
-            <td class="tl tam">SUBTOTAL EXENTO IVA</td>
-            <td class="tr tam"><g:formatNumber number="${proceso?.excentoIva ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
+            <td class="tr tam borde">SUBTOTAL EXENTO IVA</td>
+            <td class="tr tam borde"><g:formatNumber number="${proceso?.excentoIva ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
         </tr>
         <tr>
-            <td class="tl tam">SUBTOTAL SIN IMPUESTOS</td>
-            <td class="tr tam"><g:formatNumber number="${proceso?.baseImponibleIva ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
+            <td class="tr tam borde">SUBTOTAL SIN IMPUESTOS</td>
+            <td class="tr tam borde"><g:formatNumber number="${proceso?.baseImponibleIva ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
         </tr>
         <tr>
-            <td class="tl tam">DESCUENTOS</td>
-            <td class="tr tam"><g:formatNumber number="${0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
+            <td class="tr tam borde">DESCUENTOS</td>
+            <td class="tr tam borde"><g:formatNumber number="${0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
         </tr>
         <tr>
-            <td class="tl tam">ICE</td>
-            <td class="tr tam"><g:formatNumber number="${proceso?.iceGenerado ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
+            <td class="tr tam borde">ICE</td>
+            <td class="tr tam borde"><g:formatNumber number="${proceso?.iceGenerado ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
         </tr>
         <tr>
-            <td class="tl tam">IVA 12%</td>
-            <td class="tr tam"><g:formatNumber number="${proceso?.ivaGenerado ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
+            <td class="tr tam borde">IVA 12%</td>
+            <td class="tr tam borde"><g:formatNumber number="${proceso?.ivaGenerado ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
         </tr>
         <tr>
-            <td class="tl tam">IRBPNR</td>
-            <td class="tr tam"><g:formatNumber number="${0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
+            <td class="tr tam borde">IRBPNR</td>
+            <td class="tr tam borde"><g:formatNumber number="${0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
         </tr>
         <tr>
-            <td class="tl tam">PROPINA</td>
-            <td class="tr tam"><g:formatNumber number="${0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
+            <td class="tr tam borde">PROPINA</td>
+            <td class="tr tam borde"><g:formatNumber number="${0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
         </tr>
         <tr>
-            <td class="tl tam"><strong>VALOR TOTAL</strong></td>
-            <td class="tr tam"><strong><g:formatNumber number="${proceso?.valor ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></strong></td>
+            <td class="tr tam borde"><strong>VALOR TOTAL</strong></td>
+            <td class="tr tam borde"><strong><g:formatNumber number="${proceso?.valor ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></strong></td>
         </tr>
 
         </thead>
     </table>
 
 
-    <table border="1" style="height: 60px; width: 320px; margin-top: 10px;" class="left borde2">
+    %{--<table border="1" style="height: 60px; width: 360px; margin-top: 10px;" class="left borde2">--}%
+    <table style="height: 60px; width: 360px; margin-top: 10px;" class="left">
         <thead>
         <tr>
-            <th class="tc tam">Forma de Pago</th>
-            <th class="tc">Valor</th>
+            <th class="tc tam borde" style="width: 75%">Forma de Pago</th>
+            <th class="tc borde" style="width: 25%">Valor</th>
         </tr>
         </thead>
         <tbody>
         <tr>
-            <td class="tl tam letra2">${cratos.TipoPago.findByCodigo(proceso?.pago)?.descripcion?.toUpperCase() ?: ''}</td>
-            <td class="tc"><g:formatNumber number="${proceso?.valor ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
+            <td class="tl tam letra2 borde">${cratos.TipoPago.findByCodigo(proceso?.pago)?.descripcion?.toUpperCase() ?: ''}</td>
+            <td class="tc borde"><g:formatNumber number="${proceso?.valor ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
         </tr>
         </tbody>
     </table>

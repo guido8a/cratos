@@ -142,9 +142,10 @@
                         </g:if>
                     </g:if>
                     <g:else>
-                        <a href="#" id="btnEnviarFactura" class="btn btn-info" title="Enviar factura al SRI">
+                        <a href="#" id="btnEnviarFactura" class="btn btn-info" title="Enviar factura al SRI"
+                           style="border-style: solid; border-color: #d05a05; border-width: 1px; margin-right: 1px">
                             <i class="fa fa-plane"></i>
-                            Enviar Factura
+                            Factuara a SRI
                         </a>
                     </g:else>
                 </g:if>
