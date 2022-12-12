@@ -47,11 +47,12 @@ class ServicioSriController {
         def tipoComprobante = "01"  // factura --> ver tabla 3
 //        def ruc = "1705310330001"  //obtener de la empresa
         def ruc = prcs.empresa.ruc  //obtener de la empresa
-        def tipoAmbiente = 1  //Pruebas 1, Producción 2 --> poner esto en PAUX
+//        def tipoAmbiente = 1  //Pruebas 1, Producción 2 --> poner esto en PAUX
+        def tipoAmbiente = prcs.empresa.ambiente
         def serie = "001001"  // viene de prcsdcmt quitando los '-'
         def numero = prcs.documento.split("-")[2]
         def codigo = 99999999 - prcs.id // 99999999 - prcs__id
-        def tipo = 1
+        def tipo = 1 //tipo de emisión, siempre es 1
 
 //        def clave = "$fcha|$tipoComprobante|$ruc|$tipoAmbiente|$serie|$numero|$codigo|$tipo|$verificador"
         def clave = fcha + tipoComprobante + ruc + tipoAmbiente + serie + numero + codigo + tipo
@@ -194,6 +195,7 @@ class ServicioSriController {
                     ptoEmi(prcs.facturaPuntoEmision)
                     secuencial(prcs.documento.split("-")[2])
                     dirMatriz(empr.emprdire)
+                    contribuyenteRimpe("CONTRIBUYENTE RÉGIMEN RIMPE")
                 }  /* -- infoTributaria -- */
 
                 infoFactura() {
@@ -300,15 +302,16 @@ class ServicioSriController {
                 }
 
 //                infoAdicional(){
-//                    campoAdicional(Dirección: "direccion","Direccion del Local")
-//                    campoAdicional(Email: "cliente@gmail.com")
+//                    campoAdicional(nombre: 'cliente', prcs.proveedor.nombre )
+//                    campoAdicional(nombre: 'identificacion', prcs.proveedor.ruc )
+//                    campoAdicional(nombre: 'direccion', prcs.proveedor.direccion )
+//                    campoAdicional(nombre: 'telefono', prcs.proveedor.telefono )
 //                }
 
                 infoAdicional(){
-                    campoAdicional(nombre: 'cliente', prcs.proveedor.nombre )
-                    campoAdicional(nombre: 'identificacion', prcs.proveedor.ruc )
-                    campoAdicional(nombre: 'direccion', prcs.proveedor.direccion )
-                    campoAdicional(nombre: 'telefono', prcs.proveedor.telefono )
+                    campoAdicional(nombre: 'Dirección', prcs.proveedor.direccion )
+                    campoAdicional(nombre: 'Teléfono', prcs.proveedor.telefono )
+                    campoAdicional(nombre: 'Correo Electrónico', prcs.proveedor.email )
                 }
 
 
@@ -329,13 +332,19 @@ class ServicioSriController {
 //        def arch_xml = new File(path + "xml/46/enviar.xml").text
         def arch_xml = new File(pathxml).text.encodeAsBase64()
 
-        def sobre_xml = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" " +
-           "xmlns:ec=\"http://ec.gob.sri.ws.recepcion\"><soapenv:Header/><soapenv:Body>" +
-           "<ec:validarComprobante><xml>${arch_xml}</xml>" +
-           "</ec:validarComprobante></soapenv:Body></soapenv:Envelope>"
+//        def sobre_xml = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" " +
+//           "xmlns:ec=\"http://ec.gob.sri.ws.recepcion\"><soapenv:Header/><soapenv:Body>" +
+//           "<ec:validarComprobante><xml>${arch_xml}</xml>" +
+//           "</ec:validarComprobante></soapenv:Body></soapenv:Envelope>"
+
+        def sobre_xml = "<soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/'" +
+                " xmlns:ec='http://ec.gob.sri.ws.recepcion'>" + "<soapenv:Header/>" +
+                "<soapenv:Body>" + "<ec:validarComprobante>" + "<!--Optional:-->" + "<xml>${arch_xml}</xml>" +
+                "</ec:validarComprobante>" + "</soapenv:Body>" + "</soapenv:Envelope>"
 
         //https://celcer.sri.gob.ec/comprobantes-electronicos-ws/RecepcionComprobantesOffline?wsdl
-        def soapUrl = new URL("https://celcer.sri.gob.ec/comprobantes-electronicos-ws/RecepcionComprobantesOffline?wsdl")
+//        def soapUrl = new URL("https://celcer.sri.gob.ec/comprobantes-electronicos-ws/RecepcionComprobantesOffline?wsdl")  //pruebas
+        def soapUrl = new URL("https://cel.sri.gob.ec/comprobantes-electronicos-ws/RecepcionComprobantesOffline?wsdl")    //produccion
 //       def soapUrl = new URL("http://ec.gob.sri.ws.recepcion")
         def connection = soapUrl.openConnection()
         println "abre conexion"
@@ -359,6 +368,7 @@ class ServicioSriController {
         println "...connect"
 
         def respuesta = connection.content.text
+        println "respuesta: $respuesta"
         def respuestaSri = new XmlSlurper().parseText(respuesta)
         println respuestaSri
         println "respuesta SRI: ****${respuestaSri}****"
@@ -386,7 +396,8 @@ class ServicioSriController {
 
             println "----\n ${para_autorizacion}\n----"
             //https://celcer.sri.gob.ec/comprobantes-electronicos-ws/AutorizacionComprobantesOffline?wsdl
-            soapUrl = new URL("https://celcer.sri.gob.ec/comprobantes-electronicos-ws/AutorizacionComprobantesOffline?wsdl")
+            //soapUrl = new URL("https://celcer.sri.gob.ec/comprobantes-electronicos-ws/AutorizacionComprobantesOffline?wsdl") //pruebas
+            soapUrl = new URL("https://cel.sri.gob.ec/comprobantes-electronicos-ws/AutorizacionComprobantesOffline?wsdl")      //produccion
             connection = soapUrl.openConnection()
             println "abre conexion --- atrz"
             connection.setRequestMethod("POST" )

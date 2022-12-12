@@ -40,9 +40,11 @@
                 <i class="fa fa-save"></i> Guardar
             </g:link>
         </g:if>
+    </div>
+    <div class="btn-group">
         <g:if test="${proceso?.tipoProceso?.codigo?.trim() == 'V'}">
             <a href="#" class="btn btn-info" id="btnImprimirDetalle">
-                <i class="fa fa-print"></i> Imprimir Factura
+                <i class="fa fa-print"></i> Previsualizar Factura
             </a>
         </g:if>
     </div>
@@ -157,19 +159,29 @@
 
 <script type="text/javascript">
 
-    $("#btnImprimirDetalle").click(function () {
+    %{--$("#btnImprimirDetalle").click(function () {--}%
 
-        switch (${empresa?.ruc}) {
-            case 0992149892001:
-                url = "${g.createLink(controller:'reportes2' , action: 'factura')}?id=" + '${proceso?.id}' + "Wemp=${session.empresa.id}";
-                location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=detalle.pdf"
-                break;
-            case 1702155502101:
-                url = "${g.createLink(controller:'reportes2' , action: 'factura_E2')}?id=" + '${proceso?.id}' + "Wemp=${session.empresa.id}";
-                location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=detalle.pdf"
-                break;
-        }
+        %{--switch (${empresa?.ruc}) {--}%
+            %{--case 0992149892001:--}%
+                %{--url = "${g.createLink(controller:'reportes2' , action: 'factura')}?id=" + '${proceso?.id}' + "Wemp=${session.empresa.id}";--}%
+                %{--location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=detalle.pdf"--}%
+                %{--break;--}%
+            %{--case 1702155502101:--}%
+                %{--url = "${g.createLink(controller:'reportes2' , action: 'factura_E2')}?id=" + '${proceso?.id}' + "Wemp=${session.empresa.id}";--}%
+                %{--location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=detalle.pdf"--}%
+                %{--break;--}%
+        %{--}--}%
+    %{--});--}%
+
+    $("#btnImprimirDetalle").click(function () {
+        url = "${g.createLink(controller:'reportes3' , action: 'facturaElectronica')}?id=" + '${proceso?.id}' + "Wemp=${session.empresa.id}";
+        location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=facturaElectronica.pdf"
+
+        %{--location.href =  "${g.createLink(controller:'reportes3' , action: 'facturaE')}?id=" + '${proceso?.id}' + "&emp=${session.empresa.id}";--}%
+        %{--location.href =  "${g.createLink(controller:'reportes3' , action: 'enviarMail2')}?id=" + '${proceso?.id}' + "&emp=${session.empresa.id}" + "&url=" + url;--}%
+
     });
+
 
     $(".btnIrProceso").click(function () {
         location.href='${createLink(controller: 'proceso', action: 'nuevoProceso')}?id=' + '${proceso?.id}'
