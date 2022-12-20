@@ -639,9 +639,9 @@ class Reportes3Controller {
         def proceso = Proceso.get(params.id)
         def empresa = Empresa.get(params.emp)
         def detalles = DetalleFactura.findAllByProceso(proceso).sort{it?.item?.codigo}
+        def pagos = ProcesoFormaDePago.findAllByProceso(proceso)
 
-
-        return[proceso: proceso, empresa: empresa, detalles: detalles]
+        return[proceso: proceso, empresa: empresa, detalles: detalles, pagos: pagos]
     }
 
     def showBarcode(String barcode) {

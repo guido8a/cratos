@@ -116,7 +116,7 @@
 <div class="hoja">
 
     <div style="height: 100px; width: 330px;" class="left">
-            <div><g:img dir="images" file="logoTedein.png" width="300" height="100"/></div>
+        <div><g:img dir="images" file="logoTedein.png" width="300" height="100"/></div>
     </div>
 
     <div style="height: 260px; width: 300px;" class="right borde" >
@@ -206,18 +206,18 @@
     <div style="height: 120px; width: 400px; margin-top: 10px" class="left" >
         %{--<div style="margin-top: 10px; margin-left: 10px"><strong>Información Adicional</strong></div>--}%
         %{--<div style="margin-top: 10px">--}%
-            %{--<table style="margin-left: 5px">--}%
-                %{--<thead>--}%
-                %{--<tr class="letra2" style="height: 20px">--}%
-                    %{--<th class="tl tam3">Dirección</th>--}%
-                    %{--<th class="tl">${proceso?.proveedor?.direccion ?: ''}</th>--}%
-                %{--</tr>--}%
-                %{--<tr class="letra2" style="height: 10px">--}%
-                    %{--<th class="tl tam3">Email</th>--}%
-                    %{--<th class="tr">${proceso?.proveedor?.email ?: ''}</th>--}%
-                %{--</tr>--}%
-                %{--</thead>--}%
-            %{--</table>--}%
+        %{--<table style="margin-left: 5px">--}%
+        %{--<thead>--}%
+        %{--<tr class="letra2" style="height: 20px">--}%
+        %{--<th class="tl tam3">Dirección</th>--}%
+        %{--<th class="tl">${proceso?.proveedor?.direccion ?: ''}</th>--}%
+        %{--</tr>--}%
+        %{--<tr class="letra2" style="height: 10px">--}%
+        %{--<th class="tl tam3">Email</th>--}%
+        %{--<th class="tr">${proceso?.proveedor?.email ?: ''}</th>--}%
+        %{--</tr>--}%
+        %{--</thead>--}%
+        %{--</table>--}%
         %{--</div>--}%
     </div>
 
@@ -282,32 +282,36 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <td class="tl tam letra2 borde">${cratos.TipoPago.findByCodigo(proceso?.pago)?.descripcion?.toUpperCase() ?: ''}</td>
-            <td class="tc borde"><g:formatNumber number="${proceso?.valor ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
-        </tr>
+        <g:each in="${pagos}" var="pago">
+            <tr>
+                %{--<td class="tl tam letra2 borde">${cratos.TipoPago.findByCodigo(proceso?.pago)?.descripcion?.toUpperCase() ?: ''}</td>--}%
+                %{--<td class="tc borde"><g:formatNumber number="${proceso?.valor ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>--}%
+                <td class="tl tam letra2 borde">${pago?.tipoPago?.descripcion?.toUpperCase() ?: ''}</td>
+                <td class="tc borde"><g:formatNumber number="${pago?.valor ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
+            </tr>
+        </g:each>
         </tbody>
     </table>
 
     %{--<div style="height: 60px; width: 230px;" class="right borde2">--}%
-        %{--<div>--}%
-            %{--<table>--}%
-                %{--<thead>--}%
-                %{--<tr class="letra2" style="height: 20px">--}%
-                    %{--<th class="tl tam2">VALOR TOTAL SIN SUBSIDIO</th>--}%
-                    %{--<th class="tr"><g:formatNumber number="${0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></th>--}%
-                %{--</tr>--}%
-                %{--<tr class="letra2" style="height: 10px">--}%
-                    %{--<th class="tl tam2">AHORRO POR SUBSIDIO</th>--}%
-                    %{--<th class="tr"><g:formatNumber number="${0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></th>--}%
-                %{--</tr>--}%
-                %{--<tr class="letra2">--}%
-                    %{--<th class="tl tam2" style="font-size: 9px">(Incluye IVA cuando corresponda)</th>--}%
-                    %{--<th class="tr"></th>--}%
-                %{--</tr>--}%
-                %{--</thead>--}%
-            %{--</table>--}%
-        %{--</div>--}%
+    %{--<div>--}%
+    %{--<table>--}%
+    %{--<thead>--}%
+    %{--<tr class="letra2" style="height: 20px">--}%
+    %{--<th class="tl tam2">VALOR TOTAL SIN SUBSIDIO</th>--}%
+    %{--<th class="tr"><g:formatNumber number="${0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></th>--}%
+    %{--</tr>--}%
+    %{--<tr class="letra2" style="height: 10px">--}%
+    %{--<th class="tl tam2">AHORRO POR SUBSIDIO</th>--}%
+    %{--<th class="tr"><g:formatNumber number="${0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></th>--}%
+    %{--</tr>--}%
+    %{--<tr class="letra2">--}%
+    %{--<th class="tl tam2" style="font-size: 9px">(Incluye IVA cuando corresponda)</th>--}%
+    %{--<th class="tr"></th>--}%
+    %{--</tr>--}%
+    %{--</thead>--}%
+    %{--</table>--}%
+    %{--</div>--}%
     %{--</div>--}%
 
 

@@ -156,7 +156,7 @@ class ProcesoController extends cratos.seguridad.Shield {
                 proceso.pago = params.pago
 
                 if(params?.dcmtAutorizacion) {
-                    if(params?.dcmtAutorizacion.size() == 10) {
+                    if(params?.dcmtAutorizacion?.size() == 10) {
                         proveedor.autorizacionSri = params.dcmtAutorizacion
                     }
                 }
@@ -2270,7 +2270,10 @@ class ProcesoController extends cratos.seguridad.Shield {
 
     def formaPago_ajax () {
         def proceso = Proceso.get(params.id)
-        return [proceso: proceso]
+        def formasPago = ProcesoFormaDePago.findAllByProceso(proceso)
+        def total = formasPago?.valor?.sum() ?: 0
+        println("total " + total)
+        return [proceso: proceso, pagos: formasPago, total: total]
     }
 
     def tablaFormaPago_ajax () {
@@ -2285,11 +2288,13 @@ class ProcesoController extends cratos.seguridad.Shield {
         def proceso = Proceso.get(params.id)
         def tipoPago = TipoPago.get(params.tipo)
         def formaPago = new ProcesoFormaDePago()
+        def valor = params?.valor?.toDouble() ?: 0
+        def total = ProcesoFormaDePago.findAllByProceso(proceso)?.valor?.sum() ?: 0
 
         println "forma de pago, tipo: ${tipoPago.id}, proceso: ${proceso.id}, valor: ${proceso.valor}"
         formaPago.proceso = proceso
         formaPago.tipoPago = tipoPago
-        formaPago.valor = proceso.valor
+        formaPago.valor = valor
 
         if(params.plazo){
             formaPago.plazo = params.plazo.toInteger()
@@ -2297,19 +2302,20 @@ class ProcesoController extends cratos.seguridad.Shield {
             formaPago.plazo = 0
         }
 
-//        try{
-//            formaPago.save(flush: true)
-//            render "ok"
-//        }catch (e){
-//            println "error al agregar una forma de pago: $e"
-//            render "no"
-//        }
-        if(formaPago.save(flush: true)) {
-            println "graba formaPago"
-            render "ok"
-        } else {
-            println("error al crear formaPago ${formaPago.errors}")
-            render "no_error al guardar la forma de pago"
+        if(valor > proceso?.valor){
+            render "error1"
+        }else{
+            if(valor > (proceso?.valor - total)){
+                render "error2_${proceso?.valor - total}"
+            }else{
+                if(formaPago.save(flush: true)) {
+                    println "graba formaPago"
+                    render "ok"
+                } else {
+                    println("error al crear formaPago ${formaPago.errors}")
+                    render "no_error al guardar la forma de pago"
+                }
+            }
         }
     }
 

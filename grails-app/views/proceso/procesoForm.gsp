@@ -149,6 +149,11 @@
                         </a>
                     </g:else>
                 </g:if>
+
+
+                <a href="#" class="btn btn-success" id="btnImprimirFactElect">
+                    <i class="fa fa-print"></i> Factura Electŕonica
+                </a>
             %{--</g:if>--}%
                 <g:if test="${proceso?.tipoProceso?.codigo?.trim() in ['P','I', 'A']}">
                     <a href="#" class="btn btn-info" id="btnConciliar">
@@ -1125,11 +1130,11 @@
                 var span = $("<span class='span-eliminar ui-corner-all' title='Click para eliminar'>Eliminar</span>")
                 div.html($("#comboFP option:selected").text())
                 div.append(span)
-                div.addClass("fp-"+$("#comboFP").val())
-                div.attr("fp",$("#comboFP").val())
+                div.addClass("fp-"+$("#comboFP").val());
+                div.attr("fp",$("#comboFP").val());
                 span.bind("click", function () {
                     $(this).parent().remove()
-                })
+                });
                 $("#detalle-fp").append(div)
             }else{
                 bootbox.alert(message)

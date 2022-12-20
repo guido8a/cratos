@@ -8,8 +8,9 @@
 <table class="table table-bordered table-hover table-condensed" style="width: 100%">
     <thead>
     <tr>
-        <th style="width: 65%">Tipo de Pago</th>
-        <th style="width: 25%">Plazo</th>
+        <th style="width: 45%">Tipo de Pago</th>
+        <th style="width: 15%">Plazo</th>
+        <th style="width: 25%">Valor</th>
         <th style="width: 10%">Acciones</th>
     </tr>
     </thead>
@@ -18,7 +19,8 @@
     <g:each in="${formasPago}" var="forma">
         <tr style="width: 100%">
             <td style="text-align: left; width: 65%">${forma?.tipoPago?.descripcion}</td>
-            <td style="text-align: center; width: 25%">${forma?.plazo}</td>
+            <td style="text-align: center; width: 15%">${forma?.plazo}</td>
+            <td style="text-align: center; width: 25%">${forma?.valor}</td>
             <g:if test="${proceso?.estado != 'R'}">
                 <td style="text-align: center; width: 10%"><a href="#" class="btn btn-danger btnBorrarFormaPago" data-id="${forma?.id}"><i class="fa fa-trash-o"></i></a></td>
             </g:if>
