@@ -1548,7 +1548,7 @@
                 "seguro que desea registrar la transacción? </br> Una vez registrado, la información <b>NO</b> podrá ser " +
                 "cambiada.</p>", function (result) {
                 if (result) {
-//                    console.log("registrando...", tipoP);
+                    //                    console.log("registrando...", tipoP);
                     if(tipoP == 1 || tipoP == 2){
                         $.ajax({
                             type: 'POST',
@@ -1562,19 +1562,33 @@
                                 if(parts[0] == 'no'){
                                     bootbox.alert("<i class='fa fa-exclamation-circle fa-3x pull-left text-danger text-shadow'></i>" + parts[1])
                                 }else{
-                                    openLoader("Registrando...");
                                     $.ajax({
-                                        type: "POST",
-                                        url: "${g.createLink(controller: 'proceso',action: 'registrar')}",
-                                        data: "id=" + $("#idProceso").val(),
-                                        success: function (msg) {
-                                            closeLoader();
-                                            location.reload(true);
+                                        type: 'POST',
+                                        async: false,
+                                        url: '${createLink(controller: 'proceso', action: 'revisarDetalle_ajax')}',
+                                        data: {
+                                            proceso : '${proceso?.id}'
                                         },
-                                        error: function () {
-                                            bootbox.alert("Ha ocurrido un error. Por favor revise el gestor y los valores del proceso.")
+                                        success: function (msg2){
+                                            if(msg2 == 'no'){
+                                                bootbox.alert("<i class='fa fa-exclamation-circle fa-3x pull-left text-danger text-shadow'></i> La transacción no tiene ingresado ningún detalle")
+                                            }else{
+                                                openLoader("Registrando...");
+                                                $.ajax({
+                                                    type: "POST",
+                                                    url: "${g.createLink(controller: 'proceso',action: 'registrar')}",
+                                                    data: "id=" + $("#idProceso").val(),
+                                                    success: function (msg) {
+                                                        closeLoader();
+                                                        location.reload(true);
+                                                    },
+                                                    error: function () {
+                                                        bootbox.alert("Ha ocurrido un error. Por favor revise el gestor y los valores del proceso.")
+                                                    }
+                                                });
+                                            }
                                         }
-                                    });
+                                    })
                                 }
                             }
                         });

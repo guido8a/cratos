@@ -2349,5 +2349,16 @@ class ProcesoController extends cratos.seguridad.Shield {
             }
         }
     }
+
+    def revisarDetalle_ajax(){
+        def proceso = Proceso.get(params.proceso)
+        def detalle = DetalleFactura.findAllByProceso(proceso)
+
+        if(detalle.size() < 1){
+            render "no"
+        }else{
+            render "ok"
+        }
+    }
 }
 
