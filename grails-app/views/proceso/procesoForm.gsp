@@ -64,7 +64,7 @@
     <div class="btn-group">
         <g:link class="btn btn-info" action="buscarPrcs">
             <i class="fa fa-chevron-left"></i>
-            Lista Procesos
+            Procesos
         </g:link>
     </div>
 
@@ -112,18 +112,18 @@
                     <input type="hidden" name="id" value="${proceso?.id}">
                     <a class="btn btn-danger" id="btn-br-prcs" action="borrarProceso">
                         <i class="fa fa-trash-o"></i>
-                        Anular Proceso
+                        Anular
                     </a>
                 </g:form>
 
             %{--<g:if test="${proceso?.estado == 'R'}">--}%
                 <g:if test="${proceso?.tipoProceso.codigo.trim() in ['V', 'NC', 'ND']}">
                     <a href="#" class="btn btn-info" id="btnImprimirFactElect">
-                        <i class="fa fa-print"></i> Factura
+                        <i class="fa fa-print"></i> Factura, NC o ND
                     </a>
                     <g:if test="${proceso?.claveAcceso != null}">
                         <g:if test="${proceso?.tipoProceso?.codigo?.trim() in ['V']}">
-                            <a href="#" class="btn btn-success" id="btnImprimirFactElect">
+                            <a href="#" class="btn btn-success" id="btnImprimirFactElect1">
                                 <i class="fa fa-print"></i> Fact. Elect.
                             </a>
                             <a href="#" class="btn btn-primary" id="btnEnviarFactElect">
@@ -151,9 +151,6 @@
                 </g:if>
 
 
-                <a href="#" class="btn btn-success" id="btnImprimirFactElect">
-                    <i class="fa fa-print"></i> Factura Electŕonica
-                </a>
             %{--</g:if>--}%
                 <g:if test="${proceso?.tipoProceso?.codigo?.trim() in ['P','I', 'A']}">
                     <a href="#" class="btn btn-info" id="btnConciliar">
@@ -533,10 +530,11 @@
     $("#btnImprimirFactElect").click(function () {
         url = "${g.createLink(controller:'reportes3' , action: 'facturaElectronica')}?id=" + '${proceso?.id}' + "Wemp=${session.empresa.id}";
         location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=facturaElectronica.pdf"
+    });
 
-        %{--location.href =  "${g.createLink(controller:'reportes3' , action: 'facturaE')}?id=" + '${proceso?.id}' + "&emp=${session.empresa.id}";--}%
-        %{--location.href =  "${g.createLink(controller:'reportes3' , action: 'enviarMail2')}?id=" + '${proceso?.id}' + "&emp=${session.empresa.id}" + "&url=" + url;--}%
-
+    $("#btnImprimirFactElect1").click(function () {
+        url = "${g.createLink(controller:'reportes3' , action: 'facturaElectronica')}?id=" + '${proceso?.id}' + "Wemp=${session.empresa.id}";
+        location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=facturaElectronica.pdf"
     });
 
     $("#btnImprimirNCElect").click(function () {
