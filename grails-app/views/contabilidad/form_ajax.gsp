@@ -134,10 +134,10 @@
                     Costo de ventas
                 </label>
 
-                <div class="col-md-6">
+                <span class="col-md-6">
                     <g:select name="costos" from="${cntacsto}" optionValue="${{it.numero + " - " + it.descripcion}}" optionKey="id" class="form-control"
                               value="${contabilidadInstance?.costos?.id}"/>
-                </div>
+                </span>
                 *
             </span>
         </div>

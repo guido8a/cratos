@@ -144,6 +144,8 @@ class ContabilidadController extends cratos.seguridad.Shield {
         def banco = Cuenta.get(params.banco)
         def porPagar = Cuenta.get(params.porPagar)
         def porCobrar = Cuenta.get(params.porCobrar)
+        def costos = Cuenta.get(params.costos)
+        def inventario = Cuenta.get(params.inventario)
 
         if(params.id){
             contabilidadInstance =  Contabilidad.get(params.id)
@@ -157,6 +159,8 @@ class ContabilidadController extends cratos.seguridad.Shield {
             contabilidadInstance.bancos = banco
             contabilidadInstance.porPagar = porPagar
             contabilidadInstance.porCobrar = porCobrar
+            contabilidadInstance.costos = costos
+            contabilidadInstance.inventario = inventario
 
             if (!contabilidadInstance.save(flush: true)) {
                 render "NO_Error al guardar los datos de la contabilidad"
@@ -183,6 +187,8 @@ class ContabilidadController extends cratos.seguridad.Shield {
             contabilidadInstance.bancos = banco
             contabilidadInstance.porPagar = porPagar
             contabilidadInstance.porCobrar = porCobrar
+            contabilidadInstance.costos = costos
+            contabilidadInstance.inventario = inventario
 
             if (!contabilidadInstance.save(flush: true)) {
                 render "NO_Error al crear la contabilidad"
