@@ -117,7 +117,7 @@
                 </g:form>
 
             %{--<g:if test="${proceso?.estado == 'R'}">--}%
-                <g:if test="${proceso?.tipoProceso.codigo.trim() in ['V', 'NC', 'ND']}">
+                <g:if test="${proceso?.tipoProceso?.codigo?.trim() in ['V', 'NC', 'ND']}">
                     <a href="#" class="btn btn-info" id="btnImprimirFactElect">
                         <i class="fa fa-print"></i> Factura, NC o ND
                     </a>
@@ -179,12 +179,7 @@
                 </a>
             </g:if>
         </g:if>
-    %{--<a href="#" class="btn btn-primary" style="cursor: default; margin-right: 20px" id="btnFormaPago">--}%
-    %{--<i class="fa fa-usd"></i>--}%
-    %{--Forma de Pago--}%
-    %{--</a>--}%
         <g:if test="${proceso && proceso?.tipoProceso?.codigo?.trim() in ['C','V']}">
-        %{--<a href="#" class="btn btn-primary hidden" style="cursor: default; margin-right: 20px" id="abrir-fp">--}%
             <a href="#" class="btn btn-primary" style="cursor: default; margin-right: 20px" id="btnFormaPago">
                 <i class="fa fa-usd"></i>
                 Forma de Pago
@@ -221,8 +216,8 @@
                     <elm:datepicker name="fecha" title="Fecha de emisión del comprobante"
                                     class="datepicker form-control required col-xs-3 fechaE"
                                     value="${proceso?.fechaEmision?: new Date()}"
-                                    minDate="${(cratos.Contabilidad.get(session.contabilidad.id).fechaInicio - 30).format("dd-MM-yyyy")}"
-                                    maxDate="${cratos.Contabilidad.get(session.contabilidad.id).fechaCierre.format("dd-MM-yyyy")}"
+                                    minDate="${(Contabilidad.get(session.contabilidad.id).fechaInicio - 30).format("dd-MM-yyyy")}"
+                                    maxDate="${Contabilidad.get(session.contabilidad.id).fechaCierre.format("dd-MM-yyyy")}"
                                     style="width: 80px; margin-left: 5px"/>
                 </g:else>
             </div>
@@ -239,8 +234,8 @@
                     <elm:datepicker name="fechaingreso" title="Fecha de registro en el sistema"
                                     class="datepicker form-control required col-xs-3"
                                     value="${proceso?.fechaIngresoSistema?: new Date()}"
-                                    minDate="${cratos.Contabilidad.get(session.contabilidad.id).fechaInicio.format("dd-MM-yyyy")}"
-                                    maxDate="${cratos.Contabilidad.get(session.contabilidad.id).fechaCierre.format("dd-MM-yyyy")}"
+                                    minDate="${Contabilidad.get(session.contabilidad.id).fechaInicio.format("dd-MM-yyyy")}"
+                                    maxDate="${Contabilidad.get(session.contabilidad.id).fechaCierre.format("dd-MM-yyyy")}"
                                     style="width: 80px; margin-left: 5px"/>
                 </g:else>
             </div>
@@ -467,7 +462,6 @@
 
 <script type="text/javascript">
 
-
     $("#btnFormaPago").click(function () {
         $.ajax({
             type: 'POST',
@@ -494,9 +488,6 @@
         });
     });
 
-
-
-
     $("#btnEnviarFactura").click(function () {
         bootbox.confirm("<i class='fa fa-warning fa-3x pull-left text-warning text-shadow'></i> Está seguro que desea enviar esta factura al SRI?", function (result) {
             if (result) {
@@ -520,11 +511,8 @@
                         }
                     }
                 });
-
-
             }
         })
-
     });
 
     $("#btnImprimirFactElect").click(function () {
@@ -563,7 +551,6 @@
                     location.reload()
                 }
             });
-//            }
         })
     });
 
@@ -615,7 +602,7 @@
                         }
                     });
                 }
-            },
+            }
         };
 
         if(${proceso?.retEstado == 'N'}){
@@ -641,7 +628,6 @@
                 }
             }
         }
-
 
         $.ajax({
             type: 'POST',
@@ -729,7 +715,6 @@
                 var b = bootbox.dialog({
                     id: "dlgCon",
                     title: "Conciliar Total",
-//                    class: "long",
                     message: msg,
                     buttons: {
                         cancelar: {
@@ -773,25 +758,6 @@
         });
     });
 
-    //    cargarBotonFormasPago($("#tipoProceso").val())
-    //
-    //    $("#tipoProceso").change(function () {
-    //        var sel = $(this).val()
-    //        console.log('tipo:', sel);
-    //        cargarBotonFormasPago(sel)
-    //    });
-    //
-    //    function cargarBotonFormasPago (sel) {
-    //        console.log ('lega:', sel);
-    //        if(sel == 1 || sel == 2){
-    //            console.log('mostrar');
-    //            $("#btnFormaPago").removeClass('hidden')
-    //        }else{
-    //            console.log('esconder');
-    //            $("#btnFormaPago").addClass('hidden')
-    //        }
-    //    }
-
     $("#btnDetalle").click(function () {
         location.href='${createLink(controller: 'detalleFactura', action: 'detalleGeneral')}/?id=' +
             '${proceso?.id}' + '&tipo=' + '${proceso?.tipoProceso?.codigo}'
@@ -822,11 +788,9 @@
     }).keyup(function () {
     });
 
-
     $(document).ready(function () {
         var tipo = $(".tipoProcesoSel option:selected").val();
         var prve = $("#prve__id").val();
-//        console.log("prve__id:", prve);
 
         $("#listaErrores").html('');
         $("#divErrores").hide();
@@ -835,19 +799,18 @@
         $("#susteno").hide();
         $("#divFilaComprobante").html('');
         $("#divFilaComprobante").hide();
-        $("#libretinFacturas").hide()
+        $("#libretinFacturas").hide();
 
-        cargaGestor(tipo)
+        cargaGestor(tipo);
         if("${!proceso?.id}") {
             cargarProveedor(tipo)
         }
 
         if (prve && (tipo == '1')) {
-            $("#libretinFacturas").hide()
-            $("#pagoProceso").show()
+            $("#libretinFacturas").hide();
+            $("#pagoProceso").show();
             cargarProveedor(tipo);
             if ("${proceso?.sustentoTributario}") {
-                %{--console.log("proceso:", "${proceso?.tipoCmprSustento?.id}");--}%
                 cargarSstr("${proceso?.proveedor?.id}")
             }
 
@@ -860,18 +823,16 @@
         }
 
         if (prve && (tipo == '2')) {
-//            console.log('muestra libretinFacturas --2')
-            $("#libretinFacturas").show()
-            $("#pagoProceso").hide()
+            $("#libretinFacturas").show();
+            $("#pagoProceso").hide();
             cargarProveedor(tipo);
-            cargarTcsr(prve)
+            cargarTcsr(prve);
 //            cargarTipo(tipo);
         }
 
         if (tipo == '2' || tipo == '6' || tipo == '7') {
-//            console.log('carga y muestra libretinFacturas')
             cargarLibretin();
-            $("#libretinFacturas").show()
+            $("#libretinFacturas").show();
             $("#pagoProceso").hide()
         } else {
             $("#libretinFacturas").hide()
@@ -879,15 +840,15 @@
 
 
         if (tipo == '3') {
-            $("#libretinFacturas").hide()
-            $("#pagoProceso").hide()
+            $("#libretinFacturas").hide();
+            $("#pagoProceso").hide();
 //            cargarTipo(tipo);
         }
 
         if (tipo == '4' || tipo == '5' || tipo == '6' || tipo == '7') {
-            $("#libretinFacturas").hide()
-            $("#pagoProceso").hide()
-            $("#divFilaComprobante").show()
+            $("#libretinFacturas").hide();
+            $("#pagoProceso").hide();
+            $("#divFilaComprobante").show();
 //            cargarTipo(tipo);
         }
 
@@ -973,12 +934,11 @@
                 proceso: '${proceso?.id}'
             },
             success: function (msg) {
-//                console.log('ok....')
                 $("#gestorDiv").html(msg)
                 $("#gestorDiv").show()
             }
         });
-    };
+    }
 
     function cargarSstr(prve) {
         var tptr = $(".tipoProcesoSel option:selected").val();
@@ -999,7 +959,7 @@
                 $("#divSustento").show()
             }
         });
-    };
+    }
 
     function cargarTcsr(prve) {
         var tptr = $(".tipoProcesoSel option:selected").val();
@@ -1145,9 +1105,9 @@
         })
 
         $("#guardarProceso").click(function () {
-            var bandData = true
-            var error = ""
-            var info = ""
+            var bandData = true;
+            var error = "";
+            var info = "";
             var tipoP = $(".tipoProcesoSel option:selected").val();
 
 
@@ -1483,16 +1443,13 @@
                 }
             }
 
-
-
-
             if (error != "") {
                 $("#listaErrores").append(error)
                 $("#listaErrores").show()
                 $("#divErrores").show()
             } else {
                 if (info != "") {
-                    info += " Esta seguro de continuar?"
+                    info += " Esta seguro de continuar?";
                     bootbox.confirm(info, function (result) {
                         if (result) {
                             openLoader("Guardando..");
@@ -1517,14 +1474,13 @@
 
         $(".number").blur(function () {
             if (isNaN($(this).val()))
-                $(this).val("0.00")
+                $(this).val("0.00");
             if ($(this).val() == "")
-                $(this).val("0.00")
+                $(this).val("0.00");
         });
 
         $("#buscarPrve").click(function () {
             var tipo = $(".tipoProcesoSel option:selected").val();
-//            console.log('buscar...', tipo);
             $.ajax({
                 type: "POST",
                 url: "${g.createLink(controller: 'proceso',action: 'buscarProveedor')}",
@@ -1534,7 +1490,6 @@
                 }
             });
         });
-
 
         $("#parametro").keyup(function (ev) {
             if (ev.keyCode == 13) {
@@ -1548,7 +1503,6 @@
                 "seguro que desea registrar la transacción? </br> Una vez registrado, la información <b>NO</b> podrá ser " +
                 "cambiada.</p>", function (result) {
                 if (result) {
-                    //                    console.log("registrando...", tipoP);
                     if(tipoP == 1 || tipoP == 2){
                         $.ajax({
                             type: 'POST',
@@ -1635,7 +1589,7 @@
     $("#libretin").change(function () {
         var idLibretin = $("#libretin option:selected").val();
         var nmes = $("#establecimiento option:selected").val();
-        console.log('nmes..', nmes, 'libretin', idLibretin)
+//        console.log('nmes..', nmes, 'libretin', idLibretin)
         $.ajax({
             type: 'POST',
             url: '${createLink(controller: 'proceso', action: 'numeracion_ajax')}',
@@ -1647,15 +1601,15 @@
             },
             success: function (msg) {
                 var partes = msg.split('_');
-                $("#numEstablecimiento").val(partes[0])
-                $("#numEmision").val(partes[1])
+                $("#numEstablecimiento").val(partes[0]);
+                $("#numEmision").val(partes[1]);
                 $("#serie").val(partes[2])
             }
         })
     });
 
     function cargarLibretin() {
-        var fcha =  $("#fecha_input").val()
+        var fcha =  $("#fecha_input").val();
         var nmes = $("#establecimiento option:selected").val();
         if("${proceso?.fechaEmision}") {
             fcha = "${proceso?.fechaEmision?.format('dd-MM-yyyy')}"
@@ -1707,7 +1661,7 @@
 
     $("#establecimiento").change(function () {
 //        console.log('change... nmes')
-        $("#libretinFacturas").html('')
+        $("#libretinFacturas").html('');
         cargarLibretin()
     });
 

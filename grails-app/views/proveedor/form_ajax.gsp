@@ -1,5 +1,4 @@
-<%@ page import="cratos.Proveedor" %>
-
+<%@ page import="cratos.Canton; cratos.TipoRelacion; cratos.TipoProveedor; cratos.Proveedor" %>
 
 <script type="text/javascript" src="${resource(dir: 'js', file: 'ui.js')}"></script>
 <g:if test="${!proveedorInstance}">
@@ -8,31 +7,27 @@
 <g:else>
     <g:form class="form-horizontal" name="frmProveedor" role="form" action="save_ajax" method="POST">
         <g:hiddenField name="id" value="${proveedorInstance?.id}"/>
-    %{--<div class="col2">--}%
+
         <div class="form-group ${hasErrors(bean: proveedorInstance, field: 'tipoIdentificacion', 'error')} ">
             <span class="grupo">
                 <label for="tipoIdentificacion" class="col-md-3 control-label text-info">
                     Tipo Identificación
                 </label>
 
-                <div class="col-md-3">
+                <span class="col-md-3">
                     <g:select id="tipoIdentificacion" name="tipoIdentificacion.id" from="${tipoIdentificacion}"
                               optionKey="id" value="${proveedorInstance?.tipoIdentificacion?.id}"
                               class="many-to-one form-control" optionValue="descripcion" disabled="${proveedorInstance?.id ? true : false}"/>
-                </div>
+                </span>
             </span>
         </div>
-    %{--</div>--}%
+
         <div class="form-group ${hasErrors(bean: proveedorInstance, field: 'ruc', 'error')} required">
             <span class="grupo">
-                <label for="ruc" class="col-md-3 control-label text-info">
+                <label class="col-md-3 control-label text-info">
                     Ruc
                 </label>
-
-                <div class="col-md-3" id="divRuc">
-                    %{--<g:textField name="ruc" maxlength="13" minlength="10" required="" class=" form-control required"--}%
-                                 %{--value="${proveedorInstance?.ruc}" readonly="${lectura}"/>--}%
-                </div>
+                <span class="col-md-3" id="divRuc"> </span>
             </span>
         </div>
         <div class="form-group ${hasErrors(bean: proveedorInstance, field: 'nombre', 'error')} ">
@@ -41,10 +36,10 @@
                     Nombre
                 </label>
 
-                <div class="col-md-8">
+                <span class="col-md-8">
                     <g:textField name="nombre" maxlength="63" class=" form-control required"
                                  value="${proveedorInstance?.nombre}"/>
-                </div>
+                </span>
             </span>
         </div>
         <div class="form-group ${hasErrors(bean: proveedorInstance, field: 'direccion', 'error')} ">
@@ -53,47 +48,39 @@
                     Dirección
                 </label>
 
-                <div class="col-md-8">
+                <span class="col-md-8">
                     <g:textField name="direccion" maxlength="127" class=" form-control required"
                                  value="${proveedorInstance?.direccion}"/>
-                </div>
-
+                </span>
             </span>
         </div>
-        <div class="col2">
-            <div class="form-group ${hasErrors(bean: proveedorInstance, field: 'telefono', 'error')} ">
+            <div class="form-group ${hasErrors(bean: proveedorInstance, field: 'telefono', 'error')} " style="margin-top: 15px">
                 <span class="grupo">
-                    <label for="telefono" class="col-md-6 control-label text-info">
+                    <label for="telefono" class="col-md-3 control-label text-info">
                         Teléfono
                     </label>
 
-                    <div class="col-md-6">
-                        <div class="input-group">
+                    <span class="col-md-4">
+                        <span class="input-group">
                             <span class="input-group-addon"><i class="fa fa-phone"></i></span>
                             <g:textField name="telefono" maxlength="63" class=" form-control required"
                                          value="${proveedorInstance?.telefono}"/>
-                        </div>
-                    </div>
+                        </span>
+                    </span>
                 </span>
             </div>
-
-
-            <div class="form-group ${hasErrors(bean: proveedorInstance, field: 'email', 'error')} required ">
-                <span class="grupo">
-                    <label for="email" class="col-md-4 control-label text-info">
-                        Email
-                    </label>
-                    <div class="col-md-6">
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-
-                            <g:textField name="email" email="true" class=" form-control" value="${proveedorInstance?.email}"/>
-
-                        </div>
-                    </div>
+        <div class="form-group ${hasErrors(bean: proveedorInstance, field: 'email', 'error')}" style="margin-top: 15px">
+            <span class="grupo">
+                <label for="email" class="col-md-3 control-label text-info">
+                    Email
+                </label>
+                <span class="col-md-4">
+                    <span class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                        <g:textField name="email" email="true" class=" form-control required" value="${proveedorInstance?.email}"/>
+                    </span>
                 </span>
-            </div>
-
+            </span>
         </div>
         <div class="col2">
             <div class="form-group ${hasErrors(bean: proveedorInstance, field: 'tipoProveedor', 'error')} ">
@@ -102,25 +89,21 @@
                         Tipo Proveedor
                     </label>
 
-                    <div class="col-md-5">
-                        <g:select id="tipoProveedor" name="tipoProveedor.id" from="${cratos.TipoProveedor.list()}" optionKey="id"
+                    <span class="col-md-5">
+                        <g:select id="tipoProveedor" name="tipoProveedor.id" from="${TipoProveedor.list()}" optionKey="id"
                                   value="${proveedorInstance?.tipoProveedor?.id}" optionValue="descripcion" class="many-to-one form-control"
-                                 />
-                    </div>
-
+                        />
+                    </span>
                 </span>
             </div>
             <div class="form-group ${hasErrors(bean: proveedorInstance, field: 'tipoPersona', 'error')} required">
                 <span class="grupo">
-                    <label for="tipoPersona" class="col-md-4 control-label text-info">
+                    <label class="col-md-4 control-label text-info">
                         Tipo Persona
                     </label>
 
-                    <div class="col-md-5" id="divTipoPersona">
-                        %{--<g:select id="tipoPersona" name="tipoPersona.id" from="${cratos.TipoPersona.list()}" optionKey="id"--}%
-                                  %{--required="" value="${proveedorInstance?.tipoPersona?.id}" optionValue="descripcion" class="many-to-one form-control"/>--}%
-                    </div>
-                    *
+                    <span class="col-md-5" id="divTipoPersona">
+                    </span>
                 </span>
             </div>
         </div>
@@ -131,11 +114,10 @@
                         Tipo Relación
                     </label>
 
-                    <div class="col-md-5">
-                        <g:select id="tipoRelacion" name="tipoRelacion.id" from="${cratos.TipoRelacion.list()}" optionKey="id"
+                    <span class="col-md-5">
+                        <g:select id="tipoRelacion" name="tipoRelacion.id" from="${TipoRelacion.list()}" optionKey="id"
                                   required="" optionValue="descripcion" value="${proveedorInstance?.tipoRelacion?.id}" class="many-to-one form-control"/>
-                    </div>
-                    *
+                    </span>
                 </span>
             </div>
 
@@ -145,9 +127,9 @@
                         Estado
                     </label>
 
-                    <div class="col-md-3">
+                    <span class="col-md-3">
                         <g:select name="estado" from="['1':'Activo', '0': 'No Activo']" optionValue="value" optionKey="key" class="form-control" value="${proveedorInstance?.estado}"/>
-                    </div>
+                    </span>
                 </span>
             </div>
         </div>
@@ -158,10 +140,10 @@
                         Nombre Contacto
                     </label>
 
-                    <div class="col-md-6">
+                    <span class="col-md-6">
                         <g:textField name="nombreContacto" maxlength="40"  class=" form-control"
                                      value="${proveedorInstance?.nombreContacto}"/>
-                    </div>
+                    </span>
                 </span>
             </div>
             <div class="form-group ${hasErrors(bean: proveedorInstance, field: 'descuento', 'error')}">
@@ -170,12 +152,12 @@
                         Descuento
                     </label>
 
-                    <div class="col-md-3">
-                        <div class="input-group">
+                    <span class="col-md-3">
+                        <span class="input-group">
                             <g:textField name="descuento" class="number form-control" maxlength="3" value="${fieldValue(bean: proveedorInstance, field: 'descuento')}"/>
                             <span class="input-group-addon"><i class="fa fa-percent"></i>%</span>
-                        </div>
-                    </div>
+                        </span>
+                    </span>
                 </span>
             </div>
         </div>
@@ -186,10 +168,10 @@
                         Apellido Contacto
                     </label>
 
-                    <div class="col-md-6">
+                    <span class="col-md-6">
                         <g:textField name="apellidoContacto" maxlength="40" class=" form-control"
                                      value="${proveedorInstance?.apellidoContacto}"/>
-                    </div>
+                    </span>
                 </span>
             </div>
 
@@ -199,10 +181,10 @@
                         Relacionado
                     </label>
 
-                    <div class="col-md-3">
+                    <span class="col-md-3">
                         <g:select id="relacionado" name="relacionado.id" from="${['NO','SI']}"
                                   value="${proveedorInstance?.relacionado}" class="many-to-one form-control"/>
-                    </div>
+                    </span>
                 </span>
             </div>
         </div>
@@ -213,10 +195,10 @@
                         Autorización del Sri
                     </label>
 
-                    <div class="col-md-6">
+                    <span class="col-md-6">
                         <g:textField name="autorizacionSri" maxlength="40" class=" form-control"
                                      value="${proveedorInstance?.autorizacionSri}"/>
-                    </div>
+                    </span>
                 </span>
             </div>
 
@@ -226,11 +208,11 @@
                         País
                     </label>
 
-                    <div class="col-md-6">
+                    <span class="col-md-6">
                         <g:select id="pais" name="pais.id" from="${paises}"
                                   value="${proveedorInstance?.pais}" class="many-to-one form-control"
                                   noSelection="['null': 'Seleccione...']"/>
-                    </div>
+                    </span>
                 </span>
             </div>
         </div>
@@ -242,10 +224,9 @@
                         Actividad
                     </label>
 
-                    <div class="col-md-6">
+                    <span class="col-md-6">
                         <g:textField name="actividad" class=" form-control" value="${proveedorInstance?.actividad}"/>
-                    </div>
-
+                    </span>
                 </span>
             </div>
             <div class="form-group ${hasErrors(bean: proveedorInstance, field: 'canton', 'error')} ">
@@ -254,16 +235,11 @@
                         Cantón
                     </label>
 
-                    <div class="col-md-6">
-                        <g:select id="canton" name="canton.id" from="${cratos.Canton.list().sort{it.nombre}}" optionKey="id"
+                    <span class="col-md-6">
+                        <g:select id="canton" name="canton.id" from="${Canton.list().sort{it.nombre}}" optionKey="id"
                                   value="${proveedorInstance?.canton?.id}" optionValue="nombre" class="many-to-one form-control"
                                   noSelection="['null': 'Seleccione...']"/>
-                    </div>
-                    %{--<div class="col-md-1">--}%
-                        %{--<a href="#" class="btn btn-info btn-sm" id="btnCanton" title="Agregar Cantón">--}%
-                            %{--<i class="fa fa-plus"></i>--}%
-                        %{--</a>--}%
-                    %{--</div>--}%
+                    </span>
                 </span>
             </div>
         </div>
@@ -274,38 +250,39 @@
                         Cheque a nombre de
                     </label>
 
-                    <div class="col-md-6">
+                    <span class="col-md-6">
                         <g:textField name="nombreCheque" class=" form-control" value="${proveedorInstance?.nombreCheque}"/>
-                    </div>
+                    </span>
                 </span>
             </div>
         </div>
 
+        <div style="margin-top: 15px">
+            <div class="form-group ${hasErrors(bean: proveedorInstance, field: 'observaciones', 'error')} ">
+                <span class="grupo">
+                    <label for="observaciones" class="col-md-3 control-label text-info">
+                        Observaciones
+                    </label>
 
-        <div class="form-group ${hasErrors(bean: proveedorInstance, field: 'observaciones', 'error')} ">
-            <span class="grupo">
-                <label for="observaciones" class="col-md-3 control-label text-info">
-                    Observaciones
-                </label>
-
-                <div class="col-md-8">
-                    <g:textArea name="observaciones" maxlength="127" class="form-control"
-                                value="${proveedorInstance?.observaciones}" style="resize: none"/>
-                </div>
-            </span>
+                    <span class="col-md-8">
+                        <g:textArea name="observaciones" maxlength="127" class="form-control"
+                                    value="${proveedorInstance?.observaciones}" style="resize: none"/>
+                    </span>
+                </span>
+            </div>
         </div>
     </g:form>
 
 
     <script type="text/javascript">
 
+        var valorTipoIdentificacion = $("#tipoIdentificacion").val();
 
-        cargarRuc($("#tipoIdentificacion").val());
-
+        cargarRuc(valorTipoIdentificacion);
 
         function cargarRuc (tipo) {
             $.ajax({
-               type: 'POST',
+                type: 'POST',
                 url: '${createLink(controller: 'proveedor', action: 'ruc_ajax')}',
                 data:{
                     id: '${proveedorInstance?.id}',
@@ -317,13 +294,11 @@
             });
         }
 
-
-
-        cargarTipoPersona($("#tipoIdentificacion").val());
+        cargarTipoPersona(valorTipoIdentificacion);
 
         function cargarTipoPersona (tipo) {
             $.ajax({
-               type: 'POST',
+                type: 'POST',
                 url: '${createLink(controller: 'proveedor', action: 'tipoPersona_ajax')}',
                 data:{
                     id: '${proveedorInstance?.id}',
@@ -335,25 +310,11 @@
             });
         }
 
-//        revisarLongitud($("#tipoIdentificacion").val())
-//
-//        function revisarLongitud (tipo) {
-//            if(tipo == '1'){
-//                $("#ruc").attr("minlength",13)
-//            }else{
-//                $("#ruc").attr("minlength",10)
-//            }
-//        }
-
-
         $("#tipoIdentificacion").change(function () {
-            var vl = $(this).val()
-//            revisarLongitud(vl)
-            cargarTipoPersona(vl)
+            var vl = $(this).val();
+            cargarTipoPersona(vl);
             cargarRuc(vl)
         });
-
-
 
         function validarNum(ev) {
             /*
@@ -374,27 +335,12 @@
             ev.keyCode == 37 || ev.keyCode == 39);
         }
 
-
         function validarNumDec(ev) {
-            /*
-             48-57      -> numeros
-             96-105     -> teclado numerico
-             188        -> , (coma)
-             190        -> . (punto) teclado
-             110        -> . (punto) teclado numerico
-             8          -> backspace
-             46         -> delete
-             9          -> tab
-             37         -> flecha izq
-             39         -> flecha der
-             */
             return ((ev.keyCode >= 48 && ev.keyCode <= 57) ||
             (ev.keyCode >= 96 && ev.keyCode <= 105) ||
             ev.keyCode == 8 || ev.keyCode == 46 || ev.keyCode == 9 ||
             ev.keyCode == 37 || ev.keyCode == 39 || ev.keyCode == 190 || ev.keyCode == 110);
         }
-
-
 
         $("#ruc").keydown(function (ev) {
             return validarNum(ev);
@@ -414,11 +360,9 @@
 
         });
 
-
         $("#tipoPersona").change(function () {
             console.log($(this).val())
         });
-
 
         $("#descuento").keydown(function (ev) {
             var val = $(this).val();
@@ -440,7 +384,6 @@
                         var parts = val.split(".");
                         var l = parts[1].length;
                         if (l >= dec) {
-//                                return false;
                         }
                     }
                 } else {
@@ -490,8 +433,6 @@
             return true;
         });
 
-
-
-   </script>
+    </script>
 
 </g:else>

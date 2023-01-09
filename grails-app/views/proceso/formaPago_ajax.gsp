@@ -1,3 +1,8 @@
+<%@ page import="cratos.TipoPago" %>
+
+
+<div id="divRestante"></div>
+
 <g:if test="${proceso?.estado != 'R'}">
     <div class="row">
         <div class="col-xs-1 negrilla text-info">
@@ -5,7 +10,7 @@
         </div>
 
         <div class="col-xs-4">
-            <g:select name="formaPago_name" from="${cratos.TipoPago.list().sort{it.descripcion}}" optionKey="id" optionValue="descripcion" id="formaPago" class="form-control"/>
+            <g:select name="formaPago_name" from="${TipoPago.list().sort{it.descripcion}}" optionKey="id" optionValue="descripcion" id="formaPago" class="form-control"/>
         </div>
 
         <div class="col-xs-1 negrilla text-info">
@@ -31,10 +36,24 @@
 
 <div style="margin-top: 10px" id="divTablaFormaPago">
 
-
 </div>
 
 <script type="text/javascript">
+
+    cargarRestante(${proceso?.id});
+
+    function cargarRestante(id) {
+        $.ajax({
+            type: 'POST',
+            url: '${createLink(controller: 'proceso', action: 'alerta_saldo_ajax')}',
+            data: {
+                id: id
+            },
+            success: function(msg){
+                $("#divRestante").html(msg)
+            }
+        })
+    }
 
     $(".btnAgregarFormaPago").click(function () {
         var tipo = $("#formaPago option:selected").val();
@@ -58,7 +77,7 @@
                         cargarTablaFormaPago();
                     }else{
                         if(parts[0] == 'error1'){
-                            var b = bootbox.dialog({
+                            bootbox.dialog({
                                 id   : "dlgError1",
                                 title: "Alerta",
                                 message: "<i class='fa fa-exclamation-triangle fa-2x pull-left text-danger text-shadow'></i> El valor ingresado es mayor al valor de la factura",
@@ -73,7 +92,7 @@
                             }); //dialog
                         }else{
                             if(parts[0] == 'error2'){
-                                var c = bootbox.dialog({
+                                bootbox.dialog({
                                     id   : "dlgError2",
                                     title: "Alerta",
                                     message: "<i class='fa fa-exclamation-triangle fa-2x pull-left text-danger text-shadow'></i> El valor ingresado es mayor al valor disponible:" + parts[1],
@@ -94,7 +113,7 @@
                 }
             });
         }else{
-            var d = bootbox.dialog({
+            bootbox.dialog({
                 id   : "dlgError3",
                 title: "Alerta",
                 message: "<i class='fa fa-exclamation-triangle fa-2x pull-left text-danger text-shadow'></i> Ingrese un valor",
@@ -108,12 +127,9 @@
                 } //buttons
             }); //dial
         }
-
-
     });
 
     cargarTablaFormaPago();
-
 
     function cargarTablaFormaPago () {
         $.ajax({
@@ -123,6 +139,7 @@
                 proceso: '${proceso?.id}'
             },
             success: function (msg) {
+                cargarRestante(${proceso?.id});
                 $("#divTablaFormaPago").html(msg)
             }
         });
@@ -154,18 +171,6 @@
     });
 
     function validarNumDec(ev) {
-        /*
-         48-57      -> numeros
-         96-105     -> teclado numerico
-         188        -> , (coma)
-         190        -> . (punto) teclado
-         110        -> . (punto) teclado numerico
-         8          -> backspace
-         46         -> delete
-         9          -> tab
-         37         -> flecha izq
-         39         -> flecha der
-         */
         return ((ev.keyCode >= 48 && ev.keyCode <= 57) ||
         (ev.keyCode >= 96 && ev.keyCode <= 105) ||
         ev.keyCode == 8 || ev.keyCode == 46 || ev.keyCode == 9 ||
@@ -178,7 +183,5 @@
         return validarNumDec(ev);
     }).keyup(function () {
     });
-
-
 
 </script>

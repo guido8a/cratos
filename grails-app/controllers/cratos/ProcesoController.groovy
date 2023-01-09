@@ -2272,8 +2272,8 @@ class ProcesoController extends cratos.seguridad.Shield {
         def proceso = Proceso.get(params.id)
         def formasPago = ProcesoFormaDePago.findAllByProceso(proceso)
         def total = formasPago?.valor?.sum() ?: 0
-        println("total " + total)
-        return [proceso: proceso, pagos: formasPago, total: total]
+        def restante = proceso?.valor ? proceso.valor.minus(total) : 0
+        return [proceso: proceso, pagos: formasPago, total: total, restante: restante]
     }
 
     def tablaFormaPago_ajax () {
@@ -2359,6 +2359,14 @@ class ProcesoController extends cratos.seguridad.Shield {
         }else{
             render "ok"
         }
+    }
+
+    def alerta_saldo_ajax(){
+        def proceso = Proceso.get(params.id)
+        def formasPago = ProcesoFormaDePago.findAllByProceso(proceso)
+        def total = formasPago?.valor?.sum() ?: 0
+        def restante = proceso?.valor ? proceso.valor.minus(total) : 0
+        return [restante: restante, proceso: proceso]
     }
 }
 
