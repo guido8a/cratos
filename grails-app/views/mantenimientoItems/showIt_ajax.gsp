@@ -1,8 +1,10 @@
 <%@ page import="cratos.inventario.Item" %>
 
 <div style="padding: 20px">
-        <h3 style="text-align: center">${itemInstance.nombre}</h3>
         <br>
+    <div class="alert alert-success">
+        <h4 class="alert-heading">${itemInstance.nombre}</h4>
+    </div>
         <g:if test="${itemInstance?.codigo}">
             <div class="row">
                 <div class="col-md-4 text-info">

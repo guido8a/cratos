@@ -6,38 +6,6 @@ import org.springframework.dao.DataIntegrityViolationException
 import org.w3c.dom.Document
 import sri.XAdESBESSignature
 
-//import javax.swing.JFileChooser
-
-//import sun.plugin.javascript.navig.Document
-
-/*
-import javax.xml.crypto.*
-import javax.xml.crypto.dsig.*
-import javax.xml.crypto.dsig.dom.DOMSignContext
-import javax.xml.crypto.dsig.keyinfo.KeyInfo
-import javax.xml.crypto.dsig.keyinfo.KeyInfoFactory
-import javax.xml.crypto.dsig.keyinfo.KeyValue
-import javax.xml.crypto.dsig.keyinfo.X509Data
-import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec
-import javax.xml.crypto.dsig.spec.TransformParameterSpec
-import javax.xml.parsers.DocumentBuilder
-import javax.xml.parsers.DocumentBuilderFactory
-import javax.xml.transform.Transformer
-import javax.xml.transform.TransformerFactory
-import javax.xml.transform.dom.DOMSource
-import javax.xml.transform.stream.StreamResult
-import java.security.KeyPair
-import java.security.KeyPairGenerator
-import java.security.KeyStore
-import java.security.cert.Certificate
-import java.text.DecimalFormat
-*/
-
-
-
-
-//import java.io.FileInputStream;
-//import java.io.FileOutputStream;
 import java.security.Key;
 import java.security.KeyPair;
 import java.security.KeyStore;
@@ -47,8 +15,6 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.Certificate;
-//import java.util.ArrayList;
-//import java.util.Collections;
 
 import javax.xml.crypto.dsig.CanonicalizationMethod;
 import javax.xml.crypto.dsig.DigestMethod;
@@ -71,7 +37,6 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-
 class MantenimientoItemsController extends Shield {
 
     def dbConnectionService
@@ -81,7 +46,7 @@ class MantenimientoItemsController extends Shield {
     } //index
 
     String makeBasicTree(params) {
-        println "makeBasicTree: $params"
+//        println "makeBasicTree: $params"
         def empr = Empresa.get(session.empresa.id)
         def ids = params.id
         def id
@@ -475,7 +440,6 @@ class MantenimientoItemsController extends Shield {
     def formSg_ajax() {
         println "formSg_ajax $params"
         def grpo__id = params.padre ?: params.id
-//        def grupo = Grupo.get(SubgrupoItems.get(grpo__id).grupo.id)
         def grupo = Grupo.findById(1)
         def subgrupoItemsInstance = new SubgrupoItems()
         if (params.id) {
@@ -515,9 +479,6 @@ class MantenimientoItemsController extends Shield {
         if (params.codigo) {
             params.codigo = params.codigo.toString().toUpperCase()
         }
-//        if (params.descripcion) {
-//            params.descripcion = params.descripcion.toString().toUpperCase()
-//        }
         if (params.id) {
             subgrupo = SubgrupoItems.get(params.id)
             accion = "edit"
@@ -537,11 +498,11 @@ class MantenimientoItemsController extends Shield {
         def subgrupo = SubgrupoItems.get(params.id)
         try {
             subgrupo.delete(flush: true)
-            render "OK"
+            render "ok"
         }
         catch (DataIntegrityViolationException e) {
             println "mantenimiento items controller l 524: " + e
-            render "NO"
+            render "no"
         }
     }
 
@@ -564,13 +525,8 @@ class MantenimientoItemsController extends Shield {
     }
 
     def checkCdDp_ajax() {
-//        println params
         if (params.id) {
             def departamento = DepartamentoItem.get(params.id)
-//            println params.codigo
-//            println params.codigo.class
-//            println departamento.codigo
-//            println departamento.codigo.class
             if (params.codigo == departamento.codigo.toString()) {
                 render true
             } else {
@@ -615,17 +571,13 @@ class MantenimientoItemsController extends Shield {
     }
 
     def saveDp_ajax() {
-        println "save $params"
         def accion = "create"
+
         def departamento = new DepartamentoItem()
         if (params.codigo) {
             params.codigo = params.codigo.toString().toUpperCase()
         }
-/*
-        if (params.descripcion) {
-            params.descripcion = params.descripcion.toString().toUpperCase()
-        }
-*/
+
         if (params.id) {
             departamento = DepartamentoItem.get(params.id)
             accion = "edit"
@@ -641,26 +593,27 @@ class MantenimientoItemsController extends Shield {
     }
 
     def deleteDp_ajax() {
+        println("params DP" + params)
         def departamento = DepartamentoItem.get(params.id)
         try {
             departamento.delete(flush: true)
-            render "OK"
+            render "ok"
         }
         catch (DataIntegrityViolationException e) {
             println "mantenimiento items controller l 630: " + e
-            render "NO"
+            render "no"
         }
     }
 
     def showIt_ajax() {
-        println "showIt_ajax" + params
+//        println "showIt_ajax" + params
         def itemInstance = Item.get(params.id)
-        println "itemInstance: $itemInstance"
+//        println "itemInstance: $itemInstance"
         return [itemInstance: itemInstance]
     }
 
     def formIt_ajax() {
-        println "formIt_ajax $params"
+//        println "formIt_ajax $params"
         def departamento = DepartamentoItem.get(params.padre)
         def itemInstance = new Item()
         if (params.id) {
@@ -715,7 +668,6 @@ class MantenimientoItemsController extends Shield {
                 def items = Item.findAllByNombre(params.nombre)
                 if (items.size() == 0) {
                     render true
-//                    return
                 } else {
                     render false
                 }
@@ -753,7 +705,6 @@ class MantenimientoItemsController extends Shield {
         }
     }
 
-
     def infoItems() {
         def item = Item.get(params.id)
         def rubro = Rubro.findAllByItem(item)
@@ -767,7 +718,6 @@ class MantenimientoItemsController extends Shield {
         def res=null
         res = oferentesService.exportDominio(janus.Item, "itemjnid", item, null, "ofrt__id",null, "ofrt__id","select * from item where itemcdgo='${item.codigo}'")
 
-//        render "NO_Ha ocurrido un error"
         if(res)
             render "OK"
         else
@@ -778,10 +728,7 @@ class MantenimientoItemsController extends Shield {
         println "saveIt_ajax: $params"
         println "p. venta: ${params.precioVenta.toDouble()}"
         def dep = DepartamentoItem.get(params.padre)
-//        params.tipoItem = TipoItem.findByCodigo("I")
         params.fechaModificacion = new Date()
-//        params.nombre = params.nombre.toString().toUpperCase()
-//        params.observaciones = params.observaciones.toString().toUpperCase()
         params.codigo = params.codigo.toString().toUpperCase()
         params.precioVenta = params.precioVenta.toDouble()
         params.precioCosto = params.precioCosto.toDouble()
@@ -831,29 +778,14 @@ class MantenimientoItemsController extends Shield {
         def item = Item.get(params.id)
         try {
             item.delete(flush: true)
-            render "OK"
+            render "ok"
         }
         catch (DataIntegrityViolationException e) {
             println "mantenimiento items controller l 797: " + e
-            render "NO"
+            render "no"
         }
     }
 
-/*
-    def formPrecio_ajax() {
-        def item = Item.get(params.item)
-        def lugar = null
-        if (params.lugar != "all") {
-            lugar = Lugar.get(params.lugar)
-        }
-        def precioRubrosItemsInstance = new PrecioRubrosItems()
-        precioRubrosItemsInstance.item = item
-        if (lugar) {
-            precioRubrosItemsInstance.lugar = lugar
-        }
-        return [precioRubrosItemsInstance: precioRubrosItemsInstance, lugar: lugar, lugarNombre: params.nombreLugar, fecha: params.fecha, params: params]
-    }
-*/
 
     def checkFcPr_ajax() {
 //        println params
@@ -874,52 +806,6 @@ class MantenimientoItemsController extends Shield {
             }
         }
     }
-
-/*
-    def savePrecio_ajax() {
-        def item = Item.get(params.item.id)
-        params.fecha = new Date().parse("dd-MM-yyyy", params.fecha)
-        if (params.lugar.id != "-1") {
-            def precioRubrosItemsInstance = new PrecioRubrosItems(params)
-            if (precioRubrosItemsInstance.save(flush: true)) {
-                render "OK"
-            } else {
-                println "mantenimiento items controller l 846: " + precioRubrosItemsInstance.errors
-                render "NO"
-            }
-        } else {
-            if (params.ignore == "true") {
-                def error = 0
-                Lugar.findAllByTipoLista(item.tipoLista).each { lugar ->
-                    def precios = PrecioRubrosItems.withCriteria {
-                        and {
-                            eq("lugar", lugar)
-                            eq("fecha", params.fecha)
-                            eq("item", item)
-                        }
-                    }
-                    if (precios.size() == 0) {
-                        def precioRubrosItemsInstance = new PrecioRubrosItems()
-                        precioRubrosItemsInstance.precioUnitario = params.precioUnitario.toDouble()
-                        precioRubrosItemsInstance.lugar = lugar
-                        precioRubrosItemsInstance.item = Item.get(params.item.id)
-                        precioRubrosItemsInstance.fecha = params.fecha
-                        if (precioRubrosItemsInstance.save(flush: true)) {
-                        } else {
-                            println "mantenimiento items controller l 873: " + precioRubrosItemsInstance.errors
-                            error++
-                        }
-                    }
-                }
-                if (error == 0) {
-                    render "OK"
-                } else {
-                    render "NO"
-                }
-            }
-        }
-    }
-*/
 
     def deletePrecio_ajax() {
         def rubroPrecioInstance = PrecioRubrosItems.get(params.id);
@@ -1057,6 +943,26 @@ class MantenimientoItemsController extends Shield {
             e.printStackTrace();
         }
         return null;
+    }
+
+    def duplicar_ajax () {
+        def item = Item.get(params.id)
+        def codigoParcial = item.codigo.substring(0, 7)
+
+        def cn = dbConnectionService.getConnection()
+        def sql = "select max(substr(itemcdgo, 9, length(itemcdgo))::int) + 1 nmro from item where dprt__id = ${item.departamento.id}"
+        def data = cn.rows(sql.toString())
+
+        def nuevoItem = new Item()
+        nuevoItem.properties = item.properties
+        nuevoItem.codigo = codigoParcial + "." + data.nmro[0].toString().padLeft(item.codigo.substring(8).size(),'0')
+
+        if(!nuevoItem.save(flush:true)){
+            println("error al duplicar el item " + nuevoItem.errors)
+            render "no"
+        }else{
+            render "ok_${nuevoItem.id}"
+        }
     }
 
 
