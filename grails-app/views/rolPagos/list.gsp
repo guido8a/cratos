@@ -1,4 +1,3 @@
-
 <%@ page import="cratos.RolPagos" %>
 <!DOCTYPE html>
 <html>
@@ -11,8 +10,6 @@
     .centrado{
         text-align: center;
     }
-
-
     </style>
 </head>
 <body>
@@ -28,14 +25,12 @@
             <i class="fa fa-bars"></i>
             Generar rol de pagos
         </a>
-
         <a href="#" id="generar_rol" class="btn btn-azul ">
             <i class="fa fa-bars"></i>
             Generar 13° sueldo
         </a>
     </div>
 </div>
-
 
 <div style="margin-top: 15px;" class="vertical-container">
     <p class="css-icono" style="margin-bottom: -15px"><i class="fa fa-folder-open-o"></i></p>
@@ -103,25 +98,12 @@
         <th style="width: 15%">Estado</th>
     </tr>
     </thead>
-    %{--<tbody>--}%
-    %{--<g:each in="${rolPagosInstanceList}" status="i" var="rolPagosInstance">--}%
-    %{--<tr data-id="${rolPagosInstance.id}" data-estado="${rolPagosInstance?.estado}" data-mes="${rolPagosInstance?.mess__id}" data-anio="${rolPagosInstance?.anio__id}" data-mes1="${rolPagosInstance?.mess}" data-anio2="${rolPagosInstance?.anio}">--}%
-    %{--<td class="centrado">${rolPagosInstance?.anio}</td>--}%
-    %{--<td class="centrado">${rolPagosInstance?.mess}</td>--}%
-    %{--<td class="centrado"><g:formatDate date="${rolPagosInstance.fecha}" format="dd-MM-yyyy" /></td>--}%
-    %{--<td class="centrado"><g:formatDate date="${rolPagosInstance.fechaModificacion}" format="dd-MM-yyyy" /></td>--}%
-    %{--<td style="text-align: right"><g:formatNumber number="${rolPagosInstance?.pagado}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="en_US"/></td>--}%
-    %{--<td class="centrado">${rolPagosInstance?.empresa}</td>--}%
-    %{--<td class="centrado" style="text-align: center; color: ${rolPagosInstance?.estado == 'N' ? 'rgba(112,27,25,0.9)': 'rgba(83,207,109,0.9)'}">${rolPagosInstance?.estado == 'N' ? 'No Aprobado' : 'Aprobado'}</td>--}%
-    %{--</tr>--}%
-    %{--</g:each>--}%
-    %{--</tbody>--}%
 </table>
 
 <div class="row-fluid"  style="width: 99.7%;height: 250px;overflow-y: auto;float: right;">
-    <div class="span12">
+    %{--<div class="span12">--}%
         <div id="divTablaRol" style="width: 100%; height: 250px;"></div>
-    </div>
+    %{--</div>--}%
 </div>
 
 <div class="modal fade" id="dlg-rol" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -132,28 +114,25 @@
                 <h4 class="modal-title" id="myModalLabel">Rol de Pagos</h4>
             </div>
             <div class="modal-body">
-
                 <div class="row">
-                    <div class="col-xs-5" style="text-align: right">
+                    <div class="col-xs-2" style="text-align: right">
                         Año:
                     </div>
                     <div class="col-xs-3 negrilla">
                         <g:select name="anio" class="form-control" from="${cratos.Anio.list()}" id="anio" optionKey="id" optionValue="anio" />
                     </div>
-
                 </div>
                 <div class="row">
-                    <div class="col-xs-5" style="text-align: right">
+                    <div class="col-xs-2" style="text-align: right">
                         Mes:
                     </div>
                     <div class="col-xs-5 negrilla" id="divMeses">
-                        %{--<g:select name="mes" class="form-control" from="${cratos.Mes.list(sort: 'numero')}" optionKey="id" optionValue="descripcion"/>--}%
                     </div>
-
                 </div>
             </div>
             <div class="modal-footer">
-                <a href="#" id="generar" class="btn btn-success">Generar</a>
+                <a href="#" id="btnCancelar" data-dismiss="modal" class="btn btn-info"><i class="fa fa-times"></i> Cancelar </a>
+                <a href="#" id="generar" class="btn btn-success"><i class="fa fa-gear"></i> Generar</a>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
@@ -164,20 +143,18 @@
 
 <script type="text/javascript">
 
-
     function cargarMeses() {
-            $.ajax({
-                type: 'POST',
-                url: '${createLink(controller: 'rolPagos', action: 'meses_ajax')}',
-                data:{
-                 meses: '${meses}'
-                },
-                success: function (msg){
-                    $("#divMeses").html(msg)
-                }
-            })
+        $.ajax({
+            type: 'POST',
+            url: '${createLink(controller: 'rolPagos', action: 'meses_ajax')}',
+            data:{
+                meses: '${meses}'
+            },
+            success: function (msg){
+                $("#divMeses").html(msg)
+            }
+        })
     }
-
 
     $("#btnLimpiarBusqueda").click(function () {
         cargarTablaRol('1');
@@ -196,13 +173,11 @@
 
     function cargarTablaRol (tipo) {
 
-
         var anioB = $("#anioB_name").val();
         var mesB = $("#mesB_name").val();
         var fechaD = $(".fechaD").val();
         var fechaH = $(".fechaH").val();
         var estado = $("#estado_name").val();
-
 
         openLoader("Buscando");
         $.ajax({
@@ -229,26 +204,36 @@
     });
 
     $("#generar").click(function(){
-        bootbox.confirm("Está a punto de generar el rol del pago para el mes de <span style='color:blue'>"+
+        bootbox.confirm({
+            message: "<i class='fa fa-exclamation-triangle fa-3x pull-left text-info text-shadow'></i> Está a punto de generar el rol del pago para el mes de <span style='color:blue'>"+
             $("#mes :selected").text()+" </span> del año <span style='color:blue'>"+
             $("#anio :selected").text()+".</span><br><br>Si es correcto, presione Aceptar para generar el rol",
-            function(result){
-                if(result){
+            buttons: {
+                confirm: {
+                    label: '<i class="fa fa-check"></i> Aceptar',
+                    className: 'btn-success'
+                },
+                cancel: {
+                    label: '<i class="fa fa-times"></i> Cancelar',
+                    className: 'btn-info'
+                }
+            },
+            callback: function (result) {
+                if(result) {
                     openLoader();
                     $.ajax({
-                        type    : "POST",
-                        url     : "${g.createLink(controller:'rubro', action:'generarRol')}",
-                        data    : "mes="+$("#mes").val()+
-                        "&anio="+$("#anio").val(), //+
-                        success : function (msg) {
+                        type: "POST",
+                        url: "${g.createLink(controller:'rubro', action:'generarRol')}",
+                        data: "mes=" + $("#mes").val() +
+                        "&anio=" + $("#anio").val(), //+
+                        success: function (msg) {
                             location.reload()
                         }
                     });
                 }
-            })
-
+            }
+        });
     });
-
 
     var id = null;
     function submitForm() {
@@ -263,7 +248,7 @@
                 success : function (msg) {
                     var parts = msg.split("_");
                     if (parts[0] == "OK") {
-                        log(parts[1],"success")
+                        log(parts[1],"success");
                         setTimeout(function () {
                             location.reload(true);
                         }, 800);

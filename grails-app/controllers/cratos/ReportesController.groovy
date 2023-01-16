@@ -10,6 +10,8 @@ class ReportesController {
     def dbConnectionService
 
     def index() {
+        println("params " + params)
+        println("empresa " + session.empresa.id)
         def cn = dbConnectionService.getConnection()
         def sql
         def empresa = Empresa.get(session.empresa.id)

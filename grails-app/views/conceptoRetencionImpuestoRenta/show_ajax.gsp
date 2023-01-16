@@ -9,26 +9,24 @@
     <g:if test="${conceptoRetencionImpuestoRentaInstance?.codigo}">
         <div class="row">
             <div class="col-md-2 text-info">
-                Codigo
+                Código
             </div>
             
             <div class="col-md-3">
                 <g:fieldValue bean="${conceptoRetencionImpuestoRentaInstance}" field="codigo"/>
             </div>
-            
         </div>
     </g:if>
     
     <g:if test="${conceptoRetencionImpuestoRentaInstance?.descripcion}">
         <div class="row">
             <div class="col-md-2 text-info">
-                Descripcion
+                Descripción
             </div>
             
-            <div class="col-md-3">
+            <div class="col-md-10">
                 <g:fieldValue bean="${conceptoRetencionImpuestoRentaInstance}" field="descripcion"/>
             </div>
-            
         </div>
     </g:if>
     
@@ -41,20 +39,18 @@
             <div class="col-md-3">
                 <g:fieldValue bean="${conceptoRetencionImpuestoRentaInstance}" field="porcentaje"/>
             </div>
-            
         </div>
     </g:if>
     
     <g:if test="${conceptoRetencionImpuestoRentaInstance?.modalidadPago}">
         <div class="row">
             <div class="col-md-2 text-info">
-                Modalidad Pago
+                Modalidad de Pago
             </div>
             
-            <div class="col-md-3">
-                ${conceptoRetencionImpuestoRentaInstance?.modalidadPago?.encodeAsHTML()}
+            <div class="col-md-6">
+                ${conceptoRetencionImpuestoRentaInstance?.modalidadPago?.descripcion?.encodeAsHTML()}
             </div>
-            
         </div>
     </g:if>
     

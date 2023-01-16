@@ -13,19 +13,12 @@
 <!-- botones -->
 <div class="btn-toolbar toolbar">
     <div class="btn-group">
+        <g:link controller="inicio" action="parametros" class="btn btn-warning btnRegresar">
+            <i class="fa fa-chevron-left"></i> Parámetros
+        </g:link>
         <g:link action="form" class="btn btn-info btnCrear">
             <i class="fa fa-file-o"></i> Nuevo
         </g:link>
-    </div>
-    <div class="btn-group pull-right col-md-3">
-        <div class="input-group">
-            <input type="text" class="form-control" placeholder="Buscar" value="${params.search}">
-            <span class="input-group-btn">
-                <g:link action="list" class="btn btn-default btn-search" type="button">
-                    <i class="fa fa-search"></i>&nbsp;
-                </g:link>
-            </span>
-        </div><!-- /input-group -->
     </div>
 </div>
 
@@ -34,6 +27,7 @@
     <tr>
         <g:sortableColumn property="anio" title="Año" />
         <th>Sueldo</th>
+        <th width="110">Acciones</th>
     </tr>
     </thead>
     <tbody>
@@ -41,6 +35,17 @@
         <tr data-id="${anioInstance.id}" style="text-align: center">
             <td>${fieldValue(bean: anioInstance, field: "anio")}</td>
             <td><g:formatNumber number="${anioInstance?.sueldoBasico}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
+            <td>
+                <a href="#" data-id="${anioInstance.id}" class="btn btn-info btn-sm btn-show btn-ajax" title="Ver">
+                    <i class="fa fa-laptop"></i>
+                </a>
+                <a href="#" data-id="${anioInstance.id}" class="btn btn-success btn-sm btn-edit btn-ajax" title="Editar">
+                    <i class="fa fa-pencil"></i>
+                </a>
+                <a href="#" data-id="${anioInstance.id}" class="btn btn-danger btn-sm btn-delete btn-ajax" title="Eliminar">
+                    <i class="fa fa-trash-o"></i>
+                </a>
+            </td>
         </tr>
     </g:each>
     </tbody>
@@ -156,68 +161,110 @@
             return false;
         });
 
-        context.settings({
-            onShow : function (e) {
-                $("tr.success").removeClass("success");
-                var $tr = $(e.target).parent();
-                $tr.addClass("success");
-                id = $tr.data("id");
-            }
-        });
-        context.attach('tbody>tr', [
-            {
-                header : 'Acciones'
-            },
-            {
-                text   : 'Ver',
-                icon   : "<i class='fa fa-search'></i>",
-                action : function (e) {
-                    $("tr.success").removeClass("success");
-                    e.preventDefault();
-                    $.ajax({
-                        type    : "POST",
-                        url     : "${createLink(action:'show_ajax')}",
-                        data    : {
-                            id : id
-                        },
-                        success : function (msg) {
-                            bootbox.dialog({
-                                title   : "Ver Año",
-                                message : msg,
-                                buttons : {
-                                    ok : {
-                                        label     : "Aceptar",
-                                        className : "btn-primary",
-                                        callback  : function () {
-                                        }
-                                    }
+        $(".btn-show").click(function () {
+            var id = $(this).data("id");
+            $.ajax({
+                type    : "POST",
+                url     : "${createLink(action:'show_ajax')}",
+                data    : {
+                    id : id
+                },
+                success : function (msg) {
+                    bootbox.dialog({
+                        title   : "Ver",
+                        message : msg,
+                        buttons : {
+                            ok : {
+                                label     : "Aceptar",
+                                className : "btn-primary",
+                                callback  : function () {
                                 }
-                            });
+                            }
                         }
                     });
                 }
-            },
-            {
-                text   : 'Editar',
-                icon   : "<i class='fa fa-pencil'></i>",
-                action : function (e) {
-                    $("tr.success").removeClass("success");
-                    e.preventDefault();
-                    createEditRow(id);
-                }
-            },
-            {divider : true},
-            {
-                text   : 'Eliminar',
-                icon   : "<i class='fa fa-trash-o'></i>",
-                action : function (e) {
-                    $("tr.success").removeClass("success");
-                    e.preventDefault();
-                    deleteRow(id);
-                }
-            }
-        ]);
+            });
+        });
+        $(".btn-edit").click(function () {
+            var id = $(this).data("id");
+            createEditRow(id);
+        });
+        $(".btn-delete").click(function () {
+            var id = $(this).data("id");
+            deleteRow(id);
+        });
+
     });
+
+    %{--$(function () {--}%
+
+        %{--$(".btnCrear").click(function() {--}%
+            %{--createEditRow();--}%
+            %{--return false;--}%
+        %{--});--}%
+
+        %{--context.settings({--}%
+            %{--onShow : function (e) {--}%
+                %{--$("tr.success").removeClass("success");--}%
+                %{--var $tr = $(e.target).parent();--}%
+                %{--$tr.addClass("success");--}%
+                %{--id = $tr.data("id");--}%
+            %{--}--}%
+        %{--});--}%
+        %{--context.attach('tbody>tr', [--}%
+            %{--{--}%
+                %{--header : 'Acciones'--}%
+            %{--},--}%
+            %{--{--}%
+                %{--text   : 'Ver',--}%
+                %{--icon   : "<i class='fa fa-search'></i>",--}%
+                %{--action : function (e) {--}%
+                    %{--$("tr.success").removeClass("success");--}%
+                    %{--e.preventDefault();--}%
+                    %{--$.ajax({--}%
+                        %{--type    : "POST",--}%
+                        %{--url     : "${createLink(action:'show_ajax')}",--}%
+                        %{--data    : {--}%
+                            %{--id : id--}%
+                        %{--},--}%
+                        %{--success : function (msg) {--}%
+                            %{--bootbox.dialog({--}%
+                                %{--title   : "Ver Año",--}%
+                                %{--message : msg,--}%
+                                %{--buttons : {--}%
+                                    %{--ok : {--}%
+                                        %{--label     : "Aceptar",--}%
+                                        %{--className : "btn-primary",--}%
+                                        %{--callback  : function () {--}%
+                                        %{--}--}%
+                                    %{--}--}%
+                                %{--}--}%
+                            %{--});--}%
+                        %{--}--}%
+                    %{--});--}%
+                %{--}--}%
+            %{--},--}%
+            %{--{--}%
+                %{--text   : 'Editar',--}%
+                %{--icon   : "<i class='fa fa-pencil'></i>",--}%
+                %{--action : function (e) {--}%
+                    %{--$("tr.success").removeClass("success");--}%
+                    %{--e.preventDefault();--}%
+                    %{--createEditRow(id);--}%
+                %{--}--}%
+            %{--},--}%
+            %{--{divider : true},--}%
+            %{--{--}%
+                %{--text   : 'Eliminar',--}%
+                %{--icon   : "<i class='fa fa-trash-o'></i>",--}%
+                %{--action : function (e) {--}%
+                    %{--$("tr.success").removeClass("success");--}%
+                    %{--e.preventDefault();--}%
+                    %{--deleteRow(id);--}%
+                %{--}--}%
+            %{--}--}%
+        %{--]);--}%
+    %{--});--}%
 </script>
 
 </body>
