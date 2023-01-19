@@ -49,9 +49,12 @@
     }
 
     .borde{
+        border-radius: 8px !important;
         border:1px solid black !important;
         border-collapse: separate !important;
-        border-radius: 8px !important;
+        border: 0.3px solid grey !important;
+        padding: 1px;
+
         /*perspective: 1px;*/
         /*-moz-border-radius: 4px !important;*/
         /*-webkit-border-radius: 4px !important;*/
@@ -100,12 +103,10 @@
         font-size: 12pt;
     }
     .mar2{
-        margin-top: 9px;
+        margin-top: 7px;
     }
-    .borde {
-        border: 0.3px solid grey !important;
-        padding: 3px;
-    }
+    /*.borde {*/
+    /*}*/
 
     </style>
 </head>
@@ -140,11 +141,11 @@
     </div>
 
     <div style="height: 135px; width: 320px;" class="borde pos">
-        <div class="left" style="margin-left: 5px; margin-top: 10px; font-size: 11px">
+        <div class="left" style="margin-left: 5px; margin-top: 5px; font-size: 11px">
             <div class="mar1"><strong>${empresa?.nombre}</strong></div>
-            <div class="mar" style="margin-top: 20px;"><strong>Dirección Matriz:</strong> ${empresa?.direccion ?: ''}</div>
+            <div class="mar" style="margin-top: 15px;"><strong>Dirección Matriz:</strong> ${empresa?.direccion ?: ''}</div>
             <div class="mar"><strong>Dirección Sucursal:</strong> ${empresa?.direccion ?: ''}</div>
-            %{--<div class="mar"><strong>Contribuyente Especial N°:</strong> ${empresa?.contribuyenteEspecial ?: ''}</div>--}%
+            <div class="mar"><strong>Contribuyente Régimen RIMPE</strong></div>
             <div class="mar"><strong>OBLIGADO A LLEVAR CONTABILIDAD:</strong> ${empresa?.obligadaContabilidad == '0' ? 'NO' : 'SI'}</div>
         </div>
     </div>
