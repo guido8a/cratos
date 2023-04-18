@@ -71,6 +71,7 @@ class Proceso implements Serializable {
     Bodega bodegaRecibe
 
     String retEstado = 'N'
+    Date fechaAutorizacion
 
     static auditable = true
 
@@ -144,6 +145,7 @@ class Proceso implements Serializable {
             bodegaRecibe column: 'bdgarcbe'
             retEstado column: 'prcsedrv'
             claveAcceso column: 'prcsclve'
+            fechaAutorizacion column: 'prcsfcau'
         }
     }
     static constraints = {
@@ -207,5 +209,6 @@ class Proceso implements Serializable {
         bodegaRecibe(nullable: true,blank: true)
         retEstado(nullable: false, blank: false)
         claveAcceso(nullable: true, blank: true)
+        fechaAutorizacion(nullable: true, blank: true)
     }
 }

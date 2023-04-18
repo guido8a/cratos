@@ -124,17 +124,24 @@ class ServicioSriController {
         prcs.save(flush: true)
 */
 
-        def autorizacion = enviar(archivo, clave)
-        println "retorna de enviar: autorización ${autorizacion}"
+        def retornaSri = enviar(archivo, clave)
+        println "retornaSri: $retornaSri"
+        
+        def arr = retornaSri.split('_')
+        def autorizacion = arr[0]
+        def txfecha = arr[1]
+        def fecha = new Date().parse("yyyy-MM-dd'T'HH:mm:ss", txfecha)
+        println "retorna de enviar: autorización ${autorizacion} y fecha: $fecha"
 
         if(autorizacion) {
             prcs.claveAcceso = clave
             prcs.autorizacion = autorizacion
+            prcs.fechaAutorizacion = fecha
             prcs.tipoEmision = '1'  // si contesta el SRI
             retorna = "ok"
         } else {
             prcs.claveAcceso = clave
-            prcs.tipoEmision = '2'  // si no contesta el SRI hay que hacer otro envío de los "2"
+            prcs.tipoEmision = '1'  // si no contesta el SRI hay que hacer otro envío de los "2"
             retorna = "no"
         }
         prcs.save(flush: true)
@@ -347,6 +354,8 @@ class ServicioSriController {
         def soapUrl = new URL("https://cel.sri.gob.ec/comprobantes-electronicos-ws/RecepcionComprobantesOffline?wsdl")    //produccion
 //       def soapUrl = new URL("http://ec.gob.sri.ws.recepcion")
         def connection = soapUrl.openConnection()
+        def txOk = false
+
         println "abre conexion"
         connection.setRequestMethod("POST" )
         connection.setConnectTimeout(5000)
@@ -357,35 +366,26 @@ class ServicioSriController {
         connection.doOutput = true
         println "...do Output"
 
-        Writer writer = new OutputStreamWriter(connection.outputStream)
+        try {
+            Writer writer = new OutputStreamWriter(connection.outputStream)
 
-        writer.write(sobre_xml)
-//        writer.write(arch_xml)
-        println "...write"
-        writer.flush()
-        writer.close()
-        connection.connect()
-        println "...connect"
+            writer.write(sobre_xml)
+            println "...write"
+            writer.flush()
+            writer.close()
+            connection.connect()
+            println "...connect"
 
-        def respuesta = connection.content.text
-        println "respuesta: $respuesta"
-        def respuestaSri = new XmlSlurper().parseText(respuesta)
-        println respuestaSri
-        println "respuesta SRI: ****${respuestaSri}****"
-
-/*
-        el SRI responde: respuesta = """<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-        <soap:Body><ns2:validarComprobanteResponse xmlns:ns2="http://ec.gob.sri.ws.recepcion">
-        <RespuestaRecepcionComprobante>
-          <estado>RECIBIDA</estado>
-        <comprobantes/>
-        </RespuestaRecepcionComprobante></ns2:validarComprobanteResponse></soap:Body></soap:Envelope>"""
-*/
+            def respuesta = connection.content.text
+            println "respuesta: $respuesta"
+            def respuestaSri = new XmlSlurper().parseText(respuesta)
+            println respuestaSri
+            println "respuesta SRI: ****${respuestaSri}****"
+            txOk = true
 
 
-
-        if(respuestaSri == "RECIBIDA") {
-            def para_autorizacion = """<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ec="http://ec.gob.sri.ws.autorizacion">
+            if (respuestaSri == "RECIBIDA") {
+                def para_autorizacion = """<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ec="http://ec.gob.sri.ws.autorizacion">
                 <soapenv:Header/>
                 <soapenv:Body>
                 <ec:autorizacionComprobante>
@@ -394,54 +394,67 @@ class ServicioSriController {
                 </soapenv:Body>
                 </soapenv:Envelope>"""
 
-            println "----\n ${para_autorizacion}\n----"
-            //https://celcer.sri.gob.ec/comprobantes-electronicos-ws/AutorizacionComprobantesOffline?wsdl
-            //soapUrl = new URL("https://celcer.sri.gob.ec/comprobantes-electronicos-ws/AutorizacionComprobantesOffline?wsdl") //pruebas
-            soapUrl = new URL("https://cel.sri.gob.ec/comprobantes-electronicos-ws/AutorizacionComprobantesOffline?wsdl")      //produccion
-            connection = soapUrl.openConnection()
-            println "abre conexion --- atrz"
-            connection.setRequestMethod("POST" )
-            connection.setConnectTimeout(5000)
-            connection.setReadTimeout(5000)
-            println "...post"
-            connection.setRequestProperty("Content-Type" ,"application/xml" )
-            println "...xml"
-            connection.doOutput = true
-            println "...do Output"
+                println "----\n ${para_autorizacion}\n----"
+                //https://celcer.sri.gob.ec/comprobantes-electronicos-ws/AutorizacionComprobantesOffline?wsdl
+                //soapUrl = new URL("https://celcer.sri.gob.ec/comprobantes-electronicos-ws/AutorizacionComprobantesOffline?wsdl") //pruebas
+                soapUrl = new URL("https://cel.sri.gob.ec/comprobantes-electronicos-ws/AutorizacionComprobantesOffline?wsdl")
+                //produccion
+                connection = soapUrl.openConnection()
+                println "abre conexion --- atrz"
+                connection.setRequestMethod("POST")
+                connection.setConnectTimeout(5000)
+                connection.setReadTimeout(5000)
+                println "...post"
+                connection.setRequestProperty("Content-Type", "application/xml")
+                println "...xml"
+                connection.doOutput = true
+                println "...do Output"
 
-            writer = new OutputStreamWriter(connection.outputStream)
+                writer = new OutputStreamWriter(connection.outputStream)
 
-            writer.write(para_autorizacion)
-            println "...write"
-            writer.flush()
-            writer.close()
-            connection.connect()
-            println "...connect atz... "
+                writer.write(para_autorizacion)
+                println "...write"
+                writer.flush()
+                writer.close()
+                connection.connect()
+                println "...connect atz... "
 
 //            respuesta = connection.content.text
-            respuesta = connection.content.text
-            def guardar = new File(path + "/sri${archivo}")
-            guardar.write(respuesta)
+                respuesta = connection.content.text
+                def guardar = new File(path + "/sri${archivo}")
+                guardar.write(respuesta)
 
-            def atrz = respuesta =~ /numeroAutorizacion.(\d+)/
-            println "---- autorizado $atrz"
+                def atrz = respuesta =~ /numeroAutorizacion.(\d+)/
+                println "---- autorizado $atrz"
 
-            def autorizacionOk = false
-            try {
-                autorizacionOk = (atrz[0][1]?.size() > 0)
-                println "SRI: $autorizacionOk --> ${atrz[0][1]}"
-            } catch (e) {
-                println "SRI no retorna número de autorización"
-            }
+                def espacio = "<fechaAutorizacion>".size()
+                def desde = respuesta.indexOf("<fechaAutorizacion>")
+                def hasta = respuesta.indexOf("</fechaAutorizacion>")
 
-            if(autorizacionOk) {
-                return atrz[0][1]
-            } else {
-                return clave
-            }
+                def txfecha = respuesta[desde + espacio..hasta - 1]
+                txfecha = txfecha.replaceAll('-05:00', '')
+
+                def autorizacionOk = false
+                try {
+                    autorizacionOk = (atrz[0][1]?.size() > 0)
+                    println "SRI: $autorizacionOk --> ${atrz[0][1]}"
+                } catch (e) {
+                    println "SRI no retorna número de autorización"
+                }
+
+                if (autorizacionOk) {
+                    return "${atrz[0][1]}_${txfecha}"
+                } else {
+                    return clave
+                }
 //            return atrz[0]
-            
-        } else {
+
+            } else {
+                return "ha ocurrido un error al solicitar la autorización al SRI"
+            }
+
+        } catch (e) {
+            println e.message
             return "ha ocurrido un error al solicitar la autorización al SRI"
         }
         //con esto se debe pedir el número de autorización

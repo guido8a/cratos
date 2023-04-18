@@ -9,8 +9,9 @@
             Forma de Pago
         </div>
 
-        <div class="col-xs-4">
-            <g:select name="formaPago_name" from="${TipoPago.list().sort{it.descripcion}}" optionKey="id" optionValue="descripcion" id="formaPago" class="form-control"/>
+        <div class="col-xs-5">
+            <g:select name="formaPago_name" from="${TipoPago.list().sort{it.descripcion}}" optionKey="id"
+                      optionValue="descripcion" id="formaPago" class="form-control" value="7"/>
         </div>
 
         <div class="col-xs-1 negrilla text-info">
@@ -18,7 +19,8 @@
         </div>
 
         <div class="col-xs-1">
-            <g:textField name="plazo_name" id="plazoFormaPago" class="form-control validaNumero" maxlength="3"/>
+            <g:textField name="plazo_name" id="plazoFormaPago" class="form-control validaNumero" maxlength="3"
+                         style="margin-left: -40px"/>
         </div>
 
         <div class="col-xs-1 negrilla text-info">
@@ -26,10 +28,12 @@
         </div>
 
         <div class="col-xs-2">
-            <g:textField name="valor_name" id="valorFormaPago" class="form-control validaNumeroDecimal"/>
+            <g:textField name="valor_name" id="valorFormaPago" class="form-control validaNumeroDecimal"
+                         style="margin-left: -40px"/>
         </div>
 
-        <a href="#" class="btn btn-success btnAgregarFormaPago" title="Agregar Forma de Pago"><i class="fa fa-plus"></i> Agregar</a>
+        <a href="#" class="btn btn-success btnAgregarFormaPago" title="Agregar Forma de Pago" style="margin-left: -40px">
+            <i class="fa fa-plus"></i> Agregar</a>
 
     </div>
 </g:if>
