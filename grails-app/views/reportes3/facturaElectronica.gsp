@@ -127,7 +127,7 @@
             <div class="mar1"><strong>N°.</strong> ${proceso?.documento ?: ''}</div>
             <div class="mar2 letra2"><strong>NÚMERO DE AUTORIZACIÓN:</strong></div>
             <div class="mar2 letra3"><strong>${proceso?.claveAcceso ?: ''}</strong></div>
-            <div class="mar2 letra2">FECHA Y HORA DE AUTORIZACIÓN: </div>
+            <div class="mar2 letra2">FECHA Y HORA DE AUTORIZACIÓN: ${proceso?.fechaAutorizacion.format('dd/MM/yyyy HH:mm')} </div>
             <div class="mar2 letra2"><strong>AMBIENTE :</strong> ${empresa?.ambiente == '0' ? 'PRUEBAS' : 'PRODUCCIÓN'}</div>
             <div class="mar2 letra2"><strong>EMISIÓN :</strong> NORMAL</div>
             <div class="mar2 letra2">CLAVE DE ACCESO</div>
