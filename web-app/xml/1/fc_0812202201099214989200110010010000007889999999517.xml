@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
+<factura id='comprobante' version='1.1.0'>
+  <infoTributaria>
+    <ambiente>1</ambiente>
+    <tipoEmision>1</tipoEmision>
+    <razonSocial>TEDEIN S.A.</razonSocial>
+    <nombreComercial>TEDEIN S.A.</nombreComercial>
+    <ruc>0992149892001</ruc>
+    <claveAcceso>0812202201099214989200110010010000007889999999517</claveAcceso>
+    <codDoc>01</codDoc>
+    <estab>001</estab>
+    <ptoEmi>001</ptoEmi>
+    <secuencial>000000788</secuencial>
+    <dirMatriz>Río Coca E8-138 y Shyris, oficina 201</dirMatriz>
+  </infoTributaria>
+  <infoFactura>
+    <fechaEmision>08/12/2022</fechaEmision>
+    <dirEstablecimiento>Río Coca E8-138 y Shyris</dirEstablecimiento>
+    <obligadoContabilidad>SI</obligadoContabilidad>
+    <tipoIdentificacionComprador>04</tipoIdentificacionComprador>
+    <razonSocialComprador>GAD PROVINCIA DE PICHINCHA</razonSocialComprador>
+    <identificacionComprador>1760003330001</identificacionComprador>
+    <totalSinImpuestos>400.00</totalSinImpuestos>
+    <totalDescuento>0.00</totalDescuento>
+    <totalConImpuestos>
+      <totalImpuesto>
+        <codigo>2</codigo>
+        <codigoPorcentaje>2</codigoPorcentaje>
+        <baseImponible>400.00</baseImponible>
+        <tarifa>12</tarifa>
+        <valor>48.00</valor>
+      </totalImpuesto>
+    </totalConImpuestos>
+    <propina>0.00</propina>
+    <importeTotal>448.00</importeTotal>
+    <moneda>DOLAR</moneda>
+    <pagos>
+      <pago>
+        <formaPago>20</formaPago>
+        <total>448.00</total>
+        <plazo>30</plazo>
+        <unidadTiempo>DIAS</unidadTiempo>
+      </pago>
+    </pagos>
+  </infoFactura>
+  <detalles>
+    <detalle>
+      <codigoPrincipal>880.001.01</codigoPrincipal>
+      <codigoAuxiliar>880.001.01</codigoAuxiliar>
+      <descripcion>Servicio de mantenimiento y soporte técnico para el sistema de control de proyectos, contratación, ejecución y seguimiento de obras del GADPP (SEP-GADPP). Séptimo pago mensual, del 18-oct-2022 al 17-nov-2022.</descripcion>
+      <cantidad>1.000</cantidad>
+      <precioUnitario>400.0000</precioUnitario>
+      <descuento>0.00</descuento>
+      <precioTotalSinImpuesto>400.00</precioTotalSinImpuesto>
+      <impuestos>
+        <impuesto>
+          <codigo>2</codigo>
+          <codigoPorcentaje>2</codigoPorcentaje>
+          <tarifa>12</tarifa>
+          <baseImponible>400.00</baseImponible>
+          <valor>48.00</valor>
+        </impuesto>
+      </impuestos>
+    </detalle>
+  </detalles>
+  <infoAdicional>
+    <campoAdicional nombre='cliente'>GAD PROVINCIA DE PICHINCHA</campoAdicional>
+    <campoAdicional nombre='identificacion'>1760003330001</campoAdicional>
+    <campoAdicional nombre='direccion'>Manuel Larrea N13-45</campoAdicional>
+    <campoAdicional nombre='telefono'>3946760</campoAdicional>
+  </infoAdicional>
+</factura>

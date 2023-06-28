@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
+<factura id='comprobante' version='1.1.0'>
+  <infoTributaria>
+    <ambiente>2</ambiente>
+    <tipoEmision>1</tipoEmision>
+    <razonSocial>TEDEIN S.A.</razonSocial>
+    <nombreComercial>TEDEIN S.A.</nombreComercial>
+    <ruc>0992149892001</ruc>
+    <claveAcceso>0206202301099214989200120010010000008309999996812</claveAcceso>
+    <codDoc>01</codDoc>
+    <estab>001</estab>
+    <ptoEmi>001</ptoEmi>
+    <secuencial>000000830</secuencial>
+    <dirMatriz>Río Coca E8-138 y Shyris, oficina 201</dirMatriz>
+    <contribuyenteRimpe>CONTRIBUYENTE RÉGIMEN RIMPE</contribuyenteRimpe>
+  </infoTributaria>
+  <infoFactura>
+    <fechaEmision>02/06/2023</fechaEmision>
+    <dirEstablecimiento>Río Coca E8-138 y Shyris</dirEstablecimiento>
+    <obligadoContabilidad>SI</obligadoContabilidad>
+    <tipoIdentificacionComprador>04</tipoIdentificacionComprador>
+    <razonSocialComprador>Conjunto Residencial "Colinas del Sur"</razonSocialComprador>
+    <identificacionComprador>1791836701001</identificacionComprador>
+    <totalSinImpuestos>60.00</totalSinImpuestos>
+    <totalDescuento>0.00</totalDescuento>
+    <totalConImpuestos>
+      <totalImpuesto>
+        <codigo>2</codigo>
+        <codigoPorcentaje>2</codigoPorcentaje>
+        <baseImponible>60.00</baseImponible>
+        <tarifa>12</tarifa>
+        <valor>7.20</valor>
+      </totalImpuesto>
+    </totalConImpuestos>
+    <propina>0.00</propina>
+    <importeTotal>67.20</importeTotal>
+    <moneda>DOLAR</moneda>
+    <pagos>
+      <pago>
+        <formaPago>20</formaPago>
+        <total>67.20</total>
+        <plazo>30</plazo>
+        <unidadTiempo>DIAS</unidadTiempo>
+      </pago>
+    </pagos>
+  </infoFactura>
+  <detalles>
+    <detalle>
+      <codigoPrincipal>880.003.010</codigoPrincipal>
+      <codigoAuxiliar>880.003.010</codigoAuxiliar>
+      <descripcion>Servicio de uso del sistema Condominio, correspondiente a los meses de Abril y Mayo de 2023.</descripcion>
+      <cantidad>1.000</cantidad>
+      <precioUnitario>60.0000</precioUnitario>
+      <descuento>0.00</descuento>
+      <precioTotalSinImpuesto>60.00</precioTotalSinImpuesto>
+      <impuestos>
+        <impuesto>
+          <codigo>2</codigo>
+          <codigoPorcentaje>2</codigoPorcentaje>
+          <tarifa>12</tarifa>
+          <baseImponible>60.00</baseImponible>
+          <valor>7.20</valor>
+        </impuesto>
+      </impuestos>
+    </detalle>
+  </detalles>
+  <infoAdicional>
+    <campoAdicional nombre='Dirección'>Colonche 335 y José Antonio Jerves</campoAdicional>
+    <campoAdicional nombre='Teléfono'>0998115480</campoAdicional>
+    <campoAdicional nombre='Correo Electrónico'>conjuntocolinasdelsur.uio@gmail.com</campoAdicional>
+  </infoAdicional>
+</factura>

@@ -1,0 +1,108 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
+<factura id='comprobante' version='1.1.0'>
+  <infoTributaria>
+    <ambiente>2</ambiente>
+    <tipoEmision>1</tipoEmision>
+    <razonSocial>TEDEIN S.A.</razonSocial>
+    <nombreComercial>TEDEIN S.A.</nombreComercial>
+    <ruc>0992149892001</ruc>
+    <claveAcceso>2903202301099214989200120010010000008139999998510</claveAcceso>
+    <codDoc>01</codDoc>
+    <estab>001</estab>
+    <ptoEmi>001</ptoEmi>
+    <secuencial>000000813</secuencial>
+    <dirMatriz>Río Coca E8-138 y Shyris, oficina 201</dirMatriz>
+    <contribuyenteRimpe>CONTRIBUYENTE RÉGIMEN RIMPE</contribuyenteRimpe>
+  </infoTributaria>
+  <infoFactura>
+    <fechaEmision>29/03/2023</fechaEmision>
+    <dirEstablecimiento>Río Coca E8-138 y Shyris</dirEstablecimiento>
+    <obligadoContabilidad>SI</obligadoContabilidad>
+    <tipoIdentificacionComprador>04</tipoIdentificacionComprador>
+    <razonSocialComprador>Emilio Ochoa</razonSocialComprador>
+    <identificacionComprador>0600269815001</identificacionComprador>
+    <totalSinImpuestos>77.43</totalSinImpuestos>
+    <totalDescuento>0.00</totalDescuento>
+    <totalConImpuestos>
+      <totalImpuesto>
+        <codigo>2</codigo>
+        <codigoPorcentaje>2</codigoPorcentaje>
+        <baseImponible>77.43</baseImponible>
+        <tarifa>12</tarifa>
+        <valor>9.29</valor>
+      </totalImpuesto>
+    </totalConImpuestos>
+    <propina>0.00</propina>
+    <importeTotal>86.72</importeTotal>
+    <moneda>DOLAR</moneda>
+    <pagos>
+      <pago>
+        <formaPago>15</formaPago>
+        <total>86.72</total>
+        <plazo>30</plazo>
+        <unidadTiempo>DIAS</unidadTiempo>
+      </pago>
+    </pagos>
+  </infoFactura>
+  <detalles>
+    <detalle>
+      <codigoPrincipal>880.010.001</codigoPrincipal>
+      <codigoAuxiliar>880.010.001</codigoAuxiliar>
+      <descripcion>Declaración IVA 02-2023</descripcion>
+      <cantidad>1.000</cantidad>
+      <precioUnitario>17.8600</precioUnitario>
+      <descuento>0.00</descuento>
+      <precioTotalSinImpuesto>17.86</precioTotalSinImpuesto>
+      <impuestos>
+        <impuesto>
+          <codigo>2</codigo>
+          <codigoPorcentaje>2</codigoPorcentaje>
+          <tarifa>12</tarifa>
+          <baseImponible>17.86</baseImponible>
+          <valor>2.14</valor>
+        </impuesto>
+      </impuestos>
+    </detalle>
+    <detalle>
+      <codigoPrincipal>880.010.002</codigoPrincipal>
+      <codigoAuxiliar>880.010.002</codigoAuxiliar>
+      <descripcion>Devolución IVA 02-2023</descripcion>
+      <cantidad>1.000</cantidad>
+      <precioUnitario>6.0000</precioUnitario>
+      <descuento>0.00</descuento>
+      <precioTotalSinImpuesto>6.00</precioTotalSinImpuesto>
+      <impuestos>
+        <impuesto>
+          <codigo>2</codigo>
+          <codigoPorcentaje>2</codigoPorcentaje>
+          <tarifa>12</tarifa>
+          <baseImponible>6.00</baseImponible>
+          <valor>0.72</valor>
+        </impuesto>
+      </impuestos>
+    </detalle>
+    <detalle>
+      <codigoPrincipal>880.010.003</codigoPrincipal>
+      <codigoAuxiliar>880.010.003</codigoAuxiliar>
+      <descripcion>Declaración Impuesto a la Renta 2022</descripcion>
+      <cantidad>1.000</cantidad>
+      <precioUnitario>53.5700</precioUnitario>
+      <descuento>0.00</descuento>
+      <precioTotalSinImpuesto>53.57</precioTotalSinImpuesto>
+      <impuestos>
+        <impuesto>
+          <codigo>2</codigo>
+          <codigoPorcentaje>2</codigoPorcentaje>
+          <tarifa>12</tarifa>
+          <baseImponible>53.57</baseImponible>
+          <valor>6.43</valor>
+        </impuesto>
+      </impuestos>
+    </detalle>
+  </detalles>
+  <infoAdicional>
+    <campoAdicional nombre='Dirección'>Entre Ríos Manzana Q1 villa 24</campoAdicional>
+    <campoAdicional nombre='Teléfono'>0999480300</campoAdicional>
+    <campoAdicional nombre='Correo Electrónico'>emilioochoamoreno@gmail.com</campoAdicional>
+  </infoAdicional>
+</factura>

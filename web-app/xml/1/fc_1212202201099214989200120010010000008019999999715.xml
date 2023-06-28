@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
+<factura id='comprobante' version='1.1.0'>
+  <infoTributaria>
+    <ambiente>2</ambiente>
+    <tipoEmision>1</tipoEmision>
+    <razonSocial>TEDEIN S.A.</razonSocial>
+    <nombreComercial>TEDEIN S.A.</nombreComercial>
+    <ruc>0992149892001</ruc>
+    <claveAcceso>1212202201099214989200120010010000008019999999715</claveAcceso>
+    <codDoc>01</codDoc>
+    <estab>001</estab>
+    <ptoEmi>001</ptoEmi>
+    <secuencial>000000801</secuencial>
+    <dirMatriz>Río Coca E8-138 y Shyris, oficina 201</dirMatriz>
+    <contribuyenteRimpe>CONTRIBUYENTE RÉGIMEN RIMPE</contribuyenteRimpe>
+  </infoTributaria>
+  <infoFactura>
+    <fechaEmision>12/12/2022</fechaEmision>
+    <dirEstablecimiento>Río Coca E8-138 y Shyris</dirEstablecimiento>
+    <obligadoContabilidad>SI</obligadoContabilidad>
+    <tipoIdentificacionComprador>04</tipoIdentificacionComprador>
+    <razonSocialComprador>GAD PROVINCIA DE PICHINCHA</razonSocialComprador>
+    <identificacionComprador>1760003330001</identificacionComprador>
+    <totalSinImpuestos>300.00</totalSinImpuestos>
+    <totalDescuento>0.00</totalDescuento>
+    <totalConImpuestos>
+      <totalImpuesto>
+        <codigo>2</codigo>
+        <codigoPorcentaje>2</codigoPorcentaje>
+        <baseImponible>300.00</baseImponible>
+        <tarifa>12</tarifa>
+        <valor>36.00</valor>
+      </totalImpuesto>
+    </totalConImpuestos>
+    <propina>0.00</propina>
+    <importeTotal>336.00</importeTotal>
+    <moneda>DOLAR</moneda>
+    <pagos>
+      <pago>
+        <formaPago>20</formaPago>
+        <total>336.00</total>
+        <plazo>30</plazo>
+        <unidadTiempo>DIAS</unidadTiempo>
+      </pago>
+    </pagos>
+  </infoFactura>
+  <detalles>
+    <detalle>
+      <codigoPrincipal>880.001.01</codigoPrincipal>
+      <codigoAuxiliar>880.001.01</codigoAuxiliar>
+      <descripcion>Servicio de mantenimiento y soporte técnico para el sistema de control de proyectos, contratación, ejecución y seguimiento de obras del GADPP (SEP-GADPP). Séptimo pago mensual, del 18-oct-2022 al 17-nov-2022.</descripcion>
+      <cantidad>1.000</cantidad>
+      <precioUnitario>300.0000</precioUnitario>
+      <descuento>0.00</descuento>
+      <precioTotalSinImpuesto>300.00</precioTotalSinImpuesto>
+      <impuestos>
+        <impuesto>
+          <codigo>2</codigo>
+          <codigoPorcentaje>2</codigoPorcentaje>
+          <tarifa>12</tarifa>
+          <baseImponible>300.00</baseImponible>
+          <valor>36.00</valor>
+        </impuesto>
+      </impuestos>
+    </detalle>
+  </detalles>
+  <infoAdicional>
+    <campoAdicional nombre='Dirección'>Manuel Larrea N13-45</campoAdicional>
+    <campoAdicional nombre='Teléfono'>3946760</campoAdicional>
+    <campoAdicional nombre='Correo Electrónico'>abarragan@pichincha.gob.ec</campoAdicional>
+  </infoAdicional>
+</factura>

@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
+<factura id='comprobante' version='1.1.0'>
+  <infoTributaria>
+    <ambiente>2</ambiente>
+    <tipoEmision>1</tipoEmision>
+    <razonSocial>TEDEIN S.A.</razonSocial>
+    <nombreComercial>TEDEIN S.A.</nombreComercial>
+    <ruc>0992149892001</ruc>
+    <claveAcceso>2704202301099214989200120010010000008269999997210</claveAcceso>
+    <codDoc>01</codDoc>
+    <estab>001</estab>
+    <ptoEmi>001</ptoEmi>
+    <secuencial>000000826</secuencial>
+    <dirMatriz>Río Coca E8-138 y Shyris, oficina 201</dirMatriz>
+    <contribuyenteRimpe>CONTRIBUYENTE RÉGIMEN RIMPE</contribuyenteRimpe>
+  </infoTributaria>
+  <infoFactura>
+    <fechaEmision>27/04/2023</fechaEmision>
+    <dirEstablecimiento>Río Coca E8-138 y Shyris</dirEstablecimiento>
+    <obligadoContabilidad>SI</obligadoContabilidad>
+    <tipoIdentificacionComprador>05</tipoIdentificacionComprador>
+    <razonSocialComprador>Blanca Daza Aguayo</razonSocialComprador>
+    <identificacionComprador>0907423065</identificacionComprador>
+    <totalSinImpuestos>8.93</totalSinImpuestos>
+    <totalDescuento>0.00</totalDescuento>
+    <totalConImpuestos>
+      <totalImpuesto>
+        <codigo>2</codigo>
+        <codigoPorcentaje>2</codigoPorcentaje>
+        <baseImponible>8.93</baseImponible>
+        <tarifa>12</tarifa>
+        <valor>1.07</valor>
+      </totalImpuesto>
+    </totalConImpuestos>
+    <propina>0.00</propina>
+    <importeTotal>10.00</importeTotal>
+    <moneda>DOLAR</moneda>
+    <pagos>
+      <pago>
+        <formaPago>01</formaPago>
+        <total>10.00</total>
+        <plazo>10</plazo>
+        <unidadTiempo>DIAS</unidadTiempo>
+      </pago>
+    </pagos>
+  </infoFactura>
+  <detalles>
+    <detalle>
+      <codigoPrincipal>880.010.009</codigoPrincipal>
+      <codigoAuxiliar>880.010.009</codigoAuxiliar>
+      <descripcion>Devolución IVA tercera edad</descripcion>
+      <cantidad>1.000</cantidad>
+      <precioUnitario>8.9300</precioUnitario>
+      <descuento>0.00</descuento>
+      <precioTotalSinImpuesto>8.93</precioTotalSinImpuesto>
+      <impuestos>
+        <impuesto>
+          <codigo>2</codigo>
+          <codigoPorcentaje>2</codigoPorcentaje>
+          <tarifa>12</tarifa>
+          <baseImponible>8.93</baseImponible>
+          <valor>1.07</valor>
+        </impuesto>
+      </impuestos>
+    </detalle>
+  </detalles>
+  <infoAdicional>
+    <campoAdicional nombre='Dirección'>Cumbres 3 Mz 801 V 22</campoAdicional>
+    <campoAdicional nombre='Teléfono'>0907423065</campoAdicional>
+    <campoAdicional nombre='Correo Electrónico'>blanquitadaza@hotmail.com</campoAdicional>
+  </infoAdicional>
+</factura>

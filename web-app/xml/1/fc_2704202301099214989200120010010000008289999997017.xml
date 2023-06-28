@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
+<factura id='comprobante' version='1.1.0'>
+  <infoTributaria>
+    <ambiente>2</ambiente>
+    <tipoEmision>1</tipoEmision>
+    <razonSocial>TEDEIN S.A.</razonSocial>
+    <nombreComercial>TEDEIN S.A.</nombreComercial>
+    <ruc>0992149892001</ruc>
+    <claveAcceso>2704202301099214989200120010010000008289999997017</claveAcceso>
+    <codDoc>01</codDoc>
+    <estab>001</estab>
+    <ptoEmi>001</ptoEmi>
+    <secuencial>000000828</secuencial>
+    <dirMatriz>Río Coca E8-138 y Shyris, oficina 201</dirMatriz>
+    <contribuyenteRimpe>CONTRIBUYENTE RÉGIMEN RIMPE</contribuyenteRimpe>
+  </infoTributaria>
+  <infoFactura>
+    <fechaEmision>27/04/2023</fechaEmision>
+    <dirEstablecimiento>Río Coca E8-138 y Shyris</dirEstablecimiento>
+    <obligadoContabilidad>SI</obligadoContabilidad>
+    <tipoIdentificacionComprador>04</tipoIdentificacionComprador>
+    <razonSocialComprador>Alvaro René Hermenejildo Tandazo</razonSocialComprador>
+    <identificacionComprador>0922696752001</identificacionComprador>
+    <totalSinImpuestos>109.82</totalSinImpuestos>
+    <totalDescuento>0.00</totalDescuento>
+    <totalConImpuestos>
+      <totalImpuesto>
+        <codigo>2</codigo>
+        <codigoPorcentaje>2</codigoPorcentaje>
+        <baseImponible>109.82</baseImponible>
+        <tarifa>12</tarifa>
+        <valor>13.18</valor>
+      </totalImpuesto>
+    </totalConImpuestos>
+    <propina>0.00</propina>
+    <importeTotal>123.00</importeTotal>
+    <moneda>DOLAR</moneda>
+    <pagos>
+      <pago>
+        <formaPago>01</formaPago>
+        <total>123.00</total>
+        <plazo>10</plazo>
+        <unidadTiempo>DIAS</unidadTiempo>
+      </pago>
+    </pagos>
+  </infoFactura>
+  <detalles>
+    <detalle>
+      <codigoPrincipal>880.010.011</codigoPrincipal>
+      <codigoAuxiliar>880.010.011</codigoAuxiliar>
+      <descripcion>Respaldo de datos</descripcion>
+      <cantidad>1.000</cantidad>
+      <precioUnitario>22.3200</precioUnitario>
+      <descuento>0.00</descuento>
+      <precioTotalSinImpuesto>22.32</precioTotalSinImpuesto>
+      <impuestos>
+        <impuesto>
+          <codigo>2</codigo>
+          <codigoPorcentaje>2</codigoPorcentaje>
+          <tarifa>12</tarifa>
+          <baseImponible>22.32</baseImponible>
+          <valor>2.68</valor>
+        </impuesto>
+      </impuestos>
+    </detalle>
+    <detalle>
+      <codigoPrincipal>880.010.012</codigoPrincipal>
+      <codigoAuxiliar>880.010.012</codigoAuxiliar>
+      <descripcion>Disco duro de estado sólido SSD 1TB</descripcion>
+      <cantidad>1.000</cantidad>
+      <precioUnitario>87.5000</precioUnitario>
+      <descuento>0.00</descuento>
+      <precioTotalSinImpuesto>87.50</precioTotalSinImpuesto>
+      <impuestos>
+        <impuesto>
+          <codigo>2</codigo>
+          <codigoPorcentaje>2</codigoPorcentaje>
+          <tarifa>12</tarifa>
+          <baseImponible>87.50</baseImponible>
+          <valor>10.50</valor>
+        </impuesto>
+      </impuestos>
+    </detalle>
+  </detalles>
+  <infoAdicional>
+    <campoAdicional nombre='Dirección'>La Libertad</campoAdicional>
+    <campoAdicional nombre='Teléfono'>0982001434</campoAdicional>
+    <campoAdicional nombre='Correo Electrónico'>alvaro-nevy@hotmail.com</campoAdicional>
+  </infoAdicional>
+</factura>
