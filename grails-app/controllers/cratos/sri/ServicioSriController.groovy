@@ -442,10 +442,12 @@ class ServicioSriController {
                     println "SRI no retorna número de autorización"
                 }
 
+                println "atrz: $atrz, autorizacionOk: $autorizacionOk  --> clave: ${clave}_${txfecha}"
+
                 if (autorizacionOk) {
                     return "${atrz[0][1]}_${txfecha}"
                 } else {
-                    return clave
+                    return "${clave}_${txfecha}"
                 }
 //            return atrz[0]
 
