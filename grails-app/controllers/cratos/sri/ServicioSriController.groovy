@@ -447,7 +447,7 @@ class ServicioSriController {
                 if (autorizacionOk) {
                     return "${atrz[0][1]}_${txfecha}"
                 } else {
-                    return "${clave}_${txfecha}"
+                    return "${clave}_${new Date().format('yyyy-MM-dd HH:mm:ss')}"
                 }
 //            return atrz[0]
 
