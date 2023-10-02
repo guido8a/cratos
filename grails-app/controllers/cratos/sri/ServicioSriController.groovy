@@ -130,7 +130,12 @@ class ServicioSriController {
         def arr = retornaSri.split('_')
         def autorizacion = arr[0]
         def txfecha = arr[1]
-        def fecha = new Date().parse("yyyy-MM-dd'T'HH:mm:ss", txfecha)
+        def fecha
+        if(txfecha.contains('T')) {
+            fecha = new Date().parse("yyyy-MM-dd'T'HH:mm:ss", txfecha)
+        } else {
+            fecha = new Date().parse("yyyy-MM-dd HH:mm:ss", txfecha)
+        }
         println "retorna de enviar: autorización ${autorizacion} y fecha: $fecha"
 
         if(autorizacion) {
