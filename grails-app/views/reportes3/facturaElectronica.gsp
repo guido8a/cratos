@@ -226,7 +226,7 @@
     <table style="width: 230px; margin-top: 20px;" class="right">
         <thead>
         <tr>
-            <td class="tr tam borde" style="width: 73%">SUBTOTAL IVA 12%</td>
+            <td class="tr tam borde" style="width: 73%">SUBTOTAL IVA 15%</td>
             <td class="tr tam borde" style="width: 28%"><g:formatNumber number="${proceso?.baseImponibleIva ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
         </tr>
         <tr>
@@ -254,7 +254,7 @@
             <td class="tr tam borde"><g:formatNumber number="${proceso?.iceGenerado ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
         </tr>
         <tr>
-            <td class="tr tam borde">IVA 12%</td>
+            <td class="tr tam borde">IVA 15%</td>
             <td class="tr tam borde"><g:formatNumber number="${proceso?.ivaGenerado ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
         </tr>
         <tr>

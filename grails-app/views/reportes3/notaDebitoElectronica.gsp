@@ -293,7 +293,7 @@
             <th class="tr"><g:formatNumber number="${proceso?.iceGenerado ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></th>
         </tr>
         <tr>
-            <th class="tl tam">IVA 12%</th>
+            <th class="tl tam">IVA 15%</th>
             <th class="tr"><g:formatNumber number="${proceso?.ivaGenerado ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></th>
         </tr>
         <tr>
