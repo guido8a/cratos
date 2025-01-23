@@ -39,7 +39,9 @@
             <tr>
                 <th>Descripción</th>
                 <th>Fecha</th>
-                <th>Comprobate</th>
+                <th>Comp.</th>
+                <th>Documento</th>
+                <th>Clave</th>
                 <th>Valor</th>
             </tr>
             </thead>
@@ -56,6 +58,8 @@
                         <g:else>
                             <td></td>
                         </g:else>
+                        <td style="text-align: right">${(p.documento)}</td>
+                        <td style="text-align: right">${(p.claveAcceso)}</td>
                         <td style="text-align: right">${(p.valor+p.impuesto).round(2)}</td>
                     </tr>
                 </g:each>

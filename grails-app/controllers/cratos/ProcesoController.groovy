@@ -1544,6 +1544,7 @@ class ProcesoController extends cratos.seguridad.Shield {
 
         return[comprobante: comprobante, auxiliares: auxiliares, band: band]
     }
+
     def mayorizar_ajax () {
         def cn = dbConnectionService.getConnection()
         def sql = "select sum(asntdebe) - sum(asnthber) suma from asnt " +
