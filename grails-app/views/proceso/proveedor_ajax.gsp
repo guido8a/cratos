@@ -94,17 +94,33 @@
     </div>
 </g:elseif>
 
-<script type="text/javascript">
+<g:if test="${proceso}">
+    <div class="row">
+        <div class="col-xs-12"  style="margin-top: 10px">
+            <div class="col-xs-2 negrilla">
+                Clave:
+            </div>
 
+            <div class="col-xs-10 negrilla">
+                <div class="col-xs-6" style="margin-left: -15px">
+                    <input type="text" name="claveCliente" class="form-control claveCliente" id="claveCliente" readonly
+                           value="${proceso?.claveAcceso}" title="Clave del proveedor o cliente"
+                           placeholder="clave de acceso" />
+                </div>
+            </div>
+        </div>
+    </div>
+</g:if>
+
+<script type="text/javascript">
 
     $("#btn_crear").click(function () {
         crearEditar(null, false)
     });
 
-
     $("#btn_editar").click(function () {
         var pro = $("#prve__id").val();
-        if(pro != ''){
+        if(pro !== ''){
             crearEditar(pro, true);
         }
     });
@@ -159,9 +175,9 @@
                 data    : $form.serialize(),
                 success : function (msg) {
                     var parts = msg.split("_");
-                    log(parts[1], parts[0] == "ok" ? "success" : "error"); // log(msg, type, title, hide)
+                    log(parts[1], parts[0] === "ok" ? "success" : "error"); // log(msg, type, title, hide)
 //                    console.log('retorna', parts[1])
-                    if (parts[0] == "ok") {
+                    if (parts[0] === "ok") {
                         setTimeout(function () {
                             closeLoader();
                         }, 1000);
@@ -181,16 +197,14 @@
     }
 
     $("#btn_buscar").click(function () {
-//        console.log("btn_buscar")
-        $('#modal-proveedor').modal('show')
-        $("#resultados").html('')
+        $('#modal-proveedor').modal('show');
+        $("#resultados").html('');
 
         if(!'${proceso}'){
             $("#comprobanteDesc").val('');
             $("#comprobanteDoc").val('');
             $("#comprobanteSaldo").val('');
         }
-
     });
 
     $(".proveedor").dblclick(function(){
@@ -199,22 +213,18 @@
 
     $("#btn_cargar").click(function(){
         var tipo = $("#tipoProceso").val()
-//        console.log("btn_cargar, tipo:", tipo);
-//        console.log("ruc: ", $("#prve").val());
-        if($("#prve").val() != '' && (tipo == '1'))
+        if($("#prve").val() != '' && (tipo === '1'))
             cargarSstr($("#prve__id").val())
-        if($("#prve").val() != '' && (tipo == '4' || tipo == '6' || tipo == '7'))
-//            console.log('remueve hide...')
+        if($("#prve").val() != '' && (tipo === '4' || tipo === '6' || tipo === '7'))
             $("#btnBuscarComp").removeClass('hidden')
     });
 
     $("#btn_cargarCl").click(function(){
         var tipo = $("#tipoProceso").val()
         var prve = $("#prve__id").val()
-//        console.log("ttpp: ", $("#tipoProceso").val());
-        if($("#prve").val() != '' && (tipo == '6' || tipo == '7'  || tipo == '5'))
+        if($("#prve").val() != '' && (tipo === '6' || tipo === '7'  || tipo === '5'))
             $("#btnBuscarComp").removeClass('hidden')
-        if($("#prve").val() != '' && (tipo == '2'))
+        if($("#prve").val() != '' && (tipo === '2'))
             cargarTcsr(prve)
     });
 </script>

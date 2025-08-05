@@ -33,13 +33,13 @@
                           value="${contabilidad.id}" optionKey="id"/>
             </div>
         </div>
-        <table  style="margin-top: 10px;border: 1px solid black;padding:5px;"
-                class="table table-bordered table-hover table-condensed">
+        <table style="margin-top: 10px;border: 1px solid black;padding:5px;"
+               class="table table-bordered table-hover table-condensed">
             <thead>
-            <tr>
+            <tr style="width: 100%">
                 <th>Descripción</th>
                 <th>Fecha</th>
-                <th>Comp.</th>
+                %{--                <th>Comp.</th>--}%
                 <th>Documento</th>
                 <th>Clave</th>
                 <th>Valor</th>
@@ -49,17 +49,17 @@
             <g:if test="${procesos}">
                 <g:each in="${procesos}" var="p">
                     <tr>
-                        <td>${p.descripcion}</td>
+                        <td>${p.descripcion} <br/> <strong class="text-info"> ${p?.proveedor?.email} </strong> </td>
                         <td>${p.fecha.format("dd/MM/yyyy")}</td>
                         <g:set var="comp" value="${cratos.Comprobante.findByProceso(p)}"/>
-                        <g:if test="${comp}">
-                            <td><g:link controller="proceso" action="verComprobante" id="${comp.id}">${comp?.prefijo+""+comp?.numero}</g:link></td>
-                        </g:if>
-                        <g:else>
-                            <td></td>
-                        </g:else>
-                        <td style="text-align: right">${(p.documento)}</td>
-                        <td style="text-align: right">${(p.claveAcceso)}</td>
+                        %{--                        <g:if test="${comp}">--}%
+                        %{--                            <td><g:link controller="proceso" action="verComprobante" id="${comp.id}">${comp?.prefijo+""+comp?.numero}</g:link></td>--}%
+                        %{--                        </g:if>--}%
+                        %{--                        <g:else>--}%
+                        %{--                            <td></td>--}%
+                        %{--                        </g:else>--}%
+                        <td style="text-align: center">${(p.documento)}</td>
+                        <td style="text-align: right; font-size: 12px">${(p.claveAcceso)}</td>
                         <td style="text-align: right">${(p.valor+p.impuesto).round(2)}</td>
                     </tr>
                 </g:each>
