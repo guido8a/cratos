@@ -59,7 +59,7 @@
                         %{--                            <td></td>--}%
                         %{--                        </g:else>--}%
                         <td style="text-align: center">${(p.documento)}</td>
-                        <td style="text-align: right; font-size: 12px">${(p.claveAcceso)}</td>
+                        <td style="text-align: center; font-size: 13px">${(p.claveAcceso)}</td>
                         <td style="text-align: right">${(p.valor+p.impuesto).round(2)}</td>
                     </tr>
                 </g:each>
