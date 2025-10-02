@@ -145,7 +145,7 @@
                         <a href="#" id="btnEnviarFactura" class="btn btn-info" title="Enviar factura al SRI"
                            style="border-style: solid; border-color: #d05a05; border-width: 1px; margin-right: 1px">
                             <i class="fa fa-plane"></i>
-                            Factuara a SRI
+                            Factura a SRI
                         </a>
                     </g:else>
                 </g:if>

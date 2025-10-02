@@ -6,15 +6,14 @@ class LoginService {
     //static scope = 'session'
 
     Persona login(user, pass) {
-    def usuario = Persona.findWhere(login: user, password: pass.trim().encodeAsMD5() , activo:1 )
+        def usuario = Persona.findWhere(login: user, password: pass.trim().encodeAsMD5(), activo: 1)
         if (usuario) {
             if (this.verificarAccesoUsuario(usuario)) {
                 return usuario
             } else {
-            	return null
+                return null
             }
-        }
-        else{
+        } else {
             return null
         }
     }
@@ -22,46 +21,42 @@ class LoginService {
     boolean verificarAccesoUsuario(user) {
         def usuario = user
         def hoy = new Date()
-        if(usuario.accesos.size() > 0) {
+        if (usuario.accesos.size() > 0) {
             usuario.accesos.findAll { fila ->
-                if(hoy.after(fila.accsFechaInicial) && hoy.before(fila.accsFechaFinal)) {
+                if (hoy.after(fila.accsFechaInicial) && hoy.before(fila.accsFechaFinal)) {
                     return false
                 }
             }
-        }
-        else
-           return true
+        } else
+            return true
 
         return true
     }
 
-    List perfiles(user){
-        def lista=[]
-        user.sesiones.sort({it.perfil}).each {
+    List perfiles(user) {
+        def lista = []
+        user.sesiones.sort({ it.perfil }).each {
             lista.add(it.perfil)
             //println " it  "+it.perfil
         }
         return lista.toArray()
     }
 
-    List alertas(user){
-        def lista=[]
-        lista=cratos.alertas.Alerta.findAll("from Alerta where usro=${user.id} and fec_recibido is null order by fec_envio",[max:4, offset:0])
+    List alertas(user) {
+        def lista = []
+        lista = cratos.alertas.Alerta.findAll("from Alerta where usro=${user.id} and fec_recibido is null order by fec_envio", [max: 4, offset: 0])
 
         return lista
     }
 
-    boolean autorizaciones(usuario,pass) {
-        def us = Persona.findWhere(login: usuario.login, autorizacion: pass.trim().encodeAsMD5(), activo:1 )
+    boolean autorizaciones(usuario, pass) {
+        def us = Persona.findWhere(login: usuario.login, autorizacion: pass.trim().encodeAsMD5(), activo: 1)
         if (us) {
             return true
-        }
-        else{
+        } else {
             return false
         }
     }
-
-
 
 
 }

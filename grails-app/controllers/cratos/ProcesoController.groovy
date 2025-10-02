@@ -35,12 +35,12 @@ class ProcesoController extends cratos.seguridad.Shield {
     def nuevoProceso = {
 //        println "nuevo proceso "+params
 
-        def estb = Empresa.get(session.empresa.id).establecimientos.tokenize(',')
-
-        def mp = [:]
-        estb.each {
-            mp[it] = it
-        }
+//        def estb = Empresa.get(session.empresa.id).establecimientos.tokenize(',')
+//
+//        def mp = [:]
+//        estb.each {
+//            mp[it] = it
+//        }
 
         def sucursal = Establecimiento.findAllByEmpresa(Empresa.get(session.empresa.id))
 
