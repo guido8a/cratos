@@ -448,20 +448,20 @@ class ServicioSriController {
                     if(empr.emprctes =='S'){
                         contribuyenteEspecial('S')   //++ agregar en empresa
                     }
-                    obligadoContabilidad(empr.emprcont == '1' ? 'SI' : 'NO' )
+//                    obligadoContabilidad(empr.emprcont == '1' ? 'SI' : 'NO' )
                     tipoIdentificacionComprador(tipoId(prcs.id))   // Usar dato desde TITT
 //                    tipoIdentificacionComprador(prcs.proveedor.tipoIdentificacion.codigoSri)   // desde PRVE
                     razonSocialComprador(prcs.proveedor.nombre)
                     identificacionComprador(prcs.proveedor.ruc.trim())
 
-                    codDocModificado(01)
+                    codDocModificado('01')
                     numDocModificado(prcs.comprobante.proceso.documento)
-                    fechaEmisionDocSustento(prcs.comprobante.proceso.fechaEmision)
+                    fechaEmisionDocSustento(prcs.comprobante.proceso.fechaEmision.format('dd/MM/yyyy'))
                     
                     totalSinImpuestos(utilitarioService.numero(prcs.baseImponibleNoIva + prcs.baseImponibleIva0 +
                             prcs.baseImponibleIva))
 //                    totalSinImpuestos(utilitarioService.numero(prcs.baseImponibleIva))
-                    totalDescuento(utilitarioService.numero(0))   //+++ agregar total descuentos en prcs
+//                    totalDescuento(utilitarioService.numero(0))   //+++ agregar total descuentos en prcs
                     valorModificacion(utilitarioService.numero(prcs.comprobante.proceso.valor))
                     moneda("DOLAR")
 
@@ -512,8 +512,8 @@ class ServicioSriController {
                         def parcialIva = Math.round(sbtt * valorIva) / 100
 
                         detalle() {
-                            codigoPrincipal(dt.itemcdgo)
-                            codigoAuxiliar(dt.itemcdgo)
+                            codigoInterno(dt.itemcdgo)
+//                            codigoAuxiliar(dt.itemcdgo)
                             descripcion(dt.itemnmbr)
                             cantidad(dt.dtfccntd)
                             precioUnitario(utilitarioService.numero4(dt.dtfcpcun))
@@ -540,9 +540,11 @@ class ServicioSriController {
 //                }
 
                 infoAdicional(){
+                    campoAdicional(nombre: 'Cliente', prcs.proveedor.nombre )
                     campoAdicional(nombre: 'Dirección', prcs.proveedor.direccion )
                     campoAdicional(nombre: 'Teléfono', prcs.proveedor.telefono )
-                    campoAdicional(nombre: 'Correo Electrónico', prcs.proveedor.email )
+//                    campoAdicional(nombre: 'Correo Electrónico', prcs.proveedor.email )
+                    campoAdicional(nombre: 'Documento modificado', prcs.comprobante.proceso.documento )
                 }
 
 
