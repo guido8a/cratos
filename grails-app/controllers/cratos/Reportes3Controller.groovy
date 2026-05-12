@@ -665,7 +665,6 @@ class Reportes3Controller {
     }
 
     def notaCreditoElectronica () {
-
         def proceso = Proceso.get(params.id)
         def empresa = Empresa.get(params.emp)
         def detalles = DetalleFactura.findAllByProceso(proceso).sort{it?.item?.codigo}

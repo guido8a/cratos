@@ -201,7 +201,7 @@ class ProcesoController extends cratos.seguridad.Shield {
             case ['6','7']:  //NC y ND
 //                println "------ Nota de crédito y Débito------"
                 def secuencial = "-" + '0' * (9-params.serie.size()) + params.serie
-                proceso.tipoTransaccion = null
+                proceso.tipoTransaccion = TipoTransaccion.get(2)
                 proceso.documento = params.numEstablecimiento + "-" + params.numeroEmision + secuencial
                 proceso.facturaEstablecimiento = params.numEstablecimiento
                 proceso.facturaPuntoEmision = params.numeroEmision

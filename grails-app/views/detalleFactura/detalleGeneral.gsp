@@ -48,6 +48,13 @@
             </a>
         </g:if>
     </div>
+    <div class="btn-group">
+        <g:if test="${proceso?.tipoProceso?.codigo?.trim() == 'NC'}">
+            <a href="#" class="btn btn-info" id="btnImprimirDetalleNC">
+                <i class="fa fa-print"></i> Previsualizar Nota de Crédito
+            </a>
+        </g:if>
+    </div>
 </div>
 
 
@@ -180,6 +187,11 @@
         %{--location.href =  "${g.createLink(controller:'reportes3' , action: 'facturaE')}?id=" + '${proceso?.id}' + "&emp=${session.empresa.id}";--}%
         %{--location.href =  "${g.createLink(controller:'reportes3' , action: 'enviarMail2')}?id=" + '${proceso?.id}' + "&emp=${session.empresa.id}" + "&url=" + url;--}%
 
+    });
+
+    $("#btnImprimirDetalleNC").click(function () {
+        url = "${g.createLink(controller:'reportes3' , action: 'notaCreditoElectronica')}?id=" + '${proceso?.id}' + "Wemp=${session.empresa.id}";
+        location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=notaCredito.pdf"
     });
 
 

@@ -116,13 +116,9 @@ class ServicioSriController {
         println "finaliza xml de facura en --> ${archivo}"
         firmaSri(archivo)
         println "finaliza firma..."
-        //se envía al SRI y si todo va bien se pone TipoEmision = 1, caso contrario 2
 
-/*
-        prcs.claveAcceso = clave
-        prcs.tipoEmision = '1'  // si contesta el SRI
-        prcs.save(flush: true)
-*/
+        //se envía al SRI y si todo va bien se pone TipoEmision = 1, caso contrario 2
+        // quitar comentario y eliminar última linea de render
 
         def retornaSri = enviar(archivo, clave)
         println "retornaSri: $retornaSri"
@@ -154,6 +150,60 @@ class ServicioSriController {
         println "retorna >>> $retorna"
 
         render retorna
+    }
+
+    def notaCredito(){
+        def empresa_id = session.empresa.id
+        def pathxml = servletContext.getRealPath("/") + "xml/" + empresa_id + "/"  //web-app/xml
+        println "nota de Crédito: $params"   // debe enviarse prcs__id de la factura
+        def prcs = Proceso.get(params.id)
+        def clave = notaCredXml(prcs)
+        def archivo = "nc_${clave}.xml"
+        def retorna = ""
+//        def archivo = "hola.pdf"  //** no funcina con pdfs
+
+        println "archivo: $archivo"
+//        def archivo = "fc_667.xml"
+        println "finaliza xml de facura en --> ${archivo}"
+        firmaSri(archivo)
+        println "finaliza firma..."
+
+        //se envía al SRI y si todo va bien se pone TipoEmision = 1, caso contrario 2
+        // quitar comentario y eliminar última linea de render
+
+        /*
+        def retornaSri = enviar(archivo, clave)
+        println "retornaSri: $retornaSri"
+
+        def arr = retornaSri.split('_')
+        def autorizacion = arr[0]
+        def txfecha = arr[1]
+        def fecha
+        if(txfecha.contains('T')) {
+            fecha = new Date().parse("yyyy-MM-dd'T'HH:mm:ss", txfecha)
+        } else {
+            fecha = new Date().parse("yyyy-MM-dd HH:mm:ss", txfecha)
+        }
+        println "retorna de enviar: autorización ${autorizacion} y fecha: $fecha"
+
+        if(autorizacion) {
+            prcs.claveAcceso = clave
+            prcs.autorizacion = autorizacion
+            prcs.fechaAutorizacion = fecha
+            prcs.tipoEmision = '1'  // si contesta el SRI
+            retorna = "ok"
+        } else {
+            prcs.claveAcceso = clave
+            prcs.tipoEmision = '1'  // si no contesta el SRI hay que hacer otro envío de los "2"
+            retorna = "no"
+        }
+        prcs.save(flush: true)
+
+        println "retorna >>> $retorna"
+
+        render retorna
+        */
+        render 'prueba'
     }
 
     def facturaXml(prcs) {
@@ -271,6 +321,175 @@ class ServicioSriController {
                     }
                 }  /* -- infoFactura -- */
 
+                /** detalle **/
+                detalles() {
+                    dtfc.each { dt ->
+                        //def trfa = TarifaIVA.findByValor(valorIva)
+                        if(dt.tpiv__id == 2) {
+                            sql = "select trivcdgo, trivvlor from triv where tpiv__id = ${dt.tpiv__id} and " +
+                                    "trivvlor = ${valorIva}"
+                        } else {
+                            sql = "select trivcdgo, trivvlor from triv where tpiv__id = ${dt.tpiv__id}"
+                        }
+
+                        println "trfa---> $sql"
+
+                        def trfa = cn.rows(sql.toString()) [0]
+
+                        println "parcial: ${dt.dtfccntd}, ${dt.dtfcpcun}, ${dt.dtfcdsct}"
+                        def pcun = dt.dtfcpcun * (1 - dt.dtfcdsct / 100)
+                        def sbtt = dt.dtfccntd * pcun
+                        def parcial = Math.round(sbtt * 100) / 100
+                        def parcialIva = Math.round(sbtt * valorIva) / 100
+
+                        detalle() {
+                            codigoPrincipal(dt.itemcdgo)
+                            codigoAuxiliar(dt.itemcdgo)
+                            descripcion(dt.itemnmbr)
+                            cantidad(dt.dtfccntd)
+                            precioUnitario(utilitarioService.numero4(dt.dtfcpcun))
+                            descuento(utilitarioService.numero(dt.dtfcdsct))
+                            precioTotalSinImpuesto(utilitarioService.numero(parcial))
+                            impuestos() {
+                                impuesto() {
+                                    codigo(2)  /*** siempre IVA **/
+                                    codigoPorcentaje(trfa.trivcdgo)
+                                    tarifa(trfa.trivvlor)
+                                    baseImponible(utilitarioService.numero(parcial))
+                                    valor(utilitarioService.numero(parcialIva))
+                                }
+                            }
+                        }
+                    }
+                }
+
+//                infoAdicional(){
+//                    campoAdicional(nombre: 'cliente', prcs.proveedor.nombre )
+//                    campoAdicional(nombre: 'identificacion', prcs.proveedor.ruc )
+//                    campoAdicional(nombre: 'direccion', prcs.proveedor.direccion )
+//                    campoAdicional(nombre: 'telefono', prcs.proveedor.telefono )
+//                }
+
+                infoAdicional(){
+                    campoAdicional(nombre: 'Dirección', prcs.proveedor.direccion )
+                    campoAdicional(nombre: 'Teléfono', prcs.proveedor.telefono )
+                    campoAdicional(nombre: 'Correo Electrónico', prcs.proveedor.email )
+                }
+
+
+
+            }   /* -- facura -- */
+
+            file.write(writer.toString())
+        }
+
+        return clave
+    }
+
+    def notaCredXml(prcs) {
+        println "---> NotaCredXml"
+        def cn = dbConnectionService.getConnection()
+        def sql = " "
+        def empresa_id = session.empresa.id
+        def clave = claveAccs(prcs)
+        def cddc = CodigoDocumento.findByDescripcionIlike('factura')
+        def hoy = new Date().format('yyyy-MM-dd')
+        def valorIva = utilitarioService.valorIva(hoy)
+
+        def pathxml = servletContext.getRealPath("/") + "xml/" + empresa_id + "/"  //web-app/xml
+        def path = pathxml + "nc_${clave}.xml"
+        new File(pathxml).mkdirs()
+        def file = new File(path)
+
+        if (!file.exists()) {
+            sql = "select tpidcdgo, emprnmbr, empr_ruc, emprtpem, emprdire, emprambt, emprrzsc, emprnmbr, " +
+                    "emprctes, emprcont from empr, tpid " +
+                    "where tpid.tpid__id = empr.tpid__id and empr__id = ${empresa_id}"
+            println "empresa: $sql"
+            def empr = cn.rows(sql.toString()).first()
+
+            println "...empresa: $sql  --> ${empr}"
+
+            /** detalle de la facura **/
+            sql = "select itemcdgo, itemnmbr, dtfccntd, dtfcpcun, dtfcdsct, tpiv__id " +
+                    "from dtfc, item where prcs__id = ${prcs.id} and item.item__id = dtfc.item__id " +
+                    "order by tpiv__id, itemcdgo"
+            def dtfc = cn.rows(sql.toString())
+
+
+            def writer = new StringWriter()
+            def xml = new MarkupBuilder(writer)
+//        xml.mkp.xmlDeclaration(version: "1.0", encoding: "UTF-8", standalone: "no")
+            xml.mkp.xmlDeclaration(version: "1.0", encoding: "UTF-8", standalone: "yes")
+
+            xml.notaCredito(id: "comprobante", version: "1.1.0") {
+                def pto = completaCeros(prcs.facturaPuntoEmision,3)
+                println "inicia factura... ${prcs.facturaPuntoEmision} --> ${pto}"
+                infoTributaria() {
+                    ambiente(empr.emprambt)   //pruebas 1, Producción: 2
+                    tipoEmision(1) //aplica solo a empresas de emisión "E" si no contesta SRI se pone 2.--> Reenvío???
+                    razonSocial(empr.emprrzsc)  //Razón Social en Empresa
+                    nombreComercial(empr.emprnmbr)  //nombre comercial
+                    ruc(empr.empr_ruc)
+                    claveAcceso(clave)
+                    codDoc(cddc.codigo)
+                    estab(prcs.facturaEstablecimiento)
+                    ptoEmi(prcs.facturaPuntoEmision)
+                    secuencial(prcs.documento.split("-")[2])
+                    dirMatriz(empr.emprdire)
+                    contribuyenteRimpe("CONTRIBUYENTE RÉGIMEN RIMPE")
+                }  /* -- infoTributaria -- */
+
+                println "---------1---------"
+                infoNotaCredito() {
+                    fechaEmision(new Date().format('dd/MM/yyyy'))
+                    dirEstablecimiento(prcs.establecimiento.direccion)   //+++ crear tabla establecimeintos ++dirección
+//                    contribuyenteEspecial(empr.emprctes?:'000')   //++ agregar en empresa
+                    if(empr.emprctes =='S'){
+                        contribuyenteEspecial('S')   //++ agregar en empresa
+                    }
+                    obligadoContabilidad(empr.emprcont == '1' ? 'SI' : 'NO' )
+                    tipoIdentificacionComprador(tipoId(prcs.id))   // Usar dato desde TITT
+//                    tipoIdentificacionComprador(prcs.proveedor.tipoIdentificacion.codigoSri)   // desde PRVE
+                    razonSocialComprador(prcs.proveedor.nombre)
+                    identificacionComprador(prcs.proveedor.ruc.trim())
+
+                    codDocModificado(01)
+                    numDocModificado(prcs.comprobante.proceso.documento)
+                    fechaEmisionDocSustento(prcs.comprobante.proceso.fechaEmision)
+                    
+                    totalSinImpuestos(utilitarioService.numero(prcs.baseImponibleNoIva + prcs.baseImponibleIva0 +
+                            prcs.baseImponibleIva))
+//                    totalSinImpuestos(utilitarioService.numero(prcs.baseImponibleIva))
+                    totalDescuento(utilitarioService.numero(0))   //+++ agregar total descuentos en prcs
+                    valorModificacion(utilitarioService.numero(prcs.comprobante.proceso.valor))
+                    moneda("DOLAR")
+
+                    /** total con impuestos IVA 0 y 12 **/
+                    totalConImpuestos() {
+                        if(prcs.baseImponibleIva0){
+                            totalImpuesto() {
+                                codigo(TipoDeImpuesto.findByDescripcion('IVA').codigo)   // TPIM
+                                codigoPorcentaje(TarifaIVA.findByValor(0).codigo)   // TRIV
+                                baseImponible(utilitarioService.numero(prcs.baseImponibleIva0))   // +++ código % del IVA
+                                valor(utilitarioService.numero(0))   // +++ código % del IVA
+                            }
+                        }
+                        if(prcs.baseImponibleIva){
+                            sql = "select trivcdgo, trivvlor from triv where trivvlor = ${valorIva}"
+                            def trfa = cn.rows(sql.toString())[0]
+                            totalImpuesto() {
+                                codigo(TipoDeImpuesto.findByDescripcion('IVA').codigo)   // +++ código del IVA
+                                codigoPorcentaje(trfa.trivcdgo)   // +++ código % del IVA
+                                baseImponible(utilitarioService.numero(prcs.baseImponibleIva))   // +++ código % del IVA
+                                valor(utilitarioService.numero(prcs.ivaGenerado))   // +++ código % del IVA
+                            }
+                        }
+                        /*** TODO: manejar impuestos del ICE: crear tablas de impuesto ICE y prcs.baseICE (prcsbsic) **/
+                    }
+                }  /* -- infoFactura -- */
+
+                println "---------detalles---------"
                 /** detalle **/
                 detalles() {
                     dtfc.each { dt ->

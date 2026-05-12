@@ -142,11 +142,20 @@
                         </g:if>
                     </g:if>
                     <g:else>
+                        <g:if test="${proceso?.tipoProceso?.codigo?.trim() in ['V']}">
                         <a href="#" id="btnEnviarFactura" class="btn btn-info" title="Enviar factura al SRI"
                            style="border-style: solid; border-color: #d05a05; border-width: 1px; margin-right: 1px">
                             <i class="fa fa-plane"></i>
                             Factura a SRI
                         </a>
+                        </g:if>
+                        <g:if test="${proceso?.tipoProceso?.codigo?.trim() in ['NC']}">
+                        <a href="#" id="btnEnviarNotaCred" class="btn btn-info" title="Enviar factura al SRI"
+                           style="border-style: solid; border-color: #d05a05; border-width: 1px; margin-right: 1px">
+                            <i class="fa fa-plane"></i>
+                            NotaCréd a SRI
+                        </a>
+                        </g:if>
                     </g:else>
                 </g:if>
 
@@ -489,12 +498,41 @@
     });
 
     $("#btnEnviarFactura").click(function () {
-        bootbox.confirm("<i class='fa fa-warning fa-3x pull-left text-warning text-shadow'></i> Está seguro que desea enviar esta factura al SRI?", function (result) {
+        bootbox.confirm("<i class='fa fa-warning fa-3x pull-left text-warning text-shadow'></i> " +
+                "Está seguro que desea enviar esta factura al SRI?", function (result) {
             if (result) {
                 openLoader('Enviando al SRI...');
                 $.ajax({
                     type: 'POST',
                     url: '${createLink(controller: 'servicioSri', action: 'facturaElectronica')}',
+                    data:{
+                        id: '${proceso?.id}'
+                    },
+                    success: function (msg) {
+                        if(msg == 'ok'){
+                            closeLoader();
+                            log("Factura enviada al SRI correctamente!","success");
+                            setTimeout(function () {
+                                location.href="${createLink(controller: 'proceso', action: 'nuevoProceso')}/?id=" + '${proceso?.id}'
+                            }, 800);
+                        }else{
+                            closeLoader();
+                            log("Error al enviar la factura al SRI","error");
+                        }
+                    }
+                });
+            }
+        })
+    });
+
+    $("#btnEnviarNotaCred").click(function () {
+        bootbox.confirm("<i class='fa fa-warning fa-3x pull-left text-warning text-shadow'></i> " +
+                "Está seguro que desea enviar esta factura al SRI?", function (result) {
+            if (result) {
+                openLoader('Enviando al SRI...');
+                $.ajax({
+                    type: 'POST',
+                    url: '${createLink(controller: 'servicioSri', action: 'notaCredito')}',
                     data:{
                         id: '${proceso?.id}'
                     },
