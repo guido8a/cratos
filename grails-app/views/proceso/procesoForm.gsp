@@ -118,14 +118,21 @@
 
             %{--<g:if test="${proceso?.estado == 'R'}">--}%
                 <g:if test="${proceso?.tipoProceso?.codigo?.trim() in ['V', 'NC', 'ND']}">
+                    <g:if test="${proceso?.tipoProceso?.codigo?.trim() == 'V'}">
                     <a href="#" class="btn btn-info" id="btnImprimirFactElect">
-                        <i class="fa fa-print"></i> Factura, NC o ND
+                        <i class="fa fa-print"></i> Factura
                     </a>
+                    </g:if>
+                    <g:if test="${proceso?.tipoProceso?.codigo?.trim() == 'NC'}">
+                    <a href="#" class="btn btn-info" id="btnImprimirNotaCred">
+                        <i class="fa fa-print"></i> Nota Crédito
+                    </a>
+                    </g:if>
                     <g:if test="${proceso?.claveAcceso != null}">
                         <g:if test="${proceso?.tipoProceso?.codigo?.trim() in ['V']}">
-                            <a href="#" class="btn btn-success" id="btnImprimirFactElect1">
-                                <i class="fa fa-print"></i> Fact. Elect.
-                            </a>
+                            %{--<a href="#" class="btn btn-success" id="btnImprimirFactElect1">--}%
+                                %{--<i class="fa fa-print"></i> Fact. Elect.--}%
+                            %{--</a>--}%
                             <a href="#" class="btn btn-primary" id="btnEnviarFactElect">
                                 <i class="fa fa-envelope"></i> Enviar Factura
                             </a>
@@ -287,7 +294,7 @@
 
         <div class="row">
             <div class="col-xs-2 negrilla">
-                Descripción:
+                Descripción o Razón de modif. para NC
             </div>
 
             <div class="col-xs-10 negrilla">
@@ -556,6 +563,11 @@
     $("#btnImprimirFactElect").click(function () {
         url = "${g.createLink(controller:'reportes3' , action: 'facturaElectronica')}?id=" + '${proceso?.id}' + "Wemp=${session.empresa.id}";
         location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=facturaElectronica.pdf"
+    });
+
+    $("#btnImprimirNotaCred").click(function () {
+        url = "${g.createLink(controller:'reportes3' , action: 'notaCreditoElectronica')}?id=" + '${proceso?.id}' + "Wemp=${session.empresa.id}";
+        location.href = "${g.createLink(action: 'pdfLink',controller: 'pdf')}?url=" + url + "&filename=notaCredito.pdf"
     });
 
     $("#btnImprimirFactElect1").click(function () {
