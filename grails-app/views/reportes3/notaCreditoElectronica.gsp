@@ -101,7 +101,7 @@
     </style>
 </head>
 
-<body>
+<body style="font-family: Helvetica Neue, Helvetica, Arial, sans-serif;">
 
 <div class="hoja">
     <div style="height: 100px; width: 330px;" class="left">
