@@ -171,7 +171,6 @@ class ServicioSriController {
         //se envía al SRI y si todo va bien se pone TipoEmision = 1, caso contrario 2
         // quitar comentario y eliminar última linea de render
 
-        /*
         def retornaSri = enviar(archivo, clave)
         println "retornaSri: $retornaSri"
 
@@ -202,8 +201,6 @@ class ServicioSriController {
         println "retorna >>> $retorna"
 
         render retorna
-        */
-        render 'prueba'
     }
 
     def facturaXml(prcs) {
