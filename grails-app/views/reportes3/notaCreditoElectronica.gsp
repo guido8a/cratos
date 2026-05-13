@@ -155,12 +155,12 @@
 %{--                    <td class="tl letra3" style="width: 200px"><strong> </strong> </td>--}%
 %{--                </tr>--}%
                 <tr class="" style="height: 20px; width: 600px">
-                    <td class="tl letra3" style="width: 350px"><strong>Razón de modificación: </strong></td>
+                    <td class="tl letra3" style="width: 350px"><strong>Razón de modificación: </strong> ${proceso?.descripcion}</td>
                     <td class="tl" style="width: 50px"></td>
                     <td class="tl letra3" style="width: 200px"></td>
                 </tr>
                 <tr class="" style="height: 20px; width: 600px">
-                    <td class="tl letra3" style="width: 350px"><strong>Fecha de Emisión (comprobante a modificar): </strong></td>
+                    <td class="tl letra3" style="width: 350px"><strong>Fecha de Emisión (comprobante a modificar): </strong> <g:formatDate date="${proceso?.comprobante?.proceso?.fecha}" format="dd/MM/yyyy"/></td>
                     <td class="tl" style="width: 50px"></td>
                     <td class="tl" style="width: 200px"><strong></strong> </td>
                 </tr>
