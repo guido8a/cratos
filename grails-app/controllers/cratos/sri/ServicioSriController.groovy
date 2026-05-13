@@ -389,7 +389,7 @@ class ServicioSriController {
         def sql = " "
         def empresa_id = session.empresa.id
         def clave = claveAccs(prcs)
-        def cddc = CodigoDocumento.findByDescripcionIlike('factura')
+        def cddc = CodigoDocumento.findByDescripcionIlike('NOTA DE CRÉDITO')
         def hoy = new Date().format('yyyy-MM-dd')
         def valorIva = utilitarioService.valorIva(hoy)
 
