@@ -484,6 +484,7 @@ class ServicioSriController {
                         }
                         /*** TODO: manejar impuestos del ICE: crear tablas de impuesto ICE y prcs.baseICE (prcsbsic) **/
                     }
+                    motivo(prcs.descripcion)
                 }  /* -- infoFactura -- */
 
                 println "---------detalles---------"
