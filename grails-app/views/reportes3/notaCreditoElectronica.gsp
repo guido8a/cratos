@@ -172,67 +172,6 @@
         </div>
     </div>
 
-
-%{--    <div style="height: 200px; width: 640px; margin-top: 140px" class="borde2">--}%
-%{--        <div class="left">--}%
-%{--            <table style="margin-left: 5px; margin-top: 10px">--}%
-%{--                <thead style="width: 600px">--}%
-%{--                <tr class="" style="height: 10px;">--}%
-%{--                    <th class="tl letra3" style="width: 350px"><strong>Razón Social/Nombres y Apellidos:</strong> ${proceso?.proveedor?.nombre ?: ''}</th>--}%
-%{--                    <th class="tl" style="width: 50px"></th>--}%
-%{--                    <th class="tl letra3" style="width: 200px"><b>Identificación:</b> ${proceso?.proveedor?.ruc ?: ''}</th>--}%
-%{--                </tr>--}%
-%{--                </thead>--}%
-%{--            </table>--}%
-%{--            <table style="margin-left: 5px; margin-top: 20px;">--}%
-%{--                <thead>--}%
-%{--                <tr class="" style="height: 10px; width: 600px">--}%
-%{--                    <th class="tl letra3" style="width: 350px"><strong>Fecha de Emisión:</strong> <g:formatDate date="${proceso?.fechaEmision}" format="dd/MM/yyyy"/></th>--}%
-%{--                    <th class="tl" style="width: 50px"></th>--}%
-%{--                    <th class="tl letra3" style="width: 200px"></th>--}%
-%{--                </tr>--}%
-%{--                </thead>--}%
-%{--            </table>--}%
-%{--            <table style="margin-left: 5px; margin-top: 5px;">--}%
-%{--                <thead>--}%
-%{--                <tr class="" style="height: 10px; width: 600px">--}%
-%{--                    <th class="tl letra3" style="width: 50px"></th>--}%
-%{--                    <th class="tl" style="width: 450px"><strong>_____________________________________________________________________________________</strong></th>--}%
-%{--                    <th class="tl letra3" style="width: 100px"></th>--}%
-%{--                </tr>--}%
-%{--                </thead>--}%
-%{--            </table>--}%
-%{--            <table style="margin-left: 5px; margin-top: 10px;">--}%
-%{--                <thead>--}%
-%{--                <tr class="" style="height: 10px; width: 600px">--}%
-%{--                    <th class="tl letra3" style="width: 350px"><strong>Comprobante que se modifica </strong></th>--}%
-%{--                    <th class="tl" style="width: 50px"></th>--}%
-%{--                    <th class="tl" style="width: 200px"><strong></strong></th>--}%
-%{--                </tr>--}%
-%{--                </thead>--}%
-%{--            </table>--}%
-%{--            <table style="margin-left: 5px; margin-top: 20px;">--}%
-%{--                <thead>--}%
-%{--                <tr class="" style="height: 10px; width: 600px">--}%
-%{--                    <th class="tl letra3" style="width: 350px"><strong>Fecha de Emisión (comprobante a modificar)</strong></th>--}%
-%{--                    <th class="tl" style="width: 50px"></th>--}%
-%{--                    <th class="tl" style="width: 200px"><strong></strong></th>--}%
-%{--                </tr>--}%
-%{--                </thead>--}%
-%{--            </table>--}%
-%{--            <table style="margin-left: 5px; margin-top: 20px;">--}%
-%{--                <thead>--}%
-%{--                <tr class="" style="height: 10px; width: 600px">--}%
-%{--                    <th class="tl letra3" style="width: 350px"><strong>Razón de modificación:</strong></th>--}%
-%{--                    <th class="tl" style="width: 50px"></th>--}%
-%{--                    <th class="tl" style="width: 200px"><strong></strong></th>--}%
-%{--                </tr>--}%
-%{--                </thead>--}%
-%{--            </table>--}%
-%{--        </div>--}%
-%{--    </div>--}%
-
-
     <div style="margin-top: 15px;">
         <table>
             <thead>
@@ -292,50 +231,38 @@
     </div>
 
     <table border="1" style="height: 100px; width: 230px; margin-top: 10px" class="right borde2">
-        <thead>
+        <tbody style="width: 100%">
         <tr>
-            <th class="tl tam">SUBTOTAL 15%</th>
-            <th class="tr"><g:formatNumber number="${proceso?.baseImponibleIva ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></th>
+            <td class="tl tam" style="width: 72%">SUBTOTAL 15%</td>
+            <td class="tr" style="width: 28%"><g:formatNumber number="${proceso?.baseImponibleIva ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
         </tr>
         <tr>
-            <th class="tl tam">SUBTOTAL IVA 0%</th>
-            <th class="tr"><g:formatNumber number="${proceso?.baseImponibleIva0 ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></th>
+            <td class="tl tam" style="width: 72%">SUBTOTAL IVA 0%</td>
+            <td class="tr" style="width: 28%"><g:formatNumber number="${proceso?.baseImponibleIva0 ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
         </tr>
         <tr>
-            <th class="tl tam">SUBTOTAL NO OBJETO IVA</th>
-            <th class="tr"><g:formatNumber number="${proceso?.baseImponibleNoIva ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></th>
+            <td class="tl tam" style="width: 72%">SUBTOTAL NO OBJETO IVA</td>
+            <td class="tr" style="width: 28%"><g:formatNumber number="${proceso?.baseImponibleNoIva ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
         </tr>
         <tr>
-            <th class="tl tam">SUBTOTAL EXENTO IVA</th>
-            <th class="tr"><g:formatNumber number="${proceso?.excentoIva ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></th>
+            <td class="tl tam" style="width: 72%">SUBTOTAL EXENTO IVA</td>
+            <td class="tr" style="width: 28%"><g:formatNumber number="${proceso?.excentoIva ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
         </tr>
         <tr>
-            <th class="tl tam">SUBTOTAL SIN IMPUESTOS</th>
-            <th class="tr"><g:formatNumber number="${proceso?.baseImponibleIva ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></th>
+            <td class="tl tam" style="width: 72%">SUBTOTAL SIN IMPUESTOS</td>
+            <td class="tr" style="width: 28%"><g:formatNumber number="${proceso?.baseImponibleIva ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
         </tr>
-%{--        <tr>--}%
-%{--            <th class="tl tam">ICE</th>--}%
-%{--            <th class="tr"><g:formatNumber number="${proceso?.iceGenerado ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></th>--}%
-%{--        </tr>--}%
         <tr>
-            <th class="tl tam">IVA 15%</th>
-            <th class="tr"><g:formatNumber number="${proceso?.ivaGenerado ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></th>
+            <td class="tl tam" style="width: 72%">IVA 15%</td>
+            <td class="tr" style="width: 28%"><g:formatNumber number="${proceso?.ivaGenerado ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></td>
         </tr>
-%{--        <tr>--}%
-%{--            <th class="tl tam">IRBPNR</th>--}%
-%{--            <th class="tr"><g:formatNumber number="${0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></th>--}%
-%{--        </tr>--}%
         <tr>
-            <th class="tl tam">VALOR TOTAL</th>
-            <th class="tr"><g:formatNumber number="${proceso?.valor ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></th>
+            <th class="tl tam" style="width: 72%">VALOR TOTAL</th>
+            <th class="tr" style="width: 28%"><g:formatNumber number="${proceso?.valor ?: 0}" format="##,##0" locale="en_US" maxFractionDigits="2" minFractionDigits="2"/></th>
         </tr>
 
-        </thead>
+        </tbody>
     </table>
-
-
-
-
 </div>
 </body>
 </html>
