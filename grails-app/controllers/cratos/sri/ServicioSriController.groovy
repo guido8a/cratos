@@ -587,7 +587,7 @@ class ServicioSriController {
         connection.setRequestProperty("Content-Type" ,"application/xml" )
         println "...xml"
         connection.doOutput = true
-        println "...do Output envía: $sobre_xml"
+        println "...do Output envía: $pathxml"
 
         try {
             Writer writer = new OutputStreamWriter(connection.outputStream)
